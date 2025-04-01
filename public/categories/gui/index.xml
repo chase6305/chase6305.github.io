@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>GUI on Chase Blog</title>
+    <link>https://chase6305.github.io/categories/gui/</link>
+    <description>Recent content in GUI on Chase Blog</description>
+    <image>
+      <title>Chase Blog</title>
+      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.68.3</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 28 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/categories/gui/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CUDA环境配置-&gt;解决CUDA、GLIBCXX及libc&#43;&#43;abi依赖问题的指南</title>
+      <link>https://chase6305.github.io/posts/cuda/gcc/</link>
+      <pubDate>Fri, 28 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/cuda/gcc/</guid>
+      <description>CUDA环境配置-&amp;gt;解决CUDA、GLIBCXX及libc++abi依赖问题的指南</description>
+    </item>
+    <item>
+      <title>JetsonNV 上解决 PyQt5 “Could not load the Qt platform plugin ‘xcb‘“ 错误</title>
+      <link>https://chase6305.github.io/posts/gui/qt/jetson/</link>
+      <pubDate>Thu, 06 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/gui/qt/jetson/</guid>
+      <description>JetsonNV 上解决 PyQt5 “Could not load the Qt platform plugin ‘xcb‘“ 错误</description>
+    </item>
+    <item>
+      <title>PySide6 将.ui文件编译为.py文件</title>
+      <link>https://chase6305.github.io/posts/gui/qt/pyside6/</link>
+      <pubDate>Fri, 01 Jul 2022 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/gui/qt/pyside6/</guid>
+      <description>PySide6 将.ui文件编译为.py文件</description>
+    </item>
+  </channel>
+</rss>

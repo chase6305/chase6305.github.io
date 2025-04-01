@@ -1,12 +1,12 @@
 ---
-title: libstdc++.so.6 -> version `GLIBCXX_3.4.30‘ not found 解决方案
+title: 'libstdc++.so.6: version `GLIBCXX_3.4.30‘ not found 解决方案'
 date: 2025-02-08
 lastmod: 2025-02-08
 draft: false
 tags: ["C++", "GCC"]
 categories: ["编程技术"]
 authors: ["chase"]
-summary: "libstdc++.so.6 -> version `GLIBCXX_3.4.30‘ not found 解决方案"
+summary: 'libstdc++.so.6: version `GLIBCXX_3.4.30‘ not found 解决方案'
 showToc: true
 TocOpen: true
 hidemeta: false

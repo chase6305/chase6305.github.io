@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Hi there, Welcome to my Technical Blog on Chase Blog</title>
+    <link>https://chase6305.github.io/</link>
+    <description>Recent content in Hi there, Welcome to my Technical Blog on Chase Blog</description>
+    <image>
+      <title>Chase Blog</title>
+      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.68.3</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 28 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CUDA环境配置-&gt;解决CUDA、GLIBCXX及libc&#43;&#43;abi依赖问题的指南</title>
+      <link>https://chase6305.github.io/posts/cuda/gcc/</link>
+      <pubDate>Fri, 28 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/cuda/gcc/</guid>
+      <description>CUDA环境配置-&amp;gt;解决CUDA、GLIBCXX及libc++abi依赖问题的指南</description>
+    </item>
+    <item>
+      <title>Ubuntu切换默认python版本</title>
+      <link>https://chase6305.github.io/posts/python/version/</link>
+      <pubDate>Thu, 13 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/python/version/</guid>
+      <description>Ubuntu切换默认python版本</description>
+    </item>
+    <item>
+      <title>Ubuntu 22.04 无法进入图形界面的解决方法</title>
+      <link>https://chase6305.github.io/posts/vscode/bug/gdm/</link>
+      <pubDate>Tue, 11 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/vscode/bug/gdm/</guid>
+      <description>Ubuntu 22.04 无法进入图形界面的解决方法</description>
+    </item>
+    <item>
+      <title>Linux固定串口设备别名方法</title>
+      <link>https://chase6305.github.io/posts/dialout/udev/</link>
+      <pubDate>Fri, 07 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/dialout/udev/</guid>
+      <description>固定串口设备别名方法</description>
+    </item>
+    <item>
+      <title>Python可视化进度条库使用说明</title>
+      <link>https://chase6305.github.io/posts/python/tqdm/</link>
+      <pubDate>Fri, 07 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/python/tqdm/</guid>
+      <description>Python可视化进度条库使用说明</description>
+    </item>
+    <item>
+      <title>使用 watch 命令监控系统和进程状态</title>
+      <link>https://chase6305.github.io/posts/linux/watch/</link>
+      <pubDate>Fri, 07 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/linux/watch/</guid>
+      <description>watch 是一个功能强大的 Linux 命令行工具，用于周期性执行命令并实时显示输出结果。它特别适合监控系统状态、进程运行和资源使用情况。</description>
+    </item>
+    <item>
+      <title>在 Ubuntu 上安装和切换多个 GCC 版本</title>
+      <link>https://chase6305.github.io/posts/cpp/gccs/</link>
+      <pubDate>Fri, 07 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/cpp/gccs/</guid>
+      <description>在 Ubuntu 上安装和切换多个 GCC 版本</description>
+    </item>
+    <item>
+      <title>JetsonNV 上解决 PyQt5 “Could not load the Qt platform plugin ‘xcb‘“ 错误</title>
+      <link>https://chase6305.github.io/posts/gui/qt/jetson/</link>
+      <pubDate>Thu, 06 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/gui/qt/jetson/</guid>
+      <description>JetsonNV 上解决 PyQt5 “Could not load the Qt platform plugin ‘xcb‘“ 错误</description>
+    </item>
+    <item>
+      <title>Open3D 教程学习指南 (持续整理)</title>
+      <link>https://chase6305.github.io/posts/open3d/introduction/</link>
+      <pubDate>Tue, 04 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/open3d/introduction/</guid>
+      <description>Open3D 是一个开源库，旨在为 3D 数据处理提供高效且易用的工具。它由 Intel 开发和维护，支持多种 3D 数据处理任务，如点云处理、3D 重建、几何处理和可视化等。</description>
+    </item>
+    <item>
+      <title>Python优化控制大寰PGC夹具的串口通信程序</title>
+      <link>https://chase6305.github.io/posts/dialout/dh/</link>
+      <pubDate>Sat, 01 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/dialout/dh/</guid>
+      <description>Python优化控制大寰PGC夹具的串口通信程序</description>
+    </item>
+    <item>
+      <title>libpython3.9.so.1.0: cannot open shared object file: No such file or directory 解决方法</title>
+      <link>https://chase6305.github.io/posts/python/py39/</link>
+      <pubDate>Fri, 28 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/python/py39/</guid>
+      <description>libpython3.9.so.1.0: cannot open shared object file: No such file or directory 解决方法</description>
+    </item>
+    <item>
+      <title>symbol version Qt_5_PRIVATE_API not defined in libQt5Gui.so.5 解决方法</title>
+      <link>https://chase6305.github.io/posts/gui/qt/qt5/</link>
+      <pubDate>Fri, 28 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/gui/qt/qt5/</guid>
+      <description>symbol version Qt_5_PRIVATE_API not defined in libQt5Gui.so.5 解决方法</description>
+    </item>
+    <item>
+      <title>CCTag 标记技术详解</title>
+      <link>https://chase6305.github.io/posts/calibration/cctag/</link>
+      <pubDate>Thu, 27 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/calibration/cctag/</guid>
+      <description>CCTag 标记技术详解</description>
+    </item>
+    <item>
+      <title>libEGL warning: FIXME: egl/x11 doesn‘t support front buffer rendering 解决方法</title>
+      <link>https://chase6305.github.io/posts/egl/x11_warnning/</link>
+      <pubDate>Thu, 27 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/egl/x11_warnning/</guid>
+      <description>在使用 EGL 时，可能会遇到 &lt;code&gt;libEGL warning: FIXME: egl/x11 doesn&#39;t support front buffer rendering.&lt;/code&gt; 的警告。这通常是由于图形驱动程序或库的兼容性问题引起的。以下是两种解决方法，可以帮助你解决这个问题。</description>
+    </item>
+    <item>
+      <title>基于蒙特卡罗方法构建机器人全工作空间</title>
+      <link>https://chase6305.github.io/posts/robotics/workspace/whole-workspace/</link>
+      <pubDate>Thu, 27 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/robotics/workspace/whole-workspace/</guid>
+      <description>基于蒙特卡罗方法构建机器人全工作空间</description>
+    </item>
+    <item>
+      <title>非对称圆标记技术详解</title>
+      <link>https://chase6305.github.io/posts/calibration/opencv/</link>
+      <pubDate>Thu, 27 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/calibration/opencv/</guid>
+      <description>非对称圆标记技术详解</description>
+    </item>
+    <item>
+      <title>pytorch 机械臂逆运动学迭代数值解</title>
+      <link>https://chase6305.github.io/posts/robotics/kinematics/pytorch/</link>
+      <pubDate>Wed, 26 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/robotics/kinematics/pytorch/</guid>
+      <description>&lt;a href=&#34;https://github.com/UM-ARM-Lab/pytorch_kinematics&#34;&gt;https://github.com/UM-ARM-Lab/pytorch_kinematics&lt;/a&gt;</description>
+    </item>
+    <item>
+      <title>Ubuntu 下查看进程 PID 和终止进程方法</title>
+      <link>https://chase6305.github.io/posts/process/pid/</link>
+      <pubDate>Wed, 26 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/process/pid/</guid>
+      <description>Ubuntu 下查看进程 PID 和终止进程方法</description>
+    </item>
+    <item>
+      <title>Unicode 符号在程序开发中的应用指南</title>
+      <link>https://chase6305.github.io/posts/unicode/</link>
+      <pubDate>Wed, 26 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/unicode/</guid>
+      <description>Unicode 符号在程序开发中的应用指南</description>
+    </item>
+    <item>
+      <title>关于手眼标定的数学模型及标定流程</title>
+      <link>https://chase6305.github.io/posts/calibration/model/</link>
+      <pubDate>Wed, 26 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/calibration/model/</guid>
+      <description>关于手眼标定的数学模型及标定流程</description>
+    </item>
+    <item>
+      <title>Linux固定网口IP的方法</title>
+      <link>https://chase6305.github.io/posts/network-protocol/fixed_ip/</link>
+      <pubDate>Fri, 21 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/network-protocol/fixed_ip/</guid>
+      <description>Linux固定网口IP的方法</description>
+    </item>
+    <item>
+      <title>libstdc&#43;&#43;.so.6: version `GLIBCXX_3.4.30‘ not found 解决方案</title>
+      <link>https://chase6305.github.io/posts/cpp/gcc/</link>
+      <pubDate>Sat, 08 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/cpp/gcc/</guid>
+      <description>libstdc++.so.6: version `GLIBCXX_3.4.30‘ not found 解决方案</description>
+    </item>
+    <item>
+      <title>VScode终端出现显示两个环境名问题的解决方案</title>
+      <link>https://chase6305.github.io/posts/vscode/bug/two-env/</link>
+      <pubDate>Fri, 07 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/vscode/bug/two-env/</guid>
+      <description>VScode终端出现显示两个环境名问题的解决方案</description>
+    </item>
+    <item>
+      <title>C&#43;&#43; 智能指针学习总结</title>
+      <link>https://chase6305.github.io/posts/cpp/smart-pointer/</link>
+      <pubDate>Mon, 27 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/cpp/smart-pointer/</guid>
+      <description>C++ 智能指针学习总结</description>
+    </item>
+    <item>
+      <title>7DOF-SRS-运动学逆解(几何解析解)实现</title>
+      <link>https://chase6305.github.io/posts/robotics/kinematics/seven-dof-kinematics/</link>
+      <pubDate>Mon, 13 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/robotics/kinematics/seven-dof-kinematics/</guid>
+      <description>&lt;a href=&#34;https://github.com/chase6305/7DofSRSKinematics&#34;&gt;https://github.com/chase6305/7DofSRSKinematics&lt;/a&gt;</description>
+    </item>
+    <item>
+      <title>Pinocchio 机械臂逆运动学迭代数值解</title>
+      <link>https://chase6305.github.io/posts/robotics/kinematics/pinocchio/</link>
+      <pubDate>Sun, 18 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/robotics/kinematics/pinocchio/</guid>
+      <description>分享一个求解运动学逆解的第三方库 pinocchio， 并且根据其urdf文件中描述的关节极限范围内进行逆运动学求解的样例。</description>
+    </item>
+    <item>
+      <title>PySide6 将.ui文件编译为.py文件</title>
+      <link>https://chase6305.github.io/posts/gui/qt/pyside6/</link>
+      <pubDate>Fri, 01 Jul 2022 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/gui/qt/pyside6/</guid>
+      <description>PySide6 将.ui文件编译为.py文件</description>
+    </item>
+    <item>
+      <title>基于三维栅格空间的A*算法流程C&#43;&#43;实现</title>
+      <link>https://chase6305.github.io/posts/ai/algorithms/astar/astar-cpp/</link>
+      <pubDate>Wed, 29 Jun 2022 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/ai/algorithms/astar/astar-cpp/</guid>
+      <description>基于三维栅格空间的A*算法流程C++实现</description>
+    </item>
+    <item>
+      <title>基于三维栅格空间的A*算法裁剪流程</title>
+      <link>https://chase6305.github.io/posts/ai/algorithms/astar/astar-introduction/</link>
+      <pubDate>Wed, 29 Jun 2022 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/ai/algorithms/astar/astar-introduction/</guid>
+      <description>基于三维栅格空间的A*算法裁剪流程</description>
+    </item>
+    <item>
+      <title>六自由度机器人正逆运动学</title>
+      <link>https://chase6305.github.io/posts/robotics/kinematics/six-dof-kinematics/</link>
+      <pubDate>Tue, 07 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/robotics/kinematics/six-dof-kinematics/</guid>
+      <description>本文主要是对传统六自由度机器人进行正逆运动学求解，选取大族机器人Elfin05 为分析的对象，开发语言是C++。</description>
+    </item>
+    <item>
+      <title>C&#43;&#43; 关于TCP通讯的示例</title>
+      <link>https://chase6305.github.io/posts/network-protocol/c&#43;&#43;_tcp/</link>
+      <pubDate>Sun, 08 Aug 2021 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/network-protocol/c&#43;&#43;_tcp/</guid>
+      <description>C++ 关于TCP通讯的示例</description>
+    </item>
+    <item>
+      <title>C&#43;&#43; 关于UDP通讯的示例</title>
+      <link>https://chase6305.github.io/posts/network-protocol/c&#43;&#43;_udp/</link>
+      <pubDate>Sun, 08 Aug 2021 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/network-protocol/c&#43;&#43;_udp/</guid>
+      <description>C++ 关于UDP通讯的示例</description>
+    </item>
+    <item>
+      <title>Linux系统解决Qt platform plugin &#34;xcb&#34;缺失问题</title>
+      <link>https://chase6305.github.io/posts/post_2/</link>
+      <pubDate>Sat, 07 Aug 2021 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/post_2/</guid>
+      <description>解决Linux系统下Qt应用程序常见的xcb插件缺失问题</description>
+    </item>
+    <item>
+      <title>Ubuntu 18.04 Vscode配置OpenGL 记录</title>
+      <link>https://chase6305.github.io/posts/post_1/</link>
+      <pubDate>Tue, 06 Oct 2020 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/post_1/</guid>
+      <description>Ubuntu 18.04 Vscode配置OpenGL 记录</description>
+    </item>
+    <item>
+      <title></title>
+      <link>https://chase6305.github.io/posts/ai/algorithms/overview/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/ai/algorithms/overview/</guid>
+      <description>// filepath:/home/chase/web/chase6305.</description>
+    </item>
+    <item>
+      <title></title>
+      <link>https://chase6305.github.io/posts/network-protocol/tcp-udp-introduction/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/network-protocol/tcp-udp-introduction/</guid>
+      <description>// filepath:/home/chase/web/chase6305.github.io/content/posts/network-protocol/tcp-udp-introduction.md---title:&amp;#34;TCP 与 UDP 协议详解&amp;#34;date:2024-04-01lastmod:2024-04-01draft:falsetags:[&amp;#34;网络协议&amp;#34;,&amp;#34;TCP&amp;#34;,&amp;#34;UDP&amp;#34;,&amp;#34;计算机网络&amp;#34;]categories:[&amp;#34;计算机网络&amp;#34;,&amp;#34;协议分析&amp;#34;]series:[&amp;#34;网络协议详解&amp;#34;]series_weight:1summary:&amp;#34;详细介绍 TCP 和 UDP 协议的工作原理、区别及应用场景&amp;#34;---</description>
+    </item>
+    <item>
+      <title></title>
+      <link>https://chase6305.github.io/posts/robotics/kinematics/kinematics-introduction/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/robotics/kinematics/kinematics-introduction/</guid>
+      <description>// filepath:/home/chase/web/chase6305.github.io/content/posts/robotics/kinematics-introduction.md---title:&amp;#34;机器人运动学基础&amp;#34;date:2024-04-01lastmod:2024-04-01draft:falsetags:[&amp;#34;运动学&amp;#34;,&amp;#34;机器人学&amp;#34;,&amp;#34;正运动学&amp;#34;,&amp;#34;逆运动学&amp;#34;,&amp;#34;D-H参数&amp;#34;]categories:[&amp;#34;机器人学&amp;#34;,&amp;#34;运动学&amp;#34;]series:[&amp;#34;机器人运动学教程&amp;#34;]series_weight:1summary:&amp;#34;介绍机器人运动学的基本概念、坐标变换及 D-H 参数方法&amp;#34;---</description>
+    </item>
+    <item>
+      <title>Pages</title>
+      <link>https://chase6305.github.io/page/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/page/</guid>
+      <description>pages</description>
+    </item>
+  </channel>
+</rss>
