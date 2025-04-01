@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>C&#43;&#43; on Chase Blog</title>
+    <link>https://chase6305.github.io/tags/c&#43;&#43;/</link>
+    <description>Recent content in C&#43;&#43; on Chase Blog</description>
+    <image>
+      <title>Chase Blog</title>
+      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.68.3</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 07 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/tags/c++/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在 Ubuntu 上安装和切换多个 GCC 版本</title>
+      <link>https://chase6305.github.io/posts/cpp/gccs/</link>
+      <pubDate>Fri, 07 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/cpp/gccs/</guid>
+      <description>在 Ubuntu 上安装和切换多个 GCC 版本</description>
+    </item>
+    <item>
+      <title>pytorch 机械臂逆运动学迭代数值解</title>
+      <link>https://chase6305.github.io/posts/robotics/kinematics/pytorch/</link>
+      <pubDate>Wed, 26 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/robotics/kinematics/pytorch/</guid>
+      <description>&lt;a href=&#34;https://github.com/UM-ARM-Lab/pytorch_kinematics&#34;&gt;https://github.com/UM-ARM-Lab/pytorch_kinematics&lt;/a&gt;</description>
+    </item>
+    <item>
+      <title>libstdc&#43;&#43;.so.6: version `GLIBCXX_3.4.30‘ not found 解决方案</title>
+      <link>https://chase6305.github.io/posts/cpp/gcc/</link>
+      <pubDate>Sat, 08 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/cpp/gcc/</guid>
+      <description>libstdc++.so.6: version `GLIBCXX_3.4.30‘ not found 解决方案</description>
+    </item>
+    <item>
+      <title>C&#43;&#43; 智能指针学习总结</title>
+      <link>https://chase6305.github.io/posts/cpp/smart-pointer/</link>
+      <pubDate>Mon, 27 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/cpp/smart-pointer/</guid>
+      <description>C++ 智能指针学习总结</description>
+    </item>
+    <item>
+      <title>7DOF-SRS-运动学逆解(几何解析解)实现</title>
+      <link>https://chase6305.github.io/posts/robotics/kinematics/seven-dof-kinematics/</link>
+      <pubDate>Mon, 13 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/robotics/kinematics/seven-dof-kinematics/</guid>
+      <description>&lt;a href=&#34;https://github.com/chase6305/7DofSRSKinematics&#34;&gt;https://github.com/chase6305/7DofSRSKinematics&lt;/a&gt;</description>
+    </item>
+    <item>
+      <title>六自由度机器人正逆运动学</title>
+      <link>https://chase6305.github.io/posts/robotics/kinematics/six-dof-kinematics/</link>
+      <pubDate>Tue, 07 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/robotics/kinematics/six-dof-kinematics/</guid>
+      <description>本文主要是对传统六自由度机器人进行正逆运动学求解，选取大族机器人Elfin05 为分析的对象，开发语言是C++。</description>
+    </item>
+    <item>
+      <title>C&#43;&#43; 关于TCP通讯的示例</title>
+      <link>https://chase6305.github.io/posts/network-protocol/c&#43;&#43;_tcp/</link>
+      <pubDate>Sun, 08 Aug 2021 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/network-protocol/c&#43;&#43;_tcp/</guid>
+      <description>C++ 关于TCP通讯的示例</description>
+    </item>
+    <item>
+      <title>C&#43;&#43; 关于UDP通讯的示例</title>
+      <link>https://chase6305.github.io/posts/network-protocol/c&#43;&#43;_udp/</link>
+      <pubDate>Sun, 08 Aug 2021 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/network-protocol/c&#43;&#43;_udp/</guid>
+      <description>C++ 关于UDP通讯的示例</description>
+    </item>
+  </channel>
+</rss>

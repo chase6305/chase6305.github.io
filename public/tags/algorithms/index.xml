@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Algorithms on Chase Blog</title>
+    <link>https://chase6305.github.io/tags/algorithms/</link>
+    <description>Recent content in Algorithms on Chase Blog</description>
+    <image>
+      <title>Chase Blog</title>
+      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.68.3</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 29 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/tags/algorithms/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>基于三维栅格空间的A*算法流程C&#43;&#43;实现</title>
+      <link>https://chase6305.github.io/posts/ai/algorithms/astar/astar-cpp/</link>
+      <pubDate>Wed, 29 Jun 2022 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/ai/algorithms/astar/astar-cpp/</guid>
+      <description>基于三维栅格空间的A*算法流程C++实现</description>
+    </item>
+    <item>
+      <title>基于三维栅格空间的A*算法裁剪流程</title>
+      <link>https://chase6305.github.io/posts/ai/algorithms/astar/astar-introduction/</link>
+      <pubDate>Wed, 29 Jun 2022 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/ai/algorithms/astar/astar-introduction/</guid>
+      <description>基于三维栅格空间的A*算法裁剪流程</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Categories on Chase Blog</title>
+    <link>https://chase6305.github.io/categories/</link>
+    <description>Recent content in Categories on Chase Blog</description>
+    <image>
+      <title>Chase Blog</title>
+      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.68.3</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 28 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GUI</title>
+      <link>https://chase6305.github.io/categories/gui/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/categories/gui/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ubuntu</title>
+      <link>https://chase6305.github.io/categories/ubuntu/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/categories/ubuntu/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>编程技术</title>
+      <link>https://chase6305.github.io/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Python</title>
+      <link>https://chase6305.github.io/categories/python/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/categories/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Open3D</title>
+      <link>https://chase6305.github.io/categories/open3d/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/categories/open3d/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Gripper</title>
+      <link>https://chase6305.github.io/categories/gripper/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/categories/gripper/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>QT</title>
+      <link>https://chase6305.github.io/categories/qt/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/categories/qt/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Calibration</title>
+      <link>https://chase6305.github.io/categories/calibration/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/categories/calibration/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Protocol</title>
+      <link>https://chase6305.github.io/categories/protocol/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/categories/protocol/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Algorithms</title>
+      <link>https://chase6305.github.io/categories/algorithms/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/categories/algorithms/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

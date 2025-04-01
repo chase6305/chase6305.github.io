@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Kinematics on Chase Blog</title>
+    <link>https://chase6305.github.io/tags/kinematics/</link>
+    <description>Recent content in Kinematics on Chase Blog</description>
+    <image>
+      <title>Chase Blog</title>
+      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.68.3</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 26 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/tags/kinematics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>pytorch 机械臂逆运动学迭代数值解</title>
+      <link>https://chase6305.github.io/posts/robotics/kinematics/pytorch/</link>
+      <pubDate>Wed, 26 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/robotics/kinematics/pytorch/</guid>
+      <description>&lt;a href=&#34;https://github.com/UM-ARM-Lab/pytorch_kinematics&#34;&gt;https://github.com/UM-ARM-Lab/pytorch_kinematics&lt;/a&gt;</description>
+    </item>
+    <item>
+      <title>7DOF-SRS-运动学逆解(几何解析解)实现</title>
+      <link>https://chase6305.github.io/posts/robotics/kinematics/seven-dof-kinematics/</link>
+      <pubDate>Mon, 13 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/robotics/kinematics/seven-dof-kinematics/</guid>
+      <description>&lt;a href=&#34;https://github.com/chase6305/7DofSRSKinematics&#34;&gt;https://github.com/chase6305/7DofSRSKinematics&lt;/a&gt;</description>
+    </item>
+    <item>
+      <title>Pinocchio 机械臂逆运动学迭代数值解</title>
+      <link>https://chase6305.github.io/posts/robotics/kinematics/pinocchio/</link>
+      <pubDate>Sun, 18 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/robotics/kinematics/pinocchio/</guid>
+      <description>分享一个求解运动学逆解的第三方库 pinocchio， 并且根据其urdf文件中描述的关节极限范围内进行逆运动学求解的样例。</description>
+    </item>
+    <item>
+      <title>六自由度机器人正逆运动学</title>
+      <link>https://chase6305.github.io/posts/robotics/kinematics/six-dof-kinematics/</link>
+      <pubDate>Tue, 07 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/robotics/kinematics/six-dof-kinematics/</guid>
+      <description>本文主要是对传统六自由度机器人进行正逆运动学求解，选取大族机器人Elfin05 为分析的对象，开发语言是C++。</description>
+    </item>
+  </channel>
+</rss>

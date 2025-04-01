@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Ubuntu on Chase Blog</title>
+    <link>https://chase6305.github.io/tags/ubuntu/</link>
+    <description>Recent content in Ubuntu on Chase Blog</description>
+    <image>
+      <title>Chase Blog</title>
+      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.68.3</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 13 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/tags/ubuntu/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ubuntu切换默认python版本</title>
+      <link>https://chase6305.github.io/posts/python/version/</link>
+      <pubDate>Thu, 13 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/python/version/</guid>
+      <description>Ubuntu切换默认python版本</description>
+    </item>
+    <item>
+      <title>使用 watch 命令监控系统和进程状态</title>
+      <link>https://chase6305.github.io/posts/linux/watch/</link>
+      <pubDate>Fri, 07 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/linux/watch/</guid>
+      <description>watch 是一个功能强大的 Linux 命令行工具，用于周期性执行命令并实时显示输出结果。它特别适合监控系统状态、进程运行和资源使用情况。</description>
+    </item>
+    <item>
+      <title>libpython3.9.so.1.0: cannot open shared object file: No such file or directory 解决方法</title>
+      <link>https://chase6305.github.io/posts/python/py39/</link>
+      <pubDate>Fri, 28 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/python/py39/</guid>
+      <description>libpython3.9.so.1.0: cannot open shared object file: No such file or directory 解决方法</description>
+    </item>
+    <item>
+      <title>Ubuntu 下查看进程 PID 和终止进程方法</title>
+      <link>https://chase6305.github.io/posts/process/pid/</link>
+      <pubDate>Wed, 26 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/process/pid/</guid>
+      <description>Ubuntu 下查看进程 PID 和终止进程方法</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,372 @@
+<!doctype html><html lang=zh-cn dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Python优化控制大寰PGC夹具的串口通信程序 | Chase Blog</title><meta name=keywords content="Linux,Python,Gripper"><meta name=description content="Python优化控制大寰PGC夹具的串口通信程序"><meta name=author content="Chase"><link rel=canonical href=https://chase6305.github.io/posts/dialout/dh/><meta name=google-site-verification content="XYZabc"><meta name=yandex-verification content="XYZabc"><meta name=msvalidate.01 content="XYZabc"><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme: rgb(29, 30, 32);--entry: rgb(46, 46, 51);--primary: rgb(218, 218, 219);--secondary: rgb(155, 156, 157);--tertiary: rgb(65, 66, 68);--content: rgb(196, 196, 197);--code-block-bg: rgb(46, 46, 51);--code-bg: rgb(55, 56, 62);--border: rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:url" content="https://chase6305.github.io/posts/dialout/dh/"><meta property="og:site_name" content="Chase Blog"><meta property="og:title" content="Python优化控制大寰PGC夹具的串口通信程序"><meta property="og:description" content="Python优化控制大寰PGC夹具的串口通信程序"><meta property="og:locale" content="zh-CN"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-03-01T00:00:00+00:00"><meta property="article:modified_time" content="2025-03-01T00:00:00+00:00"><meta property="article:tag" content="Linux"><meta property="article:tag" content="Python"><meta property="article:tag" content="Gripper"><meta property="og:image" content="https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="Python优化控制大寰PGC夹具的串口通信程序"><meta name=twitter:description content="Python优化控制大寰PGC夹具的串口通信程序"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Python优化控制大寰PGC夹具的串口通信程序","item":"https://chase6305.github.io/posts/dialout/dh/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Python优化控制大寰PGC夹具的串口通信程序","name":"Python优化控制大寰PGC夹具的串口通信程序","description":"Python优化控制大寰PGC夹具的串口通信程序","keywords":["Linux","Python","Gripper"],"articleBody":"在工业自动化中，夹具的控制是一个非常重要的环节。本文将介绍如何使用Python通过串口控制大寰PGC夹具。我们将使用异步IO和事件锁来实现半双工通信，以提高通讯效率和鲁棒性。\n1. 环境准备 首先，我们需要安装pyserial库来处理串口通信。可以使用以下命令安装：\npip install pyserial asyncio 2. 异步IO 异步IO（Asynchronous I/O）在处理并发任务时具有显著的优势，尤其是在I/O密集型操作中。以下是异步IO的主要优势和处理逻辑：\n2.1优势   高效利用资源： 异步IO允许程序在等待I/O操作完成时执行其他任务，从而更高效地利用CPU资源。\n  更好的响应性： 异步IO可以提高应用程序的响应性，因为它不会因为等待I/O操作而阻塞整个程序。\n  简化并发编程： 使用异步IO可以避免传统多线程编程中的锁竞争和死锁问题，从而简化并发编程。\n  可扩展性： 异步IO使得应用程序更容易扩展，因为它可以处理大量并发连接而不需要为每个连接创建一个线程。\n  2.2 处理逻辑 异步IO的处理逻辑通常包括以下几个步骤：\n  定义异步函数： 使用async def定义异步函数，这些函数可以使用await关键字来等待异步操作完成。\n  创建事件循环： 使用asyncio库创建和管理事件循环，事件循环负责调度和执行异步任务。\n  执行异步任务： 使用await关键字等待异步任务完成，或者使用asyncio.run()来运行顶层异步函数。\n  3. 实现串口控制类 我们将创建一个名为dh_device的类来处理串口连接和数据读写。以下是PGC_device.py的实现：\nPGC_device.py\nimport asyncio import serial import threading import logging logging.basicConfig(level=logging.INFO) class dh_device(object): def __init__(self): r\"\"\"Initialize the dh_device class with a threading lock.\"\"\" self.lock = threading.Lock() self.serialPort = serial.Serial(timeout=1.0) def connect_device(self, portname, Baudrate): r\"\"\"Connect to the device via the specified serial port and baud rate. Args: portname (str): The name of the serial port to connect to. Baudrate (int): The baud rate for the serial communication. Returns: int: 0 if the connection is successful, -1 otherwise. \"\"\" with self.lock: try: self.serialPort.port = portname self.serialPort.baudrate = Baudrate self.serialPort.bytesize = 8 self.serialPort.parity = \"N\" self.serialPort.stopbits = 1 self.serialPort.set_output_flow_control = False self.serialPort.set_input_flow_control = False self.serialPort.open() if self.serialPort.isOpen(): logging.info(\"Serial Open Success\") return 0 else: logging.error(\"Serial Open Error\") return -1 except serial.SerialException as e: logging.error(f\"Serial Open Exception: {e}\") return -1 def disconnect_device(self): r\"\"\"Disconnect the device by closing the serial port.\"\"\" with self.lock: if self.serialPort.isOpen(): self.serialPort.close() logging.info(\"Serial Port Closed\") else: logging.warning(\"Serial Port Already Closed\") async def device_write(self, write_data): r\"\"\"Write data to the device. Args: write_data (bytes): The data to write to the device. Returns: int: The number of bytes written if successful, 0 if there is an error, -1 if the serial port is not open. \"\"\" with self.lock: if self.serialPort.isOpen(): try: write_length = self.serialPort.write(write_data) if write_length == len(write_data): return write_length else: logging.debug(f\"Write error! send_buff: {write_data}\") return 0 except serial.SerialTimeoutException as e: logging.debug(f\"Write Timeout Exception: {e}\") return 0 else: logging.error(\"Serial Port Not Open\") return -1 async def device_read(self, wlen): r\"\"\"Read data from the device. Args: wlen (int): The number of bytes to read from the device. Returns: bytes: The data read from the device if successful, -1 if the serial port is not open. \"\"\" with self.lock: if self.serialPort.isOpen(): try: responseData = self.serialPort.read(wlen) return responseData except serial.SerialTimeoutException as e: logging.error(f\"Read Timeout Exception: {e}\") return -1 else: logging.error(\"Serial Port Not Open\") return -1 4. 实现夹具控制类 接下来，我们创建一个名为dh_modbus_gripper的类来实现对夹具的具体控制。以下是PGC_gripper.py的实现： PGC_gripper.py\nimport asyncio import threading import logging from PGC_device import dh_device logging.basicConfig(level=logging.INFO) class dh_modbus_gripper(object): def __init__(self): r\"\"\"Initialize the gripper with default ID and create a lock for thread safety.\"\"\" self.gripper_ID = 0x01 self._transaction_lock = threading.Lock() self.device = dh_device() def CRC16(self, nData, wLength): r\"\"\"Calculate the CRC16 checksum for the given data. Args: nData (list): The data to calculate the checksum for. wLength (int): The length of the data. Returns: int: The calculated CRC16 checksum. \"\"\" if nData == 0x00: return 0x0000 wCRCWord = 0xFFFF poly = 0xA001 for num in range(wLength): date = nData[num] wCRCWord = (date \u0026 0xFF) ^ wCRCWord for bit in range(8): if (wCRCWord \u0026 0x01) != 0: wCRCWord = 1 wCRCWord ^= poly else: wCRCWord = 1 return wCRCWord def open(self, PortName, BaudRate): r\"\"\"Open the connection to the gripper device. Args: PortName (str): The name of the port to connect to. BaudRate (int): The baud rate for the connection. Returns: int: 0 if successful, negative value if failed. \"\"\" with self._transaction_lock: ret = self.device.connect_device(PortName, BaudRate) if ret  0: logging.error(\"Failed to open connection\") else: logging.info(\"Connection opened successfully\") return ret def close(self): r\"\"\"Close the connection to the gripper device.\"\"\" with self._transaction_lock: self.device.disconnect_device() logging.info(\"Connection closed\") async def _send_command(self, send_buf, expected_length): r\"\"\"Send a command to the device and read the response. Args: send_buf (list): The command to send. expected_length (int): The expected length of the response. Returns: list: The response from the device. \"\"\" send_temp = send_buf retrycount = 3 while retrycount  0: wdlen = await self.device.device_write(send_temp) if len(send_temp) != wdlen: logging.debug(f\"Write error! Sent: {send_temp}\") retrycount -= 1 continue rev_buf = await self.device.device_read(expected_length) if len(rev_buf) == expected_length: return rev_buf retrycount -= 1 logging.debug(\"Failed to communicate with device after retries\") return None def _prepare_command(self, function_code, index, value=None): r\"\"\"Prepare a command buffer with CRC16 checksum. Args: function_code (int): The function code for the command. index (int): The register index. value (int, optional): The value to write (for write commands). Returns: list: The prepared command buffer. \"\"\" send_buf = [self.gripper_ID, function_code, (index  8) \u0026 0xFF, index \u0026 0xFF] if value is not None: send_buf.extend([(value  8) \u0026 0xFF, value \u0026 0xFF]) else: send_buf.extend([0x00, 0x01]) crc = self.CRC16(send_buf, len(send_buf)) send_buf.extend([crc \u0026 0xFF, (crc  8) \u0026 0xFF]) return send_buf async def WriteRegisterFunc(self, index, value): r\"\"\"Write a value to a specific register of the gripper. Args: index (int): The register index to write to. value (int): The value to write to the register. Returns: bool: True if the write operation was successful, False otherwise. \"\"\" with self._transaction_lock: send_buf = self._prepare_command(0x06, index, value) response = await self._send_command(send_buf, 8) return response is not None async def ReadRegisterFunc(self, index): r\"\"\"Read a value from a specific register of the gripper. Args: index (int): The register index to read from. Returns: int: The value read from the register. \"\"\" with self._transaction_lock: send_buf = self._prepare_command(0x03, index) response = await self._send_command(send_buf, 7) if response: return (response[3]  8) | (response[4] \u0026 0xFF) return None async def Initialization(self): \"\"\"Initialize the gripper by writing to the initialization register.\"\"\" await self.WriteRegisterFunc(0x0100, 0xA5) async def SetTargetPosition(self, refpos): r\"\"\"Set the target position of the gripper. Args: refpos (int): The target position to set. \"\"\" await self.WriteRegisterFunc(0x0103, refpos) async def SetTargetForce(self, force): r\"\"\"Set the target force of the gripper. Args: force (int): The target force to set. \"\"\" await self.WriteRegisterFunc(0x0101, force) async def SetTargetSpeed(self, speed): r\"\"\"Set the target speed of the gripper. Args: speed (int): The target speed to set. \"\"\" await self.WriteRegisterFunc(0x0104, speed) async def GetCurrentPosition(self): r\"\"\"Get the current position of the gripper. Returns: int: The current position of the gripper. \"\"\" return await self.ReadRegisterFunc(0x0202) async def GetCurrentTargetForce(self): r\"\"\"Get the current target force of the gripper. Returns: int: The current target force of the gripper. \"\"\" return await self.ReadRegisterFunc(0x0101) async def GetCurrentTargetSpeed(self): r\"\"\"Get the current target speed of the gripper. Returns: int: The current target speed of the gripper. \"\"\" return await self.ReadRegisterFunc(0x0104) async def GetInitState(self): r\"\"\"Get the initialization state of the gripper. Returns: int: The initialization state of the gripper. \"\"\" return await self.ReadRegisterFunc(0x0200) async def GetGripState(self): r\"\"\"Get the grip state of the gripper. Returns: int: The grip state of the gripper. \"\"\" return await self.ReadRegisterFunc(0x0201) 5. 用法 5.2 示例代码 以下是如何使用dh_modbus_gripper类来控制大寰PGC夹具的具体示例：\nimport asyncio from PGC_gripper import dh_modbus_gripper # 定义串口和波特率 LEFT_GRIPPER_PORT = \"/dev/ttyUSB0\" BAUDRATE = 115200 # 创建夹具控制对象 gripper = dh_modbus_gripper() # 打开串口连接 gripper.open(LEFT_GRIPPER_PORT, BAUDRATE) # 初始化夹具 asyncio.run(gripper.Initialization()) # 设置目标位置 angle = 500 # 角度范围为0-1000 asyncio.run(gripper.SetTargetPosition(int(angle))) # 关闭串口连接 gripper.close() 5.2 代码说明   定义异步函数： 异步函数使用async def定义，例如device_write和device_read。\nasync def device_write(self, write_data): # 异步写入数据逻辑 pass async def device_read(self, wlen): # 异步读取数据逻辑 pass   创建事件循环： 使用asyncio.run(main())来创建和运行事件循环。\nasync def main(): # 主函数逻辑 pass if __name__ == \"__main__\": asyncio.run(main())   执行异步任务： 在异步函数内部使用await关键字等待异步操作完成，例如：\nasync def main(): device = dh_device() await device.device_write(b'example data') response = await device.device_read(10) print(response)   ","wordCount":"1104","inLanguage":"zh-cn","image":"https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E","datePublished":"2025-03-01T00:00:00Z","dateModified":"2025-03-01T00:00:00Z","author":{"@type":"Person","name":"Chase"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://chase6305.github.io/posts/dialout/dh/"},"publisher":{"@type":"Organization","name":"Chase Blog","logo":{"@type":"ImageObject","url":"https://chase6305.github.io/%3Clink%20/%20abs%20url%3E"}}}</script></head><body id=top><script>if(localStorage.getItem("pref-theme")==="dark"){document.body.classList.add('dark');}else if(localStorage.getItem("pref-theme")==="light"){document.body.classList.remove('dark')}else if(window.matchMedia('(prefers-color-scheme: dark)').matches){document.body.classList.add('dark');}</script><header class=header><nav class=nav><div class=logo><a href=https://chase6305.github.io/ accesskey=h title="Chase's Home (Alt + H)"><img src=https://chase6305.github.io/apple-touch-icon.png alt aria-label=logo height=35>Chase's Home</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://chase6305.github.io/categories/ title=categories><span>categories</span></a></li><li><a href=https://chase6305.github.io/archives/ title=archives><span>archives</span></a></li><li><a href=https://chase6305.github.io/tags/ title=tags><span>tags</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://chase6305.github.io/>Home</a></div><h1 class="post-title entry-hint-parent">Python优化控制大寰PGC夹具的串口通信程序</h1><div class=post-meta><span title="2025-03-01 00:00:00 +0000 UTC">2025-03-01</span>&nbsp;·&nbsp;Chase&nbsp;|&nbsp;<a href=https://github.com/%3cpath_to_repo%3e/content/posts/dialout/dh/index.md rel="noopener noreferrer" target=_blank>Suggest Changes</a></div></header><div class=toc><details open><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#21优势>2.1优势</a></li><li><a href=#22-处理逻辑>2.2 处理逻辑</a></li></ul><ul><li><a href=#52-示例代码>5.2 示例代码</a></li><li><a href=#52-代码说明>5.2 代码说明</a></li></ul></nav></div></details></div><div class=post-content><p>在工业自动化中，夹具的控制是一个非常重要的环节。本文将介绍如何使用Python通过串口控制大寰PGC夹具。我们将使用异步IO和事件锁来实现半双工通信，以提高通讯效率和鲁棒性。</p><h1 id=1-环境准备>1. 环境准备<a hidden class=anchor aria-hidden=true href=#1-环境准备>#</a></h1><p>首先，我们需要安装pyserial库来处理串口通信。可以使用以下命令安装：</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>pip install pyserial asyncio
+</code></pre></div><h1 id=2-异步io>2. 异步IO<a hidden class=anchor aria-hidden=true href=#2-异步io>#</a></h1><p>异步IO（Asynchronous I/O）在处理并发任务时具有显著的优势，尤其是在I/O密集型操作中。以下是异步IO的主要优势和处理逻辑：</p><h2 id=21优势>2.1优势<a hidden class=anchor aria-hidden=true href=#21优势>#</a></h2><ol><li><p><strong>高效利用资源</strong>：
+异步IO允许程序在等待I/O操作完成时执行其他任务，从而更高效地利用CPU资源。</p></li><li><p><strong>更好的响应性</strong>：
+异步IO可以提高应用程序的响应性，因为它不会因为等待I/O操作而阻塞整个程序。</p></li><li><p><strong>简化并发编程</strong>：
+使用异步IO可以避免传统多线程编程中的锁竞争和死锁问题，从而简化并发编程。</p></li><li><p><strong>可扩展性</strong>：
+异步IO使得应用程序更容易扩展，因为它可以处理大量并发连接而不需要为每个连接创建一个线程。</p></li></ol><h2 id=22-处理逻辑>2.2 处理逻辑<a hidden class=anchor aria-hidden=true href=#22-处理逻辑>#</a></h2><p>异步IO的处理逻辑通常包括以下几个步骤：</p><ol><li><p><strong>定义异步函数</strong>：
+使用<code>async def</code>定义异步函数，这些函数可以使用<code>await</code>关键字来等待异步操作完成。</p></li><li><p><strong>创建事件循环</strong>：
+使用<code>asyncio</code>库创建和管理事件循环，事件循环负责调度和执行异步任务。</p></li><li><p><strong>执行异步任务</strong>：
+使用<code>await</code>关键字等待异步任务完成，或者使用<code>asyncio.run()</code>来运行顶层异步函数。</p></li></ol><h1 id=3-实现串口控制类>3. 实现串口控制类<a hidden class=anchor aria-hidden=true href=#3-实现串口控制类>#</a></h1><p>我们将创建一个名为<code>dh_device</code>的类来处理串口连接和数据读写。以下是<code>PGC_device.py</code>的实现：</p><p><code>PGC_device.py</code></p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>asyncio</span>
+<span class=kn>import</span> <span class=nn>serial</span>
+<span class=kn>import</span> <span class=nn>threading</span>
+<span class=kn>import</span> <span class=nn>logging</span>
+
+<span class=n>logging</span><span class=o>.</span><span class=n>basicConfig</span><span class=p>(</span><span class=n>level</span><span class=o>=</span><span class=n>logging</span><span class=o>.</span><span class=n>INFO</span><span class=p>)</span>
+
+
+<span class=k>class</span> <span class=nc>dh_device</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
+    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Initialize the dh_device class with a threading lock.&#34;&#34;&#34;</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>lock</span> <span class=o>=</span> <span class=n>threading</span><span class=o>.</span><span class=n>Lock</span><span class=p>()</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span> <span class=o>=</span> <span class=n>serial</span><span class=o>.</span><span class=n>Serial</span><span class=p>(</span><span class=n>timeout</span><span class=o>=</span><span class=mf>1.0</span><span class=p>)</span>
+
+    <span class=k>def</span> <span class=nf>connect_device</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>portname</span><span class=p>,</span> <span class=n>Baudrate</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Connect to the device via the specified serial port and baud rate.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            portname (str): The name of the serial port to connect to.
+</span><span class=s2>            Baudrate (int): The baud rate for the serial communication.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            int: 0 if the connection is successful, -1 otherwise.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>lock</span><span class=p>:</span>
+            <span class=k>try</span><span class=p>:</span>
+                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>port</span> <span class=o>=</span> <span class=n>portname</span>
+                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>baudrate</span> <span class=o>=</span> <span class=n>Baudrate</span>
+                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>bytesize</span> <span class=o>=</span> <span class=mi>8</span>
+                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>parity</span> <span class=o>=</span> <span class=s2>&#34;N&#34;</span>
+                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>stopbits</span> <span class=o>=</span> <span class=mi>1</span>
+                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>set_output_flow_control</span> <span class=o>=</span> <span class=bp>False</span>
+                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>set_input_flow_control</span> <span class=o>=</span> <span class=bp>False</span>
+
+                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>open</span><span class=p>()</span>
+                <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>isOpen</span><span class=p>():</span>
+                    <span class=n>logging</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s2>&#34;Serial Open Success&#34;</span><span class=p>)</span>
+                    <span class=k>return</span> <span class=mi>0</span>
+                <span class=k>else</span><span class=p>:</span>
+                    <span class=n>logging</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=s2>&#34;Serial Open Error&#34;</span><span class=p>)</span>
+                    <span class=k>return</span> <span class=o>-</span><span class=mi>1</span>
+            <span class=k>except</span> <span class=n>serial</span><span class=o>.</span><span class=n>SerialException</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
+                <span class=n>logging</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=n>f</span><span class=s2>&#34;Serial Open Exception: {e}&#34;</span><span class=p>)</span>
+                <span class=k>return</span> <span class=o>-</span><span class=mi>1</span>
+
+    <span class=k>def</span> <span class=nf>disconnect_device</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Disconnect the device by closing the serial port.&#34;&#34;&#34;</span>
+        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>lock</span><span class=p>:</span>
+            <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>isOpen</span><span class=p>():</span>
+                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+                <span class=n>logging</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s2>&#34;Serial Port Closed&#34;</span><span class=p>)</span>
+            <span class=k>else</span><span class=p>:</span>
+                <span class=n>logging</span><span class=o>.</span><span class=n>warning</span><span class=p>(</span><span class=s2>&#34;Serial Port Already Closed&#34;</span><span class=p>)</span>
+
+    <span class=n>async</span> <span class=k>def</span> <span class=nf>device_write</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>write_data</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Write data to the device.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            write_data (bytes): The data to write to the device.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            int: The number of bytes written if successful, 0 if there is an error, -1 if the serial port is not open.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>lock</span><span class=p>:</span>
+            <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>isOpen</span><span class=p>():</span>
+                <span class=k>try</span><span class=p>:</span>
+                    <span class=n>write_length</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=n>write_data</span><span class=p>)</span>
+                    <span class=k>if</span> <span class=n>write_length</span> <span class=o>==</span> <span class=nb>len</span><span class=p>(</span><span class=n>write_data</span><span class=p>):</span>
+                        <span class=k>return</span> <span class=n>write_length</span>
+                    <span class=k>else</span><span class=p>:</span>
+                        <span class=n>logging</span><span class=o>.</span><span class=n>debug</span><span class=p>(</span><span class=n>f</span><span class=s2>&#34;Write error! send_buff: {write_data}&#34;</span><span class=p>)</span>
+                        <span class=k>return</span> <span class=mi>0</span>
+                <span class=k>except</span> <span class=n>serial</span><span class=o>.</span><span class=n>SerialTimeoutException</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
+                    <span class=n>logging</span><span class=o>.</span><span class=n>debug</span><span class=p>(</span><span class=n>f</span><span class=s2>&#34;Write Timeout Exception: {e}&#34;</span><span class=p>)</span>
+                    <span class=k>return</span> <span class=mi>0</span>
+            <span class=k>else</span><span class=p>:</span>
+                <span class=n>logging</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=s2>&#34;Serial Port Not Open&#34;</span><span class=p>)</span>
+                <span class=k>return</span> <span class=o>-</span><span class=mi>1</span>
+
+    <span class=n>async</span> <span class=k>def</span> <span class=nf>device_read</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>wlen</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Read data from the device.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            wlen (int): The number of bytes to read from the device.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            bytes: The data read from the device if successful, -1 if the serial port is not open.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>lock</span><span class=p>:</span>
+            <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>isOpen</span><span class=p>():</span>
+                <span class=k>try</span><span class=p>:</span>
+                    <span class=n>responseData</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>read</span><span class=p>(</span><span class=n>wlen</span><span class=p>)</span>
+                    <span class=k>return</span> <span class=n>responseData</span>
+                <span class=k>except</span> <span class=n>serial</span><span class=o>.</span><span class=n>SerialTimeoutException</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
+                    <span class=n>logging</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=n>f</span><span class=s2>&#34;Read Timeout Exception: {e}&#34;</span><span class=p>)</span>
+                    <span class=k>return</span> <span class=o>-</span><span class=mi>1</span>
+            <span class=k>else</span><span class=p>:</span>
+                <span class=n>logging</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=s2>&#34;Serial Port Not Open&#34;</span><span class=p>)</span>
+                <span class=k>return</span> <span class=o>-</span><span class=mi>1</span>
+</code></pre></div><h1 id=4-实现夹具控制类>4. 实现夹具控制类<a hidden class=anchor aria-hidden=true href=#4-实现夹具控制类>#</a></h1><p>接下来，我们创建一个名为<code>dh_modbus_gripper</code>的类来实现对夹具的具体控制。以下是<code>PGC_gripper.py</code>的实现：
+<code>PGC_gripper.py</code></p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>asyncio</span>
+<span class=kn>import</span> <span class=nn>threading</span>
+<span class=kn>import</span> <span class=nn>logging</span>
+<span class=kn>from</span> <span class=nn>PGC_device</span> <span class=kn>import</span> <span class=n>dh_device</span>
+
+<span class=n>logging</span><span class=o>.</span><span class=n>basicConfig</span><span class=p>(</span><span class=n>level</span><span class=o>=</span><span class=n>logging</span><span class=o>.</span><span class=n>INFO</span><span class=p>)</span>
+
+
+<span class=k>class</span> <span class=nc>dh_modbus_gripper</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
+    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Initialize the gripper with default ID and create a lock for thread safety.&#34;&#34;&#34;</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>gripper_ID</span> <span class=o>=</span> <span class=mh>0x01</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>_transaction_lock</span> <span class=o>=</span> <span class=n>threading</span><span class=o>.</span><span class=n>Lock</span><span class=p>()</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>device</span> <span class=o>=</span> <span class=n>dh_device</span><span class=p>()</span>
+
+    <span class=k>def</span> <span class=nf>CRC16</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>nData</span><span class=p>,</span> <span class=n>wLength</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Calculate the CRC16 checksum for the given data.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            nData (list): The data to calculate the checksum for.
+</span><span class=s2>            wLength (int): The length of the data.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            int: The calculated CRC16 checksum.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>if</span> <span class=n>nData</span> <span class=o>==</span> <span class=mh>0x00</span><span class=p>:</span>
+            <span class=k>return</span> <span class=mh>0x0000</span>
+        <span class=n>wCRCWord</span> <span class=o>=</span> <span class=mh>0xFFFF</span>
+        <span class=n>poly</span> <span class=o>=</span> <span class=mh>0xA001</span>
+        <span class=k>for</span> <span class=n>num</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>wLength</span><span class=p>):</span>
+            <span class=n>date</span> <span class=o>=</span> <span class=n>nData</span><span class=p>[</span><span class=n>num</span><span class=p>]</span>
+            <span class=n>wCRCWord</span> <span class=o>=</span> <span class=p>(</span><span class=n>date</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>)</span> <span class=o>^</span> <span class=n>wCRCWord</span>
+            <span class=k>for</span> <span class=n>bit</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>8</span><span class=p>):</span>
+                <span class=k>if</span> <span class=p>(</span><span class=n>wCRCWord</span> <span class=o>&amp;</span> <span class=mh>0x01</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>:</span>
+                    <span class=n>wCRCWord</span> <span class=o>&gt;&gt;=</span> <span class=mi>1</span>
+                    <span class=n>wCRCWord</span> <span class=o>^=</span> <span class=n>poly</span>
+                <span class=k>else</span><span class=p>:</span>
+                    <span class=n>wCRCWord</span> <span class=o>&gt;&gt;=</span> <span class=mi>1</span>
+        <span class=k>return</span> <span class=n>wCRCWord</span>
+
+    <span class=k>def</span> <span class=nf>open</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>PortName</span><span class=p>,</span> <span class=n>BaudRate</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Open the connection to the gripper device.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            PortName (str): The name of the port to connect to.
+</span><span class=s2>            BaudRate (int): The baud rate for the connection.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            int: 0 if successful, negative value if failed.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>_transaction_lock</span><span class=p>:</span>
+            <span class=n>ret</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>connect_device</span><span class=p>(</span><span class=n>PortName</span><span class=p>,</span> <span class=n>BaudRate</span><span class=p>)</span>
+            <span class=k>if</span> <span class=n>ret</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>:</span>
+                <span class=n>logging</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=s2>&#34;Failed to open connection&#34;</span><span class=p>)</span>
+            <span class=k>else</span><span class=p>:</span>
+                <span class=n>logging</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s2>&#34;Connection opened successfully&#34;</span><span class=p>)</span>
+            <span class=k>return</span> <span class=n>ret</span>
+
+    <span class=k>def</span> <span class=nf>close</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Close the connection to the gripper device.&#34;&#34;&#34;</span>
+        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>_transaction_lock</span><span class=p>:</span>
+            <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>disconnect_device</span><span class=p>()</span>
+            <span class=n>logging</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s2>&#34;Connection closed&#34;</span><span class=p>)</span>
+
+    <span class=n>async</span> <span class=k>def</span> <span class=nf>_send_command</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>send_buf</span><span class=p>,</span> <span class=n>expected_length</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Send a command to the device and read the response.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            send_buf (list): The command to send.
+</span><span class=s2>            expected_length (int): The expected length of the response.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            list: The response from the device.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=n>send_temp</span> <span class=o>=</span> <span class=n>send_buf</span>
+        <span class=n>retrycount</span> <span class=o>=</span> <span class=mi>3</span>
+
+        <span class=k>while</span> <span class=n>retrycount</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>:</span>
+            <span class=n>wdlen</span> <span class=o>=</span> <span class=n>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>device_write</span><span class=p>(</span><span class=n>send_temp</span><span class=p>)</span>
+            <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>send_temp</span><span class=p>)</span> <span class=o>!=</span> <span class=n>wdlen</span><span class=p>:</span>
+                <span class=n>logging</span><span class=o>.</span><span class=n>debug</span><span class=p>(</span><span class=n>f</span><span class=s2>&#34;Write error! Sent: {send_temp}&#34;</span><span class=p>)</span>
+                <span class=n>retrycount</span> <span class=o>-=</span> <span class=mi>1</span>
+                <span class=k>continue</span>
+
+            <span class=n>rev_buf</span> <span class=o>=</span> <span class=n>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>device_read</span><span class=p>(</span><span class=n>expected_length</span><span class=p>)</span>
+            <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>rev_buf</span><span class=p>)</span> <span class=o>==</span> <span class=n>expected_length</span><span class=p>:</span>
+                <span class=k>return</span> <span class=n>rev_buf</span>
+
+            <span class=n>retrycount</span> <span class=o>-=</span> <span class=mi>1</span>
+
+        <span class=n>logging</span><span class=o>.</span><span class=n>debug</span><span class=p>(</span><span class=s2>&#34;Failed to communicate with device after retries&#34;</span><span class=p>)</span>
+        <span class=k>return</span> <span class=bp>None</span>
+
+    <span class=k>def</span> <span class=nf>_prepare_command</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>function_code</span><span class=p>,</span> <span class=n>index</span><span class=p>,</span> <span class=n>value</span><span class=o>=</span><span class=bp>None</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Prepare a command buffer with CRC16 checksum.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            function_code (int): The function code for the command.
+</span><span class=s2>            index (int): The register index.
+</span><span class=s2>            value (int, optional): The value to write (for write commands).
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            list: The prepared command buffer.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=n>send_buf</span> <span class=o>=</span> <span class=p>[</span><span class=bp>self</span><span class=o>.</span><span class=n>gripper_ID</span><span class=p>,</span> <span class=n>function_code</span><span class=p>,</span> <span class=p>(</span><span class=n>index</span> <span class=o>&gt;&gt;</span> <span class=mi>8</span><span class=p>)</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>,</span> <span class=n>index</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>]</span>
+        <span class=k>if</span> <span class=n>value</span> <span class=ow>is</span> <span class=ow>not</span> <span class=bp>None</span><span class=p>:</span>
+            <span class=n>send_buf</span><span class=o>.</span><span class=n>extend</span><span class=p>([(</span><span class=n>value</span> <span class=o>&gt;&gt;</span> <span class=mi>8</span><span class=p>)</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>,</span> <span class=n>value</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>])</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=n>send_buf</span><span class=o>.</span><span class=n>extend</span><span class=p>([</span><span class=mh>0x00</span><span class=p>,</span> <span class=mh>0x01</span><span class=p>])</span>
+        <span class=n>crc</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>CRC16</span><span class=p>(</span><span class=n>send_buf</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>send_buf</span><span class=p>))</span>
+        <span class=n>send_buf</span><span class=o>.</span><span class=n>extend</span><span class=p>([</span><span class=n>crc</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>,</span> <span class=p>(</span><span class=n>crc</span> <span class=o>&gt;&gt;</span> <span class=mi>8</span><span class=p>)</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>])</span>
+        <span class=k>return</span> <span class=n>send_buf</span>
+
+    <span class=n>async</span> <span class=k>def</span> <span class=nf>WriteRegisterFunc</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>index</span><span class=p>,</span> <span class=n>value</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Write a value to a specific register of the gripper.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            index (int): The register index to write to.
+</span><span class=s2>            value (int): The value to write to the register.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            bool: True if the write operation was successful, False otherwise.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>_transaction_lock</span><span class=p>:</span>
+            <span class=n>send_buf</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>_prepare_command</span><span class=p>(</span><span class=mh>0x06</span><span class=p>,</span> <span class=n>index</span><span class=p>,</span> <span class=n>value</span><span class=p>)</span>
+            <span class=n>response</span> <span class=o>=</span> <span class=n>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>_send_command</span><span class=p>(</span><span class=n>send_buf</span><span class=p>,</span> <span class=mi>8</span><span class=p>)</span>
+            <span class=k>return</span> <span class=n>response</span> <span class=ow>is</span> <span class=ow>not</span> <span class=bp>None</span>
+
+    <span class=n>async</span> <span class=k>def</span> <span class=nf>ReadRegisterFunc</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>index</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Read a value from a specific register of the gripper.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            index (int): The register index to read from.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            int: The value read from the register.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>_transaction_lock</span><span class=p>:</span>
+            <span class=n>send_buf</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>_prepare_command</span><span class=p>(</span><span class=mh>0x03</span><span class=p>,</span> <span class=n>index</span><span class=p>)</span>
+            <span class=n>response</span> <span class=o>=</span> <span class=n>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>_send_command</span><span class=p>(</span><span class=n>send_buf</span><span class=p>,</span> <span class=mi>7</span><span class=p>)</span>
+            <span class=k>if</span> <span class=n>response</span><span class=p>:</span>
+                <span class=k>return</span> <span class=p>(</span><span class=n>response</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=mi>8</span><span class=p>)</span> <span class=o>|</span> <span class=p>(</span><span class=n>response</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>)</span>
+            <span class=k>return</span> <span class=bp>None</span>
+
+    <span class=n>async</span> <span class=k>def</span> <span class=nf>Initialization</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+        <span class=s2>&#34;&#34;&#34;Initialize the gripper by writing to the initialization register.&#34;&#34;&#34;</span>
+        <span class=n>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>WriteRegisterFunc</span><span class=p>(</span><span class=mh>0x0100</span><span class=p>,</span> <span class=mh>0xA5</span><span class=p>)</span>
+
+    <span class=n>async</span> <span class=k>def</span> <span class=nf>SetTargetPosition</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>refpos</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Set the target position of the gripper.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            refpos (int): The target position to set.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=n>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>WriteRegisterFunc</span><span class=p>(</span><span class=mh>0x0103</span><span class=p>,</span> <span class=n>refpos</span><span class=p>)</span>
+
+    <span class=n>async</span> <span class=k>def</span> <span class=nf>SetTargetForce</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>force</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Set the target force of the gripper.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            force (int): The target force to set.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=n>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>WriteRegisterFunc</span><span class=p>(</span><span class=mh>0x0101</span><span class=p>,</span> <span class=n>force</span><span class=p>)</span>
+
+    <span class=n>async</span> <span class=k>def</span> <span class=nf>SetTargetSpeed</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>speed</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Set the target speed of the gripper.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            speed (int): The target speed to set.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=n>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>WriteRegisterFunc</span><span class=p>(</span><span class=mh>0x0104</span><span class=p>,</span> <span class=n>speed</span><span class=p>)</span>
+
+    <span class=n>async</span> <span class=k>def</span> <span class=nf>GetCurrentPosition</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Get the current position of the gripper.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            int: The current position of the gripper.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>return</span> <span class=n>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>ReadRegisterFunc</span><span class=p>(</span><span class=mh>0x0202</span><span class=p>)</span>
+
+    <span class=n>async</span> <span class=k>def</span> <span class=nf>GetCurrentTargetForce</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Get the current target force of the gripper.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            int: The current target force of the gripper.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>return</span> <span class=n>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>ReadRegisterFunc</span><span class=p>(</span><span class=mh>0x0101</span><span class=p>)</span>
+
+    <span class=n>async</span> <span class=k>def</span> <span class=nf>GetCurrentTargetSpeed</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Get the current target speed of the gripper.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            int: The current target speed of the gripper.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>return</span> <span class=n>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>ReadRegisterFunc</span><span class=p>(</span><span class=mh>0x0104</span><span class=p>)</span>
+
+    <span class=n>async</span> <span class=k>def</span> <span class=nf>GetInitState</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Get the initialization state of the gripper.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            int: The initialization state of the gripper.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>return</span> <span class=n>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>ReadRegisterFunc</span><span class=p>(</span><span class=mh>0x0200</span><span class=p>)</span>
+
+    <span class=n>async</span> <span class=k>def</span> <span class=nf>GetGripState</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Get the grip state of the gripper.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            int: The grip state of the gripper.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>return</span> <span class=n>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>ReadRegisterFunc</span><span class=p>(</span><span class=mh>0x0201</span><span class=p>)</span>
+</code></pre></div><h1 id=5-用法>5. 用法<a hidden class=anchor aria-hidden=true href=#5-用法>#</a></h1><h2 id=52-示例代码>5.2 示例代码<a hidden class=anchor aria-hidden=true href=#52-示例代码>#</a></h2><p>以下是如何使用dh_modbus_gripper类来控制大寰PGC夹具的具体示例：</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>asyncio</span>
+<span class=kn>from</span> <span class=nn>PGC_gripper</span> <span class=kn>import</span> <span class=n>dh_modbus_gripper</span>
+
+<span class=c1># 定义串口和波特率</span>
+<span class=n>LEFT_GRIPPER_PORT</span> <span class=o>=</span> <span class=s2>&#34;/dev/ttyUSB0&#34;</span>
+<span class=n>BAUDRATE</span> <span class=o>=</span> <span class=mi>115200</span>
+
+<span class=c1># 创建夹具控制对象</span>
+<span class=n>gripper</span> <span class=o>=</span> <span class=n>dh_modbus_gripper</span><span class=p>()</span>
+
+<span class=c1># 打开串口连接</span>
+<span class=n>gripper</span><span class=o>.</span><span class=n>open</span><span class=p>(</span><span class=n>LEFT_GRIPPER_PORT</span><span class=p>,</span> <span class=n>BAUDRATE</span><span class=p>)</span>
+
+<span class=c1># 初始化夹具</span>
+<span class=n>asyncio</span><span class=o>.</span><span class=n>run</span><span class=p>(</span><span class=n>gripper</span><span class=o>.</span><span class=n>Initialization</span><span class=p>())</span>
+
+<span class=c1># 设置目标位置</span>
+<span class=n>angle</span> <span class=o>=</span> <span class=mi>500</span>  <span class=c1># 角度范围为0-1000</span>
+<span class=n>asyncio</span><span class=o>.</span><span class=n>run</span><span class=p>(</span><span class=n>gripper</span><span class=o>.</span><span class=n>SetTargetPosition</span><span class=p>(</span><span class=nb>int</span><span class=p>(</span><span class=n>angle</span><span class=p>)))</span>
+
+<span class=c1># 关闭串口连接</span>
+<span class=n>gripper</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</code></pre></div><h2 id=52-代码说明>5.2 代码说明<a hidden class=anchor aria-hidden=true href=#52-代码说明>#</a></h2><ol><li><p><strong>定义异步函数</strong>：
+异步函数使用<code>async def</code>定义，例如<code>device_write</code>和<code>device_read</code>。</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=n>async</span> <span class=k>def</span> <span class=nf>device_write</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>write_data</span><span class=p>):</span>
+    <span class=c1># 异步写入数据逻辑</span>
+    <span class=k>pass</span>
+
+<span class=n>async</span> <span class=k>def</span> <span class=nf>device_read</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>wlen</span><span class=p>):</span>
+    <span class=c1># 异步读取数据逻辑</span>
+    <span class=k>pass</span>
+</code></pre></div></li><li><p><strong>创建事件循环</strong>：
+使用<code>asyncio.run(main())</code>来创建和运行事件循环。</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=n>async</span> <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
+    <span class=c1># 主函数逻辑</span>
+    <span class=k>pass</span>
+
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
+    <span class=n>asyncio</span><span class=o>.</span><span class=n>run</span><span class=p>(</span><span class=n>main</span><span class=p>())</span>
+</code></pre></div></li><li><p><strong>执行异步任务</strong>：
+在异步函数内部使用<code>await</code>关键字等待异步操作完成，例如：</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=n>async</span> <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
+    <span class=n>device</span> <span class=o>=</span> <span class=n>dh_device</span><span class=p>()</span>
+    <span class=n>await</span> <span class=n>device</span><span class=o>.</span><span class=n>device_write</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;example data&#39;</span><span class=p>)</span>
+    <span class=n>response</span> <span class=o>=</span> <span class=n>await</span> <span class=n>device</span><span class=o>.</span><span class=n>device_read</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
+    <span class=k>print</span><span class=p>(</span><span class=n>response</span><span class=p>)</span>
+</code></pre></div></li></ol></div><footer class=post-footer><ul class=post-tags><li><a href=https://chase6305.github.io/tags/linux/>Linux</a></li><li><a href=https://chase6305.github.io/tags/python/>Python</a></li><li><a href=https://chase6305.github.io/tags/gripper/>Gripper</a></li></ul><nav class=paginav><a class=prev href=https://chase6305.github.io/posts/open3d/introduction/><span class=title>«</span><br><span>Open3D 教程学习指南 (持续整理)</span></a>
+<a class=next href=https://chase6305.github.io/posts/python/py39/><span class=title>»</span><br><span>libpython3.9.so.1.0: cannot open shared object file: No such file or directory 解决方法</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share Python优化控制大寰PGC夹具的串口通信程序 on x" href="https://x.com/intent/tweet/?text=Python%e4%bc%98%e5%8c%96%e6%8e%a7%e5%88%b6%e5%a4%a7%e5%af%b0PGC%e5%a4%b9%e5%85%b7%e7%9a%84%e4%b8%b2%e5%8f%a3%e9%80%9a%e4%bf%a1%e7%a8%8b%e5%ba%8f&url=https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f&hashtags=Linux%2cPython%2cGripper"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783H125.266L235.9 310.383 332.567 436.783H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Python优化控制大寰PGC夹具的串口通信程序 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f&title=Python%e4%bc%98%e5%8c%96%e6%8e%a7%e5%88%b6%e5%a4%a7%e5%af%b0PGC%e5%a4%b9%e5%85%b7%e7%9a%84%e4%b8%b2%e5%8f%a3%e9%80%9a%e4%bf%a1%e7%a8%8b%e5%ba%8f&summary=Python%e4%bc%98%e5%8c%96%e6%8e%a7%e5%88%b6%e5%a4%a7%e5%af%b0PGC%e5%a4%b9%e5%85%b7%e7%9a%84%e4%b8%b2%e5%8f%a3%e9%80%9a%e4%bf%a1%e7%a8%8b%e5%ba%8f&source=https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512h-386.892c-34.524.0-62.554-28.03-62.554-62.554v-386.892c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0v-129.439c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02v-126.056c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768h75.024zm-307.552-334.556c-25.674.0-42.448 16.879-42.448 39.002.0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Python优化控制大寰PGC夹具的串口通信程序 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f&title=Python%e4%bc%98%e5%8c%96%e6%8e%a7%e5%88%b6%e5%a4%a7%e5%af%b0PGC%e5%a4%b9%e5%85%b7%e7%9a%84%e4%b8%b2%e5%8f%a3%e9%80%9a%e4%bf%a1%e7%a8%8b%e5%ba%8f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512h-386.892c-34.524.0-62.554-28.03-62.554-62.554v-386.892c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zm-119.474 108.193c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zm-160.386-29.702c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Python优化控制大寰PGC夹具的串口通信程序 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978v-192.915h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554v-386.892c0-34.524 28.029-62.554 62.554-62.554h386.892z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Python优化控制大寰PGC夹具的串口通信程序 on whatsapp" href="https://api.whatsapp.com/send?text=Python%e4%bc%98%e5%8c%96%e6%8e%a7%e5%88%b6%e5%a4%a7%e5%af%b0PGC%e5%a4%b9%e5%85%b7%e7%9a%84%e4%b8%b2%e5%8f%a3%e9%80%9a%e4%bf%a1%e7%a8%8b%e5%ba%8f%20-%20https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512h-386.892c-34.524.0-62.554-28.03-62.554-62.554v-386.892c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23-13.314-11.876-22.304-26.542-24.916-31.026s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Python优化控制大寰PGC夹具的串口通信程序 on telegram" href="https://telegram.me/share/url?text=Python%e4%bc%98%e5%8c%96%e6%8e%a7%e5%88%b6%e5%a4%a7%e5%af%b0PGC%e5%a4%b9%e5%85%b7%e7%9a%84%e4%b8%b2%e5%8f%a3%e9%80%9a%e4%bf%a1%e7%a8%8b%e5%ba%8f&url=https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47A3.38 3.38.0 0126.49 29.86zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share Python优化控制大寰PGC夹具的串口通信程序 on ycombinator" href="https://news.ycombinator.com/submitlink?t=Python%e4%bc%98%e5%8c%96%e6%8e%a7%e5%88%b6%e5%a4%a7%e5%af%b0PGC%e5%a4%b9%e5%85%b7%e7%9a%84%e4%b8%b2%e5%8f%a3%e9%80%9a%e4%bf%a1%e7%a8%8b%e5%ba%8f&u=https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentcolor" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" /></svg></a></li></ul></footer></article></main><footer class=footer><span>&copy; 2025 <a href=https://chase6305.github.io/>Chase Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z" /></svg></a><script>let menu=document.getElementById('menu')
+if(menu){menu.scrollLeft=localStorage.getItem("menu-scroll-position");menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft);}}
+document.querySelectorAll('a[href^="#"]').forEach(anchor=>{anchor.addEventListener("click",function(e){e.preventDefault();var id=this.getAttribute("href").substr(1);if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({behavior:"smooth"});}else{document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();}
+if(id==="top"){history.replaceState(null,null," ");}else{history.pushState(null,null,`#${id}`);}});});</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){if(document.body.scrollTop>800||document.documentElement.scrollTop>800){mybutton.style.visibility="visible";mybutton.style.opacity="1";}else{mybutton.style.visibility="hidden";mybutton.style.opacity="0";}};</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{if(document.body.className.includes("dark")){document.body.classList.remove('dark');localStorage.setItem("pref-theme",'light');}else{document.body.classList.add('dark');localStorage.setItem("pref-theme",'dark');}})</script><script>document.querySelectorAll('pre > code').forEach((codeblock)=>{const container=codeblock.parentNode.parentNode;const copybutton=document.createElement('button');copybutton.classList.add('copy-code');copybutton.innerHTML='copy';function copyingDone(){copybutton.innerHTML='copied!';setTimeout(()=>{copybutton.innerHTML='copy';},2000);}
+copybutton.addEventListener('click',(cb)=>{if('clipboard'in navigator){navigator.clipboard.writeText(codeblock.textContent);copyingDone();return;}
+const range=document.createRange();range.selectNodeContents(codeblock);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);try{document.execCommand('copy');copyingDone();}catch(e){};selection.removeRange(range);});if(container.classList.contains("highlight")){container.appendChild(copybutton);}else if(container.parentNode.firstChild==container){}else if(codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"){codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);}else{codeblock.parentNode.appendChild(copybutton);}});</script></body></html>

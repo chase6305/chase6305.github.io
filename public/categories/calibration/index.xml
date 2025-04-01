@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Calibration on Chase Blog</title>
+    <link>https://chase6305.github.io/categories/calibration/</link>
+    <description>Recent content in Calibration on Chase Blog</description>
+    <image>
+      <title>Chase Blog</title>
+      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.68.3</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 27 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/categories/calibration/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>libEGL warning: FIXME: egl/x11 doesn‘t support front buffer rendering 解决方法</title>
+      <link>https://chase6305.github.io/posts/egl/x11_warnning/</link>
+      <pubDate>Thu, 27 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/egl/x11_warnning/</guid>
+      <description>在使用 EGL 时，可能会遇到 &lt;code&gt;libEGL warning: FIXME: egl/x11 doesn&#39;t support front buffer rendering.&lt;/code&gt; 的警告。这通常是由于图形驱动程序或库的兼容性问题引起的。以下是两种解决方法，可以帮助你解决这个问题。</description>
+    </item>
+    <item>
+      <title>关于手眼标定的数学模型及标定流程</title>
+      <link>https://chase6305.github.io/posts/calibration/model/</link>
+      <pubDate>Wed, 26 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/calibration/model/</guid>
+      <description>关于手眼标定的数学模型及标定流程</description>
+    </item>
+  </channel>
+</rss>

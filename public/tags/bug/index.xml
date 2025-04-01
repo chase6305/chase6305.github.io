@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Bug on Chase Blog</title>
+    <link>https://chase6305.github.io/tags/bug/</link>
+    <description>Recent content in Bug on Chase Blog</description>
+    <image>
+      <title>Chase Blog</title>
+      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.68.3</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 11 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/tags/bug/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ubuntu 22.04 无法进入图形界面的解决方法</title>
+      <link>https://chase6305.github.io/posts/vscode/bug/gdm/</link>
+      <pubDate>Tue, 11 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/vscode/bug/gdm/</guid>
+      <description>Ubuntu 22.04 无法进入图形界面的解决方法</description>
+    </item>
+    <item>
+      <title>VScode终端出现显示两个环境名问题的解决方案</title>
+      <link>https://chase6305.github.io/posts/vscode/bug/two-env/</link>
+      <pubDate>Fri, 07 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/vscode/bug/two-env/</guid>
+      <description>VScode终端出现显示两个环境名问题的解决方案</description>
+    </item>
+  </channel>
+</rss>

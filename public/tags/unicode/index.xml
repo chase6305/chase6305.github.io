@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Unicode on Chase Blog</title>
+    <link>https://chase6305.github.io/tags/unicode/</link>
+    <description>Recent content in Unicode on Chase Blog</description>
+    <image>
+      <title>Chase Blog</title>
+      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.68.3</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 26 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/tags/unicode/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Unicode 符号在程序开发中的应用指南</title>
+      <link>https://chase6305.github.io/posts/unicode/</link>
+      <pubDate>Wed, 26 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/unicode/</guid>
+      <description>Unicode 符号在程序开发中的应用指南</description>
+    </item>
+  </channel>
+</rss>

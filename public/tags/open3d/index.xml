@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Open3D on Chase Blog</title>
+    <link>https://chase6305.github.io/tags/open3d/</link>
+    <description>Recent content in Open3D on Chase Blog</description>
+    <image>
+      <title>Chase Blog</title>
+      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.68.3</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 04 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/tags/open3d/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Open3D 教程学习指南 (持续整理)</title>
+      <link>https://chase6305.github.io/posts/open3d/introduction/</link>
+      <pubDate>Tue, 04 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/open3d/introduction/</guid>
+      <description>Open3D 是一个开源库，旨在为 3D 数据处理提供高效且易用的工具。它由 Intel 开发和维护，支持多种 3D 数据处理任务，如点云处理、3D 重建、几何处理和可视化等。</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,842 @@
+<!doctype html><html lang=zh-cn dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>基于三维栅格空间的A*算法流程C++实现 | Chase Blog</title><meta name=keywords content="AI,Algorithms"><meta name=description content="基于三维栅格空间的A*算法流程C++实现"><meta name=author content="Chase"><link rel=canonical href=https://chase6305.github.io/posts/ai/algorithms/astar/astar-cpp/><meta name=google-site-verification content="XYZabc"><meta name=yandex-verification content="XYZabc"><meta name=msvalidate.01 content="XYZabc"><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme: rgb(29, 30, 32);--entry: rgb(46, 46, 51);--primary: rgb(218, 218, 219);--secondary: rgb(155, 156, 157);--tertiary: rgb(65, 66, 68);--content: rgb(196, 196, 197);--code-block-bg: rgb(46, 46, 51);--code-bg: rgb(55, 56, 62);--border: rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:url" content="https://chase6305.github.io/posts/ai/algorithms/astar/astar-cpp/"><meta property="og:site_name" content="Chase Blog"><meta property="og:title" content="基于三维栅格空间的A*算法流程C++实现"><meta property="og:description" content="基于三维栅格空间的A*算法流程C++实现"><meta property="og:locale" content="zh-CN"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-06-29T00:00:00+00:00"><meta property="article:modified_time" content="2022-06-29T00:00:00+00:00"><meta property="article:tag" content="AI"><meta property="article:tag" content="Algorithms"><meta property="og:image" content="https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="基于三维栅格空间的A*算法流程C++实现"><meta name=twitter:description content="基于三维栅格空间的A*算法流程C++实现"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"基于三维栅格空间的A*算法流程C++实现","item":"https://chase6305.github.io/posts/ai/algorithms/astar/astar-cpp/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"基于三维栅格空间的A*算法流程C++实现","name":"基于三维栅格空间的A*算法流程C\x2b\x2b实现","description":"基于三维栅格空间的A*算法流程C++实现","keywords":["AI","Algorithms"],"articleBody":"传统A * 算法介绍 传统A*算法是一种基于栅格的最短无碰路径求解的启发式算法，其评价函数为：\nf(x) = g(x) + h(x) 其中：\n g(x): 从起点到当前节点 x 的实际代价 h(x): 从节点 x 到终点的估计代价（启发值） f(x): 通过节点 x 的路径总代价  当所在的环境地图被分割成三维立体地图时，是从起始栅格到栅格x的实际栅格数，是从栅格 x 到目标栅格的预计栅格数，那么是从起始栅格经过中间栅格 x 到达目标栅格的预计栅格数。以下为传统 A * 算法的实现流程（C++）。\nblockallocator.h\n#ifndef __BLOCKALLOCATOR_H__ #define __BLOCKALLOCATOR_H__  #include  /// This is a small object allocator used for allocating small /// objects that persist for more than one time step. /// See: http://www.codeproject.com/useritems/Small_Block_Allocator.asp class BlockAllocator{ static const int kChunkSize = 16 * 1024; static const int kMaxBlockSize = 640; static const int kBlockSizes = 14; static const int kChunkArrayIncrement = 128; public: BlockAllocator(); ~BlockAllocator(); public: void* allocate(int size); void free(void *p, int size); void clear(); private: int num_chunk_count_; int num_chunk_space_; struct Chunk* chunks_; struct Block* free_lists_[kBlockSizes]; static int block_sizes_[kBlockSizes]; static uint8_t s_block_size_lookup_[kMaxBlockSize + 1]; static bool s_block_size_lookup_initialized_; }; #endif  blockallocator.cpp\n#include \"blockallocator.h\"#include #include #include #include #include  struct Chunk{ int block_size; Block *blocks; }; struct Block{ Block *next; }; int BlockAllocator::block_sizes_[kBlockSizes] ={ 16, // 0  32, // 1  64, // 2  96, // 3  128, // 4  160, // 5  192, // 6  224, // 7  256, // 8  320, // 9  384, // 10  448, // 11  512, // 12  640, // 13 }; bool BlockAllocator::s_block_size_lookup_initialized_; uint8_t BlockAllocator::s_block_size_lookup_[kMaxBlockSize + 1]; BlockAllocator::BlockAllocator(){ assert(kBlockSizes  UCHAR_MAX); num_chunk_space_ = kChunkArrayIncrement; num_chunk_count_ = 0; chunks_ = (Chunk *)malloc(num_chunk_space_ * sizeof(Chunk)); memset(chunks_, 0, num_chunk_space_ * sizeof(Chunk)); memset(free_lists_, 0, sizeof(free_lists_)); if (s_block_size_lookup_initialized_ == false){ int j = 0; for (int i = 1; i  kMaxBlockSize; ++i){ assert(j  kBlockSizes); if (i  block_sizes_[j]){ s_block_size_lookup_[i] = (uint8_t)j; } else{ ++j; s_block_size_lookup_[i] = (uint8_t)j; } } s_block_size_lookup_initialized_ = true; } } BlockAllocator::~BlockAllocator(){ for (int i = 0; i  num_chunk_count_; ++i){ ::free(chunks_[i].blocks); } ::free(chunks_); } void* BlockAllocator::allocate(int size){ if (size == 0){ return nullptr; } assert(0  size); if (size  kMaxBlockSize){ return malloc(size); } int index = s_block_size_lookup_[size]; assert(0  index \u0026\u0026 index  kBlockSizes); if (free_lists_[index]){ Block *block = free_lists_[index]; free_lists_[index] = block-next; return block; } else{ if (num_chunk_count_ == num_chunk_space_){ Chunk *oldChunks = chunks_; num_chunk_space_ += kChunkArrayIncrement; chunks_ = (Chunk *)malloc(num_chunk_space_ * sizeof(Chunk)); memcpy(chunks_, oldChunks, num_chunk_count_ * sizeof(Chunk)); memset(chunks_ + num_chunk_count_, 0, kChunkArrayIncrement * sizeof(Chunk)); ::free(oldChunks); } Chunk *chunk = chunks_ + num_chunk_count_; chunk-blocks = (Block *)malloc(kChunkSize); #if defined(_DEBUG)  memset(chunk-blocks, 0xcd, kChunkSize); #endif  int block_size = block_sizes_[index]; chunk-block_size = block_size; int block_count = kChunkSize / block_size; assert(block_count * block_size  kChunkSize); for (int i = 0; i  block_count - 1; ++i){ Block *block = (Block *)((uint8_t *)chunk-blocks + block_size * i); Block *next = (Block *)((uint8_t *)chunk-blocks + block_size * (i + 1)); block-next = next; } Block *last = (Block *)((uint8_t *)chunk-blocks + block_size * (block_count - 1)); last-next = nullptr; free_lists_[index] = chunk-blocks-next; ++num_chunk_count_; return chunk-blocks; } } void BlockAllocator::free(void *p, int size){ if (size == 0 || p == nullptr){ return; } assert(0  size); if (size  kMaxBlockSize){ ::free(p); return; } int index = s_block_size_lookup_[size]; assert(0  index \u0026\u0026 index  kBlockSizes); #ifdef _DEBUG  int block_size = block_sizes_[index]; bool found = false; for (int i = 0; i  num_chunk_count_; ++i) { Chunk *chunk = chunks_ + i; if (chunk-block_size != block_size) { assert((uint8_t *)p + block_size  (uint8_t *)chunk-blocks || (uint8_t *)chunk-blocks + kChunkSize  (uint8_t *)p); } else { if ((uint8_t *)chunk-blocks  (uint8_t *)p \u0026\u0026 (uint8_t *)p + block_size  (uint8_t *)chunk-blocks + kChunkSize) { found = true; } } } assert(found); memset(p, 0xfd, block_size); #endif  Block *block = (Block *)p; block-next = free_lists_[index]; free_lists_[index] = block; } void BlockAllocator::clear(){ for (int i = 0; i  num_chunk_count_; ++i){ ::free(chunks_[i].blocks); } num_chunk_count_ = 0; memset(chunks_, 0, num_chunk_space_ * sizeof(Chunk)); memset(free_lists_, 0, sizeof(free_lists_)); } astar.h\n#ifndef __ASTAR_H__ #define __ASTAR_H__  #include #include #include #include  class BlockAllocator; class AStar { public: /** * 二维向量 */ struct Vec3 { uint16_t x; uint16_t y; uint16_t z; Vec3() : x(0) , y(0) , z(0) //初始化  { } Vec3(uint16_t x1, uint16_t y1, uint16_t z1) : x(x1), y(y1), z(z1) //初始化赋值列表  { } void reset(uint16_t x1, uint16_t y1, uint16_t z1) //赋值  { x = x1; y = y1; z = z1; } //计算两点之间的距离  int distance(const Vec3 \u0026other) const { return abs(other.x - x) + abs(other.y - y) + abs(other.z - z); } //判断是否等于目标点  bool operator== (const Vec3 \u0026other) const { return x == other.x \u0026\u0026 y == other.y \u0026\u0026 z == other.z; } }; typedef std::functionbool(const Vec3\u0026) Callback; /** * 搜索参数 */ struct Params { bool corner; // 允许拐角  uint16_t height; // 地图高度 z  uint16_t width; // 地图宽度  uint16_t depth; // 地图深度 z  Vec3 start; // 起点坐标  Vec3 end; // 终点坐标  Callback can_pass; // 是否可通过  Params() : height(0), width(0), depth(0), corner(false) { } }; private: /** * 路径节点状态 */ enum NodeState { NOTEXIST, // 不存在  IN_OPENLIST, // 在开启列表  IN_CLOSEDLIST // 在关闭列表  }; /** * 路径节点 */ struct Node { uint16_t g; // 与起点距离  uint16_t h; // 与终点距离  Vec3 pos; // 节点位置  NodeState state; // 节点状态  Node* parent; // 父节点  /** * 计算f值 */ int f() const { return g + h; } inline Node(const Vec3 \u0026pos) : g(0), h(0), pos(pos), parent(nullptr), state(NOTEXIST) { } }; public: AStar(BlockAllocator *allocator); ~AStar(); public: /** * 获取直行估值 */ int get_step_value() const; /** * 获取拐角估值 */ int get_oblique_value() const; /** * 设置直行估值 */ void set_step_value(int value); /** * 获取拐角估值 */ void set_oblique_value(int value); /** * 执行寻路操作 */ std::vectorVec3 find(const Params \u0026param); private: /** * 清理参数 */ void clear(); /** * 初始化参数 */ void init(const Params \u0026param); /** * 参数是否有效 */ bool is_vlid_params(const Params \u0026param); private: /** * 二叉堆上滤 */ void percolate_up(size_t hole); /** * 获取节点索引 */ bool get_node_index(Node *node, size_t *index); /** * 计算G值 */ uint16_t calcul_g_value(Node *parent, const Vec3 \u0026current); /** * 计算F值 */ uint16_t calcul_h_value(const Vec3 \u0026current, const Vec3 \u0026end); /** * 节点是否存在于开启列表 */ bool in_open_list(const Vec3 \u0026pos, Node *\u0026out_node); /** * 节点是否存在于关闭列表 */ bool in_closed_list(const Vec3 \u0026pos); /** * 是否可通过 */ bool can_pass(const Vec3 \u0026pos); /** * 当前点是否可到达目标点 */ bool can_pass(const Vec3 \u0026current, const Vec3 \u0026destination, bool allow_corner); /** * 查找附近可通过的节点 */ void find_can_pass_nodes(const Vec3 \u0026current, bool allow_corner, std::vectorVec3 *out_lists); /** * 处理找到节点的情况 */ void handle_found_node(Node *current, Node *destination); /** * 处理未找到节点的情况 */ void handle_not_found_node(Node *current, Node *destination, const Vec3 \u0026end); private: int step_val_; //直行估值  int oblique_val_; //拐角估值  std::vectorNode* mapping_; //排列？？？ 如何将三维空间的所有点按一定顺序去排列 索引号均大于零  uint16_t height_; //  uint16_t width_; //  uint16_t depth_; //  Callback can_pass_; //  std::vectorNode* open_list_; //开启列表  BlockAllocator* allocator_; //寻路者 }; #endif  astar.cpp\n#include \"astar.h\"#include #include #include #include \"blockallocator.h\" //直行估值和拐角估值 static const int kStepValue = 10; //水平或垂直移动的耗费为10 static const int kObliqueValue = 14; //对角线移动的耗费为14  //构造函数 AStar::AStar(BlockAllocator *allocator) : width_(0) , height_(0) , depth_(0) , allocator_(allocator) , step_val_(kStepValue) , oblique_val_(kObliqueValue) { assert(allocator_ != nullptr); } //析构函数 AStar::~AStar(){ clear(); } // 获取直行估值 int AStar::get_step_value() const{ return step_val_; } // 获取拐角估值 int AStar::get_oblique_value() const{ return oblique_val_; } // 设置直行估值 void AStar::set_step_value(int value){ step_val_ = value; } // 获取拐角估值 void AStar::set_oblique_value(int value){ oblique_val_ = value; } // 析构函数---清理参数 void AStar::clear(){ size_t index = 0; const size_t max_size = width_ * height_ * depth_ ; //设置地图大小  while (index  max_size) { allocator_-free( mapping_[index++] , sizeof(Node) ); //  } open_list_.clear(); //清空openglist  can_pass_ = nullptr; //空  width_ = height_ = depth_ = 0; //清零 } // 初始化操作 void AStar::init(const Params \u0026param) { width_ = param.width; height_ = param.height; depth_ = param.depth; can_pass_ = param.can_pass; //如果地图不为空，则清空  if (!mapping_.empty()) { memset( \u0026mapping_[0] , 0, sizeof(Node*) * mapping_.size() ); //初始化 地图清空为0  } mapping_.resize( width_ * height_ * depth_ , nullptr); //调整大小 } // 搜索参数是否有效-----建立三维数组 （ ） // 设置搜索范围width height depth 都大于零 // 起点和终点都大于零，且在搜索范围内 bool AStar::is_vlid_params(const AStar::Params \u0026param){ return (param.can_pass != nullptr \u0026\u0026 (param.width  0 \u0026\u0026 param.height  0 \u0026\u0026 param.depth  0 ) \u0026\u0026 (param.end.x = 0 \u0026\u0026 param.end.x  param.width) \u0026\u0026 (param.end.y = 0 \u0026\u0026 param.end.y  param.height) \u0026\u0026 (param.end.z = 0 \u0026\u0026 param.end.z  param.depth) \u0026\u0026 (param.start.x = 0 \u0026\u0026 param.start.x  param.width) \u0026\u0026 (param.start.y = 0 \u0026\u0026 param.start.y  param.height) \u0026\u0026 (param.start.z = 0 \u0026\u0026 param.start.z  param.depth) ); } // 获取节点索引 bool AStar::get_node_index(Node *node, size_t *index){ *index = 0; const size_t size = open_list_.size(); while (*index  size) { if (open_list_[*index]-pos == node-pos) { return true; } ++(*index); } return false; } // 二叉堆上滤 void AStar::percolate_up(size_t hole){ size_t parent = 0; while (hole  0){ parent = (hole - 1) / 2; //父节点位于hole/2的位置  if ( open_list_[hole]-f()  open_list_[parent]-f() ){ std::swap( open_list_[hole] , open_list_[parent] ); hole = parent; } else{ return; } } } // 计算G值 inline uint16_t AStar::calcul_g_value(Node *parent, const Vec3 \u0026current){ uint16_t g_value = current.distance(parent-pos) == 2 ? oblique_val_ : step_val_; return g_value += parent-g; } // 计算F值 inline uint16_t AStar::calcul_h_value(const Vec3 \u0026current, const Vec3 \u0026end){ unsigned int h_value = end.distance(current); return h_value * step_val_; } // 节点是否存在于开启列表 inline bool AStar::in_open_list(const Vec3 \u0026pos, Node *\u0026out_node){ out_node = mapping_[ pos.z * width_ * height_ + pos.y * width_ + pos.x ]; return out_node ? out_node-state == IN_OPENLIST : false; } // 节点是否存在于关闭列表 inline bool AStar::in_closed_list(const Vec3 \u0026pos){ Node *node_ptr = mapping_[pos.z * width_ * height_ + pos.y * width_ + pos.x]; return node_ptr ? node_ptr-state == IN_CLOSEDLIST : false; } // 是否可到达//点是否在可达空间内 bool AStar::can_pass(const Vec3 \u0026pos) { return (pos.x = 0 \u0026\u0026 pos.x  width_ \u0026\u0026 pos.y = 0 \u0026\u0026 pos.y  height_ \u0026\u0026 pos.z = 0 \u0026\u0026 pos.z  depth_ ) ? can_pass_(pos) : false; } // 当前点是否可到达目标点 bool AStar::can_pass(const Vec3 \u0026current, const Vec3 \u0026destination, bool allow_corner){ if (destination.x = 0 \u0026\u0026 destination.x  width_ \u0026\u0026 destination.y = 0 \u0026\u0026 destination.y  height_ \u0026\u0026 destination.z = 0 \u0026\u0026 destination.z  depth_ ) { //该点是否在关闭列表中  if (in_closed_list(destination)){ return false; } //destination 和 current 两点之间距离是否等于1  if (destination.distance(current) == 1){ return can_pass_(destination); //判断该点是否可到达  } // 允许转角  else if (allow_corner){ return can_pass_(destination) \u0026\u0026 (can_pass(Vec3( destination.x , current.y , current.z )) \u0026\u0026 can_pass(Vec3( current.x, destination.y , current.z)) \u0026\u0026 can_pass(Vec3( current.x, current.y , destination.z))); } } return false; } // 查找附近可通过的节点 // 输入当前节点 做三维 void AStar::find_can_pass_nodes(const Vec3 \u0026current, bool corner, std::vectorVec3 *out_lists){ Vec3 destination; //新建三维点  const int max_row = current.y + 1; //  const int max_col = current.x + 1; //  const int max_z = current.z + 1; //  int row_index = current.y - 1; // row 为纵向  int z_index = current.z - 1 ; // z 为层数  //若小于零，防止超过下限  if ( z_index  0 ){ z_index = 0 ; } while ( z_index  max_z ){ int row_index = current.z - 1 ; //若row_index小于零，则将row_index置为零 以防超过边界  if (row_index  0) { row_index = 0; } while ( row_index  max_row){ int col_index = current.x - 1 ; //若col_index小于零，则将col_index置为零 以防超过边界  if ( col_index  0 ){ col_index = 0 ; } //若max_col 大于等于 col_index  while (col_index  max_col){ destination.reset( col_index, row_index, z_index ); //将当前点节点信息存放到destinationn  //判断是否到达终点  if (can_pass(current, destination, corner)){ out_lists-push_back(destination); } ++col_index; } ++row_index; } ++z_index; } } // 处理找到节点的情况 void AStar::handle_found_node(Node *current, Node *destination){ unsigned int g_value = calcul_g_value(current, destination-pos); //计算g值  if (g_value  destination-g){ destination-g = g_value; destination-parent = current; size_t index = 0; //处理找到节点的情况  if (get_node_index(destination, \u0026index)){ percolate_up(index); //二叉堆上滤  } else{ assert(false); } } } // 处理未找到节点的情况 void AStar::handle_not_found_node(Node *current, Node *destination, const Vec3 \u0026end){ destination-parent = current; destination-h = calcul_h_value(destination-pos, end); //计算h值  destination-g = calcul_g_value(current, destination-pos); //计算g值  Node *\u0026reference_node = mapping_[destination-pos.z * width_ * height_ + destination-pos.y * width_ + destination-pos.x]; reference_node = destination; reference_node-state = IN_OPENLIST; open_list_.push_back(destination); std::push_heap(open_list_.begin(), open_list_.end(), [](const Node *a, const Node *b)-bool { return a-f()  b-f(); }); } // 执行寻路操作 // 传入 param 搜索参数 // 得到最终路径结果 std::vectorAStar::Vec3 AStar::find(const Params \u0026param){ std::vectorVec3 paths; //路径  assert(is_vlid_params(param)); //检查参数是否有效  if (!is_vlid_params(param)){ return paths; } // 初始化  init(param); //初始化参数并分配地图大小  std::vectorVec3 nearby_nodes; //创建附近节点的容器  nearby_nodes.reserve(param.corner ? 26 : 6 ); //分配容器大小， 二维 8 或 4 三维 26 或 6 ----corner：是否允许拐角  // 将起点放入开启列表  Node *start_node = new( allocator_-allocate( sizeof(Node) ) ) Node(param.start); open_list_.push_back(start_node); //depth_ = ? 是等于 width_ * height_  Node *\u0026reference_node = mapping_[ start_node-pos.z * width_ * height_ + start_node-pos.y * width_ + start_node-pos.x ]; //创建路径节点  reference_node = start_node; //将起点放入reference_node中  reference_node-state = IN_OPENLIST; //将起点节点状态设置为开启，起点放入开启列表  // 寻路操作 遍历开启列表直到找到终点  while (!open_list_.empty()){ // 找出f值最小节点NumberOfGrid_x  Node *current = open_list_.front(); //返回当前vector容器中起始元素的引用  std::pop_heap(open_list_.begin(), open_list_.end(), [](const Node *a, const Node *b)-bool{ return a-f()  b-f(); }); // 将堆顶元素调整到最后  open_list_.pop_back(); //弹出末尾元素  mapping_[ current-pos.z * width_ * height_ + current-pos.y * width_ + current-pos.x ]-state = IN_CLOSEDLIST; //将节点放进关闭列表 （起点）  // 是否找到终点 //重载==号 判断两个的坐标是否相等。  if (current-pos == param.end){ //寻找到终点时，将此路径上的父节点以及子节点保存到paths中  while (current-parent){ paths.push_back(current-pos); current = current-parent; } std::reverse(paths.begin(), paths.end()); //反转操作  goto __end__; } // 查找周围可通过节点  nearby_nodes.clear(); //清空nearby_nodes，将新节点周围可通过的节点放入nearby_nodes  find_can_pass_nodes(current-pos, param.corner, \u0026nearby_nodes); //找寻当前节点的附近可通过节点  //current-pos 当前路径节点的节点位置  // 计算周围节点的估值  size_t index = 0; const size_t size = nearby_nodes.size(); while (index  size){ Node *next_node = nullptr; //判断节点是否在开启列表  if ( in_open_list(nearby_nodes[index], next_node) ){ handle_found_node(current, next_node); //处理找到节点的情况  } else{ next_node = new(allocator_-allocate(sizeof(Node))) Node(nearby_nodes[index]); handle_not_found_node(current, next_node, param.end); //处理未找到节点的情况  } ++index; } } __end__: clear(); return paths; } PathPlanComposition.h\n/* * @Author: JT * @Date: 2020-06-18 15:27:57 * @LastEditTime: 2020-08-10 13:15:05 * @LastEditors: JT * @Description: In User Settings Edit */ #ifndef PATHPLANINGCOMPOSITION_H_ #define PATHPLANINGCOMPOSITION_H_ #include#include \"data.h\"#include \"HeadFile.h\" class PathPlanComposition{ private: /* data */ public: PathPlanComposition(/* args */); ~PathPlanComposition(); void AstarRoute() ; }; PathPlanComposition::PathPlanComposition(/* args */){ } PathPlanComposition::~PathPlanComposition(){ } #endif PathPlanComposition.cpp\n#include \"PathPlanComposition.h\"#include \"astar.cpp\"#include \"blockallocator.cpp\" // Astar算法 示例程序 // 可自行构建三维栅格地图 // 在param.start和param.end传入三维栅格的起点和终点，此处第三个值为0 默认为平面 void PathPlanComposition::AstarRoute( ){ //地图 \tchar maps[10][10] = { { 0, 1, 0, 0, 0, 1, 0, 0, 0, 0 }, { 0, 0, 0, 1, 0, 1, 0, 1, 0, 1 }, { 1, 1, 1, 1, 0, 1, 0, 1, 0, 1 }, { 0, 0, 0, 1, 0, 0, 0, 1, 0, 1 }, { 0, 1, 0, 1, 1, 1, 1, 1, 0, 1 }, { 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 }, { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, { 0, 0, 0, 0, 1, 0, 0, 0, 1, 0 }, { 1, 1, 0, 0, 1, 0, 1, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 1, 0, 1, 0 }, }; AStar::Params param; param.width = 10;\t//x\t\tparam.height = 10;\t//y\t\tparam.depth = 1;\t//z\t\tparam.corner = false; param.start = AStar::Vec3( 9 , 9 , 0 );\t//起点 \tparam.end = AStar::Vec3( 1 , 1 , 0 ); //终点 \tparam.can_pass = [\u0026](const AStar::Vec3 \u0026pos)-bool{ return maps[pos.y][pos.x] == 0; }; // 执行搜索 \tBlockAllocator allocator; AStar algorithm(\u0026allocator); auto path = algorithm.find(param); if( path.empty()){\tcout  \" path empty\"  endl; } for( int i = 0 ; i path.size() ; i++ ){ cout  \" path-------- \"  path[i].x  \" , \"  path[i].y  \" , \"  path[i].z  endl; } } ","wordCount":"2348","inLanguage":"zh-cn","image":"https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E","datePublished":"2022-06-29T00:00:00Z","dateModified":"2022-06-29T00:00:00Z","author":{"@type":"Person","name":"Chase"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://chase6305.github.io/posts/ai/algorithms/astar/astar-cpp/"},"publisher":{"@type":"Organization","name":"Chase Blog","logo":{"@type":"ImageObject","url":"https://chase6305.github.io/%3Clink%20/%20abs%20url%3E"}}}</script></head><body id=top><script>if(localStorage.getItem("pref-theme")==="dark"){document.body.classList.add('dark');}else if(localStorage.getItem("pref-theme")==="light"){document.body.classList.remove('dark')}else if(window.matchMedia('(prefers-color-scheme: dark)').matches){document.body.classList.add('dark');}</script><header class=header><nav class=nav><div class=logo><a href=https://chase6305.github.io/ accesskey=h title="Chase's Home (Alt + H)"><img src=https://chase6305.github.io/apple-touch-icon.png alt aria-label=logo height=35>Chase's Home</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://chase6305.github.io/categories/ title=categories><span>categories</span></a></li><li><a href=https://chase6305.github.io/archives/ title=archives><span>archives</span></a></li><li><a href=https://chase6305.github.io/tags/ title=tags><span>tags</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://chase6305.github.io/>Home</a></div><h1 class="post-title entry-hint-parent">基于三维栅格空间的A*算法流程C++实现</h1><div class=post-meta><span title="2022-06-29 00:00:00 +0000 UTC">2022-06-29</span>&nbsp;·&nbsp;Chase&nbsp;|&nbsp;<a href=https://github.com/%3cpath_to_repo%3e/content/posts/ai/algorithms/Astar/Astar-cpp/index.md rel="noopener noreferrer" target=_blank>Suggest Changes</a></div></header><div class=post-content><p><strong>传统A * 算法介绍</strong>
+传统A*算法是一种基于栅格的最短无碰路径求解的启发式算法，其评价函数为：</p><pre><code class=language-math data-lang=math>f(x) = g(x) + h(x)
+</code></pre><p>其中：</p><ul><li>g(x): 从起点到当前节点 x 的实际代价</li><li>h(x): 从节点 x 到终点的估计代价（启发值）</li><li>f(x): 通过节点 x 的路径总代价</li></ul><p>当所在的环境地图被分割成三维立体地图时，是从起始栅格到栅格x的实际栅格数，是从栅格 x 到目标栅格的预计栅格数，那么是从起始栅格经过中间栅格 x 到达目标栅格的预计栅格数。以下为传统 A * 算法的实现流程（C++）。</p><p><strong>blockallocator.h</strong></p><div class=highlight><pre class=chroma><code class=language-cpp data-lang=cpp><span class=cp>#ifndef __BLOCKALLOCATOR_H__
+</span><span class=cp>#define __BLOCKALLOCATOR_H__
+</span><span class=cp></span>
+<span class=cp>#include</span> <span class=cpf>&lt;cstdint&gt;</span><span class=cp>
+</span><span class=cp></span>
+<span class=c1>/// This is a small object allocator used for allocating small
+</span><span class=c1>/// objects that persist for more than one time step.
+</span><span class=c1>/// See: http://www.codeproject.com/useritems/Small_Block_Allocator.asp
+</span><span class=c1></span><span class=k>class</span> <span class=nc>BlockAllocator</span><span class=p>{</span>
+    <span class=k>static</span> <span class=k>const</span> <span class=kt>int</span> <span class=n>kChunkSize</span> <span class=o>=</span> <span class=mi>16</span> <span class=o>*</span> <span class=mi>1024</span><span class=p>;</span>
+    <span class=k>static</span> <span class=k>const</span> <span class=kt>int</span> <span class=n>kMaxBlockSize</span> <span class=o>=</span> <span class=mi>640</span><span class=p>;</span>
+    <span class=k>static</span> <span class=k>const</span> <span class=kt>int</span> <span class=n>kBlockSizes</span> <span class=o>=</span> <span class=mi>14</span><span class=p>;</span>
+    <span class=k>static</span> <span class=k>const</span> <span class=kt>int</span> <span class=n>kChunkArrayIncrement</span> <span class=o>=</span> <span class=mi>128</span><span class=p>;</span>
+
+<span class=k>public</span><span class=o>:</span>
+    <span class=n>BlockAllocator</span><span class=p>();</span>
+    <span class=o>~</span><span class=n>BlockAllocator</span><span class=p>();</span>
+
+<span class=k>public</span><span class=o>:</span>
+    <span class=kt>void</span><span class=o>*</span> <span class=n>allocate</span><span class=p>(</span><span class=kt>int</span> <span class=n>size</span><span class=p>);</span>
+    <span class=kt>void</span> <span class=nf>free</span><span class=p>(</span><span class=kt>void</span> <span class=o>*</span><span class=n>p</span><span class=p>,</span> <span class=kt>int</span> <span class=n>size</span><span class=p>);</span>
+    <span class=kt>void</span> <span class=nf>clear</span><span class=p>();</span>
+
+<span class=k>private</span><span class=o>:</span>
+    <span class=kt>int</span>             <span class=n>num_chunk_count_</span><span class=p>;</span>
+    <span class=kt>int</span>             <span class=n>num_chunk_space_</span><span class=p>;</span>
+    <span class=k>struct</span> <span class=nc>Chunk</span><span class=o>*</span>   <span class=n>chunks_</span><span class=p>;</span>
+    <span class=k>struct</span> <span class=nc>Block</span><span class=o>*</span>   <span class=n>free_lists_</span><span class=p>[</span><span class=n>kBlockSizes</span><span class=p>];</span>
+    <span class=k>static</span> <span class=kt>int</span>      <span class=n>block_sizes_</span><span class=p>[</span><span class=n>kBlockSizes</span><span class=p>];</span>
+    <span class=k>static</span> <span class=kt>uint8_t</span>  <span class=n>s_block_size_lookup_</span><span class=p>[</span><span class=n>kMaxBlockSize</span> <span class=o>+</span> <span class=mi>1</span><span class=p>];</span>
+    <span class=k>static</span> <span class=kt>bool</span>     <span class=n>s_block_size_lookup_initialized_</span><span class=p>;</span>
+<span class=p>};</span>
+
+<span class=cp>#endif
+</span><span class=cp></span>
+</code></pre></div><p><strong>blockallocator.cpp</strong></p><div class=highlight><pre class=chroma><code class=language-cpp data-lang=cpp><span class=cp>#include</span> <span class=cpf>&#34;blockallocator.h&#34;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&lt;limits.h&gt;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&lt;memory.h&gt;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&lt;stddef.h&gt;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&lt;malloc.h&gt;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&lt;assert.h&gt;</span><span class=cp>
+</span><span class=cp></span>
+<span class=k>struct</span> <span class=nc>Chunk</span><span class=p>{</span>
+    <span class=kt>int</span> <span class=n>block_size</span><span class=p>;</span>
+    <span class=n>Block</span> <span class=o>*</span><span class=n>blocks</span><span class=p>;</span>
+<span class=p>};</span>
+
+<span class=k>struct</span> <span class=nc>Block</span><span class=p>{</span>
+    <span class=n>Block</span> <span class=o>*</span><span class=n>next</span><span class=p>;</span>
+<span class=p>};</span>
+
+<span class=kt>int</span> <span class=n>BlockAllocator</span><span class=o>::</span><span class=n>block_sizes_</span><span class=p>[</span><span class=n>kBlockSizes</span><span class=p>]</span> <span class=o>=</span><span class=p>{</span>
+    <span class=mi>16</span><span class=p>,</span>     <span class=c1>// 0
+</span><span class=c1></span>    <span class=mi>32</span><span class=p>,</span>     <span class=c1>// 1
+</span><span class=c1></span>    <span class=mi>64</span><span class=p>,</span>     <span class=c1>// 2
+</span><span class=c1></span>    <span class=mi>96</span><span class=p>,</span>     <span class=c1>// 3
+</span><span class=c1></span>    <span class=mi>128</span><span class=p>,</span>    <span class=c1>// 4
+</span><span class=c1></span>    <span class=mi>160</span><span class=p>,</span>    <span class=c1>// 5
+</span><span class=c1></span>    <span class=mi>192</span><span class=p>,</span>    <span class=c1>// 6
+</span><span class=c1></span>    <span class=mi>224</span><span class=p>,</span>    <span class=c1>// 7
+</span><span class=c1></span>    <span class=mi>256</span><span class=p>,</span>    <span class=c1>// 8
+</span><span class=c1></span>    <span class=mi>320</span><span class=p>,</span>    <span class=c1>// 9
+</span><span class=c1></span>    <span class=mi>384</span><span class=p>,</span>    <span class=c1>// 10
+</span><span class=c1></span>    <span class=mi>448</span><span class=p>,</span>    <span class=c1>// 11
+</span><span class=c1></span>    <span class=mi>512</span><span class=p>,</span>    <span class=c1>// 12
+</span><span class=c1></span>    <span class=mi>640</span><span class=p>,</span>    <span class=c1>// 13
+</span><span class=c1></span><span class=p>};</span>
+
+<span class=kt>bool</span> <span class=n>BlockAllocator</span><span class=o>::</span><span class=n>s_block_size_lookup_initialized_</span><span class=p>;</span>
+
+<span class=kt>uint8_t</span> <span class=n>BlockAllocator</span><span class=o>::</span><span class=n>s_block_size_lookup_</span><span class=p>[</span><span class=n>kMaxBlockSize</span> <span class=o>+</span> <span class=mi>1</span><span class=p>];</span>
+
+<span class=n>BlockAllocator</span><span class=o>::</span><span class=n>BlockAllocator</span><span class=p>(){</span>
+    <span class=n>assert</span><span class=p>(</span><span class=n>kBlockSizes</span> <span class=o>&lt;</span> <span class=n>UCHAR_MAX</span><span class=p>);</span>
+
+    <span class=n>num_chunk_space_</span> <span class=o>=</span> <span class=n>kChunkArrayIncrement</span><span class=p>;</span>
+    <span class=n>num_chunk_count_</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+    <span class=n>chunks_</span> <span class=o>=</span> <span class=p>(</span><span class=n>Chunk</span> <span class=o>*</span><span class=p>)</span><span class=n>malloc</span><span class=p>(</span><span class=n>num_chunk_space_</span> <span class=o>*</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>Chunk</span><span class=p>));</span>
+
+    <span class=n>memset</span><span class=p>(</span><span class=n>chunks_</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>num_chunk_space_</span> <span class=o>*</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>Chunk</span><span class=p>));</span>
+    <span class=n>memset</span><span class=p>(</span><span class=n>free_lists_</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>free_lists_</span><span class=p>));</span>
+
+    <span class=k>if</span> <span class=p>(</span><span class=n>s_block_size_lookup_initialized_</span> <span class=o>==</span> <span class=nb>false</span><span class=p>){</span>
+        <span class=kt>int</span> <span class=n>j</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+        <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;=</span> <span class=n>kMaxBlockSize</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>){</span>
+            <span class=n>assert</span><span class=p>(</span><span class=n>j</span> <span class=o>&lt;</span> <span class=n>kBlockSizes</span><span class=p>);</span>
+            <span class=k>if</span> <span class=p>(</span><span class=n>i</span> <span class=o>&lt;=</span> <span class=n>block_sizes_</span><span class=p>[</span><span class=n>j</span><span class=p>]){</span>
+                <span class=n>s_block_size_lookup_</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=kt>uint8_t</span><span class=p>)</span><span class=n>j</span><span class=p>;</span>
+            <span class=p>}</span>
+            <span class=k>else</span><span class=p>{</span>
+                <span class=o>++</span><span class=n>j</span><span class=p>;</span>
+                <span class=n>s_block_size_lookup_</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=kt>uint8_t</span><span class=p>)</span><span class=n>j</span><span class=p>;</span>
+            <span class=p>}</span>
+        <span class=p>}</span>
+        <span class=n>s_block_size_lookup_initialized_</span> <span class=o>=</span> <span class=nb>true</span><span class=p>;</span>
+    <span class=p>}</span>
+<span class=p>}</span>
+
+<span class=n>BlockAllocator</span><span class=o>::~</span><span class=n>BlockAllocator</span><span class=p>(){</span>
+    <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>num_chunk_count_</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>){</span>
+        <span class=o>::</span><span class=n>free</span><span class=p>(</span><span class=n>chunks_</span><span class=p>[</span><span class=n>i</span><span class=p>].</span><span class=n>blocks</span><span class=p>);</span>
+    <span class=p>}</span>
+    <span class=o>::</span><span class=n>free</span><span class=p>(</span><span class=n>chunks_</span><span class=p>);</span>
+<span class=p>}</span>
+
+<span class=kt>void</span><span class=o>*</span> <span class=n>BlockAllocator</span><span class=o>::</span><span class=n>allocate</span><span class=p>(</span><span class=kt>int</span> <span class=n>size</span><span class=p>){</span>
+    <span class=k>if</span> <span class=p>(</span><span class=n>size</span> <span class=o>==</span> <span class=mi>0</span><span class=p>){</span>
+        <span class=k>return</span> <span class=k>nullptr</span><span class=p>;</span>
+    <span class=p>}</span>
+
+    <span class=n>assert</span><span class=p>(</span><span class=mi>0</span> <span class=o>&lt;</span> <span class=n>size</span><span class=p>);</span>
+
+    <span class=k>if</span> <span class=p>(</span><span class=n>size</span> <span class=o>&gt;</span> <span class=n>kMaxBlockSize</span><span class=p>){</span>
+        <span class=k>return</span> <span class=nf>malloc</span><span class=p>(</span><span class=n>size</span><span class=p>);</span>
+    <span class=p>}</span>
+
+    <span class=kt>int</span> <span class=n>index</span> <span class=o>=</span> <span class=n>s_block_size_lookup_</span><span class=p>[</span><span class=n>size</span><span class=p>];</span>
+    <span class=n>assert</span><span class=p>(</span><span class=mi>0</span> <span class=o>&lt;=</span> <span class=n>index</span> <span class=o>&amp;&amp;</span> <span class=n>index</span> <span class=o>&lt;</span> <span class=n>kBlockSizes</span><span class=p>);</span>
+
+    <span class=k>if</span> <span class=p>(</span><span class=n>free_lists_</span><span class=p>[</span><span class=n>index</span><span class=p>]){</span>
+        <span class=n>Block</span> <span class=o>*</span><span class=n>block</span> <span class=o>=</span> <span class=n>free_lists_</span><span class=p>[</span><span class=n>index</span><span class=p>];</span>
+        <span class=n>free_lists_</span><span class=p>[</span><span class=n>index</span><span class=p>]</span> <span class=o>=</span> <span class=n>block</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
+        <span class=k>return</span> <span class=n>block</span><span class=p>;</span>
+    <span class=p>}</span>
+    <span class=k>else</span><span class=p>{</span>
+        <span class=k>if</span> <span class=p>(</span><span class=n>num_chunk_count_</span> <span class=o>==</span> <span class=n>num_chunk_space_</span><span class=p>){</span>
+            <span class=n>Chunk</span> <span class=o>*</span><span class=n>oldChunks</span> <span class=o>=</span> <span class=n>chunks_</span><span class=p>;</span>
+            <span class=n>num_chunk_space_</span> <span class=o>+=</span> <span class=n>kChunkArrayIncrement</span><span class=p>;</span>
+            <span class=n>chunks_</span> <span class=o>=</span> <span class=p>(</span><span class=n>Chunk</span> <span class=o>*</span><span class=p>)</span><span class=n>malloc</span><span class=p>(</span><span class=n>num_chunk_space_</span> <span class=o>*</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>Chunk</span><span class=p>));</span>
+            <span class=n>memcpy</span><span class=p>(</span><span class=n>chunks_</span><span class=p>,</span> <span class=n>oldChunks</span><span class=p>,</span> <span class=n>num_chunk_count_</span> <span class=o>*</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>Chunk</span><span class=p>));</span>
+            <span class=n>memset</span><span class=p>(</span><span class=n>chunks_</span> <span class=o>+</span> <span class=n>num_chunk_count_</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>kChunkArrayIncrement</span> <span class=o>*</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>Chunk</span><span class=p>));</span>
+            <span class=o>::</span><span class=n>free</span><span class=p>(</span><span class=n>oldChunks</span><span class=p>);</span>
+        <span class=p>}</span>
+
+        <span class=n>Chunk</span> <span class=o>*</span><span class=n>chunk</span> <span class=o>=</span> <span class=n>chunks_</span> <span class=o>+</span> <span class=n>num_chunk_count_</span><span class=p>;</span>
+        <span class=n>chunk</span><span class=o>-&gt;</span><span class=n>blocks</span> <span class=o>=</span> <span class=p>(</span><span class=n>Block</span> <span class=o>*</span><span class=p>)</span><span class=n>malloc</span><span class=p>(</span><span class=n>kChunkSize</span><span class=p>);</span>
+<span class=cp>#if defined(_DEBUG)
+</span><span class=cp></span>        <span class=n>memset</span><span class=p>(</span><span class=n>chunk</span><span class=o>-&gt;</span><span class=n>blocks</span><span class=p>,</span> <span class=mh>0xcd</span><span class=p>,</span> <span class=n>kChunkSize</span><span class=p>);</span>
+<span class=cp>#endif
+</span><span class=cp></span>        <span class=kt>int</span> <span class=n>block_size</span> <span class=o>=</span> <span class=n>block_sizes_</span><span class=p>[</span><span class=n>index</span><span class=p>];</span>
+        <span class=n>chunk</span><span class=o>-&gt;</span><span class=n>block_size</span> <span class=o>=</span> <span class=n>block_size</span><span class=p>;</span>
+        <span class=kt>int</span> <span class=n>block_count</span> <span class=o>=</span> <span class=n>kChunkSize</span> <span class=o>/</span> <span class=n>block_size</span><span class=p>;</span>
+        <span class=n>assert</span><span class=p>(</span><span class=n>block_count</span> <span class=o>*</span> <span class=n>block_size</span> <span class=o>&lt;=</span> <span class=n>kChunkSize</span><span class=p>);</span>
+        <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>block_count</span> <span class=o>-</span> <span class=mi>1</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>){</span>
+            <span class=n>Block</span> <span class=o>*</span><span class=n>block</span> <span class=o>=</span> <span class=p>(</span><span class=n>Block</span> <span class=o>*</span><span class=p>)((</span><span class=kt>uint8_t</span> <span class=o>*</span><span class=p>)</span><span class=n>chunk</span><span class=o>-&gt;</span><span class=n>blocks</span> <span class=o>+</span> <span class=n>block_size</span> <span class=o>*</span> <span class=n>i</span><span class=p>);</span>
+            <span class=n>Block</span> <span class=o>*</span><span class=n>next</span> <span class=o>=</span> <span class=p>(</span><span class=n>Block</span> <span class=o>*</span><span class=p>)((</span><span class=kt>uint8_t</span> <span class=o>*</span><span class=p>)</span><span class=n>chunk</span><span class=o>-&gt;</span><span class=n>blocks</span> <span class=o>+</span> <span class=n>block_size</span> <span class=o>*</span> <span class=p>(</span><span class=n>i</span> <span class=o>+</span> <span class=mi>1</span><span class=p>));</span>
+            <span class=n>block</span><span class=o>-&gt;</span><span class=n>next</span> <span class=o>=</span> <span class=n>next</span><span class=p>;</span>
+        <span class=p>}</span>
+        <span class=n>Block</span> <span class=o>*</span><span class=n>last</span> <span class=o>=</span> <span class=p>(</span><span class=n>Block</span> <span class=o>*</span><span class=p>)((</span><span class=kt>uint8_t</span> <span class=o>*</span><span class=p>)</span><span class=n>chunk</span><span class=o>-&gt;</span><span class=n>blocks</span> <span class=o>+</span> <span class=n>block_size</span> <span class=o>*</span> <span class=p>(</span><span class=n>block_count</span> <span class=o>-</span> <span class=mi>1</span><span class=p>));</span>
+        <span class=n>last</span><span class=o>-&gt;</span><span class=n>next</span> <span class=o>=</span> <span class=k>nullptr</span><span class=p>;</span>
+
+        <span class=n>free_lists_</span><span class=p>[</span><span class=n>index</span><span class=p>]</span> <span class=o>=</span> <span class=n>chunk</span><span class=o>-&gt;</span><span class=n>blocks</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
+        <span class=o>++</span><span class=n>num_chunk_count_</span><span class=p>;</span>
+
+        <span class=k>return</span> <span class=n>chunk</span><span class=o>-&gt;</span><span class=n>blocks</span><span class=p>;</span>
+    <span class=p>}</span>
+<span class=p>}</span>
+
+<span class=kt>void</span> <span class=n>BlockAllocator</span><span class=o>::</span><span class=n>free</span><span class=p>(</span><span class=kt>void</span> <span class=o>*</span><span class=n>p</span><span class=p>,</span> <span class=kt>int</span> <span class=n>size</span><span class=p>){</span>
+    <span class=k>if</span> <span class=p>(</span><span class=n>size</span> <span class=o>==</span> <span class=mi>0</span> <span class=o>||</span> <span class=n>p</span> <span class=o>==</span> <span class=k>nullptr</span><span class=p>){</span>
+        <span class=k>return</span><span class=p>;</span>
+    <span class=p>}</span>
+
+    <span class=n>assert</span><span class=p>(</span><span class=mi>0</span> <span class=o>&lt;</span> <span class=n>size</span><span class=p>);</span>
+
+    <span class=k>if</span> <span class=p>(</span><span class=n>size</span> <span class=o>&gt;</span> <span class=n>kMaxBlockSize</span><span class=p>){</span>
+        <span class=o>::</span><span class=n>free</span><span class=p>(</span><span class=n>p</span><span class=p>);</span>
+        <span class=k>return</span><span class=p>;</span>
+    <span class=p>}</span>
+
+    <span class=kt>int</span> <span class=n>index</span> <span class=o>=</span> <span class=n>s_block_size_lookup_</span><span class=p>[</span><span class=n>size</span><span class=p>];</span>
+    <span class=n>assert</span><span class=p>(</span><span class=mi>0</span> <span class=o>&lt;=</span> <span class=n>index</span> <span class=o>&amp;&amp;</span> <span class=n>index</span> <span class=o>&lt;</span> <span class=n>kBlockSizes</span><span class=p>);</span>
+
+<span class=cp>#ifdef _DEBUG
+</span><span class=cp></span>    <span class=kt>int</span> <span class=n>block_size</span> <span class=o>=</span> <span class=n>block_sizes_</span><span class=p>[</span><span class=n>index</span><span class=p>];</span>
+    <span class=kt>bool</span> <span class=n>found</span> <span class=o>=</span> <span class=nb>false</span><span class=p>;</span>
+    <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>num_chunk_count_</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+    <span class=p>{</span>
+        <span class=n>Chunk</span> <span class=o>*</span><span class=n>chunk</span> <span class=o>=</span> <span class=n>chunks_</span> <span class=o>+</span> <span class=n>i</span><span class=p>;</span>
+        <span class=k>if</span> <span class=p>(</span><span class=n>chunk</span><span class=o>-&gt;</span><span class=n>block_size</span> <span class=o>!=</span> <span class=n>block_size</span><span class=p>)</span>
+        <span class=p>{</span>
+            <span class=n>assert</span><span class=p>((</span><span class=kt>uint8_t</span> <span class=o>*</span><span class=p>)</span><span class=n>p</span> <span class=o>+</span> <span class=n>block_size</span> <span class=o>&lt;=</span> <span class=p>(</span><span class=kt>uint8_t</span> <span class=o>*</span><span class=p>)</span><span class=n>chunk</span><span class=o>-&gt;</span><span class=n>blocks</span> <span class=o>||</span>
+                <span class=p>(</span><span class=kt>uint8_t</span> <span class=o>*</span><span class=p>)</span><span class=n>chunk</span><span class=o>-&gt;</span><span class=n>blocks</span> <span class=o>+</span> <span class=n>kChunkSize</span> <span class=o>&lt;=</span> <span class=p>(</span><span class=kt>uint8_t</span> <span class=o>*</span><span class=p>)</span><span class=n>p</span><span class=p>);</span>
+        <span class=p>}</span>
+        <span class=k>else</span>
+        <span class=p>{</span>
+            <span class=k>if</span> <span class=p>((</span><span class=kt>uint8_t</span> <span class=o>*</span><span class=p>)</span><span class=n>chunk</span><span class=o>-&gt;</span><span class=n>blocks</span> <span class=o>&lt;=</span> <span class=p>(</span><span class=kt>uint8_t</span> <span class=o>*</span><span class=p>)</span><span class=n>p</span> <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=kt>uint8_t</span> <span class=o>*</span><span class=p>)</span><span class=n>p</span> <span class=o>+</span> <span class=n>block_size</span> <span class=o>&lt;=</span> <span class=p>(</span><span class=kt>uint8_t</span> <span class=o>*</span><span class=p>)</span><span class=n>chunk</span><span class=o>-&gt;</span><span class=n>blocks</span> <span class=o>+</span> <span class=n>kChunkSize</span><span class=p>)</span>
+            <span class=p>{</span>
+                <span class=n>found</span> <span class=o>=</span> <span class=nb>true</span><span class=p>;</span>
+            <span class=p>}</span>
+        <span class=p>}</span>
+    <span class=p>}</span>
+
+    <span class=n>assert</span><span class=p>(</span><span class=n>found</span><span class=p>);</span>
+
+    <span class=n>memset</span><span class=p>(</span><span class=n>p</span><span class=p>,</span> <span class=mh>0xfd</span><span class=p>,</span> <span class=n>block_size</span><span class=p>);</span>
+<span class=cp>#endif
+</span><span class=cp></span>
+    <span class=n>Block</span> <span class=o>*</span><span class=n>block</span> <span class=o>=</span> <span class=p>(</span><span class=n>Block</span> <span class=o>*</span><span class=p>)</span><span class=n>p</span><span class=p>;</span>
+    <span class=n>block</span><span class=o>-&gt;</span><span class=n>next</span> <span class=o>=</span> <span class=n>free_lists_</span><span class=p>[</span><span class=n>index</span><span class=p>];</span>
+    <span class=n>free_lists_</span><span class=p>[</span><span class=n>index</span><span class=p>]</span> <span class=o>=</span> <span class=n>block</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=kt>void</span> <span class=n>BlockAllocator</span><span class=o>::</span><span class=n>clear</span><span class=p>(){</span>
+    <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>num_chunk_count_</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>){</span>
+        <span class=o>::</span><span class=n>free</span><span class=p>(</span><span class=n>chunks_</span><span class=p>[</span><span class=n>i</span><span class=p>].</span><span class=n>blocks</span><span class=p>);</span>
+    <span class=p>}</span>
+
+    <span class=n>num_chunk_count_</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+    <span class=n>memset</span><span class=p>(</span><span class=n>chunks_</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>num_chunk_space_</span> <span class=o>*</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>Chunk</span><span class=p>));</span>
+    <span class=n>memset</span><span class=p>(</span><span class=n>free_lists_</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>free_lists_</span><span class=p>));</span>
+<span class=p>}</span>
+
+</code></pre></div><p><strong>astar.h</strong></p><div class=highlight><pre class=chroma><code class=language-cpp data-lang=cpp><span class=cp>#ifndef __ASTAR_H__
+</span><span class=cp>#define __ASTAR_H__
+</span><span class=cp></span>
+<span class=cp>#include</span> <span class=cpf>&lt;vector&gt;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&lt;memory&gt;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&lt;cstdint&gt;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&lt;functional&gt;</span><span class=cp>
+</span><span class=cp></span>
+<span class=k>class</span> <span class=nc>BlockAllocator</span><span class=p>;</span>
+
+<span class=k>class</span> <span class=nc>AStar</span>
+<span class=p>{</span>
+<span class=k>public</span><span class=o>:</span>
+    <span class=cm>/**
+</span><span class=cm>     * 二维向量
+</span><span class=cm>     */</span>
+    <span class=k>struct</span> <span class=nc>Vec3</span>
+    <span class=p>{</span>
+        <span class=kt>uint16_t</span> <span class=n>x</span><span class=p>;</span>
+        <span class=kt>uint16_t</span> <span class=n>y</span><span class=p>;</span>
+        <span class=kt>uint16_t</span> <span class=n>z</span><span class=p>;</span>
+
+        <span class=n>Vec3</span><span class=p>()</span> <span class=o>:</span> <span class=n>x</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=p>,</span> <span class=n>y</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=p>,</span> <span class=n>z</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=c1>//初始化
+</span><span class=c1></span>        <span class=p>{</span>
+        <span class=p>}</span>
+
+        <span class=n>Vec3</span><span class=p>(</span><span class=kt>uint16_t</span> <span class=n>x1</span><span class=p>,</span> <span class=kt>uint16_t</span> <span class=n>y1</span><span class=p>,</span> <span class=kt>uint16_t</span> <span class=n>z1</span><span class=p>)</span> <span class=o>:</span> <span class=n>x</span><span class=p>(</span><span class=n>x1</span><span class=p>),</span> <span class=n>y</span><span class=p>(</span><span class=n>y1</span><span class=p>),</span> <span class=n>z</span><span class=p>(</span><span class=n>z1</span><span class=p>)</span> <span class=c1>//初始化赋值列表
+</span><span class=c1></span>        <span class=p>{</span>
+        <span class=p>}</span>
+
+        <span class=kt>void</span> <span class=nf>reset</span><span class=p>(</span><span class=kt>uint16_t</span> <span class=n>x1</span><span class=p>,</span> <span class=kt>uint16_t</span> <span class=n>y1</span><span class=p>,</span> <span class=kt>uint16_t</span> <span class=n>z1</span><span class=p>)</span>   <span class=c1>//赋值 
+</span><span class=c1></span>        <span class=p>{</span>
+            <span class=n>x</span> <span class=o>=</span> <span class=n>x1</span><span class=p>;</span>
+            <span class=n>y</span> <span class=o>=</span> <span class=n>y1</span><span class=p>;</span>
+            <span class=n>z</span> <span class=o>=</span> <span class=n>z1</span><span class=p>;</span>
+        <span class=p>}</span>
+
+        <span class=c1>//计算两点之间的距离
+</span><span class=c1></span>        <span class=kt>int</span> <span class=nf>distance</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>other</span><span class=p>)</span> <span class=k>const</span>
+        <span class=p>{</span>
+            <span class=k>return</span> <span class=n>abs</span><span class=p>(</span><span class=n>other</span><span class=p>.</span><span class=n>x</span> <span class=o>-</span> <span class=n>x</span><span class=p>)</span> <span class=o>+</span> <span class=n>abs</span><span class=p>(</span><span class=n>other</span><span class=p>.</span><span class=n>y</span> <span class=o>-</span> <span class=n>y</span><span class=p>)</span> <span class=o>+</span> <span class=n>abs</span><span class=p>(</span><span class=n>other</span><span class=p>.</span><span class=n>z</span> <span class=o>-</span> <span class=n>z</span><span class=p>);</span>
+        <span class=p>}</span>
+
+        <span class=c1>//判断是否等于目标点
+</span><span class=c1></span>        <span class=kt>bool</span> <span class=k>operator</span><span class=o>==</span> <span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>other</span><span class=p>)</span> <span class=k>const</span>
+        <span class=p>{</span>
+            <span class=k>return</span> <span class=n>x</span> <span class=o>==</span> <span class=n>other</span><span class=p>.</span><span class=n>x</span> <span class=o>&amp;&amp;</span> <span class=n>y</span> <span class=o>==</span> <span class=n>other</span><span class=p>.</span><span class=n>y</span> <span class=o>&amp;&amp;</span> <span class=n>z</span> <span class=o>==</span> <span class=n>other</span><span class=p>.</span><span class=n>z</span><span class=p>;</span>
+        <span class=p>}</span>
+    <span class=p>};</span>
+
+    <span class=k>typedef</span> <span class=n>std</span><span class=o>::</span><span class=n>function</span><span class=o>&lt;</span><span class=kt>bool</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span><span class=o>&amp;</span><span class=p>)</span><span class=o>&gt;</span> <span class=n>Callback</span><span class=p>;</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 搜索参数
+</span><span class=cm>     */</span>
+    <span class=k>struct</span> <span class=nc>Params</span>
+    <span class=p>{</span>
+        <span class=kt>bool</span>        <span class=n>corner</span><span class=p>;</span>     <span class=c1>// 允许拐角
+</span><span class=c1></span>        <span class=kt>uint16_t</span>    <span class=n>height</span><span class=p>;</span>     <span class=c1>// 地图高度 z
+</span><span class=c1></span>        <span class=kt>uint16_t</span>    <span class=n>width</span><span class=p>;</span>      <span class=c1>// 地图宽度 
+</span><span class=c1></span>        <span class=kt>uint16_t</span>    <span class=n>depth</span><span class=p>;</span>      <span class=c1>// 地图深度 z
+</span><span class=c1></span>        <span class=n>Vec3</span>        <span class=n>start</span><span class=p>;</span>      <span class=c1>// 起点坐标
+</span><span class=c1></span>        <span class=n>Vec3</span>        <span class=n>end</span><span class=p>;</span>        <span class=c1>// 终点坐标
+</span><span class=c1></span>        <span class=n>Callback</span>    <span class=n>can_pass</span><span class=p>;</span>   <span class=c1>// 是否可通过
+</span><span class=c1></span>
+        <span class=n>Params</span><span class=p>()</span> <span class=o>:</span> <span class=n>height</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span> <span class=n>width</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span> <span class=n>depth</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span> <span class=n>corner</span><span class=p>(</span><span class=nb>false</span><span class=p>)</span>
+        <span class=p>{</span>
+        <span class=p>}</span>
+    <span class=p>};</span>
+
+<span class=k>private</span><span class=o>:</span>
+    <span class=cm>/**
+</span><span class=cm>     * 路径节点状态
+</span><span class=cm>     */</span>
+    <span class=k>enum</span> <span class=nc>NodeState</span>
+    <span class=p>{</span>
+        <span class=n>NOTEXIST</span><span class=p>,</span>               <span class=c1>// 不存在
+</span><span class=c1></span>        <span class=n>IN_OPENLIST</span><span class=p>,</span>            <span class=c1>// 在开启列表
+</span><span class=c1></span>        <span class=n>IN_CLOSEDLIST</span>           <span class=c1>// 在关闭列表
+</span><span class=c1></span>    <span class=p>};</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 路径节点
+</span><span class=cm>     */</span>
+    <span class=k>struct</span> <span class=nc>Node</span>
+    <span class=p>{</span>
+        <span class=kt>uint16_t</span>    <span class=n>g</span><span class=p>;</span>          <span class=c1>// 与起点距离
+</span><span class=c1></span>        <span class=kt>uint16_t</span>    <span class=n>h</span><span class=p>;</span>          <span class=c1>// 与终点距离
+</span><span class=c1></span>        <span class=n>Vec3</span>        <span class=n>pos</span><span class=p>;</span>        <span class=c1>// 节点位置
+</span><span class=c1></span>        <span class=n>NodeState</span>   <span class=n>state</span><span class=p>;</span>      <span class=c1>// 节点状态
+</span><span class=c1></span>        <span class=n>Node</span><span class=o>*</span>       <span class=n>parent</span><span class=p>;</span>     <span class=c1>// 父节点
+</span><span class=c1></span>
+        <span class=cm>/**
+</span><span class=cm>         * 计算f值
+</span><span class=cm>         */</span>
+        <span class=kt>int</span> <span class=nf>f</span><span class=p>()</span> <span class=k>const</span>
+        <span class=p>{</span>
+            <span class=k>return</span> <span class=n>g</span> <span class=o>+</span> <span class=n>h</span><span class=p>;</span>
+        <span class=p>}</span>
+
+        <span class=kr>inline</span> <span class=nf>Node</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>pos</span><span class=p>)</span>
+            <span class=o>:</span> <span class=n>g</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span> <span class=n>h</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span> <span class=n>pos</span><span class=p>(</span><span class=n>pos</span><span class=p>),</span> <span class=n>parent</span><span class=p>(</span><span class=k>nullptr</span><span class=p>),</span> <span class=n>state</span><span class=p>(</span><span class=n>NOTEXIST</span><span class=p>)</span>
+        <span class=p>{</span>
+        <span class=p>}</span>
+    <span class=p>};</span>
+
+<span class=k>public</span><span class=o>:</span>
+    <span class=n>AStar</span><span class=p>(</span><span class=n>BlockAllocator</span> <span class=o>*</span><span class=n>allocator</span><span class=p>);</span>
+
+    <span class=o>~</span><span class=n>AStar</span><span class=p>();</span>
+
+<span class=k>public</span><span class=o>:</span>
+    <span class=cm>/**
+</span><span class=cm>     * 获取直行估值
+</span><span class=cm>     */</span>
+    <span class=kt>int</span> <span class=n>get_step_value</span><span class=p>()</span> <span class=k>const</span><span class=p>;</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 获取拐角估值
+</span><span class=cm>     */</span>
+    <span class=kt>int</span> <span class=nf>get_oblique_value</span><span class=p>()</span> <span class=k>const</span><span class=p>;</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 设置直行估值
+</span><span class=cm>     */</span>
+    <span class=kt>void</span> <span class=nf>set_step_value</span><span class=p>(</span><span class=kt>int</span> <span class=n>value</span><span class=p>);</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 获取拐角估值
+</span><span class=cm>     */</span>
+    <span class=kt>void</span> <span class=nf>set_oblique_value</span><span class=p>(</span><span class=kt>int</span> <span class=n>value</span><span class=p>);</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 执行寻路操作
+</span><span class=cm>     */</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>Vec3</span><span class=o>&gt;</span> <span class=n>find</span><span class=p>(</span><span class=k>const</span> <span class=n>Params</span> <span class=o>&amp;</span><span class=n>param</span><span class=p>);</span>
+
+<span class=k>private</span><span class=o>:</span>
+    <span class=cm>/**
+</span><span class=cm>     * 清理参数
+</span><span class=cm>     */</span>
+    <span class=kt>void</span> <span class=n>clear</span><span class=p>();</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 初始化参数
+</span><span class=cm>     */</span>
+    <span class=kt>void</span> <span class=nf>init</span><span class=p>(</span><span class=k>const</span> <span class=n>Params</span> <span class=o>&amp;</span><span class=n>param</span><span class=p>);</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 参数是否有效
+</span><span class=cm>     */</span>
+    <span class=kt>bool</span> <span class=nf>is_vlid_params</span><span class=p>(</span><span class=k>const</span> <span class=n>Params</span> <span class=o>&amp;</span><span class=n>param</span><span class=p>);</span>
+
+<span class=k>private</span><span class=o>:</span>
+    <span class=cm>/**
+</span><span class=cm>     * 二叉堆上滤
+</span><span class=cm>     */</span>
+    <span class=kt>void</span> <span class=n>percolate_up</span><span class=p>(</span><span class=n>size_t</span> <span class=n>hole</span><span class=p>);</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 获取节点索引
+</span><span class=cm>     */</span>
+    <span class=kt>bool</span> <span class=nf>get_node_index</span><span class=p>(</span><span class=n>Node</span> <span class=o>*</span><span class=n>node</span><span class=p>,</span> <span class=n>size_t</span> <span class=o>*</span><span class=n>index</span><span class=p>);</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 计算G值
+</span><span class=cm>     */</span>
+    <span class=kt>uint16_t</span> <span class=nf>calcul_g_value</span><span class=p>(</span><span class=n>Node</span> <span class=o>*</span><span class=n>parent</span><span class=p>,</span> <span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>current</span><span class=p>);</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 计算F值
+</span><span class=cm>     */</span>
+    <span class=kt>uint16_t</span> <span class=nf>calcul_h_value</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>current</span><span class=p>,</span> <span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>end</span><span class=p>);</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 节点是否存在于开启列表
+</span><span class=cm>     */</span>
+    <span class=kt>bool</span> <span class=nf>in_open_list</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>pos</span><span class=p>,</span> <span class=n>Node</span> <span class=o>*&amp;</span><span class=n>out_node</span><span class=p>);</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 节点是否存在于关闭列表
+</span><span class=cm>     */</span>
+    <span class=kt>bool</span> <span class=nf>in_closed_list</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>pos</span><span class=p>);</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 是否可通过
+</span><span class=cm>     */</span>
+    <span class=kt>bool</span> <span class=nf>can_pass</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>pos</span><span class=p>);</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 当前点是否可到达目标点
+</span><span class=cm>     */</span>
+    <span class=kt>bool</span> <span class=nf>can_pass</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>current</span><span class=p>,</span> <span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>destination</span><span class=p>,</span> <span class=kt>bool</span> <span class=n>allow_corner</span><span class=p>);</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 查找附近可通过的节点
+</span><span class=cm>     */</span>
+    <span class=kt>void</span> <span class=nf>find_can_pass_nodes</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>current</span><span class=p>,</span> <span class=kt>bool</span> <span class=n>allow_corner</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>Vec3</span><span class=o>&gt;</span> <span class=o>*</span><span class=n>out_lists</span><span class=p>);</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 处理找到节点的情况
+</span><span class=cm>     */</span>
+    <span class=kt>void</span> <span class=nf>handle_found_node</span><span class=p>(</span><span class=n>Node</span> <span class=o>*</span><span class=n>current</span><span class=p>,</span> <span class=n>Node</span> <span class=o>*</span><span class=n>destination</span><span class=p>);</span>
+
+    <span class=cm>/**
+</span><span class=cm>     * 处理未找到节点的情况
+</span><span class=cm>     */</span>
+    <span class=kt>void</span> <span class=nf>handle_not_found_node</span><span class=p>(</span><span class=n>Node</span> <span class=o>*</span><span class=n>current</span><span class=p>,</span> <span class=n>Node</span> <span class=o>*</span><span class=n>destination</span><span class=p>,</span> <span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>end</span><span class=p>);</span>
+
+<span class=k>private</span><span class=o>:</span>
+    <span class=kt>int</span>                     <span class=n>step_val_</span><span class=p>;</span>          <span class=c1>//直行估值
+</span><span class=c1></span>    <span class=kt>int</span>                     <span class=n>oblique_val_</span><span class=p>;</span>       <span class=c1>//拐角估值
+</span><span class=c1></span>    <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>Node</span><span class=o>*&gt;</span>      <span class=n>mapping_</span><span class=p>;</span>           <span class=c1>//排列？？？  如何将三维空间的所有点按一定顺序去排列 索引号均大于零
+</span><span class=c1></span>    <span class=kt>uint16_t</span>                <span class=n>height_</span><span class=p>;</span>            <span class=c1>//
+</span><span class=c1></span>    <span class=kt>uint16_t</span>                <span class=n>width_</span><span class=p>;</span>             <span class=c1>//
+</span><span class=c1></span>    <span class=kt>uint16_t</span>                <span class=n>depth_</span><span class=p>;</span>             <span class=c1>//
+</span><span class=c1></span>    <span class=n>Callback</span>                <span class=n>can_pass_</span><span class=p>;</span>          <span class=c1>//
+</span><span class=c1></span>    <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>Node</span><span class=o>*&gt;</span>      <span class=n>open_list_</span><span class=p>;</span>         <span class=c1>//开启列表
+</span><span class=c1></span>    <span class=n>BlockAllocator</span><span class=o>*</span>         <span class=n>allocator_</span><span class=p>;</span>         <span class=c1>//寻路者
+</span><span class=c1></span><span class=p>};</span>
+
+<span class=cp>#endif
+</span><span class=cp></span>
+</code></pre></div><p><strong>astar.cpp</strong></p><div class=highlight><pre class=chroma><code class=language-cpp data-lang=cpp><span class=cp>#include</span> <span class=cpf>&#34;astar.h&#34;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&lt;cassert&gt;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&lt;cstring&gt;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&lt;algorithm&gt;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&#34;blockallocator.h&#34;</span><span class=cp>
+</span><span class=cp></span>
+<span class=c1>//直行估值和拐角估值
+</span><span class=c1></span><span class=k>static</span> <span class=k>const</span> <span class=kt>int</span> <span class=n>kStepValue</span> <span class=o>=</span> <span class=mi>10</span><span class=p>;</span>       <span class=c1>//水平或垂直移动的耗费为10
+</span><span class=c1></span><span class=k>static</span> <span class=k>const</span> <span class=kt>int</span> <span class=n>kObliqueValue</span> <span class=o>=</span> <span class=mi>14</span><span class=p>;</span>    <span class=c1>//对角线移动的耗费为14 
+</span><span class=c1></span>
+<span class=c1>//构造函数
+</span><span class=c1></span><span class=n>AStar</span><span class=o>::</span><span class=n>AStar</span><span class=p>(</span><span class=n>BlockAllocator</span> <span class=o>*</span><span class=n>allocator</span><span class=p>)</span> 
+    <span class=o>:</span> <span class=n>width_</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+    <span class=p>,</span> <span class=n>height_</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+    <span class=p>,</span> <span class=n>depth_</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+    <span class=p>,</span> <span class=n>allocator_</span><span class=p>(</span><span class=n>allocator</span><span class=p>)</span>
+    <span class=p>,</span> <span class=n>step_val_</span><span class=p>(</span><span class=n>kStepValue</span><span class=p>)</span>
+    <span class=p>,</span> <span class=n>oblique_val_</span><span class=p>(</span><span class=n>kObliqueValue</span><span class=p>)</span>
+<span class=p>{</span>
+    <span class=n>assert</span><span class=p>(</span><span class=n>allocator_</span> <span class=o>!=</span> <span class=k>nullptr</span><span class=p>);</span>
+<span class=p>}</span>
+
+<span class=c1>//析构函数
+</span><span class=c1></span><span class=n>AStar</span><span class=o>::~</span><span class=n>AStar</span><span class=p>(){</span>
+    <span class=n>clear</span><span class=p>();</span>
+<span class=p>}</span>
+
+<span class=c1>// 获取直行估值
+</span><span class=c1></span><span class=kt>int</span> <span class=n>AStar</span><span class=o>::</span><span class=n>get_step_value</span><span class=p>()</span> <span class=k>const</span><span class=p>{</span>
+    <span class=k>return</span> <span class=n>step_val_</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=c1>// 获取拐角估值
+</span><span class=c1></span><span class=kt>int</span> <span class=n>AStar</span><span class=o>::</span><span class=n>get_oblique_value</span><span class=p>()</span> <span class=k>const</span><span class=p>{</span>
+    <span class=k>return</span> <span class=n>oblique_val_</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=c1>// 设置直行估值
+</span><span class=c1></span><span class=kt>void</span> <span class=n>AStar</span><span class=o>::</span><span class=n>set_step_value</span><span class=p>(</span><span class=kt>int</span> <span class=n>value</span><span class=p>){</span>
+    <span class=n>step_val_</span> <span class=o>=</span> <span class=n>value</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=c1>// 获取拐角估值
+</span><span class=c1></span><span class=kt>void</span> <span class=n>AStar</span><span class=o>::</span><span class=n>set_oblique_value</span><span class=p>(</span><span class=kt>int</span> <span class=n>value</span><span class=p>){</span>
+    <span class=n>oblique_val_</span> <span class=o>=</span> <span class=n>value</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=c1>// 析构函数---清理参数
+</span><span class=c1></span><span class=kt>void</span> <span class=n>AStar</span><span class=o>::</span><span class=n>clear</span><span class=p>(){</span>
+    <span class=n>size_t</span> <span class=n>index</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+    <span class=k>const</span> <span class=n>size_t</span> <span class=n>max_size</span> <span class=o>=</span> <span class=n>width_</span> <span class=o>*</span> <span class=n>height_</span> <span class=o>*</span> <span class=n>depth_</span> <span class=p>;</span> <span class=c1>//设置地图大小
+</span><span class=c1></span>    <span class=k>while</span> <span class=p>(</span><span class=n>index</span> <span class=o>&lt;</span> <span class=n>max_size</span><span class=p>)</span>  <span class=p>{</span>
+        <span class=n>allocator_</span><span class=o>-&gt;</span><span class=n>free</span><span class=p>(</span> <span class=n>mapping_</span><span class=p>[</span><span class=n>index</span><span class=o>++</span><span class=p>]</span> <span class=p>,</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>Node</span><span class=p>)</span> <span class=p>);</span> <span class=c1>//
+</span><span class=c1></span>    <span class=p>}</span>
+    <span class=n>open_list_</span><span class=p>.</span><span class=n>clear</span><span class=p>();</span> <span class=c1>//清空openglist
+</span><span class=c1></span>    <span class=n>can_pass_</span> <span class=o>=</span> <span class=k>nullptr</span><span class=p>;</span> <span class=c1>//空
+</span><span class=c1></span>    <span class=n>width_</span> <span class=o>=</span> <span class=n>height_</span> <span class=o>=</span> <span class=n>depth_</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>  <span class=c1>//清零
+</span><span class=c1></span><span class=p>}</span>
+
+<span class=c1>// 初始化操作
+</span><span class=c1></span><span class=kt>void</span> <span class=n>AStar</span><span class=o>::</span><span class=n>init</span><span class=p>(</span><span class=k>const</span> <span class=n>Params</span> <span class=o>&amp;</span><span class=n>param</span><span class=p>)</span>
+<span class=p>{</span>
+    <span class=n>width_</span> <span class=o>=</span> <span class=n>param</span><span class=p>.</span><span class=n>width</span><span class=p>;</span>
+    <span class=n>height_</span> <span class=o>=</span> <span class=n>param</span><span class=p>.</span><span class=n>height</span><span class=p>;</span>
+    <span class=n>depth_</span> <span class=o>=</span> <span class=n>param</span><span class=p>.</span><span class=n>depth</span><span class=p>;</span>
+    <span class=n>can_pass_</span> <span class=o>=</span> <span class=n>param</span><span class=p>.</span><span class=n>can_pass</span><span class=p>;</span>
+    <span class=c1>//如果地图不为空，则清空
+</span><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>mapping_</span><span class=p>.</span><span class=n>empty</span><span class=p>())</span> <span class=p>{</span>
+        <span class=n>memset</span><span class=p>(</span> <span class=o>&amp;</span><span class=n>mapping_</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>Node</span><span class=o>*</span><span class=p>)</span> <span class=o>*</span> <span class=n>mapping_</span><span class=p>.</span><span class=n>size</span><span class=p>()</span> <span class=p>);</span> <span class=c1>//初始化 地图清空为0 
+</span><span class=c1></span>    <span class=p>}</span>
+    <span class=n>mapping_</span><span class=p>.</span><span class=n>resize</span><span class=p>(</span> <span class=n>width_</span> <span class=o>*</span> <span class=n>height_</span> <span class=o>*</span> <span class=n>depth_</span> <span class=p>,</span> <span class=k>nullptr</span><span class=p>);</span> <span class=c1>//调整大小
+</span><span class=c1></span><span class=p>}</span>
+
+<span class=c1>// 搜索参数是否有效-----建立三维数组 （  ）
+</span><span class=c1>// 设置搜索范围width height depth 都大于零
+</span><span class=c1>// 起点和终点都大于零，且在搜索范围内
+</span><span class=c1></span><span class=kt>bool</span> <span class=n>AStar</span><span class=o>::</span><span class=n>is_vlid_params</span><span class=p>(</span><span class=k>const</span> <span class=n>AStar</span><span class=o>::</span><span class=n>Params</span> <span class=o>&amp;</span><span class=n>param</span><span class=p>){</span>
+    <span class=k>return</span> <span class=p>(</span><span class=n>param</span><span class=p>.</span><span class=n>can_pass</span> <span class=o>!=</span> <span class=k>nullptr</span>
+            <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=n>param</span><span class=p>.</span><span class=n>width</span> <span class=o>&gt;</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=n>param</span><span class=p>.</span><span class=n>height</span> <span class=o>&gt;</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=n>param</span><span class=p>.</span><span class=n>depth</span> <span class=o>&gt;</span> <span class=mi>0</span> <span class=p>)</span>
+            <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=n>param</span><span class=p>.</span><span class=n>end</span><span class=p>.</span><span class=n>x</span> <span class=o>&gt;=</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=n>param</span><span class=p>.</span><span class=n>end</span><span class=p>.</span><span class=n>x</span> <span class=o>&lt;</span> <span class=n>param</span><span class=p>.</span><span class=n>width</span><span class=p>)</span>
+            <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=n>param</span><span class=p>.</span><span class=n>end</span><span class=p>.</span><span class=n>y</span> <span class=o>&gt;=</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=n>param</span><span class=p>.</span><span class=n>end</span><span class=p>.</span><span class=n>y</span> <span class=o>&lt;</span> <span class=n>param</span><span class=p>.</span><span class=n>height</span><span class=p>)</span>
+            <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=n>param</span><span class=p>.</span><span class=n>end</span><span class=p>.</span><span class=n>z</span> <span class=o>&gt;=</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=n>param</span><span class=p>.</span><span class=n>end</span><span class=p>.</span><span class=n>z</span> <span class=o>&lt;</span> <span class=n>param</span><span class=p>.</span><span class=n>depth</span><span class=p>)</span>
+            <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=n>param</span><span class=p>.</span><span class=n>start</span><span class=p>.</span><span class=n>x</span> <span class=o>&gt;=</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=n>param</span><span class=p>.</span><span class=n>start</span><span class=p>.</span><span class=n>x</span> <span class=o>&lt;</span> <span class=n>param</span><span class=p>.</span><span class=n>width</span><span class=p>)</span>
+            <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=n>param</span><span class=p>.</span><span class=n>start</span><span class=p>.</span><span class=n>y</span> <span class=o>&gt;=</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=n>param</span><span class=p>.</span><span class=n>start</span><span class=p>.</span><span class=n>y</span> <span class=o>&lt;</span> <span class=n>param</span><span class=p>.</span><span class=n>height</span><span class=p>)</span>
+            <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=n>param</span><span class=p>.</span><span class=n>start</span><span class=p>.</span><span class=n>z</span> <span class=o>&gt;=</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=n>param</span><span class=p>.</span><span class=n>start</span><span class=p>.</span><span class=n>z</span> <span class=o>&lt;</span> <span class=n>param</span><span class=p>.</span><span class=n>depth</span><span class=p>)</span>
+            <span class=p>);</span>
+<span class=p>}</span>
+
+<span class=c1>// 获取节点索引
+</span><span class=c1></span><span class=kt>bool</span> <span class=n>AStar</span><span class=o>::</span><span class=n>get_node_index</span><span class=p>(</span><span class=n>Node</span> <span class=o>*</span><span class=n>node</span><span class=p>,</span> <span class=n>size_t</span> <span class=o>*</span><span class=n>index</span><span class=p>){</span>
+    <span class=o>*</span><span class=n>index</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+    <span class=k>const</span> <span class=n>size_t</span> <span class=n>size</span> <span class=o>=</span> <span class=n>open_list_</span><span class=p>.</span><span class=n>size</span><span class=p>();</span>
+    <span class=k>while</span> <span class=p>(</span><span class=o>*</span><span class=n>index</span> <span class=o>&lt;</span> <span class=n>size</span><span class=p>)</span>
+    <span class=p>{</span>
+        <span class=k>if</span> <span class=p>(</span><span class=n>open_list_</span><span class=p>[</span><span class=o>*</span><span class=n>index</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>pos</span> <span class=o>==</span> <span class=n>node</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>)</span>
+        <span class=p>{</span>
+            <span class=k>return</span> <span class=nb>true</span><span class=p>;</span>
+        <span class=p>}</span>
+        <span class=o>++</span><span class=p>(</span><span class=o>*</span><span class=n>index</span><span class=p>);</span>
+    <span class=p>}</span>
+    <span class=k>return</span> <span class=nb>false</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=c1>// 二叉堆上滤
+</span><span class=c1></span><span class=kt>void</span> <span class=n>AStar</span><span class=o>::</span><span class=n>percolate_up</span><span class=p>(</span><span class=n>size_t</span> <span class=n>hole</span><span class=p>){</span>
+    <span class=n>size_t</span> <span class=n>parent</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+    <span class=k>while</span> <span class=p>(</span><span class=n>hole</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>){</span>
+        <span class=n>parent</span> <span class=o>=</span> <span class=p>(</span><span class=n>hole</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span> <span class=o>/</span> <span class=mi>2</span><span class=p>;</span> <span class=c1>//父节点位于hole/2的位置
+</span><span class=c1></span>        <span class=k>if</span> <span class=p>(</span> <span class=n>open_list_</span><span class=p>[</span><span class=n>hole</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>f</span><span class=p>()</span> <span class=o>&lt;</span> <span class=n>open_list_</span><span class=p>[</span><span class=n>parent</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>f</span><span class=p>()</span> <span class=p>){</span>
+            <span class=n>std</span><span class=o>::</span><span class=n>swap</span><span class=p>(</span> <span class=n>open_list_</span><span class=p>[</span><span class=n>hole</span><span class=p>]</span> <span class=p>,</span> <span class=n>open_list_</span><span class=p>[</span><span class=n>parent</span><span class=p>]</span> <span class=p>);</span>
+            <span class=n>hole</span> <span class=o>=</span> <span class=n>parent</span><span class=p>;</span>
+        <span class=p>}</span>
+        <span class=k>else</span><span class=p>{</span>
+            <span class=k>return</span><span class=p>;</span>
+        <span class=p>}</span>
+    <span class=p>}</span>
+<span class=p>}</span>
+
+<span class=c1>// 计算G值
+</span><span class=c1></span><span class=kr>inline</span> <span class=kt>uint16_t</span> <span class=n>AStar</span><span class=o>::</span><span class=n>calcul_g_value</span><span class=p>(</span><span class=n>Node</span> <span class=o>*</span><span class=n>parent</span><span class=p>,</span> <span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>current</span><span class=p>){</span>
+    <span class=kt>uint16_t</span> <span class=n>g_value</span> <span class=o>=</span> <span class=n>current</span><span class=p>.</span><span class=n>distance</span><span class=p>(</span><span class=n>parent</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>)</span> <span class=o>==</span> <span class=mi>2</span> <span class=o>?</span> <span class=nl>oblique_val_</span> <span class=p>:</span> <span class=n>step_val_</span><span class=p>;</span>
+    <span class=k>return</span> <span class=n>g_value</span> <span class=o>+=</span> <span class=n>parent</span><span class=o>-&gt;</span><span class=n>g</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=c1>// 计算F值
+</span><span class=c1></span><span class=kr>inline</span> <span class=kt>uint16_t</span> <span class=n>AStar</span><span class=o>::</span><span class=n>calcul_h_value</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>current</span><span class=p>,</span> <span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>end</span><span class=p>){</span>
+    <span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>h_value</span> <span class=o>=</span> <span class=n>end</span><span class=p>.</span><span class=n>distance</span><span class=p>(</span><span class=n>current</span><span class=p>);</span>
+    <span class=k>return</span> <span class=n>h_value</span> <span class=o>*</span> <span class=n>step_val_</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=c1>// 节点是否存在于开启列表
+</span><span class=c1></span><span class=kr>inline</span> <span class=kt>bool</span> <span class=n>AStar</span><span class=o>::</span><span class=n>in_open_list</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>pos</span><span class=p>,</span> <span class=n>Node</span> <span class=o>*&amp;</span><span class=n>out_node</span><span class=p>){</span>
+    <span class=n>out_node</span> <span class=o>=</span> <span class=n>mapping_</span><span class=p>[</span> <span class=n>pos</span><span class=p>.</span><span class=n>z</span> <span class=o>*</span> <span class=n>width_</span> <span class=o>*</span> <span class=n>height_</span> <span class=o>+</span> <span class=n>pos</span><span class=p>.</span><span class=n>y</span> <span class=o>*</span> <span class=n>width_</span> <span class=o>+</span> <span class=n>pos</span><span class=p>.</span><span class=n>x</span> <span class=p>];</span>    
+    <span class=k>return</span> <span class=n>out_node</span> <span class=o>?</span> <span class=n>out_node</span><span class=o>-&gt;</span><span class=n>state</span> <span class=o>==</span> <span class=nl>IN_OPENLIST</span> <span class=p>:</span> <span class=nb>false</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=c1>// 节点是否存在于关闭列表
+</span><span class=c1></span><span class=kr>inline</span> <span class=kt>bool</span> <span class=n>AStar</span><span class=o>::</span><span class=n>in_closed_list</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>pos</span><span class=p>){</span>
+    <span class=n>Node</span> <span class=o>*</span><span class=n>node_ptr</span> <span class=o>=</span> <span class=n>mapping_</span><span class=p>[</span><span class=n>pos</span><span class=p>.</span><span class=n>z</span> <span class=o>*</span> <span class=n>width_</span> <span class=o>*</span> <span class=n>height_</span> <span class=o>+</span> <span class=n>pos</span><span class=p>.</span><span class=n>y</span> <span class=o>*</span> <span class=n>width_</span> <span class=o>+</span> <span class=n>pos</span><span class=p>.</span><span class=n>x</span><span class=p>];</span>  
+    <span class=k>return</span> <span class=n>node_ptr</span> <span class=o>?</span> <span class=n>node_ptr</span><span class=o>-&gt;</span><span class=n>state</span> <span class=o>==</span> <span class=nl>IN_CLOSEDLIST</span> <span class=p>:</span> <span class=nb>false</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=c1>// 是否可到达//点是否在可达空间内
+</span><span class=c1></span><span class=kt>bool</span> <span class=n>AStar</span><span class=o>::</span><span class=n>can_pass</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>pos</span><span class=p>)</span> <span class=p>{</span>
+    <span class=k>return</span> <span class=p>(</span><span class=n>pos</span><span class=p>.</span><span class=n>x</span> <span class=o>&gt;=</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=n>pos</span><span class=p>.</span><span class=n>x</span> <span class=o>&lt;</span> <span class=n>width_</span> <span class=o>&amp;&amp;</span> <span class=n>pos</span><span class=p>.</span><span class=n>y</span> <span class=o>&gt;=</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=n>pos</span><span class=p>.</span><span class=n>y</span> <span class=o>&lt;</span> <span class=n>height_</span> <span class=o>&amp;&amp;</span> <span class=n>pos</span><span class=p>.</span><span class=n>z</span> <span class=o>&gt;=</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=n>pos</span><span class=p>.</span><span class=n>z</span> <span class=o>&lt;</span> <span class=n>depth_</span> <span class=p>)</span> <span class=o>?</span> <span class=n>can_pass_</span><span class=p>(</span><span class=n>pos</span><span class=p>)</span> <span class=o>:</span> <span class=nb>false</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=c1>// 当前点是否可到达目标点
+</span><span class=c1></span><span class=kt>bool</span> <span class=n>AStar</span><span class=o>::</span><span class=n>can_pass</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>current</span><span class=p>,</span> <span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>destination</span><span class=p>,</span> <span class=kt>bool</span> <span class=n>allow_corner</span><span class=p>){</span>
+    <span class=k>if</span> <span class=p>(</span><span class=n>destination</span><span class=p>.</span><span class=n>x</span> <span class=o>&gt;=</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=n>destination</span><span class=p>.</span><span class=n>x</span> <span class=o>&lt;</span> <span class=n>width_</span> 
+    <span class=o>&amp;&amp;</span> <span class=n>destination</span><span class=p>.</span><span class=n>y</span> <span class=o>&gt;=</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=n>destination</span><span class=p>.</span><span class=n>y</span> <span class=o>&lt;</span> <span class=n>height_</span> 
+    <span class=o>&amp;&amp;</span> <span class=n>destination</span><span class=p>.</span><span class=n>z</span> <span class=o>&gt;=</span> <span class=mi>0</span> <span class=o>&amp;&amp;</span> <span class=n>destination</span><span class=p>.</span><span class=n>z</span> <span class=o>&lt;</span> <span class=n>depth_</span> <span class=p>)</span> <span class=p>{</span>
+        <span class=c1>//该点是否在关闭列表中
+</span><span class=c1></span>        <span class=k>if</span> <span class=p>(</span><span class=n>in_closed_list</span><span class=p>(</span><span class=n>destination</span><span class=p>)){</span>
+            <span class=k>return</span> <span class=nb>false</span><span class=p>;</span>
+        <span class=p>}</span>
+        <span class=c1>//destination 和 current 两点之间距离是否等于1
+</span><span class=c1></span>        <span class=k>if</span> <span class=p>(</span><span class=n>destination</span><span class=p>.</span><span class=n>distance</span><span class=p>(</span><span class=n>current</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span><span class=p>){</span>
+            <span class=k>return</span> <span class=nf>can_pass_</span><span class=p>(</span><span class=n>destination</span><span class=p>);</span>      <span class=c1>//判断该点是否可到达
+</span><span class=c1></span>        <span class=p>}</span>
+         <span class=c1>// 允许转角
+</span><span class=c1></span>        <span class=k>else</span> <span class=nf>if</span> <span class=p>(</span><span class=n>allow_corner</span><span class=p>){</span>
+            <span class=k>return</span> <span class=n>can_pass_</span><span class=p>(</span><span class=n>destination</span><span class=p>)</span> 
+                    <span class=o>&amp;&amp;</span> <span class=p>(</span><span class=n>can_pass</span><span class=p>(</span><span class=n>Vec3</span><span class=p>(</span> <span class=n>destination</span><span class=p>.</span><span class=n>x</span> <span class=p>,</span> <span class=n>current</span><span class=p>.</span><span class=n>y</span> <span class=p>,</span>      <span class=n>current</span><span class=p>.</span><span class=n>z</span> <span class=p>))</span> 
+                    <span class=o>&amp;&amp;</span> <span class=n>can_pass</span><span class=p>(</span><span class=n>Vec3</span><span class=p>(</span>  <span class=n>current</span><span class=p>.</span><span class=n>x</span><span class=p>,</span>      <span class=n>destination</span><span class=p>.</span><span class=n>y</span>  <span class=p>,</span> <span class=n>current</span><span class=p>.</span><span class=n>z</span><span class=p>))</span>
+                    <span class=o>&amp;&amp;</span> <span class=n>can_pass</span><span class=p>(</span><span class=n>Vec3</span><span class=p>(</span>  <span class=n>current</span><span class=p>.</span><span class=n>x</span><span class=p>,</span>      <span class=n>current</span><span class=p>.</span><span class=n>y</span>  <span class=p>,</span>     <span class=n>destination</span><span class=p>.</span><span class=n>z</span><span class=p>)));</span> 
+        <span class=p>}</span>
+    <span class=p>}</span>
+    <span class=k>return</span> <span class=nb>false</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=c1>// 查找附近可通过的节点
+</span><span class=c1>// 输入当前节点 做三维
+</span><span class=c1></span><span class=kt>void</span> <span class=n>AStar</span><span class=o>::</span><span class=n>find_can_pass_nodes</span><span class=p>(</span><span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>current</span><span class=p>,</span> <span class=kt>bool</span> <span class=n>corner</span><span class=p>,</span> <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>Vec3</span><span class=o>&gt;</span> <span class=o>*</span><span class=n>out_lists</span><span class=p>){</span>
+    <span class=n>Vec3</span> <span class=n>destination</span><span class=p>;</span>   <span class=c1>//新建三维点
+</span><span class=c1></span>    <span class=k>const</span> <span class=kt>int</span> <span class=n>max_row</span> <span class=o>=</span> <span class=n>current</span><span class=p>.</span><span class=n>y</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span>  <span class=c1>//
+</span><span class=c1></span>    <span class=k>const</span> <span class=kt>int</span> <span class=n>max_col</span> <span class=o>=</span> <span class=n>current</span><span class=p>.</span><span class=n>x</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span>  <span class=c1>// 
+</span><span class=c1></span>    <span class=k>const</span> <span class=kt>int</span> <span class=n>max_z</span> <span class=o>=</span> <span class=n>current</span><span class=p>.</span><span class=n>z</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span> <span class=c1>// 
+</span><span class=c1></span>
+    <span class=kt>int</span> <span class=n>row_index</span> <span class=o>=</span> <span class=n>current</span><span class=p>.</span><span class=n>y</span> <span class=o>-</span> <span class=mi>1</span><span class=p>;</span>  <span class=c1>// row 为纵向
+</span><span class=c1></span>
+
+    <span class=kt>int</span> <span class=n>z_index</span> <span class=o>=</span> <span class=n>current</span><span class=p>.</span><span class=n>z</span> <span class=o>-</span> <span class=mi>1</span> <span class=p>;</span>   <span class=c1>// z 为层数
+</span><span class=c1></span>    <span class=c1>//若小于零，防止超过下限
+</span><span class=c1></span>    <span class=k>if</span> <span class=p>(</span> <span class=n>z_index</span> <span class=o>&lt;</span> <span class=mi>0</span> <span class=p>){</span>
+        <span class=n>z_index</span> <span class=o>=</span> <span class=mi>0</span> <span class=p>;</span>
+    <span class=p>}</span>
+    <span class=k>while</span> <span class=p>(</span> <span class=n>z_index</span> <span class=o>&lt;=</span> <span class=n>max_z</span> <span class=p>){</span>
+        <span class=kt>int</span> <span class=n>row_index</span> <span class=o>=</span> <span class=n>current</span><span class=p>.</span><span class=n>z</span> <span class=o>-</span> <span class=mi>1</span> <span class=p>;</span> 
+        <span class=c1>//若row_index小于零，则将row_index置为零 以防超过边界
+</span><span class=c1></span>        <span class=k>if</span> <span class=p>(</span><span class=n>row_index</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>)</span>  <span class=p>{</span>
+            <span class=n>row_index</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+        <span class=p>}</span>
+        <span class=k>while</span> <span class=p>(</span> <span class=n>row_index</span> <span class=o>&lt;=</span> <span class=n>max_row</span><span class=p>){</span>
+            <span class=kt>int</span> <span class=n>col_index</span> <span class=o>=</span> <span class=n>current</span><span class=p>.</span><span class=n>x</span> <span class=o>-</span> <span class=mi>1</span> <span class=p>;</span>
+            <span class=c1>//若col_index小于零，则将col_index置为零 以防超过边界
+</span><span class=c1></span>            <span class=k>if</span> <span class=p>(</span> <span class=n>col_index</span> <span class=o>&lt;</span> <span class=mi>0</span> <span class=p>){</span>
+                <span class=n>col_index</span> <span class=o>=</span> <span class=mi>0</span> <span class=p>;</span>
+            <span class=p>}</span>
+            <span class=c1>//若max_col 大于等于 col_index 
+</span><span class=c1></span>            <span class=k>while</span> <span class=p>(</span><span class=n>col_index</span> <span class=o>&lt;=</span> <span class=n>max_col</span><span class=p>){</span>
+                <span class=n>destination</span><span class=p>.</span><span class=n>reset</span><span class=p>(</span> <span class=n>col_index</span><span class=p>,</span> <span class=n>row_index</span><span class=p>,</span> <span class=n>z_index</span> <span class=p>);</span>    <span class=c1>//将当前点节点信息存放到destinationn  
+</span><span class=c1></span>                <span class=c1>//判断是否到达终点
+</span><span class=c1></span>                <span class=k>if</span> <span class=p>(</span><span class=n>can_pass</span><span class=p>(</span><span class=n>current</span><span class=p>,</span> <span class=n>destination</span><span class=p>,</span> <span class=n>corner</span><span class=p>)){</span>
+                    <span class=n>out_lists</span><span class=o>-&gt;</span><span class=n>push_back</span><span class=p>(</span><span class=n>destination</span><span class=p>);</span>
+                <span class=p>}</span>
+                <span class=o>++</span><span class=n>col_index</span><span class=p>;</span>
+            <span class=p>}</span>
+            <span class=o>++</span><span class=n>row_index</span><span class=p>;</span>
+        <span class=p>}</span>
+        <span class=o>++</span><span class=n>z_index</span><span class=p>;</span>
+    <span class=p>}</span>
+
+<span class=p>}</span>
+
+<span class=c1>// 处理找到节点的情况
+</span><span class=c1></span><span class=kt>void</span> <span class=n>AStar</span><span class=o>::</span><span class=n>handle_found_node</span><span class=p>(</span><span class=n>Node</span> <span class=o>*</span><span class=n>current</span><span class=p>,</span> <span class=n>Node</span> <span class=o>*</span><span class=n>destination</span><span class=p>){</span>
+    <span class=kt>unsigned</span> <span class=kt>int</span> <span class=n>g_value</span> <span class=o>=</span> <span class=n>calcul_g_value</span><span class=p>(</span><span class=n>current</span><span class=p>,</span> <span class=n>destination</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>);</span> <span class=c1>//计算g值 
+</span><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=n>g_value</span> <span class=o>&lt;</span> <span class=n>destination</span><span class=o>-&gt;</span><span class=n>g</span><span class=p>){</span>
+        <span class=n>destination</span><span class=o>-&gt;</span><span class=n>g</span> <span class=o>=</span> <span class=n>g_value</span><span class=p>;</span>
+        <span class=n>destination</span><span class=o>-&gt;</span><span class=n>parent</span> <span class=o>=</span> <span class=n>current</span><span class=p>;</span>
+
+        <span class=n>size_t</span> <span class=n>index</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+        <span class=c1>//处理找到节点的情况
+</span><span class=c1></span>        <span class=k>if</span> <span class=p>(</span><span class=n>get_node_index</span><span class=p>(</span><span class=n>destination</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>index</span><span class=p>)){</span>
+            <span class=n>percolate_up</span><span class=p>(</span><span class=n>index</span><span class=p>);</span>    <span class=c1>//二叉堆上滤
+</span><span class=c1></span>        <span class=p>}</span>
+        <span class=k>else</span><span class=p>{</span>
+            <span class=n>assert</span><span class=p>(</span><span class=nb>false</span><span class=p>);</span>
+        <span class=p>}</span>
+    <span class=p>}</span>
+<span class=p>}</span>
+
+<span class=c1>// 处理未找到节点的情况
+</span><span class=c1></span><span class=kt>void</span> <span class=n>AStar</span><span class=o>::</span><span class=n>handle_not_found_node</span><span class=p>(</span><span class=n>Node</span> <span class=o>*</span><span class=n>current</span><span class=p>,</span> <span class=n>Node</span> <span class=o>*</span><span class=n>destination</span><span class=p>,</span> <span class=k>const</span> <span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>end</span><span class=p>){</span>
+    <span class=n>destination</span><span class=o>-&gt;</span><span class=n>parent</span> <span class=o>=</span> <span class=n>current</span><span class=p>;</span>
+    <span class=n>destination</span><span class=o>-&gt;</span><span class=n>h</span> <span class=o>=</span> <span class=n>calcul_h_value</span><span class=p>(</span><span class=n>destination</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>,</span> <span class=n>end</span><span class=p>);</span>     <span class=c1>//计算h值 
+</span><span class=c1></span>    <span class=n>destination</span><span class=o>-&gt;</span><span class=n>g</span> <span class=o>=</span> <span class=n>calcul_g_value</span><span class=p>(</span><span class=n>current</span><span class=p>,</span> <span class=n>destination</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>);</span> <span class=c1>//计算g值 
+</span><span class=c1></span>
+    <span class=n>Node</span> <span class=o>*&amp;</span><span class=n>reference_node</span> <span class=o>=</span> <span class=n>mapping_</span><span class=p>[</span><span class=n>destination</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>.</span><span class=n>z</span> <span class=o>*</span> <span class=n>width_</span> <span class=o>*</span> <span class=n>height_</span> <span class=o>+</span> <span class=n>destination</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>.</span><span class=n>y</span> <span class=o>*</span> <span class=n>width_</span> <span class=o>+</span> <span class=n>destination</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>.</span><span class=n>x</span><span class=p>];</span>
+    <span class=n>reference_node</span> <span class=o>=</span> <span class=n>destination</span><span class=p>;</span>
+    <span class=n>reference_node</span><span class=o>-&gt;</span><span class=n>state</span> <span class=o>=</span> <span class=n>IN_OPENLIST</span><span class=p>;</span>
+
+    <span class=n>open_list_</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>destination</span><span class=p>);</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>push_heap</span><span class=p>(</span><span class=n>open_list_</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>open_list_</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span> <span class=p>[](</span><span class=k>const</span> <span class=n>Node</span> <span class=o>*</span><span class=n>a</span><span class=p>,</span> <span class=k>const</span> <span class=n>Node</span> <span class=o>*</span><span class=n>b</span><span class=p>)</span><span class=o>-&gt;</span><span class=kt>bool</span> <span class=p>{</span>
+        <span class=k>return</span> <span class=n>a</span><span class=o>-&gt;</span><span class=n>f</span><span class=p>()</span> <span class=o>&gt;</span> <span class=n>b</span><span class=o>-&gt;</span><span class=n>f</span><span class=p>();</span>
+    <span class=p>});</span>
+<span class=p>}</span>
+
+<span class=c1>// 执行寻路操作
+</span><span class=c1>// 传入 param 搜索参数
+</span><span class=c1>// 得到最终路径结果
+</span><span class=c1></span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>AStar</span><span class=o>::</span><span class=n>Vec3</span><span class=o>&gt;</span> <span class=n>AStar</span><span class=o>::</span><span class=n>find</span><span class=p>(</span><span class=k>const</span> <span class=n>Params</span> <span class=o>&amp;</span><span class=n>param</span><span class=p>){</span>
+    <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>Vec3</span><span class=o>&gt;</span> <span class=n>paths</span><span class=p>;</span> <span class=c1>//路径
+</span><span class=c1></span>    <span class=n>assert</span><span class=p>(</span><span class=n>is_vlid_params</span><span class=p>(</span><span class=n>param</span><span class=p>));</span> <span class=c1>//检查参数是否有效
+</span><span class=c1></span>    <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=n>is_vlid_params</span><span class=p>(</span><span class=n>param</span><span class=p>)){</span>
+        <span class=k>return</span> <span class=n>paths</span><span class=p>;</span>
+    <span class=p>}</span>
+
+    <span class=c1>// 初始化
+</span><span class=c1></span>    <span class=n>init</span><span class=p>(</span><span class=n>param</span><span class=p>);</span>  <span class=c1>//初始化参数并分配地图大小
+</span><span class=c1></span>    <span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>Vec3</span><span class=o>&gt;</span> <span class=n>nearby_nodes</span><span class=p>;</span>   <span class=c1>//创建附近节点的容器
+</span><span class=c1></span>    <span class=n>nearby_nodes</span><span class=p>.</span><span class=n>reserve</span><span class=p>(</span><span class=n>param</span><span class=p>.</span><span class=n>corner</span> <span class=o>?</span> <span class=mi>26</span> <span class=o>:</span> <span class=mi>6</span> <span class=p>);</span>  <span class=c1>//分配容器大小， 二维 8 或 4  三维 26 或 6 ----corner：是否允许拐角
+</span><span class=c1></span>
+    <span class=c1>// 将起点放入开启列表
+</span><span class=c1></span>    <span class=n>Node</span> <span class=o>*</span><span class=n>start_node</span> <span class=o>=</span> <span class=k>new</span><span class=p>(</span> <span class=n>allocator_</span><span class=o>-&gt;</span><span class=n>allocate</span><span class=p>(</span> <span class=k>sizeof</span><span class=p>(</span><span class=n>Node</span><span class=p>)</span> <span class=p>)</span> <span class=p>)</span> <span class=n>Node</span><span class=p>(</span><span class=n>param</span><span class=p>.</span><span class=n>start</span><span class=p>);</span> 
+    <span class=n>open_list_</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>start_node</span><span class=p>);</span>
+    <span class=c1>//depth_  = ?  是等于 width_ * height_ 
+</span><span class=c1></span>    <span class=n>Node</span> <span class=o>*&amp;</span><span class=n>reference_node</span> <span class=o>=</span> <span class=n>mapping_</span><span class=p>[</span> <span class=n>start_node</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>.</span><span class=n>z</span> <span class=o>*</span> <span class=n>width_</span> <span class=o>*</span> <span class=n>height_</span>  <span class=o>+</span> <span class=n>start_node</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>.</span><span class=n>y</span> <span class=o>*</span> <span class=n>width_</span> <span class=o>+</span> <span class=n>start_node</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>.</span><span class=n>x</span> <span class=p>];</span> <span class=c1>//创建路径节点
+</span><span class=c1></span>    <span class=n>reference_node</span> <span class=o>=</span> <span class=n>start_node</span><span class=p>;</span>        <span class=c1>//将起点放入reference_node中
+</span><span class=c1></span>    <span class=n>reference_node</span><span class=o>-&gt;</span><span class=n>state</span> <span class=o>=</span> <span class=n>IN_OPENLIST</span><span class=p>;</span>   <span class=c1>//将起点节点状态设置为开启，起点放入开启列表 
+</span><span class=c1></span>
+    <span class=c1>// 寻路操作 遍历开启列表直到找到终点 
+</span><span class=c1></span>    <span class=k>while</span> <span class=p>(</span><span class=o>!</span><span class=n>open_list_</span><span class=p>.</span><span class=n>empty</span><span class=p>()){</span>
+        <span class=c1>// 找出f值最小节点NumberOfGrid_x
+</span><span class=c1></span>        <span class=n>Node</span> <span class=o>*</span><span class=n>current</span> <span class=o>=</span> <span class=n>open_list_</span><span class=p>.</span><span class=n>front</span><span class=p>();</span> <span class=c1>//返回当前vector容器中起始元素的引用
+</span><span class=c1></span>        <span class=n>std</span><span class=o>::</span><span class=n>pop_heap</span><span class=p>(</span><span class=n>open_list_</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>open_list_</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span> <span class=p>[](</span><span class=k>const</span> <span class=n>Node</span> <span class=o>*</span><span class=n>a</span><span class=p>,</span> <span class=k>const</span> <span class=n>Node</span> <span class=o>*</span><span class=n>b</span><span class=p>)</span><span class=o>-&gt;</span><span class=kt>bool</span><span class=p>{</span>
+            <span class=k>return</span> <span class=n>a</span><span class=o>-&gt;</span><span class=n>f</span><span class=p>()</span> <span class=o>&gt;</span> <span class=n>b</span><span class=o>-&gt;</span><span class=n>f</span><span class=p>();</span>
+        <span class=p>});</span> <span class=c1>// 将堆顶元素调整到最后
+</span><span class=c1></span>        <span class=n>open_list_</span><span class=p>.</span><span class=n>pop_back</span><span class=p>();</span> <span class=c1>//弹出末尾元素
+</span><span class=c1></span>        <span class=n>mapping_</span><span class=p>[</span> <span class=n>current</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>.</span><span class=n>z</span> <span class=o>*</span> <span class=n>width_</span> <span class=o>*</span> <span class=n>height_</span> <span class=o>+</span> <span class=n>current</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>.</span><span class=n>y</span> <span class=o>*</span> <span class=n>width_</span> <span class=o>+</span> <span class=n>current</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>.</span><span class=n>x</span> <span class=p>]</span><span class=o>-&gt;</span><span class=n>state</span> <span class=o>=</span> <span class=n>IN_CLOSEDLIST</span><span class=p>;</span> <span class=c1>//将节点放进关闭列表 （起点）
+</span><span class=c1></span>
+        <span class=c1>// 是否找到终点    //重载==号 判断两个的坐标是否相等。
+</span><span class=c1></span>        <span class=k>if</span> <span class=p>(</span><span class=n>current</span><span class=o>-&gt;</span><span class=n>pos</span> <span class=o>==</span> <span class=n>param</span><span class=p>.</span><span class=n>end</span><span class=p>){</span>
+            <span class=c1>//寻找到终点时，将此路径上的父节点以及子节点保存到paths中
+</span><span class=c1></span>            <span class=k>while</span> <span class=p>(</span><span class=n>current</span><span class=o>-&gt;</span><span class=n>parent</span><span class=p>){</span>
+                <span class=n>paths</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>current</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>);</span>
+                <span class=n>current</span> <span class=o>=</span> <span class=n>current</span><span class=o>-&gt;</span><span class=n>parent</span><span class=p>;</span>
+            <span class=p>}</span>
+            <span class=n>std</span><span class=o>::</span><span class=n>reverse</span><span class=p>(</span><span class=n>paths</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span> <span class=n>paths</span><span class=p>.</span><span class=n>end</span><span class=p>());</span>  <span class=c1>//反转操作
+</span><span class=c1></span>            <span class=k>goto</span> <span class=n>__end__</span><span class=p>;</span>
+        <span class=p>}</span>
+        <span class=c1>// 查找周围可通过节点
+</span><span class=c1></span>        <span class=n>nearby_nodes</span><span class=p>.</span><span class=n>clear</span><span class=p>();</span> <span class=c1>//清空nearby_nodes，将新节点周围可通过的节点放入nearby_nodes
+</span><span class=c1></span>        <span class=n>find_can_pass_nodes</span><span class=p>(</span><span class=n>current</span><span class=o>-&gt;</span><span class=n>pos</span><span class=p>,</span> <span class=n>param</span><span class=p>.</span><span class=n>corner</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>nearby_nodes</span><span class=p>);</span>  <span class=c1>//找寻当前节点的附近可通过节点 
+</span><span class=c1></span>        <span class=c1>//current-&gt;pos 当前路径节点的节点位置 
+</span><span class=c1></span>        <span class=c1>// 计算周围节点的估值
+</span><span class=c1></span>        <span class=n>size_t</span> <span class=n>index</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+        <span class=k>const</span> <span class=n>size_t</span> <span class=n>size</span> <span class=o>=</span> <span class=n>nearby_nodes</span><span class=p>.</span><span class=n>size</span><span class=p>();</span> 
+        <span class=k>while</span> <span class=p>(</span><span class=n>index</span> <span class=o>&lt;</span> <span class=n>size</span><span class=p>){</span>
+            <span class=n>Node</span> <span class=o>*</span><span class=n>next_node</span> <span class=o>=</span> <span class=k>nullptr</span><span class=p>;</span> 
+            <span class=c1>//判断节点是否在开启列表
+</span><span class=c1></span>            <span class=k>if</span> <span class=p>(</span> <span class=n>in_open_list</span><span class=p>(</span><span class=n>nearby_nodes</span><span class=p>[</span><span class=n>index</span><span class=p>],</span> <span class=n>next_node</span><span class=p>)</span> <span class=p>){</span>
+                <span class=n>handle_found_node</span><span class=p>(</span><span class=n>current</span><span class=p>,</span> <span class=n>next_node</span><span class=p>);</span>    <span class=c1>//处理找到节点的情况
+</span><span class=c1></span>            <span class=p>}</span>
+            <span class=k>else</span><span class=p>{</span>
+                <span class=n>next_node</span> <span class=o>=</span> <span class=k>new</span><span class=p>(</span><span class=n>allocator_</span><span class=o>-&gt;</span><span class=n>allocate</span><span class=p>(</span><span class=k>sizeof</span><span class=p>(</span><span class=n>Node</span><span class=p>)))</span> <span class=n>Node</span><span class=p>(</span><span class=n>nearby_nodes</span><span class=p>[</span><span class=n>index</span><span class=p>]);</span>  
+                <span class=n>handle_not_found_node</span><span class=p>(</span><span class=n>current</span><span class=p>,</span> <span class=n>next_node</span><span class=p>,</span> <span class=n>param</span><span class=p>.</span><span class=n>end</span><span class=p>);</span>   <span class=c1>//处理未找到节点的情况
+</span><span class=c1></span>            <span class=p>}</span>
+            <span class=o>++</span><span class=n>index</span><span class=p>;</span>
+        <span class=p>}</span>
+    <span class=p>}</span>
+<span class=nl>__end__</span><span class=p>:</span>
+    <span class=n>clear</span><span class=p>();</span>
+    <span class=k>return</span> <span class=n>paths</span><span class=p>;</span>
+<span class=p>}</span>
+
+</code></pre></div><p><strong>PathPlanComposition.h</strong></p><div class=highlight><pre class=chroma><code class=language-cpp data-lang=cpp><span class=cm>/*
+</span><span class=cm> * @Author: JT
+</span><span class=cm> * @Date: 2020-06-18 15:27:57
+</span><span class=cm> * @LastEditTime: 2020-08-10 13:15:05
+</span><span class=cm> * @LastEditors: JT
+</span><span class=cm> * @Description: In User Settings Edit
+</span><span class=cm> */</span> 
+<span class=cp>#ifndef PATHPLANINGCOMPOSITION_H_
+</span><span class=cp>#define PATHPLANINGCOMPOSITION_H_
+</span><span class=cp>#include</span><span class=cpf>&lt;iostream&gt;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&#34;data.h&#34;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&#34;HeadFile.h&#34;</span><span class=cp>
+</span><span class=cp></span>
+<span class=k>class</span> <span class=nc>PathPlanComposition</span><span class=p>{</span>
+<span class=k>private</span><span class=o>:</span>
+    <span class=cm>/* data */</span>
+<span class=k>public</span><span class=o>:</span>  
+    <span class=n>PathPlanComposition</span><span class=p>(</span><span class=cm>/* args */</span><span class=p>);</span>
+    <span class=o>~</span><span class=n>PathPlanComposition</span><span class=p>();</span>
+    
+    <span class=kt>void</span> <span class=nf>AstarRoute</span><span class=p>()</span> <span class=p>;</span>
+<span class=p>};</span>
+
+<span class=n>PathPlanComposition</span><span class=o>::</span><span class=n>PathPlanComposition</span><span class=p>(</span><span class=cm>/* args */</span><span class=p>){</span>
+<span class=p>}</span>
+
+<span class=n>PathPlanComposition</span><span class=o>::~</span><span class=n>PathPlanComposition</span><span class=p>(){</span>
+<span class=p>}</span>
+
+
+<span class=cp>#endif
+</span></code></pre></div><p><strong>PathPlanComposition.cpp</strong></p><div class=highlight><pre class=chroma><code class=language-cpp data-lang=cpp>
+<span class=cp>#include</span> <span class=cpf>&#34;PathPlanComposition.h&#34;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&#34;astar.cpp&#34;</span><span class=cp>
+</span><span class=cp>#include</span> <span class=cpf>&#34;blockallocator.cpp&#34;</span><span class=cp>
+</span><span class=cp></span>
+<span class=c1>// Astar算法 示例程序 
+</span><span class=c1>// 可自行构建三维栅格地图
+</span><span class=c1>// 在param.start和param.end传入三维栅格的起点和终点，此处第三个值为0 默认为平面
+</span><span class=c1></span><span class=kt>void</span> <span class=n>PathPlanComposition</span><span class=o>::</span><span class=n>AstarRoute</span><span class=p>(</span> <span class=p>){</span>
+	<span class=c1>//地图
+</span><span class=c1></span>	<span class=kt>char</span> <span class=n>maps</span><span class=p>[</span><span class=mi>10</span><span class=p>][</span><span class=mi>10</span><span class=p>]</span> <span class=o>=</span>
+	<span class=p>{</span>
+		<span class=p>{</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span> <span class=p>},</span>
+		<span class=p>{</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span> <span class=p>},</span>
+		<span class=p>{</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span> <span class=p>},</span>
+		<span class=p>{</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span> <span class=p>},</span>
+		<span class=p>{</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span> <span class=p>},</span>
+		<span class=p>{</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span> <span class=p>},</span>
+		<span class=p>{</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span> <span class=p>},</span>
+		<span class=p>{</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span> <span class=p>},</span>
+		<span class=p>{</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span> <span class=p>},</span>
+		<span class=p>{</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span> <span class=p>},</span>
+	<span class=p>};</span>
+	<span class=n>AStar</span><span class=o>::</span><span class=n>Params</span> <span class=n>param</span><span class=p>;</span> 
+	<span class=n>param</span><span class=p>.</span><span class=n>width</span> <span class=o>=</span> <span class=mi>10</span><span class=p>;</span>	<span class=c1>//x	
+</span><span class=c1></span>	<span class=n>param</span><span class=p>.</span><span class=n>height</span> <span class=o>=</span> <span class=mi>10</span><span class=p>;</span>	<span class=c1>//y	
+</span><span class=c1></span>	<span class=n>param</span><span class=p>.</span><span class=n>depth</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>	<span class=c1>//z	
+</span><span class=c1></span>	<span class=n>param</span><span class=p>.</span><span class=n>corner</span> <span class=o>=</span> <span class=nb>false</span><span class=p>;</span>
+	<span class=n>param</span><span class=p>.</span><span class=n>start</span> <span class=o>=</span> <span class=n>AStar</span><span class=o>::</span><span class=n>Vec3</span><span class=p>(</span> <span class=mi>9</span> <span class=p>,</span> <span class=mi>9</span> <span class=p>,</span> <span class=mi>0</span> <span class=p>);</span>	<span class=c1>//起点
+</span><span class=c1></span>	<span class=n>param</span><span class=p>.</span><span class=n>end</span> 	<span class=o>=</span> <span class=n>AStar</span><span class=o>::</span><span class=n>Vec3</span><span class=p>(</span> <span class=mi>1</span> <span class=p>,</span> <span class=mi>1</span> <span class=p>,</span> <span class=mi>0</span> <span class=p>);</span> <span class=c1>//终点
+</span><span class=c1></span>	<span class=n>param</span><span class=p>.</span><span class=n>can_pass</span> <span class=o>=</span> <span class=p>[</span><span class=o>&amp;</span><span class=p>](</span><span class=k>const</span> <span class=n>AStar</span><span class=o>::</span><span class=n>Vec3</span> <span class=o>&amp;</span><span class=n>pos</span><span class=p>)</span><span class=o>-&gt;</span><span class=kt>bool</span><span class=p>{</span>
+		<span class=k>return</span> <span class=n>maps</span><span class=p>[</span><span class=n>pos</span><span class=p>.</span><span class=n>y</span><span class=p>][</span><span class=n>pos</span><span class=p>.</span><span class=n>x</span><span class=p>]</span> <span class=o>==</span> <span class=mi>0</span><span class=p>;</span>
+	<span class=p>};</span>
+
+	<span class=c1>// 执行搜索
+</span><span class=c1></span>	<span class=n>BlockAllocator</span> <span class=n>allocator</span><span class=p>;</span>
+	<span class=n>AStar</span> <span class=nf>algorithm</span><span class=p>(</span><span class=o>&amp;</span><span class=n>allocator</span><span class=p>);</span>
+	<span class=k>auto</span> <span class=n>path</span> <span class=o>=</span> <span class=n>algorithm</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>param</span><span class=p>);</span>
+	<span class=k>if</span><span class=p>(</span> <span class=n>path</span><span class=p>.</span><span class=n>empty</span><span class=p>()){</span>	
+		<span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34; path empty&#34;</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span> 
+	<span class=p>}</span>
+	<span class=k>for</span><span class=p>(</span> <span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span> <span class=p>;</span> <span class=n>i</span><span class=o>&lt;</span> <span class=n>path</span><span class=p>.</span><span class=n>size</span><span class=p>()</span> <span class=p>;</span> <span class=n>i</span><span class=o>++</span> <span class=p>){</span>
+		<span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34; path-------- &#34;</span> <span class=o>&lt;&lt;</span> <span class=n>path</span><span class=p>[</span><span class=n>i</span><span class=p>].</span><span class=n>x</span> <span class=o>&lt;&lt;</span> <span class=s>&#34; , &#34;</span> <span class=o>&lt;&lt;</span> <span class=n>path</span><span class=p>[</span><span class=n>i</span><span class=p>].</span><span class=n>y</span> <span class=o>&lt;&lt;</span> <span class=s>&#34; , &#34;</span> <span class=o>&lt;&lt;</span> <span class=n>path</span><span class=p>[</span><span class=n>i</span><span class=p>].</span><span class=n>z</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
+	<span class=p>}</span>
+
+<span class=p>}</span>
+</code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://chase6305.github.io/tags/ai/>AI</a></li><li><a href=https://chase6305.github.io/tags/algorithms/>Algorithms</a></li></ul><nav class=paginav><a class=prev href=https://chase6305.github.io/posts/gui/qt/pyside6/><span class=title>«</span><br><span>PySide6 将.ui文件编译为.py文件</span></a>
+<a class=next href=https://chase6305.github.io/posts/ai/algorithms/astar/astar-introduction/><span class=title>»</span><br><span>基于三维栅格空间的A*算法裁剪流程</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share 基于三维栅格空间的A*算法流程C++实现 on x" href="https://x.com/intent/tweet/?text=%e5%9f%ba%e4%ba%8e%e4%b8%89%e7%bb%b4%e6%a0%85%e6%a0%bc%e7%a9%ba%e9%97%b4%e7%9a%84A%2a%e7%ae%97%e6%b3%95%e6%b5%81%e7%a8%8bC%2b%2b%e5%ae%9e%e7%8e%b0&url=https%3a%2f%2fchase6305.github.io%2fposts%2fai%2falgorithms%2fastar%2fastar-cpp%2f&hashtags=AI%2cAlgorithms"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783H125.266L235.9 310.383 332.567 436.783H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 基于三维栅格空间的A*算法流程C++实现 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fchase6305.github.io%2fposts%2fai%2falgorithms%2fastar%2fastar-cpp%2f&title=%e5%9f%ba%e4%ba%8e%e4%b8%89%e7%bb%b4%e6%a0%85%e6%a0%bc%e7%a9%ba%e9%97%b4%e7%9a%84A%2a%e7%ae%97%e6%b3%95%e6%b5%81%e7%a8%8bC%2b%2b%e5%ae%9e%e7%8e%b0&summary=%e5%9f%ba%e4%ba%8e%e4%b8%89%e7%bb%b4%e6%a0%85%e6%a0%bc%e7%a9%ba%e9%97%b4%e7%9a%84A%2a%e7%ae%97%e6%b3%95%e6%b5%81%e7%a8%8bC%2b%2b%e5%ae%9e%e7%8e%b0&source=https%3a%2f%2fchase6305.github.io%2fposts%2fai%2falgorithms%2fastar%2fastar-cpp%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512h-386.892c-34.524.0-62.554-28.03-62.554-62.554v-386.892c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0v-129.439c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02v-126.056c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768h75.024zm-307.552-334.556c-25.674.0-42.448 16.879-42.448 39.002.0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 基于三维栅格空间的A*算法流程C++实现 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fchase6305.github.io%2fposts%2fai%2falgorithms%2fastar%2fastar-cpp%2f&title=%e5%9f%ba%e4%ba%8e%e4%b8%89%e7%bb%b4%e6%a0%85%e6%a0%bc%e7%a9%ba%e9%97%b4%e7%9a%84A%2a%e7%ae%97%e6%b3%95%e6%b5%81%e7%a8%8bC%2b%2b%e5%ae%9e%e7%8e%b0"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512h-386.892c-34.524.0-62.554-28.03-62.554-62.554v-386.892c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zm-119.474 108.193c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zm-160.386-29.702c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 基于三维栅格空间的A*算法流程C++实现 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fchase6305.github.io%2fposts%2fai%2falgorithms%2fastar%2fastar-cpp%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978v-192.915h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554v-386.892c0-34.524 28.029-62.554 62.554-62.554h386.892z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 基于三维栅格空间的A*算法流程C++实现 on whatsapp" href="https://api.whatsapp.com/send?text=%e5%9f%ba%e4%ba%8e%e4%b8%89%e7%bb%b4%e6%a0%85%e6%a0%bc%e7%a9%ba%e9%97%b4%e7%9a%84A%2a%e7%ae%97%e6%b3%95%e6%b5%81%e7%a8%8bC%2b%2b%e5%ae%9e%e7%8e%b0%20-%20https%3a%2f%2fchase6305.github.io%2fposts%2fai%2falgorithms%2fastar%2fastar-cpp%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512h-386.892c-34.524.0-62.554-28.03-62.554-62.554v-386.892c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23-13.314-11.876-22.304-26.542-24.916-31.026s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 基于三维栅格空间的A*算法流程C++实现 on telegram" href="https://telegram.me/share/url?text=%e5%9f%ba%e4%ba%8e%e4%b8%89%e7%bb%b4%e6%a0%85%e6%a0%bc%e7%a9%ba%e9%97%b4%e7%9a%84A%2a%e7%ae%97%e6%b3%95%e6%b5%81%e7%a8%8bC%2b%2b%e5%ae%9e%e7%8e%b0&url=https%3a%2f%2fchase6305.github.io%2fposts%2fai%2falgorithms%2fastar%2fastar-cpp%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47A3.38 3.38.0 0126.49 29.86zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 基于三维栅格空间的A*算法流程C++实现 on ycombinator" href="https://news.ycombinator.com/submitlink?t=%e5%9f%ba%e4%ba%8e%e4%b8%89%e7%bb%b4%e6%a0%85%e6%a0%bc%e7%a9%ba%e9%97%b4%e7%9a%84A%2a%e7%ae%97%e6%b3%95%e6%b5%81%e7%a8%8bC%2b%2b%e5%ae%9e%e7%8e%b0&u=https%3a%2f%2fchase6305.github.io%2fposts%2fai%2falgorithms%2fastar%2fastar-cpp%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentcolor" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" /></svg></a></li></ul></footer></article></main><footer class=footer><span>&copy; 2025 <a href=https://chase6305.github.io/>Chase Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z" /></svg></a><script>let menu=document.getElementById('menu')
+if(menu){menu.scrollLeft=localStorage.getItem("menu-scroll-position");menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft);}}
+document.querySelectorAll('a[href^="#"]').forEach(anchor=>{anchor.addEventListener("click",function(e){e.preventDefault();var id=this.getAttribute("href").substr(1);if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({behavior:"smooth"});}else{document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();}
+if(id==="top"){history.replaceState(null,null," ");}else{history.pushState(null,null,`#${id}`);}});});</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){if(document.body.scrollTop>800||document.documentElement.scrollTop>800){mybutton.style.visibility="visible";mybutton.style.opacity="1";}else{mybutton.style.visibility="hidden";mybutton.style.opacity="0";}};</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{if(document.body.className.includes("dark")){document.body.classList.remove('dark');localStorage.setItem("pref-theme",'light');}else{document.body.classList.add('dark');localStorage.setItem("pref-theme",'dark');}})</script><script>document.querySelectorAll('pre > code').forEach((codeblock)=>{const container=codeblock.parentNode.parentNode;const copybutton=document.createElement('button');copybutton.classList.add('copy-code');copybutton.innerHTML='copy';function copyingDone(){copybutton.innerHTML='copied!';setTimeout(()=>{copybutton.innerHTML='copy';},2000);}
+copybutton.addEventListener('click',(cb)=>{if('clipboard'in navigator){navigator.clipboard.writeText(codeblock.textContent);copyingDone();return;}
+const range=document.createRange();range.selectNodeContents(codeblock);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);try{document.execCommand('copy');copyingDone();}catch(e){};selection.removeRange(range);});if(container.classList.contains("highlight")){container.appendChild(copybutton);}else if(container.parentNode.firstChild==container){}else if(codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"){codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);}else{codeblock.parentNode.appendChild(copybutton);}});</script></body></html>

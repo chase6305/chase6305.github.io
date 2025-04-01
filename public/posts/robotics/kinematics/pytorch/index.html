@@ -1,0 +1,576 @@
+<!doctype html><html lang=zh-cn dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>pytorch 机械臂逆运动学迭代数值解 | Chase Blog</title><meta name=keywords content="Robotics,Kinematics,C++,Torch"><meta name=description content="https://github.com/UM-ARM-Lab/pytorch_kinematics"><meta name=author content="Chase"><link rel=canonical href=https://chase6305.github.io/posts/robotics/kinematics/pytorch/><meta name=google-site-verification content="XYZabc"><meta name=yandex-verification content="XYZabc"><meta name=msvalidate.01 content="XYZabc"><link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style><link rel=icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=16x16 href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><link rel=icon type=image/png sizes=32x32 href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><link rel=apple-touch-icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><link rel=mask-icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme: rgb(29, 30, 32);--entry: rgb(46, 46, 51);--primary: rgb(218, 218, 219);--secondary: rgb(155, 156, 157);--tertiary: rgb(65, 66, 68);--content: rgb(196, 196, 197);--code-block-bg: rgb(46, 46, 51);--code-bg: rgb(55, 56, 62);--border: rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:url" content="https://chase6305.github.io/posts/robotics/kinematics/pytorch/"><meta property="og:site_name" content="Chase Blog"><meta property="og:title" content="pytorch 机械臂逆运动学迭代数值解"><meta property="og:description" content="https://github.com/UM-ARM-Lab/pytorch_kinematics"><meta property="og:locale" content="zh-CN"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-02-26T00:00:00+00:00"><meta property="article:modified_time" content="2025-02-26T00:00:00+00:00"><meta property="article:tag" content="C++"><meta property="article:tag" content="Robotics"><meta property="article:tag" content="Kinematics"><meta property="article:tag" content="Torch"><meta property="og:image" content="https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta name=twitter:title content="pytorch 机械臂逆运动学迭代数值解"><meta name=twitter:description content="https://github.com/UM-ARM-Lab/pytorch_kinematics"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"pytorch 机械臂逆运动学迭代数值解","item":"https://chase6305.github.io/posts/robotics/kinematics/pytorch/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"pytorch 机械臂逆运动学迭代数值解","name":"pytorch 机械臂逆运动学迭代数值解","description":"https://github.com/UM-ARM-Lab/pytorch_kinematics","keywords":["Robotics","Kinematics","C++","Torch"],"articleBody":"https://github.com/UM-ARM-Lab/pytorch_kinematics 分享一个求解运动学逆解的第三方库 pytorch_kinematics， 以下是我写的一份集成样例。\nimport sys import itertools import typing from concurrent.futures import ThreadPoolExecutor, as_completed from contextlib import contextmanager, redirect_stderr, redirect_stdout from copy import deepcopy from os import devnull import logging import numpy as np import torch logging.basicConfig(level=logging.INFO) try: if sys.platform != \"win32\": import pytorch_kinematics as pk except ImportError: raise ImportError( \"pytorch_kinematics_ms not installed. Install with `pip install pytorch_kinematics_ms`\" ) __all__ = [\"PytorchSolver\"] class PytorchSolver(object): def __init__( self, urdf_path: str, end_link_name: str, **kwargs, ): r\"\"\"Initializes the PyTorch kinematics solver. This constructor sets up the kinematics solver using PyTorch, allowing for efficient computation of robot kinematics based on the specified URDF model. Args: urdf_path (str, optional): Path to the robot's URDF file. end_link_name (str): The name of the end-effector link. **kwargs: Additional keyword arguments passed to the base solver. \"\"\" super().__init__( urdf_path=urdf_path, end_link_name=end_link_name, **kwargs, ) self.device = kwargs.get( \"device\", torch.device(\"cuda:0\") if torch.cuda.is_available() else torch.device(\"cpu\"), ) self.root_link_name = kwargs.get(\"root_link_name\", None) with open(self.urdf_path, \"rb\") as f: urdf_str = f.read() # NOTE It seems that the pk library currently always outputs some complaints if there are unknown attributes in a URDF. Hide it with this contextmanager here. @contextmanager def suppress_stdout_stderr(): \"\"\"A context manager that redirects stdout and stderr to devnull\"\"\" with open(devnull, \"w\") as fnull: with redirect_stderr(fnull) as err, redirect_stdout( fnull) as out: yield (err, out) with suppress_stdout_stderr(): if self.root_link_name is None: self.pk_chain = pk.build_serial_chain_from_urdf( urdf_str, end_link_name=self.end_link_name, ).to(device=self.device) else: self.pk_chain = pk.build_serial_chain_from_urdf( urdf_str, end_link_name=self.end_link_name, root_link_name=self.root_link_name, ).to(device=self.device) # Get agent joint limits. self.lim = torch.tensor(self.pk_chain.get_joint_limits(), device=self.device) # Inverse kinematics is available via damped least squares (iterative steps with Jacobian pseudo-inverse damped to avoid oscillation near singularlities). self.pik = pk.PseudoInverseIK( self.pk_chain, pos_tolerance=self._pos_eps, rot_tolerance=self._rot_eps, joint_limits=self.lim.T, early_stopping_any_converged=True, max_iterations=self._max_iterations, lr=self._dt, num_retries=1, ) self.dof = self.pk_chain.n_joints self.ik_nearst_weight = torch.ones(self.dof) self.upper_position_limits = self.pk_chain.high self.lower_position_limits = self.pk_chain.low def get_link_names(self) - dict: return self.pk_chain.get_link_names() def limit_robot_config(self, qpos_list: torch.tensor) - np.ndarray: r\"\"\"Limit the robot configuration based on the elbow position. If the elbow is in the up position, it checks the positions of specific links to determine if the configuration is valid. Args: qpos_list (torch.tensor): The list of joint positions to be limited. Returns: np.ndarray: The limited list of joint positions if the elbow is up, otherwise returns the original list. \"\"\" if self._is_elbow_up: return qpos_list def process_qpos(q): ret = self.pk_chain.forward_kinematics(q, end_only=False) link_xpos_list = list(ret.values()) # Extract the z positions of specific links link_1_z = link_xpos_list[2].get_matrix()[:, 2, 3] link_2_z = link_xpos_list[3].get_matrix()[:, 2, 3] link_3_z = link_xpos_list[4].get_matrix()[:, 2, 3] if link_2_z  link_1_z: if link_3_z  link_2_z: return q else: return q return None with ThreadPoolExecutor() as executor: results = list(executor.map(process_qpos, qpos_list)) limit_qpos_list = [q for q in results if q is not None] return (torch.stack(limit_qpos_list) if limit_qpos_list else torch.empty((0,), device=self.device)) @staticmethod def _qpos_to_limits_single( q: torch.Tensor, joint_seed: torch.Tensor, lower_position_limits: torch.Tensor, upper_position_limits: torch.Tensor, ik_nearst_weight: torch.Tensor, ) - torch.Tensor: \"\"\" Adjusts the given joint positions (q) to fit within the specified limits while minimizing the difference to the seed position. Args: q (torch.Tensor): The initial joint positions. joint_seed (torch.Tensor): The seed joint positions for comparison. lower_position_limits (torch.Tensor): The lower bounds for the joint positions. upper_position_limits (torch.Tensor): The upper bounds for the joint positions. ik_nearst_weight (torch.Tensor): The weights for the inverse kinematics nearest calculation. Returns: torch.Tensor: The adjusted joint positions that fit within the limits. \"\"\" device = q.device joint_seed = joint_seed.to(device) lower_position_limits = lower_position_limits.to(device) upper_position_limits = upper_position_limits.to(device) ik_nearst_weight = ik_nearst_weight.to(device) best_qpos_limit = q.clone() best_total_q_diff = float(\"inf\") # Generate possible values for each joint possible_arrays = [[ q[i] + offset * (2 * torch.pi) for offset in range(-5, 6) if lower_position_limits[i]  q[i] + offset * (2 * torch.pi)  upper_position_limits[i] ] for i in range(q.size(0))] if any(not values for values in possible_arrays): return torch.tensor([]).to(device) # Create all possible combinations of joint values all_possible_combinations = itertools.product(*possible_arrays) for combination in all_possible_combinations: combination_tensor = torch.tensor(combination).to(device) total_q_diff = torch.sum( torch.abs(combination_tensor - joint_seed) * ik_nearst_weight) # Update the best solution if a smaller total difference is found if total_q_diff  best_total_q_diff: best_total_q_diff = total_q_diff best_qpos_limit = combination_tensor return best_qpos_limit def qpos_to_limits(self, qpos_list_split: torch.Tensor, joint_seed: torch.Tensor) - torch.Tensor: r\"\"\"Adjusts a list of joint positions to fit within the specified limits for each joint. Args: qpos_list_split (torch.Tensor): The list of joint positions to be adjusted. joint_seed (torch.Tensor): The seed joint positions for comparison. Returns: torch.Tensor: The adjusted list of joint positions. \"\"\" if self.ik_nearst_weight is None: self.ik_nearst_weight = torch.ones_like(qpos_list_split[-1], device=self.device) else: self.ik_nearst_weight = (self.ik_nearst_weight.clone().detach().to( self.device)) adjusted_qpos_list = [] # Use a ThreadPoolExecutor to parallelize the processing with ThreadPoolExecutor() as executor: futures = [ executor.submit( self._qpos_to_limits_single, q, joint_seed, self.lower_position_limits, self.upper_position_limits, self.ik_nearst_weight, ) for q in qpos_list_split ] for future in as_completed(futures): result = future.result() if result.numel()  0: adjusted_qpos_list.append(result) return (torch.stack(adjusted_qpos_list).to(qpos_list_split.device) if adjusted_qpos_list else torch.tensor([], device=self.device)) def get_ik( self, target_pose: torch.Tensor, joint_seed: torch.Tensor, num_samples: int = None, return_all_solutions: bool = False, **kwargs, ): r\"\"\"Computes the inverse kinematics for given target poses. This function generates random joint configurations within the specified limits, including the provided joint_seed, and attempts to find valid inverse kinematics solutions. It then identifies the joint positions that are closest to the joint_seed. Args: target_pose (torch.Tensor): The target poses represented as a (batch_size, 4, 4) tensor or a single 4x4 transformation matrix. joint_seed (torch.Tensor): The initial joint positions used as a seed. It can be either a 1D tensor of shape (dof,) or a 2D tensor of shape (batch_size, dof). num_samples (int, optional): Number of samples, must be positive. return_all_solutions (bool, optional): If True, return all IK results. If False, return the first IK result. Defaults to False. **kwargs: Additional arguments for future extensions. Returns: Tuple[bool, np.ndarray]: A tuple containing: - A boolean indicating whether a valid solution was found for all target poses. - A list of the closest joint positions to the joint_seed for each target pose, or an empty list if no valid solutions were found. \"\"\" # Check dimensions of target_pose target_pose = torch.as_tensor(target_pose) if target_pose.dim() == 2: assert target_pose.shape == ( 4, 4, ), \"`target_pose` must be of shape (4, 4) or (n, 4, 4).\" target_pose = target_pose.unsqueeze(0) elif target_pose.dim() == 3: assert target_pose.shape[1:] == ( 4, 4, ), \"`target_pose` must be of shape (4, 4) or (n, 4, 4).\" else: raise ValueError( \"`target_pose` must be a tensor of shape (4, 4) or (n, 4, 4).\") if num_samples is not None: self._num_samples = num_samples if joint_seed is None: joint_seed = torch.zeros(self.dof) else: joint_seed = torch.as_tensor(joint_seed) # Check dimensions of joint_seed if joint_seed.dim() == 1: joint_seed = joint_seed.unsqueeze(0) joint_seed_ndim = 1 elif joint_seed.dim() == 2: joint_seed_ndim = 2 if len(joint_seed) != len(target_pose): raise ValueError( \"Batch size of joint_seed must match batch size of target_pose when joint_seed is a 2D tensor.\" ) else: raise ValueError( \"`joint_seed` must be a tensor of shape (n,) or (n, n).\") tcp_xpos = deepcopy(self.tcp_xpos) tcp_xpos = torch.as_tensor(tcp_xpos) tcp_xpos = tcp_xpos.to(self.device).float() target_pose = target_pose.to(self.device).float() target_pose = target_pose @ torch.inverse(tcp_xpos) joint_seed = joint_seed.to(self.device).float() # Get qpos limits upper_limits = self.upper_position_limits.float() lower_limits = self.lower_position_limits.float() batch_size = target_pose.shape[0] dof = joint_seed.shape[1] # num_samples = self._num_samples * batch_size random_joint_seeds_part = lower_limits + ( upper_limits - lower_limits) * torch.rand( (self._num_samples - 3, dof), device=self.device) # Initialize random_joint_seeds as an empty tensor random_joint_seeds = torch.empty((0, dof), device=self.device) target_pose_repeated = torch.empty((0, 4, 4), device=self.device) # Handle different dimensions of joint_seed and iterate over target_pose for i in range(batch_size): current_joint_seed = (joint_seed[i].unsqueeze(0) if joint_seed_ndim == 2 else joint_seed) joint_seeds = torch.vstack([ current_joint_seed, lower_limits.unsqueeze(0), random_joint_seeds_part, upper_limits.unsqueeze(0), ]) random_joint_seeds = torch.vstack([random_joint_seeds, joint_seeds]) current_target_pose = (target_pose[i].unsqueeze(0).repeat( self._num_samples, 1, 1)) target_pose_repeated = torch.vstack( [target_pose_repeated, current_target_pose]) res_list, qpos_list = self.compute_inverse_kinematics( target_pose_repeated, random_joint_seeds) # Split res_list and qpos_list according to self._num_samples res_list_split = torch.split(res_list, self._num_samples) qpos_list_split = torch.split(qpos_list, self._num_samples) # Initialize the final results and the closest joint positions final_results = [] final_qpos = [] for i in range(batch_size): target_joint_seed = (joint_seed[i] if joint_seed_ndim == 2 else joint_seed) if not res_list_split[i].any(): final_results.append(False) final_qpos.append(torch.empty(0, device=self.device)) continue result_qpos_limit = self.qpos_to_limits(qpos_list_split[i], target_joint_seed) limited_qpos_t = self.limit_robot_config(result_qpos_limit) if len(limited_qpos_t) == 0: logging.warn( \"Pk: It is estimated that none of the axis configurations are met, elbow_up enable: {}\" .format(self._is_elbow_up)) final_results.append(False) final_qpos.append(torch.empty(0, device=self.device)) continue distances = torch.norm(limited_qpos_t - target_joint_seed, dim=1) if return_all_solutions: # Sort the solutions by distances sorted_indices = torch.argsort(distances) sorted_qpos_array = limited_qpos_t[sorted_indices] final_qpos.append(sorted_qpos_array) else: # Find the index of the closest solution closest_index = torch.argmin(distances) # Return the closest joint position closest_qpos = limited_qpos_t[closest_index] final_qpos.append(closest_qpos) final_results.append(True) # Check if all elements in final_results are True all_true = all(final_results) return all_true, final_qpos def compute_inverse_kinematics( self, target_pose: torch.Tensor, joint_seed: torch.Tensor) - (bool, np.ndarray): r\"\"\"Computes the inverse kinematics solutions for the given target poses and joint seeds. Args: target_pose (torch.Tensor): The target poses represented as a (batch_size, 4, 4) tensor. joint_seed (torch.Tensor): The initial joint positions used as a seed. It can be either a 1D tensor of shape (dof,) or a 2D tensor of shape (batch_size, dof). Returns: Tuple[bool, torch.Tensor]: A tuple containing: - A boolean indicating whether any valid solution was found. - The solutions tensor of shape (batch_size, dof) if a solution is found, otherwise an empty tensor. \"\"\" target_pose = target_pose.to(self.device).float() joint_seed = joint_seed.to(self.device).float() # Extract translation and rotation parts pos = target_pose[:, :3, 3] rot = target_pose[:, :3, :3] tf = pk.Transform3d( pos=pos, rot=rot, device=self.device, ) self.pik.initial_config = joint_seed result = self.pik.solve(tf) if result.converged_any.any().item(): return result.converged_any, result.solutions[:, 0, :].squeeze(0) return False, torch.empty(0) def get_fk(self, qpos: torch.tensor) - torch.tensor: r\"\"\"Get the forward kinematics for the end link. Args: qpos (torch.Tensor): The joint positions. Returns: torch.Tensor: A 4x4 homogeneous transformation matrix representing the pose of the end link. \"\"\" tcp_xpos = deepcopy(self.tcp_xpos) tcp_xpos = torch.as_tensor(tcp_xpos) tcp_xpos = tcp_xpos.to(self.device).float() if self.end_link_name is None: return self.compute_forward_kinematics(qpos) @ tcp_xpos else: return (self.compute_forward_kinematics( qpos, link_name=self.end_link_name) @ tcp_xpos) def get_all_fk(self, qpos: torch.tensor) - torch.tensor: r\"\"\"Get the forward kinematics for all links from root to end link. Args: qpos (torch.Tensor): The joint positions. Returns: list: A list of 4x4 homogeneous transformation matrices representing the poses of all links from root to end link. \"\"\" qpos = torch.as_tensor(qpos) qpos = qpos.to(self.device) ret = self.pk_chain.forward_kinematics(qpos, end_only=False) link_names = list(ret.keys()) if self.root_link_name is not None: try: start_index = link_names.index(self.root_link_name) except ValueError: raise KeyError( f\"Root link name '{self.root_link_name}' not found in the kinematic chain\" ) else: start_index = 0 if self.end_link_name is not None: try: end_index = link_names.index(self.end_link_name) + 1 except ValueError: raise KeyError( f\"End link name '{self.end_link_name}' not found in the kinematic chain\" ) else: end_index = len(link_names) poses = [] for link_name in link_names[start_index:end_index]: xpos = ret[link_name] if not hasattr(xpos, \"get_matrix\"): raise AttributeError( f\"The result for link '{link_name}' must have 'get_matrix' attributes.\" ) xpos_t = torch.eye(4, device=xpos.get_matrix().device) m = xpos.get_matrix() xpos_t[:3, 3] = m[:, :3, 3] xpos_t[:3, :3] = m[:, :3, :3] poses.append(xpos_t) return poses def compute_forward_kinematics(self, qpos: torch.tensor, link_name=None) - torch.tensor: r\"\"\"Computes the forward kinematics for the given joint positions. Args: qpos (torch.Tensor): The joint positions. link_name (str, optional): The name of the link for which to compute the forward kinematics. If None, computes for the end-effector. Returns: torch.Tensor: A 4x4 homogeneous transformation matrix representing the pose of the specified link or end-effector. \"\"\" if not isinstance(qpos, torch.Tensor): qpos = torch.tensor(qpos, dtype=torch.float) qpos = qpos.to(self.device) if link_name is None: xpos = list(self.pk_chain.forward_kinematics(qpos, end_only=True))[-1] else: xpos = self.pk_chain.forward_kinematics( qpos, end_only=False)[link_name][-1] if not hasattr(xpos, \"get_matrix\"): logging.warn( \"Get FK failed, the result from forward_kinematics must have 'get_matrix' attributes.\" ) return torch.eye(4, device=xpos.device) xpos_t = torch.eye(4, device=xpos.device) m = xpos.get_matrix() xpos_t[:3, 3] = m[:, :3, 3] xpos_t[:3, :3] = m[:, :3, :3] return xpos_t def get_jacobian(self, qpos: torch.tensor) - torch.tensor: r\"\"\"Compute the Jacobian matrix for the given joint positions. Args: qpos (torch.Tensor): The joint positions. Returns: torch.Tensor: The Jacobian matrix. \"\"\" if not isinstance(qpos, torch.Tensor): qpos = torch.tensor(qpos, dtype=torch.float) qpos = qpos.to(self.device) J = self.pk_chain.jacobian(qpos) return J ","wordCount":"1901","inLanguage":"zh-cn","image":"https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E","datePublished":"2025-02-26T00:00:00Z","dateModified":"2025-02-26T00:00:00Z","author":{"@type":"Person","name":"Chase"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://chase6305.github.io/posts/robotics/kinematics/pytorch/"},"publisher":{"@type":"Organization","name":"Chase Blog","logo":{"@type":"ImageObject","url":"https://chase6305.github.io/%3Clink%20/%20abs%20url%3E"}}}</script></head><body id=top><script>if(localStorage.getItem("pref-theme")==="dark"){document.body.classList.add('dark');}else if(localStorage.getItem("pref-theme")==="light"){document.body.classList.remove('dark')}else if(window.matchMedia('(prefers-color-scheme: dark)').matches){document.body.classList.add('dark');}</script><header class=header><nav class=nav><div class=logo><a href=https://chase6305.github.io/ accesskey=h title="Chase's Home (Alt + H)"><img src=https://chase6305.github.io/apple-touch-icon.png alt aria-label=logo height=35>Chase's Home</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://chase6305.github.io/categories/ title=categories><span>categories</span></a></li><li><a href=https://chase6305.github.io/archives/ title=archives><span>archives</span></a></li><li><a href=https://chase6305.github.io/tags/ title=tags><span>tags</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://chase6305.github.io/>Home</a></div><h1 class="post-title entry-hint-parent">pytorch 机械臂逆运动学迭代数值解</h1><div class=post-meta><span title="2025-02-26 00:00:00 +0000 UTC">2025-02-26</span>&nbsp;·&nbsp;Chase&nbsp;|&nbsp;<a href=https://github.com/%3cpath_to_repo%3e/content/posts/robotics/kinematics/pytorch/index.md rel="noopener noreferrer" target=_blank>Suggest Changes</a></div></header><div class=post-content><p><a href=https://github.com/UM-ARM-Lab/pytorch_kinematics>https://github.com/UM-ARM-Lab/pytorch_kinematics</a>
+分享一个求解运动学逆解的第三方库 pytorch_kinematics， 以下是我写的一份集成样例。</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python>
+<span class=kn>import</span> <span class=nn>sys</span>
+<span class=kn>import</span> <span class=nn>itertools</span>
+<span class=kn>import</span> <span class=nn>typing</span>
+<span class=kn>from</span> <span class=nn>concurrent.futures</span> <span class=kn>import</span> <span class=n>ThreadPoolExecutor</span><span class=p>,</span> <span class=n>as_completed</span>
+<span class=kn>from</span> <span class=nn>contextlib</span> <span class=kn>import</span> <span class=n>contextmanager</span><span class=p>,</span> <span class=n>redirect_stderr</span><span class=p>,</span> <span class=n>redirect_stdout</span>
+<span class=kn>from</span> <span class=nn>copy</span> <span class=kn>import</span> <span class=n>deepcopy</span>
+<span class=kn>from</span> <span class=nn>os</span> <span class=kn>import</span> <span class=n>devnull</span>
+<span class=kn>import</span> <span class=nn>logging</span>
+
+<span class=kn>import</span> <span class=nn>numpy</span> <span class=kn>as</span> <span class=nn>np</span>
+<span class=kn>import</span> <span class=nn>torch</span>
+
+<span class=n>logging</span><span class=o>.</span><span class=n>basicConfig</span><span class=p>(</span><span class=n>level</span><span class=o>=</span><span class=n>logging</span><span class=o>.</span><span class=n>INFO</span><span class=p>)</span>
+
+
+<span class=k>try</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>sys</span><span class=o>.</span><span class=n>platform</span> <span class=o>!=</span> <span class=s2>&#34;win32&#34;</span><span class=p>:</span>
+        <span class=kn>import</span> <span class=nn>pytorch_kinematics</span> <span class=kn>as</span> <span class=nn>pk</span>
+<span class=k>except</span> <span class=ne>ImportError</span><span class=p>:</span>
+    <span class=k>raise</span> <span class=ne>ImportError</span><span class=p>(</span>
+        <span class=s2>&#34;pytorch_kinematics_ms not installed. Install with `pip install pytorch_kinematics_ms`&#34;</span>
+    <span class=p>)</span>
+
+<span class=n>__all__</span> <span class=o>=</span> <span class=p>[</span><span class=s2>&#34;PytorchSolver&#34;</span><span class=p>]</span>
+
+
+<span class=k>class</span> <span class=nc>PytorchSolver</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
+
+    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span>
+        <span class=bp>self</span><span class=p>,</span>
+        <span class=n>urdf_path</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span>
+        <span class=n>end_link_name</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span>
+        <span class=o>**</span><span class=n>kwargs</span><span class=p>,</span>
+    <span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Initializes the PyTorch kinematics solver.
+</span><span class=s2>
+</span><span class=s2>            This constructor sets up the kinematics solver using PyTorch,
+</span><span class=s2>            allowing for efficient computation of robot kinematics based on
+</span><span class=s2>            the specified URDF model.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            urdf_path (str, optional): Path to the robot&#39;s URDF file.
+</span><span class=s2>            end_link_name (str): The name of the end-effector link.
+</span><span class=s2>            **kwargs: Additional keyword arguments passed to the base solver.
+</span><span class=s2>
+</span><span class=s2>        &#34;&#34;&#34;</span>
+
+        <span class=nb>super</span><span class=p>()</span><span class=o>.</span><span class=fm>__init__</span><span class=p>(</span>
+            <span class=n>urdf_path</span><span class=o>=</span><span class=n>urdf_path</span><span class=p>,</span>
+            <span class=n>end_link_name</span><span class=o>=</span><span class=n>end_link_name</span><span class=p>,</span>
+            <span class=o>**</span><span class=n>kwargs</span><span class=p>,</span>
+        <span class=p>)</span>
+
+        <span class=bp>self</span><span class=o>.</span><span class=n>device</span> <span class=o>=</span> <span class=n>kwargs</span><span class=o>.</span><span class=n>get</span><span class=p>(</span>
+            <span class=s2>&#34;device&#34;</span><span class=p>,</span>
+            <span class=n>torch</span><span class=o>.</span><span class=n>device</span><span class=p>(</span><span class=s2>&#34;cuda:0&#34;</span><span class=p>)</span>
+            <span class=k>if</span> <span class=n>torch</span><span class=o>.</span><span class=n>cuda</span><span class=o>.</span><span class=n>is_available</span><span class=p>()</span> <span class=k>else</span> <span class=n>torch</span><span class=o>.</span><span class=n>device</span><span class=p>(</span><span class=s2>&#34;cpu&#34;</span><span class=p>),</span>
+        <span class=p>)</span>
+
+        <span class=bp>self</span><span class=o>.</span><span class=n>root_link_name</span> <span class=o>=</span> <span class=n>kwargs</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&#34;root_link_name&#34;</span><span class=p>,</span> <span class=bp>None</span><span class=p>)</span>
+
+        <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>urdf_path</span><span class=p>,</span> <span class=s2>&#34;rb&#34;</span><span class=p>)</span> <span class=k>as</span> <span class=n>f</span><span class=p>:</span>
+            <span class=n>urdf_str</span> <span class=o>=</span> <span class=n>f</span><span class=o>.</span><span class=n>read</span><span class=p>()</span>
+
+        <span class=c1># NOTE It seems that the pk library currently always outputs some complaints if there are unknown attributes in a URDF. Hide it with this contextmanager here.</span>
+        <span class=nd>@contextmanager</span>
+        <span class=k>def</span> <span class=nf>suppress_stdout_stderr</span><span class=p>():</span>
+            <span class=s2>&#34;&#34;&#34;A context manager that redirects stdout and stderr to devnull&#34;&#34;&#34;</span>
+            <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>devnull</span><span class=p>,</span> <span class=s2>&#34;w&#34;</span><span class=p>)</span> <span class=k>as</span> <span class=n>fnull</span><span class=p>:</span>
+                <span class=k>with</span> <span class=n>redirect_stderr</span><span class=p>(</span><span class=n>fnull</span><span class=p>)</span> <span class=k>as</span> <span class=n>err</span><span class=p>,</span> <span class=n>redirect_stdout</span><span class=p>(</span>
+                        <span class=n>fnull</span><span class=p>)</span> <span class=k>as</span> <span class=n>out</span><span class=p>:</span>
+                    <span class=k>yield</span> <span class=p>(</span><span class=n>err</span><span class=p>,</span> <span class=n>out</span><span class=p>)</span>
+
+        <span class=k>with</span> <span class=n>suppress_stdout_stderr</span><span class=p>():</span>
+            <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>root_link_name</span> <span class=ow>is</span> <span class=bp>None</span><span class=p>:</span>
+                <span class=bp>self</span><span class=o>.</span><span class=n>pk_chain</span> <span class=o>=</span> <span class=n>pk</span><span class=o>.</span><span class=n>build_serial_chain_from_urdf</span><span class=p>(</span>
+                    <span class=n>urdf_str</span><span class=p>,</span>
+                    <span class=n>end_link_name</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>end_link_name</span><span class=p>,</span>
+                <span class=p>)</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=n>device</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span>
+            <span class=k>else</span><span class=p>:</span>
+                <span class=bp>self</span><span class=o>.</span><span class=n>pk_chain</span> <span class=o>=</span> <span class=n>pk</span><span class=o>.</span><span class=n>build_serial_chain_from_urdf</span><span class=p>(</span>
+                    <span class=n>urdf_str</span><span class=p>,</span>
+                    <span class=n>end_link_name</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>end_link_name</span><span class=p>,</span>
+                    <span class=n>root_link_name</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>root_link_name</span><span class=p>,</span>
+                <span class=p>)</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=n>device</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span>
+
+        <span class=c1># Get agent joint limits.</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>lim</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>pk_chain</span><span class=o>.</span><span class=n>get_joint_limits</span><span class=p>(),</span>
+                                <span class=n>device</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span>
+
+        <span class=c1># Inverse kinematics is available via damped least squares (iterative steps with Jacobian pseudo-inverse damped to avoid oscillation near singularlities).</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>pik</span> <span class=o>=</span> <span class=n>pk</span><span class=o>.</span><span class=n>PseudoInverseIK</span><span class=p>(</span>
+            <span class=bp>self</span><span class=o>.</span><span class=n>pk_chain</span><span class=p>,</span>
+            <span class=n>pos_tolerance</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>_pos_eps</span><span class=p>,</span>
+            <span class=n>rot_tolerance</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>_rot_eps</span><span class=p>,</span>
+            <span class=n>joint_limits</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>lim</span><span class=o>.</span><span class=n>T</span><span class=p>,</span>
+            <span class=n>early_stopping_any_converged</span><span class=o>=</span><span class=bp>True</span><span class=p>,</span>
+            <span class=n>max_iterations</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>_max_iterations</span><span class=p>,</span>
+            <span class=n>lr</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>_dt</span><span class=p>,</span>
+            <span class=n>num_retries</span><span class=o>=</span><span class=mi>1</span><span class=p>,</span>
+        <span class=p>)</span>
+
+        <span class=bp>self</span><span class=o>.</span><span class=n>dof</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>pk_chain</span><span class=o>.</span><span class=n>n_joints</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>ik_nearst_weight</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>ones</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>dof</span><span class=p>)</span>
+
+        <span class=bp>self</span><span class=o>.</span><span class=n>upper_position_limits</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>pk_chain</span><span class=o>.</span><span class=n>high</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>lower_position_limits</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>pk_chain</span><span class=o>.</span><span class=n>low</span>
+
+    <span class=k>def</span> <span class=nf>get_link_names</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>dict</span><span class=p>:</span>
+        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>pk_chain</span><span class=o>.</span><span class=n>get_link_names</span><span class=p>()</span>
+
+
+    <span class=k>def</span> <span class=nf>limit_robot_config</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>qpos_list</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>np</span><span class=o>.</span><span class=n>ndarray</span><span class=p>:</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Limit the robot configuration based on the elbow position.
+</span><span class=s2>
+</span><span class=s2>        If the elbow is in the up position, it checks the positions of specific
+</span><span class=s2>        links to determine if the configuration is valid.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            qpos_list (torch.tensor): The list of joint positions to be limited.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            np.ndarray: The limited list of joint positions if the elbow is up,
+</span><span class=s2>                        otherwise returns the original list.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>_is_elbow_up</span><span class=p>:</span>
+            <span class=k>return</span> <span class=n>qpos_list</span>
+
+        <span class=k>def</span> <span class=nf>process_qpos</span><span class=p>(</span><span class=n>q</span><span class=p>):</span>
+            <span class=n>ret</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>pk_chain</span><span class=o>.</span><span class=n>forward_kinematics</span><span class=p>(</span><span class=n>q</span><span class=p>,</span> <span class=n>end_only</span><span class=o>=</span><span class=bp>False</span><span class=p>)</span>
+            <span class=n>link_xpos_list</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>ret</span><span class=o>.</span><span class=n>values</span><span class=p>())</span>
+
+            <span class=c1># Extract the z positions of specific links</span>
+            <span class=n>link_1_z</span> <span class=o>=</span> <span class=n>link_xpos_list</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=o>.</span><span class=n>get_matrix</span><span class=p>()[:,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+            <span class=n>link_2_z</span> <span class=o>=</span> <span class=n>link_xpos_list</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span><span class=o>.</span><span class=n>get_matrix</span><span class=p>()[:,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+            <span class=n>link_3_z</span> <span class=o>=</span> <span class=n>link_xpos_list</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span><span class=o>.</span><span class=n>get_matrix</span><span class=p>()[:,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+
+            <span class=k>if</span> <span class=n>link_2_z</span> <span class=o>&lt;=</span> <span class=n>link_1_z</span><span class=p>:</span>
+                <span class=k>if</span> <span class=n>link_3_z</span> <span class=o>&lt;=</span> <span class=n>link_2_z</span><span class=p>:</span>
+                    <span class=k>return</span> <span class=n>q</span>
+            <span class=k>else</span><span class=p>:</span>
+                <span class=k>return</span> <span class=n>q</span>
+
+            <span class=k>return</span> <span class=bp>None</span>
+
+        <span class=k>with</span> <span class=n>ThreadPoolExecutor</span><span class=p>()</span> <span class=k>as</span> <span class=n>executor</span><span class=p>:</span>
+            <span class=n>results</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>executor</span><span class=o>.</span><span class=n>map</span><span class=p>(</span><span class=n>process_qpos</span><span class=p>,</span> <span class=n>qpos_list</span><span class=p>))</span>
+
+        <span class=n>limit_qpos_list</span> <span class=o>=</span> <span class=p>[</span><span class=n>q</span> <span class=k>for</span> <span class=n>q</span> <span class=ow>in</span> <span class=n>results</span> <span class=k>if</span> <span class=n>q</span> <span class=ow>is</span> <span class=ow>not</span> <span class=bp>None</span><span class=p>]</span>
+
+        <span class=k>return</span> <span class=p>(</span><span class=n>torch</span><span class=o>.</span><span class=n>stack</span><span class=p>(</span><span class=n>limit_qpos_list</span><span class=p>)</span>
+                <span class=k>if</span> <span class=n>limit_qpos_list</span> <span class=k>else</span> <span class=n>torch</span><span class=o>.</span><span class=n>empty</span><span class=p>((</span><span class=mi>0</span><span class=p>,),</span> <span class=n>device</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>))</span>
+
+    <span class=nd>@staticmethod</span>
+    <span class=k>def</span> <span class=nf>_qpos_to_limits_single</span><span class=p>(</span>
+        <span class=n>q</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>,</span>
+        <span class=n>joint_seed</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>,</span>
+        <span class=n>lower_position_limits</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>,</span>
+        <span class=n>upper_position_limits</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>,</span>
+        <span class=n>ik_nearst_weight</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>,</span>
+    <span class=p>)</span> <span class=o>-&gt;</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>:</span>
+        <span class=s2>&#34;&#34;&#34;
+</span><span class=s2>        Adjusts the given joint positions (q) to fit within the specified limits while minimizing the difference to the seed position.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            q (torch.Tensor): The initial joint positions.
+</span><span class=s2>            joint_seed (torch.Tensor): The seed joint positions for comparison.
+</span><span class=s2>            lower_position_limits (torch.Tensor): The lower bounds for the joint positions.
+</span><span class=s2>            upper_position_limits (torch.Tensor): The upper bounds for the joint positions.
+</span><span class=s2>            ik_nearst_weight (torch.Tensor): The weights for the inverse kinematics nearest calculation.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            torch.Tensor: The adjusted joint positions that fit within the limits.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=n>device</span> <span class=o>=</span> <span class=n>q</span><span class=o>.</span><span class=n>device</span>
+        <span class=n>joint_seed</span> <span class=o>=</span> <span class=n>joint_seed</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=n>device</span><span class=p>)</span>
+        <span class=n>lower_position_limits</span> <span class=o>=</span> <span class=n>lower_position_limits</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=n>device</span><span class=p>)</span>
+        <span class=n>upper_position_limits</span> <span class=o>=</span> <span class=n>upper_position_limits</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=n>device</span><span class=p>)</span>
+        <span class=n>ik_nearst_weight</span> <span class=o>=</span> <span class=n>ik_nearst_weight</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=n>device</span><span class=p>)</span>
+
+        <span class=n>best_qpos_limit</span> <span class=o>=</span> <span class=n>q</span><span class=o>.</span><span class=n>clone</span><span class=p>()</span>
+        <span class=n>best_total_q_diff</span> <span class=o>=</span> <span class=nb>float</span><span class=p>(</span><span class=s2>&#34;inf&#34;</span><span class=p>)</span>
+
+        <span class=c1># Generate possible values for each joint</span>
+        <span class=n>possible_arrays</span> <span class=o>=</span> <span class=p>[[</span>
+            <span class=n>q</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>+</span> <span class=n>offset</span> <span class=o>*</span> <span class=p>(</span><span class=mi>2</span> <span class=o>*</span> <span class=n>torch</span><span class=o>.</span><span class=n>pi</span><span class=p>)</span>
+            <span class=k>for</span> <span class=n>offset</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=o>-</span><span class=mi>5</span><span class=p>,</span> <span class=mi>6</span><span class=p>)</span>
+            <span class=k>if</span> <span class=n>lower_position_limits</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>&lt;=</span> <span class=n>q</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>+</span> <span class=n>offset</span> <span class=o>*</span>
+            <span class=p>(</span><span class=mi>2</span> <span class=o>*</span> <span class=n>torch</span><span class=o>.</span><span class=n>pi</span><span class=p>)</span> <span class=o>&lt;=</span> <span class=n>upper_position_limits</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
+        <span class=p>]</span>
+                           <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>q</span><span class=o>.</span><span class=n>size</span><span class=p>(</span><span class=mi>0</span><span class=p>))]</span>
+
+        <span class=k>if</span> <span class=nb>any</span><span class=p>(</span><span class=ow>not</span> <span class=n>values</span> <span class=k>for</span> <span class=n>values</span> <span class=ow>in</span> <span class=n>possible_arrays</span><span class=p>):</span>
+            <span class=k>return</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>([])</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=n>device</span><span class=p>)</span>
+
+        <span class=c1># Create all possible combinations of joint values</span>
+        <span class=n>all_possible_combinations</span> <span class=o>=</span> <span class=n>itertools</span><span class=o>.</span><span class=n>product</span><span class=p>(</span><span class=o>*</span><span class=n>possible_arrays</span><span class=p>)</span>
+        <span class=k>for</span> <span class=n>combination</span> <span class=ow>in</span> <span class=n>all_possible_combinations</span><span class=p>:</span>
+            <span class=n>combination_tensor</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>(</span><span class=n>combination</span><span class=p>)</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=n>device</span><span class=p>)</span>
+            <span class=n>total_q_diff</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>sum</span><span class=p>(</span>
+                <span class=n>torch</span><span class=o>.</span><span class=n>abs</span><span class=p>(</span><span class=n>combination_tensor</span> <span class=o>-</span> <span class=n>joint_seed</span><span class=p>)</span> <span class=o>*</span> <span class=n>ik_nearst_weight</span><span class=p>)</span>
+
+            <span class=c1># Update the best solution if a smaller total difference is found</span>
+            <span class=k>if</span> <span class=n>total_q_diff</span> <span class=o>&lt;</span> <span class=n>best_total_q_diff</span><span class=p>:</span>
+                <span class=n>best_total_q_diff</span> <span class=o>=</span> <span class=n>total_q_diff</span>
+                <span class=n>best_qpos_limit</span> <span class=o>=</span> <span class=n>combination_tensor</span>
+
+        <span class=k>return</span> <span class=n>best_qpos_limit</span>
+
+    <span class=k>def</span> <span class=nf>qpos_to_limits</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>qpos_list_split</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>,</span>
+                       <span class=n>joint_seed</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>:</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Adjusts a list of joint positions to fit within the specified limits for each joint.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            qpos_list_split (torch.Tensor): The list of joint positions to be adjusted.
+</span><span class=s2>            joint_seed (torch.Tensor): The seed joint positions for comparison.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            torch.Tensor: The adjusted list of joint positions.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>ik_nearst_weight</span> <span class=ow>is</span> <span class=bp>None</span><span class=p>:</span>
+            <span class=bp>self</span><span class=o>.</span><span class=n>ik_nearst_weight</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>ones_like</span><span class=p>(</span><span class=n>qpos_list_split</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>],</span>
+                                                    <span class=n>device</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=bp>self</span><span class=o>.</span><span class=n>ik_nearst_weight</span> <span class=o>=</span> <span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>ik_nearst_weight</span><span class=o>.</span><span class=n>clone</span><span class=p>()</span><span class=o>.</span><span class=n>detach</span><span class=p>()</span><span class=o>.</span><span class=n>to</span><span class=p>(</span>
+                <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>))</span>
+
+        <span class=n>adjusted_qpos_list</span> <span class=o>=</span> <span class=p>[]</span>
+        <span class=c1># Use a ThreadPoolExecutor to parallelize the processing</span>
+        <span class=k>with</span> <span class=n>ThreadPoolExecutor</span><span class=p>()</span> <span class=k>as</span> <span class=n>executor</span><span class=p>:</span>
+            <span class=n>futures</span> <span class=o>=</span> <span class=p>[</span>
+                <span class=n>executor</span><span class=o>.</span><span class=n>submit</span><span class=p>(</span>
+                    <span class=bp>self</span><span class=o>.</span><span class=n>_qpos_to_limits_single</span><span class=p>,</span>
+                    <span class=n>q</span><span class=p>,</span>
+                    <span class=n>joint_seed</span><span class=p>,</span>
+                    <span class=bp>self</span><span class=o>.</span><span class=n>lower_position_limits</span><span class=p>,</span>
+                    <span class=bp>self</span><span class=o>.</span><span class=n>upper_position_limits</span><span class=p>,</span>
+                    <span class=bp>self</span><span class=o>.</span><span class=n>ik_nearst_weight</span><span class=p>,</span>
+                <span class=p>)</span> <span class=k>for</span> <span class=n>q</span> <span class=ow>in</span> <span class=n>qpos_list_split</span>
+            <span class=p>]</span>
+
+            <span class=k>for</span> <span class=n>future</span> <span class=ow>in</span> <span class=n>as_completed</span><span class=p>(</span><span class=n>futures</span><span class=p>):</span>
+                <span class=n>result</span> <span class=o>=</span> <span class=n>future</span><span class=o>.</span><span class=n>result</span><span class=p>()</span>
+                <span class=k>if</span> <span class=n>result</span><span class=o>.</span><span class=n>numel</span><span class=p>()</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>:</span>
+                    <span class=n>adjusted_qpos_list</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>result</span><span class=p>)</span>
+
+        <span class=k>return</span> <span class=p>(</span><span class=n>torch</span><span class=o>.</span><span class=n>stack</span><span class=p>(</span><span class=n>adjusted_qpos_list</span><span class=p>)</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=n>qpos_list_split</span><span class=o>.</span><span class=n>device</span><span class=p>)</span>
+                <span class=k>if</span> <span class=n>adjusted_qpos_list</span> <span class=k>else</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>([],</span> <span class=n>device</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>))</span>
+
+    <span class=k>def</span> <span class=nf>get_ik</span><span class=p>(</span>
+        <span class=bp>self</span><span class=p>,</span>
+        <span class=n>target_pose</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>,</span>
+        <span class=n>joint_seed</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>,</span>
+        <span class=n>num_samples</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=bp>None</span><span class=p>,</span>
+        <span class=n>return_all_solutions</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=bp>False</span><span class=p>,</span>
+        <span class=o>**</span><span class=n>kwargs</span><span class=p>,</span>
+    <span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Computes the inverse kinematics for given target poses.
+</span><span class=s2>
+</span><span class=s2>        This function generates random joint configurations within the specified limits,
+</span><span class=s2>        including the provided joint_seed, and attempts to find valid inverse kinematics solutions.
+</span><span class=s2>        It then identifies the joint positions that are closest to the joint_seed.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            target_pose (torch.Tensor): The target poses represented as a (batch_size, 4, 4) tensor or a single 4x4 transformation matrix.
+</span><span class=s2>            joint_seed (torch.Tensor): The initial joint positions used as a seed. It can be either a 1D tensor of shape (dof,) or a 2D tensor of shape (batch_size, dof).
+</span><span class=s2>            num_samples (int, optional): Number of samples, must be positive.
+</span><span class=s2>            return_all_solutions (bool, optional): If True, return all IK results. If False, return the first IK result.
+</span><span class=s2>                                        Defaults to False.
+</span><span class=s2>            **kwargs: Additional arguments for future extensions.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            Tuple[bool, np.ndarray]: A tuple containing:
+</span><span class=s2>                - A boolean indicating whether a valid solution was found for all target poses.
+</span><span class=s2>                - A list of the closest joint positions to the joint_seed for each target pose, or an empty list if no valid solutions were found.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=c1># Check dimensions of target_pose</span>
+        <span class=n>target_pose</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>as_tensor</span><span class=p>(</span><span class=n>target_pose</span><span class=p>)</span>
+
+        <span class=k>if</span> <span class=n>target_pose</span><span class=o>.</span><span class=n>dim</span><span class=p>()</span> <span class=o>==</span> <span class=mi>2</span><span class=p>:</span>
+            <span class=k>assert</span> <span class=n>target_pose</span><span class=o>.</span><span class=n>shape</span> <span class=o>==</span> <span class=p>(</span>
+                <span class=mi>4</span><span class=p>,</span>
+                <span class=mi>4</span><span class=p>,</span>
+            <span class=p>),</span> <span class=s2>&#34;`target_pose` must be of shape (4, 4) or (n, 4, 4).&#34;</span>
+            <span class=n>target_pose</span> <span class=o>=</span> <span class=n>target_pose</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+        <span class=k>elif</span> <span class=n>target_pose</span><span class=o>.</span><span class=n>dim</span><span class=p>()</span> <span class=o>==</span> <span class=mi>3</span><span class=p>:</span>
+            <span class=k>assert</span> <span class=n>target_pose</span><span class=o>.</span><span class=n>shape</span><span class=p>[</span><span class=mi>1</span><span class=p>:]</span> <span class=o>==</span> <span class=p>(</span>
+                <span class=mi>4</span><span class=p>,</span>
+                <span class=mi>4</span><span class=p>,</span>
+            <span class=p>),</span> <span class=s2>&#34;`target_pose` must be of shape (4, 4) or (n, 4, 4).&#34;</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=k>raise</span> <span class=ne>ValueError</span><span class=p>(</span>
+                <span class=s2>&#34;`target_pose` must be a tensor of shape (4, 4) or (n, 4, 4).&#34;</span><span class=p>)</span>
+
+        <span class=k>if</span> <span class=n>num_samples</span> <span class=ow>is</span> <span class=ow>not</span> <span class=bp>None</span><span class=p>:</span>
+            <span class=bp>self</span><span class=o>.</span><span class=n>_num_samples</span> <span class=o>=</span> <span class=n>num_samples</span>
+
+        <span class=k>if</span> <span class=n>joint_seed</span> <span class=ow>is</span> <span class=bp>None</span><span class=p>:</span>
+            <span class=n>joint_seed</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>zeros</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>dof</span><span class=p>)</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=n>joint_seed</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>as_tensor</span><span class=p>(</span><span class=n>joint_seed</span><span class=p>)</span>
+
+        <span class=c1># Check dimensions of joint_seed</span>
+        <span class=k>if</span> <span class=n>joint_seed</span><span class=o>.</span><span class=n>dim</span><span class=p>()</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
+            <span class=n>joint_seed</span> <span class=o>=</span> <span class=n>joint_seed</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+            <span class=n>joint_seed_ndim</span> <span class=o>=</span> <span class=mi>1</span>
+        <span class=k>elif</span> <span class=n>joint_seed</span><span class=o>.</span><span class=n>dim</span><span class=p>()</span> <span class=o>==</span> <span class=mi>2</span><span class=p>:</span>
+            <span class=n>joint_seed_ndim</span> <span class=o>=</span> <span class=mi>2</span>
+            <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>joint_seed</span><span class=p>)</span> <span class=o>!=</span> <span class=nb>len</span><span class=p>(</span><span class=n>target_pose</span><span class=p>):</span>
+                <span class=k>raise</span> <span class=ne>ValueError</span><span class=p>(</span>
+                    <span class=s2>&#34;Batch size of joint_seed must match batch size of target_pose when joint_seed is a 2D tensor.&#34;</span>
+                <span class=p>)</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=k>raise</span> <span class=ne>ValueError</span><span class=p>(</span>
+                <span class=s2>&#34;`joint_seed` must be a tensor of shape (n,) or (n, n).&#34;</span><span class=p>)</span>
+        <span class=n>tcp_xpos</span> <span class=o>=</span> <span class=n>deepcopy</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>tcp_xpos</span><span class=p>)</span>
+        <span class=n>tcp_xpos</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>as_tensor</span><span class=p>(</span><span class=n>tcp_xpos</span><span class=p>)</span>
+        <span class=n>tcp_xpos</span> <span class=o>=</span> <span class=n>tcp_xpos</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span><span class=o>.</span><span class=n>float</span><span class=p>()</span>
+
+        <span class=n>target_pose</span> <span class=o>=</span> <span class=n>target_pose</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span><span class=o>.</span><span class=n>float</span><span class=p>()</span>
+        <span class=n>target_pose</span> <span class=o>=</span> <span class=n>target_pose</span> <span class=err>@</span> <span class=n>torch</span><span class=o>.</span><span class=n>inverse</span><span class=p>(</span><span class=n>tcp_xpos</span><span class=p>)</span>
+        <span class=n>joint_seed</span> <span class=o>=</span> <span class=n>joint_seed</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span><span class=o>.</span><span class=n>float</span><span class=p>()</span>
+
+        <span class=c1># Get qpos limits</span>
+        <span class=n>upper_limits</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>upper_position_limits</span><span class=o>.</span><span class=n>float</span><span class=p>()</span>
+        <span class=n>lower_limits</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>lower_position_limits</span><span class=o>.</span><span class=n>float</span><span class=p>()</span>
+
+        <span class=n>batch_size</span> <span class=o>=</span> <span class=n>target_pose</span><span class=o>.</span><span class=n>shape</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+        <span class=n>dof</span> <span class=o>=</span> <span class=n>joint_seed</span><span class=o>.</span><span class=n>shape</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
+        <span class=c1># num_samples = self._num_samples * batch_size</span>
+
+        <span class=n>random_joint_seeds_part</span> <span class=o>=</span> <span class=n>lower_limits</span> <span class=o>+</span> <span class=p>(</span>
+            <span class=n>upper_limits</span> <span class=o>-</span> <span class=n>lower_limits</span><span class=p>)</span> <span class=o>*</span> <span class=n>torch</span><span class=o>.</span><span class=n>rand</span><span class=p>(</span>
+                <span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>_num_samples</span> <span class=o>-</span> <span class=mi>3</span><span class=p>,</span> <span class=n>dof</span><span class=p>),</span> <span class=n>device</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span>
+
+        <span class=c1># Initialize random_joint_seeds as an empty tensor</span>
+        <span class=n>random_joint_seeds</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>empty</span><span class=p>((</span><span class=mi>0</span><span class=p>,</span> <span class=n>dof</span><span class=p>),</span> <span class=n>device</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span>
+        <span class=n>target_pose_repeated</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>empty</span><span class=p>((</span><span class=mi>0</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>4</span><span class=p>),</span> <span class=n>device</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span>
+
+        <span class=c1># Handle different dimensions of joint_seed and iterate over target_pose</span>
+        <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>batch_size</span><span class=p>):</span>
+            <span class=n>current_joint_seed</span> <span class=o>=</span> <span class=p>(</span><span class=n>joint_seed</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+                                  <span class=k>if</span> <span class=n>joint_seed_ndim</span> <span class=o>==</span> <span class=mi>2</span> <span class=k>else</span> <span class=n>joint_seed</span><span class=p>)</span>
+            <span class=n>joint_seeds</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>vstack</span><span class=p>([</span>
+                <span class=n>current_joint_seed</span><span class=p>,</span>
+                <span class=n>lower_limits</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span>
+                <span class=n>random_joint_seeds_part</span><span class=p>,</span>
+                <span class=n>upper_limits</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span>
+            <span class=p>])</span>
+            <span class=n>random_joint_seeds</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>vstack</span><span class=p>([</span><span class=n>random_joint_seeds</span><span class=p>,</span> <span class=n>joint_seeds</span><span class=p>])</span>
+            <span class=n>current_target_pose</span> <span class=o>=</span> <span class=p>(</span><span class=n>target_pose</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>repeat</span><span class=p>(</span>
+                <span class=bp>self</span><span class=o>.</span><span class=n>_num_samples</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>))</span>
+            <span class=n>target_pose_repeated</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>vstack</span><span class=p>(</span>
+                <span class=p>[</span><span class=n>target_pose_repeated</span><span class=p>,</span> <span class=n>current_target_pose</span><span class=p>])</span>
+
+        <span class=n>res_list</span><span class=p>,</span> <span class=n>qpos_list</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>compute_inverse_kinematics</span><span class=p>(</span>
+            <span class=n>target_pose_repeated</span><span class=p>,</span> <span class=n>random_joint_seeds</span><span class=p>)</span>
+
+        <span class=c1># Split res_list and qpos_list according to self._num_samples</span>
+        <span class=n>res_list_split</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=n>res_list</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>_num_samples</span><span class=p>)</span>
+        <span class=n>qpos_list_split</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=n>qpos_list</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>_num_samples</span><span class=p>)</span>
+
+        <span class=c1># Initialize the final results and the closest joint positions</span>
+        <span class=n>final_results</span> <span class=o>=</span> <span class=p>[]</span>
+        <span class=n>final_qpos</span> <span class=o>=</span> <span class=p>[]</span>
+
+        <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>batch_size</span><span class=p>):</span>
+            <span class=n>target_joint_seed</span> <span class=o>=</span> <span class=p>(</span><span class=n>joint_seed</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
+                                 <span class=k>if</span> <span class=n>joint_seed_ndim</span> <span class=o>==</span> <span class=mi>2</span> <span class=k>else</span> <span class=n>joint_seed</span><span class=p>)</span>
+
+            <span class=k>if</span> <span class=ow>not</span> <span class=n>res_list_split</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>any</span><span class=p>():</span>
+                <span class=n>final_results</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=bp>False</span><span class=p>)</span>
+                <span class=n>final_qpos</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>torch</span><span class=o>.</span><span class=n>empty</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>device</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>))</span>
+                <span class=k>continue</span>
+
+            <span class=n>result_qpos_limit</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>qpos_to_limits</span><span class=p>(</span><span class=n>qpos_list_split</span><span class=p>[</span><span class=n>i</span><span class=p>],</span>
+                                                    <span class=n>target_joint_seed</span><span class=p>)</span>
+
+            <span class=n>limited_qpos_t</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>limit_robot_config</span><span class=p>(</span><span class=n>result_qpos_limit</span><span class=p>)</span>
+
+            <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>limited_qpos_t</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+                <span class=n>logging</span><span class=o>.</span><span class=n>warn</span><span class=p>(</span>
+                    <span class=s2>&#34;Pk: It is estimated that none of the axis configurations are met, elbow_up enable: {}&#34;</span>
+                    <span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>_is_elbow_up</span><span class=p>))</span>
+                <span class=n>final_results</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=bp>False</span><span class=p>)</span>
+                <span class=n>final_qpos</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>torch</span><span class=o>.</span><span class=n>empty</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>device</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>))</span>
+                <span class=k>continue</span>
+
+            <span class=n>distances</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>norm</span><span class=p>(</span><span class=n>limited_qpos_t</span> <span class=o>-</span> <span class=n>target_joint_seed</span><span class=p>,</span> <span class=n>dim</span><span class=o>=</span><span class=mi>1</span><span class=p>)</span>
+            <span class=k>if</span> <span class=n>return_all_solutions</span><span class=p>:</span>
+                <span class=c1># Sort the solutions by distances</span>
+                <span class=n>sorted_indices</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>argsort</span><span class=p>(</span><span class=n>distances</span><span class=p>)</span>
+                <span class=n>sorted_qpos_array</span> <span class=o>=</span> <span class=n>limited_qpos_t</span><span class=p>[</span><span class=n>sorted_indices</span><span class=p>]</span>
+                <span class=n>final_qpos</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>sorted_qpos_array</span><span class=p>)</span>
+            <span class=k>else</span><span class=p>:</span>
+                <span class=c1># Find the index of the closest solution</span>
+                <span class=n>closest_index</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>argmin</span><span class=p>(</span><span class=n>distances</span><span class=p>)</span>
+                <span class=c1># Return the closest joint position</span>
+                <span class=n>closest_qpos</span> <span class=o>=</span> <span class=n>limited_qpos_t</span><span class=p>[</span><span class=n>closest_index</span><span class=p>]</span>
+                <span class=n>final_qpos</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>closest_qpos</span><span class=p>)</span>
+            <span class=n>final_results</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=bp>True</span><span class=p>)</span>
+
+        <span class=c1># Check if all elements in final_results are True</span>
+        <span class=n>all_true</span> <span class=o>=</span> <span class=nb>all</span><span class=p>(</span><span class=n>final_results</span><span class=p>)</span>
+
+        <span class=k>return</span> <span class=n>all_true</span><span class=p>,</span> <span class=n>final_qpos</span>
+
+    <span class=k>def</span> <span class=nf>compute_inverse_kinematics</span><span class=p>(</span>
+            <span class=bp>self</span><span class=p>,</span> <span class=n>target_pose</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>,</span>
+            <span class=n>joint_seed</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=p>(</span><span class=nb>bool</span><span class=p>,</span> <span class=n>np</span><span class=o>.</span><span class=n>ndarray</span><span class=p>):</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Computes the inverse kinematics solutions for the given target poses and joint seeds.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            target_pose (torch.Tensor): The target poses represented as a (batch_size, 4, 4) tensor.
+</span><span class=s2>            joint_seed (torch.Tensor): The initial joint positions used as a seed. It can be either a 1D tensor of shape (dof,) or a 2D tensor of shape (batch_size, dof).
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            Tuple[bool, torch.Tensor]: A tuple containing:
+</span><span class=s2>                - A boolean indicating whether any valid solution was found.
+</span><span class=s2>                - The solutions tensor of shape (batch_size, dof) if a solution is found, otherwise an empty tensor.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=n>target_pose</span> <span class=o>=</span> <span class=n>target_pose</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span><span class=o>.</span><span class=n>float</span><span class=p>()</span>
+        <span class=n>joint_seed</span> <span class=o>=</span> <span class=n>joint_seed</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span><span class=o>.</span><span class=n>float</span><span class=p>()</span>
+
+        <span class=c1># Extract translation and rotation parts</span>
+        <span class=n>pos</span> <span class=o>=</span> <span class=n>target_pose</span><span class=p>[:,</span> <span class=p>:</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+        <span class=n>rot</span> <span class=o>=</span> <span class=n>target_pose</span><span class=p>[:,</span> <span class=p>:</span><span class=mi>3</span><span class=p>,</span> <span class=p>:</span><span class=mi>3</span><span class=p>]</span>
+
+        <span class=n>tf</span> <span class=o>=</span> <span class=n>pk</span><span class=o>.</span><span class=n>Transform3d</span><span class=p>(</span>
+            <span class=n>pos</span><span class=o>=</span><span class=n>pos</span><span class=p>,</span>
+            <span class=n>rot</span><span class=o>=</span><span class=n>rot</span><span class=p>,</span>
+            <span class=n>device</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>,</span>
+        <span class=p>)</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>pik</span><span class=o>.</span><span class=n>initial_config</span> <span class=o>=</span> <span class=n>joint_seed</span>
+
+        <span class=n>result</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>pik</span><span class=o>.</span><span class=n>solve</span><span class=p>(</span><span class=n>tf</span><span class=p>)</span>
+
+        <span class=k>if</span> <span class=n>result</span><span class=o>.</span><span class=n>converged_any</span><span class=o>.</span><span class=n>any</span><span class=p>()</span><span class=o>.</span><span class=n>item</span><span class=p>():</span>
+            <span class=k>return</span> <span class=n>result</span><span class=o>.</span><span class=n>converged_any</span><span class=p>,</span> <span class=n>result</span><span class=o>.</span><span class=n>solutions</span><span class=p>[:,</span> <span class=mi>0</span><span class=p>,</span> <span class=p>:]</span><span class=o>.</span><span class=n>squeeze</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+
+        <span class=k>return</span> <span class=bp>False</span><span class=p>,</span> <span class=n>torch</span><span class=o>.</span><span class=n>empty</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+
+    <span class=k>def</span> <span class=nf>get_fk</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>qpos</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>:</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Get the forward kinematics for the end link.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            qpos (torch.Tensor): The joint positions.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            torch.Tensor: A 4x4 homogeneous transformation matrix representing the pose of the end link.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=n>tcp_xpos</span> <span class=o>=</span> <span class=n>deepcopy</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>tcp_xpos</span><span class=p>)</span>
+        <span class=n>tcp_xpos</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>as_tensor</span><span class=p>(</span><span class=n>tcp_xpos</span><span class=p>)</span>
+        <span class=n>tcp_xpos</span> <span class=o>=</span> <span class=n>tcp_xpos</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span><span class=o>.</span><span class=n>float</span><span class=p>()</span>
+
+        <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>end_link_name</span> <span class=ow>is</span> <span class=bp>None</span><span class=p>:</span>
+            <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>compute_forward_kinematics</span><span class=p>(</span><span class=n>qpos</span><span class=p>)</span> <span class=err>@</span> <span class=n>tcp_xpos</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=k>return</span> <span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>compute_forward_kinematics</span><span class=p>(</span>
+                <span class=n>qpos</span><span class=p>,</span> <span class=n>link_name</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>end_link_name</span><span class=p>)</span> <span class=err>@</span> <span class=n>tcp_xpos</span><span class=p>)</span>
+
+    <span class=k>def</span> <span class=nf>get_all_fk</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>qpos</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>:</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Get the forward kinematics for all links from root to end link.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            qpos (torch.Tensor): The joint positions.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            list: A list of 4x4 homogeneous transformation matrices representing the poses of all links from root to end link.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=n>qpos</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>as_tensor</span><span class=p>(</span><span class=n>qpos</span><span class=p>)</span>
+        <span class=n>qpos</span> <span class=o>=</span> <span class=n>qpos</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span>
+
+        <span class=n>ret</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>pk_chain</span><span class=o>.</span><span class=n>forward_kinematics</span><span class=p>(</span><span class=n>qpos</span><span class=p>,</span> <span class=n>end_only</span><span class=o>=</span><span class=bp>False</span><span class=p>)</span>
+        <span class=n>link_names</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>ret</span><span class=o>.</span><span class=n>keys</span><span class=p>())</span>
+
+        <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>root_link_name</span> <span class=ow>is</span> <span class=ow>not</span> <span class=bp>None</span><span class=p>:</span>
+            <span class=k>try</span><span class=p>:</span>
+                <span class=n>start_index</span> <span class=o>=</span> <span class=n>link_names</span><span class=o>.</span><span class=n>index</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>root_link_name</span><span class=p>)</span>
+            <span class=k>except</span> <span class=ne>ValueError</span><span class=p>:</span>
+                <span class=k>raise</span> <span class=ne>KeyError</span><span class=p>(</span>
+                    <span class=n>f</span><span class=s2>&#34;Root link name &#39;{self.root_link_name}&#39; not found in the kinematic chain&#34;</span>
+                <span class=p>)</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=n>start_index</span> <span class=o>=</span> <span class=mi>0</span>
+
+        <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>end_link_name</span> <span class=ow>is</span> <span class=ow>not</span> <span class=bp>None</span><span class=p>:</span>
+            <span class=k>try</span><span class=p>:</span>
+                <span class=n>end_index</span> <span class=o>=</span> <span class=n>link_names</span><span class=o>.</span><span class=n>index</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>end_link_name</span><span class=p>)</span> <span class=o>+</span> <span class=mi>1</span>
+            <span class=k>except</span> <span class=ne>ValueError</span><span class=p>:</span>
+                <span class=k>raise</span> <span class=ne>KeyError</span><span class=p>(</span>
+                    <span class=n>f</span><span class=s2>&#34;End link name &#39;{self.end_link_name}&#39; not found in the kinematic chain&#34;</span>
+                <span class=p>)</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=n>end_index</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>link_names</span><span class=p>)</span>
+
+        <span class=n>poses</span> <span class=o>=</span> <span class=p>[]</span>
+        <span class=k>for</span> <span class=n>link_name</span> <span class=ow>in</span> <span class=n>link_names</span><span class=p>[</span><span class=n>start_index</span><span class=p>:</span><span class=n>end_index</span><span class=p>]:</span>
+            <span class=n>xpos</span> <span class=o>=</span> <span class=n>ret</span><span class=p>[</span><span class=n>link_name</span><span class=p>]</span>
+            <span class=k>if</span> <span class=ow>not</span> <span class=nb>hasattr</span><span class=p>(</span><span class=n>xpos</span><span class=p>,</span> <span class=s2>&#34;get_matrix&#34;</span><span class=p>):</span>
+                <span class=k>raise</span> <span class=ne>AttributeError</span><span class=p>(</span>
+                    <span class=n>f</span><span class=s2>&#34;The result for link &#39;{link_name}&#39; must have &#39;get_matrix&#39; attributes.&#34;</span>
+                <span class=p>)</span>
+            <span class=n>xpos_t</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>eye</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=n>device</span><span class=o>=</span><span class=n>xpos</span><span class=o>.</span><span class=n>get_matrix</span><span class=p>()</span><span class=o>.</span><span class=n>device</span><span class=p>)</span>
+            <span class=n>m</span> <span class=o>=</span> <span class=n>xpos</span><span class=o>.</span><span class=n>get_matrix</span><span class=p>()</span>
+            <span class=n>xpos_t</span><span class=p>[:</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span> <span class=o>=</span> <span class=n>m</span><span class=p>[:,</span> <span class=p>:</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+            <span class=n>xpos_t</span><span class=p>[:</span><span class=mi>3</span><span class=p>,</span> <span class=p>:</span><span class=mi>3</span><span class=p>]</span> <span class=o>=</span> <span class=n>m</span><span class=p>[:,</span> <span class=p>:</span><span class=mi>3</span><span class=p>,</span> <span class=p>:</span><span class=mi>3</span><span class=p>]</span>
+            <span class=n>poses</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>xpos_t</span><span class=p>)</span>
+
+        <span class=k>return</span> <span class=n>poses</span>
+
+    <span class=k>def</span> <span class=nf>compute_forward_kinematics</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span>
+                                   <span class=n>qpos</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>,</span>
+                                   <span class=n>link_name</span><span class=o>=</span><span class=bp>None</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>:</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Computes the forward kinematics for the given joint positions.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            qpos (torch.Tensor): The joint positions.
+</span><span class=s2>            link_name (str, optional): The name of the link for which to compute the forward kinematics.
+</span><span class=s2>                                       If None, computes for the end-effector.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            torch.Tensor: A 4x4 homogeneous transformation matrix representing the pose of the specified link or end-effector.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>if</span> <span class=ow>not</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>qpos</span><span class=p>,</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>):</span>
+            <span class=n>qpos</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>(</span><span class=n>qpos</span><span class=p>,</span> <span class=n>dtype</span><span class=o>=</span><span class=n>torch</span><span class=o>.</span><span class=n>float</span><span class=p>)</span>
+        <span class=n>qpos</span> <span class=o>=</span> <span class=n>qpos</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span>
+
+        <span class=k>if</span> <span class=n>link_name</span> <span class=ow>is</span> <span class=bp>None</span><span class=p>:</span>
+            <span class=n>xpos</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>pk_chain</span><span class=o>.</span><span class=n>forward_kinematics</span><span class=p>(</span><span class=n>qpos</span><span class=p>,</span>
+                                                         <span class=n>end_only</span><span class=o>=</span><span class=bp>True</span><span class=p>))[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=n>xpos</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>pk_chain</span><span class=o>.</span><span class=n>forward_kinematics</span><span class=p>(</span>
+                <span class=n>qpos</span><span class=p>,</span> <span class=n>end_only</span><span class=o>=</span><span class=bp>False</span><span class=p>)[</span><span class=n>link_name</span><span class=p>][</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
+
+        <span class=k>if</span> <span class=ow>not</span> <span class=nb>hasattr</span><span class=p>(</span><span class=n>xpos</span><span class=p>,</span> <span class=s2>&#34;get_matrix&#34;</span><span class=p>):</span>
+            <span class=n>logging</span><span class=o>.</span><span class=n>warn</span><span class=p>(</span>
+                <span class=s2>&#34;Get FK failed, the result from forward_kinematics must have &#39;get_matrix&#39; attributes.&#34;</span>
+            <span class=p>)</span>
+            <span class=k>return</span> <span class=n>torch</span><span class=o>.</span><span class=n>eye</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=n>device</span><span class=o>=</span><span class=n>xpos</span><span class=o>.</span><span class=n>device</span><span class=p>)</span>
+
+        <span class=n>xpos_t</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>eye</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=n>device</span><span class=o>=</span><span class=n>xpos</span><span class=o>.</span><span class=n>device</span><span class=p>)</span>
+        <span class=n>m</span> <span class=o>=</span> <span class=n>xpos</span><span class=o>.</span><span class=n>get_matrix</span><span class=p>()</span>
+        <span class=n>xpos_t</span><span class=p>[:</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span> <span class=o>=</span> <span class=n>m</span><span class=p>[:,</span> <span class=p>:</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+        <span class=n>xpos_t</span><span class=p>[:</span><span class=mi>3</span><span class=p>,</span> <span class=p>:</span><span class=mi>3</span><span class=p>]</span> <span class=o>=</span> <span class=n>m</span><span class=p>[:,</span> <span class=p>:</span><span class=mi>3</span><span class=p>,</span> <span class=p>:</span><span class=mi>3</span><span class=p>]</span>
+
+        <span class=k>return</span> <span class=n>xpos_t</span>
+
+    <span class=k>def</span> <span class=nf>get_jacobian</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>qpos</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>:</span>
+        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Compute the Jacobian matrix for the given joint positions.
+</span><span class=s2>
+</span><span class=s2>        Args:
+</span><span class=s2>            qpos (torch.Tensor): The joint positions.
+</span><span class=s2>
+</span><span class=s2>        Returns:
+</span><span class=s2>            torch.Tensor: The Jacobian matrix.
+</span><span class=s2>        &#34;&#34;&#34;</span>
+        <span class=k>if</span> <span class=ow>not</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>qpos</span><span class=p>,</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>):</span>
+            <span class=n>qpos</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>(</span><span class=n>qpos</span><span class=p>,</span> <span class=n>dtype</span><span class=o>=</span><span class=n>torch</span><span class=o>.</span><span class=n>float</span><span class=p>)</span>
+        <span class=n>qpos</span> <span class=o>=</span> <span class=n>qpos</span><span class=o>.</span><span class=n>to</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>)</span>
+
+        <span class=n>J</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>pk_chain</span><span class=o>.</span><span class=n>jacobian</span><span class=p>(</span><span class=n>qpos</span><span class=p>)</span>
+        <span class=k>return</span> <span class=n>J</span>
+
+</code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://chase6305.github.io/tags/c++/>C++</a></li><li><a href=https://chase6305.github.io/tags/robotics/>Robotics</a></li><li><a href=https://chase6305.github.io/tags/kinematics/>Kinematics</a></li><li><a href=https://chase6305.github.io/tags/torch/>Torch</a></li></ul><nav class=paginav><a class=prev href=https://chase6305.github.io/posts/calibration/opencv/><span class=title>«</span><br><span>非对称圆标记技术详解</span></a>
+<a class=next href=https://chase6305.github.io/posts/process/pid/><span class=title>»</span><br><span>Ubuntu 下查看进程 PID 和终止进程方法</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share pytorch 机械臂逆运动学迭代数值解 on x" href="https://x.com/intent/tweet/?text=pytorch%20%e6%9c%ba%e6%a2%b0%e8%87%82%e9%80%86%e8%bf%90%e5%8a%a8%e5%ad%a6%e8%bf%ad%e4%bb%a3%e6%95%b0%e5%80%bc%e8%a7%a3&url=https%3a%2f%2fchase6305.github.io%2fposts%2frobotics%2fkinematics%2fpytorch%2f&hashtags=Robotics%2cKinematics%2cC%2b%2b%2cTorch"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783H125.266L235.9 310.383 332.567 436.783H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share pytorch 机械臂逆运动学迭代数值解 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fchase6305.github.io%2fposts%2frobotics%2fkinematics%2fpytorch%2f&title=pytorch%20%e6%9c%ba%e6%a2%b0%e8%87%82%e9%80%86%e8%bf%90%e5%8a%a8%e5%ad%a6%e8%bf%ad%e4%bb%a3%e6%95%b0%e5%80%bc%e8%a7%a3&summary=pytorch%20%e6%9c%ba%e6%a2%b0%e8%87%82%e9%80%86%e8%bf%90%e5%8a%a8%e5%ad%a6%e8%bf%ad%e4%bb%a3%e6%95%b0%e5%80%bc%e8%a7%a3&source=https%3a%2f%2fchase6305.github.io%2fposts%2frobotics%2fkinematics%2fpytorch%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512h-386.892c-34.524.0-62.554-28.03-62.554-62.554v-386.892c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0v-129.439c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02v-126.056c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768h75.024zm-307.552-334.556c-25.674.0-42.448 16.879-42.448 39.002.0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share pytorch 机械臂逆运动学迭代数值解 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fchase6305.github.io%2fposts%2frobotics%2fkinematics%2fpytorch%2f&title=pytorch%20%e6%9c%ba%e6%a2%b0%e8%87%82%e9%80%86%e8%bf%90%e5%8a%a8%e5%ad%a6%e8%bf%ad%e4%bb%a3%e6%95%b0%e5%80%bc%e8%a7%a3"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512h-386.892c-34.524.0-62.554-28.03-62.554-62.554v-386.892c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zm-119.474 108.193c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zm-160.386-29.702c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share pytorch 机械臂逆运动学迭代数值解 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fchase6305.github.io%2fposts%2frobotics%2fkinematics%2fpytorch%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978v-192.915h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554v-386.892c0-34.524 28.029-62.554 62.554-62.554h386.892z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share pytorch 机械臂逆运动学迭代数值解 on whatsapp" href="https://api.whatsapp.com/send?text=pytorch%20%e6%9c%ba%e6%a2%b0%e8%87%82%e9%80%86%e8%bf%90%e5%8a%a8%e5%ad%a6%e8%bf%ad%e4%bb%a3%e6%95%b0%e5%80%bc%e8%a7%a3%20-%20https%3a%2f%2fchase6305.github.io%2fposts%2frobotics%2fkinematics%2fpytorch%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512h-386.892c-34.524.0-62.554-28.03-62.554-62.554v-386.892c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23-13.314-11.876-22.304-26.542-24.916-31.026s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share pytorch 机械臂逆运动学迭代数值解 on telegram" href="https://telegram.me/share/url?text=pytorch%20%e6%9c%ba%e6%a2%b0%e8%87%82%e9%80%86%e8%bf%90%e5%8a%a8%e5%ad%a6%e8%bf%ad%e4%bb%a3%e6%95%b0%e5%80%bc%e8%a7%a3&url=https%3a%2f%2fchase6305.github.io%2fposts%2frobotics%2fkinematics%2fpytorch%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47A3.38 3.38.0 0126.49 29.86zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z" /></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share pytorch 机械臂逆运动学迭代数值解 on ycombinator" href="https://news.ycombinator.com/submitlink?t=pytorch%20%e6%9c%ba%e6%a2%b0%e8%87%82%e9%80%86%e8%bf%90%e5%8a%a8%e5%ad%a6%e8%bf%ad%e4%bb%a3%e6%95%b0%e5%80%bc%e8%a7%a3&u=https%3a%2f%2fchase6305.github.io%2fposts%2frobotics%2fkinematics%2fpytorch%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentcolor" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" /></svg></a></li></ul></footer></article></main><footer class=footer><span>&copy; 2025 <a href=https://chase6305.github.io/>Chase Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z" /></svg></a><script>let menu=document.getElementById('menu')
+if(menu){menu.scrollLeft=localStorage.getItem("menu-scroll-position");menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft);}}
+document.querySelectorAll('a[href^="#"]').forEach(anchor=>{anchor.addEventListener("click",function(e){e.preventDefault();var id=this.getAttribute("href").substr(1);if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({behavior:"smooth"});}else{document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();}
+if(id==="top"){history.replaceState(null,null," ");}else{history.pushState(null,null,`#${id}`);}});});</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){if(document.body.scrollTop>800||document.documentElement.scrollTop>800){mybutton.style.visibility="visible";mybutton.style.opacity="1";}else{mybutton.style.visibility="hidden";mybutton.style.opacity="0";}};</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{if(document.body.className.includes("dark")){document.body.classList.remove('dark');localStorage.setItem("pref-theme",'light');}else{document.body.classList.add('dark');localStorage.setItem("pref-theme",'dark');}})</script><script>document.querySelectorAll('pre > code').forEach((codeblock)=>{const container=codeblock.parentNode.parentNode;const copybutton=document.createElement('button');copybutton.classList.add('copy-code');copybutton.innerHTML='copy';function copyingDone(){copybutton.innerHTML='copied!';setTimeout(()=>{copybutton.innerHTML='copy';},2000);}
+copybutton.addEventListener('click',(cb)=>{if('clipboard'in navigator){navigator.clipboard.writeText(codeblock.textContent);copyingDone();return;}
+const range=document.createRange();range.selectNodeContents(codeblock);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);try{document.execCommand('copy');copyingDone();}catch(e){};selection.removeRange(range);});if(container.classList.contains("highlight")){container.appendChild(copybutton);}else if(container.parentNode.firstChild==container){}else if(codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"){codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);}else{codeblock.parentNode.appendChild(copybutton);}});</script></body></html>

@@ -5,8 +5,15 @@ date: 2024-03-31
 
 ## Hi there, Welcome to my Technical Blog 👋 
 
+<div class="profile">
+    <div class="profile_inner">
+        <img src="cjt.jpg" alt="Chase">
+    </div>
+</div>
+
 ### I'm Chase.
-- A Robotics and Software Engineer passionate about pushing the boundaries of technology.
+- A Robotics and Software Engineer, specializing in robot simulation and control
+- An enthusiastic runner and avid reader
 
 ## 💡 Areas of Expertise:
 - Robotics Technology

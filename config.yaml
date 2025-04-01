@@ -52,6 +52,9 @@ params:
   showtoc: true
   tocopen: true
 
+  customCSS:
+    - css/custom.css
+
   assets:
     disableHLJS: true # to disable highlight.js
     disableFingerprinting: true
@@ -144,7 +147,7 @@ pygmentsCodefences: true
 markup:
   goldmark:
     renderer:
-      unsafe: false  # 允许原始 HTML
+      unsafe: true  # 允许原始 HTML
   highlight:
     anchorLineNos: false
     codeFences: true
