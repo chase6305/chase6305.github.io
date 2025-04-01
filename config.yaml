@@ -40,7 +40,7 @@ params:
   ShowShareButtons: true
   ShowPostNavLinks: true
   ShowBreadCrumbs: true
-  ShowCodeCopyButtons: false
+  ShowCodeCopyButtons: true
   ShowWordCount: false
   ShowRssButtonInSectionTermList: true
   UseHugoToc: true
@@ -53,7 +53,7 @@ params:
   tocopen: true
 
   assets:
-    # disableHLJS: true # to disable highlight.js
+    disableHLJS: true # to disable highlight.js
     disableFingerprinting: true
     favicon: "<link / abs url>"
     favicon16x16: "<link / abs url>"
@@ -139,18 +139,26 @@ menu:
 
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
+pygmentsCodefences: true
+
 markup:
   goldmark:
     renderer:
-      unsafe: true  # 允许原始 HTML
+      unsafe: false  # 允许原始 HTML
   highlight:
-    noClasses: false
+    anchorLineNos: false
     codeFences: true
     guessSyntax: false
+    hl_Lines: ""
+    hl_inline: false
+    lineAnchors: ""
+    lineNoStart: 1
     lineNos: false
-    style: github
-    tabWidth: 4
     lineNumbersInTable: true
+    noClasses: true
+    style: monokai
+    tabWidth: 4
+    wrapperClass: highlight
     # 支持的语言
     extraLanguages:
       - bash
@@ -164,9 +172,6 @@ markup:
     endLevel: 4
     ordered: false
     startLevel: 2
-
-pygmentsUseClasses: true
-pygmentsCodefences: true
 
 assetDir: "assets"
 resourceDir: "resources"

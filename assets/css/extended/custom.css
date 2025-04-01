@@ -1,0 +1,43 @@
+/* 代码块容器样式 */
+.highlight {
+    position: relative;
+    margin: 1em 0;
+    border-radius: 4px;
+    background-color: var(--code-bg);
+    max-width: 100%;
+    overflow-x: auto;          /* 添加水平滚动 */
+}
+
+/* 代码块内容样式 */
+.highlight pre {
+    margin: 0;
+    padding: 1em;
+    white-space: pre !important;
+    overflow: visible !important;
+    overflow-y: hidden !important;
+    overflow-x: visible !important;
+}
+
+/* 代码内容样式 */
+.highlight pre code {
+    white-space: pre !important;
+    word-spacing: normal !important;
+    word-break: keep-all !important;
+    word-wrap: normal !important;
+    tab-size: 4;
+    hyphens: none;
+    display: inline-block !important;
+    min-width: fit-content !important;
+}
+
+/* 表格中的代码块特殊处理 */
+.highlight table td {
+    padding: 0;
+    white-space: pre !important;
+}
+
+/* 确保行号不影响主要代码显示 */
+.highlight table pre {
+    margin: 0;
+    white-space: pre !important;
+}
