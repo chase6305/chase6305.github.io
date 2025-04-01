@@ -1,0 +1,33 @@
+/* 代码块容器样式 */
+.highlight {
+    margin: 1em 0;
+    padding: 1em;
+    border-radius: 4px;
+    background: #f6f8fa;
+    overflow-x: auto;    
+}
+
+/* 暗色主题代码块背景 */
+[theme="dark"] .highlight {
+    background: #272822;
+}
+
+/* 亮色主题代码块背景 */
+[theme="light"] .highlight {
+    background: #f6f8fa;
+}
+
+/* 代码块内容样式 */
+.highlight pre {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+/* 代码高亮主题样式 */
+.highlight .keyword { color: #d73a49; }  /* 关键字 */
+.highlight .string { color: #032f62; }   /* 字符串 */
+.highlight .comment { color: #6a737d; }  /* 注释 */
+.highlight .function { color: #6f42c1; } /* 函数 */
+.highlight .number { color: #005cc5; }   /* 数字 */
+.highlight .operator { color: #d73a49; } /* 运算符 */
