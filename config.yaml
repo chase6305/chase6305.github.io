@@ -1,0 +1,173 @@
+
+baseURL: "https://chase6305.github.io/"
+
+title: Chase Blog
+paginate: 5
+theme: PaperMod
+
+languageCode: "zh-CN"
+defaultContentLanguage: "zh-cn"
+
+languages:
+  zh-cn:
+    languageName: "简体中文"
+    weight: 1
+    title: "Chase Blog"
+    params:
+      description: "个人技术博客"
+
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+params:
+  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  title: Chase Blog
+  description: "Chase Blog description"
+  keywords: [Blog, Portfolio, PaperMod]
+  author: Chase
+  images: ["<link or path of image for opengraph, twitter-cards>"]
+  DateFormat: "2006-01-02"
+  defaultTheme: auto # dark, light
+  disableThemeToggle: false
+
+  ShowReadingTime: false
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: false
+  ShowWordCount: false
+  ShowRssButtonInSectionTermList: true
+  UseHugoToc: true
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  comments: false
+  hidemeta: false
+  hideSummary: false
+  showtoc: true
+  tocopen: true
+
+  assets:
+    # disableHLJS: true # to disable highlight.js
+    disableFingerprinting: true
+    favicon: "<link / abs url>"
+    favicon16x16: "<link / abs url>"
+    favicon32x32: "<link / abs url>"
+    apple_touch_icon: "<link / abs url>"
+    safari_pinned_tab: "<link / abs url>"
+
+  label:
+    text: "Chase's Home"
+    icon: /apple-touch-icon.png
+    iconHeight: 35
+
+  # profile-mode
+  profileMode:
+    enabled: false # needs to be explicitly set
+    title: ExampleSite
+    subtitle: "This is subtitle"
+    imageUrl: "<img location>"
+    imageWidth: 120
+    imageHeight: 120
+    imageTitle: my image
+    buttons:
+      - name: Posts
+        url: posts
+      - name: Tags
+        url: tags
+      - name: Archives
+        url: archives
+
+  homeInfoParams:
+    Title: "Contact channels: "
+    Content: |
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/chase6305/"
+    - name: csdn
+      url: "https://blog.csdn.net/weixin_39284111?type=blog"
+
+  analytics:
+    google:
+      SiteVerificationTag: "XYZabc"
+    bing:
+      SiteVerificationTag: "XYZabc"
+    yandex:
+      SiteVerificationTag: "XYZabc"
+
+  cover:
+    hidden: true # hide everywhere but not in structured data
+    hiddenInList: true # hide on list pages and home
+    hiddenInSingle: true # hide on single page
+
+  editPost:
+    URL: "https://github.com/<path_to_repo>/content"
+    Text: "Suggest Changes" # edit text
+    appendFilePath: true # to append file path to Edit link
+
+  # for search
+  # https://fusejs.io/api/options.html
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
+    keys: ["title", "permalink", "summary", "content"]
+menu:
+  main:
+    - identifier: categories
+      name: categories
+      url: /categories/
+      weight: 10
+    - identifier: archives
+      name: archives
+      url: /archives/
+      weight: 20 
+    - identifier: tags
+      name: tags
+      url: /tags/
+      weight: 30
+
+# Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
+pygmentsUseClasses: true
+markup:
+  goldmark:
+    renderer:
+      unsafe: true  # 允许原始 HTML
+  highlight:
+    noClasses: false
+    codeFences: true
+    guessSyntax: false
+    lineNos: false
+    style: github
+    tabWidth: 4
+    lineNumbersInTable: true
+    # 支持的语言
+    extraLanguages:
+      - bash
+      - shell
+      - plaintext
+      - text
+      - yaml
+      - markdown
+
+  tableOfContents:
+    endLevel: 4
+    ordered: false
+    startLevel: 2
+
+pygmentsUseClasses: true
+pygmentsCodefences: true
+
+assetDir: "assets"
+resourceDir: "resources"
+

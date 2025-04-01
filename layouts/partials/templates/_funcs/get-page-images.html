@@ -1,0 +1,42 @@
+{{- /* 获取页面图片函数 */ -}}
+{{- $imgs := slice -}}
+{{- $imgParams := .Params.images -}}
+{{- $resources := .Resources.ByType "image" -}}
+
+{{- /* 如果images参数为空，查找特色图片资源 */ -}}
+{{- if not $imgParams -}}
+    {{- $featured := $resources.GetMatch "*feature*" -}}
+    {{- if not $featured -}}
+        {{- $featured = $resources.GetMatch "{*cover*,*thumbnail*}" -}}
+    {{- end -}}
+    {{- with $featured -}}
+        {{- $imgs = $imgs | append (dict "Image" . "RelPermalink" .RelPermalink "Permalink" .Permalink) -}}
+    {{- end -}}
+{{- end -}}
+
+{{- /* 使用站点图片作为后备 */ -}}
+{{- if and (not $imgParams) (not $imgs) -}}
+    {{- with site.Params.images -}}
+        {{- $imgParams = first 1 . -}}
+    {{- end -}}
+{{- end -}}
+
+{{- /* 解析页面的images参数 */ -}}
+{{- range $imgParams -}}
+    {{- $img := . -}}
+    {{- $url := urls.Parse $img -}}
+    {{- if eq $url.Scheme "" -}}
+        {{- /* 内部图片 */ -}}
+        {{- with $resources.GetMatch $img -}}
+            {{- /* 图片资源 */ -}}
+            {{- $imgs = $imgs | append (dict "Image" . "RelPermalink" .RelPermalink "Permalink" .Permalink) -}}
+        {{- else -}}
+            {{- $imgs = $imgs | append (dict "RelPermalink" (relURL $img) "Permalink" (absURL $img)) -}}
+        {{- end -}}
+    {{- else -}}
+        {{- /* 外部图片 */ -}}
+        {{- $imgs = $imgs | append (dict "RelPermalink" $img "Permalink" $img) -}}
+    {{- end -}}
+{{- end -}}
+
+{{- return $imgs -}}
