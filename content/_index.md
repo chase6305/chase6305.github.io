@@ -11,9 +11,10 @@ date: 2024-03-31
     </div>
 </div>
 
-### I'm Chase.
-- A Robotics and Software Engineer, specializing in robot simulation and control
-- An enthusiastic runner and avid reader
+### I'm Chase. 🐋
+- A Robotics and Software Engineer specializing in robot simulation and control. 🌀
+- An avid reader who enjoys works by authors such as Keigo Higashino and George Orwell. 📘
+- An enthusiastic runner, 🏃running 100km per month with a goal of completing a marathon in 3.5 hours. 
 
 ## 💡 Areas of Expertise:
 - Robotics Technology
