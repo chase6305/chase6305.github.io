@@ -1,5 +1,6 @@
 ---
 title: '机器人运动学参数标定'
+math: true
 date: 2025-02-27
 date: 2025-04-01
 lastmod: 2025-04-01
@@ -23,13 +24,14 @@ comments: false
 ### 1.1 机器人DH参数简介
 Denavit-Hartenberg（DH）参数是一种标准化方法，用于描述机器人各关节之间的几何关系。通过DH参数，可以将机器人关节的旋转和平移统一表示为矩阵变换。
 
-DH参数包括以下四个变量：
+DH参数包括以下四个变量:
+- **$a_i$** : 相邻关节轴之间的连杆长度。  
+- **$d_i$** : 沿关节轴的偏移量。  
+- **$\alpha_i$** : 相邻关节轴之间的扭转角。  
+- **$\theta_i$** : 关节的旋转角度。  
 
-**$a_i$**：相邻关节轴之间的连杆长度。
-**$d_i$**：沿关节轴的偏移量。
-**$\alpha_i$**：相邻关节轴之间的扭转角。
-**$\theta_i$**：关节的旋转角度。
-对于机器人，关节角度 $\theta_i$ 通常由硬件编码器返回的值 $q_i$ 和关节零位偏置 $\theta_i^{\text{offset}}$ 组成： $$ \theta_i = q_i + \theta_i^{\text{offset}} $$
+对于机器人，关节角度 $\theta_i$ 通常由硬件编码器返回的值 $q_i$ 和关节零位偏置 $\theta_i^{\text{offset}}$ 组成： 
+$$ \theta_i = q_i + \theta_i^{\text{offset}} $$
 ![DHparams](DHparams.jpg)
 
 ### 1.2 正运动学公式
@@ -37,8 +39,9 @@ DH参数包括以下四个变量：
 
 其中：
 
-**$\overrightarrow{q}$**：关节角度向量，由编码器返回的值组成。
-**$\overrightarrow{\phi}$**：机器人运动学参数向量，包括所有的DH参数： $$ \overrightarrow{\phi} = (a_0, d_0, \alpha_1, \theta_1, \dots, a_{n-1}, d_{n-1}, \alpha_n, \theta_n)^T $$
+- **$\overrightarrow{q}$** : 关节角度向量，由编码器返回的值组成。   
+- **$\overrightarrow{\phi}$** : 机器人运动学参数向量，包括所有的DH参数:
+ $$ \overrightarrow{\phi} = (a_0, d_0, \alpha_1, \theta_1, \dots, a_{n-1}, d_{n-1}, \alpha_n, \theta_n)^T $$
 
 由于装配误差、加工误差等原因，$\overrightarrow{\phi}$ 中的参数可能存在偏差，因此需要通过标定来修正这些参数。
 

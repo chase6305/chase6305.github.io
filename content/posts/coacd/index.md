@@ -116,9 +116,9 @@ for part in parts:
 
 o3d.visualization.draw_geometries(convex_meshes, window_name="Convex Decomposition")
 ```
-![ori_coacd](ori_coacd.jpeg)
+![ori_coacd](ori_coacd.jpg)
 
-![coacd](coacd.jpeg) 
+![coacd](coacd.jpg) 
 
 ### 5. CoACD 与 V-HACD 的区别
 

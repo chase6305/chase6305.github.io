@@ -1,4 +1,16 @@
 
+# Build Hugo:
+# hugo
+# hugo server -D
+# hugo -d
+# cd public
+# git init
+# git remote add origin https://github.com/chase6305/chase6305.github.io.git
+# git checkout -b gh-pages
+# git add .
+# git commit -m "deploy"
+# git push -f origin gh-pages
+# -------------------------------------
 baseURL: "https://chase6305.github.io/"
 
 title: Chase Blog
@@ -35,6 +47,8 @@ params:
   DateFormat: "2006-01-02"
   defaultTheme: auto # dark, light
   disableThemeToggle: false
+  math: true
+  mathEngine: mathjax
 
   ShowReadingTime: false
   ShowShareButtons: true
@@ -146,8 +160,14 @@ pygmentsCodefences: true
 
 markup:
   goldmark:
+    parser:
+      attribute:
+        block: true
+      autoHeadingID: true
     renderer:
-      unsafe: true  # 允许原始 HTML
+      unsafe: true
+    extensions:
+      typographer: false
   highlight:
     anchorLineNos: false
     codeFences: true
@@ -158,7 +178,7 @@ markup:
     lineNoStart: 1
     lineNos: false
     lineNumbersInTable: true
-    noClasses: true
+    noClasses: false
     style: monokai
     tabWidth: 4
     wrapperClass: highlight
