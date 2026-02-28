@@ -1,0 +1,481 @@
+<!doctype html><html lang=zh-cn dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>MeshCat: 基于three.js的远程可控3D可视化工具 | Chase Blog</title>
+<meta name=keywords content="CasADi">
+<meta name=description content="MeshCat: 基于three.js的远程可控3D可视化工具">
+<meta name=author content="Chase">
+<link rel=canonical href=https://chase6305.github.io/posts/meshcat/>
+<meta name=google-site-verification content="XYZabc">
+<meta name=yandex-verification content="XYZabc">
+<meta name=msvalidate.01 content="XYZabc">
+<link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style>
+<link rel=icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E>
+<link rel=icon type=image/png sizes=16x16 href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E>
+<link rel=icon type=image/png sizes=32x32 href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E>
+<link rel=apple-touch-icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E>
+<link rel=mask-icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript>
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}}</script>
+<script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js defer></script><script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}}</script>
+<script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script><meta property="og:url" content="https://chase6305.github.io/posts/meshcat/">
+<meta property="og:site_name" content="Chase Blog">
+<meta property="og:title" content="MeshCat: 基于three.js的远程可控3D可视化工具">
+<meta property="og:description" content="MeshCat: 基于three.js的远程可控3D可视化工具">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:type" content="article">
+<meta property="article:section" content="posts">
+<meta property="article:published_time" content="2025-04-01T00:00:00+00:00">
+<meta property="article:modified_time" content="2025-04-01T00:00:00+00:00">
+<meta property="article:tag" content="CasADi">
+<meta property="og:image" content="https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:title content="MeshCat: 基于three.js的远程可控3D可视化工具">
+<meta name=twitter:description content="MeshCat: 基于three.js的远程可控3D可视化工具">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://chase6305.github.io/posts/"},{"@type":"ListItem","position":2,"name":"MeshCat: 基于three.js的远程可控3D可视化工具","item":"https://chase6305.github.io/posts/meshcat/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"MeshCat: 基于three.js的远程可控3D可视化工具","name":"MeshCat: 基于three.js的远程可控3D可视化工具","description":"MeshCat: 基于three.js的远程可控3D可视化工具","keywords":["CasADi"],"articleBody":"1. MeshCat 概述  源码仓库: GitHub  MeshCat 是一个基于 three.js 构建的远程可控 3D 查看器, 特别适用于机器人学和仿真领域。它可以与 Python 结合使用，提供交互式的 3D 可视化功能。用户可通过浏览器访问 MeshCat 界面，并通过 WebSocket 发送几何指令动态构建场景树。其设计支持多语言接口，目前提供：\n meshcat-python (Python 2.7/3.4+) MeshCat.jl (Julia)   2. 安装 MeshCat 首先，确保你已经安装了 MeshCat。你可以使用 pip 进行安装：\npip install meshcat  3. 核心功能 3.1 程序化 API 创建查看器实例 let viewer = new MeshCat.Viewer(dom_element);  dom_element：承载查看器的 DOM 元素容器。  指令处理函数 Viewer.handle_command(cmd) 支持以下指令类型：\n3.2 场景对象操作 set_object - 设置场景对象 { \"type\": \"set_object\", \"path\": \"/meshcat/box\", \"object\": { \"metadata\": {\"version\": 4.5, \"type\": \"Object\"}, \"geometries\": [{ \"uuid\": \"...\", \"type\": \"BoxGeometry\", \"width\": 1, \"height\": 1, \"depth\": 1 }], \"materials\": [{ \"uuid\": \"...\", \"type\": \"MeshLambertMaterial\", \"color\": 16777215 }], \"object\": { \"uuid\": \"...\", \"type\": \"Mesh\", \"geometry\": \"...\", \"material\": \"...\" } } }  特殊格式支持：  _meshfile_geometry：直接加载 OBJ/DAE/STL 网格文件 _text：生成文字纹理 _meshfile_object：加载完整网格文件及材质    set_transform - 设置变换矩阵 { \"type\": \"set_transform\", \"path\": \"/meshcat/box\", \"matrix\": [1,0,0,0, 0,1,0,0, 0,0,1,0, 0.5,0,0.5,1] }  matrix：16元素列优先浮点数组  delete - 删除对象 { \"type\": \"delete\", \"path\": \"/meshcat/box\" } set_property - 设置对象属性 { \"type\": \"set_property\", \"path\": \"/Lights/DirectionalLight\", \"property\": \"intensity\", \"value\": 1.0 }  支持属性链：如 material.shininess 常用属性：  visible：可见性 position/quaternion/scale：变换参数 color/opacity：材质属性     3.3 动画与交互 set_animation - 设置动画 { \"type\": \"set_animation\", \"animations\": [{ \"path\": \"/Cameras/default\", \"clip\": { \"fps\": 30, \"tracks\": [{ \"name\": \".position\", \"type\": \"vector3\", \"keys\": [ {\"time\":0, \"value\":[0,1,0.3]}, {\"time\":80, \"value\":[0,1,2]} ] }] } }], \"options\": {\"play\": true} } set_target - 设置相机焦点 { \"type\": \"set_target\", \"value\": [0, 1, 0] } capture_image - 截图 { \"type\": \"capture_image\", \"xres\": 1920, \"yres\": 1080 }  3.4 WebSocket 通信 Viewer.connect(url) // 连接 WebSocket 服务器  消息格式：二进制 MsgPack 支持扩展类型：Float32Array, Uint32Array 等   4. 实用场景路径    路径 描述     /Lights/DirectionalLight 定向光源   /Grid 网格平面   /Axes 坐标系（默认隐藏）   /Cameras/default 主摄像机   /Background 背景颜色控制     5. 相机控制技巧 5.1 设置相机焦点与位置 [ { \"type\": \"set_transform\", \"path\": \"/Cameras/default\", \"matrix\": [1,0,0,0, 0,1,0,0, 0,0,1,0, 1,2,3,1] }, { \"type\": \"set_property\", \"path\": \"/Cameras/default/rotated/\", \"property\": \"position\", \"value\": [2, 0, 0] } ] 5.2 锁定相机视角 { \"type\": \"set_property\", \"path\": \"/Cameras/default/rotated/\", \"property\": \"position\", \"value\": [0, 0, 0] } 6. 高级特性 6.1 透明度控制 { \"type\": \"set_property\", \"path\": \"/path/to/object\", \"property\": \"modulated_opacity\", # 叠加透明度 (0.0-1.0) \"value\": 0.5 } 6.2 自定义渲染回调 { \"type\": \"set_render_callback\", \"callback\": \"() = { console.log(this.camera.position); }\" }  7. 基本使用案例 以下是一个简单的使用 MeshCat 进行 3D 可视化的案例。\nimport meshcat import meshcat.geometry as g import meshcat.transformations as tf import numpy as np # 创建一个新的 MeshCat 视图 vis = meshcat.Visualizer().open() # 添加一个立方体到场景中 vis[\"cube\"].set_object(g.Box([1, 1, 1])) # 设置立方体的变换矩阵 vis[\"cube\"].set_transform(tf.translation_matrix([1, 0, 0])) # 添加一个球体到场景中 vis[\"sphere\"].set_object(g.Sphere(0.5)) # 设置球体的变换矩阵 vis[\"sphere\"].set_transform(tf.translation_matrix([-1, 0, 0])) # 添加一个圆柱体到场景中 vis[\"cylinder\"].set_object(g.Cylinder(1, 0.2)) # 设置圆柱体的变换矩阵 vis[\"cylinder\"].set_transform(tf.translation_matrix([0, 1, 0])) # 使用圆柱体模拟锥体 vis[\"cone\"].set_object(g.Cylinder(1, 0.5)) # 设置锥体的变换矩阵 vis[\"cone\"].set_transform(tf.translation_matrix([0, -1, 0])) # 添加一个网格到场景中 vertices = np.array([ [0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1] ]) faces = np.array([ [0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3] ]) vis[\"mesh\"].set_object(g.TriangularMeshGeometry(vertices, faces)) # 设置网格的变换矩阵 vis[\"mesh\"].set_transform(tf.translation_matrix([0, 0, 1])) # 打开浏览器查看可视化结果 vis.open() 详细说明  创建 Visualizer：vis = meshcat.Visualizer().open() 创建一个新的 MeshCat 视图，并在浏览器中打开。 添加几何对象：使用 set_object 方法添加几何对象，如立方体、球体、圆柱体和锥体。 设置变换矩阵：使用 set_transform 方法设置几何对象的变换矩阵，以控制其位置和姿态。 添加网格：使用 TriangularMeshGeometry 方法添加自定义网格。  运行代码 运行上述代码后，MeshCat 会在浏览器中打开一个窗口，显示添加的几何对象和网格。你可以通过拖动鼠标来旋转、缩放和平移视图。\n  \n总结 MeshCat 是一个强大的 3D 可视化工具，适用于各种机器人学和仿真应用。通过简单的 Python 代码，你可以轻松地创建和操作 3D 场景。希望这个案例能帮助你快速上手 MeshCat。\n","wordCount":"448","inLanguage":"zh-cn","image":"https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E","datePublished":"2025-04-01T00:00:00Z","dateModified":"2025-04-01T00:00:00Z","author":{"@type":"Person","name":"Chase"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://chase6305.github.io/posts/meshcat/"},"publisher":{"@type":"Organization","name":"Chase Blog","logo":{"@type":"ImageObject","url":"https://chase6305.github.io/%3Clink%20/%20abs%20url%3E"}}}</script>
+</head>
+<body id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://chase6305.github.io/ accesskey=h title="Chase's Home (Alt + H)">
+<img src=https://chase6305.github.io/apple-touch-icon.png alt aria-label=logo height=35>Chase's Home</a>
+<div class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</div>
+</div>
+<ul id=menu>
+<li>
+<a href=https://chase6305.github.io/categories/ title=categories>
+<span>categories</span>
+</a>
+</li>
+<li>
+<a href=https://chase6305.github.io/archives/ title=archives>
+<span>archives</span>
+</a>
+</li>
+<li>
+<a href=https://chase6305.github.io/tags/ title=tags>
+<span>tags</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://chase6305.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://chase6305.github.io/posts/>Posts</a></div>
+<h1 class="post-title entry-hint-parent">
+MeshCat: 基于three.js的远程可控3D可视化工具
+</h1>
+<div class=post-meta><span title="2025-04-01 00:00:00 +0000 UTC">2025-04-01</span>&nbsp;·&nbsp;Chase&nbsp;|&nbsp;<a href=https://github.com/%3cpath_to_repo%3e/content/posts/meshcat/index.md rel="noopener noreferrer" target=_blank>Suggest Changes</a>
+</div>
+</header> <div class=toc>
+<details open>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><nav id=TableOfContents>
+<ul>
+<li>
+<ul>
+<li><a href=#1-meshcat-概述>1. MeshCat 概述</a></li>
+<li><a href=#2-安装-meshcat>2. 安装 MeshCat</a></li>
+</ul>
+</li>
+<li><a href=#3-核心功能>3. 核心功能</a>
+<ul>
+<li><a href=#31-程序化-api>3.1 程序化 API</a>
+<ul>
+<li><a href=#创建查看器实例>创建查看器实例</a></li>
+<li><a href=#指令处理函数>指令处理函数</a></li>
+</ul>
+</li>
+<li><a href=#32-场景对象操作>3.2 场景对象操作</a>
+<ul>
+<li><a href=#set_object---设置场景对象><strong>set_object</strong> - 设置场景对象</a></li>
+<li><a href=#set_transform---设置变换矩阵><strong>set_transform</strong> - 设置变换矩阵</a></li>
+<li><a href=#delete---删除对象><strong>delete</strong> - 删除对象</a></li>
+<li><a href=#set_property---设置对象属性><strong>set_property</strong> - 设置对象属性</a></li>
+</ul>
+</li>
+<li><a href=#33-动画与交互>3.3 动画与交互</a>
+<ul>
+<li><a href=#set_animation---设置动画><strong>set_animation</strong> - 设置动画</a></li>
+<li><a href=#set_target---设置相机焦点><strong>set_target</strong> - 设置相机焦点</a></li>
+<li><a href=#capture_image---截图><strong>capture_image</strong> - 截图</a></li>
+</ul>
+</li>
+<li><a href=#34-websocket-通信>3.4 WebSocket 通信</a></li>
+</ul>
+</li>
+<li><a href=#4-实用场景路径>4. 实用场景路径</a></li>
+<li><a href=#5-相机控制技巧>5. 相机控制技巧</a>
+<ul>
+<li><a href=#51-设置相机焦点与位置>5.1 设置相机焦点与位置</a></li>
+<li><a href=#52-锁定相机视角>5.2 锁定相机视角</a></li>
+</ul>
+</li>
+<li><a href=#6-高级特性>6. 高级特性</a>
+<ul>
+<li><a href=#61-透明度控制>6.1 透明度控制</a></li>
+<li><a href=#62-自定义渲染回调>6.2 自定义渲染回调</a></li>
+<li><a href=#7-基本使用案例>7. 基本使用案例</a>
+<ul>
+<li><a href=#详细说明>详细说明</a></li>
+<li><a href=#运行代码>运行代码</a></li>
+</ul>
+</li>
+<li><a href=#总结>总结</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</details>
+</div>
+<div class=post-content><h3 id=1-meshcat-概述>1. MeshCat 概述<a hidden class=anchor aria-hidden=true href=#1-meshcat-概述>#</a></h3>
+<ul>
+<li>源码仓库: <a href=https://github.com/rdeits/meshcat>GitHub</a></li>
+</ul>
+<p>MeshCat 是一个基于 <a href=https://threejs.org/>three.js</a> 构建的远程可控 3D 查看器, 特别适用于机器人学和仿真领域。它可以与 Python 结合使用，提供交互式的 3D 可视化功能。用户可通过浏览器访问 MeshCat 界面，并通过 WebSocket 发送几何指令动态构建场景树。其设计支持多语言接口，目前提供：</p>
+<ul>
+<li><a href=https://github.com/rdeits/meshcat-python>meshcat-python (Python 2.7/3.4+)</a></li>
+<li><a href=https://github.com/rdeits/MeshCat.jl>MeshCat.jl (Julia)</a></li>
+</ul>
+<hr>
+<h3 id=2-安装-meshcat>2. 安装 MeshCat<a hidden class=anchor aria-hidden=true href=#2-安装-meshcat>#</a></h3>
+<p>首先，确保你已经安装了 MeshCat。你可以使用 pip 进行安装：</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>pip install meshcat
+</code></pre></div><hr>
+<h2 id=3-核心功能>3. 核心功能<a hidden class=anchor aria-hidden=true href=#3-核心功能>#</a></h2>
+<h3 id=31-程序化-api>3.1 程序化 API<a hidden class=anchor aria-hidden=true href=#31-程序化-api>#</a></h3>
+<h4 id=创建查看器实例>创建查看器实例<a hidden class=anchor aria-hidden=true href=#创建查看器实例>#</a></h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=kd>let</span> <span class=nx>viewer</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>MeshCat</span><span class=p>.</span><span class=nx>Viewer</span><span class=p>(</span><span class=nx>dom_element</span><span class=p>);</span>
+</code></pre></div><ul>
+<li><code>dom_element</code>：承载查看器的 DOM 元素容器。</li>
+</ul>
+<h4 id=指令处理函数>指令处理函数<a hidden class=anchor aria-hidden=true href=#指令处理函数>#</a></h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=nx>Viewer</span><span class=p>.</span><span class=nx>handle_command</span><span class=p>(</span><span class=nx>cmd</span><span class=p>)</span>
+</code></pre></div><p>支持以下指令类型：</p>
+<h3 id=32-场景对象操作>3.2 场景对象操作<a hidden class=anchor aria-hidden=true href=#32-场景对象操作>#</a></h3>
+<h4 id=set_object---设置场景对象><strong>set_object</strong> - 设置场景对象<a hidden class=anchor aria-hidden=true href=#set_object---设置场景对象>#</a></h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;set_object&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;/meshcat/box&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;object&#34;</span><span class=p>:</span> <span class=p>{</span>
+    <span class=nt>&#34;metadata&#34;</span><span class=p>:</span> <span class=p>{</span><span class=nt>&#34;version&#34;</span><span class=p>:</span> <span class=mf>4.5</span><span class=p>,</span> <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;Object&#34;</span><span class=p>},</span>
+    <span class=nt>&#34;geometries&#34;</span><span class=p>:</span> <span class=p>[{</span>
+      <span class=nt>&#34;uuid&#34;</span><span class=p>:</span> <span class=s2>&#34;...&#34;</span><span class=p>,</span>
+      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;BoxGeometry&#34;</span><span class=p>,</span>
+      <span class=nt>&#34;width&#34;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span> <span class=nt>&#34;height&#34;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span> <span class=nt>&#34;depth&#34;</span><span class=p>:</span> <span class=mi>1</span>
+    <span class=p>}],</span>
+    <span class=nt>&#34;materials&#34;</span><span class=p>:</span> <span class=p>[{</span>
+      <span class=nt>&#34;uuid&#34;</span><span class=p>:</span> <span class=s2>&#34;...&#34;</span><span class=p>,</span>
+      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;MeshLambertMaterial&#34;</span><span class=p>,</span>
+      <span class=nt>&#34;color&#34;</span><span class=p>:</span> <span class=mi>16777215</span>
+    <span class=p>}],</span>
+    <span class=nt>&#34;object&#34;</span><span class=p>:</span> <span class=p>{</span>
+      <span class=nt>&#34;uuid&#34;</span><span class=p>:</span> <span class=s2>&#34;...&#34;</span><span class=p>,</span>
+      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;Mesh&#34;</span><span class=p>,</span>
+      <span class=nt>&#34;geometry&#34;</span><span class=p>:</span> <span class=s2>&#34;...&#34;</span><span class=p>,</span>
+      <span class=nt>&#34;material&#34;</span><span class=p>:</span> <span class=s2>&#34;...&#34;</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div><ul>
+<li><strong>特殊格式支持</strong>：
+<ul>
+<li><code>_meshfile_geometry</code>：直接加载 OBJ/DAE/STL 网格文件</li>
+<li><code>_text</code>：生成文字纹理</li>
+<li><code>_meshfile_object</code>：加载完整网格文件及材质</li>
+</ul>
+</li>
+</ul>
+<h4 id=set_transform---设置变换矩阵><strong>set_transform</strong> - 设置变换矩阵<a hidden class=anchor aria-hidden=true href=#set_transform---设置变换矩阵>#</a></h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;set_transform&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;/meshcat/box&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;matrix&#34;</span><span class=p>:</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mf>0.5</span><span class=p>,</span><span class=mi>1</span><span class=p>]</span> 
+<span class=p>}</span>
+</code></pre></div><ul>
+<li><code>matrix</code>：16元素列优先浮点数组</li>
+</ul>
+<h4 id=delete---删除对象><strong>delete</strong> - 删除对象<a hidden class=anchor aria-hidden=true href=#delete---删除对象>#</a></h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;delete&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;/meshcat/box&#34;</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=set_property---设置对象属性><strong>set_property</strong> - 设置对象属性<a hidden class=anchor aria-hidden=true href=#set_property---设置对象属性>#</a></h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;set_property&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;/Lights/DirectionalLight&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;property&#34;</span><span class=p>:</span> <span class=s2>&#34;intensity&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=mf>1.0</span>
+<span class=p>}</span>
+</code></pre></div><ul>
+<li><strong>支持属性链</strong>：如 <code>material.shininess</code></li>
+<li><strong>常用属性</strong>：
+<ul>
+<li><code>visible</code>：可见性</li>
+<li><code>position</code>/<code>quaternion</code>/<code>scale</code>：变换参数</li>
+<li><code>color</code>/<code>opacity</code>：材质属性</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id=33-动画与交互>3.3 动画与交互<a hidden class=anchor aria-hidden=true href=#33-动画与交互>#</a></h3>
+<h4 id=set_animation---设置动画><strong>set_animation</strong> - 设置动画<a hidden class=anchor aria-hidden=true href=#set_animation---设置动画>#</a></h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;set_animation&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;animations&#34;</span><span class=p>:</span> <span class=p>[{</span>
+    <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;/Cameras/default&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;clip&#34;</span><span class=p>:</span> <span class=p>{</span>
+      <span class=nt>&#34;fps&#34;</span><span class=p>:</span> <span class=mi>30</span><span class=p>,</span>
+      <span class=nt>&#34;tracks&#34;</span><span class=p>:</span> <span class=p>[{</span>
+        <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;.position&#34;</span><span class=p>,</span>
+        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;vector3&#34;</span><span class=p>,</span>
+        <span class=nt>&#34;keys&#34;</span><span class=p>:</span> <span class=p>[</span>
+          <span class=p>{</span><span class=nt>&#34;time&#34;</span><span class=p>:</span><span class=mi>0</span><span class=p>,</span> <span class=nt>&#34;value&#34;</span><span class=p>:[</span><span class=mi>0</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mf>0.3</span><span class=p>]},</span>
+          <span class=p>{</span><span class=nt>&#34;time&#34;</span><span class=p>:</span><span class=mi>80</span><span class=p>,</span> <span class=nt>&#34;value&#34;</span><span class=p>:[</span><span class=mi>0</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>2</span><span class=p>]}</span>
+        <span class=p>]</span>
+      <span class=p>}]</span>
+    <span class=p>}</span>
+  <span class=p>}],</span>
+  <span class=nt>&#34;options&#34;</span><span class=p>:</span> <span class=p>{</span><span class=nt>&#34;play&#34;</span><span class=p>:</span> <span class=kc>true</span><span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=set_target---设置相机焦点><strong>set_target</strong> - 设置相机焦点<a hidden class=anchor aria-hidden=true href=#set_target---设置相机焦点>#</a></h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;set_target&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>]</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=capture_image---截图><strong>capture_image</strong> - 截图<a hidden class=anchor aria-hidden=true href=#capture_image---截图>#</a></h4>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;capture_image&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;xres&#34;</span><span class=p>:</span> <span class=mi>1920</span><span class=p>,</span>
+  <span class=nt>&#34;yres&#34;</span><span class=p>:</span> <span class=mi>1080</span>
+<span class=p>}</span>
+</code></pre></div><hr>
+<h3 id=34-websocket-通信>3.4 WebSocket 通信<a hidden class=anchor aria-hidden=true href=#34-websocket-通信>#</a></h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=nx>Viewer</span><span class=p>.</span><span class=nx>connect</span><span class=p>(</span><span class=nx>url</span><span class=p>)</span> <span class=c1>// 连接 WebSocket 服务器
+</span></code></pre></div><ul>
+<li>消息格式：二进制 MsgPack</li>
+<li>支持扩展类型：<code>Float32Array</code>, <code>Uint32Array</code> 等</li>
+</ul>
+<hr>
+<h2 id=4-实用场景路径>4. 实用场景路径<a hidden class=anchor aria-hidden=true href=#4-实用场景路径>#</a></h2>
+<table>
+<thead>
+<tr>
+<th>路径</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/Lights/DirectionalLight</code></td>
+<td>定向光源</td>
+</tr>
+<tr>
+<td><code>/Grid</code></td>
+<td>网格平面</td>
+</tr>
+<tr>
+<td><code>/Axes</code></td>
+<td>坐标系（默认隐藏）</td>
+</tr>
+<tr>
+<td><code>/Cameras/default</code></td>
+<td>主摄像机</td>
+</tr>
+<tr>
+<td><code>/Background</code></td>
+<td>背景颜色控制</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id=5-相机控制技巧>5. 相机控制技巧<a hidden class=anchor aria-hidden=true href=#5-相机控制技巧>#</a></h2>
+<h3 id=51-设置相机焦点与位置>5.1 设置相机焦点与位置<a hidden class=anchor aria-hidden=true href=#51-设置相机焦点与位置>#</a></h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>[</span>
+  <span class=p>{</span>
+    <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;set_transform&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;/Cameras/default&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;matrix&#34;</span><span class=p>:</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span><span class=mi>2</span><span class=p>,</span><span class=mi>3</span><span class=p>,</span><span class=mi>1</span><span class=p>]</span>
+  <span class=p>},</span>
+  <span class=p>{</span>
+    <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;set_property&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;/Cameras/default/rotated/&lt;object&gt;&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;property&#34;</span><span class=p>:</span> <span class=s2>&#34;position&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=p>[</span><span class=mi>2</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>]</span>
+  <span class=p>}</span>
+<span class=p>]</span>
+</code></pre></div><h3 id=52-锁定相机视角>5.2 锁定相机视角<a hidden class=anchor aria-hidden=true href=#52-锁定相机视角>#</a></h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;set_property&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;/Cameras/default/rotated/&lt;object&gt;&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;property&#34;</span><span class=p>:</span> <span class=s2>&#34;position&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>]</span>
+<span class=p>}</span>
+</code></pre></div><h2 id=6-高级特性>6. 高级特性<a hidden class=anchor aria-hidden=true href=#6-高级特性>#</a></h2>
+<h3 id=61-透明度控制>6.1 透明度控制<a hidden class=anchor aria-hidden=true href=#61-透明度控制>#</a></h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;set_property&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;/path/to/object&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;property&#34;</span><span class=p>:</span> <span class=s2>&#34;modulated_opacity&#34;</span><span class=p>,</span>  <span class=err>#</span> <span class=err>叠加透明度</span> <span class=err>(0.0-1.0)</span>
+  <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=mf>0.5</span>
+<span class=p>}</span>
+</code></pre></div><h3 id=62-自定义渲染回调>6.2 自定义渲染回调<a hidden class=anchor aria-hidden=true href=#62-自定义渲染回调>#</a></h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;set_render_callback&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;callback&#34;</span><span class=p>:</span> <span class=s2>&#34;() =&gt; { console.log(this.camera.position); }&#34;</span>
+<span class=p>}</span>
+</code></pre></div><hr>
+<h3 id=7-基本使用案例>7. 基本使用案例<a hidden class=anchor aria-hidden=true href=#7-基本使用案例>#</a></h3>
+<p>以下是一个简单的使用 MeshCat 进行 3D 可视化的案例。</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>meshcat</span>
+<span class=kn>import</span> <span class=nn>meshcat.geometry</span> <span class=k>as</span> <span class=nn>g</span>
+<span class=kn>import</span> <span class=nn>meshcat.transformations</span> <span class=k>as</span> <span class=nn>tf</span>
+<span class=kn>import</span> <span class=nn>numpy</span> <span class=k>as</span> <span class=nn>np</span>
+
+<span class=c1># 创建一个新的 MeshCat 视图</span>
+<span class=n>vis</span> <span class=o>=</span> <span class=n>meshcat</span><span class=o>.</span><span class=n>Visualizer</span><span class=p>()</span><span class=o>.</span><span class=n>open</span><span class=p>()</span>
+
+<span class=c1># 添加一个立方体到场景中</span>
+<span class=n>vis</span><span class=p>[</span><span class=s2>&#34;cube&#34;</span><span class=p>]</span><span class=o>.</span><span class=n>set_object</span><span class=p>(</span><span class=n>g</span><span class=o>.</span><span class=n>Box</span><span class=p>([</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>]))</span>
+
+<span class=c1># 设置立方体的变换矩阵</span>
+<span class=n>vis</span><span class=p>[</span><span class=s2>&#34;cube&#34;</span><span class=p>]</span><span class=o>.</span><span class=n>set_transform</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>translation_matrix</span><span class=p>([</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>]))</span>
+
+<span class=c1># 添加一个球体到场景中</span>
+<span class=n>vis</span><span class=p>[</span><span class=s2>&#34;sphere&#34;</span><span class=p>]</span><span class=o>.</span><span class=n>set_object</span><span class=p>(</span><span class=n>g</span><span class=o>.</span><span class=n>Sphere</span><span class=p>(</span><span class=mf>0.5</span><span class=p>))</span>
+
+<span class=c1># 设置球体的变换矩阵</span>
+<span class=n>vis</span><span class=p>[</span><span class=s2>&#34;sphere&#34;</span><span class=p>]</span><span class=o>.</span><span class=n>set_transform</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>translation_matrix</span><span class=p>([</span><span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>]))</span>
+
+<span class=c1># 添加一个圆柱体到场景中</span>
+<span class=n>vis</span><span class=p>[</span><span class=s2>&#34;cylinder&#34;</span><span class=p>]</span><span class=o>.</span><span class=n>set_object</span><span class=p>(</span><span class=n>g</span><span class=o>.</span><span class=n>Cylinder</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>))</span>
+
+<span class=c1># 设置圆柱体的变换矩阵</span>
+<span class=n>vis</span><span class=p>[</span><span class=s2>&#34;cylinder&#34;</span><span class=p>]</span><span class=o>.</span><span class=n>set_transform</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>translation_matrix</span><span class=p>([</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>]))</span>
+
+<span class=c1># 使用圆柱体模拟锥体</span>
+<span class=n>vis</span><span class=p>[</span><span class=s2>&#34;cone&#34;</span><span class=p>]</span><span class=o>.</span><span class=n>set_object</span><span class=p>(</span><span class=n>g</span><span class=o>.</span><span class=n>Cylinder</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>))</span>
+
+<span class=c1># 设置锥体的变换矩阵</span>
+<span class=n>vis</span><span class=p>[</span><span class=s2>&#34;cone&#34;</span><span class=p>]</span><span class=o>.</span><span class=n>set_transform</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>translation_matrix</span><span class=p>([</span><span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>]))</span>
+
+<span class=c1># 添加一个网格到场景中</span>
+<span class=n>vertices</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>([</span>
+    <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span>
+    <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span>
+    <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span>
+    <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>]</span>
+<span class=p>])</span>
+<span class=n>faces</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>([</span>
+    <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>],</span>
+    <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>3</span><span class=p>],</span>
+    <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>],</span>
+    <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>]</span>
+<span class=p>])</span>
+<span class=n>vis</span><span class=p>[</span><span class=s2>&#34;mesh&#34;</span><span class=p>]</span><span class=o>.</span><span class=n>set_object</span><span class=p>(</span><span class=n>g</span><span class=o>.</span><span class=n>TriangularMeshGeometry</span><span class=p>(</span><span class=n>vertices</span><span class=p>,</span> <span class=n>faces</span><span class=p>))</span>
+
+<span class=c1># 设置网格的变换矩阵</span>
+<span class=n>vis</span><span class=p>[</span><span class=s2>&#34;mesh&#34;</span><span class=p>]</span><span class=o>.</span><span class=n>set_transform</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>translation_matrix</span><span class=p>([</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>]))</span>
+
+<span class=c1># 打开浏览器查看可视化结果</span>
+<span class=n>vis</span><span class=o>.</span><span class=n>open</span><span class=p>()</span>
+</code></pre></div><h4 id=详细说明>详细说明<a hidden class=anchor aria-hidden=true href=#详细说明>#</a></h4>
+<ul>
+<li><strong>创建 Visualizer</strong>：<code>vis = meshcat.Visualizer().open()</code> 创建一个新的 MeshCat 视图，并在浏览器中打开。</li>
+<li><strong>添加几何对象</strong>：使用 <code>set_object</code> 方法添加几何对象，如立方体、球体、圆柱体和锥体。</li>
+<li><strong>设置变换矩阵</strong>：使用 <code>set_transform</code> 方法设置几何对象的变换矩阵，以控制其位置和姿态。</li>
+<li><strong>添加网格</strong>：使用 <code>TriangularMeshGeometry</code> 方法添加自定义网格。</li>
+</ul>
+<h4 id=运行代码>运行代码<a hidden class=anchor aria-hidden=true href=#运行代码>#</a></h4>
+<p>运行上述代码后，MeshCat 会在浏览器中打开一个窗口，显示添加的几何对象和网格。你可以通过拖动鼠标来旋转、缩放和平移视图。</p>
+<p>
+<figure>
+<img src=meshcat.png alt=meshcat loading=lazy>
+</figure></p>
+<h3 id=总结>总结<a hidden class=anchor aria-hidden=true href=#总结>#</a></h3>
+<p>MeshCat 是一个强大的 3D 可视化工具，适用于各种机器人学和仿真应用。通过简单的 Python 代码，你可以轻松地创建和操作 3D 场景。希望这个案例能帮助你快速上手 MeshCat。</p>
+</div>
+<footer class=post-footer>
+<ul class=post-tags>
+<li><a href=https://chase6305.github.io/tags/casadi/>CasADi</a></li>
+</ul>
+<nav class=paginav>
+<a class=prev href=https://chase6305.github.io/posts/thesis/being_0/>
+<span class=title>« </span>
+<br>
+<span>论文《Being-0: 基于视觉语言模型与模块化技能的人形机器人代理》深度解析</span>
+</a>
+<a class=next href=https://chase6305.github.io/posts/queue/>
+<span class=title> »</span>
+<br>
+<span>无锁队列简介与实现示例</span>
+</a>
+</nav>
+<ul class=share-buttons>
+<li>
+<a target=_blank rel="noopener noreferrer" aria-label="share MeshCat: 基于three.js的远程可控3D可视化工具 on x" href="https://x.com/intent/tweet/?text=MeshCat%3a%20%e5%9f%ba%e4%ba%8ethree.js%e7%9a%84%e8%bf%9c%e7%a8%8b%e5%8f%af%e6%8e%a73D%e5%8f%af%e8%a7%86%e5%8c%96%e5%b7%a5%e5%85%b7&url=https%3a%2f%2fchase6305.github.io%2fposts%2fmeshcat%2f&hashtags=CasADi"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg>
+</a>
+</li>
+<li>
+<a target=_blank rel="noopener noreferrer" aria-label="share MeshCat: 基于three.js的远程可控3D可视化工具 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fchase6305.github.io%2fposts%2fmeshcat%2f&title=MeshCat%3a%20%e5%9f%ba%e4%ba%8ethree.js%e7%9a%84%e8%bf%9c%e7%a8%8b%e5%8f%af%e6%8e%a73D%e5%8f%af%e8%a7%86%e5%8c%96%e5%b7%a5%e5%85%b7&summary=MeshCat%3a%20%e5%9f%ba%e4%ba%8ethree.js%e7%9a%84%e8%bf%9c%e7%a8%8b%e5%8f%af%e6%8e%a73D%e5%8f%af%e8%a7%86%e5%8c%96%e5%b7%a5%e5%85%b7&source=https%3a%2f%2fchase6305.github.io%2fposts%2fmeshcat%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg>
+</a>
+</li>
+<li>
+<a target=_blank rel="noopener noreferrer" aria-label="share MeshCat: 基于three.js的远程可控3D可视化工具 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fchase6305.github.io%2fposts%2fmeshcat%2f&title=MeshCat%3a%20%e5%9f%ba%e4%ba%8ethree.js%e7%9a%84%e8%bf%9c%e7%a8%8b%e5%8f%af%e6%8e%a73D%e5%8f%af%e8%a7%86%e5%8c%96%e5%b7%a5%e5%85%b7"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg>
+</a>
+</li>
+<li>
+<a target=_blank rel="noopener noreferrer" aria-label="share MeshCat: 基于three.js的远程可控3D可视化工具 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fchase6305.github.io%2fposts%2fmeshcat%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg>
+</a>
+</li>
+<li>
+<a target=_blank rel="noopener noreferrer" aria-label="share MeshCat: 基于three.js的远程可控3D可视化工具 on whatsapp" href="https://api.whatsapp.com/send?text=MeshCat%3a%20%e5%9f%ba%e4%ba%8ethree.js%e7%9a%84%e8%bf%9c%e7%a8%8b%e5%8f%af%e6%8e%a73D%e5%8f%af%e8%a7%86%e5%8c%96%e5%b7%a5%e5%85%b7%20-%20https%3a%2f%2fchase6305.github.io%2fposts%2fmeshcat%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg>
+</a>
+</li>
+<li>
+<a target=_blank rel="noopener noreferrer" aria-label="share MeshCat: 基于three.js的远程可控3D可视化工具 on telegram" href="https://telegram.me/share/url?text=MeshCat%3a%20%e5%9f%ba%e4%ba%8ethree.js%e7%9a%84%e8%bf%9c%e7%a8%8b%e5%8f%af%e6%8e%a73D%e5%8f%af%e8%a7%86%e5%8c%96%e5%b7%a5%e5%85%b7&url=https%3a%2f%2fchase6305.github.io%2fposts%2fmeshcat%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg>
+</a>
+</li>
+<li>
+<a target=_blank rel="noopener noreferrer" aria-label="share MeshCat: 基于three.js的远程可控3D可视化工具 on ycombinator" href="https://news.ycombinator.com/submitlink?t=MeshCat%3a%20%e5%9f%ba%e4%ba%8ethree.js%e7%9a%84%e8%bf%9c%e7%a8%8b%e5%8f%af%e6%8e%a73D%e5%8f%af%e8%a7%86%e5%8c%96%e5%b7%a5%e5%85%b7&u=https%3a%2f%2fchase6305.github.io%2fposts%2fmeshcat%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentcolor" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg>
+</a>
+</li>
+</ul>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2026 <a href=https://chase6305.github.io/>Chase Blog</a></span> ·
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+<script>document.querySelectorAll('pre > code').forEach(b=>{const c=b.parentNode.parentNode,a=document.createElement('button');a.classList.add('copy-code'),a.innerHTML='copy';function d(){a.innerHTML='copied!',setTimeout(()=>{a.innerHTML='copy'},2e3)}a.addEventListener('click',e=>{if('clipboard'in navigator){navigator.clipboard.writeText(b.textContent),d();return}const a=document.createRange();a.selectNodeContents(b);const c=window.getSelection();c.removeAllRanges(),c.addRange(a);try{document.execCommand('copy'),d()}catch(a){}c.removeRange(a)}),c.classList.contains("highlight")?c.appendChild(a):c.parentNode.firstChild==c||(b.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?b.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(a):b.parentNode.appendChild(a))})</script>
+</body>
+</html>

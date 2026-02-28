@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>thesis on Chase Blog</title>
+    <link>https://chase6305.github.io/tags/thesis/</link>
+    <description>Recent content in thesis on Chase Blog</description>
+    <image>
+      <title>Chase Blog</title>
+      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.92.2</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 02 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/tags/thesis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>论文《Approximate Convex Decomposition for 3D Meshes with Collision-Aware Concavity and Tree Search》整理</title>
+      <link>https://chase6305.github.io/posts/thesis/coacd/</link>
+      <pubDate>Wed, 02 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/thesis/coacd/</guid>
+      <description>论文《Approximate Convex Decomposition for 3D Meshes with Collision-Aware Concavity and Tree Search》整理</description>
+    </item>
+    <item>
+      <title>论文《Being-0: 基于视觉语言模型与模块化技能的人形机器人代理》深度解析</title>
+      <link>https://chase6305.github.io/posts/thesis/being_0/</link>
+      <pubDate>Wed, 02 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/thesis/being_0/</guid>
+      <description>论文《Being-0: 基于视觉语言模型与模块化技能的人形机器人代理》深度解析</description>
+    </item>
+  </channel>
+</rss>

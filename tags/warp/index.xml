@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Warp on Chase Blog</title>
+    <link>https://chase6305.github.io/tags/warp/</link>
+    <description>Recent content in Warp on Chase Blog</description>
+    <image>
+      <title>Chase Blog</title>
+      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.92.2</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 11 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/tags/warp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【CUDA编程】CUDA Warp 与 Warp-Python 学习文档</title>
+      <link>https://chase6305.github.io/posts/cuda/warp/</link>
+      <pubDate>Fri, 11 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/cuda/warp/</guid>
+      <description>【CUDA编程】CUDA Warp 与 Warp-Python 学习文档</description>
+    </item>
+  </channel>
+</rss>

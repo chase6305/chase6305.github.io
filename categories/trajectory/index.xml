@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Trajectory on Chase Blog</title>
+    <link>https://chase6305.github.io/categories/trajectory/</link>
+    <description>Recent content in Trajectory on Chase Blog</description>
+    <image>
+      <title>Chase Blog</title>
+      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.92.2</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 16 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/categories/trajectory/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Toppra: 最优时间运动规划库</title>
+      <link>https://chase6305.github.io/posts/trajectory/toppra/</link>
+      <pubDate>Sun, 16 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/trajectory/toppra/</guid>
+      <description>Toppra: 最优时间运动规划库</description>
+    </item>
+    <item>
+      <title>Ruckig: 高效实时运动规划库</title>
+      <link>https://chase6305.github.io/posts/trajectory/ruckig/</link>
+      <pubDate>Sat, 15 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/trajectory/ruckig/</guid>
+      <description>Ruckig: 高效实时运动规划库</description>
+    </item>
+  </channel>
+</rss>
