@@ -10,6 +10,7 @@
 # git add .
 # git commit -m "deploy"
 # git push -f origin gh-pages
+# git push origin main
 # -------------------------------------
 baseURL: "https://chase6305.github.io/"
 
