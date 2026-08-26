@@ -4,7 +4,7 @@ date: 2025-03-20
 lastmod: 2025-03-20
 draft: false
 tags: ["AI", "Gymnasium"]
-categories: ["Algorithms"]
+categories: ["人工智能"]
 authors: ["chase"]
 summary: "Gymnasium入门(一)"
 showToc: true
@@ -14,7 +14,7 @@ comments: false
 ---
 
 强化学习（Reinforcement Learning, RL）是一种机器学习方法，通过与环境的交互来学习如何采取行动，以最大化累积奖励。强化学习在机器人控制、游戏 AI、自动驾驶等领域有广泛应用。
-### 1. 强化学习的基本概念
+#### 1. 强化学习的基本概念
 
 1. **Agent（智能体）**：在环境中执行动作并学习如何最大化累积奖励的实体。
 2. **Environment（环境）**：智能体与之交互的外部系统，定义了状态空间、动作空间和奖励机制。
@@ -23,11 +23,11 @@ comments: false
 5. **Reward（奖励）**：智能体执行某个动作后环境反馈的即时信号，用于指导智能体的学习。
 ![am](am.jpg)
 
-# 2. 使用 Gym 进行强化学习：LunarLander 环境示例
-参考: https://gymnasium.farama.org/index.html
+## 2. 使用 Gym 进行强化学习：LunarLander 环境示例
+参考：[Gymnasium 官方文档](https://gymnasium.farama.org/index.html)
 在这篇博客中，我们将介绍如何使用 Gym 库进行强化学习，并以 LunarLander 环境为例进行演示。Gym 是一个用于开发和比较强化学习算法的工具包，它提供了许多标准化的测试环境。
 
-## 2.1 安装 Gym 和依赖项
+### 2.1 安装 Gym 和依赖项
 
 首先，我们需要安装 Gym 库及其依赖项。你可以使用以下命令通过 pip 安装：
 
@@ -39,7 +39,7 @@ pip install "gymnasium[box2d]"
 
 这些命令将安装 Gym 库、SWIG 以及 Box2D 依赖项。
 
-## 2.2 初始化环境
+### 2.2 初始化环境
 
 接下来，我们将初始化 LunarLander 环境。LunarLander 是一个经典的控制任务，目标是控制一个着陆器在月球表面安全着陆。
 
@@ -52,7 +52,7 @@ env = gym.make("LunarLander-v3", render_mode="human")
 
 - `gym.make("LunarLander-v3", render_mode="human")`：创建并返回一个指定环境的实例。在这里，我们选择了 "LunarLander-v3" 环境，并设置 `render_mode` 为 "human" 以便在运行时显示图形界面。
 
-## 2.3 重置环境
+### 2.3 重置环境
 
 在开始训练之前，我们需要重置环境以生成初始观察值。
 
@@ -63,7 +63,7 @@ observation, info = env.reset(seed=42)
 
 - `env.reset(seed=42)`：重置环境到初始状态，并返回初始观察值和额外信息。`seed=42` 用于设置随机数种子，以确保结果的可重复性。
 
-## 2.4 运行环境
+### 2.4 运行环境
 
 我们将运行环境 1000 步，并在每一步中采取随机动作。你可以在这里插入你的策略来替换随机动作。
 
@@ -89,7 +89,7 @@ for _ in range(1000):
   - `info`：额外的诊断信息。
 - `if terminated or truncated:`：检查当前回合是否结束或被截断。如果是，则重置环境。
 
-## 2.5 关闭环境
+### 2.5 关闭环境
 
 最后，别忘了关闭环境以释放资源。
 
@@ -99,7 +99,7 @@ env.close()
 
 - `env.close()`：关闭环境并释放资源。
 
-## 2.6 完整代码
+### 2.6 完整代码
 
 以下是完整的代码示例：
 
@@ -153,7 +153,7 @@ env.close()
 	- **作用**: 关闭环境，释放资源。
 
 
-### 2.7 保存视频
+#### 2.7 保存视频
 ```python
 import gymnasium as gym
 from gymnasium.wrappers import RecordVideo

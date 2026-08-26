@@ -4,7 +4,7 @@ date: 2025-02-26
 lastmod: 2025-02-26
 draft: false
 tags: ["Ubuntu"]
-categories: ["Ubuntu"]
+categories: ["编程开发"]
 authors: ["chase"]
 summary: "Ubuntu 下查看进程 PID 和终止进程方法"
 showToc: true
@@ -13,8 +13,7 @@ hidemeta: false
 comments: false
 ---
 
-#### 查看进程 PID
-
+## 查看进程 PID
 1. **使用 `ps` 命令**:
    ```sh
    ps aux | grep <process_name>
@@ -46,8 +45,7 @@ comments: false
    ```
    在 `htop` 界面中，可以使用上下箭头键选择进程，按 `F3` 搜索进程，按 `F9` 终止进程。按 `q` 退出。
 
-#### 终止进程
-
+## 终止进程
 1. **使用 `kill` 命令**:
    ```sh
    kill <PID>
@@ -81,8 +79,7 @@ comments: false
    ```
    然后点击要终止的窗口。
 
-#### 强制终止进程
-
+## 强制终止进程
 如果进程无法正常终止，可以使用 `-9` 信号强制终止：
 
 1. **使用 `kill -9` 命令**:

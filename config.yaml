@@ -15,15 +15,17 @@
 baseURL: "https://chase6305.github.io/"
 
 title: Chase Blog
-paginate: 5
 theme: PaperMod
 
-languageCode: "zh-CN"
+locale: "zh-CN"
 defaultContentLanguage: "zh-cn"
+
+pagination:
+  pagerSize: 5
 
 languages:
   zh-cn:
-    languageName: "简体中文"
+    label: "简体中文"
     weight: 1
     title: "Chase Blog"
     params:
@@ -41,15 +43,13 @@ minify:
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   title: Chase Blog
-  description: "Chase Blog description"
-  keywords: [Blog, Portfolio, PaperMod]
+  description: "记录机器人学、运动规划、C++ 与人工智能实践"
+  keywords: [机器人学, 运动规划, C++, 人工智能]
   author: Chase
-  images: ["<link or path of image for opengraph, twitter-cards>"]
   DateFormat: "2006-01-02"
   defaultTheme: auto # dark, light
   disableThemeToggle: false
-  math: true
-  mathEngine: mathjax
+  math: false
 
   ShowReadingTime: false
   ShowShareButtons: true
@@ -67,29 +67,23 @@ params:
   showtoc: true
   tocopen: true
 
-  customCSS:
-    - css/custom.css
-
   assets:
     disableHLJS: true # to disable highlight.js
-    disableFingerprinting: true
-    favicon: "<link / abs url>"
-    favicon16x16: "<link / abs url>"
-    favicon32x32: "<link / abs url>"
-    apple_touch_icon: "<link / abs url>"
-    safari_pinned_tab: "<link / abs url>"
+    disableFingerprinting: false
+    favicon: "/cjt.jpg"
+    apple_touch_icon: "/cjt.jpg"
 
   label:
     text: "Chase's Home"
-    icon: /apple-touch-icon.png
+    icon: /cjt.jpg
     iconHeight: 35
 
   # profile-mode
   profileMode:
     enabled: false # needs to be explicitly set
-    title: ExampleSite
-    subtitle: "This is subtitle"
-    imageUrl: "<img location>"
+    title: Chase Blog
+    subtitle: "机器人学、运动规划与工程实践"
+    imageUrl: "/cjt.jpg"
     imageWidth: 120
     imageHeight: 120
     imageTitle: my image
@@ -111,21 +105,13 @@ params:
     - name: csdn
       url: "https://blog.csdn.net/weixin_39284111?type=blog"
 
-  analytics:
-    google:
-      SiteVerificationTag: "XYZabc"
-    bing:
-      SiteVerificationTag: "XYZabc"
-    yandex:
-      SiteVerificationTag: "XYZabc"
-
   cover:
     hidden: true # hide everywhere but not in structured data
     hiddenInList: true # hide on list pages and home
     hiddenInSingle: true # hide on single page
 
   editPost:
-    URL: "https://github.com/<path_to_repo>/content"
+    URL: "https://github.com/chase6305/chase6305.github.io/tree/main/content"
     Text: "Suggest Changes" # edit text
     appendFilePath: true # to append file path to Edit link
 
@@ -142,16 +128,20 @@ params:
     keys: ["title", "permalink", "summary", "content"]
 menu:
   main:
+    - identifier: open-source
+      name: 开源项目
+      url: /#open-source
+      weight: 5
     - identifier: categories
-      name: categories
+      name: 分类
       url: /categories/
       weight: 10
     - identifier: archives
-      name: archives
+      name: 归档
       url: /archives/
       weight: 20 
     - identifier: tags
-      name: tags
+      name: 标签
       url: /tags/
       weight: 30
 
@@ -199,4 +189,3 @@ markup:
 
 assetDir: "assets"
 resourceDir: "resources"
-

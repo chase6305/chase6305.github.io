@@ -4,7 +4,7 @@ date: 2026-02-06
 lastmod: 2026-02-06
 draft: false
 tags: ["C++"]
-categories: ["编程技术"]
+categories: ["编程开发"]
 authors: ["chase"]
 summary: "C++中std::前缀函数的必要性：从abs、max到数学函数的全面解析"
 showToc: true
@@ -39,11 +39,11 @@ int main() {
     int a = std::abs(-5);           // ✓ int版本
     double b = std::abs(-3.14);     // ✓ double版本
     float c = std::abs(-2.5f);      // ✓ float版本
-    
+
     // C abs：仅支持int
     int d = abs(-5);                // ✓ int版本
     // double e = abs(-3.14);       // ✗ 错误！返回int，数据丢失
-    
+
     // C需要特定函数
     double f = fabs(-3.14);         // ✓ 但需要记住不同函数名
 }
@@ -62,13 +62,13 @@ int main() {
 
 int main() {
     int x = 5, y = 3;
-    
+
     // C++安全方式
     int m1 = std::max(x, y);        // ✓ 明确调用std版本
-    
+
     // 危险方式（在Windows上）
     // int m2 = max(x, y);          // ✗ 可能被Windows.h的宏替换
-    
+
     // 技巧：使用括号避免宏
     int m3 = (max)(x, y);           // ✓ 括号阻止宏展开
 }
@@ -98,16 +98,16 @@ int main() {
     double d1 = std::sqrt(4.0);     // 2.0
     float f1 = std::sqrt(4.0f);     // 2.0f
     int i1 = std::sqrt(4);          // 2.0（返回double！）
-    
+
     // C版本需要后缀
     double d2 = sqrt(4.0);          // 2.0
     float f2 = sqrtf(4.0f);         // 2.0f
     long double ld = sqrtl(4.0L);   // 2.0L
-    
+
     // std::pow的类型安全
     double p1 = std::pow(2.0, 3.0); // 8.0
     float p2 = std::pow(2.0f, 3.0f);// 8.0f
-    
+
     // 注意：整数幂返回double
     double p3 = std::pow(2, 3);     // 8.0，不是8！
 }
@@ -120,11 +120,11 @@ int main() {
 
 int main() {
     double value = 3.7;
-    
+
     // C++重载版本
     double r1 = std::round(value);  // 4.0
     float r2 = std::round(3.7f);    // 4.0f
-    
+
     // C版本（C99/C11）
     double r3 = round(value);       // 需要编译支持
     float r4 = roundf(3.7f);        // f后缀
@@ -144,7 +144,7 @@ void process(T&& arg) {
     // 必须使用std::move和std::forward
     std::string s = std::move(arg);     // ✓ 正确
     forward_func(std::forward<T>(arg)); // ✓ 正确
-    
+
     // 以下写法错误：
     // std::string s2 = move(arg);      // ✗ 未定义
     // forward_func(forward(arg));      // ✗ 未定义
@@ -165,13 +165,13 @@ void process_container(Container& c) {
     // 必须使用std::begin/end以支持数组
     auto it = std::begin(c);            // ✓ 支持容器和数组
     auto end = std::end(c);
-    
+
     // 以下仅支持容器，不支持数组
     // auto it2 = c.begin();             // ✗ 数组不适用
-    
+
     // 使用std::size获取大小（C++17）
     size_t s = std::size(c);            // ✓ 通用
-    
+
     // 传统方法对数组有效，对容器无效
     // size_t s2 = sizeof(c)/sizeof(c[0]); // ✗ 容器不适用
 }
@@ -179,7 +179,7 @@ void process_container(Container& c) {
 int main() {
     std::vector<int> vec = {1, 2, 3};
     int arr[] = {1, 2, 3};
-    
+
     process_container(vec);  // ✓
     process_container(arr);  // ✓
 }
@@ -204,11 +204,11 @@ namespace MyLibrary {
 
 int main() {
     MyLibrary::CustomType a, b;
-    
+
     // 正确方式：使用ADL查找最佳swap
     using std::swap;    // 引入std::swap作为后备
     swap(a, b);         // 调用MyLibrary::swap（优先）
-    
+
     // 直接调用可能效率低
     std::swap(a, b);    // 使用通用交换（可能较慢）
 }
@@ -324,7 +324,7 @@ void process(Container& c) {
     // 必须使用std::版本以保证通用性
     auto it = std::begin(c);
     auto sz = std::size(c);
-    
+
     for (auto& x : c) {
         x = std::abs(x);  // 即使Container::value_type是float也能工作
     }

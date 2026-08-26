@@ -4,7 +4,7 @@ date: 2025-03-16
 lastmod: 2025-03-16
 draft: false
 tags: ["Trajectory"]
-categories: ["Trajectory"]
+categories: ["机器人技术"]
 authors: ["chase"]
 summary: "Toppra: 最优时间运动规划库"
 showToc: true

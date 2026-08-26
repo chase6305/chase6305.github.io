@@ -4,7 +4,7 @@ date: 2025-02-27
 lastmod: 2025-02-27
 draft: false
 tags: ["Calibration", "OpenCV"]
-categories: ["Python"]
+categories: ["机器人技术"]
 authors: ["chase"]
 summary: 非对称圆标记技术详解
 showToc: true

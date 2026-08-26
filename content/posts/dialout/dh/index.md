@@ -4,7 +4,7 @@ date: 2025-03-01
 lastmod: 2025-03-01
 draft: false
 tags: ["Linux", "Python", "Gripper"]
-categories: ["Gripper"]
+categories: ["系统与工具"]
 authors: ["chase"]
 summary: Python优化控制大寰PGC夹具的串口通信程序
 showToc: true
@@ -17,15 +17,15 @@ comments: false
 
 在工业自动化中，夹具的控制是一个非常重要的环节。本文将介绍如何使用Python通过串口控制大寰PGC夹具。我们将使用异步IO和事件锁来实现半双工通信，以提高通讯效率和鲁棒性。
 
-# 1. 环境准备
+## 1. 环境准备
 首先，我们需要安装pyserial库来处理串口通信。可以使用以下命令安装：
 ```bash
 pip install pyserial asyncio
 ```
-# 2. 异步IO
+## 2. 异步IO
 异步IO（Asynchronous I/O）在处理并发任务时具有显著的优势，尤其是在I/O密集型操作中。以下是异步IO的主要优势和处理逻辑：
 
-## 2.1优势
+### 2.1优势
 
 1. **高效利用资源**：
    异步IO允许程序在等待I/O操作完成时执行其他任务，从而更高效地利用CPU资源。
@@ -38,7 +38,7 @@ pip install pyserial asyncio
 
 4. **可扩展性**：
    异步IO使得应用程序更容易扩展，因为它可以处理大量并发连接而不需要为每个连接创建一个线程。
-## 2.2 处理逻辑
+### 2.2 处理逻辑
 
 异步IO的处理逻辑通常包括以下几个步骤：
 
@@ -56,7 +56,7 @@ pip install pyserial asyncio
 
 
 
-# 3. 实现串口控制类
+## 3. 实现串口控制类
 我们将创建一个名为`dh_device`的类来处理串口连接和数据读写。以下是`PGC_device.py`的实现：
 
 `PGC_device.py`
@@ -162,7 +162,7 @@ class dh_device(object):
                 return -1
 ```
 
-# 4. 实现夹具控制类
+## 4. 实现夹具控制类
 接下来，我们创建一个名为`dh_modbus_gripper`的类来实现对夹具的具体控制。以下是`PGC_gripper.py`的实现：
 `PGC_gripper.py`
 ```python
@@ -378,8 +378,8 @@ class dh_modbus_gripper(object):
         """
         return await self.ReadRegisterFunc(0x0201)
 ```
-#  5. 用法
-## 5.2 示例代码
+##  5. 用法
+### 5.2 示例代码
 以下是如何使用dh_modbus_gripper类来控制大寰PGC夹具的具体示例：
 ```python
 import asyncio
@@ -405,7 +405,7 @@ asyncio.run(gripper.SetTargetPosition(int(angle)))
 # 关闭串口连接
 gripper.close()
 ```
-## 5.2 代码说明
+### 5.2 代码说明
 
 1. **定义异步函数**：
    异步函数使用`async def`定义，例如`device_write`和`device_read`。

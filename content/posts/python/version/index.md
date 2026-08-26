@@ -4,7 +4,7 @@ date: 2025-03-13
 lastmod: 2025-03-13
 draft: false
 tags: ["Ubuntu"]
-categories: ["Ubuntu"]
+categories: ["编程开发"]
 authors: ["chase"]
 summary: "Ubuntu切换默认python版本"
 showToc: true
@@ -15,8 +15,7 @@ comments: false
 
 `update-alternatives` 是一个用于管理符号链接的工具，它允许你在系统中安装多个版本的同一个程序，并方便地在它们之间切换。以下是详细的原理介绍：
 
-### 原理
-
+## 原理
 1. **符号链接管理**：
    `update-alternatives` 通过创建和管理符号链接来实现不同版本程序的切换。符号链接是指向另一个文件或目录的指针。
 
@@ -27,8 +26,7 @@ comments: false
    - **手动模式**：用户明确选择某个版本，系统将一直使用该版本，直到用户再次更改。
    - **自动模式**：系统根据优先级自动选择版本，当有新的版本添加且优先级更高时，系统会自动切换到新版本。
 
-### 操作步骤
-
+## 操作步骤
 1. **安装新版本**：
    使用 `update-alternatives --install` 命令将新版本添加到管理系统中。例如：
    ```sh
@@ -51,8 +49,7 @@ comments: false
    ```
    这条命令会显示当前 `python3` 的所有可选项及其状态。
 
-### 示例
-
+## 示例
 假设你已经安装了 Python 3.8 和 Python 3.10，并希望在它们之间切换：
 
 1. 添加 Python 3.8 和 Python 3.10 到 `update-alternatives` 系统中：

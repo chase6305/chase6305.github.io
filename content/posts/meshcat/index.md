@@ -4,7 +4,7 @@ date: 2025-04-01
 lastmod: 2025-04-01
 draft: false
 tags: ["CasADi"]
-categories: ["Solver"]
+categories: ["机器人技术"]
 authors: ["chase"]
 summary: "MeshCat: 基于three.js的远程可控3D可视化工具"
 showToc: true
@@ -83,7 +83,7 @@ Viewer.handle_command(cmd)
 {
   "type": "set_transform",
   "path": "/meshcat/box",
-  "matrix": [1,0,0,0, 0,1,0,0, 0,0,1,0, 0.5,0,0.5,1] 
+  "matrix": [1,0,0,0, 0,1,0,0, 0,0,1,0, 0.5,0,0.5,1]
 }
 ```
 - `matrix`：16元素列优先浮点数组

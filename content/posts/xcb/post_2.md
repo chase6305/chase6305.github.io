@@ -4,7 +4,7 @@ date: 2021-08-07
 lastmod: 2021-08-07
 draft: false
 tags: ["Qt", "Linux", "Debug"]
-categories: ["编程技术"]
+categories: ["系统与工具"]
 authors: ["chase"]
 summary: "解决Linux系统下Qt应用程序常见的xcb插件缺失问题"
 showToc: true

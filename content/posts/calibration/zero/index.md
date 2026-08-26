@@ -1,10 +1,11 @@
 ---
 title: '机器人零位标定修正流程介绍'
+math: true
 date: 2025-04-01
 lastmod: 2025-04-01
 draft: false
 tags: ["Calibration", "Kinematics"]
-categories: ["Calibration"]
+categories: ["机器人技术"]
 authors: ["chase"]
 summary: '机器人零位标定修正流程介绍'
 showToc: true

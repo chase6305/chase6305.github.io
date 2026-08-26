@@ -4,7 +4,7 @@ date: 2025-04-01
 lastmod: 2025-04-01
 draft: false
 tags: ["Queue"]
-categories: ["Queue"]
+categories: ["编程开发"]
 authors: ["chase"]
 summary: "无锁队列简介与实现示例"
 showToc: true

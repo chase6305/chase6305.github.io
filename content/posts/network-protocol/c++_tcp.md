@@ -4,7 +4,7 @@ date: 2021-08-08
 lastmod: 2021-08-08
 draft: false
 tags: ["C++", "TCP"]
-categories: ["Protocol"]
+categories: ["系统与工具"]
 authors: ["chase"]
 summary: "C++ 关于TCP通讯的示例"
 showToc: true
@@ -122,7 +122,7 @@ int main()
     // 6.使用第5步返回socket描述符，进行读写通信。
     char *ip = inet_ntoa(client.sin_addr);
     std::cout << "客户： 【" << ip << "】连接成功" << std::endl;
-  
+
     write(fd, "welcome", 7);
 
     char buffer[255]={};

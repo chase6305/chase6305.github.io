@@ -1,10 +1,11 @@
 ---
 title: "Open3D 教程学习指南 (持续整理)"
+math: true
 date: 2025-03-04
 lastmod: 2025-03-04
 draft: false
 tags: ["Open3D"]
-categories: ["Open3D"]
+categories: ["三维视觉"]
 authors: ["chase"]
 summary: "Open3D 是一个开源库，旨在为 3D 数据处理提供高效且易用的工具。它由 Intel 开发和维护，支持多种 3D 数据处理任务，如点云处理、3D 重建、几何处理和可视化等。"
 showToc: true
@@ -17,14 +18,13 @@ comments: false
 
 本章仅为个人学习整理。
 
-Open3D: [https://www.open3d.org/](https://www.open3d.org/)
-Github repo: [https://github.com/isl-org/Open3D
-](https://github.com/isl-org/Open3D)
+- [Open3D 官网](https://www.open3d.org/)
+- [Open3D GitHub 仓库](https://github.com/isl-org/Open3D)
 
 
-# 1. 概述
+## 1. 概述
 Open3D 是一个开源库，旨在为 3D 数据处理提供高效且易用的工具。它由 Intel 开发和维护，支持多种 3D 数据处理任务，如点云处理、3D 重建、几何处理和可视化等。
-## 1.1 主要功能
+### 1.1 主要功能
 - 点云处理：
   - 支持点云的读取、写入和可视化。
   - 提供点云滤波、配准、分割和特征提取等功能。
@@ -41,32 +41,32 @@ Open3D 是一个开源库，旨在为 3D 数据处理提供高效且易用的工
   - 提供与深度学习框架的集成，支持 3D 数据的机器学习任务。
 ![open3d](open3d.png)
 
-# 2. 安装
+## 2. 安装
 
-## 2.1 安装 Open3D
+### 2.1 安装 Open3D
 
-### 方法一：通过 pip 安装
+#### 方法一：通过 pip 安装
 可以直接使用 pip 安装 Open3D：
 ```bash
 pip install open3d
 ```
 
-### 方法二：手动安装
+#### 方法二：手动安装
 你也可以从 [PyPI](https://pypi.org/project/open3d/0.18.0/#description) 下载对应版本的 `.whl` 文件，然后手动安装。例如，对于 Linux x86 系统和 Python 3.9 环境：
 ```bash
 pip install open3d-0.18.0-cp39-cp39-manylinux_2_27_x86_64.whl
 ```
 
-### 方法三：安装 CPU 版本
+#### 方法三：安装 CPU 版本
 如果不使用 NVIDIA 的 CUDA，可以考虑安装 CPU 版本：
 ```bash
 pip install open3d-cpu
 ```
 
-### 方法四：源码安装
+#### 方法四：源码安装
 你也可以从源码安装 Open3D。具体步骤可以参考 [Open3D 的官方文档](http://www.open3d.org/docs/release/compilation.html)。
 
-## 2.2 第三方库管理
+### 2.2 第三方库管理
 Open3D 使用 CMake 来管理第三方库。CMake 是一个跨平台的构建系统，它可以帮助自动化软件构建过程，包括查找和配置第三方库。Open3D 通过 CMake 的 `find_package` 和 `ExternalProject` 模块来管理第三方库。
 
 - **第三方库管理步骤**
@@ -97,7 +97,7 @@ Open3D 使用 CMake 来管理第三方库。CMake 是一个跨平台的构建系
      ```
 Open3D 通过 CMake 的 `find_package` 和 `ExternalProject_Add` 命令来查找和管理第三方库，并使用 `third_party` 目录包含一些必要的库。这样可以确保在不同平台上都能顺利构建和运行 Open3D。
 
-## 2.3 编译原理
+### 2.3 编译原理
 
 1. **CMake 配置**：
    - Open3D 使用 CMake 作为构建系统。CMakeLists.txt 文件定义了项目的构建配置，包括源文件、依赖项、编译选项等。
@@ -116,18 +116,18 @@ Open3D 通过 CMake 的 `find_package` 和 `ExternalProject_Add` 命令来查找
    - 编译过程中会生成 `_pybind` 模块，并将其安装到 Python 的包目录中。
 
 
-# 3. 点云写入、读取、可视化
+## 3. 点云写入、读取、可视化
 `open3d.io.write_point_cloud` 是一个用于将点云数据写入文件的函数。
 `open3d.io.read_point_cloud` 是一个用于从文件中读取点云数据的函数。
 `open3d.visualization.draw_geometries` 是一个用于可视化几何对象列表的函数。
-## 3.1 点云写入文件
+### 3.1 点云写入文件
 ```python
 open3d.io.write_point_cloud(
-    filename: os.PathLike, 
-    pointcloud: open3d.geometry.PointCloud, 
-    format: str = 'auto', 
-    write_ascii: bool = False, 
-    compressed: bool = False, 
+    filename: os.PathLike,
+    pointcloud: open3d.geometry.PointCloud,
+    format: str = 'auto',
+    write_ascii: bool = False,
+    compressed: bool = False,
     print_progress: bool = False
 ) -> bool
 ```
@@ -139,13 +139,13 @@ open3d.io.write_point_cloud(
 `compressed (bool, optional, default=False)`：如果为 True，则以压缩格式写入。
 `print_progress (bool, optional, default=False)`：如果为 True，在控制台中显示进度条。
 
-## 3.2 读取点云文件
+### 3.2 读取点云文件
 ```python
 open3d.io.read_point_cloud(
-    filename: os.PathLike, 
-    format: str = 'auto', 
-    remove_nan_points: bool = False, 
-    remove_infinite_points: bool = False, 
+    filename: os.PathLike,
+    format: str = 'auto',
+    remove_nan_points: bool = False,
+    remove_infinite_points: bool = False,
     print_progress: bool = False
 ) -> open3d.geometry.PointCloud
 ```
@@ -156,21 +156,21 @@ open3d.io.read_point_cloud(
 `remove_infinite_points (bool, optional, default=False)`：如果为 True，则移除包含无限值的点。
 `print_progress (bool, optional, default=False)`：如果为 True，在控制台中显示进度条。
 
-## 3.3 可视化点云
+### 3.3 可视化点云
 ```python
 open3d.visualization.draw_geometries(
-    geometry_list: list[open3d.geometry.Geometry], 
-    window_name: str = 'Open3D', 
-    width: int = 1920, 
-    height: int = 1080, 
-    left: int = 50, 
-    top: int = 50, 
-    point_show_normal: bool = False, 
-    mesh_show_wireframe: bool = False, 
-    mesh_show_back_face: bool = False, 
-    lookat: numpy.ndarray[numpy.float64[3, 1]] | None = None, 
-    up: numpy.ndarray[numpy.float64[3, 1]] | None = None, 
-    front: numpy.ndarray[numpy.float64[3, 1]] | None = None, 
+    geometry_list: list[open3d.geometry.Geometry],
+    window_name: str = 'Open3D',
+    width: int = 1920,
+    height: int = 1080,
+    left: int = 50,
+    top: int = 50,
+    point_show_normal: bool = False,
+    mesh_show_wireframe: bool = False,
+    mesh_show_back_face: bool = False,
+    lookat: numpy.ndarray[numpy.float64[3, 1]] | None = None,
+    up: numpy.ndarray[numpy.float64[3, 1]] | None = None,
+    front: numpy.ndarray[numpy.float64[3, 1]] | None = None,
     zoom: float | None = None
 ) -> None
 ```
@@ -189,7 +189,7 @@ open3d.visualization.draw_geometries(
 `front (Optional[numpy.ndarray[numpy.float64[3, 1]]], optional, default=None)`：相机的 front 向量。
 `zoom (Optional[float], optional, default=None)`：相机的缩放。
 
-## 3.4 使用案例
+### 3.4 使用案例
 ```python
 import open3d as o3d
 import numpy as np
@@ -222,8 +222,8 @@ load_pcd = o3d.io.read_point_cloud("generated_point_cloud.ply")
 o3d.visualization.draw_geometries([load_pcd])
 ```
 ![cude_pc](cude_pc.png)
-# 4. TriangleMesh 读取、保存
-**TriangleMeshIO**节选代码: [https://github.com/isl-org/Open3D/blob/main/cpp/open3d/io/TriangleMeshIO.cpp](https://github.com/isl-org/Open3D/blob/main/cpp/open3d/io/TriangleMeshIO.cpp)
+## 4. TriangleMesh 读取、保存
+下面的代码节选自 Open3D 的 [TriangleMeshIO.cpp](https://github.com/isl-org/Open3D/blob/main/cpp/open3d/io/TriangleMeshIO.cpp)：
 
 ```cpp
 static const std::unordered_map<
@@ -264,7 +264,7 @@ static const std::unordered_map<
 ```
 在这段代码中，`open3d` 使用 `assimp` 来读取和写入多种三角网格文件格式。以下是支持的文件格式：
 
-## 4.1 支持的读取文件格式
+### 4.1 支持的读取文件格式
 - `ply` (使用 `ReadTriangleMeshFromPLY` 函数)
 - `stl` (使用 `ReadTriangleMeshUsingASSIMP` 函数)
 - `obj` (使用 `ReadTriangleMeshUsingASSIMP` 函数)
@@ -273,7 +273,7 @@ static const std::unordered_map<
 - `glb` (使用 `ReadTriangleMeshUsingASSIMP` 函数)
 - `fbx` (使用 `ReadTriangleMeshUsingASSIMP` 函数)
 
-## 4.2 支持的写入文件格式
+### 4.2 支持的写入文件格式
 - `ply` (使用 `WriteTriangleMeshToPLY` 函数)
 - `stl` (使用 `WriteTriangleMeshToSTL` 函数)
 - `obj` (使用 `WriteTriangleMeshToOBJ` 函数)
@@ -284,13 +284,13 @@ static const std::unordered_map<
 这些函数通过文件扩展名与相应的读取和写入函数进行映射，从而支持多种三角网格文件格式的读写操作。
 
 
-## 4.3 TriangleMesh 读取
+### 4.3 TriangleMesh 读取
 `open3d.io.read_triangle_mesh`
 ```python
 open3d.io.read_triangle_mesh(
-filename: os.PathLike, 
-enable_post_processing: 
-bool = False, 
+filename: os.PathLike,
+enable_post_processing:
+bool = False,
 print_progress: bool = False
 ) → open3d.geometry.TriangleMesh
 ```
@@ -312,7 +312,7 @@ filename = "doll.stl"
 try:
     # 尝试读取三角网格
     mesh = o3d.io.read_triangle_mesh(filename, enable_post_processing=True, print_progress=True)
-    
+
     # 检查网格是否成功读取
     if mesh.is_empty():
         print("Failed to read the mesh. The file format may not be supported.")
@@ -342,10 +342,10 @@ if mesh.is_empty():
     print("Failed to read the mesh. The file format may not be supported.")
 else:
     print("Successfully read the mesh.")
-    
+
     # 计算法线
     mesh.compute_vertex_normals()
-    
+
     # 设置网格的颜色为红色
     mesh.paint_uniform_color([1, 0, 0])  # 设置为红色
 
@@ -408,7 +408,7 @@ else:
 ![triangle_mesh_3](triangle_mesh_3.png)
 
 
-## 4.4 从mesh上提取点云
+### 4.4 从mesh上提取点云
 
 ```python
 import open3d as o3d
@@ -455,23 +455,22 @@ else:
 ![triangle_mesh_4](triangle_mesh_4.png)
 
 
-# 5. KD-Tree
+## 5. KD-Tree
 
-## 5.1 KD-树 说明与算法原理
-### 5.1.1 KD-树的简介
+### 5.1 KD-树 说明与算法原理
+#### 5.1.1 KD-树的简介
 
 KD-树（K-Dimension Tree）是一种用于多维空间数据的搜索数据结构，其构建和搜索过程类似于二叉搜索树，但适用于高维场景。通过交替使用各维特征进行划分，KD-树能在 \(O(\log N)\) 的时间复杂度内实现最近邻搜索。此外，它还支持动态插入新节点，通过一种类似替罪羊树的方法保持一定的结构平衡，确保插入效率。
-另外, 可以直接看wiki的说明:
-[https://en.wikipedia.org/wiki/K-d_tree](https://en.wikipedia.org/wiki/K-d_tree)
+更多背景可参考维基百科的 [k-d tree](https://en.wikipedia.org/wiki/K-d_tree) 条目。
 
-### 5.1.2 KD-树的构建
+#### 5.1.2 KD-树的构建
 
 KD-树的构建过程如下：
 
 1. **选择分割维度**：从根节点开始，依次选择各维度进行分割。通常选择数据点在该维度上的中位数作为分割点。
 2. **递归构建子树**：将数据点分为两部分，左子树包含小于等于分割点的数据点，右子树包含大于分割点的数据点。递归地对每个子树进行上述操作，直到所有数据点都被处理完。
 
-### 5.1.3 KD-树的搜索
+#### 5.1.3 KD-树的搜索
 
 KD-树的搜索过程如下：
 
@@ -479,14 +478,14 @@ KD-树的搜索过程如下：
 2. **回溯检查**：在回溯过程中，检查当前节点是否比已找到的最近邻更接近查询点。如果是，则更新最近邻。
 3. **检查其他子树**：如果查询点与当前分割平面的距离小于已找到的最近邻距离，则需要检查另一个子树。
 
-### 5.1.4 KD-树的插入
+#### 5.1.4 KD-树的插入
 
 KD-树的插入过程如下：
 
 1. **找到插入位置**：从根节点开始，递归地找到适合插入新节点的位置。
 2. **插入新节点**：在找到的插入位置插入新节点，并根据需要调整树的结构以保持平衡。
 
-### 5.1.5 KD-树的应用
+#### 5.1.5 KD-树的应用
 
 KD-树广泛应用于以下场景：
 
@@ -494,7 +493,7 @@ KD-树广泛应用于以下场景：
 2. **范围查询**：在地理信息系统中，KD-树可以用于查找指定范围内的所有点。
 3. **聚类分析**：在机器学习中，KD-树可以用于加速 K-means 聚类算法。
 
-### 5.1.6 KD-树的C++实现
+#### 5.1.6 KD-树的C++实现
 
 以下是一个简单的 KD-树的 C++ 实现示例：
 
@@ -588,7 +587,7 @@ int main() {
 
 
 
-## 5.2 KDTreeFlann接口
+### 5.2 KDTreeFlann接口
 
 Open3D 提供了 `KDTreeFlann` 类，用于高效的空间查询。主要的接口包括：
 
@@ -618,7 +617,7 @@ Open3D 提供了 `KDTreeFlann` 类，用于高效的空间查询。主要的接�
   - 返回值：`k` 为找到的邻居数量，`idx` 为邻居的索引，`dist` 为邻居的距离
 
 
-## 5.3 Open3D 中 k-d 树的接口案例
+### 5.3 Open3D 中 k-d 树的接口案例
 
 以下是使用 Open3D 构建和查询 k-d 树的示例代码：
 
@@ -690,72 +689,70 @@ vis.destroy_window()
 - **可视化**：将点云、查询点和最近邻点一起可视化。
 
 
-# 6. Octree 八叉树
+## 6. Octree 八叉树
 
 Octree 八叉树是一种用于描述三维空间的树状数据结构。它的基本思想是递归地将三维空间划分成更小的体积单元，每个节点表示一个正方体的体积元素，每个节点有八个子节点，将八个子节点所表示的体积元素加在一起就等于父节点的体积。
-另外, 可以直接看wiki的说明:
-[https://en.wikipedia.org/wiki/Octree
-](https://en.wikipedia.org/wiki/Octree)
-## 6.1 基本原理
+更多背景可参考维基百科的 [Octree](https://en.wikipedia.org/wiki/Octree) 条目。
+### 6.1 基本原理
 
-### 6.1.1 构建八叉树
+#### 6.1.1 构建八叉树
 
 1. **根节点**：八叉树的根节点表示整个三维空间或一个较大的正方体。
 2. **划分空间**：将空间划分为八个相等的子空间，每个子空间对应一个子节点。
 3. **递归划分**：对于每个子节点，如果其包含的元素数量超过预设阈值，则继续递归地将该子节点对应的空间再划分为八个更小的子空间，直到每个子节点包含的元素数量小于或等于阈值，或者达到设定的最大深度。
 
-### 6.1.2 节点结构
+#### 6.1.2 节点结构
 
 每个八叉树节点包含以下信息：
 - **边界（Boundary）**：定义了节点所代表的空间区域。
 - **子节点（Children）**：指向八个子节点的指针。
 - **元素（Elements）**：节点所包含的元素列表，通常是点、物体或其他空间实体。
 
-### 6.1.3 空间划分
+#### 6.1.3 空间划分
 
 在三维空间中，每个节点代表一个正方体，可以通过中心点和边长来定义。将正方体沿三个坐标轴（x、y、z）各切一刀，就可以得到八个子正方体。
 
-## 6.2 应用
+### 6.2 应用
 
-### 6.2.1 空间划分
+#### 6.2.1 空间划分
 
 八叉树常用于三维空间的分层表示和管理，例如在计算机图形学中用于加速光线追踪和碰撞检测。通过将复杂的三维场景划分成更小的区域，可以大大减少需要处理的元素数量，从而提高计算效率。
 
-### 6.2.2 最近邻搜索
+#### 6.2.2 最近邻搜索
 
 在三维空间中查找某个点的最近邻居时，可以利用八叉树快速缩小搜索范围。通过递归地检查包含目标点的节点及其相邻节点，可以高效地找到最近邻居。
 
-### 6.2.3 碰撞检测
+#### 6.2.3 碰撞检测
 
 在物理引擎中，八叉树被广泛用于碰撞检测。通过将物体划分到不同的节点中，可以快速确定哪些物体可能发生碰撞，从而减少不必要的碰撞检测计算。
 
-### 6.2.4 空间索引
+#### 6.2.4 空间索引
 
 八叉树也可以用于空间数据库中的空间索引，支持快速的空间查询操作，如范围查询和K近邻查询。
 
-## 6.3 实现细节
+### 6.3 实现细节
 
-### 6.3.1 插入元素
+#### 6.3.1 插入元素
 
 将一个元素插入八叉树时，首先找到包含该元素的节点，然后递归地检查该节点是否需要进一步划分，直到找到最适合的叶子节点，将元素插入其中。
 
-### 6.3.2 查找元素
+#### 6.3.2 查找元素
 
 查找元素时，从根节点开始，根据元素的位置递归地进入对应的子节点，直到找到包含该元素的节点。
 
-### 6.3.3 删除元素
+#### 6.3.3 删除元素
 
 删除元素时，首先找到包含该元素的节点，然后从节点的元素列表中删除该元素。如果删除后节点的元素数量小于阈值，则可以考虑合并该节点的子节点以减少树的深度。
 
-## 6.4 优缺点
+### 6.4 优缺点
 
-### 6.4.1 优点
+#### 6.4.1 优点
 
 - **高效的空间划分**：八叉树可以高效地划分三维空间，适用于处理大规模三维数据。
 - **快速查询**：支持快速的空间查询操作，如最近邻搜索和碰撞检测。
 - **灵活性**：可以自适应地划分空间，根据需要调整树的深度和节点容量。
 
-### 6.4.2 缺点
+#### 6.4.2 缺点
 
 - **内存消耗**：在处理大规模数据时，八叉树的节点数量可能非常庞大，导致较高的内存消耗。
 - **复杂性**：实现和维护八叉树的数据结构相对复杂，特别是在处理动态数据时。
@@ -763,11 +760,11 @@ Octree 八叉树是一种用于描述三维空间的树状数据结构。它的�
 
 八叉树是一种强大的数据结构，广泛应用于三维空间的划分和管理。通过递归地将三维空间划分为更小的体积单元，八叉树可以高效地支持各种空间查询操作，如最近邻搜索和碰撞检测。然而，在实际应用中，需要权衡其内存消耗和实现复杂性，以确保其高效性和实用性。
 
-## 6.4 Open3D Octree
+### 6.4 Open3D Octree
 
 `Octree` 类是 Open3D 中用于三维空间分割的主要类。它提供了构建、插入、查询等功能。
 
-### 6.4.1 构建 Octree
+#### 6.4.1 构建 Octree
 
 要构建一个 Octree，可以使用 `Octree` 类并指定最大深度：
 
@@ -779,7 +776,7 @@ max_depth = 4
 octree = o3d.geometry.Octree(max_depth)
 ```
 
-### 6.4.2 从点云构建 Octree
+#### 6.4.2 从点云构建 Octree
 
 可以从一个点云构建 Octree：
 
@@ -792,7 +789,7 @@ pcd.points = o3d.utility.Vector3dVector(np.random.rand(5000, 3))
 octree.convert_from_point_cloud(pcd, size_expand=0.01)
 ```
 
-### 6.4.3 插入点
+#### 6.4.3 插入点
 
 可以向 Octree 中插入单个点：
 
@@ -801,7 +798,7 @@ point = [0.5, 0.5, 0.5]
 octree.insert_point(point)
 ```
 
-### 6.4.4 查询点
+#### 6.4.4 查询点
 
 可以查询一个点是否在 Octree 中，并获取其所在的叶节点信息：
 
@@ -812,7 +809,7 @@ print("查询成功:", success)
 print("节点信息:", node_info)
 ```
 
-### 6.4.5 可视化 Octree
+#### 6.4.5 可视化 Octree
 
 可以使用 Open3D 的可视化工具来显示 Octree：
 
@@ -820,7 +817,7 @@ print("节点信息:", node_info)
 o3d.visualization.draw_geometries([octree])
 ```
 
-### 6.4.6 完整示例代码
+#### 6.4.6 完整示例代码
 
 以下是一个完整的示例代码，展示了如何构建、插入、查询和可视化 Octree：
 
@@ -986,7 +983,7 @@ o3d.visualization.draw_geometries(geometries)
    o3d.visualization.draw_geometries(geometries)
    ```
 
-### 6.4.7 点云分割
+#### 6.4.7 点云分割
 在 Open3D 中使用 Octree 进行点云分割可以通过以下步骤实现：
 
 - 创建点云并构建 Octree：
@@ -1107,7 +1104,7 @@ o3d.visualization.draw_geometries([filtered_pcd], window_name="滤波后点云")
 
 
 
-# 7. 点云过滤
+## 7. 点云过滤
 Open3D 提供了以下几种常用的点云滤波方法：
 
 1. **统计滤波 (Statistical Outlier Removal)**：
@@ -1187,9 +1184,9 @@ o3d.visualization.draw_geometries([downsampled_pcd_uniform], window_name="Unifor
 这些方法可以帮助你在不同的场景下对点云进行预处理和优化，以提高点云处理的效率和效果。
 
 
-# 8. 点云转换
+## 8. 点云转换
 
-## 8.1 **transform**：应用变换矩阵到点云
+### 8.1 **transform**：应用变换矩阵到点云
 `transform` 方法用于将一个 4x4 的变换矩阵应用到点云上。该矩阵可以包含平移、旋转和缩放。
 
 ```python
@@ -1213,7 +1210,7 @@ pcd.transform(transformation_matrix)
 o3d.visualization.draw_geometries([pcd], window_name="Transformed Point Cloud")
 ```
 
-## 8.2 **translate**：平移点云
+### 8.2 **translate**：平移点云
 `translate` 方法用于将点云沿指定的方向平移。
 
 ```python
@@ -1227,7 +1224,7 @@ pcd.translate(translation_vector)
 o3d.visualization.draw_geometries([pcd], window_name="Translated Point Cloud")
 ```
 
-## 8.3 **rotate**：旋转点云
+### 8.3 **rotate**：旋转点云
 `rotate` 方法用于将点云绕指定的轴旋转。旋转矩阵可以通过欧拉角或四元数生成。
 
 ```python
@@ -1241,7 +1238,7 @@ pcd.rotate(rotation_matrix, center=(0, 0, 0))
 o3d.visualization.draw_geometries([pcd], window_name="Rotated Point Cloud")
 ```
 
-## 8.4 **scale**：缩放点云
+### 8.4 **scale**：缩放点云
 `scale` 方法用于将点云按指定的比例缩放。
 
 ```python
@@ -1255,21 +1252,21 @@ pcd.scale(scale_factor, center=pcd.get_center())
 o3d.visualization.draw_geometries([pcd], window_name="Scaled Point Cloud")
 ```
 
-# 9. 点云法线估计
-## 9.1 **estimate_normals**：估计点云法线
+## 9. 点云法线估计
+### 9.1 **estimate_normals**：估计点云法线
 `estimate_normals` 方法用于估计点云的法线。该方法通过计算每个点的邻域点的协方差矩阵，并求解其特征向量来确定法线方向。
 
 - **参数说明**：
 - `search_param`：搜索参数，定义了用于法线估计的邻域搜索方法和半径。
   - `search_param=o3d.geometry.KDTreeSearchParamKNN(knn)`：使用 K 近邻搜索，`knn` 为邻居点的数量。
   - `search_param=o3d.geometry.KDTreeSearchParamRadius(radius)`：使用半径搜索，`radius` 为搜索半径。
-## 9.2 **orient_normals_consistent_tangent_plane**：使法线方向一致
+### 9.2 **orient_normals_consistent_tangent_plane**：使法线方向一致
 `orient_normals_consistent_tangent_plane` 方法用于使点云的法线方向一致。该方法通过构建一致的切平面来调整法线方向。
 
 - **参数说明**：
 - `k`：用于一致性调整的邻居点数量。
 
-## 9.3 详细案例
+### 9.3 详细案例
 
 以下是一个完整的案例，展示了如何读取点云、估计法线并使法线方向一致：
 ```python
@@ -1323,7 +1320,7 @@ o3d.visualization.draw_geometries([pcd], point_show_normal=True, window_name="Po
 通过 `estimate_normals` 和 `orient_normals_consistent_tangent_plane` 方法，你可以估计点云的法线并使其方向一致。这对于后续的点云处理和分析（如表面重建、配准等）非常重要。
 
 
-# 10. 点云配准
+## 10. 点云配准
 
 Open3D 提供了多种点云配准方法，主要包括以下几种：
 
@@ -1337,7 +1334,7 @@ Open3D 提供了多种点云配准方法，主要包括以下几种：
 
 下面是每种方法的说明和案例：
 
-## 10.1 ICP 配准
+### 10.1 ICP 配准
 
 **说明**：通过迭代地最小化两组点云之间的距离来实现配准。
 
@@ -1405,7 +1402,7 @@ visualize_point_clouds(pcd1, pcd2, "Aligned Point Clouds")
 
 
 
-## 10.2 Colored ICP 配准
+### 10.2 Colored ICP 配准
 
 **说明**：在传统 ICP 的基础上，考虑了颜色信息来进行配准。
 
@@ -1481,7 +1478,7 @@ o3d.visualization.draw_geometries([sphere1, sphere2], window_name="After Registr
 
 
 
-## 10.3 全局配准
+### 10.3 全局配准
 
 **说明**：用于初始配准，通常在没有初始对齐的情况下使用。
 
@@ -1564,7 +1561,7 @@ o3d.visualization.draw_geometries([source_temp, target_down], window_name="配�
 
 
 
-## 10.4 多路配准
+### 10.4 多路配准
 
 **说明**：用于将多个点云配准到一个共同的参考框架中。
 
@@ -1701,13 +1698,13 @@ o3d.visualization.draw_geometries([pcd_combined], window_name="After Registratio
 这些案例展示了 Open3D 中不同点云配准方法的基本用法。
 
 
-# 11. 点云表面重建
+## 11. 点云表面重建
 
-## 11.1 Alpha形状重建
+### 11.1 Alpha形状重建
 
 Alpha形状重建是一种用于从点云数据生成三角网格的方法。它基于计算几何中的Alpha形状理论。Alpha形状是由Edelsbrunner等人在1983年提出的，它是Delaunay三角剖分的一个子集，用于描述点集的形状。
 
-### 11.1.1 原理
+#### 11.1.1 原理
 
 1. **Delaunay三角剖分**：
    - 首先，对点云进行Delaunay三角剖分。Delaunay三角剖分是一种将点集划分为一系列三角形的算法，具有最大化最小角的性质，避免了瘦长三角形。
@@ -1721,7 +1718,7 @@ Alpha形状重建是一种用于从点云数据生成三角网格的方法。它
 4. **生成Alpha形状**：
    - 保留的三角形构成了Alpha形状。通过调整α的值，可以控制生成的形状的细节程度。较小的α值会生成更细致的形状，而较大的α值会生成更平滑的形状。
 
-### 11.1.2 代码示例
+#### 11.1.2 代码示例
 
 以下是使用Open3D库进行Alpha形状重建的代码示例：
 
@@ -1743,14 +1740,14 @@ mesh_alpha.compute_vertex_normals()
 o3d.visualization.draw_geometries([mesh_alpha], window_name=f"Alpha Shape Reconstruction with alpha={alpha}")
 ```
 
-### 11.1.3 调整Alpha值
+#### 11.1.3 调整Alpha值
 
 通过调整alpha值，可以生成不同细节程度的形状：
 
 - **较小的alpha值**：生成的形状更细致，保留更多的细节。
 - **较大的alpha值**：生成的形状更平滑，去除了更多的细节。
 
-### 11.1.4 总结
+#### 11.1.4 总结
 
 Alpha形状重建是一种有效的从点云数据生成三角网格的方法，通过调整alpha值，可以控制生成形状的细节程度。它在计算几何和计算机图形学中有广泛的应用。
 
@@ -1778,10 +1775,10 @@ for alpha in alphas:
 ![Alpha_2](Alpha_2.png)
 ![Alpha_3](Alpha_3.png)
 
-## 11.2 泊松重建
+### 11.2 泊松重建
 泊松重建（Poisson Surface Reconstruction）是一种从点云数据生成平滑三角网格的方法。它基于泊松方程，通过全局优化的方法生成表面，能够有效处理噪声和不完整的点云数据。
 
-### 11.2.1 原理
+#### 11.2.1 原理
 
 1. **法线估计**：
    - 首先，从点云数据中估计每个点的法线方向。这一步通常使用邻域搜索算法，如KD树搜索。
@@ -1807,7 +1804,7 @@ $$
 6. **平滑和优化**：
    - 对生成的三角网格进行平滑和优化，以去除噪声和不规则性，生成最终的平滑表面。
 
-### 11.2.2 代码示例
+#### 11.2.2 代码示例
 
 以下是使用Open3D库进行泊松重建的代码示例：
 
@@ -1830,19 +1827,19 @@ o3d.visualization.draw_geometries([mesh_poisson], window_name=f"Poisson Reconstr
 ```
 ![mesh_poisson_1](mesh_poisson_1.png)
 
-### 11.2.3 调整深度参数
+#### 11.2.3 调整深度参数
 
 通过调整深度参数，可以控制生成的网格的细节程度：
 
 - **较小的深度值**：生成的网格较粗糙，计算速度较快。
 - **较大的深度值**：生成的网格较细致，计算速度较慢。
 
-### 11.2.4 总结
+#### 11.2.4 总结
 
 泊松重建是一种从点云数据生成平滑三角网格的有效方法。它通过求解泊松方程，能够处理噪声和不完整的点云数据，生成高质量的表面。通过调整深度参数，可以控制生成网格的细节程度。
 
 
-# 12.  最小包围盒
+## 12.  最小包围盒
 
 使用Open3D计算点云的包围盒可以通过以下两种方式：轴对齐包围盒（Axis-Aligned Bounding Box, AABB）和有向包围盒（Oriented Bounding Box, OBB）。
 下面是一个示例代码，展示如何计算和可视化这两种包围盒。
@@ -1893,7 +1890,7 @@ o3d.visualization.draw_geometries([pcd, aabb, obb], window_name="Bounding Boxes"
 
 
 
-# 13. 凸包
+## 13. 凸包
 
 使用Open3D计算点云的凸包可以通过 `compute_convex_hull` 方法来实现。
 以下是一个示例代码，展示如何计算和可视化点云的凸包。
@@ -1936,7 +1933,7 @@ o3d.visualization.draw_geometries([pcd, hull], window_name="Convex Hull")
 	- 通过上述代码，可以使用Open3D计算点云的凸包，并进行可视化。这对于点云数据的分析和处理非常有用，特别是在需要了解点云的外部形状时。
 
 
-# 14. 体素化
+## 14. 体素化
 
 使用Open3D计算点云的体素化可以通过 `voxel_down_sample` 方法来实现。体素化是将点云划分为固定大小的立方体（体素），并用每个体素内的点的中心点来代表该体素。
 以下是一个示例代码，展示如何对点云进行体素化处理并进行可视化。

@@ -4,7 +4,7 @@ date: 2020-10-06
 lastmod: 2020-10-06
 draft: false
 tags: ["Linux", "OpenGL"]
-categories: ["编程技术"]
+categories: ["三维视觉"]
 authors: ["chase"]
 summary: "Ubuntu 18.04 Vscode配置OpenGL 记录"
 showToc: true
@@ -28,7 +28,7 @@ sudo apt-get install freeglut3-dev
 sudo apt-get install libglew-dev libsdl2-dev libsdl2-image-dev libglm-dev libfreetype6-dev
 ```
 
- 
+
 
  - 在选定的文件夹中新建一个`main.cpp` ，可在文件夹中右键打开终端：
 
@@ -49,7 +49,7 @@ void init(void){
     GLfloat light_position [ ] = { 1.0, 1.0, 1.0, 0.0 };
     glClearColor(0.3, 0.2, 0.2, 0.1);
     glShadeModel ( GL_SMOOTH );
-    
+
     glMatrixMode(GL_PROJECTION);
     glOrtho(-5, 5, -5, 5, 5, 15);
     glMatrixMode(GL_MODELVIEW);
@@ -58,7 +58,7 @@ void init(void){
     glMaterialfv ( GL_FRONT, GL_SPECULAR, mat_specular);
     glMaterialfv ( GL_FRONT, GL_SHININESS, mat_shininess);
     glLightfv ( GL_LIGHT0, GL_POSITION, light_position);
-    
+
     glEnable (GL_LIGHTING);
     glEnable (GL_LIGHT0);
     glEnable (GL_DEPTH_TEST);
@@ -103,7 +103,7 @@ g++ main.cpp -o main -lGL -lGLU -lglut
 在`launch.json`文件中配置：
 ```javascript
 {
-    // 使用 IntelliSense 了解相关属性。 
+    // 使用 IntelliSense 了解相关属性。
     // 悬停以查看现有属性的描述。
     // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
@@ -141,11 +141,11 @@ g++ main.cpp -o main -lGL -lGLU -lglut
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build", 
+            "label": "build",
             "type": "shell",
             "command": "g++",
             "args": [
-                "main.cpp","-o","main","-lGL","-lGLU","-lglut" 
+                "main.cpp","-o","main","-lGL","-lGLU","-lglut"
             ],
             "group": {
                 "kind": "build",

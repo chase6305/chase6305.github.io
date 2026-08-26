@@ -4,7 +4,7 @@ date: 2025-02-26
 lastmod: 2025-02-26
 draft: false
 tags: ["Unicode"]
-categories: ["编程技术"]
+categories: ["编程开发"]
 authors: ["chase"]
 summary: "Unicode 符号在程序开发中的应用指南"
 showToc: true
@@ -24,7 +24,7 @@ comments: false
 
 ```cpp
 ✅ CHECK_MARK - 表示成功或完成
-❌ CROSS_MARK - 表示失败或错误  
+❌ CROSS_MARK - 表示失败或错误
 ⚠️ WARNING - 表示警告
 ℹ️ INFO - 表示信息提示
 ```

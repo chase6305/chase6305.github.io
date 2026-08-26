@@ -4,7 +4,7 @@ date: 2025-08-04
 lastmod: 2025-08-04
 draft: false
 tags: ["PySide6", "Matplotlib"]
-categories: ["编程技术"]
+categories: ["编程开发"]
 authors: ["chase"]
 summary: "Matplotlib与PySide6兼容性问题及解决方案"
 showToc: true
@@ -102,11 +102,11 @@ from matplotlib.figure import Figure
 class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        
+
         # 创建Matplotlib画布
         self.canvas = FigureCanvasQTAgg(Figure())
         self.setCentralWidget(self.canvas)
-        
+
         # 绘制图形
         ax = self.canvas.figure.add_subplot(111)
         ax.plot([1, 2, 3], [1, 2, 3])

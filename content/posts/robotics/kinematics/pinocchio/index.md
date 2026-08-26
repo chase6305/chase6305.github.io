@@ -4,7 +4,7 @@ date: 2024-08-18
 lastmod: 2024-08-18
 draft: false
 tags: ["Robotics", "Kinematics", "Python"]
-categories: ["编程技术"]
+categories: ["机器人技术"]
 authors: ["chase"]
 summary: "分享一个求解运动学逆解的第三方库 pinocchio， 并且根据其urdf文件中描述的关节极限范围内进行逆运动学求解的样例。"
 showToc: true
@@ -14,8 +14,7 @@ comments: false
 ---
 
 
-**https://github.com/stack-of-tasks/pinocchio**
-分享一个求解运动学逆解的第三方库 pinocchio， 并且根据其urdf文件中描述的关节极限范围内进行逆运动学求解的样例。
+[Pinocchio](https://github.com/stack-of-tasks/pinocchio) 是一个机器人运动学与动力学库。下面分享一个根据 URDF 关节限位求解逆运动学的示例。
 ```python
 import numpy as np
 from numpy.linalg import norm, solve
@@ -40,18 +39,18 @@ class pinocchio_kinematics(object):
     def qpos_to_limits(self, q: np.ndarray, upperPositionLimit: np.ndarray,
                        lowerPositionLimit: np.ndarray, joint_seed: np.ndarray,
                        ik_weight: np.ndarray):
-        """Adjusts the joint positions (q) to be within specified limits and as close as possible to the joint seed,  
-        while minimizing the total weighted difference.  
-    
-        Args:  
-            q (np.ndarray): The original joint positions.  
-            upperPositionLimit (np.ndarray): The upper limits for the joint positions.  
-            lowerPositionLimit (np.ndarray): The lower limits for the joint positions.  
-            joint_seed (np.ndarray): The desired (seed) joint positions.  
-            ik_weight (np.ndarray): The weights to apply for each joint in the total difference calculation.  
-    
-        Returns:  
-            np.ndarray: The adjusted joint positions within the specified limits.  
+        """Adjusts the joint positions (q) to be within specified limits and as close as possible to the joint seed,
+        while minimizing the total weighted difference.
+
+        Args:
+            q (np.ndarray): The original joint positions.
+            upperPositionLimit (np.ndarray): The upper limits for the joint positions.
+            lowerPositionLimit (np.ndarray): The lower limits for the joint positions.
+            joint_seed (np.ndarray): The desired (seed) joint positions.
+            ik_weight (np.ndarray): The weights to apply for each joint in the total difference calculation.
+
+        Returns:
+            np.ndarray: The adjusted joint positions within the specified limits.
         """
         qpos_limit = np.copy(q)
         best_qpos_limit = np.copy(q)
@@ -116,7 +115,7 @@ class pinocchio_kinematics(object):
             err = pinocchio.log(dMi).vector
             if norm(err) < self.eps:
                 print("Pin:Convergence achieved!")
-                
+
                 q = self.qpos_to_limits(q, self.model.upperPositionLimit,
                                         self.model.lowerPositionLimit,
                                         joint_seed, ik_weight)

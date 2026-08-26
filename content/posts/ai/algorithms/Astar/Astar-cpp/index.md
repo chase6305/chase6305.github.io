@@ -4,7 +4,7 @@ date: 2022-06-29
 lastmod: 2022-06-29
 draft: false
 tags: ["AI", "Algorithms"]
-categories: ["Algorithms"]
+categories: ["人工智能"]
 authors: ["chase"]
 summary: "基于三维栅格空间的A*算法流程C++实现"
 showToc: true
@@ -280,7 +280,7 @@ public:
         {
         }
 
-        void reset(uint16_t x1, uint16_t y1, uint16_t z1)   //赋值 
+        void reset(uint16_t x1, uint16_t y1, uint16_t z1)   //赋值
         {
             x = x1;
             y = y1;
@@ -309,7 +309,7 @@ public:
     {
         bool        corner;     // 允许拐角
         uint16_t    height;     // 地图高度 z
-        uint16_t    width;      // 地图宽度 
+        uint16_t    width;      // 地图宽度
         uint16_t    depth;      // 地图深度 z
         Vec3        start;      // 起点坐标
         Vec3        end;        // 终点坐标
@@ -485,10 +485,10 @@ private:
 
 //直行估值和拐角估值
 static const int kStepValue = 10;       //水平或垂直移动的耗费为10
-static const int kObliqueValue = 14;    //对角线移动的耗费为14 
+static const int kObliqueValue = 14;    //对角线移动的耗费为14
 
 //构造函数
-AStar::AStar(BlockAllocator *allocator) 
+AStar::AStar(BlockAllocator *allocator)
     : width_(0)
     , height_(0)
     , depth_(0)
@@ -545,7 +545,7 @@ void AStar::init(const Params &param)
     can_pass_ = param.can_pass;
     //如果地图不为空，则清空
     if (!mapping_.empty()) {
-        memset( &mapping_[0] , 0, sizeof(Node*) * mapping_.size() ); //初始化 地图清空为0 
+        memset( &mapping_[0] , 0, sizeof(Node*) * mapping_.size() ); //初始化 地图清空为0
     }
     mapping_.resize( width_ * height_ * depth_ , nullptr); //调整大小
 }
@@ -609,13 +609,13 @@ inline uint16_t AStar::calcul_h_value(const Vec3 &current, const Vec3 &end){
 
 // 节点是否存在于开启列表
 inline bool AStar::in_open_list(const Vec3 &pos, Node *&out_node){
-    out_node = mapping_[ pos.z * width_ * height_ + pos.y * width_ + pos.x ];    
+    out_node = mapping_[ pos.z * width_ * height_ + pos.y * width_ + pos.x ];
     return out_node ? out_node->state == IN_OPENLIST : false;
 }
 
 // 节点是否存在于关闭列表
 inline bool AStar::in_closed_list(const Vec3 &pos){
-    Node *node_ptr = mapping_[pos.z * width_ * height_ + pos.y * width_ + pos.x];  
+    Node *node_ptr = mapping_[pos.z * width_ * height_ + pos.y * width_ + pos.x];
     return node_ptr ? node_ptr->state == IN_CLOSEDLIST : false;
 }
 
@@ -626,8 +626,8 @@ bool AStar::can_pass(const Vec3 &pos) {
 
 // 当前点是否可到达目标点
 bool AStar::can_pass(const Vec3 &current, const Vec3 &destination, bool allow_corner){
-    if (destination.x >= 0 && destination.x < width_ 
-    && destination.y >= 0 && destination.y < height_ 
+    if (destination.x >= 0 && destination.x < width_
+    && destination.y >= 0 && destination.y < height_
     && destination.z >= 0 && destination.z < depth_ ) {
         //该点是否在关闭列表中
         if (in_closed_list(destination)){
@@ -639,10 +639,10 @@ bool AStar::can_pass(const Vec3 &current, const Vec3 &destination, bool allow_co
         }
          // 允许转角
         else if (allow_corner){
-            return can_pass_(destination) 
-                    && (can_pass(Vec3( destination.x , current.y ,      current.z )) 
+            return can_pass_(destination)
+                    && (can_pass(Vec3( destination.x , current.y ,      current.z ))
                     && can_pass(Vec3(  current.x,      destination.y  , current.z))
-                    && can_pass(Vec3(  current.x,      current.y  ,     destination.z))); 
+                    && can_pass(Vec3(  current.x,      current.y  ,     destination.z)));
         }
     }
     return false;
@@ -653,8 +653,8 @@ bool AStar::can_pass(const Vec3 &current, const Vec3 &destination, bool allow_co
 void AStar::find_can_pass_nodes(const Vec3 &current, bool corner, std::vector<Vec3> *out_lists){
     Vec3 destination;   //新建三维点
     const int max_row = current.y + 1;  //
-    const int max_col = current.x + 1;  // 
-    const int max_z = current.z + 1; // 
+    const int max_col = current.x + 1;  //
+    const int max_z = current.z + 1; //
 
     int row_index = current.y - 1;  // row 为纵向
 
@@ -665,7 +665,7 @@ void AStar::find_can_pass_nodes(const Vec3 &current, bool corner, std::vector<Ve
         z_index = 0 ;
     }
     while ( z_index <= max_z ){
-        int row_index = current.z - 1 ; 
+        int row_index = current.z - 1 ;
         //若row_index小于零，则将row_index置为零 以防超过边界
         if (row_index < 0)  {
             row_index = 0;
@@ -676,9 +676,9 @@ void AStar::find_can_pass_nodes(const Vec3 &current, bool corner, std::vector<Ve
             if ( col_index < 0 ){
                 col_index = 0 ;
             }
-            //若max_col 大于等于 col_index 
+            //若max_col 大于等于 col_index
             while (col_index <= max_col){
-                destination.reset( col_index, row_index, z_index );    //将当前点节点信息存放到destinationn  
+                destination.reset( col_index, row_index, z_index );    //将当前点节点信息存放到destinationn
                 //判断是否到达终点
                 if (can_pass(current, destination, corner)){
                     out_lists->push_back(destination);
@@ -694,7 +694,7 @@ void AStar::find_can_pass_nodes(const Vec3 &current, bool corner, std::vector<Ve
 
 // 处理找到节点的情况
 void AStar::handle_found_node(Node *current, Node *destination){
-    unsigned int g_value = calcul_g_value(current, destination->pos); //计算g值 
+    unsigned int g_value = calcul_g_value(current, destination->pos); //计算g值
     if (g_value < destination->g){
         destination->g = g_value;
         destination->parent = current;
@@ -713,8 +713,8 @@ void AStar::handle_found_node(Node *current, Node *destination){
 // 处理未找到节点的情况
 void AStar::handle_not_found_node(Node *current, Node *destination, const Vec3 &end){
     destination->parent = current;
-    destination->h = calcul_h_value(destination->pos, end);     //计算h值 
-    destination->g = calcul_g_value(current, destination->pos); //计算g值 
+    destination->h = calcul_h_value(destination->pos, end);     //计算h值
+    destination->g = calcul_g_value(current, destination->pos); //计算g值
 
     Node *&reference_node = mapping_[destination->pos.z * width_ * height_ + destination->pos.y * width_ + destination->pos.x];
     reference_node = destination;
@@ -742,14 +742,14 @@ std::vector<AStar::Vec3> AStar::find(const Params &param){
     nearby_nodes.reserve(param.corner ? 26 : 6 );  //分配容器大小， 二维 8 或 4  三维 26 或 6 ----corner：是否允许拐角
 
     // 将起点放入开启列表
-    Node *start_node = new( allocator_->allocate( sizeof(Node) ) ) Node(param.start); 
+    Node *start_node = new( allocator_->allocate( sizeof(Node) ) ) Node(param.start);
     open_list_.push_back(start_node);
-    //depth_  = ?  是等于 width_ * height_ 
+    //depth_  = ?  是等于 width_ * height_
     Node *&reference_node = mapping_[ start_node->pos.z * width_ * height_  + start_node->pos.y * width_ + start_node->pos.x ]; //创建路径节点
     reference_node = start_node;        //将起点放入reference_node中
-    reference_node->state = IN_OPENLIST;   //将起点节点状态设置为开启，起点放入开启列表 
+    reference_node->state = IN_OPENLIST;   //将起点节点状态设置为开启，起点放入开启列表
 
-    // 寻路操作 遍历开启列表直到找到终点 
+    // 寻路操作 遍历开启列表直到找到终点
     while (!open_list_.empty()){
         // 找出f值最小节点NumberOfGrid_x
         Node *current = open_list_.front(); //返回当前vector容器中起始元素的引用
@@ -771,19 +771,19 @@ std::vector<AStar::Vec3> AStar::find(const Params &param){
         }
         // 查找周围可通过节点
         nearby_nodes.clear(); //清空nearby_nodes，将新节点周围可通过的节点放入nearby_nodes
-        find_can_pass_nodes(current->pos, param.corner, &nearby_nodes);  //找寻当前节点的附近可通过节点 
-        //current->pos 当前路径节点的节点位置 
+        find_can_pass_nodes(current->pos, param.corner, &nearby_nodes);  //找寻当前节点的附近可通过节点
+        //current->pos 当前路径节点的节点位置
         // 计算周围节点的估值
         size_t index = 0;
-        const size_t size = nearby_nodes.size(); 
+        const size_t size = nearby_nodes.size();
         while (index < size){
-            Node *next_node = nullptr; 
+            Node *next_node = nullptr;
             //判断节点是否在开启列表
             if ( in_open_list(nearby_nodes[index], next_node) ){
                 handle_found_node(current, next_node);    //处理找到节点的情况
             }
             else{
-                next_node = new(allocator_->allocate(sizeof(Node))) Node(nearby_nodes[index]);  
+                next_node = new(allocator_->allocate(sizeof(Node))) Node(nearby_nodes[index]);
                 handle_not_found_node(current, next_node, param.end);   //处理未找到节点的情况
             }
             ++index;
@@ -804,7 +804,7 @@ __end__:
  * @LastEditTime: 2020-08-10 13:15:05
  * @LastEditors: JT
  * @Description: In User Settings Edit
- */ 
+ */
 #ifndef PATHPLANINGCOMPOSITION_H_
 #define PATHPLANINGCOMPOSITION_H_
 #include<iostream>
@@ -814,10 +814,10 @@ __end__:
 class PathPlanComposition{
 private:
     /* data */
-public:  
+public:
     PathPlanComposition(/* args */);
     ~PathPlanComposition();
-    
+
     void AstarRoute() ;
 };
 
@@ -839,7 +839,7 @@ PathPlanComposition::~PathPlanComposition(){
 #include "astar.cpp"
 #include "blockallocator.cpp"
 
-// Astar算法 示例程序 
+// Astar算法 示例程序
 // 可自行构建三维栅格地图
 // 在param.start和param.end传入三维栅格的起点和终点，此处第三个值为0 默认为平面
 void PathPlanComposition::AstarRoute( ){
@@ -857,10 +857,10 @@ void PathPlanComposition::AstarRoute( ){
 		{ 1, 1, 0, 0, 1, 0, 1, 0, 0, 0 },
 		{ 0, 0, 0, 0, 0, 0, 1, 0, 1, 0 },
 	};
-	AStar::Params param; 
-	param.width = 10;	//x	
-	param.height = 10;	//y	
-	param.depth = 1;	//z	
+	AStar::Params param;
+	param.width = 10;	//x
+	param.height = 10;	//y
+	param.depth = 1;	//z
 	param.corner = false;
 	param.start = AStar::Vec3( 9 , 9 , 0 );	//起点
 	param.end 	= AStar::Vec3( 1 , 1 , 0 ); //终点
@@ -872,8 +872,8 @@ void PathPlanComposition::AstarRoute( ){
 	BlockAllocator allocator;
 	AStar algorithm(&allocator);
 	auto path = algorithm.find(param);
-	if( path.empty()){	
-		cout << " path empty" << endl; 
+	if( path.empty()){
+		cout << " path empty" << endl;
 	}
 	for( int i = 0 ; i< path.size() ; i++ ){
 		cout << " path-------- " << path[i].x << " , " << path[i].y << " , " << path[i].z << endl;

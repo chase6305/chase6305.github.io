@@ -1,0 +1,27 @@
+{{- $projects := hugo.Data.projects -}}
+<div class="project-grid">
+  {{- range $projects }}
+  <article class="project-card{{ if .featured }} project-card--featured{{ end }}">
+    <div class="project-card__header">
+      <span class="project-card__icon" aria-hidden="true">{{ .icon }}</span>
+      <div>
+        <p class="project-card__eyebrow">{{ .role }} · {{ .organization }}</p>
+        <h3 class="project-card__title">{{ .name }}</h3>
+      </div>
+    </div>
+    <p class="project-card__tagline">{{ .tagline }}</p>
+    <p class="project-card__description">{{ .description }}</p>
+    <ul class="project-card__topics" aria-label="技术方向">
+      {{- range .topics }}
+      <li>{{ . }}</li>
+      {{- end }}
+    </ul>
+    <div class="project-card__links">
+      {{- range .links }}
+      <a class="project-link{{ if .primary }} project-link--primary{{ end }}" href="{{ .url }}"
+         target="_blank" rel="noopener noreferrer">{{ .label }} <span aria-hidden="true">↗</span></a>
+      {{- end }}
+    </div>
+  </article>
+  {{- end }}
+</div>

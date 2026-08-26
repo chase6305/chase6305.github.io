@@ -4,7 +4,7 @@ date: 2021-12-07
 lastmod: 2021-12-07
 draft: false
 tags: ["Robotics", "Kinematics", "C++"]
-categories: ["编程技术"]
+categories: ["机器人技术"]
 authors: ["chase"]
 summary: "本文主要是对传统六自由度机器人进行正逆运动学求解，选取大族机器人Elfin05 为分析的对象，开发语言是C++。"
 showToc: true
@@ -384,7 +384,7 @@ void Kinematics::computeIKUpperAngles(
     // 解决办法：
     //  1.在规划路径中尽可能的避免机器人经过奇异点。
     //  2.结合机器人运动学，优化机器人反解算法，确保在奇异点附近伪逆解的稳定性 。
-    //  3. 
+    //  3.
 }
 }
 ```

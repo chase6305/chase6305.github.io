@@ -4,7 +4,7 @@ date: 2025-01-13
 lastmod: 2025-01-13
 draft: false
 tags: ["Robotics", "Kinematics", "C++"]
-categories: ["编程技术"]
+categories: ["机器人技术"]
 authors: ["chase"]
 summary: "https://github.com/chase6305/7DofSRSKinematics"
 showToc: true
@@ -132,7 +132,7 @@ class SRSKinSolver:
 
         # Lower arm transformation
         T34_v = np.eye(4)
-        T34_v = self.dh_calc(self.dh_params[3, 0], self.dh_params[3, 1], 
+        T34_v = self.dh_calc(self.dh_params[3, 0], self.dh_params[3, 1],
                              self.dh_params[3, 2], joint_v[3])
         P34_v = T34_v[:3, 3]
         R34_v = T34_v[:3, :3]
@@ -176,7 +176,7 @@ class SRSKinSolver:
         V_v_to_sew, R03_o, joint_v = self.reference_plane(pose, elbow_config)
 
         # Another way to compute R03_o
-        
+
         # Calculate shoulder joint rotation matrices
         usw = P26 / np.linalg.norm(P26)
         skew_usw = self.skew(usw)
@@ -188,7 +188,7 @@ class SRSKinSolver:
         A_s = skew_usw @ R03_o
         B_s = -skew_usw @ skew_usw @ R03_o
         # C_s = (usw @ usw.T) @ R03_o
-        C_s = (usw.reshape(-1, 1) @ usw.reshape(1, -1)) @ R03_o  
+        C_s = (usw.reshape(-1, 1) @ usw.reshape(1, -1)) @ R03_o
 
         # C_s = P26 @ P26 @ R03_o
         R03 = A_s * np.sin(angle_psi) + B_s * np.cos(angle_psi) + C_s
@@ -225,7 +225,7 @@ class SRSKinSolver:
             s_mat,
             w_mat,
         )  # Returning joints with placeholders for s_mat and w_mat
-        
+
 
     def compute_total_transform(self, joint_angles):
         """Compute the overall transformation matrix and the list of transformation matrices for each joint."""

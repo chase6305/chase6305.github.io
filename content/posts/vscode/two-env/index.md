@@ -3,8 +3,8 @@ title: VScode终端出现显示两个环境名问题的解决方案
 date: 2025-02-07
 lastmod: 2025-02-07
 draft: false
-tags: ["Vscode", "Conda", "Bug"]
-categories: ["编程技术"]
+tags: ["VS Code", "Conda", "Bug"]
+categories: ["系统与工具"]
 authors: ["chase"]
 summary: VScode终端出现显示两个环境名问题的解决方案
 showToc: true
@@ -95,5 +95,5 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 conda activate py39 # 这里你可以自动选用你默认使用的环境
-conda config --set auto_activate_base false 
+conda config --set auto_activate_base false
 ```

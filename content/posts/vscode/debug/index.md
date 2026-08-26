@@ -3,8 +3,8 @@ title: VS Code Python 调试完全指南：从入门到精通
 date: 2026-01-27
 lastmod: 2026-01-27
 draft: false
-tags: ["VsCode", "debug"]
-categories: ["编程技术"]
+tags: ["VS Code", "Debug"]
+categories: ["系统与工具"]
 authors: ["chase"]
 summary: "VS Code Python 调试完全指南：从入门到精通"
 showToc: true

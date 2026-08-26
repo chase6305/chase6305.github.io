@@ -3,8 +3,8 @@ title: Python中5个提升效率的f-string高阶技巧
 date: 2025-05-03
 lastmod: 2025-05-03
 draft: false
-tags: ["python", "f-string"]
-categories: ["编程技术"]
+tags: ["Python", "f-string"]
+categories: ["编程开发"]
 authors: ["chase"]
 summary: "Python中5个提升效率的f-string高阶技巧"
 showToc: true
@@ -36,7 +36,7 @@ print(f"GDP总量：{9876543210.5:,.2f}美元")  # GDP总量：9,876,543,210.50�
 item = "APPLE"
 price = 9.99
 print(f"[{item:_^15}]")  # [_____APPLE_____]
-print(f"{'价格：':#>15}{price:<8.2f}")  # ##########价格：9.99    
+print(f"{'价格：':#>15}{price:<8.2f}")  # ##########价格：9.99
 ```
 - `>右对齐` `<左对齐` `^居中`
 - 可自定义填充符号（单字符）

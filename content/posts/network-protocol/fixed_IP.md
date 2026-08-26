@@ -4,7 +4,7 @@ date: 2025-02-21
 lastmod: 2025-02-21
 draft: false
 tags: ["IP"]
-categories: ["Protocol"]
+categories: ["系统与工具"]
 authors: ["chase"]
 summary: "Linux固定网口IP的方法"
 showToc: true

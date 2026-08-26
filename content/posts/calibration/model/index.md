@@ -4,7 +4,7 @@ date: 2025-02-26
 lastmod: 2025-02-26
 draft: false
 tags: ["Calibration"]
-categories: ["Calibration"]
+categories: ["机器人技术"]
 authors: ["chase"]
 summary: '关于手眼标定的数学模型及标定流程'
 showToc: true

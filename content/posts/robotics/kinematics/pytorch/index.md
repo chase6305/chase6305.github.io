@@ -4,7 +4,7 @@ date: 2025-02-26
 lastmod: 2025-02-26
 draft: false
 tags: ["Robotics", "Kinematics", "C++", "Torch"]
-categories: ["编程技术"]
+categories: ["机器人技术"]
 authors: ["chase"]
 summary: "https://github.com/UM-ARM-Lab/pytorch_kinematics"
 showToc: true

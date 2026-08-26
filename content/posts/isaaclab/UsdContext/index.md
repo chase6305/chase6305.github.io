@@ -3,8 +3,8 @@ title: '解决 Isaac Lab 中module ''omni.usd'' has no attribute ''UsdContext'' 
 date: 2025-11-17
 lastmod: 2025-11-17
 draft: false
-tags: ["IsaacLab", "bug"]
-categories: ["编程技术"]
+tags: ["IsaacLab", "Bug"]
+categories: ["人工智能"]
 authors: ["chase"]
 summary: "解决 Isaac Lab 中 `module ‘omni.usd‘ has no attribute ‘UsdContext‘` 错误"
 showToc: true

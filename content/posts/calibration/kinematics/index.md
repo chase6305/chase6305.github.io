@@ -1,12 +1,11 @@
 ---
 title: '机器人运动学参数标定'
 math: true
-date: 2025-02-27
 date: 2025-04-01
 lastmod: 2025-04-01
 draft: false
 tags: ["Calibration", "Kinematics"]
-categories: ["Calibration"]
+categories: ["机器人技术"]
 authors: ["chase"]
 summary: '机器人运动学参数标定'
 showToc: true
@@ -25,23 +24,32 @@ comments: false
 Denavit-Hartenberg（DH）参数是一种标准化方法，用于描述机器人各关节之间的几何关系。通过DH参数，可以将机器人关节的旋转和平移统一表示为矩阵变换。
 
 DH参数包括以下四个变量:
-- **$a_i$** : 相邻关节轴之间的连杆长度。  
-- **$d_i$** : 沿关节轴的偏移量。  
-- **$\alpha_i$** : 相邻关节轴之间的扭转角。  
-- **$\theta_i$** : 关节的旋转角度。  
+- **$a_i$** : 相邻关节轴之间的连杆长度。
+- **$d_i$** : 沿关节轴的偏移量。
+- **$\alpha_i$** : 相邻关节轴之间的扭转角。
+- **$\theta_i$** : 关节的旋转角度。
 
-对于机器人，关节角度 $\theta_i$ 通常由硬件编码器返回的值 $q_i$ 和关节零位偏置 $\theta_i^{\text{offset}}$ 组成： 
-$$ \theta_i = q_i + \theta_i^{\text{offset}} $$
+对于机器人，关节角度 $\theta_i$ 通常由硬件编码器返回的值 $q_i$ 和关节零位偏置 $\theta_i^{\text{offset}}$ 组成：
+$$
+\theta_i = q_i + \theta_i^{\text{offset}}
+$$
 ![DHparams](DHparams.jpg)
 
 ### 1.2 正运动学公式
-通过DH参数和关节角度，可以计算机器人末端在基坐标系下的位姿矩阵： $$ {}_{E}^{B}\textrm{T} = f(\overrightarrow{q}, \overrightarrow{\phi}) $$
+通过 DH 参数和关节角度，可以计算机器人末端在基坐标系下的位姿矩阵：
+
+$$
+{}_{E}^{B}\mathbf{T} = f(\boldsymbol{q}, \boldsymbol{\phi})
+$$
 
 其中：
 
-- **$\overrightarrow{q}$** : 关节角度向量，由编码器返回的值组成。   
+- **$\overrightarrow{q}$** : 关节角度向量，由编码器返回的值组成。
 - **$\overrightarrow{\phi}$** : 机器人运动学参数向量，包括所有的DH参数:
- $$ \overrightarrow{\phi} = (a_0, d_0, \alpha_1, \theta_1, \dots, a_{n-1}, d_{n-1}, \alpha_n, \theta_n)^T $$
+$$
+\boldsymbol{\phi} = (a_0, d_0, \alpha_1, \theta_1, \dots,
+a_{n-1}, d_{n-1}, \alpha_n, \theta_n)^\mathsf{T}
+$$
 
 由于装配误差、加工误差等原因，$\overrightarrow{\phi}$ 中的参数可能存在偏差，因此需要通过标定来修正这些参数。
 
@@ -61,8 +69,12 @@ $$ \theta_i = q_i + \theta_i^{\text{offset}} $$
 
  ![针尖基准点](tcp.png)
 #### 2.2.2 误差定义
-由于末端点始终与针尖基准点 $P$ 接触，末端点在 $P$ 坐标系下的位置应为 $(0, 0, 0)^T$。因此，误差函数可以定义为： 
-$$ \Delta_{E}^{P}\overrightarrow{p} = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix} - {}_{E}^{P}\overrightarrow{p} $$
+由于末端点始终与针尖基准点 $P$ 接触，末端点在 $P$ 坐标系下的位置应为 $(0, 0, 0)^T$。因此，误差函数可以定义为：
+$$
+\Delta_{E}^{P}\boldsymbol{p} =
+\begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}
+- {}_{E}^{P}\boldsymbol{p}
+$$
 
 其中：
 
@@ -70,17 +82,35 @@ $$ \Delta_{E}^{P}\overrightarrow{p} = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix} 
 
 
 #### 2.2.3 雅可比矩阵
-误差函数 $\Delta_{E}^{P}\overrightarrow{p}$ 对运动学参数 $\overrightarrow{\phi}$ 的偏导数构成雅可比矩阵 $J$： $$ J = \begin{bmatrix} \frac{\partial f}{\partial a_0} & \frac{\partial f}{\partial d_0} & \cdots & \frac{\partial f}{\partial \theta_n} \end{bmatrix} $$
+误差函数 $\Delta_{E}^{P}\boldsymbol{p}$ 对运动学参数 $\boldsymbol{\phi}$ 的偏导数构成雅可比矩阵 $J$：
+
+$$
+J = \begin{bmatrix}
+\frac{\partial f}{\partial a_0} &
+\frac{\partial f}{\partial d_0} &
+\cdots &
+\frac{\partial f}{\partial \theta_n}
+\end{bmatrix}
+$$
 
 #### 2.2.4 参数更新
-通过最小二乘法，计算运动学参数的修正值 $\Delta\overrightarrow{\phi}$： 
-$$ \Delta\overrightarrow{\phi} = (J^T J)^{-1} J^T \cdot \Delta_{E}^{P}\overrightarrow{p} $$
+通过最小二乘法，计算运动学参数的修正值 $\Delta\overrightarrow{\phi}$：
+$$
+\Delta\boldsymbol{\phi} = (J^\mathsf{T}J)^{-1}J^\mathsf{T}
+\Delta_{E}^{P}\boldsymbol{p}
+$$
 
-然后更新运动学参数： 
-$$ \overrightarrow{\phi}^{k+1} = \overrightarrow{\phi}^{k} + \Delta\overrightarrow{\phi} $$
+然后更新运动学参数：
+$$
+\boldsymbol{\phi}^{k+1} = \boldsymbol{\phi}^{k} + \Delta\boldsymbol{\phi}
+$$
 
 #### 2.2.5 迭代停止条件
-重复上述步骤，直到 $\Delta\overrightarrow{\phi}$ 足够小，即： $$ |\Delta\overrightarrow{\phi}| < \epsilon $$
+重复上述步骤，直到 $\Delta\boldsymbol{\phi}$ 足够小，即：
+
+$$
+\lVert\Delta\boldsymbol{\phi}\rVert < \epsilon
+$$
 
 其中 $\epsilon$ 是预设的误差阈值。
 
@@ -90,6 +120,6 @@ $$ \overrightarrow{\phi}^{k+1} = \overrightarrow{\phi}^{k} + \Delta\overrightarr
 	- 采用基于POE的机器人运动学校准方法，利用轴配置空间和伴随误差模型，基于扭转和正向运动学的指数积(POE)公式。通过迭代最小二乘优化方案，可以找到螺旋轴校正，从而最小化观测值与机器人正向运动学之间的误差。
 
 - https://github.com/neuebot/Kinematic-Calibration
-	- 一种基于圆拟合和对偶矢量几何的方法，用于确定串行机械手的经典Denavit-Hartenberg参数。 
+	- 一种基于圆拟合和对偶矢量几何的方法，用于确定串行机械手的经典Denavit-Hartenberg参数。
 - https://github.com/cursi36/Kalibrot?tab=readme-ov-file
-	- 采用Kalibrot(一种优化算法)解决寻找正确机器人运动学校准的最佳 DH 参数的问题。 
+	- 采用 Kalibrot（一种优化算法）寻找机器人运动学校准所需的最佳 DH 参数。

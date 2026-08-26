@@ -4,7 +4,7 @@ date: 2025-04-11
 lastmod: 2025-04-11
 draft: false
 tags: ["CUDA", "Warp"]
-categories: ["CUDA"]
+categories: ["编程开发"]
 authors: ["chase"]
 summary: "【CUDA编程】CUDA Warp 与 Warp-Python 学习文档"
 showToc: true
@@ -23,13 +23,13 @@ GitHub：[nvidia/warp](https://github.com/NVIDIA/warp)
 ## **1. CUDA Warp（硬件/编程模型概念）**
 
 ### **1.1 定义与核心概念**
-- **定义**：  
+- **定义**：
   CUDA Warp 是 NVIDIA GPU 的线程调度单位，由 **32 个连续线程** 组成（Volta 架构后支持独立线程调度）。
 - **核心特性**：
   - **SIMT 执行模型**：同一 Warp 内的线程执行相同指令，但处理不同数据。
   - **分支发散**：若 Warp 内线程执行不同分支，性能会显著下降。
   - **内存访问优化**：需对齐和连续的全局内存访问（合并内存事务）。
-- **目标**：  
+- **目标**：
   最大化 GPU 吞吐量，通过减少分支发散和优化内存访问提升性能。
 
 ### **1.2 Warp 的关键特性**
@@ -126,7 +126,7 @@ __device__ float warp_reduce_sum(float val) {
 ## **2. Warp-Python（高性能 GPU 编程库）**
 
 ### **2.1 定义与核心概念**
-- **定义**：  
+- **定义**：
   Warp-Python 是 NVIDIA 推出的 **Python 库**，允许用户通过 Python 语法编写 GPU 加速代码，并自动编译为 CUDA 内核。
 - **特点**：
   - 类似 NumPy 的数组操作，支持 GPU 并行计算。
@@ -138,7 +138,7 @@ __device__ float warp_reduce_sum(float val) {
   - **自动内存管理**：无需手动分配 GPU 内存。
   - **内置自动微分**：支持机器学习中的梯度计算。
   - **与 CUDA 兼容**：底层生成优化的 CUDA 代码。
-- **目标**：  
+- **目标**：
   - 简化 GPU 编程，快速实现高性能计算任务。
 
 ### **2.2 使用场景**
@@ -285,7 +285,7 @@ pixel = wp.zeros((n, n), dtype=f32, device='cuda:0')
 
 @wp.func
 def mandelbrot_func(z: wp.vec2, c: wp.vec2) -> wp.vec2:
-    return wp.vec2(z[0] * z[0] - z[1] * z[1] + c[0], 
+    return wp.vec2(z[0] * z[0] - z[1] * z[1] + c[0],
                    2.0 * z[0] * z[1] + c[1])
 
 @wp.kernel
@@ -324,7 +324,7 @@ def main():
         np_pixel = pixel.numpy()
         # 使用更丰富的颜色映射
         colored = cv2.applyColorMap(
-            (np_pixel * 255).astype(np.uint8), 
+            (np_pixel * 255).astype(np.uint8),
             cv2.COLORMAP_MAGMA
         )
 
@@ -338,7 +338,7 @@ if __name__ == "__main__":
     main()
 ```
 
-![warp_demo](warp_demo.gif)
+<!-- TODO: 补充 warp_demo.gif 后恢复演示动画。 -->
 
 ## **3. 核心区别与联系**
 
@@ -356,7 +356,7 @@ if __name__ == "__main__":
 ## **4. 联合使用场景**
 
 ### **4.1 在 Warp-Python 中利用 CUDA Warp 知识**
-- **优化 Warp-Python 内核**：  
+- **优化 Warp-Python 内核**：
   通过重组线程索引减少分支发散（例如将相邻线程分配到同一 Warp）。
   ```python
   @wp.kernel
@@ -367,7 +367,7 @@ if __name__ == "__main__":
       # 确保同一 Warp 内线程执行相同逻辑
   ```
 
-- **内存访问优化**：  
+- **内存访问优化**：
   使用 `wp.array` 的连续内存布局，避免全局内存访问碎片化。
 
 ### **4.2 示例：结合两者的粒子模拟**

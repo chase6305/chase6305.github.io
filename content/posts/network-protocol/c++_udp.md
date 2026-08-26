@@ -4,7 +4,7 @@ date: 2021-08-08
 lastmod: 2021-08-08
 draft: false
 tags: ["C++", "UDP"]
-categories: ["Protocol"]
+categories: ["系统与工具"]
 authors: ["chase"]
 summary: "C++ 关于UDP通讯的示例"
 showToc: true
@@ -14,12 +14,12 @@ comments: false
 ---
 
 
-# UDP介绍
+## UDP介绍
 
 UDP是User Datagram Protocol的简称，即用户数据报协议，为一种无连接的传输层协议，提供面向简单不可靠信息传送服务。客户端Client和服务端Server在交互数据之前无需像TCP那样是先建立连接。
 在网络质量较差的情况下，UDP协议数据包丢失会比较严重。但由于UDP的特性，其不属于连接型协议，具有资源消耗小，处理速度快的优点，所以通常音频、视频和普通数据在传送时使用UDP较多，丢失一、两个Packet也不会有太多的影响，同时像微信Wechat聊天。
 
-## 客户端
+### 客户端
 
 ```cpp
 #include <arpa/inet.h>
@@ -34,7 +34,7 @@ UDP是User Datagram Protocol的简称，即用户数据报协议，为一种无�
 #include <sys/types.h>
 #include <unistd.h>
 #include <vector>
-#include <netdb.h>  
+#include <netdb.h>
 using namespace std;
 
 #define DEST_PORT 5001
@@ -85,7 +85,7 @@ int main() {
     addr.sin_family = AF_INET;
     addr.sin_port = htons(DEST_PORT);
     addr.sin_addr.s_addr = htonl(INADDR_BROADCAST);
-    
+
     char send_buf[20] = "Hello!";
 
     sendto(sockfd, send_buf, strlen(send_buf), 0, (sockaddr *)&addr, addr_len);
@@ -110,7 +110,7 @@ int main() {
 }
 ```
 
-## 服务端
+### 服务端
 
 ```cpp
 #include <arpa/inet.h>
