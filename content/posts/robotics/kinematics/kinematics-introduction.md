@@ -3,7 +3,7 @@ title: "机器人运动学基础"
 date: 2024-04-01
 lastmod: 2024-04-01
 draft: true
-tags: ["运动学", "机器人学", "正运动学", "逆运动学", "D-H参数"]
+tags: ["Robotics", "Kinematics", "D-H Parameters"]
 categories: ["机器人技术"]
 series: ["机器人运动学教程"]
 series_weight: 1

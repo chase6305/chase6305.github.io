@@ -3,8 +3,8 @@ title: 'Ubuntu 下查看进程 PID 和终止进程方法'
 date: 2025-02-26
 lastmod: 2025-02-26
 draft: false
-tags: ["Ubuntu"]
-categories: ["编程开发"]
+tags: ["Linux", "Process Management"]
+categories: ["系统与工具"]
 authors: ["chase"]
 summary: "Ubuntu 下查看进程 PID 和终止进程方法"
 showToc: true

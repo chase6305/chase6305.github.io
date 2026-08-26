@@ -3,7 +3,7 @@ title: '基于三维栅格空间的A*算法裁剪流程'
 date: 2022-06-29
 lastmod: 2022-06-29
 draft: false
-tags: ["AI", "Algorithms"]
+tags: ["A*", "Path Planning", "3D Grid"]
 categories: ["人工智能"]
 authors: ["chase"]
 summary: "基于三维栅格空间的A*算法裁剪流程"

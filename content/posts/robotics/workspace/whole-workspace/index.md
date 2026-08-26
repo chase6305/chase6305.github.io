@@ -3,7 +3,7 @@ title: 基于蒙特卡罗方法构建机器人全工作空间
 date: 2025-02-27
 lastmod: 2025-02-27
 draft: false
-tags: ["Robotics", "Workspace"]
+tags: ["Robotics", "Workspace Analysis", "Monte Carlo"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: "基于蒙特卡罗方法构建机器人全工作空间"

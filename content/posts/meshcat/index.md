@@ -3,7 +3,7 @@ title: "MeshCat: 基于three.js的远程可控3D可视化工具"
 date: 2025-04-01
 lastmod: 2025-04-01
 draft: false
-tags: ["CasADi"]
+tags: ["MeshCat", "3D Visualization", "Robotics"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: "MeshCat: 基于three.js的远程可控3D可视化工具"
@@ -302,4 +302,3 @@ vis.open()
 ### 总结
 
 MeshCat 是一个强大的 3D 可视化工具，适用于各种机器人学和仿真应用。通过简单的 Python 代码，你可以轻松地创建和操作 3D 场景。希望这个案例能帮助你快速上手 MeshCat。
-

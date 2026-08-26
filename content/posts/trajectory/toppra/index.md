@@ -3,7 +3,7 @@ title: 'Toppra: 最优时间运动规划库'
 date: 2025-03-16
 lastmod: 2025-03-16
 draft: false
-tags: ["Trajectory"]
+tags: ["Trajectory Optimization", "TOPP-RA", "Motion Planning"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: "Toppra: 最优时间运动规划库"
@@ -117,4 +117,3 @@ plt.show()
 
 - [toppra 官方文档](https://toppra.github.io/)
 - [toppra GitHub 仓库](https://github.com/hungpham2511/toppra)
-

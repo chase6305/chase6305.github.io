@@ -3,7 +3,7 @@ title: Linux固定串口设备别名方法
 date: 2025-03-07
 lastmod: 2025-03-07
 draft: false
-tags: ["Linux", "udev"]
+tags: ["Linux", "udev", "Serial Communication"]
 categories: ["系统与工具"]
 authors: ["chase"]
 summary: 固定串口设备别名方法

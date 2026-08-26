@@ -3,7 +3,7 @@ title: Ubuntu 22.04 无法进入图形界面的解决方法
 date: 2025-03-11
 lastmod: 2025-03-11
 draft: false
-tags: ["VS Code", "Conda", "Bug"]
+tags: ["Ubuntu", "GDM", "Troubleshooting"]
 categories: ["系统与工具"]
 authors: ["chase"]
 summary: Ubuntu 22.04 无法进入图形界面的解决方法

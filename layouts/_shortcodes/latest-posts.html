@@ -1,0 +1,15 @@
+{{- $limit := .Get "limit" | default 3 -}}
+{{- $pages := where site.RegularPages "Section" "posts" -}}
+<div class="latest-grid">
+  {{- range first $limit ($pages.ByDate.Reverse) }}
+    <article class="latest-card">
+      <div class="latest-card__meta">
+        <time datetime="{{ .Date.Format `2006-01-02` }}">{{ .Date.Format "Jan 02, 2006" }}</time>
+        {{- with index .Params.categories 0 }}<span>{{ . }}</span>{{ end }}
+      </div>
+      <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      <p>{{ partial "utils/page-description" . }}</p>
+      <a class="latest-card__link" href="{{ .RelPermalink }}">Read <span aria-hidden="true">→</span></a>
+    </article>
+  {{- end }}
+</div>

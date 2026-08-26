@@ -4,7 +4,7 @@ math: true
 date: 2026-02-14
 lastmod: 2026-02-14
 draft: false
-tags: ["Pink"]
+tags: ["Pink", "Inverse Kinematics", "Optimization"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: "Pink: 一个高效易用的机器人逆运动学库"

@@ -1,0 +1,23 @@
+{{- $projects := hugo.Data.projects -}}
+<div class="project-grid">
+  {{- range $projects }}
+  <article class="project-card{{ if .featured }} project-card--featured{{ end }}">
+    <div class="project-card__header">
+      <span class="project-card__icon" aria-hidden="true">{{ .icon }}</span>
+      <div>
+        <p class="project-card__eyebrow">{{ if eq $.Page.Language.Lang "zh-cn" }}{{ .roleZh | default .role }}{{ else }}{{ .role }}{{ end }} · {{ .organization }}</p>
+        <h3 class="project-card__title">{{ .name }}</h3>
+      </div>
+    </div>
+    <p class="project-card__description">{{ if eq $.Page.Language.Lang "zh-cn" }}{{ .taglineZh | default .tagline }}。{{ .descriptionZh | default .description }}{{ else }}{{ .tagline }}. {{ .description }}{{ end }}</p>
+    <ul class="project-card__topics" aria-label="Topics">
+      {{- range .topics }}<li>{{ . }}</li>{{ end }}
+    </ul>
+    <div class="project-card__links">
+      {{- range .links }}
+      <a class="project-link{{ if .primary }} project-link--primary{{ end }}" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ if eq $.Page.Language.Lang "zh-cn" }}{{ .labelZh | default .label }}{{ else }}{{ .label }}{{ end }} <span aria-hidden="true">↗</span></a>
+      {{- end }}
+    </div>
+  </article>
+  {{- end }}
+</div>

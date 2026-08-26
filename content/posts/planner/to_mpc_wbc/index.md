@@ -3,7 +3,7 @@ title: TO、MPC与WBC在机器人控制中的作用与区别对比文档
 date: 2025-05-06
 lastmod: 2025-05-06
 draft: false
-tags: ["Planner"]
+tags: ["Motion Planning", "MPC", "Whole-Body Control"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: "TO、MPC与WBC在机器人控制中的作用与区别对比文档"

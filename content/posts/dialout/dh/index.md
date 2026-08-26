@@ -3,7 +3,7 @@ title: Python优化控制大寰PGC夹具的串口通信程序
 date: 2025-03-01
 lastmod: 2025-03-01
 draft: false
-tags: ["Linux", "Python", "Gripper"]
+tags: ["Serial Communication", "Python", "Robot Gripper"]
 categories: ["系统与工具"]
 authors: ["chase"]
 summary: Python优化控制大寰PGC夹具的串口通信程序
@@ -439,4 +439,3 @@ gripper.close()
        response = await device.device_read(10)
        print(response)
    ```
-

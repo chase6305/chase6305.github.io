@@ -3,7 +3,7 @@ title: 'Gymnasium入门(一)'
 date: 2025-03-20
 lastmod: 2025-03-20
 draft: false
-tags: ["AI", "Gymnasium"]
+tags: ["Reinforcement Learning", "Gymnasium", "Python"]
 categories: ["人工智能"]
 authors: ["chase"]
 summary: "Gymnasium入门(一)"

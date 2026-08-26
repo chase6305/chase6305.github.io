@@ -2,5 +2,7 @@ projects: 开源项目
 blog: 博客
 categories: 分类
 archives: 归档
+explore: 内容索引
+tags: 标签
 changeTheme: 切换外观
 changeLanguage: 切换语言

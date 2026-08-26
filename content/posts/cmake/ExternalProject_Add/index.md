@@ -3,7 +3,7 @@ title: 'ExternalProject_Add 使用手册与文档详解'
 date: 2025-04-08
 lastmod: 2025-04-08
 draft: false
-tags: ["CMake", "ExternalProject_Add"]
+tags: ["CMake", "ExternalProject", "Build Systems"]
 categories: ["编程开发"]
 authors: ["chase"]
 summary: "ExternalProject_Add 使用手册与文档详解"

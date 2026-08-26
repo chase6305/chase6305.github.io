@@ -3,7 +3,7 @@ title: '关于手眼标定的数学模型及标定流程'
 date: 2025-02-26
 lastmod: 2025-02-26
 draft: false
-tags: ["Calibration"]
+tags: ["Calibration", "Hand-Eye Calibration"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: '关于手眼标定的数学模型及标定流程'

@@ -4,7 +4,7 @@ math: true
 date: 2025-04-01
 lastmod: 2025-04-01
 draft: false
-tags: ["Calibration", "Kinematics"]
+tags: ["Calibration", "Kinematic Calibration"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: '机器人运动学参数标定'

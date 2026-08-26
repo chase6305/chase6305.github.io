@@ -3,7 +3,7 @@ title: 'Linux固定网口IP的方法'
 date: 2025-02-21
 lastmod: 2025-02-21
 draft: false
-tags: ["IP"]
+tags: ["Linux Networking", "IP Configuration"]
 categories: ["系统与工具"]
 authors: ["chase"]
 summary: "Linux固定网口IP的方法"

@@ -3,7 +3,7 @@ title: "libEGL warning: FIXME: egl/x11 doesn‘t support front buffer rendering 
 date: 2025-02-27
 lastmod: 2025-02-27
 draft: false
-tags: ["Calibration"]
+tags: ["EGL", "X11", "Linux"]
 categories: ["系统与工具"]
 authors: ["chase"]
 summary: "在使用 EGL 时，可能会遇到 `libEGL warning: FIXME: egl/x11 doesn't support front buffer rendering.` 的警告。这通常是由于图形驱动程序或库的兼容性问题引起的。以下是两种解决方法，可以帮助你解决这个问题。"

@@ -3,8 +3,8 @@ title: "论文《Being-0: 基于视觉语言模型与模块化技能的人形机
 date: 2025-04-02
 lastmod: 2025-04-02
 draft: false
-tags: ["VLA", "论文笔记"]
-categories: ["三维视觉"]
+tags: ["VLA", "Humanoid Robots", "Paper Notes"]
+categories: ["人工智能"]
 authors: ["chase"]
 summary: "论文《Being-0: 基于视觉语言模型与模块化技能的人形机器人代理》深度解析"
 showToc: true

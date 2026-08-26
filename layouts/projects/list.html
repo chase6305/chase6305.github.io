@@ -1,0 +1,24 @@
+{{ define "main" }}
+  {{- $zh := eq site.Language.Lang "zh-cn" -}}
+  <main id="content" class="projects-page">
+    <header class="projects-page__hero">
+      <p class="chase-section__eyebrow">{{ if $zh }}开放协作{{ else }}Open collaboration{{ end }}</p>
+      <h1>{{ .Title }}</h1>
+      <div>{{ .Content }}</div>
+    </header>
+    <section class="projects-page__featured" aria-label="Featured projects">
+      {{ partial "projects.html" . }}
+    </section>
+    <section class="projects-principles">
+      <div>
+        <p class="chase-section__eyebrow">{{ if $zh }}工作方式{{ else }}How I contribute{{ end }}</p>
+        <h2>{{ if $zh }}不止提交代码，也参与系统落地。{{ else }}Beyond commits, into complete systems.{{ end }}</h2>
+      </div>
+      <div class="projects-principles__grid">
+        <article><strong>01</strong><h3>{{ if $zh }}架构与基础设施{{ else }}Architecture &amp; Infrastructure{{ end }}</h3><p>{{ if $zh }}构建可维护、可扩展的机器人软件和训练系统。{{ else }}Maintainable, extensible robotics software and training systems.{{ end }}</p></article>
+        <article><strong>02</strong><h3>{{ if $zh }}算法到部署{{ else }}Algorithm to Deployment{{ end }}</h3><p>{{ if $zh }}连接模型、数据、仿真与真实机器人执行链路。{{ else }}Connecting models, data, simulation, and real-robot execution.{{ end }}</p></article>
+        <article><strong>03</strong><h3>{{ if $zh }}文档与复用{{ else }}Documentation &amp; Reuse{{ end }}</h3><p>{{ if $zh }}沉淀清晰文档、工程规范与可复用工具。{{ else }}Clear documentation, engineering conventions, and reusable tooling.{{ end }}</p></article>
+      </div>
+    </section>
+  </main>
+{{ end }}

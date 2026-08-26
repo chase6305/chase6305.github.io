@@ -3,7 +3,7 @@ title: 7DOF-SRS-运动学逆解(几何解析解)实现
 date: 2025-01-13
 lastmod: 2025-01-13
 draft: false
-tags: ["Robotics", "Kinematics", "C++"]
+tags: ["Kinematics", "Inverse Kinematics", "C++"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: "https://github.com/chase6305/7DofSRSKinematics"

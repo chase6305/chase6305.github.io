@@ -3,7 +3,7 @@ title: "CoACD: 基于碰撞感知凹性与树搜索的近似凸分解"
 date: 2025-04-03
 lastmod: 2025-04-03
 draft: false
-tags: ["CoACD"]
+tags: ["CoACD", "Mesh Processing", "Collision Geometry"]
 categories: ["三维视觉"]
 authors: ["chase"]
 summary: "CoACD: 基于碰撞感知凹性与树搜索的近似凸分解"

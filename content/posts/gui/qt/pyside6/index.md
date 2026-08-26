@@ -3,7 +3,7 @@ title: 'PySide6 将.ui文件编译为.py文件'
 date: 2022-07-01
 lastmod: 2022-07-01
 draft: false
-tags: ["GUI", "PySide6"]
+tags: ["PySide6", "Qt", "Python"]
 categories: ["编程开发"]
 authors: ["chase"]
 summary: "PySide6 将.ui文件编译为.py文件"

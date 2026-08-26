@@ -3,7 +3,7 @@ title: 'Ruckig: 高效实时运动规划库'
 date: 2025-03-15
 lastmod: 2025-03-15
 draft: false
-tags: ["Trajectory"]
+tags: ["Trajectory Generation", "Ruckig", "Motion Planning"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: "Ruckig: 高效实时运动规划库"

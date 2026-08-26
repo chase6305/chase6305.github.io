@@ -3,7 +3,7 @@ title: 'libpython3.9.so.1.0: cannot open shared object file: No such file or dir
 date: 2025-02-28
 lastmod: 2025-02-28
 draft: false
-tags: ["Ubuntu", "Python"]
+tags: ["Python", "Shared Libraries", "Troubleshooting"]
 categories: ["编程开发"]
 authors: ["chase"]
 summary: "libpython3.9.so.1.0: cannot open shared object file: No such file or directory 解决方法"

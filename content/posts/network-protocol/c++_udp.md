@@ -3,7 +3,7 @@ title: 'C++ 关于UDP通讯的示例'
 date: 2021-08-08
 lastmod: 2021-08-08
 draft: false
-tags: ["C++", "UDP"]
+tags: ["C++", "UDP", "Network Programming"]
 categories: ["系统与工具"]
 authors: ["chase"]
 summary: "C++ 关于UDP通讯的示例"

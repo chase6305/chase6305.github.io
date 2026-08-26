@@ -51,6 +51,14 @@ layout: hextra-home
   </div>
 </section>
 
+<section class="chase-section">
+  <div class="chase-section__heading">
+    <div><p class="chase-section__eyebrow">最新文章</p><h2>近期技术记录。</h2></div>
+    <p>来自当前研究与工程实践的技术笔记。</p>
+  </div>
+  {{< latest-posts limit="3" >}}
+</section>
+
 <section class="chase-closing">
   <p class="chase-section__eyebrow">技术写作</p>
   <h2>记录构建智能机器人的过程。</h2>

@@ -4,7 +4,7 @@ math: true
 date: 2025-04-02
 lastmod: 2025-04-02
 draft: false
-tags: ["CoACD", "论文笔记"]
+tags: ["CoACD", "Mesh Processing", "Paper Notes"]
 categories: ["三维视觉"]
 authors: ["chase"]
 summary: "论文《Approximate Convex Decomposition for 3D Meshes with Collision-Aware Concavity and Tree Search》整理"

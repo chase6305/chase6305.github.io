@@ -3,7 +3,7 @@ title: "TCP 与 UDP 协议详解"
 date: 2024-04-01
 lastmod: 2024-04-01
 draft: true
-tags: ["网络协议", "TCP", "UDP", "计算机网络"]
+tags: ["Network Protocols", "TCP", "UDP"]
 categories: ["系统与工具"]
 series: ["网络协议详解"]
 series_weight: 1

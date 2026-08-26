@@ -67,6 +67,14 @@ layout: hextra-home
   </div>
 </section>
 
+<section class="chase-section">
+  <div class="chase-section__heading">
+    <div><p class="chase-section__eyebrow">Latest writing</p><h2>Recently published.</h2></div>
+    <p>Technical notes from current research and engineering work.</p>
+  </div>
+  {{< latest-posts limit="3" >}}
+</section>
+
 <section class="chase-closing">
   <p class="chase-section__eyebrow">Technical writing</p>
   <h2>Notes from building intelligent robots.</h2>

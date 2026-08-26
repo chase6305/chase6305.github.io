@@ -3,7 +3,7 @@ title: 'CUDA环境配置->解决CUDA、GLIBCXX及libc++abi依赖问题的指南'
 date: 2025-03-28
 lastmod: 2025-03-28
 draft: false
-tags: ["GUI", "PySide6"]
+tags: ["CUDA", "GCC", "Dependencies"]
 categories: ["编程开发"]
 authors: ["chase"]
 summary: "CUDA环境配置->解决CUDA、GLIBCXX及libc++abi依赖问题的指南"

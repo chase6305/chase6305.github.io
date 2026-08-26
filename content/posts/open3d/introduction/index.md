@@ -4,7 +4,7 @@ math: true
 date: 2025-03-04
 lastmod: 2025-03-04
 draft: false
-tags: ["Open3D"]
+tags: ["Open3D", "Point Cloud", "3D Vision"]
 categories: ["三维视觉"]
 authors: ["chase"]
 summary: "Open3D 是一个开源库，旨在为 3D 数据处理提供高效且易用的工具。它由 Intel 开发和维护，支持多种 3D 数据处理任务，如点云处理、3D 重建、几何处理和可视化等。"

@@ -3,7 +3,7 @@ title: 'symbol version Qt_5_PRIVATE_API not defined in libQt5Gui.so.5 解决方�
 date: 2025-02-28
 lastmod: 2025-02-28
 draft: false
-tags: ["Qt"]
+tags: ["Qt", "Shared Libraries", "Troubleshooting"]
 categories: ["编程开发"]
 authors: ["chase"]
 summary: 'symbol version Qt_5_PRIVATE_API not defined in libQt5Gui.so.5 解决方法'

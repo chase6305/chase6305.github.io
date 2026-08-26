@@ -3,7 +3,7 @@ title: "使用 watch 命令监控系统和进程状态"
 date: 2025-03-07
 lastmod: 2025-03-07
 draft: false
-tags: ["Ubuntu", "Watch"]
+tags: ["Linux", "Process Monitoring", "CLI"]
 categories: ["系统与工具"]
 authors: ["chase"]
 summary: "watch 是一个功能强大的 Linux 命令行工具，用于周期性执行命令并实时显示输出结果。它特别适合监控系统状态、进程运行和资源使用情况。"

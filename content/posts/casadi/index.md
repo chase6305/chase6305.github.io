@@ -3,7 +3,7 @@ title: "CasADi: 数值优化和自动微分库"
 date: 2025-04-03
 lastmod: 2025-04-03
 draft: false
-tags: ["CasADi"]
+tags: ["CasADi", "Optimization", "Automatic Differentiation"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: "CasADi: 数值优化和自动微分库"

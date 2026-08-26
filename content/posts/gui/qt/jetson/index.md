@@ -3,7 +3,7 @@ title: 'JetsonNV 上解决 PyQt5 “Could not load the Qt platform plugin ‘xcb
 date: 2025-03-06
 lastmod: 2025-03-06
 draft: false
-tags: ["GUI", "pyqt5", "Jetson"]
+tags: ["PyQt5", "Jetson", "Qt"]
 categories: ["编程开发"]
 authors: ["chase"]
 summary: "JetsonNV 上解决 PyQt5 “Could not load the Qt platform plugin ‘xcb‘“ 错误"

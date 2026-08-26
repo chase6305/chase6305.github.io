@@ -3,7 +3,7 @@ title: 非对称圆标记技术详解
 date: 2025-02-27
 lastmod: 2025-02-27
 draft: false
-tags: ["Calibration", "OpenCV"]
+tags: ["Calibration", "OpenCV", "Circle Grid"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: 非对称圆标记技术详解

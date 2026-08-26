@@ -2,5 +2,7 @@ projects: Projects
 blog: Blog
 categories: Categories
 archives: Archives
+explore: Explore
+tags: Tags
 changeTheme: Change appearance
 changeLanguage: Change language

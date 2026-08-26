@@ -3,7 +3,7 @@ title: 六自由度机器人正逆运动学
 date: 2021-12-07
 lastmod: 2021-12-07
 draft: false
-tags: ["Robotics", "Kinematics", "C++"]
+tags: ["Kinematics", "Inverse Kinematics", "C++"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: "本文主要是对传统六自由度机器人进行正逆运动学求解，选取大族机器人Elfin05 为分析的对象，开发语言是C++。"

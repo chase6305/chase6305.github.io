@@ -3,7 +3,7 @@ title: VScode终端出现显示两个环境名问题的解决方案
 date: 2025-02-07
 lastmod: 2025-02-07
 draft: false
-tags: ["VS Code", "Conda", "Bug"]
+tags: ["VS Code", "Conda", "Environment Management"]
 categories: ["系统与工具"]
 authors: ["chase"]
 summary: VScode终端出现显示两个环境名问题的解决方案

@@ -3,7 +3,7 @@ title: pytorch 机械臂逆运动学迭代数值解
 date: 2025-02-26
 lastmod: 2025-02-26
 draft: false
-tags: ["Robotics", "Kinematics", "C++", "Torch"]
+tags: ["Kinematics", "PyTorch", "Inverse Kinematics"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: "https://github.com/UM-ARM-Lab/pytorch_kinematics"

@@ -4,7 +4,7 @@ math: true
 date: 2025-04-24
 lastmod: 2025-04-24
 draft: false
-tags: ["PD", "PID"]
+tags: ["PID", "Robot Control"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: "PD vs PID control 简要对比"

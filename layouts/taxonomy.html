@@ -5,13 +5,43 @@
       <h1>{{ .Title }}</h1>
       <p>{{ len .Data.Terms }} topics across robotics, AI, software, and engineering systems.</p>
     </header>
-    <section class="taxonomy-grid" aria-label="{{ .Title }}">
-      {{ range .Data.Terms.ByCount }}
-        <a class="taxonomy-card" href="{{ .Page.RelPermalink }}">
-          <span>{{ .Page.LinkTitle }}</span>
-          <strong>{{ .Count }}</strong>
-        </a>
-      {{ end }}
-    </section>
+    {{ if eq .Data.Plural "tags" }}
+      {{ $.Scratch.Set "groupedTags" (slice) }}
+      <div class="tag-groups">
+        {{ range $group := hugo.Data.tag_groups }}
+          <section class="tag-group">
+            <h2>{{ if eq site.Language.Lang "zh-cn" }}{{ $group.nameZh }}{{ else }}{{ $group.name }}{{ end }}</h2>
+            <div class="taxonomy-grid">
+              {{ range $term := $.Data.Terms.ByCount }}
+                {{ if in $group.tags $term.Page.LinkTitle }}
+                  {{ $.Scratch.Add "groupedTags" (slice $term.Page.LinkTitle) }}
+                  <a class="taxonomy-card" href="{{ $term.Page.RelPermalink }}"><span>{{ $term.Page.LinkTitle }}</span><strong>{{ $term.Count }}</strong></a>
+                {{ end }}
+              {{ end }}
+            </div>
+          </section>
+        {{ end }}
+        {{- $ungrouped := slice -}}
+        {{- range $term := $.Data.Terms.ByCount -}}
+          {{- if not (in ($.Scratch.Get "groupedTags") $term.Page.LinkTitle) -}}
+            {{- $ungrouped = $ungrouped | append $term -}}
+          {{- end -}}
+        {{- end -}}
+        {{- if $ungrouped }}
+          <section class="tag-group tag-group--ungrouped">
+            <h2>Pending classification</h2>
+            <div class="taxonomy-grid">
+              {{ range $ungrouped }}<a class="taxonomy-card" href="{{ .Page.RelPermalink }}"><span>{{ .Page.LinkTitle }}</span><strong>{{ .Count }}</strong></a>{{ end }}
+            </div>
+          </section>
+        {{- end }}
+      </div>
+    {{ else }}
+      <section class="taxonomy-grid" aria-label="{{ .Title }}">
+        {{ range .Data.Terms.ByCount }}
+          <a class="taxonomy-card" href="{{ .Page.RelPermalink }}"><span>{{ .Page.LinkTitle }}</span><strong>{{ .Count }}</strong></a>
+        {{ end }}
+      </section>
+    {{ end }}
   </main>
 {{ end }}

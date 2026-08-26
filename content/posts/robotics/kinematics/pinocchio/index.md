@@ -3,7 +3,7 @@ title: Pinocchio 机械臂逆运动学迭代数值解
 date: 2024-08-18
 lastmod: 2024-08-18
 draft: false
-tags: ["Robotics", "Kinematics", "Python"]
+tags: ["Kinematics", "Pinocchio", "Python"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: "分享一个求解运动学逆解的第三方库 pinocchio， 并且根据其urdf文件中描述的关节极限范围内进行逆运动学求解的样例。"

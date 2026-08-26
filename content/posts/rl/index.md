@@ -3,7 +3,7 @@ title: '强化学习基础'
 date: 2025-12-08
 lastmod: 2025-12-08
 draft: false
-tags: ["强化学习", "人工智能"]
+tags: ["Reinforcement Learning", "Artificial Intelligence"]
 categories: ["人工智能"]
 authors: ["chase"]
 summary: "强化学习基础"

@@ -3,7 +3,7 @@ title: 'Ubuntu 18.04 Vscode配置OpenGL 记录'
 date: 2020-10-06
 lastmod: 2020-10-06
 draft: false
-tags: ["Linux", "OpenGL"]
+tags: ["OpenGL", "VS Code", "Linux"]
 categories: ["三维视觉"]
 authors: ["chase"]
 summary: "Ubuntu 18.04 Vscode配置OpenGL 记录"

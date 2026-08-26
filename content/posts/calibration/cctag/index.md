@@ -3,7 +3,7 @@ title: CCTag 标记技术详解
 date: 2025-02-27
 lastmod: 2025-02-27
 draft: false
-tags: ["Calibration", "CCTag"]
+tags: ["Calibration", "CCTag", "Fiducial Markers"]
 categories: ["机器人技术"]
 authors: ["chase"]
 summary: CCTag 标记技术详解

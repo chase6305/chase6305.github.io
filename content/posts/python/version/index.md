@@ -3,7 +3,7 @@ title: 'Ubuntu切换默认python版本'
 date: 2025-03-13
 lastmod: 2025-03-13
 draft: false
-tags: ["Ubuntu"]
+tags: ["Python", "Ubuntu", "Environment Management"]
 categories: ["编程开发"]
 authors: ["chase"]
 summary: "Ubuntu切换默认python版本"
