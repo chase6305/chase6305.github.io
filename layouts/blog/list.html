@@ -1,0 +1,39 @@
+{{ define "main" }}
+  {{- $pages := partial "utils/sort-pages" (dict "page" . "by" site.Params.blog.list.sortBy "order" site.Params.blog.list.sortOrder) -}}
+  {{- $pagerSize := site.Params.blog.list.pagerSize | default 10 -}}
+  {{- $paginator := .Paginate $pages $pagerSize -}}
+  <main id="content" class="blog-index">
+    <header class="blog-index__hero">
+      <p class="chase-section__eyebrow">Writing &amp; research notes</p>
+      <h1>Technical Blog</h1>
+      <p>{{ .Content | plainify }}</p>
+      <div class="blog-index__stats">
+        <span><strong>{{ len $pages }}</strong> published articles</span>
+        <span>Robotics · AI · Engineering</span>
+      </div>
+    </header>
+
+    <section class="blog-list" aria-label="Blog posts">
+      {{- range $paginator.Pages }}
+        <article class="blog-card">
+          <div class="blog-card__meta">
+            <time datetime="{{ .Date.Format `2006-01-02` }}">{{ .Date.Format "Jan 02, 2006" }}</time>
+            {{- with index .Params.categories 0 }}<span>{{ . }}</span>{{ end -}}
+          </div>
+          <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+          <p>{{ partial "utils/page-description" . }}</p>
+          <div class="blog-card__footer">
+            {{ if site.Params.blog.list.displayTags }}
+              <div class="blog-card__tags">{{ partial "tags.html" (dict "context" .) }}</div>
+            {{ end }}
+            <a class="blog-card__read" href="{{ .RelPermalink }}" aria-label="Read {{ .Title }}">Read article <span aria-hidden="true">→</span></a>
+          </div>
+        </article>
+      {{- end }}
+    </section>
+
+    {{- if gt $paginator.TotalPages 1 }}
+      <div class="blog-index__pager">{{ partial "components/blog-pager.html" $paginator }}</div>
+    {{- end }}
+  </main>
+{{ end }}
