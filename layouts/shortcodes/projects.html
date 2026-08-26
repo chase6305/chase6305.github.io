@@ -9,8 +9,7 @@
         <h3 class="project-card__title">{{ .name }}</h3>
       </div>
     </div>
-    <p class="project-card__tagline">{{ .tagline }}</p>
-    <p class="project-card__description">{{ .description }}</p>
+    <p class="project-card__description">{{ .tagline }}。{{ .description }}</p>
     <ul class="project-card__topics" aria-label="技术方向">
       {{- range .topics }}
       <li>{{ . }}</li>

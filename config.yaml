@@ -1,153 +1,130 @@
-
-# Build Hugo:
-# hugo
-# hugo server -D
-# hugo -d
-# cd public
-# git init
-# git remote add origin https://github.com/chase6305/chase6305.github.io.git
-# git checkout -b gh-pages
-# git add .
-# git commit -m "deploy"
-# git push -f origin gh-pages
-# git push origin main
-# -------------------------------------
 baseURL: "https://chase6305.github.io/"
+title: Chase
+theme: hextra
+cacheDir: /tmp/hugo_cache/chase-hextra
 
-title: Chase Blog
-theme: PaperMod
-
-locale: "zh-CN"
-defaultContentLanguage: "zh-cn"
+locale: "en-US"
+defaultContentLanguage: en
+hasCJKLanguage: true
+enableRobotsTXT: true
+enableInlineShortcodes: true
 
 pagination:
-  pagerSize: 5
+  pagerSize: 10
 
 languages:
-  zh-cn:
-    label: "简体中文"
+  en:
+    label: English
     weight: 1
-    title: "Chase Blog"
-    params:
-      description: "个人技术博客"
+    title: Chase
 
-enableRobotsTXT: true
-buildDrafts: false
-buildFuture: false
-buildExpired: false
+outputs:
+  home: [html]
+  page: [html]
+  section: [html, rss]
+
+taxonomies:
+  category: categories
+  series: series
+  tag: tags
 
 minify:
   disableXML: true
   minifyOutput: true
 
 params:
-  env: production # to enable google analytics, opengraph, twitter-cards and schema.
-  title: Chase Blog
-  description: "记录机器人学、运动规划、C++ 与人工智能实践"
-  keywords: [机器人学, 运动规划, C++, 人工智能]
-  author: Chase
-  DateFormat: "2006-01-02"
-  defaultTheme: auto # dark, light
-  disableThemeToggle: false
-  math: false
+  description: "Robotics Engineer focused on Embodied AI, VLA, motion planning, robot control, and open-source robotics."
+  externalLinkDecoration: true
+  displayUpdatedDate: true
+  dateFormat: "January 2, 2006"
 
-  ShowReadingTime: false
-  ShowShareButtons: true
-  ShowPostNavLinks: true
-  ShowBreadCrumbs: true
-  ShowCodeCopyButtons: true
-  ShowWordCount: false
-  ShowRssButtonInSectionTermList: true
-  UseHugoToc: true
-  disableSpecial1stPost: false
-  disableScrollToTop: false
-  comments: false
-  hidemeta: false
-  hideSummary: false
-  showtoc: true
-  tocopen: true
+  navbar:
+    displayTitle: true
+    displayLogo: true
+    logo:
+      path: cjt.jpg
+      width: 32
+      height: 32
+      link: /
+    width: wide
 
-  assets:
-    disableHLJS: true # to disable highlight.js
-    disableFingerprinting: false
-    favicon: "/cjt.jpg"
-    apple_touch_icon: "/cjt.jpg"
+  theme:
+    default: system
+    displayToggle: true
 
-  label:
-    text: "Chase's Home"
-    icon: /cjt.jpg
-    iconHeight: 35
+  footer:
+    enable: true
+    displayCopyright: true
+    displayPoweredBy: false
+    width: wide
 
-  # profile-mode
-  profileMode:
-    enabled: false # needs to be explicitly set
-    title: Chase Blog
-    subtitle: "机器人学、运动规划与工程实践"
-    imageUrl: "/cjt.jpg"
-    imageWidth: 120
-    imageHeight: 120
-    imageTitle: my image
-    buttons:
-      - name: Posts
-        url: posts
-      - name: Tags
-        url: tags
-      - name: Archives
-        url: archives
+  search:
+    enable: true
+    type: flexsearch
+    flexsearch:
+      index: content
+      tokenize: forward
 
-  homeInfoParams:
-    Title: "Contact channels: "
-    Content: |
+  editURL:
+    enable: true
+    base: "https://github.com/chase6305/chase6305.github.io/edit/main/content"
 
-  socialIcons:
-    - name: github
-      url: "https://github.com/chase6305/"
-    - name: csdn
-      url: "https://blog.csdn.net/weixin_39284111?type=blog"
+  blog:
+    list:
+      displayTags: true
+      sortBy: date
+      sortOrder: desc
+      pagerSize: 10
+    article:
+      displayPagination: true
 
-  cover:
-    hidden: true # hide everywhere but not in structured data
-    hiddenInList: true # hide on list pages and home
-    hiddenInSingle: true # hide on single page
+  archives:
+    section: posts
+    dateFormat: "Jan 02"
 
-  editPost:
-    URL: "https://github.com/chase6305/chase6305.github.io/tree/main/content"
-    Text: "Suggest Changes" # edit text
-    appendFilePath: true # to append file path to Edit link
+  toc:
+    displayTags: true
 
-  # for search
-  # https://fusejs.io/api/options.html
-  fuseOpts:
-    isCaseSensitive: false
-    shouldSort: true
-    location: 0
-    distance: 1000
-    threshold: 0.4
-    minMatchCharLength: 0
-    limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
-    keys: ["title", "permalink", "summary", "content"]
+  highlight:
+    copy:
+      enable: true
+      display: hover
+
+  page:
+    width: normal
+    contextMenu:
+      enable: false
+
+  imageZoom:
+    enable: true
+
 menu:
   main:
-    - identifier: open-source
-      name: 开源项目
+    - identifier: projects
+      name: Projects
       url: /#open-source
-      weight: 5
+      weight: 1
+    - identifier: blog
+      name: Blog
+      pageRef: /posts
+      weight: 2
     - identifier: categories
-      name: 分类
-      url: /categories/
-      weight: 10
+      name: Categories
+      pageRef: /categories
+      weight: 3
     - identifier: archives
-      name: 归档
-      url: /archives/
-      weight: 20 
-    - identifier: tags
-      name: 标签
-      url: /tags/
-      weight: 30
-
-# Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
-pygmentsUseClasses: true
-pygmentsCodefences: true
+      name: Archives
+      pageRef: /archives
+      weight: 4
+    - name: Search
+      weight: 5
+      params:
+        type: search
+    - name: GitHub
+      weight: 6
+      url: "https://github.com/chase6305/"
+      params:
+        icon: github
 
 markup:
   goldmark:
@@ -158,34 +135,18 @@ markup:
     renderer:
       unsafe: true
     extensions:
-      typographer: false
+      passthrough:
+        delimiters:
+          block: [['\[', '\]'], ['$$', '$$']]
+          inline: [['\(', '\)']]
+        enable: true
   highlight:
-    anchorLineNos: false
     codeFences: true
     guessSyntax: false
-    hl_Lines: ""
-    hl_inline: false
-    lineAnchors: ""
-    lineNoStart: 1
     lineNos: false
-    lineNumbersInTable: true
     noClasses: false
-    style: monokai
     tabWidth: 4
-    wrapperClass: highlight
-    # 支持的语言
-    extraLanguages:
-      - bash
-      - shell
-      - plaintext
-      - text
-      - yaml
-      - markdown
-
   tableOfContents:
+    startLevel: 2
     endLevel: 4
     ordered: false
-    startLevel: 2
-
-assetDir: "assets"
-resourceDir: "resources"
