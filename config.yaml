@@ -17,6 +17,33 @@ languages:
     label: English
     weight: 1
     title: Chase
+    menus:
+      main:
+        - {identifier: projects, name: Projects, url: "/#open-source", weight: 1}
+        - {identifier: blog, name: Blog, url: "/posts/", weight: 2}
+        - {identifier: categories, name: Categories, url: "/categories/", weight: 3}
+        - {identifier: archives, name: Archives, url: "/archives/", weight: 4}
+        - {name: Appearance, weight: 5, params: {type: theme-toggle}}
+        - {name: Language, weight: 6, params: {type: language-switch}}
+        - {name: Search, weight: 7, params: {type: search}}
+        - {name: GitHub, url: "https://github.com/chase6305/", weight: 8, params: {icon: github}}
+  zh-cn:
+    label: 简体中文
+    locale: zh-CN
+    weight: 2
+    title: Chase
+    params:
+      description: "机器人、具身智能、VLA 与工程实践"
+    menus:
+      main:
+        - {identifier: projects, name: 开源项目, url: "/zh-cn/#open-source", weight: 1}
+        - {identifier: blog, name: 博客, url: "/posts/", weight: 2}
+        - {identifier: categories, name: 分类, url: "/categories/", weight: 3}
+        - {identifier: archives, name: 归档, url: "/archives/", weight: 4}
+        - {name: 外观, weight: 5, params: {type: theme-toggle}}
+        - {name: 语言, weight: 6, params: {type: language-switch}}
+        - {name: 搜索, weight: 7, params: {type: search}}
+        - {name: GitHub, url: "https://github.com/chase6305/", weight: 8, params: {icon: github}}
 
 outputs:
   home: [html]
@@ -97,34 +124,6 @@ params:
 
   imageZoom:
     enable: true
-
-menu:
-  main:
-    - identifier: projects
-      name: Projects
-      url: /#open-source
-      weight: 1
-    - identifier: blog
-      name: Blog
-      pageRef: /posts
-      weight: 2
-    - identifier: categories
-      name: Categories
-      pageRef: /categories
-      weight: 3
-    - identifier: archives
-      name: Archives
-      pageRef: /archives
-      weight: 4
-    - name: Search
-      weight: 5
-      params:
-        type: search
-    - name: GitHub
-      weight: 6
-      url: "https://github.com/chase6305/"
-      params:
-        icon: github
 
 markup:
   goldmark:

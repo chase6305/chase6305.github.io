@@ -1,0 +1,23 @@
+{{- $hideLabel := .hideLabel -}}
+{{- $class := .class | default "hx:h-7 hx:px-2 hx:text-xs" -}}
+{{- $location := .location | default "bottom" -}}
+{{- $changeTheme := (T "changeTheme") | default "Change theme" -}}
+<div class="theme-picker hx:flex hx:justify-items-start" data-theme="light">
+  <button title="{{ $changeTheme }}" data-state="closed" data-location="{{ $location }}"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md {{ $class }}" type="button"
+    aria-label="{{ $changeTheme }}" aria-expanded="false" aria-haspopup="menu">
+    <span class="theme-picker__icon" aria-hidden="true"></span>
+    {{- if not $hideLabel }}<span class="theme-picker__label">Theme</span>{{ end -}}
+  </button>
+  <ul class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0 0; min-width: 130px" data-theme="light" role="menu">
+    {{- range $item := slice (dict "id" "light" "label" "Light") (dict "id" "warm" "label" "Warm") (dict "id" "dark" "label" "Dark") (dict "id" "system" "label" "System") }}
+      <li role="none">
+        <button type="button" role="menuitemradio" aria-checked="false" tabindex="-1" data-item="{{ $item.id }}"
+          class="theme-picker__option hx:relative hx:w-full hx:cursor-pointer hx:rounded-sm hx:border-0 hx:bg-transparent hx:px-3 hx:py-1.5 hx:text-left">
+          <span class="theme-picker__swatch theme-picker__swatch--{{ $item.id }}" aria-hidden="true"></span>{{ $item.label }}
+        </button>
+      </li>
+    {{- end }}
+  </ul>
+</div>

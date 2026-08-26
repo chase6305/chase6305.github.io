@@ -5,11 +5,11 @@
     <div class="project-card__header">
       <span class="project-card__icon" aria-hidden="true">{{ .icon }}</span>
       <div>
-        <p class="project-card__eyebrow">{{ .role }} · {{ .organization }}</p>
+        <p class="project-card__eyebrow">{{ if eq $.Page.Language.Lang "zh-cn" }}{{ .roleZh | default .role }}{{ else }}{{ .role }}{{ end }} · {{ .organization }}</p>
         <h3 class="project-card__title">{{ .name }}</h3>
       </div>
     </div>
-    <p class="project-card__description">{{ .tagline }}。{{ .description }}</p>
+    <p class="project-card__description">{{ if eq $.Page.Language.Lang "zh-cn" }}{{ .taglineZh | default .tagline }}。{{ .descriptionZh | default .description }}{{ else }}{{ .tagline }}. {{ .description }}{{ end }}</p>
     <ul class="project-card__topics" aria-label="技术方向">
       {{- range .topics }}
       <li>{{ . }}</li>
@@ -18,7 +18,7 @@
     <div class="project-card__links">
       {{- range .links }}
       <a class="project-link{{ if .primary }} project-link--primary{{ end }}" href="{{ .url }}"
-         target="_blank" rel="noopener noreferrer">{{ .label }} <span aria-hidden="true">↗</span></a>
+         target="_blank" rel="noopener noreferrer">{{ if eq $.Page.Language.Lang "zh-cn" }}{{ .labelZh | default .label }}{{ else }}{{ .label }}{{ end }} <span aria-hidden="true">↗</span></a>
       {{- end }}
     </div>
   </article>

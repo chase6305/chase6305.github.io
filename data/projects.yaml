@@ -1,10 +1,13 @@
 - name: EmbodiChain
   organization: DexForce
   role: Core Contributor
+  roleZh: 深度参与
   featured: true
   icon: EC
   tagline: An end-to-end, GPU-accelerated platform for general-purpose embodied AI
+  taglineZh: 面向通用具身智能的端到端 GPU 加速平台
   description: Unifying high-performance simulation, generative data pipelines, modular model architectures, and training workflows for faster experimentation, deployment, and Sim2Real transfer.
+  descriptionZh: 统一高性能仿真、生成式数据管线、模块化模型架构与训练工作流，加速智能体实验、部署和 Sim2Real 迁移。
   topics:
     - Embodied AI
     - GPU Simulation
@@ -15,4 +18,5 @@
       url: https://github.com/DexForce/EmbodiChain
       primary: true
     - label: Documentation
+      labelZh: 项目文档
       url: https://dexforce.github.io/EmbodiChain/
