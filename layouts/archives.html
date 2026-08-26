@@ -1,0 +1,27 @@
+{{ define "main" }}
+  {{- $section := site.Params.archives.section | default "posts" -}}
+  {{- $pages := where site.RegularPages "Section" $section -}}
+  {{- $groups := $pages.GroupByDate "2006" "desc" -}}
+  <main id="content" class="collection-page">
+    <header class="collection-hero">
+      <p class="chase-section__eyebrow">Timeline</p>
+      <h1>{{ .Title }}</h1>
+      <p>{{ len $pages }} articles, organized chronologically.</p>
+    </header>
+    <div class="archive-list">
+      {{ range $groups }}
+        <section class="archive-year">
+          <h2>{{ .Key }}</h2>
+          <div class="archive-year__posts">
+            {{ range .Pages }}
+              <a href="{{ .RelPermalink }}">
+                <time datetime="{{ .Date.Format `2006-01-02` }}">{{ .Date.Format "Jan 02" }}</time>
+                <span>{{ .Title }}</span>
+              </a>
+            {{ end }}
+          </div>
+        </section>
+      {{ end }}
+    </div>
+  </main>
+{{ end }}

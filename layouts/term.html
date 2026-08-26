@@ -1,0 +1,19 @@
+{{ define "main" }}
+  <main id="content" class="collection-page">
+    <header class="collection-hero">
+      <p class="chase-section__eyebrow">Topic</p>
+      <h1>{{ .Title }}</h1>
+      <p>{{ len .Pages }} related articles.</p>
+    </header>
+    <section class="blog-list" aria-label="Articles">
+      {{ range .Pages.ByDate.Reverse }}
+        <article class="blog-card blog-card--compact">
+          <div class="blog-card__meta"><time datetime="{{ .Date.Format `2006-01-02` }}">{{ .Date.Format "Jan 02, 2006" }}</time></div>
+          <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+          <p>{{ partial "utils/page-description" . }}</p>
+          <a class="blog-card__read" href="{{ .RelPermalink }}">Read article <span aria-hidden="true">→</span></a>
+        </article>
+      {{ end }}
+    </section>
+  </main>
+{{ end }}

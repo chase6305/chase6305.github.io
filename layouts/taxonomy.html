@@ -1,0 +1,17 @@
+{{ define "main" }}
+  <main id="content" class="collection-page">
+    <header class="collection-hero">
+      <p class="chase-section__eyebrow">Knowledge index</p>
+      <h1>{{ .Title }}</h1>
+      <p>{{ len .Data.Terms }} topics across robotics, AI, software, and engineering systems.</p>
+    </header>
+    <section class="taxonomy-grid" aria-label="{{ .Title }}">
+      {{ range .Data.Terms.ByCount }}
+        <a class="taxonomy-card" href="{{ .Page.RelPermalink }}">
+          <span>{{ .Page.LinkTitle }}</span>
+          <strong>{{ .Count }}</strong>
+        </a>
+      {{ end }}
+    </section>
+  </main>
+{{ end }}

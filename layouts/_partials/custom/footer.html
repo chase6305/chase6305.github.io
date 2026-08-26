@@ -1,0 +1,12 @@
+{{- $zh := eq site.Language.Lang "zh-cn" -}}
+<div class="chase-footer">
+  <div>
+    <strong>Chase</strong>
+    <p>{{ if $zh }}机器人、具身智能与工程实践。{{ else }}Robotics, embodied intelligence, and engineering in practice.{{ end }}</p>
+  </div>
+  <div class="chase-footer__links">
+    <a href="/posts/">{{ if $zh }}博客{{ else }}Blog{{ end }}</a>
+    <a href="https://github.com/chase6305/" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    <span>© {{ now.Year }} Chase</span>
+  </div>
+</div>
