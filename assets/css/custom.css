@@ -931,31 +931,60 @@ article main#content > .content {
 
 .focus-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 1rem;
   margin-top: 2rem;
 }
 
 .focus-grid article {
-  min-height: 13rem;
-  padding: 1.5rem;
+  position: relative;
+  min-height: 15rem;
+  padding: 1.75rem;
+  overflow: hidden;
   border: 1px solid var(--chase-border);
-  border-radius: 1rem;
+  border-radius: 1.15rem;
+  background: var(--chase-surface);
+}
+
+.focus-grid article:nth-child(1),
+.focus-grid article:nth-child(4) {
+  grid-column: span 7;
+  min-height: 17rem;
+}
+
+.focus-grid article:nth-child(2),
+.focus-grid article:nth-child(3) {
+  grid-column: span 5;
+}
+
+.focus-grid article:nth-child(1) {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--chase-accent) 10%, var(--chase-surface)), var(--chase-surface) 70%);
+}
+
+.focus-grid article:nth-child(4) {
+  background: linear-gradient(145deg, var(--chase-surface), var(--chase-surface-strong));
 }
 
 .focus-grid article > span {
+  display: block;
   color: var(--chase-accent);
-  font-size: 0.72rem;
-  font-weight: 750;
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  font-weight: 780;
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  opacity: 0.88;
 }
 
 .focus-grid h3 {
-  margin: 2.4rem 0 0.6rem;
+  margin: 3.2rem 0 0.65rem;
   color: var(--chase-text);
-  font-size: 1.2rem;
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  line-height: 1.25;
+  letter-spacing: -0.025em;
 }
 
 .focus-grid p {
+  max-width: 35rem;
   margin: 0;
   color: var(--chase-muted);
   line-height: 1.65;
@@ -1005,6 +1034,19 @@ article main#content > .content {
   .chase-about,
   .focus-grid {
     grid-template-columns: 1fr;
+  }
+
+  .focus-grid article:nth-child(n) {
+    grid-column: auto;
+    min-height: 13.5rem;
+  }
+
+  .focus-grid article > span {
+    font-size: 2.6rem;
+  }
+
+  .focus-grid h3 {
+    margin-top: 2.4rem;
   }
 
   .chase-section {
