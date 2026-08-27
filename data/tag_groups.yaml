@@ -3,7 +3,7 @@
   tags: [Robotics, Kinematics, Inverse Kinematics, D-H Parameters, Calibration, Kinematic Calibration, Hand-Eye Calibration, Robot Zeroing, CCTag, Circle Grid, Fiducial Markers, OpenCV, Motion Planning, Path Planning, A*, 3D Grid, MPC, Whole-Body Control, PID, Robot Control, Trajectory Generation, Trajectory Optimization, Ruckig, TOPP-RA, Pink, Pinocchio, Workspace Analysis, Monte Carlo, Robot Gripper, CasADi, Optimization, Automatic Differentiation]
 - name: AI & Learning
   nameZh: 人工智能与学习
-  tags: [Artificial Intelligence, Machine Learning, Deep Learning, Reinforcement Learning, Gymnasium, VLA, Humanoid Robots, Isaac Lab, USD, PyTorch, Paper Notes]
+  tags: [Artificial Intelligence, Machine Learning, Deep Learning, Reinforcement Learning, Transformer, Attention, Gymnasium, VLA, Humanoid Robots, Isaac Lab, USD, PyTorch, Paper Notes]
 - name: 3D Vision & Simulation
   nameZh: 三维视觉与仿真
   tags: [3D Vision, 3D Visualization, Open3D, Point Cloud, Mesh Processing, CoACD, Collision Geometry, MeshCat, OpenGL, NVIDIA Warp]
