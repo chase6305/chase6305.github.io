@@ -1,17 +1,18 @@
 {{ define "main" }}
+  {{- $zh := eq site.Language.Lang "zh-cn" -}}
   <main id="content" class="collection-page">
     <header class="collection-hero">
-      <p class="chase-section__eyebrow">Topic</p>
+      <p class="chase-section__eyebrow">{{ if $zh }}主题{{ else }}Topic{{ end }}</p>
       <h1>{{ .Title }}</h1>
-      <p>{{ len .Pages }} related articles.</p>
+      <p>{{ if $zh }}{{ len .Pages }} 篇相关文章。{{ else }}{{ len .Pages }} related articles.{{ end }}</p>
     </header>
-    <section class="blog-list" aria-label="Articles">
+    <section class="blog-list" aria-label="{{ if $zh }}文章{{ else }}Articles{{ end }}">
       {{ range .Pages.ByDate.Reverse }}
         <article class="blog-card blog-card--compact">
           <div class="blog-card__meta"><time datetime="{{ .Date.Format `2006-01-02` }}">{{ .Date.Format "Jan 02, 2006" }}</time></div>
           <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
           <p>{{ partial "utils/page-description" . }}</p>
-          <a class="blog-card__read" href="{{ .RelPermalink }}">Read article <span aria-hidden="true">→</span></a>
+          <a class="blog-card__read" href="{{ .RelPermalink }}">{{ if $zh }}阅读全文{{ else }}Read article{{ end }} <span aria-hidden="true">→</span></a>
         </article>
       {{ end }}
     </section>

@@ -10,7 +10,7 @@
       </div>
     </div>
     <p class="project-card__description">{{ if eq $.Page.Language.Lang "zh-cn" }}{{ .taglineZh | default .tagline }}。{{ .descriptionZh | default .description }}{{ else }}{{ .tagline }}. {{ .description }}{{ end }}</p>
-    <ul class="project-card__topics" aria-label="Topics">
+    <ul class="project-card__topics" aria-label="{{ if eq $.Page.Language.Lang "zh-cn" }}主题{{ else }}Topics{{ end }}">
       {{- range .topics }}<li>{{ . }}</li>{{ end }}
     </ul>
     <div class="project-card__links">

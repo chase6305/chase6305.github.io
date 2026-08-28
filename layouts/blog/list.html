@@ -1,19 +1,20 @@
 {{ define "main" }}
+  {{- $zh := eq site.Language.Lang "zh-cn" -}}
   {{- $pages := partial "utils/sort-pages" (dict "page" . "by" site.Params.blog.list.sortBy "order" site.Params.blog.list.sortOrder) -}}
   {{- $pagerSize := site.Params.blog.list.pagerSize | default 10 -}}
   {{- $paginator := .Paginate $pages $pagerSize -}}
   <main id="content" class="blog-index">
     <header class="blog-index__hero">
-      <p class="chase-section__eyebrow">Writing &amp; research notes</p>
-      <h1>Technical Blog</h1>
+      <p class="chase-section__eyebrow">{{ if $zh }}写作与研究笔记{{ else }}Writing &amp; research notes{{ end }}</p>
+      <h1>{{ if $zh }}技术博客{{ else }}Technical Blog{{ end }}</h1>
       <p>{{ .Content | plainify }}</p>
       <div class="blog-index__stats">
-        <span><strong>{{ len $pages }}</strong> published articles</span>
-        <span>Robotics · AI · Engineering</span>
+        <span><strong>{{ len $pages }}</strong> {{ if $zh }}篇文章{{ else }}published articles{{ end }}</span>
+        <span>{{ if $zh }}机器人 · 人工智能 · 工程实践{{ else }}Robotics · AI · Engineering{{ end }}</span>
       </div>
     </header>
 
-    <section class="blog-list" aria-label="Blog posts">
+    <section class="blog-list" aria-label="{{ if $zh }}博客文章{{ else }}Blog posts{{ end }}">
       {{- range $paginator.Pages }}
         <article class="blog-card">
           <div class="blog-card__meta">
@@ -26,7 +27,7 @@
             {{ if site.Params.blog.list.displayTags }}
               <div class="blog-card__tags">{{ partial "tags.html" (dict "context" .) }}</div>
             {{ end }}
-            <a class="blog-card__read" href="{{ .RelPermalink }}" aria-label="Read {{ .Title }}">Read article <span aria-hidden="true">→</span></a>
+            <a class="blog-card__read" href="{{ .RelPermalink }}" aria-label="{{ if $zh }}阅读{{ else }}Read{{ end }} {{ .Title }}">{{ if $zh }}阅读全文{{ else }}Read article{{ end }} <span aria-hidden="true">→</span></a>
           </div>
         </article>
       {{- end }}

@@ -195,6 +195,13 @@ body {
   box-shadow: 0 16px 38px rgb(15 23 42 / 8%);
 }
 
+.blog-card:focus-within,
+.latest-card:focus-within,
+.project-card:focus-within {
+  border-color: color-mix(in srgb, var(--chase-accent) 65%, var(--chase-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--chase-accent) 14%, transparent);
+}
+
 .blog-card__meta {
   display: flex;
   flex-wrap: wrap;
@@ -407,6 +414,17 @@ article main#content > .content {
 
 .archive-year__posts a:hover span {
   color: var(--chase-accent);
+}
+
+.blog-card h2 a:focus-visible,
+.blog-card__read:focus-visible,
+.latest-card h3 a:focus-visible,
+.latest-card__link:focus-visible,
+.taxonomy-card:focus-visible,
+.archive-year__posts a:focus-visible {
+  border-radius: 0.25rem;
+  outline: 3px solid color-mix(in srgb, var(--chase-accent) 35%, transparent);
+  outline-offset: 3px;
 }
 
 .archive-year__posts time {
@@ -1163,18 +1181,41 @@ article main#content > .content {
   .chase-button--quiet {
     flex-basis: 100%;
   }
+
+  .taxonomy-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .taxonomy-card {
+    gap: 0.5rem;
+    min-height: 4.25rem;
+    padding: 0.8rem 0.9rem;
+    font-size: 0.88rem;
+  }
+
+  .taxonomy-card strong {
+    min-width: 1.65rem;
+    height: 1.65rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .blog-card,
   .chase-button,
+  .latest-card,
   .project-card,
-  .project-link {
+  .project-link,
+  .taxonomy-card {
     transition: none;
   }
 
+  .blog-card:hover,
   .chase-button:hover,
+  .latest-card:hover,
   .project-card:hover,
-  .project-link:hover {
+  .project-link:hover,
+  .taxonomy-card:hover {
     transform: none;
   }
 }

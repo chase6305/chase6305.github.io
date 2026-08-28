@@ -1,12 +1,13 @@
 {{ define "main" }}
+  {{- $zh := eq site.Language.Lang "zh-cn" -}}
   {{- $section := site.Params.archives.section | default "posts" -}}
   {{- $pages := where site.RegularPages "Section" $section -}}
   {{- $groups := $pages.GroupByDate "2006" "desc" -}}
   <main id="content" class="collection-page">
     <header class="collection-hero">
-      <p class="chase-section__eyebrow">Timeline</p>
-      <h1>{{ .Title }}</h1>
-      <p>{{ len $pages }} articles, organized chronologically.</p>
+      <p class="chase-section__eyebrow">{{ if $zh }}时间线{{ else }}Timeline{{ end }}</p>
+      <h1>{{ if $zh }}文章归档{{ else }}{{ .Title }}{{ end }}</h1>
+      <p>{{ if $zh }}按时间整理的 {{ len $pages }} 篇文章。{{ else }}{{ len $pages }} articles, organized chronologically.{{ end }}</p>
     </header>
     <div class="archive-list">
       {{ range $groups }}
@@ -15,7 +16,7 @@
           <div class="archive-year__posts">
             {{ range .Pages }}
               <a href="{{ .RelPermalink }}">
-                <time datetime="{{ .Date.Format `2006-01-02` }}">{{ .Date.Format "Jan 02" }}</time>
+                <time datetime="{{ .Date.Format `2006-01-02` }}">{{ if $zh }}{{ .Date.Format "01月02日" }}{{ else }}{{ .Date.Format "Jan 02" }}{{ end }}</time>
                 <span>{{ .Title }}</span>
               </a>
             {{ end }}

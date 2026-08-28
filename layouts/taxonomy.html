@@ -1,9 +1,10 @@
 {{ define "main" }}
+  {{- $zh := eq site.Language.Lang "zh-cn" -}}
   <main id="content" class="collection-page">
     <header class="collection-hero">
-      <p class="chase-section__eyebrow">Knowledge index</p>
-      <h1>{{ .Title }}</h1>
-      <p>{{ len .Data.Terms }} topics across robotics, AI, software, and engineering systems.</p>
+      <p class="chase-section__eyebrow">{{ if $zh }}知识索引{{ else }}Knowledge index{{ end }}</p>
+      <h1>{{ if $zh }}{{ if eq .Data.Plural "tags" }}标签{{ else if eq .Data.Plural "categories" }}分类{{ else }}{{ .Title }}{{ end }}{{ else }}{{ .Title }}{{ end }}</h1>
+      <p>{{ if $zh }}覆盖机器人、人工智能、软件与工程系统的 {{ len .Data.Terms }} 个主题。{{ else }}{{ len .Data.Terms }} topics across robotics, AI, software, and engineering systems.{{ end }}</p>
     </header>
     {{ if eq .Data.Plural "tags" }}
       {{ $.Scratch.Set "groupedTags" (slice) }}
@@ -29,7 +30,7 @@
         {{- end -}}
         {{- if $ungrouped }}
           <section class="tag-group tag-group--ungrouped">
-            <h2>Pending classification</h2>
+            <h2>{{ if $zh }}待分类{{ else }}Pending classification{{ end }}</h2>
             <div class="taxonomy-grid">
               {{ range $ungrouped }}<a class="taxonomy-card" href="{{ .Page.RelPermalink }}"><span>{{ .Page.LinkTitle }}</span><strong>{{ .Count }}</strong></a>{{ end }}
             </div>

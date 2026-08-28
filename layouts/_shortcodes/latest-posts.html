@@ -9,7 +9,7 @@
       </div>
       <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
       <p>{{ partial "utils/page-description" . }}</p>
-      <a class="latest-card__link" href="{{ .RelPermalink }}">Read <span aria-hidden="true">→</span></a>
+      <a class="latest-card__link" href="{{ .RelPermalink }}">{{ if eq $.Page.Language.Lang "zh-cn" }}阅读{{ else }}Read{{ end }} <span aria-hidden="true">→</span></a>
     </article>
   {{- end }}
 </div>
