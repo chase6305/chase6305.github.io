@@ -30,14 +30,6 @@ layout: hextra-home
   <div class="chase-about__copy">
     <p>My background spans mechanical engineering, robotics, and artificial intelligence. I have contributed to self-built simulation engines and robot motion control libraries, with hands-on experience from hardware design and system integration to algorithms and software infrastructure.</p>
     <p>Currently, I focus on VLA data processing, large-scale robot dataset construction, and foundation model pre-training for embodied AI. My goal is to build robots that can perceive, understand, learn, and interact with the real world.</p>
-    <details class="bilingual-profile">
-      <summary>阅读中文介绍</summary>
-      <div class="bilingual-profile__content">
-        <p><strong>致力于连接物理机器人与智能基础模型。</strong></p>
-        <p>我拥有机械工程、机器人学与人工智能背景，实践覆盖计算机视觉、图像处理、运动规划、轨迹优化、机器人控制、标定、仿真和机器人系统开发等完整技术栈。</p>
-        <p>我曾深度参与自研仿真引擎和机器人运动控制库的开发，具备从硬件设计、系统集成到算法实现和软件基础设施建设的完整工程经验。目前主要专注于 VLA 数据处理、大规模机器人数据集构建，以及面向具身智能的基础模型预训练。</p>
-      </div>
-    </details>
   </div>
 </section>
 
