@@ -20,3 +20,23 @@
     - label: Documentation
       labelZh: 项目文档
       url: https://dexforce.github.io/EmbodiChain/
+
+- name: HolisticMotion
+  organization: chase6305
+  role: Creator & Maintainer
+  roleZh: 作者与维护者
+  featured: true
+  icon: HM
+  tagline: A focused C++17 robotics library with Python bindings
+  taglineZh: 专注于机器人运动系统的 C++17 与 Python 库
+  description: Providing robot models, kinematics, trajectory generation, sampling-based planning, collision queries, and pose retargeting in one modular toolkit.
+  descriptionZh: 以模块化工具包统一提供机器人模型、运动学、轨迹生成、采样式规划、碰撞查询与姿态重定向能力。
+  topics:
+    - Robotics
+    - Motion Planning
+    - Kinematics
+    - C++ / Python
+  links:
+    - label: GitHub
+      url: https://github.com/chase6305/HolisticMotion
+      primary: true
