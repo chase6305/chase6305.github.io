@@ -40,3 +40,23 @@
     - label: GitHub
       url: https://github.com/chase6305/HolisticMotion
       primary: true
+
+- name: Orchestrion
+  organization: chase6305
+  role: Creator & Maintainer
+  roleZh: 作者与维护者
+  featured: true
+  icon: OR
+  tagline: A lightweight Python framework for robot and peripheral orchestration
+  taglineZh: 面向机器人与外设编排的轻量级 Python 框架
+  description: Coordinating robot trajectories and asynchronous peripheral tasks with motion synchronization, unified request lifecycles, and device health monitoring.
+  descriptionZh: 通过运动同步、统一请求生命周期与设备健康监控，协调机器人轨迹和异步外设任务。
+  topics:
+    - Robot Orchestration
+    - Async Tasks
+    - Device Integration
+    - Python
+  links:
+    - label: GitHub
+      url: https://github.com/chase6305/orchestrion
+      primary: true
