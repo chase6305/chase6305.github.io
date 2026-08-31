@@ -644,11 +644,22 @@ class InputEmbedding(nn.Module):
         self.token = nn.Embedding(vocab_size, dim)
         self.position = nn.Embedding(max_seq_len, dim)
 
-    def forward(self, token_ids: torch.Tensor):
+    def forward(
+        self,
+        token_ids: torch.Tensor,
+        position_ids: torch.Tensor | None = None,
+    ):
         # token_ids: [B,T]
-        T = token_ids.size(1)
-        positions = torch.arange(T, device=token_ids.device)
-        return self.token(token_ids) + self.position(positions)
+        B, T = token_ids.shape
+        if position_ids is None:
+            position_ids = torch.arange(T, device=token_ids.device)
+        elif position_ids.shape != (B, T):
+            raise ValueError("position_ids must have shape [B,T]")
+        else:
+            position_ids = position_ids.to(
+                device=token_ids.device, dtype=torch.long
+            )
+        return self.token(token_ids) + self.position(position_ids)
 ```
 
 输出形状从 `[B,T]` 变成 `[B,T,C]`。token embedding 回答“是什么”，position embedding 回答“在哪里”。
@@ -1473,8 +1484,18 @@ class MiniGPT(nn.Module):
         token_ids: torch.Tensor,
         targets: torch.Tensor | None = None,
         valid_tokens: torch.Tensor | None = None,
+        position_ids: torch.Tensor | None = None,
     ):
-        x = self.embedding(token_ids)             # [B,T,C]
+        if position_ids is None and valid_tokens is not None:
+            position_mask = valid_tokens.to(
+                device=token_ids.device, dtype=torch.bool
+            )
+            position_ids = position_mask.long().cumsum(dim=-1) - 1
+            position_ids = position_ids.masked_fill(~position_mask, 0)
+
+        x = self.embedding(                       # [B,T,C]
+            token_ids, position_ids=position_ids
+        )
         for block in self.blocks:
             x = block(                            # [B,T,C]
                 x, causal=True, valid_tokens=valid_tokens
@@ -1629,6 +1650,51 @@ logits, loss = model(
 ```
 
 `valid_tokens` 作为 Key Padding Mask 逐层传入 Attention；target 中的 `-100` 是 PyTorch Cross-Entropy 默认忽略值。二者相关但不能互相替代：一个控制 Attention 可见性，另一个控制哪些位置计入 Loss。本文实现采用右侧 Padding，并保证每条序列至少有一个有效输入 token，因此不会产生整行 Key 都被屏蔽的情况。
+
+#### 为什么批量生成常用左侧 Padding
+
+训练和生成对 Padding 方向的需求并不完全相同。假设两个 Prompt 分别有 3 和 5 个 token：
+
+| 方式 | 短 Prompt | 长 Prompt | `logits[:, -1, :]` |
+|---|---|---|---|
+| 右侧 Padding | `[A, B, C, PAD, PAD]` | `[D, E, F, G, H]` | 短 Prompt 取到 PAD 位置 |
+| 左侧 Padding | `[PAD, PAD, A, B, C]` | `[D, E, F, G, H]` | 两者都取到最后有效位置 |
+
+许多简单生成循环固定使用最后一个位置：
+
+```python
+logits = model(input_ids, valid_tokens=attention_mask)[0]
+next_logits = logits[:, -1, :]
+```
+
+这种实现做批量自回归生成时，左侧 Padding 最方便，因为每个样本最右侧都是最后一个有效 token。右侧 Padding 并非数学上错误，更不是 Decoder-Only 模型的强制要求；只要根据每个样本的有效位置收集 logits，也能得到正确的第一步预测：
+
+```python
+# 对任意 Padding 布局，找到每行最右侧的有效位置
+B, T = attention_mask.shape
+positions = torch.arange(T, device=attention_mask.device).expand(B, T)
+last_valid = positions.masked_fill(~attention_mask, -1).amax(dim=-1)
+next_logits = logits[torch.arange(B, device=logits.device), last_valid]
+```
+
+继续生成时，推理引擎还要同步维护每个样本的逻辑长度、Position IDs 和 KV Cache 写入位置。成熟的连续批处理或分页缓存引擎通常会直接跟踪这些元数据，并不依赖“所有样本最后有效 token 必须位于同一物理列”。
+
+左侧 Padding 也不是只移动 PAD 就结束了，还必须满足以下条件：
+
+1. **Key Padding Mask**：有效 Query 不能读取左侧 PAD 的 K/V。
+2. **Position IDs**：有效 token 的逻辑位置应从 0 开始，不能简单使用它在补齐张量中的物理列号。
+3. **Padded Query 行**：左侧 PAD Query 在 Causal Mask 下可能看不到任何有效 Key；实现要避免整行 `-∞` 产生 NaN，并忽略或清零这些输出。
+4. **Loss Mask**：训练时仍要排除 PAD target，Attention Mask 不能替代它。
+
+左侧 Padding 的 Position IDs 可以从有效位置掩码构造：
+
+```python
+# attention_mask: [B,T]，True 表示有效 token
+position_ids = attention_mask.long().cumsum(dim=-1) - 1
+position_ids = position_ids.masked_fill(~attention_mask, 0)
+```
+
+可学习绝对位置编码应查表这些 `position_ids`；RoPE 则应按这些位置旋转 Q/K。Encoder-Only 模型没有固定读取最后一个位置做下一 token 预测的约束，因此通常使用更直观的右侧 Padding；只要掩码和位置处理正确，左右两种方式都可以工作。
 
 ### 15.3 Packing
 
@@ -2031,6 +2097,12 @@ Post-Norm 计算 `LN(x + Sublayer(x))`，归一化发生在残差相加之后；
 新 token 的张量长度虽然是 1，但它在完整序列中的位置不是 0。RoPE 必须使用当前绝对位置，通常等于已有缓存长度；如果每一步都从位置 0 开始旋转，Query/Key 的相对位置信息就会错误。
 </details>
 
+<details>
+<summary>12. Decoder-Only 批量生成是否强制要求左侧 Padding？</summary>
+
+不强制。固定读取 `logits[:, -1, :]` 的简单生成循环通常需要左侧 Padding，才能保证最后一列是每个样本的有效锚点。右侧 Padding 也能正确生成，但必须按样本收集最后有效位置的 logits，并正确维护逻辑长度、Position IDs 和 KV Cache 位置。
+</details>
+
 ### 学习完成标准
 
 不必一次掌握所有扩展方法。先完成“核心推导”，再检查实现和工程判断。
@@ -2050,6 +2122,7 @@ Post-Norm 计算 `LN(x + Sublayer(x))`，归一化发生在残差相加之后；
 - [ ] 能实现一个带残差、Dropout、Norm 和 FFN 的 Transformer Block。
 - [ ] 能运行单头、多头及 MiniGPT 示例，并验证形状、概率和梯度。
 - [ ] 能让 Padding 位置既不被有效 Query 读取，也不计入训练 Loss。
+- [ ] 能解释左/右 Padding 对批量生成锚点和 Position IDs 的影响。
 
 #### 工程判断
 
