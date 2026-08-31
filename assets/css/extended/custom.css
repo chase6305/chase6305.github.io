@@ -190,3 +190,74 @@ ul, ol {
         flex: 1 1 auto;
     }
 }
+
+/* Numbered technical figures in long-form articles. */
+.post-content .article-figure {
+    overflow: hidden;
+    margin: clamp(1.5rem, 4vw, 2.5rem) auto;
+    padding: clamp(0.6rem, 2vw, 1rem);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--entry);
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+}
+
+.post-content .article-figure:hover {
+    transform: none;
+    box-shadow: 0 6px 22px rgba(15, 23, 42, 0.09);
+}
+
+.post-content .article-figure > img {
+    width: auto;
+    max-width: 100%;
+    max-height: 78vh;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.post-content .article-figure > figcaption {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 0.65rem;
+    align-items: start;
+    margin: 0.85rem 0 0;
+    padding: 0.85rem 0.25rem 0.1rem;
+    border-top: 1px solid var(--border);
+    color: var(--secondary);
+    font-size: 0.88rem;
+    font-weight: 400;
+    line-height: 1.65;
+    text-align: left;
+}
+
+.article-figure__number {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.75rem;
+    padding: 0.1rem 0.55rem;
+    border-radius: 999px;
+    color: var(--theme);
+    background: var(--primary);
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.article-figure__text {
+    min-width: 0;
+}
+
+@media (max-width: 680px) {
+    .post-content .article-figure {
+        margin-block: 1.35rem;
+        padding: 0.45rem;
+        border-radius: 9px;
+    }
+
+    .post-content .article-figure > figcaption {
+        gap: 0.5rem;
+        padding-inline: 0.15rem;
+        font-size: 0.82rem;
+    }
+}

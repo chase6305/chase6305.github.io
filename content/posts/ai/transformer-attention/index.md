@@ -1,7 +1,7 @@
 ---
 title: "Transformer Attention 学习指南：从 Q/K/V 到现代大模型架构"
 date: 2026-08-27
-lastmod: 2026-08-27
+lastmod: 2026-08-31
 draft: false
 tags: ["Transformer", "Attention", "PyTorch"]
 categories: ["人工智能"]
@@ -46,14 +46,32 @@ toc: true
 - [代码与形状速查](#19-代码与形状速查)
 - [运行、自测与完成标准](#20-运行与自测)
 
+### 配图阅读约定（图例）
+
+全文配图的具体颜色会随主题变化，应优先看框内文字与箭头。下面这些符号保持一致：
+
+| 图形或符号 | 含义 |
+|---|---|
+| 矩阵的行 / 列 | Attention 图中通常分别表示 Query / Key |
+| 彩色单元格 / 灰色单元格 | 允许关注 / 被 Mask 屏蔽 |
+| 绕过子层的弧线 | 残差连接（Residual Connection） |
+| `+` 或 `⊕` | 形状相同张量的逐元素相加 |
+| `×`、`·` 或连线汇入 | 矩阵乘法、点积或加权汇总，以相邻标签为准 |
+| `B, T, C, H, Dh, Cff` | Batch、序列长度、模型维度、Head 数、每头维度、FFN 中间维度 |
+
+图号按照正文首次出现顺序连续编号；图注不仅说明“画了什么”，也会指出阅读该图时需要注意的适用范围。
+
 ## 1. 先看 Transformer 层的全貌
 
 Transformer 处理的不是原始文字，而是 token 对应的向量。一个典型的 Transformer 层由注意力子层和前馈网络组成，两个子层外都有残差连接与归一化。
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/transformer-block-overview.png" alt="Transformer 层总体框架" width="900">
-  <br><em>图 1：一个 Transformer 层的主要数据流；弧形箭头表示残差连接。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 1</span>
+    <span class="article-figure__text">Post-Norm Transformer 层的主要数据流；弧形箭头表示残差连接。Pre-Norm 会把 Norm 移到子层之前。</span>
+  </figcaption>
+</figure>
 
 各部分职责：
 
@@ -145,10 +163,15 @@ Attention 公式中还会使用以下字母：
 
 Window、Causal、Sparse 描述的则是**可见范围**：一个 Query 被允许查看哪些 Key。它们可以与单头或多头任意组合。例如“Multi-Head Causal Sliding-Window Attention”表示多个 head 都只查看一定长度的过去窗口。
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/attention-patterns.png" alt="Full、Causal、Sliding Window、Block Sparse 与 Global Token Attention" width="960">
-  <br><em>图 2：Head 数量与可见性模式是两个独立设计轴；蓝色区域表示 Query 可以读取的 Key。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 2</span>
+    <span class="article-figure__text">Head 数量与可见性模式是两个独立设计轴；蓝色区域表示 Query 可以读取的 Key。</span>
+  </figcaption>
+</figure>
+
+> 图中 `O(n²/2)` 用于直观表示 Causal Attention 只计算约半个矩阵；按大 O 记号忽略常数后，它仍是 `O(n²)`。另外，稀疏模式只有在实现使用相应稀疏或分块内核时才会带来实际加速。
 
 | 可见性模式 | 每个 Query 可以看什么 | 复杂度（忽略 head/特征维） | 适用场景 |
 |---|---|---:|---|
@@ -203,10 +226,13 @@ K = self.k_proj(x)
 V = self.v_proj(x)
 ```
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/qkv-projection.png" alt="X 通过三个独立线性层投影为 Q、K、V" width="900">
-  <br><em>图 3：同一个 X 经过三组不同的可学习参数，得到形状相同但语义不同的 Q、K、V。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 3</span>
+    <span class="article-figure__text">同一个 X 经过三组不同的可学习参数，得到形状相同但语义不同的 Q、K、V。</span>
+  </figcaption>
+</figure>
 
 对每个 token 向量分别计算：
 
@@ -232,10 +258,13 @@ Q、K、V 不是简单复制出来的。它们输入相同，但使用不同权�
 
 ## 4. 单头缩放点积注意力
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/simple-attention-flow.png" alt="单头缩放点积注意力" width="960">
-  <br><em>图 4：单头缩放点积注意力，从相关性分数到 Value 加权汇总。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 4</span>
+    <span class="article-figure__text">单头缩放点积注意力，从相关性分数到 Value 加权汇总。</span>
+  </figcaption>
+</figure>
 
 完整公式为：
 
@@ -247,6 +276,8 @@ $$
 ### 4.1 计算相关性
 
 `Q @ K.transpose(-2, -1)` 得到 `[B, T, T]`。其中第 `i` 行、第 `j` 列表示第 `i` 个 Query 与第 `j` 个 Key 的匹配分数。除以 `sqrt(C)` 可避免维度增大时点积过大、softmax 饱和。
+
+更具体地说，若 $q$ 和 $k$ 的各维近似独立、均值为 0、方差为 1，则点积 $q^\top k$ 是 $C$ 项乘积之和，其方差约为 $C$、标准差约为 $\sqrt C$。除以 $\sqrt C$ 后，分数的典型尺度回到常数量级，Softmax 不容易在初始化阶段过早进入接近 one-hot 的饱和区域。多头中实际点积维度是 $D_h$，因此改除以 $\sqrt{D_h}$。
 
 | 数学步骤 | 对应代码 | 输出形状 |
 |---|---|---|
@@ -279,10 +310,13 @@ $$
 
 最后三个权重之和为 1，较大的原始分数获得较大的概率。
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/softmax-step-by-step.png" alt="Softmax 数值计算与 Mask 示例" width="960">
-  <br><em>图 5：逐步计算 row-wise Softmax；被 mask 的负无穷位置在指数运算后变为 0。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 5</span>
+    <span class="article-figure__text">逐步计算 row-wise Softmax；被 mask 的负无穷位置在指数运算后变为 0。</span>
+  </figcaption>
+</figure>
 
 #### 为什么要减去最大值
 
@@ -358,10 +392,13 @@ M=\begin{bmatrix}
 \end{bmatrix}
 $$
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/causal-mask.png" alt="因果掩码将未来位置的注意力权重变为零" width="920">
-  <br><em>图 6：上三角的未来位置被屏蔽；softmax 后对应权重严格为 0。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 6</span>
+    <span class="article-figure__text">上三角的未来位置被屏蔽；softmax 后对应权重严格为 0。</span>
+  </figcaption>
+</figure>
 
 示例还可以调用 PyTorch 的 `scaled_dot_product_attention`。在 `torch.no_grad()` 中手动重算权重仅用于观察，不参与反向传播。
 
@@ -375,10 +412,13 @@ $$
 
 因此必须满足 `C % H == 0`。示例中 `C=48`、`H=8`，所以每头 `Dh=6`。
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/multi-head-attention-flow.png" alt="多头注意力的拆分、并行与拼接" width="960">
-  <br><em>图 7：特征维被拆给多个 head，并行计算后再拼回原维度。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 7</span>
+    <span class="article-figure__text">特征维被拆给多个 head，并行计算后再拼回原维度。</span>
+  </figcaption>
+</figure>
 
 ### 5.1 先投影，再拆 Head
 
@@ -418,6 +458,25 @@ $$
 | 缩放因子 | `sqrt(C)` | `sqrt(Dh)` |
 
 多头通常不会使最终输出维度扩大：因为 `H × Dh = C`，拼接后仍恢复为 `C`。
+
+### 6.1 参数量、计算量与显存分别看什么
+
+“多头”不等于把参数量乘以 Head 数。保持总模型维度 $C=H\times D_h$ 不变时，标准 MHA 的四个投影矩阵约有：
+
+$$
+\underbrace{3C^2}_{W_Q,W_K,W_V}+\underbrace{C^2}_{W_O}=4C^2
+$$
+
+这里忽略了规模较小的 bias。改变 `H` 只是在固定的 $C$ 维中重新分组，通常不会改变上述主项。一个标准两层 FFN 则约有 $2CC_{ff}$ 个权重；当 $C_{ff}=4C$ 时约为 $8C^2$，因此很多 Transformer 中 FFN 的参数量高于 Attention 投影层。
+
+计算成本要分成两部分：
+
+| 部分 | 时间复杂度 | 主要受什么影响 |
+|---|---:|---|
+| Q/K/V 与输出投影 | $O(BTC^2)$ | 模型维度 $C$ |
+| Scores 与加权 Value | $O(BT^2C)$ | 序列长度 $T$ |
+
+普通训练实现还可能保存 `[B,H,T,T]` 的分数或概率，Attention 激活显存因而随 $T^2$ 增长。FlashAttention 主要减少这部分中间矩阵的显存读写；它不会消除 Dense Attention 本身的平方级算术量。
 
 ## 7. 单头注意力完整示例
 
@@ -507,6 +566,7 @@ class SimpleMultiHeadAttention(nn.Module):
         self,
         x: torch.Tensor,
         causal: bool = False,
+        valid_tokens: torch.Tensor | None = None,
         return_attn: bool = False,
     ):
         # B = Batch Size；T = Token Count；C = Channels / Hidden Dimension
@@ -530,6 +590,15 @@ class SimpleMultiHeadAttention(nn.Module):
                 T, T, device=x.device, dtype=torch.bool
             ).triu(diagonal=1)
             scores = scores.masked_fill(mask, -torch.inf)
+
+        if valid_tokens is not None:
+            if valid_tokens.shape != (B, T):
+                raise ValueError("valid_tokens must have shape [B,T]")
+            valid_tokens = valid_tokens.to(
+                device=scores.device, dtype=torch.bool
+            )
+            key_mask = ~valid_tokens[:, None, None, :]
+            scores = scores.masked_fill(key_mask, -torch.inf)
 
         attn = torch.softmax(scores, dim=-1)  # [B,H,T,T]
         out = attn @ V                        # [B,H,T,Dh]
@@ -584,18 +653,52 @@ class InputEmbedding(nn.Module):
 
 输出形状从 `[B,T]` 变成 `[B,T,C]`。token embedding 回答“是什么”，position embedding 回答“在哪里”。
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/embedding-position-encoding.png" alt="Token Embedding 与位置编码相加" width="960">
-  <br><em>图 8：Token 向量与同形状的位置向量逐元素相加，得到 Transformer 的输入 X。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 8</span>
+    <span class="article-figure__text">Token 向量与位置向量逐元素相加，得到 Transformer 的输入 X。位置编码原始形状通常为 [T,C] 或 [1,T,C]，图中的 [B,T,C] 表示广播到 batch 后的逻辑形状。</span>
+  </figcaption>
+</figure>
 
 ### 9.2 Feed-Forward Network
 
-FFN 对每个 token 独立应用同一个两层 MLP，通常先升维再降回模型维度：
+Attention 完成 token 之间的信息聚合后，FFN（Feed-Forward Network）会对每个 token 的特征做进一步变换。它对序列中的每个位置独立应用**同一组参数**，不会在不同 token 之间交换信息，因此也常被称为 position-wise FFN。
+
+设模型维度为 $C$，FFN 的中间维度为 $C_{ff}$，则两层线性变换通常先把特征从 $C$ 维升到 $C_{ff}$ 维，再投影回 $C$ 维：
 
 $$
 \operatorname{FFN}(x)=W_2\,\sigma(W_1x+b_1)+b_2
 $$
+
+其中：
+
+- $W_1\in\mathbb{R}^{C_{ff}\times C}$，负责升维；
+- $W_2\in\mathbb{R}^{C\times C_{ff}}$，负责降维；
+- $\sigma$ 是非线性激活函数，例如 ReLU 或 GELU；
+- $C_{ff}$ 通常大于 $C$，原始 Transformer 常取 $C_{ff}=4C$。
+
+升维给网络提供了更大的中间特征空间，非线性激活使它能够组合和筛选不同语义特征；最后降回 $C$ 维，是为了与残差分支的输入保持相同形状。
+
+#### 为什么需要 GELU 激活
+
+如果两层 Linear 之间没有激活函数，那么无论中间维度多大，两次线性变换仍可合并成一次线性变换，FFN 就无法学习更复杂的非线性关系。这里使用的 GELU（Gaussian Error Linear Unit）定义为：
+
+$$
+\operatorname{GELU}(x)=x\,\Phi(x)
+$$
+
+其中 $\Phi(x)$ 是标准正态分布的累积分布函数。也可以用下面的近似式计算：
+
+$$
+\operatorname{GELU}(x)\approx\frac{x}{2}
+\left(1+\tanh\left[\sqrt{\frac{2}{\pi}}
+\left(x+0.044715x^3\right)\right]\right)
+$$
+
+可以把 $\Phi(x)\in(0,1)$ 理解成一个由输入大小决定的**软门控系数**：较大的正输入接近原样通过，较大的负输入逐渐趋近于 0，中间区域则被平滑缩放。这里的“概率式门控”只是数学直觉，`nn.GELU()` 的前向计算本身是确定性的，并不会随机采样。
+
+与 `ReLU(x) = max(0, x)` 相比，GELU 在 0 附近没有硬截断，并允许一部分较小的负值通过，因此梯度变化更平滑。GELU 被 BERT、GPT 等许多 Transformer 采用，但它不是对所有模型和硬件都必然更优；ReLU 计算更简单，现代大模型也常改用 SiLU/SwiGLU 等门控结构。
 
 ```python
 class FeedForward(nn.Module):
@@ -612,15 +715,67 @@ class FeedForward(nn.Module):
         return self.net(x)  # [B,T,C] -> [B,T,C]
 ```
 
-Attention 负责 token 之间的信息交换；FFN 负责每个 token 内部的特征变换。
+对输入 `x: [B,T,C]`，`nn.Linear` 只作用于最后一个维度。它等价于对全部 `B × T` 个 token 分别执行相同的 MLP，只是 PyTorch 将这些计算并行完成：
+
+$$
+[B,T,C]\xrightarrow{W_1}[B,T,C_{ff}]
+\xrightarrow{\operatorname{GELU}}[B,T,C_{ff}]
+\xrightarrow{W_2}[B,T,C]
+$$
+
+<figure class="article-figure">
+  <img src="assets/ffn-token-wise-flow.svg" alt="FFN 对每个 token 共享参数并沿特征维升维、激活和降维" width="960">
+  <figcaption>
+    <span class="article-figure__number">图 9</span>
+    <span class="article-figure__text">Position-wise FFN 的数据流。B 和 T 保持不变，特征维执行 C → Cff → C；所有 token 共享同一组 W₁、W₂。</span>
+  </figcaption>
+</figure>
+
+因此，Attention 与 FFN 承担互补的职责：
+
+- **Attention** 沿序列维度混合信息，让一个 token 能读取其他 token；
+- **FFN** 沿特征维度变换信息，增强每个 token 自身的表示能力。
+
+实际大模型中也常见带门控的 FFN，如 GLU、GEGLU 和 SwiGLU。它们改变了中间层的计算方式，但“逐 token 共享参数、最后回到模型维度”这一基本结构不变。
 
 ### 9.3 残差连接与 LayerNorm
+
+一个 Transformer Block 通常包含 Attention 和 FFN 两个子层，每个子层外都配有残差连接与归一化。它们承担不同作用：
+
+- **残差连接**为信息和梯度提供直接通路，使深层网络更容易保留原始表示并稳定训练；
+- **LayerNorm**控制每个 token 特征的数值尺度，减小不同层之间分布变化带来的训练不稳定。
 
 残差连接把子层输入直接加回输出：
 
 $$
+r=x+\operatorname{Sublayer}(x)
+$$
+
+逐元素相加要求 `Sublayer(x)` 与 `x` 形状一致。这也是 Attention 最后要投影回 $C$ 维、FFN 第二层要从 $C_{ff}$ 降回 $C$ 维的原因。
+
+LayerNorm 则对**每个 token 的最后一个特征维度**独立归一化。对于某个 token 的向量 $x\in\mathbb{R}^{C}$：
+
+$$
+\mu=\frac{1}{C}\sum_{i=1}^{C}x_i,\qquad
+\sigma^2=\frac{1}{C}\sum_{i=1}^{C}(x_i-\mu)^2
+$$
+
+$$
+\operatorname{LayerNorm}(x)_i=
+\gamma_i\frac{x_i-\mu}{\sqrt{\sigma^2+\epsilon}}+\beta_i
+$$
+
+其中 $\gamma$ 和 $\beta$ 是可学习参数。对于 `[B,T,C]` 输入，`nn.LayerNorm(C)` 分别归一化每个样本、每个 token 的 $C$ 个特征，不会在 batch 维或序列维之间混合统计量。
+
+残差连接和 LayerNorm 的相对顺序主要有两种。
+
+**Post-Norm** 在子层与残差相加之后归一化：
+
+$$
 y=\operatorname{LayerNorm}(x+\operatorname{Sublayer}(x))
 $$
+
+下面的代码先执行 Attention，再执行 FFN；两次都使用 Post-Norm：
 
 ```python
 dim = 12
@@ -637,7 +792,30 @@ x = norm2(x + dropout(ffn_out))
 print(x.shape)  # [2, 4, 12]
 ```
 
-这里展示的是 Post-Norm，与图 1 一致。现代大模型也经常使用先归一化再进入子层的 Pre-Norm 结构。
+Dropout 只作用于子层输出，随后再与残差分支相加。即使丢弃了部分子层特征，原始输入仍能通过残差路径继续向后传播。
+
+**Pre-Norm** 则先归一化，再把结果送入子层：
+
+$$
+y=x+\operatorname{Sublayer}(\operatorname{LayerNorm}(x))
+$$
+
+对应的核心写法是：
+
+```python
+x = x + dropout(attention(norm1(x), causal=True))
+x = x + dropout(ffn(norm2(x)))
+```
+
+<figure class="article-figure">
+  <img src="assets/pre-post-norm-comparison.svg" alt="Post-Norm 与 Pre-Norm 的残差和归一化顺序对比" width="960">
+  <figcaption>
+    <span class="article-figure__number">图 10</span>
+    <span class="article-figure__text">Post-Norm 与 Pre-Norm 的计算顺序。Post-Norm 在残差相加后归一化；Pre-Norm 在进入子层前归一化，并保留更直接的残差主路径。</span>
+  </figcaption>
+</figure>
+
+Post-Norm 是原始 Transformer 采用的形式，也与图 1 一致；Pre-Norm 的残差主路径更直接，训练较深网络时通常更容易优化，因此现代大模型中十分常见。无论采用哪一种，整个 Block 都保持 `[B,T,C] -> [B,T,C]`，从而可以连续堆叠多层。
 
 ### 9.4 组合成一个 Transformer Block
 
@@ -659,8 +837,15 @@ class TransformerBlock(nn.Module):
         self.norm2 = nn.LayerNorm(dim)
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x: torch.Tensor, causal: bool = False):
-        attn_out = self.attention(x, causal=causal)
+    def forward(
+        self,
+        x: torch.Tensor,
+        causal: bool = False,
+        valid_tokens: torch.Tensor | None = None,
+    ):
+        attn_out = self.attention(
+            x, causal=causal, valid_tokens=valid_tokens
+        )
         x = self.norm1(x + self.dropout(attn_out))
         ffn_out = self.ffn(x)
         x = self.norm2(x + self.dropout(ffn_out))
@@ -690,6 +875,8 @@ $$
 class SinusoidalPositionEncoding(nn.Module):
     def __init__(self, dim: int, max_seq_len: int = 2048):
         super().__init__()
+        if dim % 2 != 0:
+            raise ValueError("sinusoidal encoding requires an even dim")
         position = torch.arange(max_seq_len).unsqueeze(1)
         scale = torch.exp(
             torch.arange(0, dim, 2) * (-math.log(10000.0) / dim)
@@ -710,10 +897,15 @@ class SinusoidalPositionEncoding(nn.Module):
 
 两类 mask 解决的问题不同：
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/attention-mask-comparison.png" alt="Causal Mask 与 Padding Mask 对比" width="940">
-  <br><em>图 9：Causal Mask 屏蔽未来位置，Padding Mask 屏蔽补齐列；二者可在 softmax 前组合。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 11</span>
+    <span class="article-figure__text">Causal Mask 与 Padding Mask 的作用范围。前者屏蔽未来位置，后者屏蔽补齐的 Key 列；二者可在 Softmax 前组合。</span>
+  </figcaption>
+</figure>
+
+图中的 Padding Mask 只屏蔽 PAD 对应的 **Key 列**，保证有效 Query 不读取补齐内容；PAD 对应的 Query 行仍可能产生数值。训练时通常再通过 loss mask 忽略这些位置，或在后续显式清零其输出。
 
 | Mask | 屏蔽对象 | 常见形状 | 典型用途 |
 |---|---|---|---|
@@ -753,16 +945,19 @@ attn = attn_dropout(attn)
 out = attn @ V
 ```
 
-Dropout 只在 `model.train()` 时随机丢弃元素；调用 `model.eval()` 后会自动关闭。
+Dropout 只在 `model.train()` 时随机丢弃元素；调用 `model.eval()` 后会自动关闭。训练模式下，PyTorch 会把保留下来的元素除以 `1-p` 以保持期望不变，因此 Attention Dropout 后某一行的**实际和不一定仍为 1**；“每行和为 1”只适用于 Dropout 之前的 Softmax 权重或评估模式。
 
 ### 9.7 Self-Attention 与 Cross-Attention
 
 两者使用相同公式，区别在 Q、K、V 的来源：
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/self-vs-cross-attention.png" alt="Self-Attention 与 Cross-Attention 对比" width="940">
-  <br><em>图 10：Self-Attention 的 Q/K/V 来自同一序列；Cross-Attention 的 Q 与 K/V 来自不同输入。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 12</span>
+    <span class="article-figure__text">Self-Attention 与 Cross-Attention 的输入来源。前者的 Q/K/V 来自同一序列；后者的 Q 来自查询序列，K/V 来自 Context。</span>
+  </figcaption>
+</figure>
 
 | 类型 | Q 来源 | K/V 来源 |
 |---|---|---|
@@ -794,10 +989,13 @@ Cross-Attention 允许一个序列主动查询另一个序列，例如翻译解�
 
 生成第 `t` 个 token 时，过去位置的 K、V 不会改变。若每一步都重新计算整个前缀，会产生大量重复工作。KV Cache 保存历史 K、V，新一步只追加一项：
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/training-vs-kv-cache-inference.png" alt="语言模型训练与 KV Cache 推理流程" width="960">
-  <br><em>图 11：训练并行计算所有位置并反向传播；推理逐 token 生成，并复用历史 K/V。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 13</span>
+    <span class="article-figure__text">训练与自回归推理的数据流。训练并行计算所有位置并反向传播；推理逐 token 生成，并通过 KV Cache 复用历史 K/V。</span>
+  </figcaption>
+</figure>
 
 ```text
 第 1 步：计算 K1,V1                   → cache=[1]
@@ -816,7 +1014,23 @@ def append_kv_cache(K_new, V_new, cache=None):
     return K, V
 ```
 
-KV Cache 用额外显存换取更快解码。训练时通常一次并行处理整个序列，不需要这种逐 token cache。
+KV Cache 用额外显存换取更快解码。训练时通常一次并行处理整个序列，不需要这种逐 token cache。上面的 `torch.cat` 适合解释形状，但每一步都会重新分配并复制越来越长的张量；生产推理通常使用预分配缓存或分页式 KV Cache，直接写入新位置。
+
+#### Prefill、Decode 与缓存大小
+
+推理通常分成两个阶段：
+
+- **Prefill**：并行处理完整 Prompt，建立各层的初始 K/V Cache；
+- **Decode**：每一步只输入一个新 token，生成新的 Q/K/V，并把 K/V 追加到缓存。
+
+假设共有 $L$ 层、batch 大小为 $B$、已缓存长度为 $T_{cache}$、KV Head 数为 $H_{kv}$、每头维度为 $D_h$，每个元素占 $s$ 字节，则缓存主体约为：
+
+$$
+\operatorname{KVBytes}\approx
+2LBT_{cache}H_{kv}D_hs
+$$
+
+系数 2 来自 K 和 V。MHA 中通常有 $H_{kv}=H_q$；GQA 和 MQA 通过减少 $H_{kv}$ 直接降低缓存大小与解码时的内存带宽。KV Cache 避免重复计算历史 token 的 K/V，但新 Query 仍需读取历史 Key/Value，因此单步 Decode 的 Attention 工作量仍随当前上下文长度增长。
 
 ### 9.9 语言模型输出层与训练目标
 
@@ -855,10 +1069,13 @@ print(logits.shape, loss.item())
 
 ### 10.1 三种位置编码与 RoPE
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/position-encoding-comparison.png" alt="可学习位置编码、正弦位置编码与 RoPE 对比" width="960">
-  <br><em>图 12：前两种方法把位置向量加到 token 向量；RoPE 则按位置旋转 Q 和 K。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 14</span>
+    <span class="article-figure__text">可学习位置编码、正弦位置编码与 RoPE。前两者把位置向量加到 token 向量；RoPE 按位置旋转 Q 和 K，使点积包含相对位置信息。</span>
+  </figcaption>
+</figure>
 
 RoPE 把特征两两配对，在每个二维平面中按位置旋转。Q 和 K 的相对旋转角进入点积，因此注意力分数自然包含相对位置信息；V 不做旋转。
 
@@ -870,7 +1087,7 @@ def rotate_half(x: torch.Tensor):
     return torch.stack((-odd, even), dim=-1).flatten(-2)
 
 
-def apply_rope(x: torch.Tensor):
+def apply_rope(x: torch.Tensor, position_offset: int = 0):
     # x: [B,H,T,Dh]，要求 Dh 为偶数
     T, Dh = x.shape[-2:]
     if Dh % 2 != 0:
@@ -878,7 +1095,10 @@ def apply_rope(x: torch.Tensor):
     inv_freq = 1.0 / (
         10000 ** (torch.arange(0, Dh, 2, device=x.device) / Dh)
     )
-    angles = torch.outer(torch.arange(T, device=x.device), inv_freq)
+    positions = torch.arange(
+        position_offset, position_offset + T, device=x.device
+    )
+    angles = torch.outer(positions, inv_freq)
     angles = angles.repeat_interleave(2, dim=-1)  # [T,Dh]
     return x * angles.cos() + rotate_half(x) * angles.sin()
 
@@ -888,7 +1108,7 @@ K_rot = apply_rope(torch.randn(2, 3, 4, 8))
 print(Q_rot.shape, K_rot.shape)  # [2,3,4,8]
 ```
 
-这是便于理解的基础实现。实际模型还会处理更长上下文的频率缩放、缓存 cos/sin，以及不同的维度排列约定。
+这是便于理解的基础实现。Prefill 时 `position_offset=0`；使用 KV Cache 解码时，新 token 必须传入它在完整序列中的绝对位置，例如当前缓存长度。实际模型还会处理更长上下文的频率缩放、缓存 cos/sin，以及不同的维度排列约定。
 
 ### 10.2 RMSNorm
 
@@ -940,10 +1160,13 @@ class SwiGLU(nn.Module):
 
 ### 10.4 MHA、GQA 与 MQA
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/mha-gqa-mqa-comparison.png" alt="MHA、GQA 与 MQA 的 KV Head 共享方式" width="960">
-  <br><em>图 13：三者保持 Query head 数不变，通过共享 K/V head 逐步减小 KV Cache。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 15</span>
+    <span class="article-figure__text">MHA、GQA 与 MQA 的 K/V 共享方式。在 Query head 数不变时，共享范围越大，需要保存的 K/V head 越少。</span>
+  </figcaption>
+</figure>
 
 令 Query head 数为 `Hq`、KV head 数为 `Hkv`：
 
@@ -974,10 +1197,13 @@ GQA 常用于在模型质量与解码显存/带宽之间折中。它主要减少
 
 ### 10.5 FlashAttention 在优化什么
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/modern-transformer-flash-attention.png" alt="基础 Transformer、现代 Decoder 与 FlashAttention" width="960">
-  <br><em>图 14：现代 Decoder 常组合 RMSNorm、RoPE、GQA 与 SwiGLU；FlashAttention 优化 Attention 的内存访问。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 16</span>
+    <span class="article-figure__text">基础 Pre-Norm Block、现代 Decoder 组件与 FlashAttention。现代 Decoder 常组合 RMSNorm、RoPE、GQA 和 SwiGLU；FlashAttention 改变分块与内存访问，不改变 Attention 的数学定义。</span>
+  </figcaption>
+</figure>
 
 普通实现会显式产生 `[B,H,T,T]` 的 scores 和 attn，序列很长时占用大量显存。FlashAttention 将 Q/K/V 分块送入更快的片上存储，在线维护 softmax 统计量，避免把完整的 `T × T` 矩阵写回显存。
 
@@ -1008,15 +1234,24 @@ out = nn.functional.scaled_dot_product_attention(
 
 普通 Transformer 的每个 token 都经过同一个 FFN。MoE 准备多个专家 FFN，由 Router 为每个 token 选择少量专家：
 
+设 Router logits 为 $r_t=W_rx_t$，选中的专家集合为 $I_t=\operatorname{TopK}(r_t)$。本文代码只在入选专家之间重新归一化：
+
 $$
-y_t=\sum_{i\in\operatorname{TopK}(p_t)}p_{t,i}E_i(x_t),\qquad
-p_t=\operatorname{softmax}(W_rx_t)
+\widetilde p_{t,i}=
+\frac{e^{r_{t,i}}}{\sum_{j\in I_t}e^{r_{t,j}}},\quad i\in I_t,
+\qquad
+y_t=\sum_{i\in I_t}\widetilde p_{t,i}E_i(x_t)
 $$
 
-<p align="center">
+也有实现先对所有专家做 Softmax，再截取 Top-K，并选择是否重新归一化；阅读具体模型时需要确认这一细节。
+
+<figure class="article-figure">
   <img src="assets/moe-routing.png" alt="MoE Router 与 Top-2 专家路由" width="960">
-  <br><em>图 15：Router 为每个 token 选择 Top-2 专家，专家结果加权合并后恢复原 token 顺序。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 17</span>
+    <span class="article-figure__text">Top-2 MoE 路由。Router 为每个 token 选择两个专家；专家结果按 token 分别加权求和，不会混合不同 token，最后恢复原顺序。</span>
+  </figcaption>
+</figure>
 
 下面是强调数学过程的教学实现。它会计算所有专家，因此没有真实稀疏内核的性能收益：
 
@@ -1064,10 +1299,13 @@ MoE 增加模型总参数量，但每个 token 只激活少量专家。训练时
 
 单张设备放不下模型或算力不足时，可以从三个维度拆分：
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/distributed-parallelism.png" alt="数据并行、张量并行与流水线并行" width="960">
-  <br><em>图 16：数据并行复制模型，张量并行拆分层内运算，流水线并行拆分连续层。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 18</span>
+    <span class="article-figure__text">三种分布式并行方式。数据并行拆 batch 并同步梯度；张量并行拆分层内计算；流水线并行把连续层分配到不同设备。</span>
+  </figcaption>
+</figure>
 
 | 方法 | 拆分对象 | 主要通信 | 主要挑战 |
 |---|---|---|---|
@@ -1108,7 +1346,7 @@ x_hat, q, scale = fake_symmetric_quantize(x, bits=8)
 print(x.shape, q.dtype, scale.shape)
 ```
 
-这是理解量化误差的简化示例。工程实现通常采用逐通道或分组量化，并使用专用整数/低比特内核；“文件更小”不自动等于“运行更快”。
+这是理解量化误差的简化示例。`q` 的数值已经取整，但为了方便反量化仍存放在浮点 Tensor 中，并不代表真实的 INT8 存储压缩。工程实现通常采用逐通道或分组量化，并使用真正的整数打包与专用低比特内核；“文件更小”不自动等于“运行更快”。
 
 ## 12. 文本生成与解码加速
 
@@ -1126,19 +1364,27 @@ $$
 - Top-K：只从概率最高的固定 K 个 token 中采样。
 - Top-P：选择累计概率达到 P 的最小候选集合，也称 nucleus sampling。
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/decoding-strategies.png" alt="采样策略与推测解码" width="960">
-  <br><em>图 17：左侧比较 Greedy、Top-K、Top-P；右侧展示草稿模型提议、目标模型并行验证。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 19</span>
+    <span class="article-figure__text">采样与推测解码。左侧比较 Greedy、Top-K、Top-P 的候选范围；右侧展示 Draft Model 提议和 Target Model 并行验证的概念流程。</span>
+  </figcaption>
+</figure>
+
+右图中的勾和叉是接受或拒绝结果的概念化表示，并不等同于“Draft token 是否等于 Target Model 的 argmax”。标准随机推测采样依据 Draft 与 Target 的概率比执行接受检验，并在拒绝处从校正后的分布采样，才能保持目标模型原本的输出分布。
 
 ```python
 def sample_top_k(logits: torch.Tensor, temperature=1.0, top_k=50):
     if temperature <= 0:
         raise ValueError("temperature must be positive")
+    if top_k <= 0:
+        raise ValueError("top_k must be positive")
     logits = logits / temperature
     k = min(top_k, logits.size(-1))
-    threshold = torch.topk(logits, k, dim=-1).values[..., -1, None]
-    filtered = logits.masked_fill(logits < threshold, -torch.inf)
+    top_values, top_indices = torch.topk(logits, k, dim=-1)
+    filtered = torch.full_like(logits, -torch.inf)
+    filtered.scatter_(-1, top_indices, top_values)
     probs = torch.softmax(filtered, dim=-1)
     return torch.multinomial(probs, num_samples=1)
 
@@ -1164,10 +1410,13 @@ print(next_token.shape)  # [2,1]
 
 前面已经分别实现 Attention、Embedding、FFN、Transformer Block 和 LM Head。现在把它们组合成一个最小因果语言模型。
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/minigpt-training-flow.png" alt="MiniGPT 端到端训练数据流" width="960">
-  <br><em>图 18：输入与目标错开一个 token；Cross-Entropy 产生损失，梯度反向更新所有可学习模块。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 20</span>
+    <span class="article-figure__text">MiniGPT 的一次训练迭代。输入与目标错开一个 token；Cross-Entropy 产生损失，反向传播计算梯度，优化器更新可学习参数。</span>
+  </figcaption>
+</figure>
 
 ### 13.1 Shifted Inputs 与 Targets
 
@@ -1223,10 +1472,13 @@ class MiniGPT(nn.Module):
         self,
         token_ids: torch.Tensor,
         targets: torch.Tensor | None = None,
+        valid_tokens: torch.Tensor | None = None,
     ):
         x = self.embedding(token_ids)             # [B,T,C]
         for block in self.blocks:
-            x = block(x, causal=True)             # [B,T,C]
+            x = block(                            # [B,T,C]
+                x, causal=True, valid_tokens=valid_tokens
+            )
         hidden = self.final_norm(x)
         logits = self.lm_head(hidden)              # [B,T,V_vocab]
 
@@ -1300,10 +1552,13 @@ print("perplexity:", float(perplexity))
 
 Transformer 不是只有一种结构。三类架构的核心差异是 Attention 可见范围，以及是否需要 Cross-Attention。
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/transformer-architecture-families.png" alt="三类 Transformer 架构对比" width="960">
-  <br><em>图 19：Encoder-Only 双向建模，Decoder-Only 因果生成，Encoder-Decoder 通过 Cross-Attention连接输入与输出。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 21</span>
+    <span class="article-figure__text">三类 Transformer 架构。Encoder-Only 使用双向注意力，Decoder-Only 使用因果注意力，Encoder-Decoder 通过 Cross-Attention 连接输入与输出。</span>
+  </figcaption>
+</figure>
 
 | 架构 | Attention | 输出形式 | 典型任务 |
 |---|---|---|---|
@@ -1364,9 +1619,16 @@ def make_lm_batch(sequences: list[list[int]], pad_id: int):
 sequences = [[1, 20, 21, 2], [1, 30, 2]]
 inputs, targets, valid_tokens = make_lm_batch(sequences, pad_id=0)
 print(inputs.shape, targets.shape, valid_tokens.shape)  # 都是 [2,3]
+
+# MiniGPT 会把 valid_tokens 逐层传给 Attention，并用 -100 忽略 PAD target
+logits, loss = model(
+    inputs,
+    targets=targets,
+    valid_tokens=valid_tokens,
+)
 ```
 
-`valid_tokens` 用于 Padding Mask；target 中的 `-100` 是 PyTorch Cross-Entropy 默认忽略值。二者相关但不能互相替代：一个控制 Attention 可见性，另一个控制哪些位置计入 Loss。
+`valid_tokens` 作为 Key Padding Mask 逐层传入 Attention；target 中的 `-100` 是 PyTorch Cross-Entropy 默认忽略值。二者相关但不能互相替代：一个控制 Attention 可见性，另一个控制哪些位置计入 Loss。本文实现采用右侧 Padding，并保证每条序列至少有一个有效输入 token，因此不会产生整行 Key 都被屏蔽的情况。
 
 ### 15.3 Packing
 
@@ -1374,10 +1636,13 @@ Padding 过多会浪费计算。Packing 把多条短样本拼入一个固定长�
 
 ## 16. 训练工程与稳定性
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/training-lifecycle.png" alt="Transformer 训练生命周期" width="960">
-  <br><em>图 20：数据处理、训练、监控、验证和 Checkpoint 构成一个闭环；验证集不参与参数更新。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 22</span>
+    <span class="article-figure__text">训练生命周期。从数据处理到前向、反向、参数更新、验证和 Checkpoint 形成闭环；验证集只用于评估，不参与梯度更新。</span>
+  </figcaption>
+</figure>
 
 ### 16.1 AdamW、Warmup 与学习率衰减
 
@@ -1495,10 +1760,13 @@ scheduler.step()
 | 计算方式 | 是否构造完整的 `T × T` 矩阵？ | Dense、Low-rank、Kernel/Linear、FlashAttention |
 | 信息来源 | Q 与 K/V 来自哪里？ | Self、Cross、Co-Attention、Memory/Retrieval |
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/attention-family-map.png" alt="Attention 方法家族图" width="960">
-  <br><em>图 21：Attention 方法可从长序列、位置、视觉、多模态与外部记忆等方向扩展。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 23</span>
+    <span class="article-figure__text">Attention 方法族的分类视图。长序列、位置机制、视觉结构、多模态和外部记忆是可组合的设计维度，并非互斥类别。</span>
+  </figcaption>
+</figure>
 
 ### 18.2 四种常见打分函数
 
@@ -1515,10 +1783,13 @@ scheduler.step()
 
 Additive Attention 用一个小网络学习匹配函数；点积可以直接用矩阵乘法；缩放点积抑制维度增大造成的分数过大；Cosine 只比较方向。无论采用哪一种，后续通常仍是 `mask → Softmax → 加权汇总 V`。
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/attention-scoring-functions.png" alt="Attention 打分函数对比" width="960">
-  <br><em>图 22：不同打分函数只改变相关性分数的产生方式，概率归一化和 Value 汇总流程可以保持不变。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 24</span>
+    <span class="article-figure__text">四类 Attention 打分函数。它们改变 Query-Key 相关性分数的计算方式；Mask、按 Key 归一化和 Value 加权汇总的后续流程可以保持一致。</span>
+  </figcaption>
+</figure>
 
 下面的代码统一返回 `[B, Tq, Tk]`，适合直接比较：
 
@@ -1618,6 +1889,13 @@ def add_alibi(scores, slopes):
 
 ### 18.7 延伸阅读：代表性原始论文
 
+- [Attention Is All You Need（Transformer、Scaled Dot-Product 与 Multi-Head Attention）](https://arxiv.org/abs/1706.03762)
+- [Root Mean Square Layer Normalization（RMSNorm）](https://arxiv.org/abs/1910.07467)
+- [Fast Transformer Decoding: One Write-Head is All You Need（MQA）](https://arxiv.org/abs/1911.02150)
+- [GLU Variants Improve Transformer（GEGLU、SwiGLU）](https://arxiv.org/abs/2002.05202)
+- [RoFormer: Enhanced Transformer with Rotary Position Embedding（RoPE）](https://arxiv.org/abs/2104.09864)
+- [FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness](https://arxiv.org/abs/2205.14135)
+- [GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints](https://arxiv.org/abs/2305.13245)
 - [Neural Machine Translation by Jointly Learning to Align and Translate（Additive Attention）](https://arxiv.org/abs/1409.0473)
 - [Effective Approaches to Attention-based Neural Machine Translation（Dot-product Attention）](https://arxiv.org/abs/1508.04025)
 - [Longformer: The Long-Document Transformer（局部、稀疏与全局 Attention）](https://arxiv.org/abs/2004.05150)
@@ -1669,7 +1947,9 @@ assert torch.allclose(future, torch.zeros_like(future))
 
 ### 知识检查
 
-尝试先口头回答，再展开答案核对：
+建议先在纸上写出形状或公式，再展开答案核对。前 5 题检查 Attention 核心，后 6 题覆盖完整 Block 与推理工程。
+
+#### Attention 核心
 
 <details>
 <summary>1. 为什么 Q、K、V 形状相同，却承担不同作用？</summary>
@@ -1687,12 +1967,14 @@ assert torch.allclose(future, torch.zeros_like(future))
 <summary>3. Softmax 为什么沿最后一维计算？</summary>
 
 Attention 分数的最后一维枚举所有 Key。对每个 Query 行沿该维归一化，才能得到“这个 Query 应该分别关注哪些 Key”的概率分布。
+
+这里说的是 Dropout 前的 Softmax 权重。训练模式下应用 Attention Dropout 后，某一行的实际和不一定仍为 1。
 </details>
 
 <details>
 <summary>4. Causal Mask 和 Padding Mask 有什么区别？</summary>
 
-Causal Mask 屏蔽未来位置，防止自回归模型泄露答案；Padding Mask 屏蔽为凑齐 batch 长度而添加的 PAD token。两种 mask 可以组合使用。
+Causal Mask 屏蔽未来位置，防止自回归模型泄露答案；Padding Mask 屏蔽为凑齐 batch 长度而添加的 PAD Key。两种 mask 可以组合使用，但它们都不能替代 Loss Mask：PAD target 仍需通过 `ignore_index` 等方式排除。
 </details>
 
 <details>
@@ -1701,20 +1983,90 @@ Causal Mask 屏蔽未来位置，防止自回归模型泄露答案；Padding Mas
 训练通常一次并行处理完整序列，所有 K/V 一次生成。KV Cache 主要用于逐 token 推理，避免重复计算已生成前缀的 K/V。
 </details>
 
+#### Block 结构与现代组件
+
+<details>
+<summary>6. FFN 为什么需要激活函数，并且最后必须降回 C 维？</summary>
+
+没有激活函数时，两层 Linear 可以合并成一层，模型仍只是线性变换。GELU 等激活提供非线性；第二层降回 `C` 维，是为了保持 Block 的输入输出形状一致，并能与残差分支逐元素相加。
+</details>
+
+<details>
+<summary>7. Post-Norm 与 Pre-Norm 的主要区别是什么？</summary>
+
+Post-Norm 计算 `LN(x + Sublayer(x))`，归一化发生在残差相加之后；Pre-Norm 计算 `x + Sublayer(LN(x))`，归一化发生在子层之前。Pre-Norm 保留更直接的残差主路径，深层网络通常更容易优化。
+</details>
+
+<details>
+<summary>8. MHA、GQA、MQA 为什么会有不同的 KV Cache 大小？</summary>
+
+它们可以保持相同的 Query Head 数，但 K/V Head 数不同。MHA 通常每个 Query Head 对应一组 K/V；GQA 让一组 Query Heads 共享 K/V；MQA 让所有 Query Heads 共享一组 K/V。缓存大小与 `Hkv` 成正比，因此依次减小。
+</details>
+
+<details>
+<summary>9. FlashAttention 是否把 O(T²) 的 Dense Attention 变成了线性复杂度？</summary>
+
+没有。FlashAttention 仍计算精确的 Dense Attention，主要通过分块和在线 Softmax 减少 HBM 与片上存储之间的数据读写，并避免把完整注意力矩阵写回显存。它不等同于 Sliding Window、稀疏或线性 Attention。
+</details>
+
+#### 推理与工程
+
+<details>
+<summary>10. 如何估算 KV Cache？32 层、B=1、Tcache=4096、Hkv=8、Dh=128、BF16 时约占多少显存？</summary>
+
+使用公式 `2 × L × B × Tcache × Hkv × Dh × bytes`。代入 BF16 的 2 bytes：
+
+```text
+2 × 32 × 1 × 4096 × 8 × 128 × 2
+= 536,870,912 bytes
+= 512 MiB
+```
+
+这只是 K/V 主体，不含模型权重、激活、分配器保留空间和分页管理开销。
+</details>
+
+<details>
+<summary>11. 使用 KV Cache 逐 token 解码时，RoPE 为什么需要 position_offset？</summary>
+
+新 token 的张量长度虽然是 1，但它在完整序列中的位置不是 0。RoPE 必须使用当前绝对位置，通常等于已有缓存长度；如果每一步都从位置 0 开始旋转，Query/Key 的相对位置信息就会错误。
+</details>
+
 ### 学习完成标准
 
-- [ ] 能从 `[B,T,C]` 手写推导到 `[B,H,T,Dh]`，再恢复为 `[B,T,C]`。
-- [ ] 能手算一行 Softmax，并解释减最大值的原因。
-- [ ] 能解释 Q/K/V、mask、残差、Norm 和 FFN 各自职责。
-- [ ] 能独立运行单头、多头和 MiniGPT 示例并核对形状。
-- [ ] 能说明训练与自回归推理的数据流差异。
-- [ ] 能区分 MHA/GQA/MQA，以及普通 Attention/FlashAttention。
+不必一次掌握所有扩展方法。先完成“核心推导”，再检查实现和工程判断。
+
+#### 核心推导
+
+- [ ] 能从 `[B,T,C]` 推导出 Q/K/V、Scores、Attention Weights 和输出的形状。
+- [ ] 能把 `[B,T,C]` 拆成 `[B,H,T,Dh]`，并在多头拼接后恢复 `[B,T,C]`。
+- [ ] 能解释缩放因子为什么是实际点积维度的平方根。
+- [ ] 能手算一行稳定 Softmax，并解释减最大值和 Mask 填 `-∞` 的原因。
+- [ ] 能说明 Attention 沿序列维混合信息、FFN 沿特征维变换信息。
+
+#### 代码实现
+
+- [ ] 能独立实现 Causal Mask，并正确组合 Key Padding Mask。
+- [ ] 能解释 `reshape → transpose → matmul → transpose → reshape` 中每一步的维度。
+- [ ] 能实现一个带残差、Dropout、Norm 和 FFN 的 Transformer Block。
+- [ ] 能运行单头、多头及 MiniGPT 示例，并验证形状、概率和梯度。
+- [ ] 能让 Padding 位置既不被有效 Query 读取，也不计入训练 Loss。
+
+#### 工程判断
+
+- [ ] 能区分 Post-Norm/Pre-Norm、LayerNorm/RMSNorm 和 GELU/SwiGLU。
+- [ ] 能区分 MHA/GQA/MQA，并根据 `Hkv` 估算 KV Cache。
+- [ ] 能说明 Prefill 与 Decode 的差异，以及 RoPE 解码位置偏移的必要性。
+- [ ] 能区分 Dense、Sparse/Window、Linear Attention 与 FlashAttention。
+- [ ] 能判断 NaN、未来信息泄漏、Padding 污染和 KV Cache 过大应优先检查什么。
 
 ## 21. 进一步学习路线
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/transformer-learning-roadmap.png" alt="Transformer 学习路线" width="960">
-  <br><em>图 23：从 Embedding、单头注意力到完整 Transformer Block 的推荐学习顺序。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 25</span>
+    <span class="article-figure__text">推荐学习路线。从 Embedding 和 Q/K/V 出发，依次掌握单头、多头、Mask、残差与归一化，最后组合完整 Transformer Block。</span>
+  </figcaption>
+</figure>
 
 掌握本文内容后，可以按目标选择路线：偏算法可继续研究长上下文、稀疏/线性 Attention 与 MoE；偏训练可学习分布式并行、指令微调和偏好对齐；偏应用可研究 RAG 与多模态；偏部署可研究连续批处理、量化和分页 KV Cache。无需按顺序全部学习。

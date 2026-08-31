@@ -1,7 +1,7 @@
 ---
 title: "大模型分布式训练与显存优化指南：从 DDP、ZeRO 到 FSDP"
 date: 2026-08-27
-lastmod: 2026-08-27
+lastmod: 2026-08-31
 draft: false
 tags: ["Distributed Training", "GPU Memory", "PyTorch"]
 categories: ["人工智能"]
@@ -219,10 +219,13 @@ fig.savefig(output, dpi=180, bbox_inches="tight")
 print(f"saved: {output.resolve()}")
 ```
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/zero-memory-comparison.png" alt="1B 模型在 DDP 与 ZeRO 各阶段的每卡持久状态显存" width="900">
-  <br><em>图 1：8 卡时 P/G/O 的理论常驻显存；不包含激活、临时张量、通信缓冲和参数 All-Gather 峰值。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 1</span>
+    <span class="article-figure__text">8 卡时 P/G/O 的理论常驻显存；不包含激活、临时张量、通信缓冲和参数 All-Gather 峰值。</span>
+  </figcaption>
+</figure>
 
 ### 3.3 理论下限、稳态与峰值不是同一个数
 
@@ -290,10 +293,13 @@ $$
 
 NCCL（NVIDIA Collective Communications Library）是面向 NVIDIA GPU 的集合通信库。它负责高效执行 All-Reduce、All-Gather、Reduce-Scatter、Broadcast 等原语；DDP/FSDP 是训练策略，NCCL 是它们常用的通信后端，不要把两者视作同一层组件。
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/collective-communications.png" alt="All-Reduce、Reduce-Scatter 与 All-Gather" width="960">
-  <br><em>图 2：All-Reduce 让所有 Rank 得到相同归约结果；Reduce-Scatter 只保留各自结果分片；All-Gather 将各分片拼回完整张量。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 2</span>
+    <span class="article-figure__text">All-Reduce 让所有 Rank 得到相同归约结果；Reduce-Scatter 只保留各自结果分片；All-Gather 将各分片拼回完整张量。</span>
+  </figcaption>
+</figure>
 
 ### 5.1 All-Reduce：求和还是平均
 
@@ -316,37 +322,49 @@ $$
 
 #### Broadcast：一份数据复制给所有 Rank
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/collective-broadcast.png" alt="四 Rank Broadcast 前后数据所有权" width="960">
-  <br><em>图 3：Broadcast 只有 source Rank 提供有效输入，操作后每个 Rank 都得到相同的 X；它不做求和。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 3</span>
+    <span class="article-figure__text">Broadcast 只有 source Rank 提供有效输入，操作后每个 Rank 都得到相同的 X；它不做求和。</span>
+  </figcaption>
+</figure>
 
 常用于同步初始化参数、配置或控制信息。`src=0` 指通信组中的 Rank 0，不一定等于物理 GPU 0；使用子 Process Group 时要特别核对 Rank 空间。
 
 #### All-Gather：分片拼成完整张量
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/collective-all-gather.png" alt="四 Rank All-Gather 前后数据所有权" width="960">
-  <br><em>图 4：Rank 0～3 分别提供 A/B/C/D，所有 Rank 最终按 Rank 顺序得到完整的 `[A|B|C|D]`。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 4</span>
+    <span class="article-figure__text">Rank 0～3 分别提供 A/B/C/D，所有 Rank 最终按 Rank 顺序得到完整的 `[A|B|C|D]`。</span>
+  </figcaption>
+</figure>
 
 All-Gather 不做数值归约，只做收集和拼接。若每 Rank 输入 `M/K`，操作后每 Rank 输出约 `M`，因此会产生显著的瞬时完整参数峰值。
 
 #### Reduce-Scatter：先归约，再分发结果分片
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/collective-reduce-scatter.png" alt="四 Rank Reduce-Scatter SUM 数值示例" width="960">
-  <br><em>图 5：四个向量先逐元素求和为 `[1111,2222,3333,4444]`，随后 Rank 0～3 各保留一个不同分片。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 5</span>
+    <span class="article-figure__text">四个向量先逐元素求和为 `[1111,2222,3333,4444]`，随后 Rank 0～3 各保留一个不同分片。</span>
+  </figcaption>
+</figure>
 
 Reduce-Scatter 同时完成 Reduction 和 Sharding。它非常适合 FSDP/ZeRO 梯度：每个 Rank 不需要保留完整归约梯度，只保留与本地参数 shard 对应的部分。
 
 #### All-Reduce：每个 Rank 都得到完整归约结果
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/collective-all-reduce.png" alt="四 Rank All-Reduce SUM 数值示例" width="960">
-  <br><em>图 6：四个输入逐元素求和后，每个 Rank 都获得相同的完整结果 `[1111,2222,3333,4444]`。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 6</span>
+    <span class="article-figure__text">四个输入逐元素求和后，每个 Rank 都获得相同的完整结果 `[1111,2222,3333,4444]`。</span>
+  </figcaption>
+</figure>
 
 与 Reduce-Scatter 的区别不是“是否求和”，而是结果所有权：All-Reduce 在每个 Rank 保留完整结果，Reduce-Scatter 只在每个 Rank 保留不同结果分片。
 
@@ -420,10 +438,13 @@ $$
 
 ZeRO 的核心是消除数据并行 Rank 之间重复保存的模型状态：
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/ddp-zero-sharding.png" alt="DDP 与 ZeRO 三阶段模型状态分片" width="960">
-  <br><em>图 7：ZeRO-1 分优化器，ZeRO-2 再分梯度，ZeRO-3 进一步分参数；图中不包含激活和临时峰值。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 7</span>
+    <span class="article-figure__text">ZeRO-1 分优化器，ZeRO-2 再分梯度，ZeRO-3 进一步分参数；图中不包含激活和临时峰值。</span>
+  </figcaption>
+</figure>
 
 | 策略 | 参数 P | 梯度 G | 优化器 O | 主要新增通信/管理 |
 |---|---|---|---|---|
@@ -634,10 +655,13 @@ $$
 
 若某个 Bucket 的通信时间小于其后可并行的计算窗口，它大部分可以被隐藏；最后一个 Bucket、过大的 Collective 或慢网络通常形成 exposed communication tail。
 
-<p align="center">
+<figure class="article-figure">
   <img src="assets/compute-communication-overlap.png" alt="串行通信与计算通信重叠时间线" width="960">
-  <br><em>图 8：Bucket 就绪后立即通信可与后续反向计算重叠；真正增加 Step Time 的主要是未被覆盖的通信尾部。</em>
-</p>
+  <figcaption>
+    <span class="article-figure__number">图 8</span>
+    <span class="article-figure__text">Bucket 就绪后立即通信可与后续反向计算重叠；真正增加 Step Time 的主要是未被覆盖的通信尾部。</span>
+  </figcaption>
+</figure>
 
 ### 10.1 优先优化顺序
 
