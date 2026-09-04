@@ -29,6 +29,8 @@ comments: false
 | 从需求计算参数 | 第 8 节：整定算例、离散极点和故障排查 |
 | 准备真机测试 | 第 9～10 节：状态机、安全保护和量化验收 |
 
+文中的技术图均可点击打开原始分辨率，便于在窄屏设备上查看公式和标注。
+
 ## 1. 阻抗控制到底控制什么
 
 理想笛卡尔阻抗关系为：
@@ -36,7 +38,7 @@ comments: false
 $$M_d\delta\ddot x+D_d\delta\dot x+K_d\delta x=F_{ext},
 \qquad \delta x=x-x_d$$
 
-![阻抗控制的虚拟质量弹簧阻尼原理](assets/impedance-principle-v2.webp)
+[![阻抗控制的虚拟质量弹簧阻尼原理](assets/impedance-principle-v2.webp)](assets/impedance-principle-v2.webp)
 
 其中 $\delta x=x-x_d$ 是相对目标的位移，$M_d$、$D_d$、$K_d$ 分别是期望惯性、阻尼和刚度，$F_{ext}$ 是外部作用力。直观上：
 
@@ -114,7 +116,7 @@ $$\tau_{ff}=M(q)\ddot q_d+C(q,\dot q)\dot q+g(q)$$
 
 下面的闭环图同时画出了阻抗环、操作空间映射、机器人动力学、环境接触和状态反馈。橙色模块表示输出限制与外部环境，蓝绿色模块表示控制和动力学计算：
 
-![笛卡尔阻抗控制闭环框图](assets/impedance-control-loop-v3.webp)
+[![笛卡尔阻抗控制闭环框图](assets/impedance-control-loop-v3.webp)](assets/impedance-control-loop-v3.webp)
 
 ### 4.1 位姿误差
 
@@ -340,7 +342,7 @@ $$V_{center}(q)=\frac{1}{2}\sum_i
 
 一个完整的笛卡尔阻抗控制循环可以按下图组织：
 
-![笛卡尔阻抗控制数据流](assets/cartesian-impedance-pipeline.webp)
+[![笛卡尔阻抗控制数据流](assets/cartesian-impedance-pipeline.webp)](assets/cartesian-impedance-pipeline.webp)
 
 核心关系与代码对应如下：
 
@@ -506,7 +508,7 @@ peak displacement:            0.010013 m
 final position:               -0.000000 m
 ```
 
-![一维阻抗系统的外力与末端位移响应](assets/impedance-response.webp)
+[![一维阻抗系统的外力与末端位移响应](assets/impedance-response.webp)](assets/impedance-response.webp)
 
 程序会生成 `impedance_response.csv`。可以绘制 `force_n` 和 `position_m`，检查施力后位移是否趋近 $10\,\mathrm{mm}$、撤去外力后是否平稳回零。示例采用先更新速度、再更新位置的半隐式 Euler，只用于教学；真实控制器需要结合采样周期选择经过稳定性验证的离散化方法。
 
@@ -1012,6 +1014,10 @@ impedance-config-v3/
 | 稳态误差 | 有积分且未饱和时可以很小 | 受力偏移通常是设计行为 |
 | 典型风险 | 硬接触、积分饱和和冲击 | 模型误差、低刚度漂移和动态不稳定 |
 
+[![相同外力下位置模式与阻抗模式的响应差异](assets/position-vs-impedance.webp)](assets/position-vs-impedance.webp)
+
+图中两侧承受相同外力。静态平衡时，两种模式的控制反力都应与外力大小相等；区别是高刚度位置模式只需很小位移就产生该反力，而有限刚度阻抗允许产生设计好的 $\delta x=F_{ext}/K$。因此不能仅根据最终力的大小区分两种模式。
+
 位置模式并非绝对“没有误差”。它也会受到有限增益、摩擦、负载、饱和、柔性和编码器分辨率影响；只是工业位置伺服通常带有较高增益、前馈和积分，所以自由空间误差看起来很小。代价是遇到刚性约束时，控制器仍可能持续输出较大作用力。
 
 事实上，一个关节 PD 位置环
@@ -1091,6 +1097,10 @@ $$
 - **原始关节力矩接口**：控制器一般需要显式加入 $\hat g(q)$；动态运动时还要根据所选推导决定是否加入科氏、离心和加速度前馈。
 - **已经重力补偿的力矩接口**：阻抗控制器通常只发送附加交互力矩，不能再次叠加重力。
 - **位置或速度接口**：底层伺服往往已经隐式承担重力与负载保持，上层更接近导纳控制，仍需查清接口语义。
+
+[![未补偿、正确补偿与重复重力补偿的状态对比](assets/gravity-compensation-cases.webp)](assets/gravity-compensation-cases.webp)
+
+图中的虚线圆表示目标位置，实心圆表示实际末端位置。它只表达补偿方向：真实重力是分布在各连杆上的广义力矩，应由完整机器人与工具模型计算，不能简单用一个末端竖直力替代。
 
 不做重力补偿时，机械臂会下沉，直到虚拟弹簧力矩足以平衡重力；刚度越低，下沉越明显。重复补偿则会向相反方向持续施力，同样危险。工具质量、质心或负载改变后，旧的 $\hat g(q)$ 也会产生残差，因此重力补偿配置必须与当前 URDF、工具和 payload 版本绑定。
 
