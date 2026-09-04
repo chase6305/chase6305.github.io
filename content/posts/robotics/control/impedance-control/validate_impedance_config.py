@@ -23,6 +23,9 @@ COMPENSATION_MODES = {"none", "gravity", "nonlinear"}
 COMMAND_MODES = {"raw_joint_torque", "compensated_joint_torque"}
 FORMULATIONS = {"direct_wrench", "inertia_shaped"}
 REFERENCE_FRAMES = {"local", "world", "local_world_aligned"}
+POSE_ERROR_CONVENTIONS = {"desired_minus_measured"}
+WRENCH_SIGN_CONVENTIONS = {"environment_on_robot"}
+EFFORT_LIMIT_SCOPES = {"physical_total_torque", "commanded_additional_torque"}
 
 
 def value_at(config: dict[str, Any], path: tuple[str, ...]) -> Any:
@@ -80,16 +83,24 @@ def require_nonempty_string(config: dict[str, Any], path: tuple[str, ...]) -> st
 
 
 def validate(config: dict[str, Any]) -> None:
-    if value_at(config, ("schema_version",)) != 1:
-        raise ValueError("schema_version must be 1")
+    if value_at(config, ("schema_version",)) != 2:
+        raise ValueError("schema_version must be 2")
     require_nonempty_string(config, ("config_id",))
     require_nonempty_string(config, ("model_hash",))
+    require_nonempty_string(config, ("tool_id",))
+    require_nonempty_string(config, ("payload_id",))
     require_nonempty_string(config, ("frames", "base"))
     require_nonempty_string(config, ("frames", "controlled"))
+    require_nonempty_string(config, ("frames", "task_parameters"))
     if value_at(config, ("frames", "spatial_order")) != ["linear", "angular"]:
         raise ValueError("frames.spatial_order must be [linear, angular]")
     require_choice(config, ("frames", "reference"), REFERENCE_FRAMES)
+    require_choice(config, ("frames", "pose_error"), POSE_ERROR_CONVENTIONS)
+    require_choice(config, ("frames", "wrench_sign"), WRENCH_SIGN_CONVENTIONS)
     command_mode = require_choice(config, ("interface", "command"), COMMAND_MODES)
+    require_choice(
+        config, ("interface", "effort_limit_scope"), EFFORT_LIMIT_SCOPES
+    )
     require_choice(config, ("control", "formulation"), FORMULATIONS)
 
     for path in VECTOR6_PATHS:

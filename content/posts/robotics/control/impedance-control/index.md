@@ -903,19 +903,25 @@ $J^T\Lambda\ddot x_{cmd}$ 计算出的任务力矩上，因为两条路径都可
 不要把增益和限幅散落在控制代码中。下面的 YAML 展示一种通用组织方式，便于版本管理、离线检查和运行日志关联。可以直接[下载示例配置 `impedance_example.yaml`](impedance_example.yaml)：
 
 ```yaml
-schema_version: 1
+schema_version: 2
 config_id: cartesian-impedance-sim-001
 model_hash: replace-with-urdf-sha256
+tool_id: example-tool-v1
+payload_id: empty
 
 frames:
   base: base_link
   controlled: tool0
+  task_parameters: tool0
   reference: local_world_aligned
   spatial_order: [linear, angular]
+  pose_error: desired_minus_measured
+  wrench_sign: environment_on_robot
 
 interface:
   command: raw_joint_torque
   driver_compensation: none
+  effort_limit_scope: physical_total_torque
 
 control:
   period_s: 0.001
@@ -946,9 +952,13 @@ safety:
 
 六维数组顺序与 `spatial_order` 对应：前三项分别使用 N/m、kg 或 N，后三项分别使用 N·m/rad、kg·m² 或 N·m。该示例刻意关闭积分和零空间，数值只用于仿真演示，不能作为特定机器人的真机推荐参数。逐关节绝对力矩上限应来自机器人手册和风险评估，通常还需要单独配置，不能用一个通用数值替代。
 
+`task_parameters` 表示 $K/D/M_d$ 主方向所在的 frame，不一定与 `controlled` 控制点相同；二者不同时必须执行第 4.4 节的完整变换。`pose_error` 和 `wrench_sign` 将本文的误差、外力正方向固定到配置中，防止更换实现后只改了一个负号。`tool_id`、`payload_id` 与 `model_hash` 一起描述当前动力学对象，任一项变化都应生成新的配置版本。
+
+`effort_limit_scope: physical_total_torque` 表示安全限制针对执行器实际承受的总力矩，因此即使某项补偿由驱动器内部添加，也要纳入力矩预算。若硬件 API 明确只限制上层附加命令，可以使用 `commanded_additional_torque`，但仍需另有机制保护物理总力矩。这两个语义不能通过观察字段名称猜测，必须与厂商接口和实测饱和行为核对。
+
 `driver_compensation` 描述驱动器已经完成的补偿，`model_compensation` 描述本文控制器还要增加的补偿。后者建议只允许 `none`、`gravity` 和 `nonlinear` 三种枚举值。示例表示驱动器接收原始关节力矩，上层仅加入重力补偿。`formulation` 只允许 `direct_wrench` 或 `inertia_shaped`，接口 `command` 则明确区分 `raw_joint_torque` 与 `compensated_joint_torque`。
 
-控制器加载配置时至少应验证：数组长度均为 6、所有元素有限、质量和刚度非负、阻尼比非负、截止频率低于 Nyquist 频率、frame 存在、模型哈希匹配，以及安全限制不超过硬件允许值。若 `driver_compensation` 已包含重力，则 `model_compensation: gravity` 或 `nonlinear` 应判定为冲突并拒绝使能，而不是只打印警告。运行日志应记录最终生效配置的完整内容或哈希，而不只是文件路径，因为同一路径下的文件可能已经改变。
+控制器加载配置时至少应验证：数组长度均为 6、所有元素有限、虚拟质量严格为正、刚度与阻尼比非负、截止频率低于 Nyquist 频率、frame 存在、模型哈希匹配，以及安全限制不超过硬件允许值。若 `driver_compensation` 已包含重力，则 `model_compensation: gravity` 或 `nonlinear` 应判定为冲突并拒绝使能，而不是只打印警告。运行日志应记录最终生效配置的完整内容或哈希，而不只是文件路径，因为同一路径下的文件可能已经改变。
 
 可以[下载配置校验脚本 `validate_impedance_config.py`](validate_impedance_config.py)。脚本依赖 PyYAML，运行方式为：
 

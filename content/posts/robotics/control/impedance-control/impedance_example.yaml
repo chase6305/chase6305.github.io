@@ -1,16 +1,22 @@
-schema_version: 1
+schema_version: 2
 config_id: cartesian-impedance-sim-001
 model_hash: replace-with-urdf-sha256
+tool_id: example-tool-v1
+payload_id: empty
 
 frames:
   base: base_link
   controlled: tool0
+  task_parameters: tool0
   reference: local_world_aligned
   spatial_order: [linear, angular]
+  pose_error: desired_minus_measured
+  wrench_sign: environment_on_robot
 
 interface:
   command: raw_joint_torque
   driver_compensation: none
+  effort_limit_scope: physical_total_torque
 
 control:
   period_s: 0.001
