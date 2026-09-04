@@ -595,6 +595,58 @@ Eigen::VectorXd task_torque = J.transpose() * task_wrench;
 
 实现时要保持 `ReferenceFrame` 一致：位姿误差、twist、$J$、$\dot J$ 和 wrench 必须在相容坐标系表达。不要显式计算 $M^{-1}$ 或 $\Lambda^{-1}$ 的普通逆，应使用 LDLT/LLT 求解和带阻尼伪逆，并检查分解、维度和非有限结果。
 
+Pinocchio 还可以分别计算纯重力项和包含科氏/离心项的非线性项：
+
+```cpp
+Eigen::VectorXd gravity =
+    pinocchio::computeGeneralizedGravity(model, data, q);
+
+Eigen::VectorXd nonlinear =
+    pinocchio::nonLinearEffects(model, data, q, dq);
+```
+
+其中 `gravity` 对应 $g(q)$，而 `nonlinear` 对应 Pinocchio 刚体模型中的
+$C(q,\dot q)\dot q+g(q)$。因此常见输出只能根据接口契约选择一种：
+
+```cpp
+// A. 原始力矩接口，只补偿重力
+tau_command = tau_impedance + gravity;
+
+// B. 原始力矩接口，控制律需要完整刚体非线性补偿
+tau_command = tau_impedance + nonlinear;
+
+// C. 底层已经完成所需补偿
+tau_command = tau_impedance;
+```
+
+不能使用 `tau_impedance + gravity + nonlinear`，因为 `nonlinear` 已经包含重力。Pinocchio 默认不会替驱动器发送或执行补偿，它只根据模型计算数值；究竟选择 A、B 还是 C，仍由机器人力矩接口和控制律推导决定。
+
+工具与 payload 必须已经体现在用于构建 `model` 的惯性参数中，否则 `gravity` 和 `nonlinear` 都只对应空载或旧负载。运行时切换 payload 时，应构造并批准对应模型版本，避免实时线程临时修改尚未验证的惯性数据。
+
+若已知期望关节加速度，RNEA 可以计算完整逆动力学力矩：
+
+```cpp
+Eigen::VectorXd tau_inverse_dynamics =
+    pinocchio::rnea(model, data, q, dq, desired_joint_acceleration);
+```
+
+其理想刚体含义是：
+
+$$
+\tau_{inverse\ dynamics}
+=M(q)\ddot q_d+C(q,\dot q)\dot q+g(q)
+$$
+
+当 `desired_joint_acceleration` 为零时，RNEA 的刚体部分与 `nonLinearEffects` 对应；它并不包含 URDF 刚体模型之外的摩擦、线缆力或驱动器内部补偿。
+
+不能把 `tau_inverse_dynamics` 无条件加到前面已经通过
+$J^T\Lambda\ddot x_{cmd}$ 计算出的任务力矩上，因为两条路径都可能包含惯量和非线性补偿。常见正确结构有两类：
+
+1. 在操作空间完整推导 $F_{ctrl}$，再映射为 $J^TF_{ctrl}$，只补充推导中尚未包含的关节空间项。
+2. 先把任务目标转换为一致的 $\ddot q_d$，再使用一次 RNEA 计算完整关节力矩。
+
+两种结构都可以成立，但不能把它们各自的“完整输出”相加。代码审查时应给每个力矩分量标注来源，例如 `tau_task`、`tau_gravity`、`tau_coriolis`、`tau_null`，并写出它是否已经包含在其他分量中。
+
 如果使用其他库，例如 RBDL、Drake、KDL 或厂商动力学 SDK，也可以按同一接口组织：模型层提供 FK、$J$、$\dot J$、$M$ 和非线性项，阻抗控制层只负责误差、目标 wrench、零空间和安全限制。
 
 ### 7.4 一份可审查的参数配置示例
@@ -612,9 +664,14 @@ frames:
   reference: local_world_aligned
   spatial_order: [linear, angular]
 
+interface:
+  command: raw_joint_torque
+  driver_compensation: none
+
 control:
   period_s: 0.001
   formulation: inertia_shaped
+  model_compensation: gravity
   stiffness: [300.0, 300.0, 200.0, 12.0, 12.0, 8.0]
   damping_ratio: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
   virtual_mass: [3.0, 3.0, 3.0, 0.15, 0.15, 0.10]
@@ -640,7 +697,24 @@ safety:
 
 六维数组顺序与 `spatial_order` 对应：前三项分别使用 N/m、kg 或 N，后三项分别使用 N·m/rad、kg·m² 或 N·m。该示例刻意关闭积分和零空间，数值只用于仿真演示，不能作为特定机器人的真机推荐参数。逐关节绝对力矩上限应来自机器人手册和风险评估，通常还需要单独配置，不能用一个通用数值替代。
 
-控制器加载配置时至少应验证：数组长度均为 6、所有元素有限、质量和刚度非负、阻尼比非负、截止频率低于 Nyquist 频率、frame 存在、模型哈希匹配，以及安全限制不超过硬件允许值。运行日志应记录最终生效配置的完整内容或哈希，而不只是文件路径，因为同一路径下的文件可能已经改变。
+`driver_compensation` 描述驱动器已经完成的补偿，`model_compensation` 描述本文控制器还要增加的补偿。后者建议只允许 `none`、`gravity` 和 `nonlinear` 三种枚举值。示例表示驱动器接收原始关节力矩，上层仅加入重力补偿。`formulation` 只允许 `direct_wrench` 或 `inertia_shaped`，接口 `command` 则明确区分 `raw_joint_torque` 与 `compensated_joint_torque`。
+
+控制器加载配置时至少应验证：数组长度均为 6、所有元素有限、质量和刚度非负、阻尼比非负、截止频率低于 Nyquist 频率、frame 存在、模型哈希匹配，以及安全限制不超过硬件允许值。若 `driver_compensation` 已包含重力，则 `model_compensation: gravity` 或 `nonlinear` 应判定为冲突并拒绝使能，而不是只打印警告。运行日志应记录最终生效配置的完整内容或哈希，而不只是文件路径，因为同一路径下的文件可能已经改变。
+
+可以[下载配置校验脚本 `validate_impedance_config.py`](validate_impedance_config.py)。脚本依赖 PyYAML，运行方式为：
+
+```bash
+python3 -m pip install pyyaml
+python3 validate_impedance_config.py impedance_example.yaml
+```
+
+正常输出为：
+
+```text
+valid: impedance_example.yaml
+```
+
+该示例会检查主要数值约束和补偿互斥关系，但不会读取机器人厂商的真实关节力矩上限，也无法判断 URDF 哈希、frame 和控制接口语义是否真实匹配。工程控制器仍需在加载模型后完成这些上下文检查。
 
 ## 8. 参数如何整定
 
@@ -983,6 +1057,18 @@ $$
 1. **无外力且模型补偿准确**：理想阻抗的平衡点就是目标位姿，理论稳态误差为零。
 2. **存在持续外力或接触力**：有限刚度必然产生 $K_d^{-1}F_{ext}$ 量级的稳态位移，这是有意设计的柔顺行为。
 3. **存在未补偿的重力、摩擦或负载误差**：这些扰动也会通过有限刚度转化为非期望偏移。
+4. **目标持续运动**：有限闭环带宽、缺失前馈、滤波和延迟会产生跟踪滞后；此时更适合报告幅值误差和相位差，而不是只讨论静态稳态误差。
+
+例如采用自然操作空间惯量 $\Lambda$，控制器包含位置和速度误差，但遗漏目标加速度前馈时，运动误差近似满足：
+
+$$
+\Lambda\delta\ddot x+D_d\delta\dot x+K_d\delta x
+=F_{ext}-\Lambda\ddot x_d
+$$
+
+即使 $F_{ext}=0$，非零 $\ddot x_d$ 仍会驱动跟踪误差。加入一致的 $\Lambda\ddot x_d$ 前馈可以在理想模型中消除这一项，但真实系统仍受模型误差和饱和限制。若控制器连 $\dot x_d$ 也未使用，匀速轨迹还会通过阻尼项形成额外跟随误差。
+
+因此测试“正常情况下是否有误差”时必须说明工况：静止保持、恒速运动、加减速轨迹和持续接触的结论不同。对周期轨迹应记录 RMS、峰值和相位滞后；对静止保持才使用最终偏移描述稳态误差。
 
 以静止的关节阻抗为例，若命令为
 

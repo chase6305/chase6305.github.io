@@ -8,9 +8,14 @@ frames:
   reference: local_world_aligned
   spatial_order: [linear, angular]
 
+interface:
+  command: raw_joint_torque
+  driver_compensation: none
+
 control:
   period_s: 0.001
   formulation: inertia_shaped
+  model_compensation: gravity
   stiffness: [300.0, 300.0, 200.0, 12.0, 12.0, 8.0]
   damping_ratio: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
   virtual_mass: [3.0, 3.0, 3.0, 0.15, 0.15, 0.10]
