@@ -10,6 +10,7 @@ frames:
   task_parameters: tool0
   reference: local_world_aligned
   spatial_order: [linear, angular]
+  characteristic_length_m: 0.10
   pose_error: desired_minus_measured
   wrench_sign: environment_on_robot
 

@@ -72,6 +72,27 @@ $$F_{ext}=K_d\delta x$$
 
 六维量同时包含平移和旋转分量，因此不能只写“单位为 N”或直接比较平移、旋转增益的数值。本文默认下标 $d$ 表示 desired，$ext$ 表示环境施加在机器人上的 external wrench。
 
+### 1.2 六维量不能直接求欧氏范数
+
+将位置误差写成六维向量，不意味着可以直接计算 $\|e\|_2$：前三维是 m，后三维是 rad；wrench 的前三维是 N，后三维是 N·m。若确实需要单一指标，可以先选择具有任务意义的特征长度 $\ell$，定义：
+
+$$
+e_s=\begin{bmatrix}e_p\\ \ell e_R\end{bmatrix},\qquad
+v_s=\begin{bmatrix}v\\ \ell\omega\end{bmatrix},\qquad
+F_s=\begin{bmatrix}f\\ \mu/\ell\end{bmatrix}
+$$
+
+这样 $e_s$ 的所有分量具有长度尺度，$F_s$ 的所有分量具有力尺度，而且功率保持不变：
+
+$$
+F_s^Tv_s=f^Tv+\mu^T\omega
+$$
+
+$\ell$ 不是数学常数，应根据工具尺寸、任务允许的转角对应多大末端位移来选择并写入配置。例如长工具与短工具通常不应使用同一个特征长度。另一种更直观的方案是不合并六维量，分别报告平移、旋转、力和力矩的逐轴最大值。
+
+同理，直接对未缩放的六维 Jacobian 求条件数，会让结果依赖所用的长度单位。若用
+$S=\operatorname{diag}(I_3,\ell I_3)$ 将 twist 归一化，应对 $J_s=SJ$ 监控奇异值。机器人同时包含转动和移动关节时，列空间也具有混合单位，还需定义关节尺度矩阵。所有报警阈值必须和同一组尺度绑定；否则把模型从 m 改成 mm 就可能改变“接近奇异”的判断。
+
 ## 2. 阻抗控制与导纳控制
 
 | 对比 | 阻抗控制 | 导纳控制 |
@@ -915,6 +936,7 @@ frames:
   task_parameters: tool0
   reference: local_world_aligned
   spatial_order: [linear, angular]
+  characteristic_length_m: 0.10
   pose_error: desired_minus_measured
   wrench_sign: environment_on_robot
 
@@ -964,7 +986,7 @@ safety:
 
 六维数组顺序与 `spatial_order` 对应：前三项分别使用 N/m、kg 或 N，后三项分别使用 N·m/rad、kg·m² 或 N·m。该示例刻意关闭积分和零空间，数值只用于仿真演示，不能作为特定机器人的真机推荐参数。逐关节绝对力矩上限应来自机器人手册和风险评估，通常还需要单独配置，不能用一个通用数值替代。
 
-`task_parameters` 表示 $K/D/M_d$ 主方向所在的 frame，不一定与 `controlled` 控制点相同；二者不同时必须执行第 4.4 节的完整变换。`pose_error` 和 `wrench_sign` 将本文的误差、外力正方向固定到配置中，防止更换实现后只改了一个负号。`tool_id`、`payload_id` 与 `model_hash` 一起描述当前动力学对象，任一项变化都应生成新的配置版本。
+`task_parameters` 表示 $K/D/M_d$ 主方向所在的 frame，不一定与 `controlled` 控制点相同；二者不同时必须执行第 4.4 节的完整变换。`characteristic_length_m` 是第 1.2 节用于六维监控指标的特征长度，不改变控制器本身的物理增益。`pose_error` 和 `wrench_sign` 将本文的误差、外力正方向固定到配置中，防止更换实现后只改了一个负号。`tool_id`、`payload_id` 与 `model_hash` 一起描述当前动力学对象，任一项变化都应生成新的配置版本。
 
 `effort_limit_scope: physical_total_torque` 表示安全限制针对执行器实际承受的总力矩，因此即使某项补偿由驱动器内部添加，也要纳入力矩预算。若硬件 API 明确只限制上层附加命令，可以使用 `commanded_additional_torque`，但仍需另有机制保护物理总力矩。这两个语义不能通过观察字段名称猜测，必须与厂商接口和实测饱和行为核对。
 
@@ -1138,16 +1160,19 @@ $$
 
 这里的 $u$ 可以表示目标位姿的平移分量、单个刚度元素或允许力矩上限。姿态目标应在 $SO(3)$ 上插值，不能直接逐元素插值旋转矩阵。
 
-接触状态不要由单点阈值决定。可以同时检查估计外力、末端速度和持续时间，并使用不同的进入/退出阈值形成滞回：
+接触状态不要由单点阈值决定。设 $a_f\in\mathbb R^3$ 是任务 frame 中的接触法向单位向量，先计算法向力投影
+$f_n=a_f^T\hat f_{ext}$，再同时检查其方向、末端法向速度和持续时间，并使用不同的进入/退出阈值形成滞回：
 
 $$
 \begin{aligned}
-\text{enter contact}:&\quad \lVert \hat F_{ext}\rVert>F_{on}
+\text{enter contact}:&\quad |f_n|>F_{on}
 \text{ 持续 }T_{on}\\
-\text{leave contact}:&\quad \lVert \hat F_{ext}\rVert<F_{off}
+\text{leave contact}:&\quad |f_n|<F_{off}
 \text{ 持续 }T_{off},\qquad F_{off}<F_{on}
 \end{aligned}
 $$
+
+这里使用绝对值只表示检测接触存在；进入力控前还必须确认 $f_n$ 的符号符合预期接触方向。若任务需要检测任意方向碰撞，应使用分别具有 N 和 N·m 单位的逐轴阈值，或按第 1.2 节缩放后的 wrench 指标，不能直接对原始六维 wrench 求欧氏范数。
 
 若任务本来就不需要区分自由空间和接触，可以始终保持同一阻抗参数；不要为了“状态完整”引入不必要的硬切换。
 

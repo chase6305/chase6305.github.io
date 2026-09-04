@@ -102,6 +102,7 @@ def validate(config: dict[str, Any]) -> None:
     require_nonempty_string(config, ("frames", "task_parameters"))
     if value_at(config, ("frames", "spatial_order")) != ["linear", "angular"]:
         raise ValueError("frames.spatial_order must be [linear, angular]")
+    require_positive(config, ("frames", "characteristic_length_m"))
     require_choice(config, ("frames", "reference"), REFERENCE_FRAMES)
     require_choice(config, ("frames", "pose_error"), POSE_ERROR_CONVENTIONS)
     require_choice(config, ("frames", "wrench_sign"), WRENCH_SIGN_CONVENTIONS)
