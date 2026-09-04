@@ -740,6 +740,30 @@ Eigen::VectorXd task_torque = J.transpose() * task_wrench;
 
 若项目自己的适配层决定改成 `[angular, linear]`，需要同时左乘同一个排列矩阵到 $J$ 和 $\dot J$，并一致重排误差、速度、wrench、$K/D/M_d$ 与限幅；只交换 Jacobian 会破坏 $F^TJ\dot q=\tau^T\dot q$ 的功率一致性。建议把排列转换集中在动力学适配层，控制循环内部只允许一种六维布局。
 
+#### 空间加速度与经典线加速度
+
+Pinocchio 的 `getFrameAcceleration()` 返回空间加速度，而控制点位置 $p$ 的二阶导数是经典线加速度。二者的线性部分并不总是相同。对同一点且采用相容表达时，有：
+
+$$
+a_{classic,linear}=a_{spatial,linear}+\omega\times v_{linear}
+$$
+
+因此末端同时旋转和平移时，不能把 `getFrameAcceleration(...).linear()` 直接当作 $\ddot p$。[Pinocchio 官方 frame API](https://gepettoweb.laas.fr/doc/stack-of-tasks/pinocchio/master/doxygen-html/frames_8hpp_source.html)为此单独提供了 `getFrameClassicalAcceleration()`，其说明明确包含离心效应。
+
+对于本文使用的几何 Jacobian，运动学关系是：
+
+$$
+\dot v=J\ddot q+\dot J\dot q
+$$
+
+可以在非实时测试中令 $\ddot q=0$，调用二阶 `forwardKinematics(model,data,q,dq,zero_ddq)`，再比较 `Jdot * dq` 与相同 frame 约定下的 `getFrameClassicalAcceleration(...).toVector()`。还应沿一条平滑轨迹用中心差分检查 $J$ 的变化：
+
+$$
+\dot J(t)\approx\frac{J(t+\Delta t)-J(t-\Delta t)}{2\Delta t}
+$$
+
+差分时必须在同一个 `LOCAL_WORLD_ALIGNED` 表达中重新计算两侧 Jacobian，并避开关节坐标的环绕不连续。有限差分误差应随 $\Delta t$ 先减小；当步长过小时又会受浮点误差影响。若只在静止姿态测试，$\omega\times v$ 和 $\dot J\dot q$ 都可能为零，无法发现这类错误，所以验证轨迹必须包含组合关节运动和工具旋转。
+
 Pinocchio 还可以分别计算纯重力项和包含科氏/离心项的非线性项：
 
 ```cpp
