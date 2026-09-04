@@ -1372,10 +1372,11 @@ $$
 ```bash
 python3 impedance_1d.py
 python3 analyze_impedance_log.py impedance_response.csv \
-  --step-on 0.5 --step-off 1.5
+  --step-on 0.5 --step-off 1.5 \
+  --acceptance impedance_acceptance_example.json
 ```
 
-脚本只依赖 Python 标准库，要求 CSV 至少包含 `time_s`、`force_n` 和 `position_m` 三列。它会输出基线位置、稳态位移、稳态外力、估计刚度、峰值位移、超调率、卸载后位置 RMS 和平均采样周期。例如默认参数的等效刚度应接近设定的 $1000\,\mathrm{N/m}$，但不能要求浮点结果恰好等于理论值。
+脚本只依赖 Python 标准库，要求 CSV 至少包含 `time_s`、`force_n` 和 `position_m` 三列。它会输出基线位置、稳态位移、稳态外力、估计刚度、峰值位移、超调率、卸载后位置 RMS 和平均采样周期。例如默认参数的等效刚度应接近设定的 $1000\,\mathrm{N/m}$，但不能要求浮点结果恰好等于理论值。可以下载[示例验收阈值 `impedance_acceptance_example.json`](impedance_acceptance_example.json)；使用 `--acceptance` 后，任一指标超限都会输出具体失败项并以非零状态码退出。
 
 脚本默认使用施力阶段最后 $20\%$ 的样本估计稳态值。这要求施力时间足够长；如果系统在该窗口仍未稳定，计算出的“等效刚度”会混入动态响应。真机数据还应先排除状态切换、碰撞尖峰、饱和区间和无效时间戳，并将排除规则写入报告。分析工具负责计算指标，是否通过则应由试验前冻结的 `acceptance.yaml` 决定，不能把阈值硬编码成对所有机器人通用的数字。
 

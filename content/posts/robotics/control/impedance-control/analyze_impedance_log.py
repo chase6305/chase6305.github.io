@@ -86,15 +86,105 @@ def analyze(
     }
 
 
+def load_acceptance(path: Path) -> dict[str, float]:
+    required = {
+        "expected_stiffness_n_m",
+        "stiffness_relative_tolerance",
+        "max_overshoot_percent",
+        "max_released_position_rms_m",
+        "expected_sample_period_s",
+        "sample_period_relative_tolerance",
+    }
+    with path.open(encoding="utf-8") as source:
+        raw = json.load(source)
+    if not isinstance(raw, dict):
+        raise ValueError("acceptance JSON root must be an object")
+    missing = required.difference(raw)
+    if missing:
+        raise ValueError(f"missing acceptance fields: {sorted(missing)}")
+
+    acceptance: dict[str, float] = {}
+    for name in required:
+        value = raw[name]
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(value)
+        ):
+            raise ValueError(f"acceptance field {name} must be finite")
+        acceptance[name] = float(value)
+    if acceptance["expected_stiffness_n_m"] <= 0.0:
+        raise ValueError("expected_stiffness_n_m must be positive")
+    if acceptance["expected_sample_period_s"] <= 0.0:
+        raise ValueError("expected_sample_period_s must be positive")
+    for name in required - {
+        "expected_stiffness_n_m",
+        "expected_sample_period_s",
+    }:
+        if acceptance[name] < 0.0:
+            raise ValueError(f"acceptance field {name} cannot be negative")
+    return acceptance
+
+
+def acceptance_failures(
+    metrics: dict[str, float], acceptance: dict[str, float]
+) -> list[str]:
+    stiffness_error = abs(
+        metrics["estimated_stiffness_n_m"]
+        - acceptance["expected_stiffness_n_m"]
+    ) / acceptance["expected_stiffness_n_m"]
+    period_error = abs(
+        metrics["sample_period_mean_s"]
+        - acceptance["expected_sample_period_s"]
+    ) / acceptance["expected_sample_period_s"]
+
+    checks = (
+        (
+            "stiffness_relative_error",
+            stiffness_error,
+            acceptance["stiffness_relative_tolerance"],
+        ),
+        (
+            "overshoot_percent",
+            metrics["overshoot_percent"],
+            acceptance["max_overshoot_percent"],
+        ),
+        (
+            "released_position_rms_m",
+            metrics["released_position_rms_m"],
+            acceptance["max_released_position_rms_m"],
+        ),
+        (
+            "sample_period_relative_error",
+            period_error,
+            acceptance["sample_period_relative_tolerance"],
+        ),
+    )
+    return [
+        f"{name}: actual={actual:.9g}, limit={limit:.9g}"
+        for name, actual, limit in checks
+        if actual > limit
+    ]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("csv_path", type=Path)
     parser.add_argument("--step-on", type=float, default=0.5)
     parser.add_argument("--step-off", type=float, default=1.5)
+    parser.add_argument("--acceptance", type=Path)
     args = parser.parse_args()
 
     metrics = analyze(load_rows(args.csv_path), args.step_on, args.step_off)
     print(json.dumps(metrics, indent=2, ensure_ascii=False))
+    if args.acceptance is not None:
+        failures = acceptance_failures(metrics, load_acceptance(args.acceptance))
+        if failures:
+            print("FAIL:")
+            for failure in failures:
+                print(f"- {failure}")
+            raise SystemExit(1)
+        print("PASS: all acceptance checks satisfied")
 
 
 if __name__ == "__main__":

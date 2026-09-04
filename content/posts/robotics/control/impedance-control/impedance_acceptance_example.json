@@ -1,0 +1,8 @@
+{
+  "expected_stiffness_n_m": 1000.0,
+  "stiffness_relative_tolerance": 0.05,
+  "max_overshoot_percent": 5.0,
+  "max_released_position_rms_m": 0.003,
+  "expected_sample_period_s": 0.01,
+  "sample_period_relative_tolerance": 0.01
+}
