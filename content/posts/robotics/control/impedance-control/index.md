@@ -941,6 +941,18 @@ nullspace:
   stiffness: 0.0
   damping_ratio: 1.0
 
+contact:
+  enabled: false
+  normal_axis: positive_z
+  target_force_magnitude_n: 0.0
+  enter_force_magnitude_n: 3.0
+  exit_force_magnitude_n: 1.5
+  enter_hold_s: 0.03
+  exit_hold_s: 0.05
+  force_ramp_n_s: 20.0
+  allowed_peak_force_n: 20.0
+  emergency_force_n: 30.0
+
 safety:
   translation_error_m: [0.02, 0.02, 0.02]
   rotation_error_rad: [0.10, 0.10, 0.10]
@@ -955,6 +967,14 @@ safety:
 `task_parameters` 表示 $K/D/M_d$ 主方向所在的 frame，不一定与 `controlled` 控制点相同；二者不同时必须执行第 4.4 节的完整变换。`pose_error` 和 `wrench_sign` 将本文的误差、外力正方向固定到配置中，防止更换实现后只改了一个负号。`tool_id`、`payload_id` 与 `model_hash` 一起描述当前动力学对象，任一项变化都应生成新的配置版本。
 
 `effort_limit_scope: physical_total_torque` 表示安全限制针对执行器实际承受的总力矩，因此即使某项补偿由驱动器内部添加，也要纳入力矩预算。若硬件 API 明确只限制上层附加命令，可以使用 `commanded_additional_torque`，但仍需另有机制保护物理总力矩。这两个语义不能通过观察字段名称猜测，必须与厂商接口和实测饱和行为核对。
+
+`contact` 将第 4.4 节和图中的接触状态参数落实到配置。`normal_axis` 给出任务 frame 中的期望接触方向，力目标使用非负幅值，实际符号由该方向与 `wrench_sign` 共同确定。示例关闭接触力控制，因此目标幅值为零，但仍保留检测和安全阈值供回放测试。开启后必须满足：
+
+$$
+F_{off}<F_{on}<F_{allowed\ peak}<F_{emergency}
+$$
+
+目标作业力还必须不高于允许峰值。`allowed_peak_force_n` 用于受控降级或退出，`emergency_force_n` 用于立即进入经验证的安全路径，两者不能合并。阈值比较通常针对期望法向投影的幅值；反方向力、切向力或合 wrench 超限仍需独立安全检查，不能因法向符号不匹配而被忽略。
 
 `driver_compensation` 描述驱动器已经完成的补偿，`model_compensation` 描述本文控制器还要增加的补偿。后者建议只允许 `none`、`gravity` 和 `nonlinear` 三种枚举值。示例表示驱动器接收原始关节力矩，上层仅加入重力补偿。`formulation` 只允许 `direct_wrench` 或 `inertia_shaped`，接口 `command` 则明确区分 `raw_joint_torque` 与 `compensated_joint_torque`。
 

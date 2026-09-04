@@ -36,6 +36,18 @@ nullspace:
   stiffness: 0.0
   damping_ratio: 1.0
 
+contact:
+  enabled: false
+  normal_axis: positive_z
+  target_force_magnitude_n: 0.0
+  enter_force_magnitude_n: 3.0
+  exit_force_magnitude_n: 1.5
+  enter_hold_s: 0.03
+  exit_hold_s: 0.05
+  force_ramp_n_s: 20.0
+  allowed_peak_force_n: 20.0
+  emergency_force_n: 30.0
+
 safety:
   translation_error_m: [0.02, 0.02, 0.02]
   rotation_error_rad: [0.10, 0.10, 0.10]

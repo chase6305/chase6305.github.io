@@ -26,6 +26,14 @@ REFERENCE_FRAMES = {"local", "world", "local_world_aligned"}
 POSE_ERROR_CONVENTIONS = {"desired_minus_measured"}
 WRENCH_SIGN_CONVENTIONS = {"environment_on_robot"}
 EFFORT_LIMIT_SCOPES = {"physical_total_torque", "commanded_additional_torque"}
+CONTACT_NORMAL_AXES = {
+    "positive_x",
+    "negative_x",
+    "positive_y",
+    "negative_y",
+    "positive_z",
+    "negative_z",
+}
 
 
 def value_at(config: dict[str, Any], path: tuple[str, ...]) -> Any:
@@ -162,6 +170,45 @@ def validate(config: dict[str, Any]) -> None:
             or value < 0
         ):
             raise ValueError(f"{'.'.join(path)} must be finite and non-negative")
+
+    contact_enabled = value_at(config, ("contact", "enabled"))
+    if not isinstance(contact_enabled, bool):
+        raise ValueError("contact.enabled must be true or false")
+    require_choice(config, ("contact", "normal_axis"), CONTACT_NORMAL_AXES)
+    target_force = value_at(config, ("contact", "target_force_magnitude_n"))
+    if (
+        isinstance(target_force, bool)
+        or not isinstance(target_force, (int, float))
+        or not math.isfinite(target_force)
+        or target_force < 0
+    ):
+        raise ValueError(
+            "contact.target_force_magnitude_n must be finite and non-negative"
+        )
+    enter_force = require_positive(
+        config, ("contact", "enter_force_magnitude_n")
+    )
+    exit_force = require_positive(config, ("contact", "exit_force_magnitude_n"))
+    allowed_peak = require_positive(config, ("contact", "allowed_peak_force_n"))
+    emergency_force = require_positive(config, ("contact", "emergency_force_n"))
+    for name in ("enter_hold_s", "exit_hold_s", "force_ramp_n_s"):
+        require_positive(config, ("contact", name))
+    if exit_force >= enter_force:
+        raise ValueError(
+            "contact.exit_force_magnitude_n must be below enter_force_magnitude_n"
+        )
+    if enter_force >= allowed_peak:
+        raise ValueError(
+            "contact.enter_force_magnitude_n must be below allowed_peak_force_n"
+        )
+    if allowed_peak >= emergency_force:
+        raise ValueError(
+            "contact.allowed_peak_force_n must be below emergency_force_n"
+        )
+    if contact_enabled and target_force > allowed_peak:
+        raise ValueError(
+            "enabled contact target force cannot exceed allowed_peak_force_n"
+        )
 
     require_positive(config, ("safety", "torque_rate_nm_s"))
     state_timeout_s = require_positive(config, ("safety", "state_timeout_s"))
