@@ -1,0 +1,34 @@
+schema_version: 1
+config_id: cartesian-impedance-sim-001
+model_hash: replace-with-urdf-sha256
+
+frames:
+  base: base_link
+  controlled: tool0
+  reference: local_world_aligned
+  spatial_order: [linear, angular]
+
+control:
+  period_s: 0.001
+  formulation: inertia_shaped
+  stiffness: [300.0, 300.0, 200.0, 12.0, 12.0, 8.0]
+  damping_ratio: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  virtual_mass: [3.0, 3.0, 3.0, 0.15, 0.15, 0.10]
+  integral_gain: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+filter:
+  joint_velocity_cutoff_hz: 30.0
+  external_wrench_cutoff_hz: 20.0
+
+nullspace:
+  enabled: false
+  stiffness: 0.0
+  damping_ratio: 1.0
+
+safety:
+  translation_error_m: [0.02, 0.02, 0.02]
+  rotation_error_rad: [0.10, 0.10, 0.10]
+  wrench_abs_limit: [20.0, 20.0, 20.0, 3.0, 3.0, 3.0]
+  torque_rate_nm_s: 100.0
+  state_timeout_s: 0.005
+  consecutive_deadline_misses: 3
