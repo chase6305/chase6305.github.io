@@ -708,6 +708,17 @@ pinocchio::getFrameJacobianTimeVariation(
     model, data, frame_id,
     pinocchio::ReferenceFrame::LOCAL_WORLD_ALIGNED, Jdot);
 
+// Pinocchio Motion::toVector() and this article both use
+// [linear, angular]. Verify the actual library/wrapper contract once.
+const pinocchio::Motion frame_velocity = pinocchio::getFrameVelocity(
+    model, data, frame_id,
+    pinocchio::ReferenceFrame::LOCAL_WORLD_ALIGNED);
+const double jacobian_velocity_error =
+    (J * dq - frame_velocity.toVector()).norm();
+if (jacobian_velocity_error > velocity_consistency_tolerance) {
+    throw std::runtime_error("Jacobian/frame velocity convention mismatch");
+}
+
 Eigen::MatrixXd M = pinocchio::crba(model, data, q);
 M.triangularView<Eigen::StrictlyLower>() =
     M.transpose().triangularView<Eigen::StrictlyLower>();
@@ -724,6 +735,10 @@ Eigen::VectorXd task_torque = J.transpose() * task_wrench;
 ```
 
 实现时要保持 `ReferenceFrame` 一致：位姿误差、twist、$J$、$\dot J$ 和 wrench 必须在相容坐标系表达。不要显式计算 $M^{-1}$ 或 $\Lambda^{-1}$ 的普通逆，应使用 LDLT/LLT 求解和带阻尼伪逆，并检查分解、维度和非有限结果。
+
+[Pinocchio 官方 `Motion` 接口文档](https://docs.ros.org/en/noetic/api/pinocchio/html/bindings_2python_2spatial_2motion_8hpp_source.html)将六维数组说明为 `[linear velocity, angular velocity]`，因此上面得到的 $J$ 可以直接配合本文的 `[linear, angular]` 误差与增益排列。这里不应因为其他库采用不同惯例就盲目交换三维分块。更稳妥的做法是像示例一样，在初始化或非实时测试中比较 $J\dot q$ 与 `getFrameVelocity(...).toVector()`；还可以分别调用 `frame_velocity.linear()` 和 `frame_velocity.angular()` 检查两段含义。该检查必须使用相同 `frame_id`、`ReferenceFrame`、$q$ 和 $\dot q$，否则差值没有诊断意义。
+
+若项目自己的适配层决定改成 `[angular, linear]`，需要同时左乘同一个排列矩阵到 $J$ 和 $\dot J$，并一致重排误差、速度、wrench、$K/D/M_d$ 与限幅；只交换 Jacobian 会破坏 $F^TJ\dot q=\tau^T\dot q$ 的功率一致性。建议把排列转换集中在动力学适配层，控制循环内部只允许一种六维布局。
 
 Pinocchio 还可以分别计算纯重力项和包含科氏/离心项的非线性项：
 
