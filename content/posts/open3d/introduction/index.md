@@ -39,7 +39,7 @@ Open3D 是一个开源库，旨在为 3D 数据处理提供高效且易用的工
   - 支持点云、网格和体素的渲染。
 - 机器学习：
   - 提供与深度学习框架的集成，支持 3D 数据的机器学习任务。
-![open3d](open3d.png)
+![open3d](open3d.webp)
 
 ## 2. 安装
 
@@ -680,7 +680,7 @@ vis.update_renderer()
 vis.run()
 vis.destroy_window()
 ```
-![sphere_1](sphere_1.png)
+![sphere_1](sphere_1.webp)
 - **创建点云**：生成一个包含 1000 个随机点的点云。
 - **构建 k-d 树**：使用 o3d.geometry.KDTreeFlann 构建 k-d 树。
 - **查询最近邻**：使用 search_knn_vector_3d 方法查询给定点的 5 个最近邻。
@@ -1046,7 +1046,7 @@ else:
     # 可视化分割后的点云
     o3d.visualization.draw_geometries(segments)
 ```
-![segment](segment.png)
+![segment](segment.webp)
 
 6.4.8 点云过滤
 在 Open3D 中使用 Octree 进行点云滤波可以通过以下步骤实现：
@@ -1100,7 +1100,7 @@ o3d.visualization.draw_geometries([filtered_pcd], window_name="滤波后点云")
 ```
 |过滤前|过滤后|
 |--|--|
-| ![filtered_pcd](filtered_pcd.png) |![filtered_pcd_1](filtered_pcd_1.png)  |
+| ![filtered_pcd](filtered_pcd.webp) |![filtered_pcd_1](filtered_pcd_1.webp)  |
 
 
 
@@ -1168,10 +1168,10 @@ o3d.visualization.draw_geometries([filtered_pcd_radius], window_name="半径滤�
 o3d.visualization.draw_geometries([downsampled_pcd_voxel], window_name="体素下采样后的点云")
 o3d.visualization.draw_geometries([downsampled_pcd_uniform], window_name="Uniform下采样后的点云")
 ```
-![outlier_1](outlier_1.png)
-![outlier_2](outlier_2.png)
-![outlier_3](outlier_3.png)
-![outlier_4](outlier_4.png)
+![outlier_1](outlier_1.webp)
+![outlier_2](outlier_2.webp)
+![outlier_3](outlier_3.webp)
+![outlier_4](outlier_4.webp)
 ![outlier_5](outlier_5.png)
 
 
@@ -1395,7 +1395,7 @@ visualize_point_clouds(pcd1, pcd2, "Aligned Point Clouds")
 ```
 |原始点云| 配准点云 |
 |--|--|
-| ![reg_p2p_1](reg_p2p_1.png) | ![reg_p2p_2](reg_p2p_2.png) |
+| ![reg_p2p_1](reg_p2p_1.webp) | ![reg_p2p_2](reg_p2p_2.webp) |
 
 
 
@@ -1473,7 +1473,7 @@ o3d.visualization.draw_geometries([sphere1, sphere2], window_name="After Registr
 
 |原始点云| 配准点云 |
 |--|--|
-| ![reg_p2p_3](reg_p2p_3.png) | ![reg_p2p_4](reg_p2p_4.png) |
+| ![reg_p2p_3](reg_p2p_3.webp) | ![reg_p2p_4](reg_p2p_4.webp) |
 
 
 
@@ -1691,7 +1691,7 @@ o3d.visualization.draw_geometries([pcd_combined], window_name="After Registratio
 
 |原始点云| 配准点云 |
 |--|--|
-| ![reg_p2p_7](reg_p2p_7.png) | ![reg_p2p_8](reg_p2p_8.png)
+| ![reg_p2p_7](reg_p2p_7.png) | ![reg_p2p_8](reg_p2p_8.webp)
  |
 
 
@@ -1865,7 +1865,7 @@ obb.color = (0, 1, 0)   # 绿色
 # 可视化点云和包围盒
 o3d.visualization.draw_geometries([pcd, aabb, obb], window_name="Bounding Boxes")
 ```
-![aabb_obb](aabb_obb.png)
+![aabb_obb](aabb_obb.webp)
 
 - **说明**
 
@@ -1956,7 +1956,7 @@ voxel_grid = o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size=voxe
 o3d.visualization.draw_geometries([pcd], window_name="Original Point Cloud")
 o3d.visualization.draw_geometries([voxel_grid], window_name="Voxelized Point Cloud")
 ```
-![voxel_grid_1](voxel_grid_1.png)
+![voxel_grid_1](voxel_grid_1.webp)
 ![voxel_grid_2](voxel_grid_2.png)
 
 

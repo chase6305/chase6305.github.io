@@ -44,7 +44,7 @@ toc: true
 - **反向去噪（Reverse Denoising）**：训练神经网络预测噪声或等价目标，再从随机噪声逐步恢复出数据。
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/diffusion-overview.png" alt="扩散模型前向加噪与反向去噪总览" width="960">
+  <img data-zoomable loading="lazy" src="assets/diffusion-overview.webp" alt="扩散模型前向加噪与反向去噪总览" width="960">
   <figcaption>
     <span class="article-figure__number">图 1</span>
     <span class="article-figure__text">训练时学习逆转已知的加噪过程；生成时从随机噪声开始反复调用去噪网络。</span>
@@ -101,7 +101,7 @@ $$
 $$
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/forward-noising.png" alt="前向扩散的信号与噪声分量" width="960">
+  <img data-zoomable loading="lazy" src="assets/forward-noising.webp" alt="前向扩散的信号与噪声分量" width="960">
   <figcaption>
     <span class="article-figure__number">图 2</span>
     <span class="article-figure__text">时间越晚，原始信号分量越弱，噪声分量越强；精确系数以上方闭式公式为准。</span>
@@ -298,7 +298,7 @@ $$
 U-Net 的 Encoder 逐步降低空间分辨率、扩大感受野；Decoder 恢复分辨率；Skip Connection 把高分辨率细节直接送到对应解码层。时间嵌入告诉每个残差块当前噪声等级，文本等条件可以通过 Cross-Attention 注入。
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/time-conditioned-unet.png" alt="带时间嵌入和条件注意力的 U-Net" width="960">
+  <img data-zoomable loading="lazy" src="assets/time-conditioned-unet.webp" alt="带时间嵌入和条件注意力的 U-Net" width="960">
   <figcaption>
     <span class="article-figure__number">图 4</span>
     <span class="article-figure__text">U-Net 同时利用低分辨率语义、高分辨率细节、时间步以及可选条件。</span>
@@ -367,7 +367,7 @@ $$
 `NFE` 是 Number of Function Evaluations（去噪网络求值次数），可能小于训练使用的 `T`。例如模型训练了 1000 个离散噪声等级，推理时可以只选其中 20～50 个时间点。采样慢的根本原因是反向步骤互相依赖，不能像训练 batch 那样一次并行完成。
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/training-vs-sampling.png" alt="Diffusion 训练迭代与反向采样对照" width="960">
+  <img data-zoomable loading="lazy" src="assets/training-vs-sampling.webp" alt="Diffusion 训练迭代与反向采样对照" width="960">
   <figcaption>
     <span class="article-figure__number">图 5</span>
     <span class="article-figure__text">训练对随机 t 做一次监督预测并更新参数；采样冻结参数，沿下降的推理时间表重复去噪。</span>
@@ -428,7 +428,7 @@ Seed 只固定随机数生成序列。要获得可复现结果，还需固定模
 Pixel-space Diffusion 直接在 `[B,3,H,W]` 图像上去噪，直观但计算昂贵。Latent Diffusion 先用 VAE Encoder 把图像压缩为较小潜变量 `z`，在潜空间扩散，最后由 VAE Decoder 恢复图像。
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/latent-diffusion.png" alt="像素扩散与潜空间扩散对比" width="960">
+  <img data-zoomable loading="lazy" src="assets/latent-diffusion.webp" alt="像素扩散与潜空间扩散对比" width="960">
   <figcaption>
     <span class="article-figure__number">图 6</span>
     <span class="article-figure__text">潜空间扩散把主要去噪计算放到更小的表示中；VAE 负责图像与潜变量之间的转换。</span>
