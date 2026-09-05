@@ -1187,6 +1187,33 @@ $$
 - 实际控制周期、状态数据年龄、连续丢帧数；
 - 当前状态机状态、降级原因和首次异常时间戳。
 
+建议为高频控制日志冻结机器可读 schema，而不是把 Eigen 向量或 JSON 字符串塞进单个 CSV 单元格。一个最小记录可以分为：
+
+| 分组 | 代表字段 | 单位/语义 |
+| --- | --- | --- |
+| 时间 | `host_time_s`、`state_time_s`、`command_seq` | 单调时钟；反馈采样时刻；命令序号 |
+| 状态 | `q_0...q_n`、`dq_0...dq_n` | rad、rad/s 或移动关节对应 SI 单位 |
+| 任务 | `error_x...error_rz`、`velocity_error_*` | 与配置中的 frame 和排列一致 |
+| 外力 | `wrench_raw_*`、`wrench_compensated_*`、`wrench_filtered_*` | 分别保留原始、模型补偿后和滤波后信号 |
+| 力矩 | `tau_task_*`、`tau_null_*`、`tau_model_*`、`tau_raw_*`、`tau_cmd_*` | N·m；移动关节为 N |
+| 限制 | `torque_saturated_*`、`rate_limited_*`、`wrench_limited_*` | 每轴布尔值，不只保存一个总标志 |
+| 数值 | `sigma_min_scaled`、`condition_scaled`、`solve_status` | 使用第 1.2 节冻结的尺度 |
+| 状态机 | `mode`、`contact_state`、`fault_code` | 使用稳定枚举，不记录易变的自由文本 |
+
+例如 7 轴机器人不要使用名为 `q`、内容为 `"[0.1, ...]"` 的一列，而应展开成 `q_0` 到 `q_6`。这样可以检查列数、单位和非有限值，也便于列式存储和批量绘图。六维量的后缀顺序应与 `spatial_order` 一致，并在 schema 元数据中重复声明，不能只依赖读者记住文章约定。
+
+数据文件之外还应保存一次会话级元数据：
+
+```text
+session_id, config_sha256, model_hash, tool_id, payload_id,
+software_commit, control_period_s, log_decimation,
+frame_reference, spatial_order, characteristic_length_m
+```
+
+`config_id` 只是可读名称，不能替代内容哈希。日志若每 10 个控制周期记录一次，`log_decimation=10` 必须明确保存；此时从日志相邻行得到的是记录周期，不是实际控制周期，也不能据此计算 deadline miss。故障发生前后的环形缓冲区应优先保留未降采样数据。
+
+实时线程只负责把定长记录写入预分配的无锁或有界缓冲区，文件编码、压缩和落盘放在非实时线程。缓冲区满时应增加 `dropped_log_records`，而不是阻塞力矩循环；同时要区分“日志丢失”和“机器人状态丢帧”，两者风险完全不同。
+
 诊断条件最好区分“瞬时告警”和“持续故障”。例如一次周期超时可以暂时沿用上一条受限命令；连续超时、状态数据过期或出现 NaN 则必须进入 `FAULT`。接近奇异位形、长期发生力矩饱和或模型残差升高时，可先进入 `DEGRADED`，降低任务刚度与速度，并提高伪逆阻尼；这比等到数值求解失败后才停机更平滑。
 
 力矩限幅比例也是重要诊断量。若控制器长期满足
