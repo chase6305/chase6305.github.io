@@ -17,7 +17,7 @@ comments: false
 
 在使用 Isaac Lab 进行开发时，可能会遇到以下错误：
 
-```
+```text
 AttributeError: module 'omni.usd' has no attribute 'UsdContext'
 ```
 
@@ -89,4 +89,3 @@ pip install isaaclab[isaacsim,all]==2.3.0 --extra-index-url https://pypi.nvidia.
 ## 总结
 
 `module 'omni.usd' has no attribute 'UsdContext'` 错误通常是由于扩展缓存问题导致的。通过清理 `extscache` 目录，可以强制系统重新下载正确的扩展版本，从而解决这个兼容性问题。这种方法比完全重新创建环境更加高效和直接。
-

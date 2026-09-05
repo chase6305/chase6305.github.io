@@ -6,7 +6,7 @@ draft: false
 tags: ["Calibration", "CCTag", "Fiducial Markers"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: CCTag 标记技术详解
+summary: "介绍 CCTag 同心圆标记的编码与识别原理，并分析其在相机标定、定位和增强现实任务中的优势与限制。"
 showToc: true
 TocOpen: true
 hidemeta: false

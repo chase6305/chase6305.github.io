@@ -6,7 +6,7 @@ draft: false
 tags: ["A*", "Path Planning", "C++"]
 categories: ["人工智能"]
 authors: ["chase"]
-summary: "基于三维栅格空间的A*算法流程C++实现"
+summary: "从代价函数、邻域扩展和开放/关闭集合出发，给出三维栅格 A* 搜索流程及完整 C++ 实现。"
 showToc: true
 TocOpen: true
 hidemeta: false

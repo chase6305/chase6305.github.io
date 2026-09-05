@@ -16,7 +16,7 @@ comments: false
 
 在 Jetson NV 上运行 PyQt5 应用程序时，可能会遇到以下错误：
 
-```
+```text
 qt.qpa.xcb: could not connect to display
 qt.qpa.plugin: Could not load the Qt platform plugin "xcb" in "" even though it was found.
 This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.

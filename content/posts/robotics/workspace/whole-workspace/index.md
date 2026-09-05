@@ -6,7 +6,7 @@ draft: false
 tags: ["Robotics", "Workspace Analysis", "Monte Carlo"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "基于蒙特卡罗方法构建机器人全工作空间"
+summary: "通过关节空间随机采样与正运动学计算机械臂末端点云，构建、可视化并分析机器人的近似全工作空间。"
 showToc: true
 TocOpen: true
 hidemeta: false

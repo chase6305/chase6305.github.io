@@ -6,7 +6,7 @@ draft: false
 tags: ["Calibration", "Hand-Eye Calibration"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: '关于手眼标定的数学模型及标定流程'
+summary: "梳理 Eye-in-Hand 与 Eye-to-Hand 两类手眼标定关系，解释 AX=XB、AX=YB 模型的坐标含义与基本求解流程。"
 showToc: true
 TocOpen: true
 hidemeta: false

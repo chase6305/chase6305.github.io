@@ -6,7 +6,7 @@ draft: false
 tags: ["Trajectory Generation", "Ruckig", "Motion Planning"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "Ruckig: 高效实时运动规划库"
+summary: "介绍 Ruckig 在线轨迹生成的状态、目标与运动学约束，并通过一自由度和七自由度示例演示实时轨迹计算。"
 showToc: true
 TocOpen: true
 hidemeta: false

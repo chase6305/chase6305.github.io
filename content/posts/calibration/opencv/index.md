@@ -6,7 +6,7 @@ draft: false
 tags: ["Calibration", "OpenCV", "Circle Grid"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: 非对称圆标记技术详解
+summary: "介绍非对称圆点标定板的几何编码和 OpenCV 识别思路，并总结其精度、鲁棒性、适用场景与限制。"
 showToc: true
 TocOpen: true
 hidemeta: false

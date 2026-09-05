@@ -6,7 +6,7 @@ draft: false
 tags: ["A*", "Path Planning", "3D Grid"]
 categories: ["人工智能"]
 authors: ["chase"]
-summary: "基于三维栅格空间的A*算法裁剪流程"
+summary: "介绍三维栅格 A* 的路径搜索与视线直连裁剪思路，通过障碍物附近启停搜索减少不必要的节点扩展。"
 showToc: true
 TocOpen: true
 hidemeta: false

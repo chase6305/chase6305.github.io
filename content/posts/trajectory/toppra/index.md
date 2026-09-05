@@ -6,7 +6,7 @@ draft: false
 tags: ["Trajectory Optimization", "TOPP-RA", "Motion Planning"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "Toppra: 最优时间运动规划库"
+summary: "介绍 TOPP-RA 如何在速度与加速度约束下完成路径时间参数化，并给出 Python 安装、建模和轨迹采样示例。"
 showToc: true
 TocOpen: true
 hidemeta: false

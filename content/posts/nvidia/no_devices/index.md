@@ -78,7 +78,7 @@ nvidia-smi
 ```
 
 结果令人失望：
-```
+```text
 No devices were found
 ```
 
@@ -166,4 +166,3 @@ Build cuda_12.8.r12.8/compiler.35404655_0
 ### 结论
 
 在Ubuntu 22.04上安装RTX 5070显卡驱动时，如果遇到`nvidia-smi`显示"No devices were found"的问题，尝试使用开源版本的驱动（如`nvidia-driver-580-open`）暂时能够解决问题。
-

@@ -7,7 +7,7 @@ draft: false
 tags: ["Calibration", "Kinematic Calibration"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: '机器人运动学参数标定'
+summary: "从 D-H 正运动学出发，介绍机器人运动学标定的数据采集、位姿误差、参数 Jacobian 与迭代最小二乘更新流程。"
 showToc: true
 TocOpen: true
 hidemeta: false

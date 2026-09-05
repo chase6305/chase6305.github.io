@@ -7,7 +7,7 @@ draft: false
 tags: ["Calibration", "Robot Zeroing"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: '机器人零位标定修正流程介绍'
+summary: "介绍机器人关节零位偏差的采集与误差建模方法，给出最小二乘求解流程、Python 实现和采样注意事项。"
 showToc: true
 TocOpen: true
 hidemeta: false
