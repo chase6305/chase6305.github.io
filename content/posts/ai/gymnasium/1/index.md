@@ -1,181 +1,127 @@
 ---
 title: 'Gymnasium入门(一)'
 date: 2025-03-20
-lastmod: 2025-03-20
+lastmod: 2026-09-05
 draft: false
 tags: ["Reinforcement Learning", "Gymnasium", "Python"]
 categories: ["人工智能"]
 authors: ["chase"]
-summary: "Gymnasium入门(一)"
+summary: "使用 Gymnasium 运行 LunarLander 随机交互与录像，讲清 reset、step、随机种子以及终止和截断的差别。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+description: "使用 Gymnasium 运行 LunarLander 随机交互与录像，讲清 reset、step、随机种子以及终止和截断的差别。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "Python 循环与强化学习基本概念"
+reading_focus: "先无窗口验证环境接口；随机动作示例不是训练算法。"
+related_posts:
+  - "/posts/rl"
+  - "/posts/python/tqdm"
+math: true
 ---
 
-强化学习（Reinforcement Learning, RL）是一种机器学习方法，通过与环境的交互来学习如何采取行动，以最大化累积奖励。强化学习在机器人控制、游戏 AI、自动驾驶等领域有广泛应用。
-#### 1. 强化学习的基本概念
+## Gymnasium 提供环境接口，不自动训练策略
 
-1. **Agent（智能体）**：在环境中执行动作并学习如何最大化累积奖励的实体。
-2. **Environment（环境）**：智能体与之交互的外部系统，定义了状态空间、动作空间和奖励机制。
-3. **Observation（观察）**：智能体从环境中获取的当前状态信息。
-4. **Action（动作）**：智能体在某个状态下可以执行的操作，影响环境的状态。
-5. **Reward（奖励）**：智能体执行某个动作后环境反馈的即时信号，用于指导智能体的学习。
-![am](am.jpg)
+强化学习中的 agent 根据观测选择动作，环境返回下一步观测和奖励。Gymnasium 统一这套交互接口；随机调用 `action_space.sample()` 只是接口测试，并没有学习策略。
 
-## 2. 使用 Gym 进行强化学习：LunarLander 环境示例
-参考：[Gymnasium 官方文档](https://gymnasium.farama.org/index.html)
-在这篇博客中，我们将介绍如何使用 Gym 库进行强化学习，并以 LunarLander 环境为例进行演示。Gym 是一个用于开发和比较强化学习算法的工具包，它提供了许多标准化的测试环境。
+![智能体、动作、环境与奖励之间的交互关系](am.jpg)
 
-### 2.1 安装 Gym 和依赖项
+观测不一定包含环境完整状态。编写算法时应检查 `observation_space` 和 `action_space`，不要仅凭变量名推断可观测性或数据类型。
 
-首先，我们需要安装 Gym 库及其依赖项。你可以使用以下命令通过 pip 安装：
+## 安装与最小运行
+
+本文使用 Gymnasium 的五返回值 step API 和 `LunarLander-v3` 环境。在独立 Python 环境中安装：
 
 ```bash
-pip install gymnasium
-pip install swig
-pip install "gymnasium[box2d]"
+python -m pip install swig
+python -m pip install "gymnasium[box2d]"
+python -c "import gymnasium; print(gymnasium.__version__)"
 ```
 
-这些命令将安装 Gym 库、SWIG 以及 Box2D 依赖项。
+Box2D 的构建条件取决于平台和可用 wheel；安装失败时保留第一条编译错误，核对 Python 版本与编译工具，不反复混用不同环境的 pip。
 
-### 2.2 初始化环境
-
-接下来，我们将初始化 LunarLander 环境。LunarLander 是一个经典的控制任务，目标是控制一个着陆器在月球表面安全着陆。
+下面是完整的随机交互示例，默认不打开窗口，适合先验证接口：
 
 ```python
 import gymnasium as gym
 
-# 初始化环境
-env = gym.make("LunarLander-v3", render_mode="human")
+env = gym.make("LunarLander-v3")
+try:
+    observation, info = env.reset(seed=42)
+    env.action_space.seed(42)
+    episode_return = 0.0
+    for _ in range(1000):
+        action = env.action_space.sample()
+        observation, reward, terminated, truncated, info = env.step(action)
+        episode_return += reward
+        if terminated or truncated:
+            print(f"return={episode_return:.2f}, {terminated=}, {truncated=}")
+            observation, info = env.reset()
+            episode_return = 0.0
+finally:
+    env.close()
 ```
 
-- `gym.make("LunarLander-v3", render_mode="human")`：创建并返回一个指定环境的实例。在这里，我们选择了 "LunarLander-v3" 环境，并设置 `render_mode` 为 "human" 以便在运行时显示图形界面。
+需要实时画面时，将创建环境的语句改为 `gym.make("LunarLander-v3", render_mode="human")`，并确认有可用图形会话。渲染模式在创建时指定。
 
-### 2.3 重置环境
+## reset 与 step 的返回值
 
-在开始训练之前，我们需要重置环境以生成初始观察值。
+| 调用 | 返回 | 含义 |
+| --- | --- | --- |
+| `reset(seed=42)` | `observation, info` | 开始回合并初始化环境随机数 |
+| `step(action)` | `observation, reward, terminated, truncated, info` | 推进一步，返回观测、奖励与两种结束标记 |
+| `close()` | 无 | 释放窗口、视频或环境资源 |
 
-```python
-# 重置环境以生成初始观察值
-observation, info = env.reset(seed=42)
-```
+`reset(seed=42)` 不会自动为 `action_space.sample()` 的随机数生成器设种子，所以示例分别设置两者。固定种子有助于同一实现下复现，但不保证跨平台、跨依赖版本逐位一致。后续回合一般调用无 seed 的 `reset()`，避免每回合重播同一个初始随机序列。
 
-- `env.reset(seed=42)`：重置环境到初始状态，并返回初始观察值和额外信息。`seed=42` 用于设置随机数种子，以确保结果的可重复性。
+## terminated 和 truncated 为什么必须分开
 
-### 2.4 运行环境
+- `terminated`：到达任务定义的终止状态，例如成功或失败；它是布尔值，不是正负奖励。
+- `truncated`：因为任务定义之外的条件停止，例如外部时间限制。
 
-我们将运行环境 1000 步，并在每一步中采取随机动作。你可以在这里插入你的策略来替换随机动作。
+两者任一为真都需要结束当前回合并 reset。但在价值学习的目标中，通常只在真正终止时取消下一状态的 bootstrap：
 
-```python
-for _ in range(1000):
-    # 这里可以插入你的策略
-    action = env.action_space.sample()
+$$
+y_t=r_t+\gamma(1-\mathrm{terminated}_t)V(s_{t+1}).
+$$
 
-    # 使用动作在环境中进行一步
-    observation, reward, terminated, truncated, info = env.step(action)
+这要求使用结束前的真实下一观测；自动重置的向量环境可能另行提供 final observation，不能用新回合的初始观测替代。具体还需遵循环境的有限时域建模方式。
 
-    # 如果回合结束，则重置环境
-    if terminated or truncated:
-        observation, info = env.reset()
-```
+## 保存视频
 
-- `env.action_space.sample()`：从动作空间中随机采样一个动作。在实际应用中，你可以用你的策略来替换这个随机动作。
-- `env.step(action)`：使用指定的动作在环境中执行一步。返回值包括：
-  - `observation`：执行动作后环境的下一个状态。
-  - `reward`：执行动作后获得的奖励。
-  - `terminated`：布尔值，表示当前回合是否结束。
-  - `truncated`：布尔值，表示当前回合是否被截断。
-  - `info`：额外的诊断信息。
-- `if terminated or truncated:`：检查当前回合是否结束或被截断。如果是，则重置环境。
+以下是独立示例；录像功能需要与所用 Gymnasium 版本匹配的视频依赖。
 
-### 2.5 关闭环境
-
-最后，别忘了关闭环境以释放资源。
-
-```python
-env.close()
-```
-
-- `env.close()`：关闭环境并释放资源。
-
-### 2.6 完整代码
-
-以下是完整的代码示例：
-
-```python
-import gymnasium as gym
-
-# 初始化环境
-env = gym.make("LunarLander-v3", render_mode="human")
-
-# 重置环境以生成初始观察值
-observation, info = env.reset(seed=42)
-for _ in range(1000):
-    # 这里可以插入你的策略
-    action = env.action_space.sample()
-
-    # 使用动作在环境中进行一步
-    observation, reward, terminated, truncated, info = env.step(action)
-
-    # 如果回合结束，则重置环境
-    if terminated or truncated:
-        observation, info = env.reset()
-
-env.close()
-```
-以下是对代码中涉及的函数及其参数的详细说明：
-
--  `gym.make()`
-	- **参数**:
-	  - **id (str)**: 环境的名称或ID，例如 `"LunarLander-v3"`。
-	  - **render_mode (str, optional)**: 渲染模式，例如 `"human"` 表示以人类可读的方式渲染环境。
-
-- `env.reset()`
-	- **参数**:
-	  - **seed (int, optional)**: 随机数生成器的种子，用于确保结果的可重复性。
-	  - **options (dict, optional)**: 其他选项，具体取决于环境。
-	- **返回值**:
-	  - **observation (ObsType)**: 环境的初始观察值。
-	  - **info (dict)**: 包含辅助诊断信息。
-
--  `env.step()`
-	- **参数**:
-	  - **action (ActType)**: 代理提供的用于更新环境状态的操作。
-	- **返回值**:
-	  - **observation (ObsType)**: 环境观察空间的一个元素，作为代理动作的下一个观察结果。
-	  - **reward (SupportsFloat)**: 采取行动的结果的奖励。
-	  - **terminated (bool)**: 代理是否达到最终状态，可以是正数或负数。
-	  - **truncated (bool)**: 是否满足MDP范围外的截断条件。通常，这是一个时间限制，但也可用于指示代理实际越界。可用于在达到最终状态之前提前结束情节。
-	  - **info (dict)**: 包含辅助诊断信息（有助于调试、学习和记录）。
-
--  `env.close()`
-	- **作用**: 关闭环境，释放资源。
-
-
-#### 2.7 保存视频
 ```python
 import gymnasium as gym
 from gymnasium.wrappers import RecordVideo
 
-# 初始化环境并包装以记录视频
-env = gym.make("LunarLander-v3", render_mode="rgb_array")
-env = RecordVideo(env, video_folder="videos", episode_trigger=lambda x: True)
-
-# 重置环境以生成初始观察值
-observation, info = env.reset(seed=42)
-for _ in range(1000):
-    # 这里可以插入你的策略
-    action = env.action_space.sample()
-
-    # 使用动作在环境中进行一步
-    observation, reward, terminated, truncated, info = env.step(action)
-
-    # 如果回合结束，则重置环境
-    if terminated or truncated:
-        observation, info = env.reset()
-
-env.close()
+env = RecordVideo(
+    gym.make("LunarLander-v3", render_mode="rgb_array"),
+    video_folder="videos",
+    episode_trigger=lambda episode: episode == 0,
+)
+try:
+    observation, info = env.reset(seed=42)
+    env.action_space.seed(42)
+    for _ in range(1000):
+        observation, reward, terminated, truncated, info = env.step(
+            env.action_space.sample()
+        )
+        if terminated or truncated:
+            break
+finally:
+    env.close()
 ```
 
-![LunarLander](LunarLander.gif)
+![LunarLander 环境运行效果的历史演示](LunarLander.gif)
+
+录像与随机 rollout 只证明环境可交互，不代表策略训练成功。进一步实现学习算法时，应单独记录奖励、回合长度、结束原因和评估种子。
+
+参考：[Gymnasium Env API](https://gymnasium.farama.org/api/env/)、[终止与截断的设计说明](https://farama.org/Gymnasium-Terminated-Truncated-Step-API)。
+
+
+## 阅读自测与验收
+
+- 同一 seed 下比较 reset 与动作采样，确认环境随机源和 action_space 都已设置；有渲染和无渲染时任务逻辑应一致。
+- 人为设置较短时间限制，核对 truncated 与 terminated 的差别；继续计算价值目标时应使用截断前的最终观测，而不是 reset 后的新初态。

@@ -1,0 +1,480 @@
+{
+  "date": "2026-09-05",
+  "scope": "第五轮聚焦整体查找与阅读体验：全部 66 篇纳入筛选、共享卡片与回归；1 篇正文及其可下载日志分析脚本修正。另修复分类、归档和项目入口的移动导航。保留文章 URL、发布日期和草稿状态。",
+  "shared_improvements": [
+    "博客列表按关键词、10 个专题、发布日期或阅读时间筛选，支持分享 URL、中文输入和浏览器历史恢复。",
+    "筛选使用标题、摘要和标签等元数据，不冒充全文搜索；默认保留 Hugo 原分页，无脚本或数据解析失败时仍可阅读。",
+    "列表与分类/标签详情页共用卡片，统一日期、标签、阅读时长、文章语言和草稿标识。",
+    "博客增加专题、归档与 RSS 入口；全部文章说明阅读时长不包含实际练习时间。",
+    "分类、标签、归档和中英文项目页补齐移动导航容器；预览草稿在单页、卡片、归档和最新文章处显式标记。",
+    "静态检查覆盖分类/标签/归档、7 个分页中的全量筛选数据和草稿隔离，阻止文章目录中的 Python 字节码进入资源。"
+  ],
+  "images": {
+    "new_generated": 0,
+    "decision": "本轮主要是交互、导航和无效数据处理，保留既有有效图片，不新增装饰图；后续生成图仍参考 transformer-attention/assets。"
+  },
+  "posts": [
+    {
+      "path": "content/posts/ai/algorithms/Astar/Astar-cpp/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/ai/algorithms/Astar/Astar-introduction/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/ai/algorithms/overview.md",
+      "draft": true,
+      "topic": "ai",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/ai/diffusion-models/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/ai/distributed-training-memory/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/ai/gymnasium/1/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/calibration/cctag/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/calibration/kinematics/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/calibration/model/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/calibration/opencv/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/calibration/zero/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/casadi/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/cmake/ExternalProject_Add/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/coacd/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/cpp/gcc/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/cpp/gccs/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/cpp/smart-pointer/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/cpp/std/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/cuda/gcc/index.md",
+      "draft": false,
+      "topic": "gpu",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/cuda/warp/index.md",
+      "draft": false,
+      "topic": "gpu",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/dialout/dh/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/dialout/udev/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/egl/x11_warnning/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/gui/qt/jetson/index.md",
+      "draft": false,
+      "topic": "gpu",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/gui/qt/pyside6/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/gui/qt/qt5/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/isaaclab/UsdContext/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/linux/watch/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/meshcat/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/network-protocol/c++_tcp.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/network-protocol/c++_udp.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/network-protocol/fixed_IP.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/network-protocol/tcp-udp-introduction.md",
+      "draft": true,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/nvidia/no_devices/index.md",
+      "draft": false,
+      "topic": "gpu",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/open3d/introduction/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/opengl/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/pid/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/pink/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/planner/to_mpc_wbc/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/process/pid/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/python/f_string/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/python/py39/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/python/tqdm/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/python/version/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/qt/pyside6_matplotlib/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/queue/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/rl/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": true,
+      "body_change": "日志分析拒绝 NaN/Inf、缺失数据、重复表头和无效时间戳；非有限指标必须验收失败；明确零基线、平均采样周期与 JSON 配置边界。"
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/jacobian/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/kinematics-introduction.md",
+      "draft": true,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pinocchio/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pytorch/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/robotics/workspace/whole-workspace/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/thesis/being_0/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/thesis/coacd/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/trajectory/ruckig/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/trajectory/toppra/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/unicode/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/vscode/debug/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/vscode/gdm/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/vscode/two-env/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    },
+    {
+      "path": "content/posts/xcb/post_2.md",
+      "draft": false,
+      "topic": "gui",
+      "body_changed": false,
+      "body_change": "本轮保留正文，纳入整体筛选、共享阅读提示及全量回归。"
+    }
+  ]
+}

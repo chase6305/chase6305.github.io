@@ -1,404 +1,141 @@
 ---
 title: VS Code Python 调试完全指南：从入门到精通
 date: 2026-01-27
-lastmod: 2026-01-27
+lastmod: 2026-09-05
 draft: false
 tags: ["VS Code", "Python", "Debugging"]
 categories: ["系统与工具"]
 authors: ["chase"]
-summary: "从断点和调试面板入门，系统介绍 VS Code Python 的 launch.json、参数传递、模块调试、远程调试与常见排错。"
+summary: "从最小 debugpy 配置讲解 VS Code 断点、模块入口、参数与附加调试，补充解释器核对及调试端口保护。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+description: "从最小 debugpy 配置讲解 VS Code 断点、模块入口、参数与附加调试，补充解释器核对及调试端口保护。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "Python 执行入口与 VS Code"
+reading_focus: "先复现终端运行环境，再添加远程和多进程配置，暂停会改变程序时序。"
+related_posts:
+  - "/posts/vscode/two-env"
+  - "/posts/process/pid"
 ---
 
+## 先用最小调试配置定位问题
 
----
-## 📖 目录
-1. [快速开始](#快速开始)
-2. [基础调试](#基础调试)
-3. [高级配置](#高级配置)
-4. [框架调试](#框架调试)
-5. [远程调试](#远程调试)
-6. [实用技巧](#实用技巧)
-7. [故障排除](#故障排除)
+调试器让程序在断点暂停，查看变量和调用栈。先确认所选 Python 解释器、工作目录和启动参数与正常运行一致，再加入远程、容器或多进程配置。
 
-## 🚀 快速开始
+本文使用 VS Code Python Debugger（debugpy）。`launch.json` 支持注释，因此代码块标为 JSONC；其中的调试设置要由具体适配器支持，不能混用 Node.js 或 Docker 扩展的字段。
 
-### 安装准备
-```bash
-# 必需扩展
-- Python (Microsoft官方扩展)
-- Python Debugger (推荐)
-```
+## 1. 当前文件调试
 
-### 最简调试流程
-1. **设置断点**：点击行号左侧
-2. **启动调试**：按 `F5`
-3. **选择配置**：选择 "Python File"
+在项目的 `.vscode/launch.json` 中保存：
 
-## 🔧 基础调试
-
-### 调试控制面板
-| 按钮 | 快捷键 | 功能 |
-|------|--------|------|
-| ▶️ 继续 | F5 | 执行到下一个断点 |
-| ⏸️ 暂停 | Ctrl+F5 | 暂停执行 |
-| ⏭️ 单步跳过 | F10 | 执行当前行 |
-| ↓ 单步进入 | F11 | 进入函数内部 |
-| ↑ 单步跳出 | Shift+F11 | 跳出当前函数 |
-| 🔄 重启 | Ctrl+Shift+F5 | 重新开始 |
-| ⏹️ 停止 | Shift+F5 | 停止调试 |
-
-### 调试视图区域
-- **变量 (Variables)**：查看和修改变量值
-- **监视 (Watch)**：添加自定义表达式监控
-- **调用堆栈 (Call Stack)**：查看函数调用链
-- **断点 (Breakpoints)**：管理所有断点
-
-## ⚙️ 高级配置
-
-### launch.json 核心配置
-```json
+```jsonc
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Python: 当前文件",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "justMyCode": false,
-            "env": {"PYTHONPATH": "${workspaceFolder}"}
-        }
-    ]
-}
-```
-
-### 常用配置模板
-
-#### 1. 带参数调试
-```json
-{
-    "args": ["--input", "data.csv", "--verbose"]
-}
-```
-
-#### 2. 模块调试
-```json
-{
-    "module": "pytest",
-    "args": ["tests/", "-v"]
-}
-```
-
-## 🏗️ 框架调试
-
-### Django 项目调试
-```json
-{
-    "name": "Python: Django",
-    "type": "debugpy",
-    "request": "launch",
-    "program": "${workspaceFolder}/manage.py",
-    "args": ["runserver", "--noreload"],
-    "django": true,
-    "autoStartBrowser": false
-}
-```
-
-### Flask 应用调试
-```json
-{
-    "name": "Python: Flask",
-    "type": "debugpy",
-    "request": "launch",
-    "module": "flask",
-    "env": {
-        "FLASK_APP": "app.py",
-        "FLASK_DEBUG": "1"
-    },
-    "args": ["run", "--port", "5000"]
-}
-```
-
-### 测试框架调试
-```json
-{
-    "name": "Python: Pytest",
-    "type": "debugpy",
-    "request": "launch",
-    "module": "pytest",
-    "args": ["${file}", "-v", "-s", "--tb=short"]
-}
-```
-
-## 🌐 远程调试
-
-### 配置示例
-```json
-{
-    "name": "Python: 远程附加",
-    "type": "debugpy",
-    "request": "attach",
-    "connect": {
-        "host": "localhost",
-        "port": 5678
-    },
-    "pathMappings": [
-        {
-            "localRoot": "${workspaceFolder}",
-            "remoteRoot": "/remote/path"
-        }
-    ]
-}
-```
-
-### 远程代码启动
-```python
-import debugpy
-debugpy.listen(5678)
-debugpy.wait_for_client()  # 等待调试器连接
-# 你的代码从这里开始执行
-```
-
-## 🎯 实用技巧
-
-### 1. 智能断点
-- **条件断点**：右键断点 → 设置条件
-- **日志点**：输出信息而不暂停执行
-- **函数断点**：在函数调用时暂停
-
-### 2. 调试控制台
-- 在调试过程中执行任意 Python 代码
-- 修改变量值实时生效
-- 导入模块测试函数
-
-### 3. 性能分析
-```json
-{
-    "cProfile": {
-        "enable": true,
-        "output": "${workspaceFolder}/profile.prof"
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: 当前文件",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": true
     }
+  ]
 }
 ```
 
-### 4. 多进程调试
-```json
-{
-    "subProcess": true,  // 调试子进程
-    "multiprocess": true  // 支持多进程
-}
-```
+上面路径使用 VS Code 变量，按项目需要指定固定入口。运行前通过“Python: Select Interpreter”选择解释器；在代码中打印 `sys.executable` 可确认调试实际使用的环境。
 
-## 🔍 调试技巧进阶
+设置断点后按 `F5`。常见默认快捷键如下，操作系统和自定义键位可能不同：
 
-### 1. 条件断点高级用法
-```python
-# 仅当条件满足时暂停
-# 例如：列表长度大于10时暂停
-if len(items) > 10:  # 在此行设置条件断点
-    process_items(items)
-```
-
-### 2. 监视表达式
-```python
-# 在Watch面板添加：
-- len(data_list)
-- user.name if user else None
-- [x for x in items if x.active]
-- f"总数: {count}, 平均: {total/count:.2f}"
-```
-
-### 3. 异常断点
-1. 打开断点视图
-2. 点击 "+" 添加异常断点
-3. 选择异常类型（如：所有异常、特定异常）
-
-## 🐛 常见问题解决
-
-### 问题1：调试无法启动
-**解决方案：**
-```json
-{
-    "python": "/usr/bin/python3",  // 指定解释器路径
-    "cwd": "${workspaceFolder}"     // 设置工作目录
-}
-```
-
-### 问题2：断点不生效
-**检查点：**
-1. 确保文件已保存
-2. 检查 `justMyCode` 设置
-3. 验证文件路径是否正确
-
-### 问题3：导入错误
-```json
-{
-    "env": {
-        "PYTHONPATH": "${workspaceFolder}/src:${workspaceFolder}/lib"
-    }
-}
-```
-
-## 🎨 自定义调试体验
-
-### 1. 颜色主题定制
-```json
-{
-    "workbench.colorCustomizations": {
-        "debugToolBar.background": "#1e1e1e",
-        "debugIcon.startForeground": "#00ff00"
-    }
-}
-```
-
-### 2. 快捷键自定义
-```json
-{
-    "keybindings": [
-        {
-            "key": "ctrl+shift+d",
-            "command": "workbench.action.debug.start"
-        }
-    ]
-}
-```
-
-### 3. 复合调试配置
-```json
-{
-    "compounds": [
-        {
-            "name": "全栈调试",
-            "configurations": ["后端API", "前端服务", "数据库"],
-            "stopAll": true
-        }
-    ]
-}
-```
-
-## 📊 调试最佳实践
-
-### 1. 分层调试策略
-- **开发阶段**：启用 `justMyCode: false`，深入第三方库
-- **测试阶段**：使用条件断点和日志点
-- **生产调试**：仅启用关键断点，记录调试日志
-
-### 2. 性能优化建议
-```json
-{
-    "skipFiles": [
-        "<node_internals>/**",
-        "**/site-packages/**/*.py"
-    ]
-}
-```
-
-### 3. 团队协作配置
-```bash
-# 将 launch.json 提交到版本控制
-# 确保团队成员配置一致
-# 使用环境变量替代硬编码配置
-```
-
-## 🚀 高效调试工作流
-
-### 日常调试流程
-1. **准备阶段**
-   - 设置关键断点
-   - 添加监视表达式
-   - 配置环境变量
-
-2. **执行阶段**
-   - 启动调试
-   - 逐步执行代码
-   - 观察变量变化
-
-3. **分析阶段**
-   - 检查调用堆栈
-   - 查看异常信息
-   - 修改代码并重新测试
-
-### 快捷键速查表
-| 操作 | 快捷键 |
-|------|--------|
-| 开始调试 | F5 |
-| 切换断点 | F9 |
-| 单步进入 | F11 |
+| 操作 | 默认快捷键 |
+| --- | --- |
+| 启动 / 继续 | F5 |
+| 无调试运行 | Ctrl+F5 |
+| 暂停 | F6 |
 | 单步跳过 | F10 |
-| 重启调试 | Ctrl+Shift+F5 |
-| 停止调试 | Shift+F5 |
-| 打开调试控制台 | Ctrl+Shift+Y |
-| 查看所有断点 | Ctrl+Shift+F8 |
+| 单步进入 / 跳出 | F11 / Shift+F11 |
+| 切换断点 | F9 |
+| 停止 | Shift+F5 |
+| 重启 | Ctrl+Shift+F5 |
 
-## 💡 高级调试场景
+## 2. 模块、参数与环境变量
 
-### 异步代码调试
-```json
+模块入口用 `module`，不要同时配置 `program`。数组中的每个元素是一个命令行参数，不要把所有参数拼成一条字符串：
+
+```jsonc
 {
-    "name": "Python: Async",
-    "type": "debugpy",
-    "request": "launch",
-    "program": "${file}",
-    "asyncio": true,  // 支持异步
-    "gevent": true    // 支持协程
+  "name": "Python: 模块入口",
+  "type": "debugpy",
+  "request": "launch",
+  "module": "my_package.train",
+  "args": ["--config", "configs/debug.yaml", "--steps", "10"],
+  "cwd": "${workspaceFolder}",
+  "console": "integratedTerminal",
+  "env": {
+    "PYTHONUNBUFFERED": "1"
+  },
+  "justMyCode": false
 }
 ```
 
-### Jupyter Notebook 调试
-1. 安装 Jupyter 扩展
-2. 在单元格左侧设置断点
-3. 使用专用调试按钮启动
+这是一项 configuration，放入完整文件的 `configurations` 数组。`my_package.train` 和配置路径都是项目占位示例。凭据不要提交到 `launch.json`，环境文件也需按项目规则排除敏感内容。
 
-### 容器内调试
-```json
+## 3. 条件断点、日志点与异常断点
+
+右键断点可设置条件，例如 `step >= 100 and loss > 10`。条件在目标进程中求值，应避免写文件、发网络请求或修改状态的表达式。
+
+日志点适合观察循环变量而不频繁暂停；异常断点适合定位最初的抛错位置。调试控制台执行的是程序上下文中的表达式，同样可能改变对象状态，不是纯只读窗口。
+
+`justMyCode: false` 允许进入库代码，但 Python 调试不能用 Node 的 `skipFiles` 规则作为通用性能开关。
+
+## 4. 本机与 SSH 附加调试
+
+在目标机器的正确环境运行：
+
+```bash
+python -m debugpy --listen 127.0.0.1:5678 --wait-for-client your_script.py
+```
+
+本机添加附加配置：
+
+```jsonc
 {
-    "dockerOptions": {
-        "image": "python:3.9",
-        "volumes": ["${workspaceFolder}:/workspace"],
-        "workspaceMount": "/workspace"
-    }
+  "name": "Python: Attach",
+  "type": "debugpy",
+  "request": "attach",
+  "connect": {
+    "host": "127.0.0.1",
+    "port": 5678
+  },
+  "justMyCode": false
 }
 ```
 
----
+远程机器可通过 `ssh -L 5678:127.0.0.1:5678 user@server` 转发。若本地和远程源码路径不同，按实际位置配置 `pathMappings`；源码版本也必须一致。
 
-## 📝 总结
+调试端口具有执行代码的能力，不应无保护监听公网地址。暂停机器人控制线程、生产服务或分布式训练 rank 可能触发超时或失控，优先在隔离环境复现。
 
-VS Code Python 调试提供了：
-- ✅ **直观的界面**：图形化调试控制
-- ✅ **强大的功能**：条件断点、远程调试、多进程支持
-- ✅ **灵活的配置**：JSON 配置满足各种需求
-- ✅ **丰富的扩展**：支持主流框架和工具
+## 5. 异步、多进程与容器
 
-**核心建议：**
-1. 从简单配置开始，逐步增加复杂度
-2. 合理使用条件断点和监视表达式
-3. 为不同场景创建专用调试配置
-4. 定期更新调试配置以适应项目变化
+`asyncio` 程序通常按普通 Python 入口调试，不存在通用的 `"asyncio": true` debugpy 开关。`gevent` 配置针对 gevent，不是所有协程库。
 
-通过掌握这些调试技巧，你将能够：
-- 🎯 快速定位和修复 bug
-- ⚡ 提高开发效率
-- 🔧 深入理解代码执行流程
-- 🚀 加速项目开发进程
+多进程应用按已安装 debugpy 版本评估 `subProcess`，并关注启动方法。容器使用 Dev Containers / Remote 环境或受保护的 attach，不能随意添加未定义的 `dockerOptions` 就期望启动容器。
 
-**立即尝试：**
-```python
-# 测试代码
-def debug_demo():
-    data = [1, 2, 3, 4, 5]
-    total = 0
-    for item in data:
-        total += item  # 在此设置断点
-        print(f"当前累计: {total}")
-    return total
+## 6. 断点不生效时的检查表
 
-if __name__ == "__main__":
-    result = debug_demo()
-    print(f"最终结果: {result}")
-```
+- 断点为空心：检查源码映射、实际执行文件和模块是否加载。
+- 终端能运行、调试失败：比较解释器、cwd、args、环境变量与依赖版本。
+- 暂停后卡住：检查其他线程、进程和外部服务是否等待当前线程持有的锁。
+- 问题只在无调试模式出现：考虑时序、超时和竞态；调试器会改变执行速度。
+
+参考：[VS Code Python 调试](https://code.visualstudio.com/docs/python/debugging)、[debugpy 使用说明](https://github.com/microsoft/debugpy)。
+
+
+## 阅读自测与验收
+
+- 从调试控制台打印解释器或程序路径，并核对启动目录、参数和环境变量，避免断点落在另一份源文件上。
+- 先验证断点、单步和异常中断，再配置远程 attach；调试端口只绑定本机，通过受控隧道访问。

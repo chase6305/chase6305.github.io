@@ -1,0 +1,13 @@
+{{- if and (eq .Section "posts") .Params.reading_focus -}}
+  <aside class="blog-reading-guide" aria-label="阅读提示" lang="zh-CN">
+    <p class="blog-reading-guide__meta">阅读提示 <span aria-hidden="true">·</span> 约 {{ .ReadingTime }} 分钟（含代码，实际练习时间另计）</p>
+    <dl>
+      <div><dt>前置知识</dt><dd>{{ .Params.reading_prerequisites }}</dd></div>
+      <div><dt>阅读重点</dt><dd>{{ .Params.reading_focus }}</dd></div>
+      {{- with partial "blog/topic-data.html" . }}
+        <div><dt>所属专题</dt><dd><a href="{{ relURL "learning-paths/" }}#{{ .topic.id }}">{{ .topic.title }}</a> · 第 {{ .position }} / {{ .count }} 篇</dd></div>
+      {{- end }}
+    </dl>
+  </aside>
+  {{ partial "blog/mobile-toc.html" . }}
+{{- end -}}

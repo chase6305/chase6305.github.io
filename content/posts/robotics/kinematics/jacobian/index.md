@@ -1,16 +1,23 @@
 ---
 title: "机器人雅可比矩阵：从关节速度到末端速度"
 date: 2026-09-03
-lastmod: 2026-09-03
+lastmod: 2026-09-05
 draft: false
 tags: ["Kinematics", "Jacobian", "Pinocchio", "Python"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "从几何直觉出发理解机器人雅可比矩阵，并用 Pinocchio 计算末端速度、做阻尼最小二乘控制和数值校验。"
+summary: "用几何直觉和 Pinocchio 理解关节速度到末端 twist 的映射，解释参考系、奇异与阻尼最小二乘校验。"
 showToc: true
 TocOpen: true
 math: true
 comments: false
+description: "用几何直觉和 Pinocchio 理解关节速度到末端 twist 的映射，解释参考系、奇异与阻尼最小二乘校验。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "FK、矩阵微分与坐标变换"
+reading_focus: "先确认 twist 顺序、参考点和表达坐标系，再用有限差分验证每一列。"
+related_posts:
+  - "/posts/robotics/kinematics/pinocchio"
+  - "/posts/pink"
 ---
 
 ## 1. 雅可比矩阵解决什么问题？
@@ -28,9 +35,11 @@ $$
 ### 图 1：速度映射的数据流
 
 ![关节空间、正运动学、雅可比和任务空间之间的数据流](assets/jacobian-flow.webp)
+
 *图 1　正向路径计算末端速度，逆向路径根据期望 twist 求关节速度。*
 
 ![二维机械臂中关节速度、雅可比与末端 twist 的映射示意图](assets/jacobian-mapping.png)
+
 *图 2　把雅可比看成“每个关节影响的集合”：矩阵的每一列对应一个关节。*
 
 这张图也说明了雅可比依赖当前姿态：机器人换了一个 $q$，同一个关节速度通常会产生不同的末端速度。
@@ -76,7 +85,7 @@ $$J_i=\begin{bmatrix}z_i\\0\end{bmatrix}.$$
 | 选项 | 含义 | 使用建议 |
 | --- | --- | --- |
 | `LOCAL` | 在末端自身坐标系表达 | 适合局部控制律 |
-| `WORLD` | 在世界坐标系表达，含完整坐标变换 | 适合严格的世界系推导 |
+| `WORLD` | 在世界原点表达空间 twist，含旋转和平移的伴随变换 | 线速度部分不是末端原点的直接速度，不能拿它与末端位置差分直接比较 |
 | `LOCAL_WORLD_ALIGNED` | 速度投影到世界坐标轴，但原点仍在末端 | 初学和笛卡尔控制常用 |
 
 在下文中使用 `LOCAL_WORLD_ALIGNED`，这样线速度和角速度都能直观地用世界坐标轴解释。其向量顺序为 `[vx, vy, vz, wx, wy, wz]`，不要与 `[角速度, 线速度]` 的其他库约定混用。
@@ -118,6 +127,7 @@ $$
 因为 7 个关节要完成 6 个末端任务，系统通常有 1 个冗余自由度：满足同一末端速度的 $\dot q$ 不止一组，这正是零空间避限位、避奇异和优化姿态的来源。注意，“7-DoF”描述的是速度维度 `nv=7`；若模型包含浮动基座或四元数，配置维度 `nq` 可能不是 7。
 
 ![7-DoF 机械臂的 6×7 雅可比矩阵维度与行列含义](assets/jacobian-7dof-dimensions.webp)
+
 *图 4　7 个关节对应 7 列，末端的 3 个线速度和 3 个角速度对应 6 行。*
 
 #### 把一列数字读成物理量
@@ -137,10 +147,10 @@ $$J_{:,4}\dot q_4=[0.07,\;-0.024,\;0,\;0,\;0,\;0.2]^T,$$
 安装 Python 包（不同发行版的包名可能略有不同）：
 
 ```bash
-pip install pin
+python -m pip install pin
 ```
 
-下面的脚本读取 URDF，在中性姿态计算末端位姿和雅可比。运行时请把 URDF 路径和 `--frame` 改成自己的机器人模型；`frame` 是 frame 名称，不一定等于最后一个 joint 名称。
+下面的脚本读取 URDF，在中性姿态计算末端位姿和雅可比。保存为 `check_jacobian.py`，运行 `python check_jacobian.py --urdf robot.urdf --frame ee_link`；`frame` 是 frame 名称，不一定等于最后一个 joint 名称。后文的短代码片段接在这个脚本末尾，复用 `model, data, q, frame_id, J`，不是相互独立的脚本。
 
 ```python
 from pathlib import Path
@@ -150,17 +160,14 @@ import numpy as np
 import pinocchio as pin
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--urdf", type=Path, required=True)
-    parser.add_argument("--frame", default="ee_link")
-    args = parser.parse_args()
-
-    model = pin.buildModelFromUrdf(str(args.urdf))
+def load_robot(urdf, frame):
+    model = pin.buildModelFromUrdf(str(urdf))
     data = model.createData()
-    frame_id = model.getFrameId(args.frame)
+    frame_id = model.getFrameId(frame)
     if frame_id >= model.nframes:
-        raise ValueError(f"找不到 frame: {args.frame}")
+        raise ValueError(f"找不到 frame: {frame}")
+    if model.nv == 0:
+        raise ValueError("模型没有可动关节")
 
     q = pin.neutral(model)
     J = pin.computeFrameJacobian(
@@ -168,19 +175,26 @@ def main() -> None:
     )
     pin.forwardKinematics(model, data, q)
     pin.updateFramePlacements(model, data)
+    return model, data, q, frame_id, J
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--urdf", type=Path, required=True)
+    parser.add_argument("--frame", default="ee_link")
+    args = parser.parse_args()
+    model, data, q, frame_id, J = load_robot(args.urdf, args.frame)
     placement = data.oMf[frame_id]
 
     print(f"nq={model.nq}, nv={model.nv}, J.shape={J.shape}")
     print("末端位置 (m):", placement.translation)
     print("线速度部分:\n", J[:3])
     print("角速度部分:\n", J[3:])
-
-
-if __name__ == "__main__":
-    main()
 ```
 
 `nq` 是配置向量的维度，`nv` 是切空间（速度）的维度。普通转动/移动关节时二者相等，但浮动基座和四元数关节可能不相等，因此雅可比列数应看 `model.nv`。
+
+没有现成机器人文件时，可下载 [PyTorch 运动学文章中的二连杆 URDF]({{< relref "/posts/robotics/kinematics/pytorch" >}})，将上述命令的模型文件改为 `planar2r.urdf`、frame 改为 `tip`。该模型只有两个活动关节，适合验证数值与坐标约定，不代表能够执行完整六维末端任务。
 
 如果需要分步控制计算，也可以先调用 `pin.computeJointJacobians(model, data, q)` 和 `pin.updateFramePlacements(model, data)`，再用 `pin.getFrameJacobian(...)` 读取指定参考系的结果。不要在没有更新 `data` 的情况下重复使用旧雅可比。
 
@@ -212,7 +226,7 @@ print("singular values:", singular_values)
 print("最小奇异值:", singular_values[-1])
 ```
 
-最小奇异值接近 0 时，机器人接近奇异位形：某些末端方向几乎无法产生，逆解中的关节速度可能急剧增大。阻尼可以限制速度峰值，但会带来一定跟踪误差；实际控制还应同时设置关节速度、位置和加速度限制。
+对本来能完成六维任务的模型，最小奇异值接近 0 表示某些末端方向接近失去可控性。但 `svd` 只返回 `min(6, nv)` 个奇异值；一个 `6×2` Jacobian 即使两个奇异值都非零，也不能完成任意六维任务。应先选定任务行、比较当前秩与该任务的正常最大秩，再谈奇异性。阻尼抑制速度放大但带来跟踪误差，不等价于显式速度上限。
 
 ### 图 3：奇异值与 DLS 的关系
 
@@ -228,9 +242,10 @@ $$
 ```
 
 ![良好条件与奇异位形下的奇异值和 DLS 增益对比](assets/jacobian-singularity.webp)
+
 *图 3　奇异位形会让最小奇异值塌缩；DLS 用阻尼抑制伪逆增益。*
 
-阻尼 $\lambda$ 不是越大越好：它越大，速度越平滑，但末端误差也越明显。常见做法是根据最小奇异值或关节速度余量自适应调节阻尼。
+阻尼 $\lambda$ 不是越大越好：它越大，求解速度通常越受抑制，但末端跟踪误差也可能更明显；这不等于保证时间上的连续平滑。常见做法是根据最小奇异值或关节速度余量自适应调节阻尼。
 
 ## 7. 用有限差分检查实现
 
@@ -253,6 +268,10 @@ for i in range(model.nv):
     J_pos_fd[:, i] = (frame_position(q_plus) - frame_position(q_minus)) / (2 * eps)
 
 print("位置雅可比最大误差:", np.max(np.abs(J[:3] - J_pos_fd)))
+np.testing.assert_allclose(J[:3], J_pos_fd, atol=1e-7, rtol=1e-6)
+# 差分函数修改了 data 的缓存，后续使用前恢复到原配置 q。
+pin.forwardKinematics(model, data, q)
+pin.updateFramePlacements(model, data)
 ```
 
 姿态的有限差分需要先选定旋转误差定义，不能直接对旋转矩阵逐元素相减；因此先验证位置部分通常更稳妥。
@@ -280,7 +299,7 @@ $$
 | 可操作性分析 | $JJ^T$、奇异值 | 判断哪些方向容易运动、哪些方向接近失去自由度，并用于姿态规划。 |
 | 参数标定 | $\delta x\approx J_p\delta p$ | 将连杆长度、零位偏差等参数误差映射到末端观测误差。这里的 $J_p$ 是对参数的灵敏度矩阵。 |
 | 接触与碰撞约束 | $v_c=J_c\dot q$ | 将接触点速度写成关节速度的线性约束，配合 QP、摩擦锥或避碰控制。 |
-| 动力学建模 | $M_x=J^{-T}M_qJ^{-1}$（满秩时） | 在任务空间表达惯量；实际实现常使用操作空间动力学和广义逆。 |
+| 动力学建模 | $\Lambda=(JM_q^{-1}J^T)^{-1}$ | 要求 $M_q$ 正定且选定任务的 $J$ 满行秩；冗余系统不应直接写 $J^{-1}$。 |
 
 ### 9.1 雅可比转置：末端力如何传到关节？
 
@@ -370,17 +389,24 @@ $$
 
 只控制位置时，可以直接使用 $e_p=p_d-p$。姿态属于旋转群，不能安全地用旋转矩阵逐元素相减。设当前位姿为 $M$、目标位姿为 $M_d$，一种常用做法是通过 SE(3) 对数映射得到六维误差：
 
-\`\`\`python
-current = data.oMf[frame_id]
-desired = pin.SE3(desired_rotation, desired_translation)
+```python
+pin.forwardKinematics(model, data, q)
+pin.updateFramePlacements(model, data)
+current = data.oMf[frame_id].copy()
+# 教学目标：保持姿态，沿世界 x 方向平移 2 cm；不保证目标可达。
+desired = pin.SE3(current.rotation.copy(), current.translation + np.array([0.02, 0, 0]))
 
 # LOCAL 误差：从当前 frame 到目标 frame 的相对变换
+
 error = pin.log6(current.inverse() * desired).vector
 gain = 2.0
 xi_des = gain * error
-\`\`\`
+J = pin.computeFrameJacobian(model, data, q, frame_id, pin.ReferenceFrame.LOCAL)
+```
 
-这里的 \`error\` 在局部坐标系表达，因此应配合 \`ReferenceFrame.LOCAL\` 的雅可比。若采用 \`LOCAL_WORLD_ALIGNED\`，误差也必须转换到相同表达方式。**误差、twist 和雅可比的参考系必须一致**，这是位姿 IK 中最容易遗漏的条件之一。
+这里的 `error` 在局部坐标系表达，因此应配合 `ReferenceFrame.LOCAL` 的雅可比。若采用 `LOCAL_WORLD_ALIGNED`，误差也必须转换到相同表达方式。**误差、twist 和雅可比的参考系必须一致**，这是位姿 IK 中最容易遗漏的条件之一。
+
+`gain * error` 是局部速度反馈示例，不是把 `log6` 残差的精确导数直接等同于几何 Jacobian。对该残差做 Gauss–Newton 等优化时，要进一步考虑 `Jlog6`；可对照 [Pinocchio 的 Jlog6 定义](https://docs.ros.org/en/ros2_packages/jazzy/api/pinocchio/generated/function_namespacepinocchio_1ab17df97cd3cbec6801112c074a8b5377.html)。
 
 ## 12. 7-DoF 的零空间控制
 
@@ -392,16 +418,24 @@ $$
 
 $N$ 是零空间投影矩阵，理想情况下 $JN=0$，因此第二项不会改变末端瞬时速度。下面以“把关节拉向行程中点”为例：
 
-\`\`\`python
+```python
 J_pinv = np.linalg.pinv(J)
+if any(joint.nq != 1 or joint.nv != 1 for joint in model.joints[1:]):
+    raise ValueError("本片段只演示固定基座标量关节")
+lower, upper = model.lowerPositionLimit, model.upperPositionLimit
+if not (np.isfinite(lower).all() and np.isfinite(upper).all() and np.all(lower < upper)):
+    raise ValueError("需要有界且有效的关节行程")
 q_mid = 0.5 * (model.lowerPositionLimit + model.upperPositionLimit)
 qdot_secondary = -0.2 * (q - q_mid)
 
 null_projector = np.eye(model.nv) - J_pinv @ J
 qdot = J_pinv @ xi_des + null_projector @ qdot_secondary
-\`\`\`
+np.testing.assert_allclose(J @ null_projector, 0, atol=1e-9)
+```
 
-这段代码只适用于 \`q\` 和速度向量可直接对应的固定基座标量关节模型。更一般的 Pinocchio 模型应使用 \`pin.difference\` 计算配置差，并处理无限或无效的关节限位。接近奇异位形时，零空间维度可能变化，实际控制器通常使用阻尼广义逆和速度限幅。
+这段代码只适用于 `q` 和速度向量可直接对应的固定基座标量关节模型。更一般的 Pinocchio 模型应使用 `pin.difference` 计算配置差，并处理无限或无效的关节限位。接近奇异位形时，零空间维度可能变化，实际控制器通常使用阻尼广义逆和速度限幅。
+
+不能把伪逆替换成阻尼逆后仍宣称“完全不影响主任务”：通常 $J(I-J^\#_\lambda J)\ne0$，次任务会向主任务泄漏；对合成速度逐轴裁剪也可能改变主任务。严格优先级需要相应的层级求解或约束设计。正常六维满行秩的 7-DoF 情形有一维零空间；秩降低时零空间维度会增加，但任务能力会减少。
 
 ## 13. 加速度级关系：为什么还有 $\dot J\dot q$？
 
@@ -413,16 +447,16 @@ $$
 
 其中 $J\ddot q$ 是关节加速度的直接贡献，$\dot J\dot q$ 是机器人运动过程中雅可比本身变化产生的偏置项。高速轨迹或操作空间动力学中忽略该项，会造成明显的加速度误差。
 
-Pinocchio 可以在完成运动学导数计算后读取 frame Jacobian 的时间变化率。不同版本的 Python 绑定接口可能略有差异，使用时应核对当前版本的 \`computeJointJacobiansTimeVariation\` 与 \`getFrameJacobianTimeVariation\` 文档。
+Pinocchio 可以在完成运动学导数计算后读取 frame Jacobian 的时间变化率。不同版本的 Python 绑定接口可能略有差异，使用时应核对当前版本的 `computeJointJacobiansTimeVariation` 与 `getFrameJacobianTimeVariation` 文档。
 
 ## 14. 如何判断计算结果是否合理？
 
 拿到一个 $6\times7$ 数组后，不应只检查形状。建议按以下顺序验证：
 
-1. **零速度检查**：\`qdot=0\` 时，\`J @ qdot\` 必须为零。
+1. **零速度检查**：`qdot=0` 时，`J @ qdot` 必须为零。
 2. **单列检查**：每次只给一个关节很小的速度，观察末端方向是否符合直觉。
-3. **有限差分检查**：用 \`pin.integrate\` 扰动配置，比较位置变化和 \`J[:3]\`。
-4. **接口交叉检查**：比较 \`J @ qdot\` 与 \`getFrameVelocity(...).vector\`。
+3. **有限差分检查**：用 `pin.integrate` 扰动配置，比较位置变化和 `J[:3]`。
+4. **接口交叉检查**：比较 `J @ qdot` 与 `getFrameVelocity(...).vector`。
 5. **参考系检查**：旋转机器人基座或末端后，确认向量表达随选定 reference frame 正确变化。
 6. **奇异性检查**：观察奇异值和关节速度是否同时出现异常，而不只看矩阵元素大小。
 
@@ -436,3 +470,9 @@ Pinocchio 可以在完成运动学导数计算后读取 frame Jacobian 的时间
 - TCP 有固定工具偏置，却读取了法兰 frame；应在 URDF 中添加工具 frame，或使用对应的 frame 变换。
 
 进一步的接口细节可参考 [Pinocchio 的 frame Jacobian 文档](https://docs.ros.org/en/rolling/p/pinocchio/generated/function_namespacepinocchio_1a10afd10589bb0c0984e504b3685e5910.html) 和 [Pinocchio 项目仓库](https://github.com/stack-of-tasks/pinocchio)。
+
+
+## 阅读自测与验收
+
+- 用同一 frame 和关节排列进行有限差分对照，逐步缩小扰动观察误差变化；扰动过小时舍入误差也会占优。
+- 比较 LOCAL 与 WORLD 表达时使用相应的伴随变换，不能直接比较两个不同参考系中的六维数组。

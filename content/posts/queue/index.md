@@ -1,244 +1,183 @@
 ---
 title: '无锁队列简介与实现示例'
 date: 2025-04-01
-lastmod: 2025-04-01
+lastmod: 2026-09-05
 draft: false
 tags: ["Lock-Free Queue", "Concurrency", "C++"]
 categories: ["编程开发"]
 authors: ["chase"]
-summary: "介绍无锁队列的并发特性、原子操作和常见应用，并给出 Python 与 C++ 生产者—消费者实现及运行示例。"
+summary: "区分线程安全、无锁和无等待，给出 Python 有界队列及 C++17 SPSC 环形队列，并解释 acquire/release 发布关系。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+description: "区分线程安全、无锁和无等待，给出 Python 有界队列及 C++17 SPSC 环形队列，并解释 acquire/release 发布关系。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "线程、原子操作与生产者消费者模型"
+reading_focus: "确认单生产者单消费者前提，先验证顺序与收尾，再分析内存序和吞吐。"
+related_posts:
+  - "/posts/cpp/smart-pointer"
+  - "/posts/dialout/dh"
 ---
 
+线程安全、无锁（lock-free）和无等待（wait-free）描述的是不同性质。选择队列前，先确定生产者和消费者数量、是否允许阻塞，以及队列满时如何处理。
 
-## 1. 简介
+## 1. 先明确并发契约
 
-无锁队列是一种数据结构，旨在在多线程环境中实现高效的并发访问，而无需使用传统的锁机制（如互斥锁）。无锁队列通过使用原子操作（如CAS，Compare-And-Swap）来确保线程安全，从而避免了锁带来的开销和潜在的死锁问题。
+| 方案 | 并发契约 | 适合的用途 |
+| --- | --- | --- |
+| Python `queue.Queue` | 多生产者、多消费者，内部使用锁 | 任务分发、背压、线程间通信 |
+| 有界 SPSC 环形队列 | 恰好一个生产者和一个消费者 | 采集线程向处理线程传递固定大小数据 |
+| 无锁 MPMC 队列 | 多生产者、多消费者 | 需要经过验证的算法和内存回收机制 |
 
-### 1.1 无锁队列的特点
+无锁保证系统整体持续取得进展，不保证每个线程都能在固定时间内完成操作，也不保证比互斥锁更快。CAS 只是原子操作；把头尾指针改成原子变量，仍不能解决节点生命周期问题。
 
-1. **高并发性**：无锁队列允许多个线程同时进行入队和出队操作，而不会相互阻塞，从而提高了系统的并发性能。
-2. **避免死锁**：由于不使用锁机制，无锁队列天然避免了死锁问题。
-3. **低延迟**：无锁队列的操作通常比使用锁的队列操作更快，因为它们避免了上下文切换和锁竞争。
+![SPSC 队列中生产者发布数据、消费者读取数据并释放槽位的顺序](assets/spsc-publication.webp "生产者先写数据再发布尾索引；消费者读完数据再发布头索引。图中的 acquire/release 分别建立数据可见性和槽位复用关系。")
 
-### 1.2 实现原理
+## 2. Python：使用标准库线程安全队列
 
-无锁队列通常基于以下原理实现：
+`queue.Queue` 内部使用锁，不能称为无锁队列。也不要先调用 `empty()` 再 `get()`：两次调用之间，队列状态可能被另一个线程改变。需要非阻塞取值时，直接调用 `get_nowait()` 并捕获 `queue.Empty`。[Python 官方文档](https://docs.python.org/3/library/queue.html)
 
-1. **原子操作**：使用原子操作（如CAS）来确保对共享数据的修改是线程安全的。
-2. **链表结构**：无锁队列通常使用链表结构，其中每个节点包含一个值和一个指向下一个节点的指针。
-3. **头尾指针**：队列维护两个原子指针，分别指向队列的头部和尾部，用于支持并发的入队和出队操作。
-
-### 1.3 常见应用
-
-无锁队列广泛应用于需要高并发和低延迟的场景，如：
-
-- 多线程任务调度
-- 并发数据处理
-- 网络服务器请求队列
-
-## 2. Python 无锁队列实现
+下面用有界队列和结束标记实现完整的生产者—消费者生命周期：
 
 ```python
-import threading
-import queue
-import time
+from queue import Queue
+from threading import Thread
 
-class LockFreeQueue:
-    def __init__(self):
-        self.queue = queue.Queue()
+tasks = Queue(maxsize=8)
+STOP = object()
 
-    def enqueue(self, value):
-        self.queue.put(value)
-        print(f"Enqueued: {value}")
 
-    def dequeue(self):
-        if not self.queue.empty():
-            value = self.queue.get()
-            print(f"Dequeued: {value}")
-            return value
-        return None
+def producer():
+    for value in range(10):
+        tasks.put(value)
+    tasks.put(STOP)
 
-def producer(queue, values):
-    for value in values:
-        queue.enqueue(value)
-        time.sleep(0.1)
 
-def consumer(queue, count):
-    for _ in range(count):
-        queue.dequeue()
-        time.sleep(0.1)
+def consumer():
+    while True:
+        value = tasks.get()
+        try:
+            if value is STOP:
+                return
+            print(f"Consumed: {value}")
+        finally:
+            tasks.task_done()
+
 
 if __name__ == "__main__":
-    queue = LockFreeQueue()
-    values_to_enqueue = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-    producer_thread = threading.Thread(target=producer, args=(queue, values_to_enqueue))
-    consumer_thread = threading.Thread(target=consumer, args=(queue, len(values_to_enqueue)))
-
-    producer_thread.start()
-    consumer_thread.start()
-
-    producer_thread.join()
-    consumer_thread.join()
+    writer = Thread(target=producer)
+    reader = Thread(target=consumer)
+    reader.start()
+    writer.start()
+    writer.join()
+    tasks.join()
+    reader.join()
 ```
 
-### 代码解析
+预期按顺序输出 `0` 到 `9`，随后两个线程正常退出。`maxsize` 限制积压任务数；队列满时，生产者阻塞形成背压。多个消费者通常需要分别接收到结束标记。
 
-1. **LockFreeQueue类**：
-   - 使用`queue.Queue`类来实现线程安全的队列。
-   - `enqueue`方法：将元素添加到队列中，并打印出添加的元素。
-   - `dequeue`方法：从队列中取出元素，并打印出取出的元素。
+## 3. C++17：有界 SPSC 环形队列
 
-2. **生产者和消费者函数**：
-   - `producer`函数：模拟生产者线程，向队列中添加元素。
-   - `consumer`函数：模拟消费者线程，从队列中取出元素。
-
-3. **主程序**：
-   - 创建并启动生产者和消费者线程，并等待它们完成。
-
-## 2. C++ 无锁队列实现
+下面的实现限定为一个生产者、一个消费者，预分配所有槽位，不涉及链表节点回收。`Slots` 个槽位保留一个空位，用于区分满与空，因此有效容量为 `Slots - 1`。
 
 ```cpp
+#include <array>
 #include <atomic>
+#include <cassert>
+#include <cstddef>
 #include <iostream>
 #include <thread>
-#include <vector>
-#include <chrono>
+#include <type_traits>
 
-template<typename T>
-class LockFreeQueue {
-private:
-    struct Node {
-        T value;
-        std::atomic<Node*> next;
-        Node(T val) : value(val), next(nullptr) {}
-    };
+template <typename T, std::size_t Slots>
+class SpscQueue {
+    static_assert(Slots >= 2);
+    static_assert(std::is_trivially_copyable_v<T>);
+    static_assert(std::is_nothrow_copy_assignable_v<T>);
+    static_assert(std::atomic<std::size_t>::is_always_lock_free,
+                  "This example requires lock-free index atomics.");
 
-    std::atomic<Node*> head;
-    std::atomic<Node*> tail;
+    std::array<T, Slots> data_{};
+    std::atomic<std::size_t> head_{0};  // Only the consumer writes.
+    std::atomic<std::size_t> tail_{0};  // Only the producer writes.
 
 public:
-    LockFreeQueue() {
-        Node* dummy = new Node(T());
-        head.store(dummy);
-        tail.store(dummy);
+    bool try_push(const T& value) noexcept {
+        const auto tail = tail_.load(std::memory_order_relaxed);
+        const auto next = (tail + 1) % Slots;
+        if (next == head_.load(std::memory_order_acquire)) {
+            return false;
+        }
+        data_[tail] = value;
+        tail_.store(next, std::memory_order_release);
+        return true;
     }
 
-    ~LockFreeQueue() {
-        while (Node* node = head.load()) {
-            head.store(node->next.load());
-            delete node;
+    bool try_pop(T& value) noexcept {
+        const auto head = head_.load(std::memory_order_relaxed);
+        if (head == tail_.load(std::memory_order_acquire)) {
+            return false;
         }
-    }
-
-    void enqueue(T value) {
-        Node* new_node = new Node(value);
-        Node* old_tail = nullptr;
-
-        while (true) {
-            old_tail = tail.load();
-            Node* next = old_tail->next.load();
-
-            if (old_tail == tail.load()) {
-                if (next == nullptr) {
-                    if (old_tail->next.compare_exchange_weak(next, new_node)) {
-                        break;
-                    }
-                } else {
-                    tail.compare_exchange_weak(old_tail, next);
-                }
-            }
-        }
-        tail.compare_exchange_weak(old_tail, new_node);
-    }
-
-    bool dequeue(T& result) {
-        Node* old_head = nullptr;
-
-        while (true) {
-            old_head = head.load();
-            Node* old_tail = tail.load();
-            Node* next = old_head->next.load();
-
-            if (old_head == head.load()) {
-                if (old_head == old_tail) {
-                    if (next == nullptr) {
-                        return false;
-                    }
-                    tail.compare_exchange_weak(old_tail, next);
-                } else {
-                    result = next->value;
-                    if (head.compare_exchange_weak(old_head, next)) {
-                        break;
-                    }
-                }
-            }
-        }
-        delete old_head;
+        value = data_[head];
+        head_.store((head + 1) % Slots, std::memory_order_release);
         return true;
     }
 };
 
-void producer(LockFreeQueue<int>& queue, const std::vector<int>& values) {
-    for (int value : values) {
-        queue.enqueue(value);
-        std::cout << "Enqueued: " << value << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-}
-
-void consumer(LockFreeQueue<int>& queue, int count) {
-    for (int i = 0; i < count; ++i) {
-        int value;
-        if (queue.dequeue(value)) {
-            std::cout << "Dequeued: " << value << std::endl;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-}
-
 int main() {
-    LockFreeQueue<int> queue;
-    std::vector<int> values_to_enqueue = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    SpscQueue<int, 64> queue;
+    constexpr int count = 100000;
+    long long sum = 0;
 
-    std::thread producer_thread(producer, std::ref(queue), std::ref(values_to_enqueue));
-    std::thread consumer_thread(consumer, std::ref(queue), values_to_enqueue.size());
+    std::thread writer([&] {
+        for (int i = 0; i < count; ++i) {
+            while (!queue.try_push(i)) {
+                std::this_thread::yield();
+            }
+        }
+    });
+    std::thread reader([&] {
+        for (int i = 0; i < count; ++i) {
+            int value;
+            while (!queue.try_pop(value)) {
+                std::this_thread::yield();
+            }
+            assert(value == i);  // Check order and detect missing values.
+            sum += value;
+        }
+    });
 
-    producer_thread.join();
-    consumer_thread.join();
-
-    return 0;
+    writer.join();
+    reader.join();
+    assert(sum == 1LL * count * (count - 1) / 2);
+    std::cout << "Consumed " << count << " values; sum = " << sum << '\n';
 }
 ```
 
-### 编译和运行
+保存为 `spsc_queue.cpp`：
 
-使用`g++`编译并运行代码：
-
-```sh
-g++ -std=c++11 -o lock_free_queue lock_free_queue.cpp -pthread
-./lock_free_queue
+```bash
+g++ -std=c++17 -O2 -Wall -Wextra -pthread spsc_queue.cpp -o spsc_queue
+./spsc_queue
 ```
 
-### 代码解析
+预期输出 `Consumed 100000 values; sum = 4999950000`。示例用自旋加 `yield` 演示重试；真实应用应根据延迟、CPU 占用和丢帧策略设计等待方式。
 
-1. **Node结构体**：
-   - `Node`结构体表示队列中的节点，每个节点包含一个值和一个原子指针`next`。
+## 4. 为什么需要 acquire/release
 
-2. **LockFreeQueue类**：
-   - `head`和`tail`是原子指针，分别指向队列的头部和尾部。
-   - `enqueue`方法：将新节点添加到队列的尾部，使用CAS操作保证线程安全。
-   - `dequeue`方法：从队列的头部移除节点，使用CAS操作保证线程安全。
+生产者写入普通数组后，通过 `tail.store(..., release)` 发布；消费者的 `tail.load(acquire)` 观察到该发布后，才能读取相应槽位。反向的 `head` 同步保证生产者不会覆盖消费者尚未读完的数据。各线程读取自己独占写入的索引时使用 `relaxed`，不承担跨线程发布职责。
 
-3. **生产者和消费者函数**：
-   - `producer`函数：模拟生产者线程，向队列中添加元素。
-   - `consumer`函数：模拟消费者线程，从队列中取出元素。
+队列析构之前，两个线程必须已经退出。不要把本例直接扩展成多生产者或多消费者：多个写者竞争同一索引会破坏所有权约定。
 
-4. **主程序**：
-   - 创建并启动生产者和消费者线程，并等待它们完成。
+## 5. 链表无锁队列的难点
 
-这个示例展示了如何使用C++11中的原子操作实现一个无锁队列，并使用多线程进行测试。
+出队成功后立即 `delete old_head` 是不安全的：其他线程可能仍持有该节点地址，即使随后会检查 CAS 是否成功，也可能已经读取了释放的内存。此类算法通常还需要 hazard pointers、epoch reclamation 等回收机制，并处理 ABA 问题。
+
+需要通用 MPMC 队列时，应选择具有明确并发契约和测试的实现。可对照 [Boost.Lockfree 文档](https://www.boost.org/doc/libs/latest/doc/html/lockfree.html)理解进展保证与内存分配限制。
+
+
+## 阅读自测与验收
+
+- 用很小的环形容量强制频繁绕回，检查满/空状态、顺序和总数；大容量下偶然成功不足以覆盖索引复用。
+- 严格保持单生产者、单消费者约束，测试结束时等待线程退出；无锁进展条件不是实时截止时间保证。

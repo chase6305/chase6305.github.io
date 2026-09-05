@@ -1,14 +1,21 @@
 ---
 title: "Diffusion 扩散模型入门指南：从 DDPM 到 Latent Diffusion 与 DiT"
 date: 2026-08-27
-lastmod: 2026-08-31
+lastmod: 2026-09-05
 draft: false
 tags: ["Diffusion Models", "Generative Models", "PyTorch"]
 categories: ["人工智能"]
 authors: ["chase"]
-summary: "从前向加噪和反向采样出发，系统讲解 DDPM、条件生成、Classifier-Free Guidance、DDIM、Latent Diffusion 与 Diffusion Transformer，并提供可运行的 PyTorch 示例。"
+summary: "从前向加噪与反向去噪推导 DDPM，串联 CFG、DDIM、Latent Diffusion 和 DiT，并提供二维 PyTorch 示例。"
 math: true
 toc: true
+description: "从前向加噪与反向去噪推导 DDPM，串联 CFG、DDIM、Latent Diffusion 和 DiT，并提供二维 PyTorch 示例。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "概率分布、神经网络与 PyTorch 张量"
+reading_focus: "先核对时间步、噪声目标和张量形状，再理解采样器与网络的分工。"
+related_posts:
+  - "/posts/ai/transformer-attention"
+  - "/posts/ai/distributed-training-memory"
 ---
 
 本文从“逐步破坏数据，再学习逆过程”这一核心直觉出发，推导 DDPM 的前向加噪、训练目标与反向采样，并介绍条件生成、DDIM、Latent Diffusion 和 Diffusion Transformer。文末提供一个可直接运行的二维生成示例。
@@ -28,7 +35,7 @@ toc: true
 - [符号表](#2-符号与张量)
 - [前向加噪](#3-前向扩散从数据到噪声)
 - [训练目标](#4-模型到底学习什么)
-- [去噪网络](#5-去噪网络unet-与-dit)
+- [去噪网络](#5-去噪网络u-net-与-dit)
 - [反向采样](#6-反向过程从噪声生成样本)
 - [条件生成与 CFG](#7-条件生成与-classifier-free-guidance)
 - [像素与潜空间扩散](#8-像素扩散与-latent-diffusion)
@@ -44,7 +51,7 @@ toc: true
 - **反向去噪（Reverse Denoising）**：训练神经网络预测噪声或等价目标，再从随机噪声逐步恢复出数据。
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/diffusion-overview.webp" alt="扩散模型前向加噪与反向去噪总览" width="960">
+  {{< post-image src="assets/diffusion-overview.webp" alt="扩散模型前向加噪与反向去噪总览" >}}
   <figcaption>
     <span class="article-figure__number">图 1</span>
     <span class="article-figure__text">训练时学习逆转已知的加噪过程；生成时从随机噪声开始反复调用去噪网络。</span>
@@ -101,7 +108,7 @@ $$
 $$
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/forward-noising.webp" alt="前向扩散的信号与噪声分量" width="960">
+  {{< post-image src="assets/forward-noising.webp" alt="前向扩散的信号与噪声分量" >}}
   <figcaption>
     <span class="article-figure__number">图 2</span>
     <span class="article-figure__text">时间越晚，原始信号分量越弱，噪声分量越强；精确系数以上方闭式公式为准。</span>
@@ -151,7 +158,7 @@ $$
 Linear schedule 是让 `βₜ` 线性变化，不代表 `ᾱₜ` 或 SNR 线性变化。Cosine schedule 通常让有效信号衰减更平缓。训练时还可采用 SNR-based Loss Weighting，避免某些噪声区间主导梯度。
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/schedule-and-snr.png" alt="Linear 与 Cosine 噪声调度的累计信号和信噪比曲线" width="960">
+  {{< post-image src="assets/schedule-and-snr.png" alt="Linear 与 Cosine 噪声调度的累计信号和信噪比曲线" >}}
   <figcaption>
     <span class="article-figure__number">图 3</span>
     <span class="article-figure__text">即使 β 线性增长，累计信号 ᾱ 和 SNR 也呈非线性变化；右图使用对数纵轴。</span>
@@ -298,7 +305,7 @@ $$
 U-Net 的 Encoder 逐步降低空间分辨率、扩大感受野；Decoder 恢复分辨率；Skip Connection 把高分辨率细节直接送到对应解码层。时间嵌入告诉每个残差块当前噪声等级，文本等条件可以通过 Cross-Attention 注入。
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/time-conditioned-unet.webp" alt="带时间嵌入和条件注意力的 U-Net" width="960">
+  {{< post-image src="assets/time-conditioned-unet.webp" alt="带时间嵌入和条件注意力的 U-Net" >}}
   <figcaption>
     <span class="article-figure__number">图 4</span>
     <span class="article-figure__text">U-Net 同时利用低分辨率语义、高分辨率细节、时间步以及可选条件。</span>
@@ -367,7 +374,7 @@ $$
 `NFE` 是 Number of Function Evaluations（去噪网络求值次数），可能小于训练使用的 `T`。例如模型训练了 1000 个离散噪声等级，推理时可以只选其中 20～50 个时间点。采样慢的根本原因是反向步骤互相依赖，不能像训练 batch 那样一次并行完成。
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/training-vs-sampling.webp" alt="Diffusion 训练迭代与反向采样对照" width="960">
+  {{< post-image src="assets/training-vs-sampling.webp" alt="Diffusion 训练迭代与反向采样对照" >}}
   <figcaption>
     <span class="article-figure__number">图 5</span>
     <span class="article-figure__text">训练对随机 t 做一次监督预测并更新参数；采样冻结参数，沿下降的推理时间表重复去噪。</span>
@@ -428,7 +435,7 @@ Seed 只固定随机数生成序列。要获得可复现结果，还需固定模
 Pixel-space Diffusion 直接在 `[B,3,H,W]` 图像上去噪，直观但计算昂贵。Latent Diffusion 先用 VAE Encoder 把图像压缩为较小潜变量 `z`，在潜空间扩散，最后由 VAE Decoder 恢复图像。
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/latent-diffusion.webp" alt="像素扩散与潜空间扩散对比" width="960">
+  {{< post-image src="assets/latent-diffusion.webp" alt="像素扩散与潜空间扩散对比" >}}
   <figcaption>
     <span class="article-figure__number">图 6</span>
     <span class="article-figure__text">潜空间扩散把主要去噪计算放到更小的表示中；VAE 负责图像与潜变量之间的转换。</span>
@@ -528,9 +535,15 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 # T = Number of Timesteps；D = Time Embedding Dimension
 T = 100
 D = 64
-beta = torch.linspace(1e-4, 2e-2, T, device=device)
+# 缩短到 100 步时不能直接照搬 1000 步线性 beta 的端点。
+# 从 cosine 累计量反推出每步 beta，再重算实际累计量。
+grid = torch.linspace(0, 1, T + 1, device=device, dtype=torch.float64)
+f = torch.cos((grid + 0.008) / 1.008 * math.pi / 2).square()
+f = f / f[0]
+beta = (1 - f[1:] / f[:-1]).clamp(1e-8, 0.999).float()
 alpha = 1.0 - beta
 alpha_bar = torch.cumprod(alpha, dim=0)
+assert alpha_bar[-1] < 1e-5  # 末端应接近采样使用的标准高斯先验
 alpha_bar_prev = F.pad(alpha_bar[:-1], (1, 0), value=1.0)
 posterior_var = beta * (1.0 - alpha_bar_prev) / (1.0 - alpha_bar)
 
@@ -620,7 +633,13 @@ plt.savefig("diffusion_2d_result.png", dpi=160)
 print("saved: diffusion_2d_result.png")
 ```
 
-首次实验建议依次修改：`T=50/200`、训练步数、`beta` 范围、网络宽度，并同时观察 Loss 和最终分布；Loss 较低不保证采样轨迹一定正确。
+首次实验建议依次修改：`T=50/200`、训练步数和网络宽度，并同时观察 Loss 和最终分布；Loss 较低不保证采样轨迹一定正确。改变步数时应重新构造完整噪声调度，而不是只截短原数组。
+
+![CPU 上训练 3000 步后的二维 DDPM：训练数据与 4000 个生成样本的分布对比](assets/ddpm-2d-cosine-cpu.webp "实际运行结果：PyTorch 2.8.0、CPU、seed=0、100 个扩散步和 3000 个训练步。此图由上面代码绘制，不是 AI 生成的实验结果；生成簇之间仍有少量过渡点，不能仅凭外观宣称分布完全一致。")
+
+本次运行的 4000 个生成点均为有限值，平均半径约 4.046；训练簇中心半径为 4，但带噪样本的平均半径并不严格等于 4。这里只提供一个可复核的教学运行，不作为跨设备性能或生成质量基准。
+
+这里采用 [Improved DDPM](https://arxiv.org/abs/2102.09672) 的 cosine 调度思路。原来的 100 步线性 `beta=1e-4…0.02` 会留下约 0.364 的累计信号系数，对于半径 4 的训练簇并不接近标准高斯；直接从标准高斯采样会造成训练与采样起点不一致。上例末端 `alpha_bar` 约为 2.43e-7，只修正先验匹配，不代表少量训练后就有高质量生成。应另外检查各簇覆盖率与样本半径，不能只看平均 loss。
 
 ### 10.3 从二维代码迁移到图像
 
@@ -731,3 +750,9 @@ U-Net/DiT 预测噪声等目标；Scheduler 保存噪声强度及相关系数；
 - [Scalable Diffusion Models with Transformers（DiT）](https://arxiv.org/abs/2212.09748)
 
 论文适合用于追溯定义和设计动机；初学时不必从证明开始，可先将本文公式逐行对应到二维代码，再回看论文中的完整推导。
+
+
+## 阅读自测与验收
+
+- 固定干净样本、噪声和时间步，检查前向加噪公式的 shape 与量级；t 的编号方式应与噪声表索引一致。
+- 先确认训练目标是预测噪声、干净样本还是 v，再检查采样更新式；换采样器时不能只替换步数而保留不匹配的系数。

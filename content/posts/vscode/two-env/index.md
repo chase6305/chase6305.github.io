@@ -1,99 +1,75 @@
 ---
 title: VScode终端出现显示两个环境名问题的解决方案
 date: 2025-02-07
-lastmod: 2025-02-07
+lastmod: 2026-09-05
 draft: false
 tags: ["VS Code", "Conda", "Environment Management"]
 categories: ["系统与工具"]
 authors: ["chase"]
-summary: VScode终端出现显示两个环境名问题的解决方案
+summary: "定位 VS Code 终端双环境提示，核对解释器和 Conda 状态，区分新旧自动激活设置与 shell 提示符问题。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+description: "定位 VS Code 终端双环境提示，核对解释器和 Conda 状态，区分新旧自动激活设置与 shell 提示符问题。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "Conda、venv 与 VS Code 设置"
+reading_focus: "以 sys.executable 为准，统一环境激活入口，再检查新建终端的结果。"
+related_posts:
+  - "/posts/python/version"
+  - "/posts/vscode/debug"
 ---
 
+## 两个提示符不等于两个解释器同时运行
 
-在使用 Visual Studio Code (VS Code) 进行 Python 开发时，有时会遇到终端中显示两个环境名的问题。这可能会导致混淆，并影响开发体验。本文将介绍如何通过修改 VS Code 的设置文件来解决这个问题。
+终端出现 `(base) (myenv)` 可能是继承环境、重复激活或提示符未恢复。先检查实际解释器，不只看括号里的名称：
 
 ```bash
-(base) (myenv) user@hostname:~/project$
+command -v python
+python -c "import sys; print(sys.executable); print(sys.prefix)"
+python -m pip --version
+printf 'CONDA_PREFIX=%s\nCONDA_SHLVL=%s\nVIRTUAL_ENV=%s\n' "$CONDA_PREFIX" "$CONDA_SHLVL" "$VIRTUAL_ENV"
 ```
 
-## 问题描述
-在 VS Code 中，当你打开终端并激活 Python 环境时，可能会看到类似以下的输出：
+对比 VS Code 状态栏所选解释器与终端中的 `sys.executable`。编辑器分析、调试器和 shell 可以各自使用不同的环境，需要分别确认。
 
-这里显示了两个环境名 **(base)** 和 **(myenv)** ，这可能会让人困惑，不知道当前到底使用的是哪个环境。
+## 避免多个入口重复激活
 
-## 解决方案
-我们可以通过修改 VS Code 的设置文件 **settings.json** 来解决这个问题。具体步骤如下：
+常见入口包括 shell 启动脚本里的 `conda activate`、VS Code 自动激活，以及手动 `source .venv/bin/activate`。保留一套明确的管理方式即可，不必因此关闭整个 shell integration 功能。
 
-打开 VS Code。
+若选择手动激活，在工作区 `.vscode/settings.json` 中使用：
 
-安装并启用 Python 插件（如果尚未安装）。
-
-打开 VS Code 的设置文件 **settings.json**。
-
-你可以通过以下步骤打开 **settings.json** 文件：
-
-点击左下角的齿轮图标，然后选择“**设置**”。
-在设置界面右上角点击打开 **JSON** 设置文件的图标。
-在 **settings.json** 文件中添加以下配置：
-
-```yaml
-"python.terminal.activateEnvironment": false,
-"terminal.integrated.shellIntegration.enabled": false,
-```
-
-这两行配置的作用如下：
-
-**"python.terminal.activateEnvironment": false** 禁用 Python 插件自动激活环境的功能。
-**"terminal.integrated.shellIntegration.enabled": false** 禁用终端集成的 shell 环境激活功能。
-保存 **settings.json** 文件。
-
-## 示例
-以下是一个完整的 settings.json 文件示例：
-
-```yaml
+```jsonc
 {
-    // 其他配置项...
-    "python.terminal.activateEnvironment": false,
-    "terminal.integrated.shellIntegration.enabled": false
+  "python.terminal.activateEnvironment": false,
+  "python-envs.terminal.autoActivationType": "off"
 }
 ```
 
-## 效果
-完成上述配置后，当你在 VS Code 中打开终端并激活 Python 环境时，应该只会显示一个环境名。例如：
+第一项用于传统 Python 扩展；第二项用于 Python Environments 扩展，配置后会覆盖对应的旧设置。未安装后者时，以已安装扩展实际提供的设置为准。
+
+保存后关闭旧终端，再新建终端验证。设置不会自动清理已经被激活过的 shell。
+
+## Conda 的 base 自动激活
+
+不希望新终端进入 base 时，在终端执行一次：
 
 ```bash
-(myenv) user@hostname:~/project$
-```
-
-这样可以避免显示两个环境名的问题，提升开发体验。
-
-## 为了避免自动激活环境
-你可以在~/.bashrc文件中在初始化conda环境后, 添加:
-
-```bash
-conda config --set auto_activate_base False
-```
-即
-```bash
-# 其他配置
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/chase/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/chase/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/chase/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/chase/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-conda activate py39 # 这里你可以自动选用你默认使用的环境
 conda config --set auto_activate_base false
 ```
+
+这是修改 Conda 配置的命令，不应每次 shell 启动都运行。检查 `.bashrc` / `.zshrc` 中是否另外写了 `conda activate myenv`；不要盲目复制其他机器的 Conda 绝对路径或删除整个初始化块。
+
+若只想项目使用某环境，可以在新终端中手动 `conda activate myenv`。若采用 VS Code 自动激活，则移除自己添加的重复激活逻辑，并保留编辑器自动激活设置。
+
+## 验收
+
+新终端、运行 Python 文件和调试会话分别打印 `sys.executable`，都应指向目标环境；`python -m pip --version` 也应匹配。若路径正确但提示符仍重复，继续排查 shell 主题的 prompt 拼接，而不是再次重装解释器。
+
+参考：[VS Code Python 环境管理](https://code.visualstudio.com/docs/python/environments)、[Python 设置参考](https://code.visualstudio.com/docs/python/settings-reference)。
+
+
+## 阅读自测与验收
+
+- 比较新终端、已有终端与调试启动中的 sys.executable；提示符显示两个环境名不一定意味着 Python 真在叠加运行。
+- 修改自动激活设置后创建新终端复测，并检查 shell 启动脚本；关闭 shell integration 不是关闭环境激活的等价操作。

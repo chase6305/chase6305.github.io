@@ -1,0 +1,9 @@
+{{- with partial "blog/topic-data.html" . -}}
+  <nav class="blog-topic-nav" aria-label="专题阅读顺序" lang="zh-CN">
+    <p><a href="{{ relURL "learning-paths/" }}#{{ .topic.id }}">{{ .topic.title }}</a> · 第 {{ .position }} / {{ .count }} 篇 <span>（建议顺序，可按需跳读）</span></p>
+    <div class="blog-topic-nav__links">
+      {{- with .previous }}<a rel="prev" href="{{ .RelPermalink }}"><small>← 专题上一篇</small><span>{{ .Title }}</span></a>{{ end -}}
+      {{- with .next }}<a rel="next" href="{{ .RelPermalink }}"><small>专题下一篇 →</small><span>{{ .Title }}</span></a>{{ end -}}
+    </div>
+  </nav>
+{{- end -}}

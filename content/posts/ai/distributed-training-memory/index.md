@@ -1,14 +1,21 @@
 ---
 title: "大模型分布式训练与显存优化指南：从 DDP、ZeRO 到 FSDP"
 date: 2026-08-27
-lastmod: 2026-08-31
+lastmod: 2026-09-05
 draft: false
 tags: ["Distributed Training", "GPU Memory", "PyTorch"]
 categories: ["人工智能"]
 authors: ["chase"]
-summary: "从训练显存账本出发，系统解释 DDP、NCCL 集合通信、ZeRO 与 FSDP，并梳理混合精度、Activation Checkpointing、通信隐藏和显存排错方法。"
+summary: "建立训练显存账本，解释 DDP、NCCL、ZeRO 与 FSDP 的数据所有权，并梳理混合精度、重计算和 OOM 排查。"
 math: true
 toc: true
+description: "建立训练显存账本，解释 DDP、NCCL、ZeRO 与 FSDP 的数据所有权，并梳理混合精度、重计算和 OOM 排查。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "PyTorch 训练循环与 GPU 基础"
+reading_focus: "沿参数、梯度、优化器状态和激活的生命周期追踪显存，不只计算权重大小。"
+related_posts:
+  - "/posts/cuda/warp"
+  - "/posts/ai/transformer-attention"
 ---
 
 本文从显存账本出发，解释 DP、DDP、NCCL 集合通信、ZeRO-1/2/3 与 PyTorch FSDP，并讨论混合精度、Activation Checkpointing、通信隐藏和显存碎片。重点不是背术语，而是回答两个工程问题：**每张 GPU 此刻持有什么，以及下一次通信为什么发生。**
@@ -84,7 +91,7 @@ $$
 | BF16 / FP16 | 2 | 2 GB |
 | FP8 / INT8 | 1 | 1 GB（仅理论原始数据，不含缩放元数据） |
 
-所以你的计算是正确的：
+按上述十进制单位计算：
 
 $$
 1\text{B}\times\frac{16}{8}=2\text{ GB},\qquad
@@ -156,6 +163,12 @@ def model_state_gb(
     adam_v_bytes=4,
 ):
     """只估算持久模型状态；不含激活、临时张量、通信 buffer 和碎片。"""
+    import math
+    if isinstance(world_size, bool) or not isinstance(world_size, int) or world_size <= 0:
+        raise ValueError("world_size must be a positive integer")
+    values = (params_billion, param_bytes, grad_bytes, master_bytes, adam_m_bytes, adam_v_bytes)
+    if any(not math.isfinite(value) or value < 0 for value in values):
+        raise ValueError("parameter count and byte sizes must be finite and nonnegative")
     n = params_billion * 1e9
     P = n * param_bytes / 1e9
     G = n * grad_bytes / 1e9
@@ -220,7 +233,7 @@ print(f"saved: {output.resolve()}")
 ```
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/zero-memory-comparison.png" alt="1B 模型在 DDP 与 ZeRO 各阶段的每卡持久状态显存" width="900">
+  {{< post-image src="assets/zero-memory-comparison.png" alt="1B 模型在 DDP 与 ZeRO 各阶段的每卡持久状态显存" >}}
   <figcaption>
     <span class="article-figure__number">图 1</span>
     <span class="article-figure__text">8 卡时 P/G/O 的理论常驻显存；不包含激活、临时张量、通信缓冲和参数 All-Gather 峰值。</span>
@@ -294,7 +307,7 @@ $$
 NCCL（NVIDIA Collective Communications Library）是面向 NVIDIA GPU 的集合通信库。它负责高效执行 All-Reduce、All-Gather、Reduce-Scatter、Broadcast 等原语；DDP/FSDP 是训练策略，NCCL 是它们常用的通信后端，不要把两者视作同一层组件。
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/collective-communications.webp" alt="All-Reduce、Reduce-Scatter 与 All-Gather" width="960">
+  {{< post-image src="assets/collective-communications.webp" alt="All-Reduce、Reduce-Scatter 与 All-Gather" >}}
   <figcaption>
     <span class="article-figure__number">图 2</span>
     <span class="article-figure__text">All-Reduce 让所有 Rank 得到相同归约结果；Reduce-Scatter 只保留各自结果分片；All-Gather 将各分片拼回完整张量。</span>
@@ -323,7 +336,7 @@ $$
 #### Broadcast：一份数据复制给所有 Rank
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/collective-broadcast.png" alt="四 Rank Broadcast 前后数据所有权" width="960">
+  {{< post-image src="assets/collective-broadcast.png" alt="四 Rank Broadcast 前后数据所有权" >}}
   <figcaption>
     <span class="article-figure__number">图 3</span>
     <span class="article-figure__text">Broadcast 只有 source Rank 提供有效输入，操作后每个 Rank 都得到相同的 X；它不做求和。</span>
@@ -335,7 +348,7 @@ $$
 #### All-Gather：分片拼成完整张量
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/collective-all-gather.png" alt="四 Rank All-Gather 前后数据所有权" width="960">
+  {{< post-image src="assets/collective-all-gather.png" alt="四 Rank All-Gather 前后数据所有权" >}}
   <figcaption>
     <span class="article-figure__number">图 4</span>
     <span class="article-figure__text">Rank 0～3 分别提供 A/B/C/D，所有 Rank 最终按 Rank 顺序得到完整的 `[A|B|C|D]`。</span>
@@ -347,7 +360,7 @@ All-Gather 不做数值归约，只做收集和拼接。若每 Rank 输入 `M/K`
 #### Reduce-Scatter：先归约，再分发结果分片
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/collective-reduce-scatter.png" alt="四 Rank Reduce-Scatter SUM 数值示例" width="960">
+  {{< post-image src="assets/collective-reduce-scatter.png" alt="四 Rank Reduce-Scatter SUM 数值示例" >}}
   <figcaption>
     <span class="article-figure__number">图 5</span>
     <span class="article-figure__text">四个向量先逐元素求和为 `[1111,2222,3333,4444]`，随后 Rank 0～3 各保留一个不同分片。</span>
@@ -359,7 +372,7 @@ Reduce-Scatter 同时完成 Reduction 和 Sharding。它非常适合 FSDP/ZeRO �
 #### All-Reduce：每个 Rank 都得到完整归约结果
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/collective-all-reduce.png" alt="四 Rank All-Reduce SUM 数值示例" width="960">
+  {{< post-image src="assets/collective-all-reduce.png" alt="四 Rank All-Reduce SUM 数值示例" >}}
   <figcaption>
     <span class="article-figure__number">图 6</span>
     <span class="article-figure__text">四个输入逐元素求和后，每个 Rank 都获得相同的完整结果 `[1111,2222,3333,4444]`。</span>
@@ -439,7 +452,7 @@ $$
 ZeRO 的核心是消除数据并行 Rank 之间重复保存的模型状态：
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/ddp-zero-sharding.webp" alt="DDP 与 ZeRO 三阶段模型状态分片" width="960">
+  {{< post-image src="assets/ddp-zero-sharding.webp" alt="DDP 与 ZeRO 三阶段模型状态分片" >}}
   <figcaption>
     <span class="article-figure__number">图 7</span>
     <span class="article-figure__text">ZeRO-1 分优化器，ZeRO-2 再分梯度，ZeRO-3 进一步分参数；图中不包含激活和临时峰值。</span>
@@ -656,7 +669,7 @@ $$
 若某个 Bucket 的通信时间小于其后可并行的计算窗口，它大部分可以被隐藏；最后一个 Bucket、过大的 Collective 或慢网络通常形成 exposed communication tail。
 
 <figure class="article-figure">
-  <img data-zoomable loading="lazy" src="assets/compute-communication-overlap.webp" alt="串行通信与计算通信重叠时间线" width="960">
+  {{< post-image src="assets/compute-communication-overlap.webp" alt="串行通信与计算通信重叠时间线" >}}
   <figcaption>
     <span class="article-figure__number">图 8</span>
     <span class="article-figure__text">Bucket 就绪后立即通信可与后续反向计算重叠；真正增加 Step Time 的主要是未被覆盖的通信尾部。</span>
@@ -798,3 +811,9 @@ NCCL:    通信后端，不是训练并行策略
 - [NVIDIA NCCL Collective Operations](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html)
 - [DeepSpeed ZeRO Documentation](https://deepspeed.readthedocs.io/en/stable/zero3.html)
 - [PyTorch CUDA Memory Management](https://docs.pytorch.org/docs/stable/cuda.html#memory-management)
+
+
+## 阅读自测与验收
+
+- 按实际 dtype 分别列出参数、梯度、优化器状态和激活；把估算与同一训练阶段的峰值测量比较，不混用 GB 与 GiB。
+- 保存并恢复一次小规模训练，检查步数、优化器状态及各 Rank 的一致性；只恢复权重不能证明训练可续跑。

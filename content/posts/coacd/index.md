@@ -1,201 +1,126 @@
 ---
 title: "CoACD: 基于碰撞感知凹性与树搜索的近似凸分解"
 date: 2025-04-03
-lastmod: 2025-04-03
+lastmod: 2026-09-05
 draft: false
 tags: ["CoACD", "Mesh Processing", "Collision Geometry"]
 categories: ["三维视觉"]
 authors: ["chase"]
-summary: "演示 CoACD 网格近似凸分解、Open3D 可视化和参数配置，并比较其与 V-HACD 的算法特点和适用场景。"
+summary: "演示 CoACD 网格检查、凸分解、逐块导出与 Open3D 可视化，说明阈值单位、预处理和物理引擎加载边界。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+description: "演示 CoACD 网格检查、凸分解、逐块导出与 Open3D 可视化，说明阈值单位、预处理和物理引擎加载边界。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "Python、三角网格与碰撞几何"
+reading_focus: "保存原始模型和每次参数，检查功能孔洞在最终引擎中是否仍然存在。"
+related_posts:
+  - "/posts/thesis/coacd"
+  - "/posts/open3d/introduction"
 ---
 
-## CoACD 基于碰撞感知凹性与树搜索的近似凸分解
-- [CoACD 官方文档](https://colin97.github.io/CoACD/)
+## 先确认输入与输出的用途
 
-CoACD（Convex Approximation of Complex Decompositions）是一种用于将复杂网格分解为多个凸包的算法, 专为 3D 网格设计了近似凸分解算法，强调在保持物体间潜在碰撞条件的同时减少组件数量，优化了后续应用中的精细且高效的对象交互。该算法在计算机图形学、物理模拟和碰撞检测等领域有广泛应用。
+CoACD 是面向碰撞几何的近似凸分解方法。输入是三角网格，输出是多个凸组件；它不是纹理简化器，也不保证物体所有功能孔洞在任意阈值下都保留。
 
-本文档将详细介绍如何使用 Open3D 可视化 CoACD 凸包分解前后的网格。
+本文演示 Python 分解与 Open3D 检查。原有对比图继续作为历史结果展示，不以 AI 生成图模拟分解效果。
 
-### 1. 安装依赖
-首先，确保你已经安装了必要的依赖库：
+## 安装与版本记录
+
 ```bash
-pip install trimesh open3d coacd
+python -m pip install coacd trimesh open3d numpy
+python -m pip show coacd trimesh open3d
 ```
 
-### 2. 加载和处理网格
-我们将使用 `trimesh` 加载一个网格文件，并使用 `coacd` 进行凸包分解。
+在独立环境中运行，记录版本和输入模型。无桌面环境可完成分解与导出，但 Open3D 交互窗口还需要可用图形后端。
+
+## 一个可复用的分解脚本
+
+保存为 `decompose.py`，运行 `python decompose.py doll.obj output-parts`。输出目录必须是新目录，避免覆盖旧实验。
 
 ```python
+import argparse
+import inspect
+from pathlib import Path
+from time import perf_counter
+
 import coacd
-import trimesh
-import open3d as o3d
 import numpy as np
-
-# 加载输入的网格文件
-input_file = 'doll.obj'
-mesh = trimesh.load(input_file, force="mesh")
-
-# 将加载的网格转换为 coacd 的 Mesh 对象
-mesh_coacd = coacd.Mesh(mesh.vertices, mesh.faces)
-
-# 运行 CoACD 算法，返回凸包列表
-parts = coacd.run_coacd(mesh_coacd)
-```
-
-### 3. 使用 Open3D 可视化原始网格
-我们将使用 Open3D 可视化原始的网格。
-
-```python
-# 使用 open3d 可视化原始网格
-original_mesh = o3d.geometry.TriangleMesh(
-    vertices=o3d.utility.Vector3dVector(mesh.vertices),
-    triangles=o3d.utility.Vector3iVector(mesh.faces)
-)
-original_mesh.paint_uniform_color([0.5, 0.5, 0.5])
-o3d.visualization.draw_geometries([original_mesh], window_name="Original Mesh")
-```
-
-### 4. 使用 Open3D 可视化凸包分解后的网格
-接下来，我们将使用 Open3D 可视化凸包分解后的网格。
-
-```python
-# 使用 open3d 可视化凸包分解后的网格
-convex_meshes = []
-for part in parts:
-    vertices = part[0]
-    faces = part[1]
-    convex_mesh = o3d.geometry.TriangleMesh(
-        vertices=o3d.utility.Vector3dVector(vertices),
-        triangles=o3d.utility.Vector3iVector(faces)
-    )
-    convex_mesh.paint_uniform_color(np.random.random(3))
-    convex_meshes.append(convex_mesh)
-
-o3d.visualization.draw_geometries(convex_meshes, window_name="Convex Decomposition")
-```
-### 5. 整体示例
-```python
-import coacd
-import trimesh
 import open3d as o3d
-import numpy as np
+import trimesh
 
-# 加载输入的网格文件
-input_file = 'doll.obj'
-mesh = trimesh.load(input_file, force="mesh")
+parser = argparse.ArgumentParser()
+parser.add_argument("mesh")
+parser.add_argument("output")
+parser.add_argument("--show", action="store_true")
+args = parser.parse_args()
 
-# 将加载的网格转换为 coacd 的 Mesh 对象
-mesh_coacd = coacd.Mesh(mesh.vertices, mesh.faces)
+mesh = trimesh.load(args.mesh, force="mesh")
+if not isinstance(mesh, trimesh.Trimesh) or mesh.is_empty:
+    raise ValueError("需要非空三角网格")
+if not np.isfinite(mesh.vertices).all() or mesh.faces.shape[1] != 3:
+    raise ValueError("输入包含非有限坐标或非三角面")
+print("bounds:", mesh.bounds, "watertight:", mesh.is_watertight)
+print("run_coacd:", inspect.signature(coacd.run_coacd))
 
-# 运行 CoACD 算法，返回凸包列表
-parts = coacd.run_coacd(mesh_coacd)
-
-# 使用 open3d 可视化原始网格
-original_mesh = o3d.geometry.TriangleMesh(
-    vertices=o3d.utility.Vector3dVector(mesh.vertices),
-    triangles=o3d.utility.Vector3iVector(mesh.faces)
+destination = Path(args.output)
+destination.mkdir(parents=True, exist_ok=False)
+start = perf_counter()
+parts = coacd.run_coacd(
+    coacd.Mesh(mesh.vertices, mesh.faces),
+    threshold=0.05,
+    seed=42,
 )
-original_mesh.paint_uniform_color([0.5, 0.5, 0.5])
-o3d.visualization.draw_geometries([original_mesh], window_name="Original Mesh")
+if not parts:
+    raise RuntimeError("分解没有返回组件")
+print(f"parts={len(parts)}, seconds={perf_counter() - start:.3f}")
 
-# 使用 open3d 可视化凸包分解后的网格
-convex_meshes = []
-for part in parts:
-    vertices = part[0]
-    faces = part[1]
-    convex_mesh = o3d.geometry.TriangleMesh(
-        vertices=o3d.utility.Vector3dVector(vertices),
-        triangles=o3d.utility.Vector3iVector(faces)
-    )
-    convex_mesh.paint_uniform_color(np.random.random(3))
-    convex_meshes.append(convex_mesh)
-
-o3d.visualization.draw_geometries(convex_meshes, window_name="Convex Decomposition")
+rng = np.random.default_rng(42)
+visuals = []
+for index, (vertices, faces) in enumerate(parts):
+    part = trimesh.Trimesh(vertices=vertices, faces=faces, process=False)
+    part.export(destination / f"part-{index:03d}.obj")
+    if args.show:
+        visual = o3d.geometry.TriangleMesh(
+            o3d.utility.Vector3dVector(vertices),
+            o3d.utility.Vector3iVector(faces),
+        )
+        visual.compute_vertex_normals()
+        visual.paint_uniform_color(rng.uniform(0.25, 0.9, 3))
+        visuals.append(visual)
+if args.show:
+    o3d.visualization.draw_geometries(visuals, window_name="CoACD parts")
 ```
-![ori_coacd](ori_coacd.jpg)
 
-![coacd](coacd.jpg)
+每块单独导出，便于在物理引擎中配置为多个碰撞体。如果把所有块合成一个资产，而引擎又对整个资产取一次凸包，孔洞会再次消失。
 
-## 5. CoACD 与 V-HACD 的区别
-CoACD（Convex Approximation of Complex Decompositions）和 V-HACD（Volumetric Hierarchical Approximate Convex Decomposition）都是用于将复杂网格分解为多个凸包的算法。尽管它们的目标相似，但在实现细节和应用场景上存在一些区别。
+![分解前的原始网格历史截图](ori_coacd.jpg)
 
-### 5.1 算法原理对比
-- **CoACD**：
-  - **初始分解**：通过初步分解生成初始的凸包集合。
-  - **迭代优化**：通过迭代优化过程，逐步改进凸包的质量，使其更好地逼近原始网格。
-  - **合并与细化**：在优化过程中，可能会对凸包进行合并或细化，以提高分解的质量。
+![CoACD 分解后以不同颜色显示的凸组件历史截图](coacd.jpg)
 
-- **V-HACD**：
-  - **体积分解**：基于体积的层次化分解方法，将网格分解为多个体积块。
-  - **层次化聚类**：通过层次化聚类算法，将体积块聚合成凸包。
-  - **细化与优化**：对生成的凸包进行细化和优化，以提高分解的质量。
+## 调参先看什么
 
-### 5.2 适用场景
-- **CoACD**：
-  - 更适合需要高精度凸包分解的场景。
-  - 在需要迭代优化和细化的应用中表现更好。
-  - 适用于需要动态调整凸包数量和精度的场景。
+| 参数或设置 | 作用 | 注意事项 |
+| --- | --- | --- |
+| `threshold` | 控制允许的近似凹度 | 先确认归一化或真实单位模式 |
+| `preprocess_mode` | 控制流形预处理 | 关闭前确认输入是有效实体，预处理也可能改变细节 |
+| `mcts_iterations` / `mcts_max_depth` | 控制搜索预算 | 更多计算不等于每个模型都获得更好结果 |
+| `max_convex_hull` | 限制最终组件数量 | 强制合并可能超出原凹度阈值 |
+| `seed` | 固定随机采样 | 同时固定库版本和其他参数 |
 
-- **V-HACD**：
-  - 更适合需要快速生成凸包分解的场景。
-  - 在处理大规模网格时表现更好。
-  - 适用于需要层次化分解和聚类的应用。
+Python 参数名与命令行短选项不同，使用 `inspect.signature` 检查已安装版本，不沿用未定义的 `max_iter`。新版本提供 `real_metric=True` 时，可在米制网格上按真实长度设置阈值；旧版本未必支持，默认归一化模式不能直接把 `0.05` 解释成 5 cm。
 
-### 5.3 性能对比
-- **CoACD**：
-  - 由于迭代优化过程，计算时间可能较长。
-  - 生成的凸包质量较高，适合高精度需求。
+以上接口与模式说明见[作者仓库的参数文档](https://github.com/SarahWeiii/CoACD)。
 
-- **V-HACD**：
-  - 计算速度较快，适合实时应用。
-  - 生成的凸包数量较多，适合大规模网格。
+## 与 V-HACD 如何比较
 
-### 5.4 使用方法
-- **CoACD**：
-  ```python
-  import coacd
-  import trimesh
+两者都用凸组件近似非凸网格。CoACD 重点在碰撞感知度量、直接网格切割与多步搜索；不能因此一概推断它总是更精确，或 V-HACD 可以实时处理所有大网格。
 
-  # 加载网格
-  mesh = trimesh.load('doll.obj', force="mesh")
-  mesh_coacd = coacd.Mesh(mesh.vertices, mesh.faces)
+公平比较需固定输入尺度、预处理、组件/顶点预算，并记录具体实现与版本。除了耗时和组件数，还要测试关键孔洞能否通过、抓手接触是否合理，以及物理引擎加载后是否保持这些性质。
 
-  # 运行 CoACD
-  parts = coacd.run_coacd(mesh_coacd)
-  ```
 
-- **V-HACD**：
-  ```python
-  import pyvhacd
-  import trimesh
+## 阅读自测与验收
 
-  # 加载网格
-  mesh = trimesh.load('doll.obj', force="mesh")
-
-  # 运行 V-HACD
-  vhacd = pyvhacd.VHACD()
-  vhacd.compute(mesh.vertices, mesh.faces)
-  parts = vhacd.get_convex_hulls()
-  ```
-
-### 5.5 参数设置
-- **CoACD**：
-  - `max_convex_hull`: 最大凸包数量。
-  - `threshold`: 精度阈值。
-  - `max_iter`: 最大迭代次数。
-
-- **V-HACD**：
-  - `resolution`: 分辨率。
-  - `concavity`: 凸度。
-  - `plane_downsampling`: 平面降采样。
-  - `convex_hull_downsampling`: 凸包降采样。
-
-### 5.6 总结
-- **CoACD** 更适合需要高精度和迭代优化的应用。
-- **V-HACD** 更适合需要快速分解和处理大规模网格的应用。
-
-根据具体需求选择合适的算法，可以更好地满足应用场景的要求。
+- 先检查输入是否是预期单位、拓扑和连通性，再比较分解块数、近似误差及耗时；块数少不必然更适合碰撞检测。
+- 重新加载全部导出的凸块，确认它们保留原坐标系和相对位置；把每块分别居中会破坏组合几何。

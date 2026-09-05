@@ -1,0 +1,473 @@
+{
+  "date": "2026-09-05",
+  "scope": "66 篇共享导航和回归检查；10 篇重点正文修订；原 URL、发布日期与 3 篇草稿状态保持不变",
+  "shared_improvements": [
+    "10 条学习路线，正文顶部专题入口和底部同专题前后篇",
+    "正式输出不包含草稿，预览输出标记草稿",
+    "全篇手机与桌面布局检查；专题唯一覆盖与相邻文章检查"
+  ],
+  "posts": [
+    {
+      "path": "content/posts/ai/algorithms/Astar/Astar-cpp/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/ai/algorithms/Astar/Astar-introduction/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/ai/algorithms/overview.md",
+      "draft": true,
+      "topic": "ai",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/ai/diffusion-models/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_change": "修正 100 步 DDPM 的末端先验不匹配；保留完整训练、采样与实际结果图。",
+      "image_decision": "新增完整 CPU 训练得到的真实结果图，不使用 AI 生成实验数据。"
+    },
+    {
+      "path": "content/posts/ai/distributed-training-memory/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_change": "为显存估算器增加 world_size、参数量和状态字节数的输入检查。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/ai/gymnasium/1/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_change": "修复左 padding / 全遮蔽行的 NaN；补齐 PAD Query 清零、空 batch 与全忽略 target 检查。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/calibration/cctag/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/calibration/kinematics/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/calibration/model/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_change": "增加 OpenCV 手眼合成求解、相对运动方程和 6 个留出姿态验证。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/calibration/opencv/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/calibration/zero/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_change": "将普通线性方程改为两连杆零偏恢复，重算 Jacobian 并留出 10 个验证姿态。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/casadi/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/cmake/ExternalProject_Add/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/coacd/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/cpp/gcc/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/cpp/gccs/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/cpp/smart-pointer/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/cpp/std/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/cuda/gcc/index.md",
+      "draft": false,
+      "topic": "gpu",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/cuda/warp/index.md",
+      "draft": false,
+      "topic": "gpu",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/dialout/dh/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/dialout/udev/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/egl/x11_warnning/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/gui/qt/jetson/index.md",
+      "draft": false,
+      "topic": "gpu",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/gui/qt/pyside6/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/gui/qt/qt5/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/isaaclab/UsdContext/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/linux/watch/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/meshcat/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/network-protocol/c++_tcp.md",
+      "draft": false,
+      "topic": "systems",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/network-protocol/c++_udp.md",
+      "draft": false,
+      "topic": "systems",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/network-protocol/fixed_IP.md",
+      "draft": false,
+      "topic": "systems",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/network-protocol/tcp-udp-introduction.md",
+      "draft": true,
+      "topic": "systems",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/nvidia/no_devices/index.md",
+      "draft": false,
+      "topic": "gpu",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/open3d/introduction/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/opengl/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/pid/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/pink/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/planner/to_mpc_wbc/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/process/pid/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/python/f_string/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/python/py39/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/python/tqdm/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_change": "重写 tqdm 教程，减少重复安装与无关库示例，明确增量、字节、并发完成量和非 TTY 行为。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/python/version/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/qt/pyside6_matplotlib/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/queue/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/rl/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/jacobian/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/kinematics-introduction.md",
+      "draft": true,
+      "topic": "kinematics",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pinocchio/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pytorch/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_change": "提供可下载的无网格二连杆 URDF，运行 FK–IK–FK 并与自动微分核对 Jacobian。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/robotics/workspace/whole-workspace/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_change": "向量化工作空间采样，使用不等长连杆展示内部空洞，并加入解析边界断言。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/thesis/being_0/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/thesis/coacd/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/trajectory/ruckig/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_change": "合并一轴与七轴程序，验证初始采样、精确终点、平均 jerk、状态传递与失败处理。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/trajectory/toppra/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_change": "明确路径导数与时间导数，固定输出参数化器，对照三组求解网格和解析 2.5 秒答案。",
+      "image_decision": "新增内置 imagegen 说明图，沿用 Transformer 参考风格。"
+    },
+    {
+      "path": "content/posts/unicode/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/vscode/debug/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/vscode/gdm/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/vscode/two-env/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    },
+    {
+      "path": "content/posts/xcb/post_2.md",
+      "draft": false,
+      "topic": "gui",
+      "body_change": "本轮不重复重写正文；纳入共享导航、静态检查和浏览器回归。",
+      "image_decision": "沿用前两轮的配图判断，不添加装饰性图片。"
+    }
+  ]
+}

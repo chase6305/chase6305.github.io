@@ -1,40 +1,62 @@
 {{ define "main" }}
-  {{- $zh := eq site.Language.Lang "zh-cn" -}}
   {{- $pages := partial "utils/sort-pages" (dict "page" . "by" site.Params.blog.list.sortBy "order" site.Params.blog.list.sortOrder) -}}
   {{- $pagerSize := site.Params.blog.list.pagerSize | default 10 -}}
   {{- $paginator := .Paginate $pages $pagerSize -}}
-  <main id="content" class="blog-index">
+  {{- $drafts := len (where $pages "Draft" true) -}}
+  {{ partial "sidebar.html" (dict "context" . "disableSidebar" true) }}
+  <main id="content" class="blog-index" lang="zh-CN" data-blog-index>
     <header class="blog-index__hero">
-      <p class="chase-section__eyebrow">{{ if $zh }}写作与研究笔记{{ else }}Writing &amp; research notes{{ end }}</p>
-      <h1>{{ if $zh }}技术博客{{ else }}Technical Blog{{ end }}</h1>
+      <p class="chase-section__eyebrow">写作与研究笔记</p>
+      <h1>{{ .Title }}</h1>
       <p>{{ .Content | plainify }}</p>
+      <nav class="blog-index__links" aria-label="博客阅读入口">
+        <a href="{{ relURL "learning-paths/" }}">专题学习路线 <span aria-hidden="true">→</span></a>
+        <a href="{{ relURL "archives/" }}">按年份归档</a>
+        {{ with .OutputFormats.Get "RSS" }}<a href="{{ .RelPermalink }}">RSS 订阅</a>{{ end }}
+      </nav>
       <div class="blog-index__stats">
-        <span><strong>{{ len $pages }}</strong> {{ if $zh }}篇文章{{ else }}published articles{{ end }}</span>
-        <span>{{ if $zh }}机器人 · 人工智能 · 工程实践{{ else }}Robotics · AI · Engineering{{ end }}</span>
+        <span><strong>{{ len $pages }}</strong> 篇文章{{ if $drafts }}（含 {{ $drafts }} 篇草稿预览）{{ end }}</span>
+        <span><strong>{{ len hugo.Data.blog_topics }}</strong> 条学习路线</span>
       </div>
     </header>
 
-    <section class="blog-list" aria-label="{{ if $zh }}博客文章{{ else }}Blog posts{{ end }}">
-      {{- range $paginator.Pages }}
-        <article class="blog-card">
-          <div class="blog-card__meta">
-            <time datetime="{{ .Date.Format `2006-01-02` }}">{{ .Date.Format "Jan 02, 2006" }}</time>
-            {{- with index .Params.categories 0 }}<span>{{ . }}</span>{{ end -}}
-          </div>
-          <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-          <p>{{ partial "utils/page-description" . }}</p>
-          <div class="blog-card__footer">
-            {{ if site.Params.blog.list.displayTags }}
-              <div class="blog-card__tags">{{ partial "tags.html" (dict "context" .) }}</div>
-            {{ end }}
-            <a class="blog-card__read" href="{{ .RelPermalink }}" aria-label="{{ if $zh }}阅读{{ else }}Read{{ end }} {{ .Title }}">{{ if $zh }}阅读全文{{ else }}Read article{{ end }} <span aria-hidden="true">→</span></a>
-          </div>
-        </article>
-      {{- end }}
+    <form class="blog-filter" data-blog-filter hidden role="search" aria-label="筛选全部博客">
+      <div class="blog-filter__fields">
+        <div class="blog-filter__query">
+          <label for="blog-query">关键词</label>
+          <input id="blog-query" name="q" type="search" maxlength="120" placeholder="标题、摘要或标签，例如 Jacobian" autocomplete="off" aria-describedby="blog-filter-help" aria-controls="blog-filter-results">
+        </div>
+        <div>
+          <label for="blog-topic">专题</label>
+          <select id="blog-topic" name="topic" aria-controls="blog-filter-results">
+            <option value="">全部专题</option>
+            {{ range hugo.Data.blog_topics }}<option value="{{ .id }}">{{ .title }}</option>{{ end }}
+          </select>
+        </div>
+        <div>
+          <label for="blog-sort">排序</label>
+          <select id="blog-sort" name="sort" aria-controls="blog-filter-results">
+            <option value="newest">最新发布</option>
+            <option value="oldest">最早发布</option>
+            <option value="shortest">阅读较短</option>
+          </select>
+        </div>
+        <button type="button" class="blog-filter__reset" data-blog-reset>清除筛选</button>
+      </div>
+      <p id="blog-filter-help">筛选覆盖全部 {{ len $pages }} 篇，不限当前页；多个关键词同时匹配。查找正文内容请用导航栏搜索。</p>
+      <p class="blog-filter__status" data-blog-filter-status role="status" aria-live="polite" aria-atomic="true">当前第 {{ $paginator.PageNumber }} / {{ $paginator.TotalPages }} 页，按发布日期排列。</p>
+    </form>
+    <script type="application/json" id="blog-filter-data">{{ partial "blog/filter-data.html" $pages | jsonify | safeJS }}</script>
+    <section class="blog-list" data-blog-original-list aria-label="博客文章">
+      {{ range $paginator.Pages }}{{ partial "blog/card.html" (dict "page" .) }}{{ end }}
     </section>
-
-    {{- if gt $paginator.TotalPages 1 }}
-      <div class="blog-index__pager">{{ partial "components/blog-pager.html" $paginator }}</div>
-    {{- end }}
+    <section class="blog-list" id="blog-filter-results" aria-label="筛选结果" hidden></section>
+    <p class="blog-filter__empty" data-blog-empty hidden>没有找到匹配文章。试试更短的关键词，或点击“清除筛选”。</p>
+    {{ if gt $paginator.TotalPages 1 }}
+      <div class="blog-index__pager" data-blog-original-pager>{{ partial "components/blog-pager.html" $paginator }}</div>
+    {{ end }}
+    <noscript><p class="blog-filter__help">当前未启用 JavaScript，仍可通过上下页、<a href="{{ relURL "learning-paths/" }}">专题路线</a>或<a href="{{ relURL "archives/" }}">完整归档</a>浏览全部文章。</p></noscript>
   </main>
+  {{- $filter := resources.Get "js/blog-filter.js" | minify | fingerprint -}}
+  <script defer src="{{ $filter.RelPermalink }}" integrity="{{ $filter.Data.Integrity }}"></script>
 {{ end }}

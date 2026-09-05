@@ -1,0 +1,535 @@
+{
+  "reviewed_on": "2026-09-05",
+  "round": 2,
+  "scope": "全部 66 篇；新增针对性阅读自测与验收，不代表所有硬件示例都已执行",
+  "posts": [
+    {
+      "id": 0,
+      "path": "content/posts/ai/algorithms/Astar/Astar-cpp/index.md",
+      "acceptance_checks": [
+        "把启发函数设为零后，路径形状可以不同，但同一邻接和代价模型下的最短路径代价应一致。随机障碍地图比只测空地图更容易暴露父节点和队列更新错误。",
+        "人为封住起点、终点或对角中间格，确认返回失败；改变机器人半径后应重新膨胀障碍，点机器人通过并不代表实体机器人能通过。"
+      ]
+    },
+    {
+      "id": 1,
+      "path": "content/posts/ai/algorithms/Astar/Astar-introduction/index.md",
+      "acceptance_checks": [
+        "用拐角障碍测试视线裁剪：只检查连线两端为空闲是不够的，整段线及机器人占据空间都要合法。",
+        "记录简化前后的代价和碰撞检测分辨率；折点减少只说明表示更简洁，不自动证明长度全局最短或满足动力学。"
+      ]
+    },
+    {
+      "id": 2,
+      "path": "content/posts/ai/algorithms/overview.md",
+      "acceptance_checks": [
+        "为同一张小地图分别运行 BFS、Dijkstra 与 A*：先说明边权与启发条件，再解释哪些结果应该相同。",
+        "在笔记中区分算法保证、实现测试与实验性能；草稿中的学习路线不是已经完成的性能对比。"
+      ]
+    },
+    {
+      "id": 3,
+      "path": "content/posts/ai/diffusion-models/index.md",
+      "acceptance_checks": [
+        "固定干净样本、噪声和时间步，检查前向加噪公式的 shape 与量级；t 的编号方式应与噪声表索引一致。",
+        "先确认训练目标是预测噪声、干净样本还是 v，再检查采样更新式；换采样器时不能只替换步数而保留不匹配的系数。"
+      ]
+    },
+    {
+      "id": 4,
+      "path": "content/posts/ai/distributed-training-memory/index.md",
+      "acceptance_checks": [
+        "按实际 dtype 分别列出参数、梯度、优化器状态和激活；把估算与同一训练阶段的峰值测量比较，不混用 GB 与 GiB。",
+        "保存并恢复一次小规模训练，检查步数、优化器状态及各 Rank 的一致性；只恢复权重不能证明训练可续跑。"
+      ]
+    },
+    {
+      "id": 5,
+      "path": "content/posts/ai/gymnasium/1/index.md",
+      "acceptance_checks": [
+        "同一 seed 下比较 reset 与动作采样，确认环境随机源和 action_space 都已设置；有渲染和无渲染时任务逻辑应一致。",
+        "人为设置较短时间限制，核对 truncated 与 terminated 的差别；继续计算价值目标时应使用截断前的最终观测，而不是 reset 后的新初态。"
+      ]
+    },
+    {
+      "id": 6,
+      "path": "content/posts/ai/transformer-attention/index.md",
+      "acceptance_checks": [
+        "在极小序列上手算 QKᵀ、mask 与 softmax，再比较实现输出；特别检查未来位置屏蔽和 padding 屏蔽的方向。",
+        "分别测完整前向和带 KV cache 的逐 token 解码，在相同位置编码、权重及数值容差下比较输出，避免把缓存长度误当成有效上下文位置。"
+      ]
+    },
+    {
+      "id": 7,
+      "path": "content/posts/calibration/cctag/index.md",
+      "acceptance_checks": [
+        "从不同距离和倾角拍摄标记，记录检出率与圆心误差；图案能被识别不等于它提供了完整、无歧义的六维位姿。",
+        "需要尺度或朝向时，明确增加了哪些已知几何信息和标记组合；不要仅由同心圆的 ID 推出绕对称轴的旋转。"
+      ]
+    },
+    {
+      "id": 8,
+      "path": "content/posts/calibration/kinematics/index.md",
+      "acceptance_checks": [
+        "先用已知参数合成观测，再尝试恢复参数；检查哪些列近似线性相关，以及单独改变某参数能否被其他参数抵消。",
+        "把标定样本与验证样本分开，比较标定前后位置残差和参数变化；训练残差下降但验证变差时，应检查可辨识性与过拟合。"
+      ]
+    },
+    {
+      "id": 9,
+      "path": "content/posts/calibration/model/index.md",
+      "acceptance_checks": [
+        "为每个位姿写清从哪个坐标系变到哪个坐标系，用合成变换验证 AX=XB 的乘法顺序。",
+        "分别计算相机观测残差和机器人运动一致性；采样姿态应包含足够不同的旋转轴，单纯增加同方向运动的数量未必改善标定。"
+      ]
+    },
+    {
+      "id": 10,
+      "path": "content/posts/calibration/opencv/index.md",
+      "acceptance_checks": [
+        "按 patternSize 的列、行顺序逐项打印 objectPoints，检查单位、交错行偏移和图像检测顺序是否一致。",
+        "留出未参与求解的图像检查重投影误差；仅增加重复视角，或把完整网格检测误当作单圆 ID，都不能提升几何约束质量。"
+      ]
+    },
+    {
+      "id": 11,
+      "path": "content/posts/calibration/zero/index.md",
+      "acceptance_checks": [
+        "在合成零位偏置上测试恢复误差，并比较已知参考点与未知支点两种模型；未知点坐标也要进入待估计变量或消元过程。",
+        "检查奇异值、验证位姿残差和参数物理范围；只有总残差变小而没有独立验证，不足以说明零位参数可信。"
+      ]
+    },
+    {
+      "id": 12,
+      "path": "content/posts/casadi/index.md",
+      "acceptance_checks": [
+        "把变量边界和 g 的边界分别打印：第一例只有一个等式，第二例有两个；维度匹配不等于约束含义正确。",
+        "故意添加互相矛盾的约束，确认程序能报告失败，而不是继续把 sol['x'] 当作可用答案。"
+      ]
+    },
+    {
+      "id": 13,
+      "path": "content/posts/cmake/ExternalProject_Add/index.md",
+      "acceptance_checks": [
+        "使用全新构建目录和第二次增量构建分别运行 app；只有增量构建成功时，应检查是否依赖了旧库产物。",
+        "切换编译器、构建类型或生成器时使用独立目录，核对导入库路径和 BUILD_BYPRODUCTS，不能只看头文件是否可找到。"
+      ]
+    },
+    {
+      "id": 14,
+      "path": "content/posts/coacd/index.md",
+      "acceptance_checks": [
+        "先检查输入是否是预期单位、拓扑和连通性，再比较分解块数、近似误差及耗时；块数少不必然更适合碰撞检测。",
+        "重新加载全部导出的凸块，确认它们保留原坐标系和相对位置；把每块分别居中会破坏组合几何。"
+      ]
+    },
+    {
+      "id": 15,
+      "path": "content/posts/cpp/gcc/index.md",
+      "acceptance_checks": [
+        "对实际报错的可执行文件检查加载到的 libstdc++ 路径与可提供的符号版本；终端里的 g++ 版本不是运行时库版本的充分证据。",
+        "在新终端和目标应用实际启动方式下复测，避免只在临时修改的 LD_LIBRARY_PATH 环境中看起来正常。"
+      ]
+    },
+    {
+      "id": 16,
+      "path": "content/posts/cpp/gccs/index.md",
+      "acceptance_checks": [
+        "记录配置阶段选中的 CMAKE_CXX_COMPILER 或实际编译命令；修改 PATH 后复用旧 CMakeCache.txt，不一定切换了编译器。",
+        "用一个最小程序同时验证编译、链接和运行，并保留原工具链；编译成功不能排除运行时 ABI 不匹配。"
+      ]
+    },
+    {
+      "id": 17,
+      "path": "content/posts/cpp/smart-pointer/index.md",
+      "acceptance_checks": [
+        "移动 unique_ptr 后，原拥有者应为空；让最后一个 shared_ptr 离开作用域后，weak_ptr::lock() 应返回空。",
+        "检查回调捕获和父子反向引用是否形成强引用环；引用计数正确与对象成员并发访问正确需要分别验证。"
+      ]
+    },
+    {
+      "id": 18,
+      "path": "content/posts/cpp/std/index.md",
+      "acceptance_checks": [
+        "分别用 int、double 和边界整数测试重载，避免把某个输入类型下的结果推广到所有 std::abs 调用。",
+        "遇到宏、命名空间或 ADL 冲突时，先缩小到可独立编译的例子，并保留具体诊断而非只修改 using 指令。"
+      ]
+    },
+    {
+      "id": 19,
+      "path": "content/posts/cuda/gcc/index.md",
+      "acceptance_checks": [
+        "分别记录驱动、nvcc、host compiler 和目标架构；nvidia-smi 中显示的 CUDA 能力上限不等于本机 Toolkit 版本。",
+        "用项目实际构建命令编译最小 CUDA 程序，再检查加载库；不要用随意改 GCC 链接或忽略版本检查来证明兼容。"
+      ]
+    },
+    {
+      "id": 20,
+      "path": "content/posts/cuda/warp/index.md",
+      "acceptance_checks": [
+        "把向量加法和矩阵乘法与相同 float32 输入的 NumPy 结果比较；计时前后同步，首次编译时间单独记录。",
+        "自动微分用能手算的损失检查梯度，并显式记录 device；Python 库名 Warp 与 CUDA 的 32 线程执行组不是同一个抽象层。"
+      ]
+    },
+    {
+      "id": 21,
+      "path": "content/posts/dialout/dh/index.md",
+      "acceptance_checks": [
+        "在假串口中依次注入短帧、错误 CRC、异常码和错误地址；失败后应禁止继续自动发送，尤其不能自动重试运动写入。",
+        "两个并发调用必须共享同一个总线对象，检查请求和响应不交错；取消协程后仍需等待正在运行的工作线程结束。"
+      ]
+    },
+    {
+      "id": 22,
+      "path": "content/posts/dialout/udev/index.md",
+      "acceptance_checks": [
+        "两台同型号设备交换 USB 接口后，检查别名是否仍对应原序列号；若规则只匹配 vendor/product，可能命中多个设备。",
+        "以真实运行服务的用户检查权限和用户组，并在重新登录后验证；root 能访问不代表应用用户能访问。"
+      ]
+    },
+    {
+      "id": 23,
+      "path": "content/posts/egl/x11_warnning/index.md",
+      "acceptance_checks": [
+        "区分日志警告与实际窗口/渲染失败，记录所用平台、DISPLAY 和驱动；不要因出现一个 EGL 字样就修改整套显示环境。",
+        "在应用真正运行的会话中测试，确认硬件渲染或所需离屏后端可用；把输出重定向隐藏只会隐藏症状。"
+      ]
+    },
+    {
+      "id": 24,
+      "path": "content/posts/gui/qt/jetson/index.md",
+      "acceptance_checks": [
+        "在 Jetson 上核对进程架构与 Qt 平台插件依赖，避免混入 x86_64 库；路径存在不代表二进制架构正确。",
+        "分别确认显示会话授权和平台后端，远程 SSH 设置 DISPLAY 不能替代授权；无窗口任务才考虑适合的离屏方式。"
+      ]
+    },
+    {
+      "id": 25,
+      "path": "content/posts/gui/qt/pyside6/index.md",
+      "acceptance_checks": [
+        "修改一次 .ui 后重新生成代码，检查业务逻辑是否仍完整；业务代码不应依靠手动修改生成文件来保存。",
+        "在实际解释器中核对 PySide6 及 pyside6-uic 来源，测试窗口关闭与信号槽连接，避免系统工具和虚拟环境混用。"
+      ]
+    },
+    {
+      "id": 26,
+      "path": "content/posts/gui/qt/qt5/index.md",
+      "acceptance_checks": [
+        "记录导入的 Qt binding、Qt 版本和插件目录，检查应用是否同时加载了不兼容的 Qt5/Qt6 组件。",
+        "用同一环境启动最小窗口，再逐步加回 Matplotlib、OpenCV 等依赖；不要在最小窗口尚未成功时调试业务界面。"
+      ]
+    },
+    {
+      "id": 27,
+      "path": "content/posts/isaaclab/UsdContext/index.md",
+      "acceptance_checks": [
+        "先运行当前 Isaac Lab 安装自带的最小示例，确认应用初始化顺序，再增加 USD 操作。",
+        "记录启动方式、扩展加载日志和 stage 状态；任意删除扩展缓存可能掩盖版本或依赖问题，不能作为默认步骤。"
+      ]
+    },
+    {
+      "id": 28,
+      "path": "content/posts/linux/watch/index.md",
+      "acceptance_checks": [
+        "先单次执行被 watch 包裹的命令，核对筛选范围和输出单位；重复执行的频率要低于设备或系统可承受的轮询负载。",
+        "区分快照、累计量和区间采样值；watch 刷新更快不代表测量值具有更高的时间精度。"
+      ]
+    },
+    {
+      "id": 29,
+      "path": "content/posts/meshcat/index.md",
+      "acceptance_checks": [
+        "只添加一个几何体并单独改变父节点变换，检查子节点是否按场景树继承；坐标系错位时先查变换层级。",
+        "通过本机或 SSH 隧道验证浏览器可访问，并确保 Python 服务仍在运行；页面能打开不等于场景已经收到几何数据。"
+      ]
+    },
+    {
+      "id": 30,
+      "path": "content/posts/network-protocol/c++_tcp.md",
+      "acceptance_checks": [
+        "让客户端分多次发送头部与正文，确认服务端仍能解析一帧；一次 recv 返回的数据量不能代表应用消息边界。",
+        "测试对端提前关闭和超长声明长度，确认不会无界分配或把不完整内容作为完整响应。"
+      ]
+    },
+    {
+      "id": 31,
+      "path": "content/posts/network-protocol/c++_udp.md",
+      "acceptance_checks": [
+        "测试零长度、正常长度和超出接收缓冲区的数据报；零长度是合法消息，而截断消息不应继续按完整协议解析。",
+        "应用需要重传时必须另行设计序号、超时、去重与幂等；一次回显成功不说明 UDP 提供可靠或有序交付。"
+      ]
+    },
+    {
+      "id": 32,
+      "path": "content/posts/network-protocol/fixed_IP.md",
+      "acceptance_checks": [
+        "修改前记录接口名、地址、路由和 DNS，修改后分别验证同网段、网关和域名解析，而不是只 ping 一个地址。",
+        "远程修改必须保留可用的回退通道；配置语法通过不保证新地址无冲突或管理连接仍可达。"
+      ]
+    },
+    {
+      "id": 33,
+      "path": "content/posts/network-protocol/tcp-udp-introduction.md",
+      "acceptance_checks": [
+        "给聊天、遥测和文件传输分别列出时延、可靠性及顺序需求，再解释为什么选择某种传输或应用协议。",
+        "写出应用消息的边界和最大长度；即便使用 TCP，也仍需要定义消息格式与失败处理。"
+      ]
+    },
+    {
+      "id": 34,
+      "path": "content/posts/nvidia/no_devices/index.md",
+      "acceptance_checks": [
+        "把 PCI 识别、内核模块加载、模块签名和 nvidia-smi 分开检查，保留原始日志以及驱动安装来源。",
+        "修复后在目标内核和重启后的会话中复测；安装命令成功与驱动实际绑定硬件是不同的验收条件。"
+      ]
+    },
+    {
+      "id": 35,
+      "path": "content/posts/open3d/introduction/index.md",
+      "acceptance_checks": [
+        "对滤波前后点数、法线、包围盒和坐标单位做数值检查；可视化颜色或视角变化不等于几何处理成功。",
+        "在已知刚体变换的点云上检验配准，同时报告 fitness、RMSE 与变换误差；对称物体尤其不能仅凭视觉重合判断唯一解。"
+      ]
+    },
+    {
+      "id": 36,
+      "path": "content/posts/opengl/index.md",
+      "acceptance_checks": [
+        "先确认上下文版本和使用的是固定管线还是现代 shader 管线，不能把旧 GLUT 教程直接当作核心模式示例。",
+        "把编译、链接、创建上下文与实际绘制分别验收；启用深度测试时也需要请求并清理深度缓冲区。"
+      ]
+    },
+    {
+      "id": 37,
+      "path": "content/posts/pid/index.md",
+      "acceptance_checks": [
+        "人为设置不可达参考，确认积分不会持续向饱和方向累积；参考恢复后观察输出与积分的恢复过程。",
+        "改变采样周期后重新测试，并比较对误差微分和对测量微分在参考阶跃时的区别；不要忽略滤波延迟与单位。"
+      ]
+    },
+    {
+      "id": 38,
+      "path": "content/posts/pink/index.md",
+      "acceptance_checks": [
+        "对每个任务检查误差、雅可比、参考系和权重的单位；修改残差符号时对应雅可比也必须一致。",
+        "制造相互冲突的任务，检查加权折中与严格优先级的差别；QP 可解不代表结果已经满足碰撞和所有硬件限制。"
+      ]
+    },
+    {
+      "id": 39,
+      "path": "content/posts/planner/to_mpc_wbc/index.md",
+      "acceptance_checks": [
+        "给每一条模块接口写清传递的是状态、轨迹、接触计划还是关节命令，并注明时间戳和坐标系。",
+        "模拟估计延迟、优化超时或接触变化，确认下层如何处理过期参考；模块频率高不等于闭环一定稳定。"
+      ]
+    },
+    {
+      "id": 40,
+      "path": "content/posts/process/pid/index.md",
+      "acceptance_checks": [
+        "发送信号前再次核对 PID、命令行、用户和启动时间，防止误认同名进程或复用的 PID。",
+        "先观察正常退出是否完成资源清理，仍未退出时再分析原因；停止控制进程不等于机器人已进入安全状态。"
+      ]
+    },
+    {
+      "id": 41,
+      "path": "content/posts/python/f_string/index.md",
+      "acceptance_checks": [
+        "使用正数、负数、很小的数和中文字段比较格式输出；小数位格式只控制显示，不提升底层浮点精度。",
+        "在日志中区分用于显示的字符串与用于继续计算的数值，避免把格式化后的数据再当作高精度原始值。"
+      ]
+    },
+    {
+      "id": 42,
+      "path": "content/posts/python/py39/index.md",
+      "acceptance_checks": [
+        "打印 sys.executable 和实际加载库路径，确认当前 Python 3.9 所属环境；目录名称相似不代表加载的是同一套库。",
+        "用相同入口启动最小导入和实际应用，避免终端可运行而 IDE 或服务仍使用其他解释器。"
+      ]
+    },
+    {
+      "id": 43,
+      "path": "content/posts/python/tqdm/index.md",
+      "acceptance_checks": [
+        "在交互终端和重定向日志两种方式下检查进度条行为，必要时关闭动态显示，避免日志被回车刷新控制符淹没。",
+        "进度更新应对应已完成的工作；异步 GPU 提交数量与完成数量不同，不能直接据此推断真实吞吐率。"
+      ]
+    },
+    {
+      "id": 44,
+      "path": "content/posts/python/version/index.md",
+      "acceptance_checks": [
+        "把 python、python -m pip 与 IDE 使用的解释器路径放在一起比较；不要仅依赖 python --version 的主次版本号。",
+        "建立独立环境复现最小导入，保留系统 Python；切换项目解释器不需要改系统命令的默认链接。"
+      ]
+    },
+    {
+      "id": 45,
+      "path": "content/posts/qt/pyside6_matplotlib/index.md",
+      "acceptance_checks": [
+        "重复打开、更新和关闭绘图窗口，确认 QApplication、Canvas、定时器与窗口生命周期一致。",
+        "从工作线程获取数据时通过信号回到 GUI 线程更新界面；刷新频率应与数据速率和绘制成本匹配。"
+      ]
+    },
+    {
+      "id": 46,
+      "path": "content/posts/queue/index.md",
+      "acceptance_checks": [
+        "用很小的环形容量强制频繁绕回，检查满/空状态、顺序和总数；大容量下偶然成功不足以覆盖索引复用。",
+        "严格保持单生产者、单消费者约束，测试结束时等待线程退出；无锁进展条件不是实时截止时间保证。"
+      ]
+    },
+    {
+      "id": 47,
+      "path": "content/posts/rl/index.md",
+      "acceptance_checks": [
+        "手算正、负优势下 PPO 的四种裁剪情形，再检查 SAC 中 tanh 与动作缩放后的 log-probability。",
+        "区分在线/离线数据、同策略/异策略以及终止/截断；单一训练损失下降不能替代多种子的策略评估。"
+      ]
+    },
+    {
+      "id": 48,
+      "path": "content/posts/robotics/control/impedance-control/index.md",
+      "acceptance_checks": [
+        "统一位置、速度、力矩和 wrench 的坐标系与单位，先在仿真中观察阻抗参数对响应的影响。",
+        "比较有无重力补偿、接触切换和力矩饱和时的行为；静态刚度曲线合理不等于接触过程满足稳定性与安全要求。"
+      ]
+    },
+    {
+      "id": 49,
+      "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+      "acceptance_checks": [
+        "检查回归矩阵的秩和条件数，并将采集轨迹与验证轨迹分开；更多重复样本不能替代对不同参数方向的激励。",
+        "确认质量、惯量等估计参数的物理一致性，再比较留出轨迹上的预测力矩残差；较低训练误差不是唯一标准。"
+      ]
+    },
+    {
+      "id": 50,
+      "path": "content/posts/robotics/kinematics/jacobian/index.md",
+      "acceptance_checks": [
+        "用同一 frame 和关节排列进行有限差分对照，逐步缩小扰动观察误差变化；扰动过小时舍入误差也会占优。",
+        "比较 LOCAL 与 WORLD 表达时使用相应的伴随变换，不能直接比较两个不同参考系中的六维数组。"
+      ]
+    },
+    {
+      "id": 51,
+      "path": "content/posts/robotics/kinematics/kinematics-introduction.md",
+      "acceptance_checks": [
+        "给一个两关节平面臂手算 FK，再用数值扰动解释雅可比，最后讨论目标不可达或逆解多解。",
+        "在学习笔记中把几何解、数值解、限位和碰撞分开；草稿路线不意味着已实现通用机器人求解器。"
+      ]
+    },
+    {
+      "id": 52,
+      "path": "content/posts/robotics/kinematics/pinocchio/index.md",
+      "acceptance_checks": [
+        "用已知 q 的 FK 构造目标，记录位置与旋转残差，再逐渐增大初值扰动；近初值成功不能推广到任意初值。",
+        "故意输入缺失 frame、越界 q0 和不可达目标，确认返回或异常语义明确；没有成功标记时不能直接下发关节值。"
+      ]
+    },
+    {
+      "id": 53,
+      "path": "content/posts/robotics/kinematics/pytorch/index.md",
+      "acceptance_checks": [
+        "打印 batch、重试维度、关节顺序和 device/dtype，先用 CPU 与已知目标完成一次 FK→IK→FK 对照。",
+        "只选择已收敛且满足限位的候选，再按连续性等任务标准选择解；返回张量的存在不等于每个重试都成功。"
+      ]
+    },
+    {
+      "id": 54,
+      "path": "content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+      "acceptance_checks": [
+        "固定目标，改变臂角和八类构型分支，分别检查 FK 残差；肘部位置可变化，但目标末端位姿应保持一致。",
+        "接近肩腕重合、肘伸直等退化情况时检查失败处理；该理想 SRS 模型不能直接代替任意七轴机器人的实测几何。"
+      ]
+    },
+    {
+      "id": 55,
+      "path": "content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+      "acceptance_checks": [
+        "使用同一 DH 约定、长度单位和零位偏置对照 MATLAB 与 C++ 的 FK，再讨论逆解分支。",
+        "把每个逆解候选重新代入 FK，并过滤关节限位与重复解；理论分支数不是任意目标都能获得的有效解数量。"
+      ]
+    },
+    {
+      "id": 56,
+      "path": "content/posts/robotics/workspace/whole-workspace/index.md",
+      "acceptance_checks": [
+        "用两连杆平面模型的已知内外半径检查采样结果，区分采样覆盖范围与解析可达集合。",
+        "改变采样数和 seed，观察边界是否稳定；随机未采到的区域不一定不可达，凸包内部也不一定全部可达。"
+      ]
+    },
+    {
+      "id": 57,
+      "path": "content/posts/thesis/being_0/index.md",
+      "acceptance_checks": [
+        "把论文实际报告的任务、成功定义和评估次数逐项对照，区分系统概念图与原始实验结果。",
+        "单独说明高层模型、Connector 和低层技能的输入输出；不同硬件或任务上的数字不能直接拼成统一成功率。"
+      ]
+    },
+    {
+      "id": 58,
+      "path": "content/posts/thesis/coacd/index.md",
+      "acceptance_checks": [
+        "检查论文对近似误差和凸分解的定义，再对照实现参数的单位及默认值，避免把同名阈值当作完全相同的指标。",
+        "对固定输入报告凸块数量、几何误差与计算时间；单个模型上的效果不能证明 MCTS 得到全局最优分解。"
+      ]
+    },
+    {
+      "id": 59,
+      "path": "content/posts/trajectory/ruckig/index.md",
+      "acceptance_checks": [
+        "检查每一步返回状态和最终位置、速度、加速度，确认记录到了 Finished 对应的最后一个状态。",
+        "在轨迹切换时传递真实当前状态，并分别检查速度、加速度和 jerk 上限；平滑插值图像不等于数值约束已通过。"
+      ]
+    },
+    {
+      "id": 60,
+      "path": "content/posts/trajectory/toppra/index.md",
+      "acceptance_checks": [
+        "分别检查几何路径和时间参数化的合法性；沿路径的关节位置约束、碰撞与指定速度/加速度约束不是同一件事。",
+        "遇到不可行结果时先核对边界速度与约束，不能直接调用空轨迹；需要 jerk 约束时明确算法是否真的建模了它。"
+      ]
+    },
+    {
+      "id": 61,
+      "path": "content/posts/unicode/index.md",
+      "acceptance_checks": [
+        "对 ASCII、中文、组合字符和 emoji 分别比较字节数、码点数与显示宽度；它们不应被当作同一个长度。",
+        "声明文件编码以及 C++ 标准版本，特别检查 u8 字面量在 C++20 中的 char8_t 类型与接收 API 是否兼容。"
+      ]
+    },
+    {
+      "id": 62,
+      "path": "content/posts/vscode/debug/index.md",
+      "acceptance_checks": [
+        "从调试控制台打印解释器或程序路径，并核对启动目录、参数和环境变量，避免断点落在另一份源文件上。",
+        "先验证断点、单步和异常中断，再配置远程 attach；调试端口只绑定本机，通过受控隧道访问。"
+      ]
+    },
+    {
+      "id": 63,
+      "path": "content/posts/vscode/gdm/index.md",
+      "acceptance_checks": [
+        "保留显示管理器、用户会话与驱动日志，区分服务未启动、会话崩溃和显卡模块问题。",
+        "重启显示管理器会结束图形会话，操作前保存工作并确认远程恢复手段；不要把无差别重装桌面作为第一步。"
+      ]
+    },
+    {
+      "id": 64,
+      "path": "content/posts/vscode/two-env/index.md",
+      "acceptance_checks": [
+        "比较新终端、已有终端与调试启动中的 sys.executable；提示符显示两个环境名不一定意味着 Python 真在叠加运行。",
+        "修改自动激活设置后创建新终端复测，并检查 shell 启动脚本；关闭 shell integration 不是关闭环境激活的等价操作。"
+      ]
+    },
+    {
+      "id": 65,
+      "path": "content/posts/xcb/post_2.md",
+      "acceptance_checks": [
+        "使用 QT_DEBUG_PLUGINS 记录实际插件路径，再对该二进制执行依赖检查；不要对系统中另一份同名插件下结论。",
+        "在匹配的解释器、架构和显示会话中验证最小窗口；伪造 soname 链接可能绕过报错，却留下 ABI 风险。"
+      ]
+    }
+  ]
+}

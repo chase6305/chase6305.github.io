@@ -2,142 +2,127 @@
 title: PD vs PID control 简要对比
 math: true
 date: 2025-04-24
-lastmod: 2025-04-24
+lastmod: 2026-09-05
 draft: false
 tags: ["PID", "Robot Control"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "PD vs PID control 简要对比"
+summary: "区分 PD 与 PID 的适用条件，给出带微分滤波、限幅和条件积分的离散示例，并讨论采样与稳态误差。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+description: "区分 PD 与 PID 的适用条件，给出带微分滤波、限幅和条件积分的离散示例，并讨论采样与稳态误差。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "反馈控制、导数与离散时间"
+reading_focus: "先明确误差符号和采样周期，再检查饱和、积分累积与噪声。"
+related_posts:
+  - "/posts/robotics/control/impedance-control"
+  - "/posts/planner/to_mpc_wbc"
 ---
 
+PD 与 PID 的核心区别是是否引入积分项。选择哪一种，需要结合被控对象、采样周期、执行器限制和扰动类型，不能仅凭“PD 快、PID 准”判断。
 
-在机器人控制中，PD（比例-微分）控制和PID（比例-积分-微分）控制是两种经典的控制策略，它们的核心区别在于是否引入积分环节。以下是它们的详细说明、区别及适用场景：
+![PD 和 PID 反馈回路，以及积分分支、输出限幅和抗积分饱和的关系](assets/pid-feedback.webp "比例项处理当前误差，积分项累积误差，微分项处理误差变化率。图示采用对误差微分的标准形式；工程中也常对测量值微分以减小设定值突变带来的冲击。")
 
----
+## 1. 连续时间形式
 
-## **1. PD控制（比例-微分控制）**
-### **控制原理**
-- **比例项（P）**：
-  输出与当前误差成比例，快速响应误差的“当前状态”。
-  公式：
+设参考为 $r(t)$、测量为 $y(t)$、误差为 $e(t)=r(t)-y(t)$：
 
 $$
-u_P = K_p \cdot e(t)
+u_{\mathrm{PD}} = K_p e + K_d \dot e,
+\qquad
+u_{\mathrm{PID}} = K_p e + K_i\int_0^t e(\tau)\,d\tau + K_d\dot e.
 $$
 
-- **微分项（D）**：
-  输出与误差的变化率成比例，预测误差的“未来趋势”，抑制超调和振荡。
-  公式：
+- P 项提供与当前偏差成比例的纠正。
+- D 项影响阻尼，但也会放大高频测量噪声。
+- I 项在闭环稳定、执行器有余量等条件下，可以消除某些恒定参考或恒定扰动导致的稳态误差。
 
-$$
-u_D = K_d \cdot \frac{de(t)}{dt}
-$$
+PID 不会自动保证稳定，也不会修复错误的传感器标定、坐标方向或不可达目标。
 
-- **总输出**：
-$$
-u(t) = K_p \cdot e(t) + K_d \cdot \frac{de(t)}{dt}
-$$
+## 2. 对比时保留必要条件
 
-### **特点**
-- **响应速度快**：微分项提前抑制超调，适合动态响应要求高的场景（如机器人关节运动）。
-- **稳态误差**：可能无法完全消除系统持续外力或摩擦导致的稳态误差。
-- **参数调节简单**：仅需调整 $K_p$ 和 $K_d$。
+| 维度 | PD | PID |
+| --- | --- | --- |
+| 调参 | $K_p,K_d$ | 还需选择 $K_i$ 与抗饱和策略 |
+| 恒定扰动 | 可能存在稳态偏差，可结合前馈补偿 | 稳定且未受限时可通过积分减小偏差 |
+| 噪声 | D 项需要滤波 | 同样需要滤波 |
+| 输出受限 | 检查力矩、速度或电压限制 | 还需防止积分继续累积 |
+| 动态响应 | 取决于对象与增益 | 同样取决于对象与增益，没有固定快慢关系 |
 
-### **典型应用**
-- 机器人关节位置控制（如机械臂快速定位）。
-- 需要快速稳定的运动控制（如无人机姿态调整）。
+在机械臂位置控制中，PD 加重力前馈是常见组合；如果没有重力补偿，不能把所有静态偏差都归结为比例增益不足。
 
----
+## 3. 离散实现：采样周期不能省略
 
-## **2. PID控制（比例-积分-微分控制）**
-### **控制原理**
-- **比例项（P）**：同PD控制。
-- **积分项（I）**：
-  输出与误差的累积值成比例，消除系统的“历史累积误差”（如持续干扰或静态摩擦）。
-  公式：
-$$
-u_I = K_i \cdot \int_0^t e(\tau)\,d\tau
-$$
+用采样周期 $\Delta t$ 积分，并对测量速度进行一阶滤波。下面是标量控制器示例，采用对测量值微分，限幅对象为最终控制输出：
 
-- **微分项（D）**：同PD控制。
+```python
+from dataclasses import dataclass
+from math import isfinite
 
-- **总输出**：
-$$
-u(t) = K_p \cdot e(t) + K_i \cdot \int_0^t e(\tau)\,d\tau + K_d \cdot \frac{de(t)}{dt}
-$$
 
-### **特点**
-- **消除稳态误差**：积分项持续修正系统偏差，适合高精度控制。
-- **响应相对较慢**：积分项的延迟可能降低动态响应速度。
-- **积分饱和风险**：长时间误差累积可能导致输出超出物理限制（需防饱和处理）。
+@dataclass
+class PID:
+    kp: float
+    ki: float
+    kd: float
+    limit: float
+    tau: float = 0.02
+    integral: float = 0.0
+    previous_y: float | None = None
+    filtered_dy: float = 0.0
 
-### **典型应用**
-- 机器人速度控制（如轮式机器人恒速巡航）。
-- 需要长时间保持精度的场景（如3D打印机的轨迹跟踪）。
+    def __post_init__(self):
+        if (not all(isfinite(v) for v in (self.kp, self.ki, self.kd,
+                                        self.limit, self.tau))
+                or self.limit <= 0 or self.tau < 0):
+            raise ValueError("limit must be positive and tau nonnegative")
 
----
+    def update(self, target, measured, dt):
+        if not all(isfinite(v) for v in (target, measured, dt)) or dt <= 0:
+            raise ValueError("inputs must be finite and dt positive")
+        error = target - measured
+        dy = 0.0 if self.previous_y is None else (
+            measured - self.previous_y
+        ) / dt
+        alpha = dt / (self.tau + dt)
+        self.filtered_dy += alpha * (dy - self.filtered_dy)
+        self.previous_y = measured
 
-## **3. PD与PID的核心区别**
-| **特性**       | **PD控制**                | **PID控制**                     |
-|----------------|--------------------------|--------------------------------|
-| **积分项**     | 无                        | 有（消除稳态误差）               |
-| **稳态误差**   | 可能存在（依赖系统模型）   | 理论上可消除（需合理调参）        |
-| **动态响应**   | 更快（无积分延迟）         | 稍慢（积分项引入滞后）           |
-| **参数复杂度** | 简单（调 $K_p, K_d$ ） | 复杂（调 $K_p, K_i, K_d$ ） |
-| **抗干扰性**   | 对持续干扰敏感             | 通过积分项抑制持续干扰            |
+        candidate = self.integral + self.ki * error * dt
+        base = self.kp * error - self.kd * self.filtered_dy
+        raw = base + candidate
+        # Integrate only if unsaturated or moving back toward the valid range.
+        if (abs(raw) <= self.limit
+                or (raw > self.limit and self.ki * error < 0)
+                or (raw < -self.limit and self.ki * error > 0)):
+            self.integral = candidate
+        return max(-self.limit, min(self.limit, base + self.integral))
 
----
 
-## **4. 机器人控制中的选择建议**
-### **选择PD控制**
-- **场景**：
-  - 系统动态响应优先级高（如高速运动）。
-  - 稳态误差可通过机械设计或其他方式补偿（如摩擦力已知的关节）。
-- **示例**：
-  机械臂快速抓取物体时，PD控制可快速稳定关节角度，轻微稳态误差可通过末端执行器的柔顺机构补偿。
+controller = PID(kp=2.0, ki=0.5, kd=0.1, limit=3.0)
+print(controller.update(target=1.0, measured=0.0, dt=0.01))
+```
 
-### **选择PID控制**
-- **场景**：
-  - 需要高精度稳态跟踪（如精密装配）。
-  - 存在未知持续干扰（如地面不平导致移动机器人速度波动）。
-- **示例**：
-  服务机器人在不平地面上巡航时，PID控制通过积分项补偿轮子打滑导致的累积位置偏差。
+代码要求 Python 3.10+。这里只演示控制器内部状态更新；增益和限幅的单位由输入、输出的物理含义决定，示例数字不能直接作为真实机器人参数。
 
----
+## 4. 调参与验证
 
-## **5. 调参注意事项**
-- **PD控制**：
-  1. 先调 $K_p$ 至系统开始振荡，再增大 $K_d$ 抑制振荡。
-  2. 过大的 $K_d$ 可能使系统响应迟缓。
+先确认反馈符号、单位与采样周期，再在仿真或受控的小幅运动中从保守增益开始。建立 PD 基线后，如确有需要再逐步加入积分。不要把“先调到振荡”作为所有机器人通用的实机操作步骤。
 
-- **PID控制**：
-  1. 先调 $K_p$ 和 $K_d$（类似 PD），最后引入 $K_i$。
-  2. $K_i$ 过大会导致积分饱和，需设置积分限幅或使用抗饱和算法（如Clamping）。
+同时记录参考、测量、未限幅输出、实际输出与积分状态。用阶跃、小幅轨迹、恒定扰动及输出受限场景分别检查上升时间、超调、稳态误差和恢复时间。
 
----
+## 5. 常见误解
 
-## **6. 实际案例对比**
-### **案例1：机械臂位置控制**
-- **PD控制**：
-  - 快速到达目标位置，但若关节存在静摩擦，可能遗留微小偏差。
-  - 适合抓取任务（允许毫米级误差）。
-- **PID控制**：
-  - 最终位置更精确，但响应可能稍慢。
-  - 适合精密装配（如芯片贴装）。
+- 积分项补偿的是闭环误差，不保证能从车轮编码器中识别打滑后的真实车体位移。
+- 增大 D 不一定改善响应；噪声、滤波延迟和采样频率都会影响结果。
+- 关闭控制或切换模式时，应设计积分状态重置或无扰切换，避免重新启用后输出突变。
 
-### **案例2：移动机器人速度控制**
-- **PD控制**：
-  - 上下坡时速度波动明显（无法补偿重力导致的持续误差）。
-- **PID控制**：
-  - 积分项自动补偿坡度影响，保持速度稳定。
+可对照 [Åström 与 Murray《Feedback Systems》](https://fbsbook.org/)中的 PID 与反馈分析继续学习。
 
----
 
-## **总结**
-- **PD控制**：简单高效，适合动态响应优先、稳态误差可容忍的场景。
-- **PID控制**：精度更高，适合需消除稳态误差、对抗持续干扰的系统。
-- **实际应用**：现代机器人常结合二者优势，例如使用PD控制快速响应，叠加前馈控制补偿模型已知的扰动，而非依赖积分项。
+## 阅读自测与验收
+
+- 人为设置不可达参考，确认积分不会持续向饱和方向累积；参考恢复后观察输出与积分的恢复过程。
+- 改变采样周期后重新测试，并比较对误差微分和对测量微分在参考阶跃时的区别；不要忽略滤波延迟与单位。

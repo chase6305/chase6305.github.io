@@ -2,93 +2,81 @@
 title: 'Pink: 一个高效易用的机器人逆运动学库'
 math: true
 date: 2026-02-14
-lastmod: 2026-02-14
+lastmod: 2026-09-05
 draft: false
 tags: ["Pink", "Inverse Kinematics", "Optimization"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "介绍 Pink 的 QP 逆运动学框架、FrameTask 与 PostureTask，说明任务权重、约束配置以及与 Pinocchio、CasADi 的区别。"
+summary: "用一致的残差与 Jacobian 解释 Pink 微分 IK，区分任务权重和严格优先级，说明限位、积分与求解失败处理。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+description: "用一致的残差与 Jacobian 解释 Pink 微分 IK，区分任务权重和严格优先级，说明限位、积分与求解失败处理。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "Jacobian、QP 与 Pinocchio"
+reading_focus: "把一个控制周期的局部解和全局 IK 分开，权重不能代替缺失的硬约束。"
+related_posts:
+  - "/posts/robotics/kinematics/jacobian"
+  - "/posts/robotics/kinematics/pinocchio"
 ---
 
-参考：[Pink 官方文档](https://stephane-caron.github.io/pink/)和 [Pink GitHub 仓库](https://github.com/stephane-caron/pink)。
+## Pink 求的是带约束的微分 IK
 
-在机器人运动规划与控制中，逆运动学（Inverse Kinematics, IK） 是一个核心问题：给定机器人期望的末端位置（比如机械臂要抓取的物体），如何计算出各个关节应该转动的角度？当机器人需要同时满足多个目标（如“伸手拿杯子”的同时还要“保持身体平衡”），并且受到关节限位等约束时，问题就变得更加复杂。
+Pink 依托 Pinocchio 计算运动学，把多个任务的一阶局部近似组合成 QP。它适合在每个控制周期求一个关节速度/切空间增量，再更新机器人配置；不是一次调用就保证找到任意目标的全局 IK。
 
-今天，我们来探索一个实测非常好用的 Python 库——Pink。它基于二次规划（Quadratic Programming, QP）来求解带约束的逆运动学问题，并由法国学者 Stéphane Caron 开发维护，兼具扎实的数学基础和优秀的工程实现。
+[官方文档](https://stephane-caron.github.io/pink/)和[源码仓库](https://github.com/stephane-caron/pink)是接口与版本的核对入口。具体求解器由 qpsolvers 及已安装的后端提供，不是所有后端都默认可用。
 
-## 什么是 QP-based IK？
-传统的逆运动学方法在处理多个冲突的目标时往往力不从心。**QP-based IK** 通过“加权任务”的方式优雅地解决了这个问题。
+## 残差、Jacobian 与符号必须成对使用
 
-其核心思想是：
-1. **定义任务**：每个任务由一个**残差函数** $e(q)$ 定义，目标是将其驱零。例如，将脚移动到目标位置 $p_{\text{foot}}^{\star}$ 的任务可定义为：
+设任务残差为 $e(q)$，其对切空间增量的导数为 $J_e$：
 
 $$
-e(q) = p_{\text{foot}}^{\star} - p_{\text{foot}}(q)
-$$
-2. **一阶近似**：我们希望找到一个关节速度 $v$，使得任务沿着梯度下降方向优化，即满足 $J_e(q)v = -\alpha e(q)$。这里的 $J_e(q)$ 是任务雅可比矩阵，$\alpha$ 是任务增益。
-3. **构建优化问题**：当有多个任务时，我们无法同时完美满足所有任务。因此，将所有任务的目标统一到一个框架下，并通过**加权**来解决冲突，最终形成一个“二次规划（QP）”问题：
-
-$$
-\min_{v} \sum_{\text{task } e} \|J_e(q)v + \alpha e(q)\|^2_{W_e}
-\quad \text{s.t.} \quad
-v_{\min}(q) \leq v \leq v_{\max}(q)
+e(q\oplus\Delta q)\approx e(q)+J_e(q)\Delta q.
 $$
 
-这里，$W_e$ 就是任务的权重，权重越高，优先级越高。
-
-## Pink 库：让复杂的 QP-based IK 变得简单
-Pink 正是基于上述理论，并依托强大的机器人动力学库 **Pinocchio** 构建的。它将复杂的 QP 问题封装在简洁的 API 背后，让用户能专注于机器人本身的任务定义。
-
-### Pink 是如何工作的？
-Pink 在求解时，会将连续的 QP 问题离散化，将优化变量由速度 $v$ 转换为关节空间的增量 $\Delta q = v \Delta t$。
-
-对于一个单独的任务，其贡献给总优化目标的函数是：
-$$
-\| J \Delta q + \alpha e \|^2_W + \mu \|\Delta q\|^2
-$$
-- $J, e$：由具体任务计算出的雅可比矩阵和误差。
-- $\alpha$：**任务增益**（gain），控制任务收敛的速度。
-- $W$：**权重矩阵**（cost），定义任务内不同维度（如位置 vs 姿态）的重要性。
-- $\mu$：**Levenberg-Marquardt 阻尼**（`lm_damping`），用于保证数值求解的稳定性。
-
-PINK 会将所有任务（Task）、障碍物约束（Barrier）和关节限制（Limit）的目标和约束，统一转换为标准 QP 形式 $\frac{1}{2} \Delta q^T H \Delta q + c^T \Delta q$ 的矩阵 $H$ 和向量 $c$，然后调用其自带的 `qpsolvers` 库（支持 OSQP、DAQP 等多种求解器）进行高效求解。
-
-## 核心任务详解：FrameTask 与 PostureTask
-Pink 预置了多种任务类型，其中最常用的是以下两个：
-
-### 1. 末端位姿跟踪任务（FrameTask）
-**目标**：驱动机器人的某个“框架”（如夹爪、脚底）到达目标位置和姿态。
-
-这是 IK 中最核心的任务。它的难点在于，机器人的位姿变化是定义在李群上的，而误差和雅可比的求导不能简单地在欧式空间进行。很多 IK 库在这里会出错。
-
-Pink 的作者 Stéphane Caron 在其[博客](https://scaron.info/robotics/jacobian-of-a-kinematic-task-and-derivatives-on-manifolds.html)中特别澄清了这一点，并在 Pink 中给出了正确实现。简单来说，它通过在**李代数**（切空间）上定义误差 $e$ 和雅可比 $J$，保证了数学上的精确性，从而让末端运动更加精准稳定。
-
-### 2. 关节角任务（PostureTask）
-**目标**：让机器人的关节角度趋向于一个给定的“舒适”姿态 $q^*$。
-这个任务通常用作**正则化项**。当主任务（如 FrameTask）因为奇异或不可达而失效时，PostureTask 可以发挥作用，防止关节速度失控发散，驱动机器人回到一个安全的姿态。
-PostureTask 的 QP 目标函数为：
+一个教学形式的目标是：
 
 $$
-H_{\text{task}} = J^\mathsf{T} W J + \mu I
+\min_{\Delta q}\frac12\|J_e\Delta q+\alpha e\|_W^2
++\frac{\lambda}{2}\|\Delta q\|^2,
+\quad A\Delta q\le b.
 $$
 
-$$
-c_{\text{task}} = -\alpha e^\mathsf{T} W J
-$$
+其展开为 $H=J_e^\top WJ_e+\lambda I$、$c=\alpha J_e^\top We$。若选择 $e=q^*-q$，欧氏空间中的导数是 $-I$；不能一边使用“目标减当前”的残差，一边直接把其导数写成 $+I$ 而不改变方程符号。
 
-它的计算非常简单：
-*   误差：$e = q^* - q$
-*   雅可比：$J = I$（单位阵）
-通过调整其权重 $W$，可以控制关节回正的“力度”。
+这是解释 QP 的简化模型，不是逐项复刻 Pink 的任务成本和 LM 阻尼实现。实际调用应使用同一个 Task 提供的 error 与 Jacobian，避免混用其他库的约定。
 
-### 注意事项
-1. PostureTask 不会影响浮动基座的自由度，只作用于实际的关节角。
-2. 由于其雅可比恒为满秩，PostureTask 常用于正则化，防止主任务奇异时解发散
-3.  任务权重$W$可以用来调节不同关节的优先级或灵敏度
-## 与Pinocchio+CasADi的区别
-1. Pink: 专用 IK 求解器. 专注于解决多任务、带约束的微分逆运动学问题。它是一个“开箱即用”的工具。
-2. Pinocchio+CasADi: 通用开发框架. Pinocchio 提供高效的运动学和动力学算法 ，CasADi 提供符号计算和数值优化。两者结合，用于构建自定义的、复杂的优化问题，如轨迹优化、MPC等。
+## FrameTask 与 PostureTask
+
+| 任务 | 用途 | 边界 |
+| --- | --- | --- |
+| FrameTask | 跟踪指定 frame 的位置与姿态 | SE(3) 误差与几何 Jacobian 不可随意互换 |
+| PostureTask | 将受控关节拉向参考姿态，提供正则化 | 不直接约束浮动基座，也不自动保证参考姿态无碰撞 |
+| 约束/Barrier | 限位、速度或显式配置的几何条件 | 没添加的约束不会因使用 QP 自动存在 |
+
+位置与姿态有不同单位，应明确 cost 的缩放。任务权重越高表示违反该任务的代价越大，**不构成严格优先级保证**；多个任务冲突时仍会折中。需要严格层级时，应采用相应的层级求解方案或硬约束，而不只是无限增大权重。
+
+## 一个控制周期如何接起来
+
+1. 用当前配置更新 FK，设置目标和必要任务。
+2. 给出实际时间步长 `dt`，求解局部 QP。
+3. 检查求解状态、速度上限、当前配置是否越界。
+4. 使用配置流形上的 integrate 更新，不能对含四元数的配置直接 `q += v * dt`。
+5. 重新计算非线性任务误差并决定继续、减速、重规划或安全停止。
+
+离散任务增益与连续速度反馈增益的单位不同，修改 `dt` 后不能假设同一数值仍产生相同的闭环响应。姿态任务和阻尼有助于改善数值行为，但不能保证不可达目标下的全局收敛或硬件安全。
+
+## 与 Pinocchio + CasADi 的分工
+
+Pink 提供现成的微分 IK 任务框架。Pinocchio + CasADi 则用于构建更自由的非线性优化问题，可扩展到轨迹优化或 MPC，但需要自行选择残差、约束、初始化与求解流程。
+
+选择标准应是问题结构：单周期、多任务微分控制可先验证 Pink；跨时间约束、动力学或复杂非线性目标则需要更完整的优化建模。
+
+参考：[Pink 逆运动学接口](https://stephane-caron.github.io/pink/inverse-kinematics.html)、[任务定义](https://stephane-caron.github.io/pink/tasks.html)。
+
+
+## 阅读自测与验收
+
+- 对每个任务检查误差、雅可比、参考系和权重的单位；修改残差符号时对应雅可比也必须一致。
+- 制造相互冲突的任务，检查加权折中与严格优先级的差别；QP 可解不代表结果已经满足碰撞和所有硬件限制。

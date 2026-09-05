@@ -1,0 +1,10 @@
+{{- if and (eq .Section "posts") .IsPage -}}
+  {{- with .TableOfContents -}}
+    {{- if strings.Contains . "<li>" -}}
+      <details class="blog-mobile-toc">
+        <summary>本文目录 <span>展开章节导航</span></summary>
+        {{ . }}
+      </details>
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

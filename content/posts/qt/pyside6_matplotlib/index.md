@@ -1,122 +1,124 @@
 ---
 title: Matplotlib与PySide6兼容性问题及解决方案
 date: 2025-08-04
-lastmod: 2025-08-04
+lastmod: 2026-09-05
 draft: false
 tags: ["PySide6", "Matplotlib"]
 categories: ["编程开发"]
 authors: ["chase"]
-summary: "Matplotlib与PySide6兼容性问题及解决方案"
+summary: "区分 Matplotlib Agg 与 QtAgg，给出 PySide6 嵌入图表的完整窗口，并说明后端选择、线程与事件循环。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+description: "区分 Matplotlib Agg 与 QtAgg，给出 PySide6 嵌入图表的完整窗口，并说明后端选择、线程与事件循环。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "PySide6 信号槽与 Matplotlib"
+reading_focus: "先验证最小窗口，再加入后台计算；界面与画布更新留在主线程。"
+related_posts:
+  - "/posts/gui/qt/pyside6"
+  - "/posts/gui/qt/qt5"
 ---
 
+Matplotlib 与 PySide6 集成时，先区分“生成静态图片”和“把可交互画布嵌入 Qt 窗口”。当前 Qt 后端支持 PySide6；发生异常时应核对实际版本、导入顺序和 Qt 绑定，不能直接假定必须降级到旧版 PySide6。
 
-
-## 问题背景
-
-在使用Python进行科学计算和GUI开发时，经常会遇到Matplotlib与PySide6的兼容性问题。特别是在以下情况下：
-
-1. Matplotlib对PySide6的支持不够完善，在一些枚举值的处理上存在差异
-2. 某些库（如toppra）内置并要求Matplotlib版本必须小于3.0
-3. 交互式图形显示与GUI框架的集成问题
-
-## 解决方案
-
-### 方案一：使用非交互式后端
-
-```python
-import matplotlib
-matplotlib.use('Agg')  # 使用非交互式后端
-```
-
-**优点**：
-- 完全避免GUI相关的兼容性问题
-- 适用于只需要生成静态图像而不需要交互的场景
-- 不受Matplotlib和PySide6版本限制
-
-**缺点**：
-- 无法在GUI中实现交互式图表
-- 功能受限，无法使用缩放、平移等交互功能
-
-### 方案二：降低PySide6版本
-
-将PySide6降级到6.2版本可以解决部分兼容性问题：
+## 1. 记录当前环境
 
 ```bash
-pip install pyside6==6.2
+python -m pip show matplotlib PySide6 PyQt5 PyQt6 toppra
+python -m pip check
+python -c "import sys, matplotlib; print(sys.executable); print(matplotlib.__version__)"
 ```
 
-**优点**：
-- 保持交互式功能
-- 可能解决特定版本的枚举值不匹配问题
+不要仅根据某篇旧教程推断第三方库要求 `matplotlib<3.0`。应查看正在使用的包版本与安装元数据。Matplotlib 2.2.3 与 PySide6 6.2 也不是本文建议的组合。
 
-**缺点**：
-- 可能影响其他依赖新版本PySide6的功能
-- 不是长期可持续的解决方案
+## 2. 仅保存图片：Agg
 
-## 深入分析
-
-Matplotlib的后端系统是其能够支持多种GUI框架的关键。当与PySide6等Qt绑定集成时，可能会出现以下问题：
-
-1. **枚举值不匹配**：PySide6在不同版本中对Qt枚举值的实现可能有变化，而Matplotlib可能没有及时跟进
-2. **版本冲突**：某些科学计算库固定依赖较旧版本的Matplotlib，而新版本PySide6可能需要新版本Matplotlib
-3. **线程安全问题**：GUI主线程与绘图线程的交互可能导致问题
-
-## 最佳实践建议
-
-1. **明确需求**：如果不需要交互，优先使用'Agg'后端
-2. **虚拟环境**：为不同项目创建隔离的环境，避免版本冲突
-3. **逐步升级**：在测试环境中逐步升级版本，观察兼容性变化
-4. **替代方案**：考虑使用PyQt5或PySide2等更成熟的Qt绑定
-
-## 示例代码
-
-### 非交互式使用案例
+必须在导入 `pyplot` 之前选择后端：
 
 ```python
 import matplotlib
-matplotlib.use('Agg')  # 必须在导入pyplot之前设置
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-def generate_plot():
-    fig, ax = plt.subplots()
-    ax.plot([1, 2, 3], [4, 5, 6])
-    fig.savefig('output.png')  # 保存到文件
-    plt.close(fig)
+fig, ax = plt.subplots()
+ax.plot([1, 2, 3], [4, 5, 6])
+ax.set(xlabel="x", ylabel="y", title="Headless rendering")
+fig.savefig("output.png", dpi=150, bbox_inches="tight")
+plt.close(fig)
 ```
 
-### 交互式使用案例（兼容版本）
+Agg 不创建交互窗口，适合服务器批量出图；它不负责消除其他依赖问题。
+
+## 3. 嵌入 Qt：使用 backend_qtagg
+
+先导入所需的 Qt 绑定，再创建画布，避免环境中其他绑定先被选中：
 
 ```python
-# 确保使用兼容版本
-# pip install pyside6==6.2 matplotlib==2.2.3
-
 import sys
+import math
+from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QApplication, QMainWindow
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
-class MyWindow(QMainWindow):
+
+class PlotWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-
-        # 创建Matplotlib画布
-        self.canvas = FigureCanvasQTAgg(Figure())
+        self.setWindowTitle("Matplotlib + PySide6")
+        self.canvas = FigureCanvasQTAgg(Figure(figsize=(6, 4)))
         self.setCentralWidget(self.canvas)
+        self.axes = self.canvas.figure.subplots()
+        self.line, = self.axes.plot([], [])
+        self.axes.set(xlabel="x", ylabel="sin(x + phase)")
+        self.phase = 0.0
+        self.update_plot()
+        self.timer = QTimer(self)  # 随窗口销毁，不使用无父对象的临时定时器。
+        self.timer.setInterval(100)
+        self.timer.timeout.connect(self.update_plot)
+        self.timer.start()
 
-        # 绘制图形
-        ax = self.canvas.figure.add_subplot(111)
-        ax.plot([1, 2, 3], [1, 2, 3])
+    def update_plot(self):
+        xs = [i * 0.05 for i in range(126)]
+        ys = [math.sin(x + self.phase) for x in xs]
+        self.line.set_data(xs, ys)  # 复用同一条曲线，不在每次刷新时继续 plot。
+        self.axes.relim()
+        self.axes.autoscale_view()
+        self.canvas.draw_idle()
+        self.phase += 0.1
 
-app = QApplication(sys.argv)
-window = MyWindow()
-window.show()
-app.exec()
+    def closeEvent(self, event):
+        self.timer.stop()
+        super().closeEvent(event)
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = PlotWindow()
+    window.show()
+    sys.exit(app.exec())
 ```
 
-## 结论
+保存为 `plot_window.py`，在具有桌面显示权限的环境执行 `python plot_window.py`。需要缩放和平移工具栏时，可添加同一后端中的 `NavigationToolbar2QT`。[Matplotlib Qt 后端文档](https://matplotlib.org/stable/api/backend_qt_api.html)
 
-Matplotlib与PySide6的兼容性问题通常可以通过选择合适的后端或调整版本组合来解决。对于不需要交互的场景，使用'Agg'后端是最稳定可靠的选择；而对于需要交互的GUI应用，则可能需要精心控制版本组合。随着生态的发展，这些问题有望在未来版本中得到更好的解决。
+曲线每 100 ms 请求一次重绘；`draw_idle()` 会等待 GUI 事件循环，必要时合并重绘，并不保证精确 10 FPS。关闭窗口会停止定时器；本示例不复用已经关闭的实例，需要再次打开时创建新窗口。持续自动缩放会影响手动缩放体验；实现交互浏览时应允许暂停刷新或固定坐标范围。
+
+验收时连续更新几十次，检查 `len(window.axes.lines)` 仍为 `1`，关闭后 `window.timer.isActive()` 为 `False`。无桌面环境可用 offscreen 平台做生命周期测试，但仍需在目标桌面验证实际显示。
+
+## 4. 按症状排查
+
+| 症状 | 优先检查 |
+| --- | --- |
+| 导入时出现 Qt 枚举或符号错误 | 实际导入的 Qt 绑定、版本及包来源 |
+| 找不到 xcb 或无法连接 display | 显示会话与平台插件依赖 |
+| 能保存图片但没有窗口 | 是否选择了 Agg、是否进入 Qt 事件循环 |
+| 更新曲线时卡顿或崩溃 | 是否在主线程操作 GUI、是否重复创建 QApplication |
+
+数据计算可以放在工作线程，界面和画布更新通过 Qt 信号交给主线程。修改依赖后重启 Python 进程，以免旧 Qt 动态库仍留在进程中。
+
+
+## 阅读自测与验收
+
+- 重复打开、更新和关闭绘图窗口，确认 QApplication、Canvas、定时器与窗口生命周期一致。
+- 从工作线程获取数据时通过信号回到 GUI 线程更新界面；刷新频率应与数据速率和绘制成本匹配。

@@ -1,216 +1,168 @@
 ---
 title: 'Ruckig: 高效实时运动规划库'
 date: 2025-03-15
-lastmod: 2025-03-15
+lastmod: 2026-09-05
 draft: false
 tags: ["Trajectory Generation", "Ruckig", "Motion Planning"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "介绍 Ruckig 在线轨迹生成的状态、目标与运动学约束，并通过一自由度和七自由度示例演示实时轨迹计算。"
+summary: "用 Ruckig 生成一轴和七轴 jerk 受限轨迹，补充返回状态、终点采样、预测状态传递与版本功能边界。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+description: "用 Ruckig 生成一轴和七轴 jerk 受限轨迹，补充返回状态、终点采样、预测状态传递与版本功能边界。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "位置、速度、加速度与离散采样"
+reading_focus: "先验证本地状态到状态问题，中间路径点功能与碰撞规划需另行评估。"
+related_posts:
+  - "/posts/trajectory/toppra"
+  - "/posts/planner/to_mpc_wbc"
+math: true
 ---
 
+## 先分清输入是什么
 
+Ruckig 从当前与目标的 **位置、速度、加速度** 出发，在速度、加速度和 jerk 限制下生成状态到状态轨迹。它不自动规划避障路径，也不保证末端沿笛卡尔直线运动。已有必须严格跟随的关节路径时，应先阅读 [TOPP-RA 的时间参数化]({{< relref "/posts/trajectory/toppra" >}})。
 
-**Ruckig** 是一种实时轨迹生成器，允许机器人和机器即时响应传感器输入。Ruckig 从任意初始状态开始，计算到目标路径点（包括位置、速度和加速度）的轨迹，并受限于速度、加速度和加加速度约束。除了目标状态外，Ruckig 还允许定义中间位置以进行路径点跟踪。对于状态到状态的运动，Ruckig 保证时间最优解。通过中间路径点，Ruckig 联合计算路径及其时间参数化，与传统方法相比，生成的轨迹显著更快。
+本文只使用本地状态到状态接口，不设置中间路径点。Community 与 Pro 的中间点、跟踪等功能不同；使用前查看[官方教程的版本与实时性说明](https://docs.ruckig.com/tutorial.html)，不要把可能使用远端服务的功能直接放进控制周期。
 
-- 参考 [Ruckig 的 GitHub 仓库](https://github.com/pantor/ruckig)
-## 1. 基本概念
+## 安装与单位
 
-- **自由度 (Degrees of Freedom, DOFs)**：指系统中可以独立运动的维度数量。例如，一个三轴机器人臂有三个自由度。
-- **位置 (Position)**：系统在某一时刻的具体位置。
-- **速度 (Velocity)**：系统在某一时刻的运动速度。
-- **加速度 (Acceleration)**：系统在某一时刻的速度变化率。
-- **加加速度 (Jerk)**：系统在某一时刻的加速度变化率。
-- **输入参数 (Input Parameters)**：包括当前状态（位置、速度、加速度）、目标状态（位置、速度、加速度）以及最大速度、加速度和加加速度等约束条件。
-- **输出参数 (Output Parameters)**：计算得到的新的状态（位置、速度、加速度）。
-- **同步模式 (Synchronization)**：确保所有自由度在相同的时间内完成运动。
-
-## 2. 轨迹规划类型
-- 状态到状态的轨迹规划：从任意初始状态（包括位置、速度和加速度）到目标状态的轨迹规划，保证时间最优解。
-- 路径点跟踪：允许定义中间位置，通过这些路径点进行轨迹规划，联合计算路径及其时间参数化。
-- 实时轨迹生成：能够在运行时根据传感器输入即时生成轨迹，适用于需要快速响应的应用场景。
-
-## 3. 安装
 ```bash
-pip install ruckig
+python -m pip install ruckig numpy matplotlib
 ```
-## 4. 使用示例
-### 一自由度的运动规划
+
+旋转关节采用 rad、rad/s、rad/s²、rad/s³，时间采用秒。移动关节应对应使用米。下面的限制只是教学值，不是任何实机的安全配置。
+
+| 输入 | 作用 |
+| --- | --- |
+| current / target position、velocity、acceleration | 完整边界状态；目标速度不一定为零 |
+| max_velocity、max_acceleration、max_jerk | 各轴运动学上限，不包含力矩、碰撞和位置限位 |
+| delta_time | `update` 的离散周期，不等于求出的总时长 |
+| synchronization | 轴间时间/相位同步策略，不能据此推断末端路径形状 |
+
+## 一个函数验证一轴与七轴
+
+保存为 `check_ruckig.py`。脚本在仿真中传递预测状态，不连接设备；包含精确终点、速度/加速度上限和采样区间平均 jerk 检查。
+
 ```python
-import ruckig
 import numpy as np
-import matplotlib.pyplot as plt
+import ruckig
 
-# 维度
-DOFs = 1  # 1自由度示例
 
-# 创建 Ruckig 实例
-otg = ruckig.Ruckig(DOFs, 0.01)  # 时间步长为 0.01 秒
+def simulate(target, dt=0.01):
+    target = np.asarray(target, dtype=float)
+    if target.ndim != 1 or target.size == 0 or not np.isfinite(target).all():
+        raise ValueError("target must be a nonempty finite vector")
+    if not np.isfinite(dt) or dt <= 0:
+        raise ValueError("dt must be positive and finite")
 
-# 输入和输出参数
-input = ruckig.InputParameter(DOFs)
-output = ruckig.OutputParameter(DOFs)
+    dofs = target.size
+    otg = ruckig.Ruckig(dofs, dt)
+    inp = ruckig.InputParameter(dofs)
+    out = ruckig.OutputParameter(dofs)
+    inp.current_position = [0.0] * dofs
+    inp.current_velocity = [0.0] * dofs
+    inp.current_acceleration = [0.0] * dofs
+    inp.target_position = target.tolist()
+    inp.target_velocity = [0.0] * dofs
+    inp.target_acceleration = [0.0] * dofs
+    inp.max_velocity = [1.0] * dofs
+    inp.max_acceleration = [1.0] * dofs
+    inp.max_jerk = [1.0] * dofs
+    otg.validate_input(inp, True, True)
 
-# 设置初始状态
-input.current_position = [0.0]
-input.current_velocity = [0.0]
-input.current_acceleration = [0.0]
-
-# 设置目标状态
-input.target_position = [1.0]
-input.target_velocity = [0.0]
-input.target_acceleration = [0.0]
-
-# 设置最大速度、加速度和加加速度
-input.max_velocity = [1.0]
-input.max_acceleration = [1.0]
-input.max_jerk = [1.0]
-
-# 用于存储轨迹数据
-positions = []
-velocities = []
-accelerations = []
-jerks = []
-
-# 计算轨迹
-while True:
-    result = otg.update(input, output)
-
-    if result == ruckig.Result.Finished:
-        break
-
-    # 存储当前状态
-    positions.append(output.new_position.copy())
-    velocities.append(output.new_velocity.copy())
-    accelerations.append(output.new_acceleration.copy())
-
-    # 计算并存储加加速度（jerk）
-    if len(accelerations) > 1:
-        jerk = (accelerations[-1][0] - accelerations[-2][0]) / 0.01
+    # 包含 t=0，不能把第一次 update 后的状态标为初始状态。
+    times = [0.0]
+    positions = [inp.current_position.copy()]
+    velocities = [inp.current_velocity.copy()]
+    accelerations = [inp.current_acceleration.copy()]
+    trajectory = None
+    for _ in range(100000):
+        result = otg.update(inp, out)
+        if result not in (ruckig.Result.Working, ruckig.Result.Finished):
+            raise RuntimeError(f"Ruckig failed: {result}")
+        if trajectory is None:
+            trajectory = out.trajectory
+            duration = float(trajectory.duration)
+        times.append(float(out.time))
+        positions.append(out.new_position.copy())
+        velocities.append(out.new_velocity.copy())
+        accelerations.append(out.new_acceleration.copy())
+        out.pass_to_input(inp)
+        if result == ruckig.Result.Finished:
+            break
     else:
-        jerk = 0.0
-    jerks.append(jerk)
+        raise RuntimeError("Simulation step budget exceeded")
 
-    # 更新输入参数
-    input.current_position = output.new_position
-    input.current_velocity = output.new_velocity
-    input.current_acceleration = output.new_acceleration
+    t = np.asarray(times)
+    q, dq, ddq = map(np.asarray, (positions, velocities, accelerations))
+    for values in (t, q, dq, ddq):
+        assert np.isfinite(values).all()
+    np.testing.assert_allclose(q[-1], target, atol=1e-8)
+    np.testing.assert_allclose(dq[-1], 0, atol=1e-8)
+    np.testing.assert_allclose(ddq[-1], 0, atol=1e-8)
+    assert np.max(np.abs(dq)) <= 1.0 + 1e-8
+    assert np.max(np.abs(ddq)) <= 1.0 + 1e-8
+    average_jerk = np.diff(ddq, axis=0) / np.diff(t)[:, None]
+    assert np.max(np.abs(average_jerk)) <= 1.0 + 1e-7
 
-# 转换为 NumPy 数组
-positions = np.array(positions)
-velocities = np.array(velocities)
-accelerations = np.array(accelerations)
-jerks = np.array(jerks)
+    # Finished 所在的离散 tick 可能超过总时长；另查精确终点。
+    q_end, dq_end, ddq_end = trajectory.at_time(duration)
+    np.testing.assert_allclose(q_end, target, atol=1e-8)
+    np.testing.assert_allclose(dq_end, 0, atol=1e-8)
+    np.testing.assert_allclose(ddq_end, 0, atol=1e-8)
+    print(f"{dofs} DoF: duration={duration:.6f}s, ticks={len(t)-1}")
+    return t, q, dq, ddq, average_jerk
 
-# 绘制轨迹图
-time_steps = np.arange(positions.shape[0]) * 0.01
 
-fig, axs = plt.subplots(4, 1, figsize=(10, 10))
-
-axs[0].plot(time_steps, positions, label='Position')
-axs[1].plot(time_steps, velocities, label='Velocity')
-axs[2].plot(time_steps, accelerations, label='Acceleration')
-axs[3].plot(time_steps, jerks, label='Jerk')
-
-axs[0].set_title('Position')
-axs[1].set_title('Velocity')
-axs[2].set_title('Acceleration')
-axs[3].set_title('Jerk')
-
-for ax in axs:
-    ax.set_xlabel('Time [s]')
-    ax.legend()
-    ax.grid()
-
-plt.tight_layout()
-plt.show()
+if __name__ == "__main__":
+    simulate([1.0])
+    simulate([1.0, 0.5, 0.25, 0.0, -1.0, -0.5, -0.25])
 ```
-![ruckig_1](ruckig_1.jpg)
 
-### 七自由度的运动规划
+`validate_input` 检查输入可行性，但调用仍可能抛出异常或返回错误状态。实机需要独立故障处理与停机策略；不能将失败结果继续下发。
+
+## 绘图是观察工具，不替代断言
+
+将以下片段接在同一个脚本末尾，或从 `check_ruckig` 导入 `simulate` 后使用。前面的数值测试本身不需要图形窗口。
 
 ```python
-import ruckig
-import numpy as np
 import matplotlib.pyplot as plt
 
-# 维度
-DOFs = 7  # 7自由度机械臂
-
-# 创建 Ruckig 实例
-otg = ruckig.Ruckig(DOFs, 0.01)  # 时间步长为 0.01 秒
-
-# 输入和输出参数
-input = ruckig.InputParameter(DOFs)
-output = ruckig.OutputParameter(DOFs)
-
-# 设置初始状态
-input.current_position = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-input.current_velocity = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-input.current_acceleration = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-
-# 设置目标状态（假设已通过逆运动学计算得到）
-input.target_position = [1.0, 0.5, 0.25, 0.0, -1.0, -0.5, -0.25]
-input.target_velocity = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-input.target_acceleration = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-
-# 设置最大速度、加速度和加加速度
-input.max_velocity = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-input.max_acceleration = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-input.max_jerk = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-
-# 用于存储轨迹数据
-positions = []
-velocities = []
-accelerations = []
-
-# 计算轨迹
-while True:
-    result = otg.update(input, output)
-
-    if result == ruckig.Result.Finished:
-        break
-
-    # 存储当前状态
-    positions.append(output.new_position.copy())
-    velocities.append(output.new_velocity.copy())
-    accelerations.append(output.new_acceleration.copy())
-
-    # 更新输入参数
-    input.current_position = output.new_position
-    input.current_velocity = output.new_velocity
-    input.current_acceleration = output.new_acceleration
-
-# 转换为 NumPy 数组
-positions = np.array(positions)
-velocities = np.array(velocities)
-accelerations = np.array(accelerations)
-
-# 绘制轨迹图
-time_steps = np.arange(positions.shape[0]) * 0.01
-
-fig, axs = plt.subplots(3, 1, figsize=(10, 8))
-
-for i in range(DOFs):
-    axs[0].plot(time_steps, positions[:, i], label=f'Joint {i+1}')
-    axs[1].plot(time_steps, velocities[:, i], label=f'Joint {i+1}')
-    axs[2].plot(time_steps, accelerations[:, i], label=f'Joint {i+1}')
-
-axs[0].set_title('Position')
-axs[1].set_title('Velocity')
-axs[2].set_title('Acceleration')
-
-for ax in axs:
-    ax.set_xlabel('Time [s]')
-    ax.legend()
-    ax.grid()
-
-plt.tight_layout()
+t, q, dq, ddq, average_jerk = simulate([1.0])
+fig, axes = plt.subplots(4, 1, figsize=(9, 8), sharex=True)
+for ax, values, label in zip(
+    axes, (q, dq, ddq), ("Position [rad]", "Velocity [rad/s]", "Acceleration [rad/s²]")
+):
+    ax.plot(t, values)
+    ax.set_ylabel(label)
+axes[3].step(t[1:], average_jerk, where="pre")
+axes[3].set_ylabel("Mean jerk [rad/s³]")
+axes[3].set_xlabel("Time [s]")
+for ax in axes:
+    ax.grid(True)
+fig.tight_layout()
 plt.show()
 ```
 
-![ruckig_2](ruckig_2.jpg)
+差分得到的是每个采样区间的 **平均 jerk**，跨过分段切换点时不等于瞬时 jerk；首个区间也应使用初始加速度，而不是人为补零。离散采样不能独立证明连续时间约束成立，应结合求解器保证与边界验证。
+
+![原一轴示例的位置、速度、加速度与 jerk 图](ruckig_1.jpg)
+![原七轴示例的同步运动结果](ruckig_2.jpg)
+
+以上保留原笔记的绘图作为形状参考；新脚本以打印结果和断言为准，不把历史图片当作本轮测试输出。
+
+## 预测状态与测量状态
+
+`pass_to_input` 适合“下一步确实到达预测状态”的理想仿真。真实系统存在跟踪误差，重规划时应使用经过状态估计和单位转换的真实当前位置、速度与加速度，同时评估噪声、延迟和重新规划频率。不要每个周期盲目将任意噪声测量替换进去，也不要把预测状态等同于传感器反馈。
+
+非零目标速度时，`Finished` 不表示机器人已经静止，越过终点后的状态也不必仍是目标位置。本例使用零目标速度和加速度，因此才断言最后一帧停在目标处。
+
+输入校验、返回状态及 `at_time` 的定义见 [Ruckig 官方教程](https://docs.ruckig.com/tutorial.html)。
+
+## 阅读自测与验收
+
+- 检查每一步返回状态和最终位置、速度、加速度，确认记录到了 Finished 对应的最后一个状态。
+- 在轨迹切换时传递真实当前状态，并分别检查速度、加速度和 jerk 上限；平滑插值图像不等于数值约束已通过。

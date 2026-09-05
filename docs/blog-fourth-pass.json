@@ -1,0 +1,543 @@
+{
+  "date": "2026-09-05",
+  "scope": "66 篇全量静态与浏览器回归；7 篇较深正文修订及 2 篇标签/路径修正；不重复重写其他正文。保持 URL、发布日期和 3 篇草稿状态。",
+  "shared_improvements": [
+    "所有博客代码复制保留空白与多行内容；权限拒绝、API 缺失、同步异常时选择代码并提供可访问的手动复制提示。",
+    "新增转义代码围栏、Bash/sh 语法、JSON/JSONC/XML 和重复 HTML id 检查；语法检查不运行文章中的 shell 命令。",
+    "66 篇各检查手机 390 px 与桌面 1440 px，保留前轮导读、自测、相关内容和专题导航。"
+  ],
+  "images": {
+    "new_generated": 0,
+    "decision": "沿用前三轮已有说明图和真实截图。本轮问题主要是代码可运行性、坐标约定和失败反馈，现有配图足够，不新增装饰图；后续生成图继续参考 transformer-attention/assets。"
+  },
+  "posts": [
+    {
+      "path": "content/posts/ai/algorithms/Astar/Astar-cpp/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/ai/algorithms/Astar/Astar-introduction/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/ai/algorithms/overview.md",
+      "draft": true,
+      "topic": "ai",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/ai/diffusion-models/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/ai/distributed-training-memory/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/ai/gymnasium/1/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/calibration/cctag/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/calibration/kinematics/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/calibration/model/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/calibration/opencv/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/calibration/zero/index.md",
+      "draft": false,
+      "topic": "calibration",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/casadi/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/cmake/ExternalProject_Add/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/coacd/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/cpp/gcc/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/cpp/gccs/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/cpp/smart-pointer/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/cpp/std/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/cuda/gcc/index.md",
+      "draft": false,
+      "topic": "gpu",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/cuda/warp/index.md",
+      "draft": false,
+      "topic": "gpu",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/dialout/dh/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/dialout/udev/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": true,
+      "body_change": "统一 ttyUSB0/ttyACM0 路径说明；区分终端输出、规则文件与 shell 命令；改进已有截图替代文本。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/egl/x11_warnning/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/gui/qt/jetson/index.md",
+      "draft": false,
+      "topic": "gpu",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/gui/qt/pyside6/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_changed": true,
+      "body_change": "提供 robot-dialog.ui 下载和完整目录结构；按钮计数信号槽可运行，验证重新生成 UI 后业务逻辑保留。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/gui/qt/qt5/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/isaaclab/UsdContext/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/linux/watch/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": true,
+      "body_change": "重写快照与采样说明；修正 -e 语义；tmux 显式指定新会话/pane，拒绝覆盖同名会话；设备查询独立为需现场确认的可选步骤。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/meshcat/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_changed": true,
+      "body_change": "圆柱由局部 Y 轴旋转到世界 Z 轴；更新片段明确插入位置；核对 0.3.2 服务代码，提醒本地 URL 不等于仅监听本机，HTTP 与 ZMQ 均需保护。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/network-protocol/c++_tcp.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/network-protocol/c++_udp.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/network-protocol/fixed_IP.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/network-protocol/tcp-udp-introduction.md",
+      "draft": true,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/nvidia/no_devices/index.md",
+      "draft": false,
+      "topic": "gpu",
+      "body_changed": true,
+      "body_change": "历史终端记录和 nvcc 输出改为 text 围栏，不再被误认为可执行 Bash；保留真实历史环境及排障结论。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/open3d/introduction/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/opengl/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/pid/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/pink/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/planner/to_mpc_wbc/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/process/pid/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/python/f_string/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_changed": true,
+      "body_change": "五组独立断言示例；修正填充宽度和预期输出，使用固定带时区时间；明确码点宽度、精度、日志求值及安全边界。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/python/py39/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/python/tqdm/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/python/version/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/qt/pyside6_matplotlib/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_changed": true,
+      "body_change": "动态图表复用 Line2D，通过有父对象的 QTimer 更新，关闭窗口停止定时器；说明 draw_idle、自动缩放与 offscreen 的边界。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/queue/index.md",
+      "draft": false,
+      "topic": "cpp",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/rl/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/jacobian/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_changed": true,
+      "body_change": "修复转义代码围栏；脚本与后续片段共享变量；明确 WORLD 原点、任务秩、操作空间惯量和阻尼零空间泄漏；补充 URDF 复现入口。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/kinematics-introduction.md",
+      "draft": true,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pinocchio/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pytorch/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/robotics/workspace/whole-workspace/index.md",
+      "draft": false,
+      "topic": "kinematics",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/thesis/being_0/index.md",
+      "draft": false,
+      "topic": "ai",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/thesis/coacd/index.md",
+      "draft": false,
+      "topic": "geometry",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/trajectory/ruckig/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/trajectory/toppra/index.md",
+      "draft": false,
+      "topic": "planning-control",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/unicode/index.md",
+      "draft": false,
+      "topic": "systems",
+      "body_changed": true,
+      "body_change": "补齐可注入任务函数，失败异常向上传递；增加 ASCII 回退、换行转义、UTF-8 增量解码及 C++17/C++20 类型断言。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/vscode/debug/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/vscode/gdm/index.md",
+      "draft": false,
+      "topic": "gui",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/vscode/two-env/index.md",
+      "draft": false,
+      "topic": "python",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    },
+    {
+      "path": "content/posts/xcb/post_2.md",
+      "draft": false,
+      "topic": "gui",
+      "body_changed": false,
+      "body_change": "本轮保留既有正文，纳入共享复制体验、静态检查和双宽度浏览器回归。",
+      "image_decision": "保留现有有效图片，本轮不新增生成图。"
+    }
+  ]
+}

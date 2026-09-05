@@ -1,0 +1,30 @@
+{{- $records := slice -}}
+{{- range . -}}
+  {{- $page := . -}}
+  {{- $topic := "" -}}
+  {{- $topicTitle := "" -}}
+  {{- range hugo.Data.blog_topics -}}
+    {{- if in .posts $page.File.Path -}}
+      {{- $topic = .id -}}
+      {{- $topicTitle = .title -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $tags := slice -}}
+  {{- range $page.GetTerms "tags" -}}
+    {{- $tags = $tags | append (dict "name" .LinkTitle "url" .RelPermalink) -}}
+  {{- end -}}
+  {{- $records = $records | append (dict
+    "url" .RelPermalink
+    "title" .Title
+    "summary" (partial "utils/page-description" . | htmlUnescape)
+    "date" (.Date.Format "2006-01-02")
+    "minutes" .ReadingTime
+    "category" (index .Params.categories 0 | default "")
+    "tags" $tags
+    "topic" $topic
+    "topicTitle" $topicTitle
+    "draft" .Draft
+    "lang" (.Params.contentLanguage | default .Language.Lang)
+  ) -}}
+{{- end -}}
+{{- return $records -}}

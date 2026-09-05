@@ -1,15 +1,23 @@
 ---
 title: "机器人动力学参数辨识：从数据采集到安全验证"
 date: 2026-09-03
-lastmod: 2026-09-04
+lastmod: 2026-09-05
 draft: false
+authors: ["chase"]
 math: true
 tags: ["Robotics", "Dynamics", "Parameter Identification", "Pinocchio", "RLS", "EKF"]
 categories: ["机器人技术"]
-summary: "从数据采集、激励轨迹和基参数回归出发，介绍物理一致求解、FF-RLS/EKF 在线估计、独立验证与安全部署，并结合 RobotServer 给出可运行示例。"
+summary: "从同步采样和激励轨迹建立动力学回归，讨论物理一致性、在线估计、独立验证与候选参数安全部署。"
 showToc: true
 TocOpen: true
 comments: false
+description: "从同步采样和激励轨迹建立动力学回归，讨论物理一致性、在线估计、独立验证与候选参数安全部署。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "刚体动力学、回归与数据处理"
+reading_focus: "先完成可回滚的离线辨识闭环，训练残差小不代表参数可以直接上机。"
+related_posts:
+  - "/posts/robotics/control/impedance-control"
+  - "/posts/calibration/kinematics"
 ---
 
 动力学参数辨识的目标，是从关节位置、速度、加速度和力矩观测中估计质量、质心、惯量及摩擦等参数。它服务于重力补偿、逆动力学、阻抗控制和仿真，但辨识结果首先是“候选参数”，不能未经审查就覆盖真机配置。
@@ -893,3 +901,9 @@ $$M(q)\dot v+h(q,v)=S^T\tau+J_c^Tf_c$$
 ## 13. 小结
 
 最终交付的不是一串参数，而是“数据 + 模型 + 诊断 + 审核 + 回滚 + 运行证据”的完整包。只有这个包能够被另一位工程师复现和审查，辨识结果才适合进入实际控制系统。
+
+
+## 阅读自测与验收
+
+- 检查回归矩阵的秩和条件数，并将采集轨迹与验证轨迹分开；更多重复样本不能替代对不同参数方向的激励。
+- 确认质量、惯量等估计参数的物理一致性，再比较留出轨迹上的预测力矩残差；较低训练误差不是唯一标准。

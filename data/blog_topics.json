@@ -1,0 +1,138 @@
+[
+  {
+    "id": "kinematics",
+    "title": "机械臂运动学",
+    "description": "从坐标与 Jacobian 到解析解、数值 IK 和工作空间；实现章节可按所用工具选择。",
+    "posts": [
+      "posts/robotics/kinematics/kinematics-introduction.md",
+      "posts/robotics/kinematics/six-dof-kinematics/index.md",
+      "posts/robotics/kinematics/jacobian/index.md",
+      "posts/robotics/kinematics/seven-dof-kinematics/index.md",
+      "posts/robotics/kinematics/pinocchio/index.md",
+      "posts/robotics/kinematics/pytorch/index.md",
+      "posts/pink/index.md",
+      "posts/robotics/workspace/whole-workspace/index.md"
+    ]
+  },
+  {
+    "id": "planning-control",
+    "title": "规划、轨迹与控制",
+    "description": "先区分几何路径和时间轨迹，再理解跟踪控制、动力学与全身控制的边界。",
+    "posts": [
+      "posts/ai/algorithms/Astar/Astar-introduction/index.md",
+      "posts/ai/algorithms/Astar/Astar-cpp/index.md",
+      "posts/casadi/index.md",
+      "posts/trajectory/toppra/index.md",
+      "posts/trajectory/ruckig/index.md",
+      "posts/pid/index.md",
+      "posts/robotics/dynamics/parameter-identification/index.md",
+      "posts/robotics/control/impedance-control/index.md",
+      "posts/planner/to_mpc_wbc/index.md"
+    ]
+  },
+  {
+    "id": "calibration",
+    "title": "视觉与机器人标定",
+    "description": "从可观测的标记点出发，统一相机、工具和基座坐标，再估计零偏与几何参数。",
+    "posts": [
+      "posts/calibration/opencv/index.md",
+      "posts/calibration/cctag/index.md",
+      "posts/calibration/model/index.md",
+      "posts/calibration/zero/index.md",
+      "posts/calibration/kinematics/index.md"
+    ]
+  },
+  {
+    "id": "ai",
+    "title": "强化学习与生成模型",
+    "description": "先理解交互与训练目标，再选择 Transformer、扩散模型、分布式训练或具身策略。",
+    "posts": [
+      "posts/ai/algorithms/overview.md",
+      "posts/ai/gymnasium/1/index.md",
+      "posts/rl/index.md",
+      "posts/ai/transformer-attention/index.md",
+      "posts/ai/diffusion-models/index.md",
+      "posts/ai/distributed-training-memory/index.md",
+      "posts/thesis/being_0/index.md"
+    ]
+  },
+  {
+    "id": "geometry",
+    "title": "几何处理与仿真可视化",
+    "description": "从点云和凸分解开始，按需进入网格处理、浏览器可视化与仿真场景。",
+    "posts": [
+      "posts/open3d/introduction/index.md",
+      "posts/thesis/coacd/index.md",
+      "posts/coacd/index.md",
+      "posts/meshcat/index.md",
+      "posts/isaaclab/UsdContext/index.md",
+      "posts/opengl/index.md"
+    ]
+  },
+  {
+    "id": "cpp",
+    "title": "C++ 与构建工程",
+    "description": "核对编译器和语言标准，理解所有权与并发，再管理第三方构建依赖。",
+    "posts": [
+      "posts/cpp/gcc/index.md",
+      "posts/cpp/gccs/index.md",
+      "posts/cpp/std/index.md",
+      "posts/cpp/smart-pointer/index.md",
+      "posts/queue/index.md",
+      "posts/cmake/ExternalProject_Add/index.md"
+    ]
+  },
+  {
+    "id": "python",
+    "title": "Python 与调试环境",
+    "description": "先固定解释器和依赖环境，再使用语言特性、进度条与 VS Code 调试。",
+    "posts": [
+      "posts/python/version/index.md",
+      "posts/python/py39/index.md",
+      "posts/python/f_string/index.md",
+      "posts/python/tqdm/index.md",
+      "posts/vscode/debug/index.md",
+      "posts/vscode/two-env/index.md"
+    ]
+  },
+  {
+    "id": "gpu",
+    "title": "CUDA 与嵌入式 GPU",
+    "description": "区分主机编译器、内核执行、驱动设备和 Jetson 平台依赖，按故障层级排查。",
+    "posts": [
+      "posts/cuda/gcc/index.md",
+      "posts/cuda/warp/index.md",
+      "posts/nvidia/no_devices/index.md",
+      "posts/gui/qt/jetson/index.md"
+    ]
+  },
+  {
+    "id": "gui",
+    "title": "Qt 与图形显示排障",
+    "description": "先跑通 Qt/PySide 与绘图，再分别定位 EGL、XCB 和登录会话问题。",
+    "posts": [
+      "posts/gui/qt/qt5/index.md",
+      "posts/gui/qt/pyside6/index.md",
+      "posts/qt/pyside6_matplotlib/index.md",
+      "posts/egl/x11_warnning/index.md",
+      "posts/xcb/post_2.md",
+      "posts/vscode/gdm/index.md"
+    ]
+  },
+  {
+    "id": "systems",
+    "title": "Linux、通信与设备",
+    "description": "先掌握观测工具和权限，再验证串口与 TCP/UDP，最后处理网络配置和字节编码。",
+    "posts": [
+      "posts/linux/watch/index.md",
+      "posts/process/pid/index.md",
+      "posts/dialout/udev/index.md",
+      "posts/dialout/dh/index.md",
+      "posts/network-protocol/tcp-udp-introduction.md",
+      "posts/network-protocol/c++_tcp.md",
+      "posts/network-protocol/c++_udp.md",
+      "posts/network-protocol/fixed_IP.md",
+      "posts/unicode/index.md"
+    ]
+  }
+]

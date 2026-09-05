@@ -1,441 +1,187 @@
 ---
 title: Python优化控制大寰PGC夹具的串口通信程序
 date: 2025-03-01
-lastmod: 2025-03-01
+lastmod: 2026-09-05
 draft: false
 tags: ["Serial Communication", "Python", "Robot Gripper"]
 categories: ["系统与工具"]
 authors: ["chase"]
-summary: Python优化控制大寰PGC夹具的串口通信程序
+summary: "把 Modbus RTU 请求与响应封装为串口事务，增加 CRC、异常帧、超时和并发检查，并以线程桥接异步调用。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+description: "把 Modbus RTU 请求与响应封装为串口事务，增加 CRC、异常帧、超时和并发检查，并以线程桥接异步调用。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "Python、串口与 Modbus 基础"
+reading_focus: "先用假串口测试协议，再按设备手册接入；示例不自动初始化或移动夹爪。"
+related_posts:
+  - "/posts/dialout/udev"
+  - "/posts/queue"
 ---
 
+## 先把一次请求—响应作为不可分割的事务
 
+半双工串口同一时刻只应有一个在途事务。仅分别给 `write` 和 `read` 加锁，仍可能出现 A 写、B 写、A 读到 B 响应的串包。
 
-在工业自动化中，夹具的控制是一个非常重要的环节。本文将介绍如何使用Python通过串口控制大寰PGC夹具。我们将使用异步IO和事件锁来实现半双工通信，以提高通讯效率和鲁棒性。
+`async def` 不会把 pySerial 的阻塞调用自动变成异步。这里采用“同步事务 + 工作线程”的结构：整个发包、收包和校验都在同一个线程锁内完成，异步调用方通过 `asyncio.to_thread` 等待，不阻塞事件循环。
 
-## 1. 环境准备
-首先，我们需要安装pyserial库来处理串口通信。可以使用以下命令安装：
+本文针对 Modbus RTU 单寄存器读写框架，不代替对应 PGC 型号的厂商手册。串口参数、设备 ID、寄存器地址和夹持力范围必须逐项核对；示例不自动执行夹爪初始化或运动。
+
+## 环境与协议约定
+
+Python 3.9+ 自带 `asyncio`，不需要从 pip 安装同名包：
+
 ```bash
-pip install pyserial asyncio
+python -m pip install pyserial
 ```
-## 2. 异步IO
-异步IO（Asynchronous I/O）在处理并发任务时具有显著的优势，尤其是在I/O密集型操作中。以下是异步IO的主要优势和处理逻辑：
 
-### 2.1优势
+使用 `0x03` 读取一个保持寄存器、`0x06` 写一个寄存器。数据字段按大端编码，Modbus RTU CRC 的低字节先发送。必须验证设备地址、功能码、长度、CRC，以及写响应是否回显原请求；收到 8 字节不等于写入成功。
 
-1. **高效利用资源**：
-   异步IO允许程序在等待I/O操作完成时执行其他任务，从而更高效地利用CPU资源。
+## 同步事务实现
 
-2. **更好的响应性**：
-   异步IO可以提高应用程序的响应性，因为它不会因为等待I/O操作而阻塞整个程序。
+保存为 `gripper_bus.py`。构造函数接收已配置的串口对象，使协议逻辑可以用假串口测试。每个物理总线只能共享一个该对象，不要让多个进程同时打开设备。
 
-3. **简化并发编程**：
-   使用异步IO可以避免传统多线程编程中的锁竞争和死锁问题，从而简化并发编程。
-
-4. **可扩展性**：
-   异步IO使得应用程序更容易扩展，因为它可以处理大量并发连接而不需要为每个连接创建一个线程。
-### 2.2 处理逻辑
-
-异步IO的处理逻辑通常包括以下几个步骤：
-
-1. **定义异步函数**：
-   使用`async def`定义异步函数，这些函数可以使用`await`关键字来等待异步操作完成。
-
-2. **创建事件循环**：
-   使用`asyncio`库创建和管理事件循环，事件循环负责调度和执行异步任务。
-
-3. **执行异步任务**：
-   使用`await`关键字等待异步任务完成，或者使用`asyncio.run()`来运行顶层异步函数。
-
-
-
-
-
-
-## 3. 实现串口控制类
-我们将创建一个名为`dh_device`的类来处理串口连接和数据读写。以下是`PGC_device.py`的实现：
-
-`PGC_device.py`
 ```python
 import asyncio
-import serial
 import threading
-import logging
-
-logging.basicConfig(level=logging.INFO)
+import time
 
 
-class dh_device(object):
-    def __init__(self):
-        r"""Initialize the dh_device class with a threading lock."""
+def crc16(data: bytes) -> int:
+    crc = 0xFFFF
+    for value in data:
+        crc ^= value
+        for _ in range(8):
+            crc = (crc >> 1) ^ (0xA001 if crc & 1 else 0)
+    return crc
+
+
+def with_crc(body: bytes) -> bytes:
+    return body + crc16(body).to_bytes(2, "little")
+
+
+class ModbusRegisterBus:
+    def __init__(self, port, unit=1, timeout=0.5, frame_gap=0.004):
+        if not 1 <= unit <= 247 or timeout <= 0 or frame_gap <= 0:
+            raise ValueError("Invalid unit, timeout, or frame gap")
+        self.port = port
+        self.unit = unit
+        self.timeout = timeout
+        self.frame_gap = frame_gap
         self.lock = threading.Lock()
-        self.serialPort = serial.Serial(timeout=1.0)
+        self.failed = False
+        self.last_end = 0.0
+        # 限制单次 read/write 阻塞时间；总接收时间另由 deadline 控制。
+        self.port.timeout = min(timeout, 0.05)
+        self.port.write_timeout = timeout
 
-    def connect_device(self, portname, Baudrate):
-        r"""Connect to the device via the specified serial port and baud rate.
+    def _read_exact(self, length, deadline):
+        data = bytearray()
+        while len(data) < length:
+            if time.monotonic() >= deadline:
+                raise TimeoutError("Incomplete Modbus response")
+            data.extend(self.port.read(length - len(data)))
+        return bytes(data)
 
-        Args:
-            portname (str): The name of the serial port to connect to.
-            Baudrate (int): The baud rate for the serial communication.
-
-        Returns:
-            int: 0 if the connection is successful, -1 otherwise.
-        """
+    def _exchange(self, function, register, value):
+        if function not in (0x03, 0x06):
+            raise ValueError("Only single-register 0x03/0x06 are implemented")
+        if not 0 <= register <= 0xFFFF or not 0 <= value <= 0xFFFF:
+            raise ValueError("Register and value must fit uint16")
+        request = with_crc(
+            bytes([self.unit, function])
+            + register.to_bytes(2, "big")
+            + value.to_bytes(2, "big")
+        )
         with self.lock:
+            if self.failed:
+                raise RuntimeError("Bus faulted; inspect and resynchronize before reuse")
             try:
-                self.serialPort.port = portname
-                self.serialPort.baudrate = Baudrate
-                self.serialPort.bytesize = 8
-                self.serialPort.parity = "N"
-                self.serialPort.stopbits = 1
-                self.serialPort.set_output_flow_control = False
-                self.serialPort.set_input_flow_control = False
-
-                self.serialPort.open()
-                if self.serialPort.isOpen():
-                    logging.info("Serial Open Success")
-                    return 0
-                else:
-                    logging.error("Serial Open Error")
-                    return -1
-            except serial.SerialException as e:
-                logging.error(f"Serial Open Exception: {e}")
-                return -1
-
-    def disconnect_device(self):
-        r"""Disconnect the device by closing the serial port."""
-        with self.lock:
-            if self.serialPort.isOpen():
-                self.serialPort.close()
-                logging.info("Serial Port Closed")
-            else:
-                logging.warning("Serial Port Already Closed")
-
-    async def device_write(self, write_data):
-        r"""Write data to the device.
-
-        Args:
-            write_data (bytes): The data to write to the device.
-
-        Returns:
-            int: The number of bytes written if successful, 0 if there is an error, -1 if the serial port is not open.
-        """
-        with self.lock:
-            if self.serialPort.isOpen():
-                try:
-                    write_length = self.serialPort.write(write_data)
-                    if write_length == len(write_data):
-                        return write_length
+                delay = self.frame_gap - (time.monotonic() - self.last_end)
+                if delay > 0:
+                    time.sleep(delay)
+                if self.port.write(request) != len(request):
+                    raise IOError("Incomplete serial write")
+                deadline = time.monotonic() + self.timeout
+                header = self._read_exact(3, deadline)
+                if header[0] != self.unit:
+                    raise ValueError("Unexpected device address")
+                if header[1] == (function | 0x80):
+                    response = header + self._read_exact(2, deadline)
+                elif header[1] == function:
+                    if function == 0x03:
+                        if header[2] != 2:
+                            raise ValueError("Expected exactly one register")
+                        response = header + self._read_exact(4, deadline)
                     else:
-                        logging.debug(f"Write error! send_buff: {write_data}")
-                        return 0
-                except serial.SerialTimeoutException as e:
-                    logging.debug(f"Write Timeout Exception: {e}")
-                    return 0
-            else:
-                logging.error("Serial Port Not Open")
-                return -1
-
-    async def device_read(self, wlen):
-        r"""Read data from the device.
-
-        Args:
-            wlen (int): The number of bytes to read from the device.
-
-        Returns:
-            bytes: The data read from the device if successful, -1 if the serial port is not open.
-        """
-        with self.lock:
-            if self.serialPort.isOpen():
-                try:
-                    responseData = self.serialPort.read(wlen)
-                    return responseData
-                except serial.SerialTimeoutException as e:
-                    logging.error(f"Read Timeout Exception: {e}")
-                    return -1
-            else:
-                logging.error("Serial Port Not Open")
-                return -1
-```
-
-## 4. 实现夹具控制类
-接下来，我们创建一个名为`dh_modbus_gripper`的类来实现对夹具的具体控制。以下是`PGC_gripper.py`的实现：
-`PGC_gripper.py`
-```python
-import asyncio
-import threading
-import logging
-from PGC_device import dh_device
-
-logging.basicConfig(level=logging.INFO)
-
-
-class dh_modbus_gripper(object):
-    def __init__(self):
-        r"""Initialize the gripper with default ID and create a lock for thread safety."""
-        self.gripper_ID = 0x01
-        self._transaction_lock = threading.Lock()
-        self.device = dh_device()
-
-    def CRC16(self, nData, wLength):
-        r"""Calculate the CRC16 checksum for the given data.
-
-        Args:
-            nData (list): The data to calculate the checksum for.
-            wLength (int): The length of the data.
-
-        Returns:
-            int: The calculated CRC16 checksum.
-        """
-        if nData == 0x00:
-            return 0x0000
-        wCRCWord = 0xFFFF
-        poly = 0xA001
-        for num in range(wLength):
-            date = nData[num]
-            wCRCWord = (date & 0xFF) ^ wCRCWord
-            for bit in range(8):
-                if (wCRCWord & 0x01) != 0:
-                    wCRCWord >>= 1
-                    wCRCWord ^= poly
+                        response = header + self._read_exact(5, deadline)
                 else:
-                    wCRCWord >>= 1
-        return wCRCWord
+                    raise ValueError("Unexpected function code")
+                if crc16(response[:-2]) != int.from_bytes(response[-2:], "little"):
+                    raise ValueError("CRC mismatch")
+                if header[1] & 0x80:
+                    raise RuntimeError(f"Device exception: {header[2]:#04x}")
+                if function == 0x06 and response != request:
+                    raise ValueError("Write echo mismatch")
+                return response
+            except Exception:
+                # 超时后晚到的旧响应不能当作下一次响应，停止自动发送。
+                self.failed = True
+                raise
+            finally:
+                self.last_end = time.monotonic()
 
-    def open(self, PortName, BaudRate):
-        r"""Open the connection to the gripper device.
+    def read_register(self, register):
+        response = self._exchange(0x03, register, 1)
+        return int.from_bytes(response[3:5], "big")
 
-        Args:
-            PortName (str): The name of the port to connect to.
-            BaudRate (int): The baud rate for the connection.
+    def write_register(self, register, value):
+        self._exchange(0x06, register, value)
 
-        Returns:
-            int: 0 if successful, negative value if failed.
-        """
-        with self._transaction_lock:
-            ret = self.device.connect_device(PortName, BaudRate)
-            if ret < 0:
-                logging.error("Failed to open connection")
-            else:
-                logging.info("Connection opened successfully")
-            return ret
+    async def read_register_async(self, register):
+        return await asyncio.to_thread(self.read_register, register)
+
+    async def write_register_async(self, register, value):
+        await asyncio.to_thread(self.write_register, register, value)
 
     def close(self):
-        r"""Close the connection to the gripper device."""
-        with self._transaction_lock:
-            self.device.disconnect_device()
-            logging.info("Connection closed")
-
-    async def _send_command(self, send_buf, expected_length):
-        r"""Send a command to the device and read the response.
-
-        Args:
-            send_buf (list): The command to send.
-            expected_length (int): The expected length of the response.
-
-        Returns:
-            list: The response from the device.
-        """
-        send_temp = send_buf
-        retrycount = 3
-
-        while retrycount > 0:
-            wdlen = await self.device.device_write(send_temp)
-            if len(send_temp) != wdlen:
-                logging.debug(f"Write error! Sent: {send_temp}")
-                retrycount -= 1
-                continue
-
-            rev_buf = await self.device.device_read(expected_length)
-            if len(rev_buf) == expected_length:
-                return rev_buf
-
-            retrycount -= 1
-
-        logging.debug("Failed to communicate with device after retries")
-        return None
-
-    def _prepare_command(self, function_code, index, value=None):
-        r"""Prepare a command buffer with CRC16 checksum.
-
-        Args:
-            function_code (int): The function code for the command.
-            index (int): The register index.
-            value (int, optional): The value to write (for write commands).
-
-        Returns:
-            list: The prepared command buffer.
-        """
-        send_buf = [self.gripper_ID, function_code, (index >> 8) & 0xFF, index & 0xFF]
-        if value is not None:
-            send_buf.extend([(value >> 8) & 0xFF, value & 0xFF])
-        else:
-            send_buf.extend([0x00, 0x01])
-        crc = self.CRC16(send_buf, len(send_buf))
-        send_buf.extend([crc & 0xFF, (crc >> 8) & 0xFF])
-        return send_buf
-
-    async def WriteRegisterFunc(self, index, value):
-        r"""Write a value to a specific register of the gripper.
-
-        Args:
-            index (int): The register index to write to.
-            value (int): The value to write to the register.
-
-        Returns:
-            bool: True if the write operation was successful, False otherwise.
-        """
-        with self._transaction_lock:
-            send_buf = self._prepare_command(0x06, index, value)
-            response = await self._send_command(send_buf, 8)
-            return response is not None
-
-    async def ReadRegisterFunc(self, index):
-        r"""Read a value from a specific register of the gripper.
-
-        Args:
-            index (int): The register index to read from.
-
-        Returns:
-            int: The value read from the register.
-        """
-        with self._transaction_lock:
-            send_buf = self._prepare_command(0x03, index)
-            response = await self._send_command(send_buf, 7)
-            if response:
-                return (response[3] << 8) | (response[4] & 0xFF)
-            return None
-
-    async def Initialization(self):
-        """Initialize the gripper by writing to the initialization register."""
-        await self.WriteRegisterFunc(0x0100, 0xA5)
-
-    async def SetTargetPosition(self, refpos):
-        r"""Set the target position of the gripper.
-
-        Args:
-            refpos (int): The target position to set.
-        """
-        await self.WriteRegisterFunc(0x0103, refpos)
-
-    async def SetTargetForce(self, force):
-        r"""Set the target force of the gripper.
-
-        Args:
-            force (int): The target force to set.
-        """
-        await self.WriteRegisterFunc(0x0101, force)
-
-    async def SetTargetSpeed(self, speed):
-        r"""Set the target speed of the gripper.
-
-        Args:
-            speed (int): The target speed to set.
-        """
-        await self.WriteRegisterFunc(0x0104, speed)
-
-    async def GetCurrentPosition(self):
-        r"""Get the current position of the gripper.
-
-        Returns:
-            int: The current position of the gripper.
-        """
-        return await self.ReadRegisterFunc(0x0202)
-
-    async def GetCurrentTargetForce(self):
-        r"""Get the current target force of the gripper.
-
-        Returns:
-            int: The current target force of the gripper.
-        """
-        return await self.ReadRegisterFunc(0x0101)
-
-    async def GetCurrentTargetSpeed(self):
-        r"""Get the current target speed of the gripper.
-
-        Returns:
-            int: The current target speed of the gripper.
-        """
-        return await self.ReadRegisterFunc(0x0104)
-
-    async def GetInitState(self):
-        r"""Get the initialization state of the gripper.
-
-        Returns:
-            int: The initialization state of the gripper.
-        """
-        return await self.ReadRegisterFunc(0x0200)
-
-    async def GetGripState(self):
-        r"""Get the grip state of the gripper.
-
-        Returns:
-            int: The grip state of the gripper.
-        """
-        return await self.ReadRegisterFunc(0x0201)
+        with self.lock:
+            self.failed = True
+            self.port.close()
 ```
-##  5. 用法
-### 5.2 示例代码
-以下是如何使用dh_modbus_gripper类来控制大寰PGC夹具的具体示例：
+
+`frame_gap` 是事务间的保守等待值，不是通用波特率配置；应按设备手册、字符时间、RS-485 方向切换和适配器行为调整。这里没有实现完整的 RTU 帧间隔接收器或自动重新同步，不能直接替代经过验证的工业协议栈。
+
+## 不接硬件也能先测 CRC
+
 ```python
-import asyncio
-from PGC_gripper import dh_modbus_gripper
+from gripper_bus import crc16, with_crc
 
-# 定义串口和波特率
-LEFT_GRIPPER_PORT = "/dev/ttyUSB0"
-BAUDRATE = 115200
-
-# 创建夹具控制对象
-gripper = dh_modbus_gripper()
-
-# 打开串口连接
-gripper.open(LEFT_GRIPPER_PORT, BAUDRATE)
-
-# 初始化夹具
-asyncio.run(gripper.Initialization())
-
-# 设置目标位置
-angle = 500  # 角度范围为0-1000
-asyncio.run(gripper.SetTargetPosition(int(angle)))
-
-# 关闭串口连接
-gripper.close()
+# Modbus 常用测试向量：01 03 00 00 00 0A，CRC 低字节先传
+request = bytes.fromhex("01 03 00 00 00 0A")
+assert crc16(request) == 0xCDC5
+assert with_crc(request).hex(" ") == "01 03 00 00 00 0a c5 cd"
+print("CRC test passed")
 ```
-### 5.2 代码说明
 
-1. **定义异步函数**：
-   异步函数使用`async def`定义，例如`device_write`和`device_read`。
-   ```python
-   async def device_write(self, write_data):
-       # 异步写入数据逻辑
-       pass
+还应模拟短帧、CRC 错误、异常响应、错误设备 ID、超时和两个并发读请求，检查事务不会交错。
 
-   async def device_read(self, wlen):
-       # 异步读取数据逻辑
-       pass
-   ```
+## 接入 PGC 时的检查顺序
 
-2. **创建事件循环**：
-   使用`asyncio.run(main())`来创建和运行事件循环。
-   ```python
-   async def main():
-       # 主函数逻辑
-       pass
+1. 用稳定串口别名识别设备，确认波特率、校验位、停止位和从站地址。
+2. 查对应型号/固件手册，先读取明确标为只读的状态或版本寄存器。
+3. 记录请求与响应原始十六进制帧，先验证状态读取，再考虑写入。
+4. 初始化、目标位置、速度和夹持力属于设备动作，应增加范围校验、状态确认、急停和安全空间检查。
 
-   if __name__ == "__main__":
-       asyncio.run(main())
-   ```
+原笔记中的 `0x0100`、`0x0103` 等地址及 `0–1000` 数值是设备相关配置，不是通用角度单位；没有手册确认时不要发送。
 
-3. **执行异步任务**：
-   在异步函数内部使用`await`关键字等待异步操作完成，例如：
-   ```python
-   async def main():
-       device = dh_device()
-       await device.device_write(b'example data')
-       response = await device.device_read(10)
-       print(response)
-   ```
+取消等待 `asyncio.to_thread` 的协程不会杀死工作线程。关闭总线、重新打开或恢复发送之前，必须确认在途事务已经结束；超时也不能证明设备未执行上一条命令，所以本例不自动重试运动写入。
+
+参考：[pySerial API 与超时语义](https://pyserial.readthedocs.io/en/latest/pyserial_api.html)、[Modbus 官方规范入口](https://www.modbus.org/modbus-specifications)。
+
+
+## 阅读自测与验收
+
+- 在假串口中依次注入短帧、错误 CRC、异常码和错误地址；失败后应禁止继续自动发送，尤其不能自动重试运动写入。
+- 两个并发调用必须共享同一个总线对象，检查请求和响应不交错；取消协程后仍需等待正在运行的工作线程结束。

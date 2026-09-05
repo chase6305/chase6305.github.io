@@ -1,0 +1,20 @@
+{{- $page := .page -}}
+{{- $zh := eq ($page.Params.contentLanguage | default $page.Language.Lang) "zh-CN" -}}
+<article class="blog-card{{ if .compact }} blog-card--compact{{ end }}" lang="{{ $page.Params.contentLanguage | default $page.Language.Lang }}">
+  <div class="blog-card__meta">
+    <time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ $page.Date.Format "2006-01-02" }}</time>
+    {{- with index $page.Params.categories 0 }}<span>{{ . }}</span>{{ end -}}
+    <span>{{ if $zh }}约 {{ $page.ReadingTime }} 分钟{{ else }}{{ $page.ReadingTime }} min read{{ end }}</span>
+    {{ if $page.Draft }}<span class="blog-draft-label">{{ if $zh }}草稿预览{{ else }}Draft preview{{ end }}</span>{{ end }}
+  </div>
+  <h2><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h2>
+  <p>{{ partial "utils/page-description" $page }}</p>
+  <div class="blog-card__footer">
+    <div class="blog-card__tags">
+      {{ if site.Params.blog.list.displayTags }}
+        {{ range $page.GetTerms "tags" }}<a href="{{ .RelPermalink }}">#{{ .LinkTitle }}</a>{{ end }}
+      {{ end }}
+    </div>
+    <a class="blog-card__read" href="{{ $page.RelPermalink }}" aria-label="{{ if $zh }}阅读{{ else }}Read{{ end }} {{ $page.Title }}">{{ if $zh }}阅读全文{{ else }}Read article{{ end }} <span aria-hidden="true">→</span></a>
+  </div>
+</article>

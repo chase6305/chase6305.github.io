@@ -1,0 +1,19 @@
+{{- $result := dict -}}
+{{- $current := . -}}
+{{- range hugo.Data.blog_topics -}}
+  {{- $topic := . -}}
+  {{- if in .posts $current.File.Path -}}
+    {{- $pages := slice -}}
+    {{- range .posts -}}
+      {{- with site.GetPage . -}}{{- $pages = $pages | append . -}}{{- end -}}
+    {{- end -}}
+    {{- range $index, $page := $pages -}}
+      {{- if eq $page.File.Path $current.File.Path -}}
+        {{- $result = dict "topic" $topic "position" (add $index 1) "count" (len $pages) -}}
+        {{- if gt $index 0 -}}{{- $result = merge $result (dict "previous" (index $pages (sub $index 1))) -}}{{- end -}}
+        {{- if lt (add $index 1) (len $pages) -}}{{- $result = merge $result (dict "next" (index $pages (add $index 1))) -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $result -}}

@@ -1,207 +1,153 @@
 ---
 title: 'C++ 关于UDP通讯的示例'
 date: 2021-08-08
-lastmod: 2021-08-08
+lastmod: 2026-09-05
 draft: false
 tags: ["C++", "UDP", "Network Programming"]
 categories: ["系统与工具"]
 authors: ["chase"]
-summary: "C++ 关于UDP通讯的示例"
+summary: "实现带接收超时和截断检查的 Linux C++17 UDP 回环通信，说明报文边界、零长度消息与广播限制。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+description: "实现带接收超时和截断检查的 Linux C++17 UDP 回环通信，说明报文边界、零长度消息与广播限制。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "C++17 与 Linux socket"
+reading_focus: "先确认一次完整数据报，再按业务需求设计序列号、去重和重试预算。"
+related_posts:
+  - "/posts/network-protocol/c++_tcp"
+  - "/posts/network-protocol/fixed_IP"
 ---
 
+## UDP 保留报文边界，但不保证送达
 
-## UDP介绍
+UDP 是无连接的数据报传输协议。它不保证送达、顺序或去重；“没有重传等待”不等于每个场景都更快，更不等于丢包对业务没有影响。
 
-UDP是User Datagram Protocol的简称，即用户数据报协议，为一种无连接的传输层协议，提供面向简单不可靠信息传送服务。客户端Client和服务端Server在交互数据之前无需像TCP那样是先建立连接。
-在网络质量较差的情况下，UDP协议数据包丢失会比较严重。但由于UDP的特性，其不属于连接型协议，具有资源消耗小，处理速度快的优点，所以通常音频、视频和普通数据在传送时使用UDP较多，丢失一、两个Packet也不会有太多的影响，同时像微信Wechat聊天。
+下面使用 **Linux / C++17 / IPv4** 实现一次本机请求—响应，默认 `127.0.0.1:5001`。不向局域网广播，避免示例程序意外干扰其他设备。
 
-### 客户端
+## 完整程序：udp_demo.cpp
+
+客户端对 UDP socket 调用 `connect` 只是设置默认对端并过滤接收来源，不会建立 TCP 式握手。服务端使用 `recvfrom` 获取发送者，再回复该地址。
 
 ```cpp
 #include <arpa/inet.h>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <unistd.h>
+
+#include <array>
+#include <cerrno>
 #include <iostream>
-#include <netinet/in.h>
+#include <stdexcept>
 #include <string>
-#include <sys/select.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <vector>
-#include <netdb.h>
-using namespace std;
+#include <system_error>
 
-#define DEST_PORT 5001
-#define LOCAL_PORT 8080
-
-int main() {
-  int sockfd;
-
-  char ipStr[32];
-  char name[256];
-  gethostname(name, sizeof(name));
-
-  // 1.创建socket
-  sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-  if (-1 == sockfd) {
-    return false;
-    puts("Failed to create socket");
-  }
-
-  // 2.设置地址与端口
-  struct sockaddr_in addr;
-  socklen_t addr_len = sizeof(addr);
-
-  memset(&addr, 0, sizeof(addr));
-  addr.sin_family = AF_INET;         // Use IPV4
-  addr.sin_port = htons(LOCAL_PORT); //
-  addr.sin_addr.s_addr = htonl(INADDR_ANY); // INADDR_ANY 绑定本地IP
-
-  const int bBroadcast = 1;
-  int nb = setsockopt(sockfd, SOL_SOCKET, SO_BROADCAST,
-                      (const char *)&bBroadcast, sizeof(bBroadcast));
-  if (nb < 0) {
-    perror("setsockopt SO_BROADCAST");
-    exit(1);
-  }
-
-  // 3.绑定获取数据的端口，作为发送方，不绑定也行
-  if (bind(sockfd, (struct sockaddr *)&addr, addr_len) == -1) {
-    printf("Failed to bind socket on port %d\n", LOCAL_PORT);
-    close(sockfd);
-    return false;
-  }
-  char buffer[128];
-  memset(buffer, 0, 128);
-
-  int counter = 0;
-  while (1) {
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(DEST_PORT);
-    addr.sin_addr.s_addr = htonl(INADDR_BROADCAST);
-
-    char send_buf[20] = "Hello!";
-
-    sendto(sockfd, send_buf, strlen(send_buf), 0, (sockaddr *)&addr, addr_len);
-
-    printf("IP sended %s\n", inet_ntoa(addr.sin_addr));
-    printf("Sended %d\n", ++counter);
-    sleep(1);
-
-    int sz = recvfrom(sockfd, buffer, 128, 0, (sockaddr *)&addr, &addr_len);
-    if (sz > 0) {
-      buffer[sz] = 0;
-      printf("Get Message %d:\n %s\n", counter++, buffer);
-      printf("get IP %s \n", inet_ntoa(addr.sin_addr));
-      printf("get Port %d \n\n", ntohs(addr.sin_port));
-    } else {
-      puts("timeout");
+struct Socket {
+    int fd;
+    explicit Socket(int value) : fd(value) {
+        if (fd < 0) throw std::system_error(errno, std::generic_category(), "socket");
     }
-  }
+    ~Socket() { ::close(fd); }
+    Socket(const Socket&) = delete;
+    Socket& operator=(const Socket&) = delete;
+};
 
-  close(sockfd);
-  return 0;
+void check(int result, const char* operation) {
+    if (result < 0)
+        throw std::system_error(errno, std::generic_category(), operation);
+}
+
+int main(int argc, char** argv) {
+    try {
+        if (argc != 2 || (std::string(argv[1]) != "server" &&
+                          std::string(argv[1]) != "client"))
+            throw std::runtime_error("usage: udp_demo server|client");
+        const bool server = std::string(argv[1]) == "server";
+        Socket socket(::socket(AF_INET, SOCK_DGRAM, 0));
+
+        timeval timeout{5, 0};
+        check(::setsockopt(socket.fd, SOL_SOCKET, SO_RCVTIMEO,
+                          &timeout, sizeof(timeout)), "setsockopt");
+        sockaddr_in address{};
+        address.sin_family = AF_INET;
+        address.sin_port = htons(5001);
+        address.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+        const std::string message = "Hello, UDP!";
+
+        if (server) {
+            check(::bind(socket.fd, reinterpret_cast<sockaddr*>(&address),
+                         sizeof(address)), "bind");
+            std::cout << "Listening on 127.0.0.1:5001 (5 s timeout)" << std::endl;
+        } else {
+            check(::connect(socket.fd, reinterpret_cast<sockaddr*>(&address),
+                            sizeof(address)), "connect");
+            ssize_t sent;
+            do { sent = ::send(socket.fd, message.data(), message.size(), 0); }
+            while (sent < 0 && errno == EINTR);
+            check(static_cast<int>(sent), "send");
+            if (static_cast<std::size_t>(sent) != message.size())
+                throw std::runtime_error("incomplete datagram send");
+        }
+
+        std::array<char, 1500> buffer{};
+        sockaddr_in peer{};
+        socklen_t peer_size = sizeof(peer);
+        ssize_t received;
+        do {
+            received = ::recvfrom(socket.fd, buffer.data(), buffer.size(),
+                                  MSG_TRUNC, reinterpret_cast<sockaddr*>(&peer),
+                                  &peer_size);
+        } while (received < 0 && errno == EINTR);
+        if (received < 0 && (errno == EAGAIN || errno == EWOULDBLOCK))
+            throw std::runtime_error("receive timed out after 5 s");
+        check(static_cast<int>(received), "recvfrom");
+        // Linux MSG_TRUNC 返回原始数据报长度；截断的消息不得继续处理。
+        if (static_cast<std::size_t>(received) > buffer.size())
+            throw std::runtime_error("datagram exceeds the application limit");
+
+        if (server) {
+            ssize_t sent;
+            do {
+                sent = ::sendto(socket.fd, buffer.data(), received, 0,
+                                reinterpret_cast<sockaddr*>(&peer), peer_size);
+            } while (sent < 0 && errno == EINTR);
+            check(static_cast<int>(sent), "sendto");
+            if (sent != received) throw std::runtime_error("incomplete reply");
+        } else {
+            const std::string reply(buffer.data(), received);
+            if (reply != message) throw std::runtime_error("reply mismatch");
+            std::cout << reply << '\n';
+        }
+        return 0;
+    } catch (const std::exception& error) {
+        std::cerr << error.what() << '\n';
+        return 1;
+    }
 }
 ```
 
-### 服务端
-
-```cpp
-#include <arpa/inet.h>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <iostream>
-#include <netinet/in.h>
-#include <sys/select.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-#define DEST_PORT 5001
-
-int main() {
-
-  int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-  if (-1 == sockfd) {
-    return false;
-    puts("Failed to create socket");
-  }
-
-  struct sockaddr_in addr;
-  socklen_t addr_len = sizeof(addr);
-
-  memset(&addr, 0, sizeof(addr));
-  addr.sin_family = AF_INET;        // Use IPV4
-  addr.sin_port = htons(DEST_PORT); //
-
-  const int opt = 1;
-  int nb = setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (const char *)&opt,
-                      sizeof(opt));
-  if (nb < 0) {
-    perror("setsockopt error");
-    exit(1);
-  }
-  // Bind
-  // 端口，用来接受之前设定的地址与端口发来的信息,作为接受一方必须bind端口，并且端口号与发送方一致
-  if (bind(sockfd, (struct sockaddr *)&addr, addr_len) == -1) {
-    printf("Failed to bind socket on port %d\n", DEST_PORT);
-    close(sockfd);
-    return false;
-  }
-
-  char buffer[128];
-  memset(buffer, 0, 128);
-
-  int counter = 0;
-  while (1) {
-    struct sockaddr_in src;
-    socklen_t src_len = sizeof(src);
-    memset(&src, 0, sizeof(src));
-
-    // 阻塞住接受消息
-    int sz = recvfrom(sockfd, buffer, 128, 0, (sockaddr *)&src, &src_len);
-    if (sz > 0) {
-      buffer[sz] = 0;
-      printf("Get Message %d:\n %s\n", counter++, buffer);
-      printf("get IP %s \n", inet_ntoa(src.sin_addr));
-      printf("get Port %d \n\n", ntohs(src.sin_port));
-
-      struct sockaddr_in sent;
-      socklen_t sent_len = sizeof(sent);
-      memset(&sent, 0, sizeof(sent));
-      sent.sin_family = AF_INET;
-      sent.sin_addr = src.sin_addr;
-      sent.sin_port = src.sin_port;
-
-      char send_buf[20] = "I am Robot!";
-
-      sendto(sockfd, send_buf, strlen(send_buf), 0, (sockaddr *)&sent,
-             sent_len);
-    } else {
-      puts("timeout");
-    }
-  }
-
-  close(sockfd);
-  return 0;
-}
-```
-
-在**Linux**系统上安装**g++**，然后在上述文件对应的文件夹中打开终端输入：
+## 编译与验证
 
 ```bash
-g++ server.cpp -o server
-g++ client.cpp -o client
+g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic udp_demo.cpp -o udp_demo
 ```
-生成可执行程序后，打开两个终端，各自输入以下：
-```bash
-./server
-./client
-```
+
+两个终端依次执行 `./udp_demo server` 和 `./udp_demo client`，在 5 秒内启动客户端。预期客户端输出 `Hello, UDP!`。若超时，服务端退出后需要重新启动，不会永久等待。
+
+`recvfrom` 返回 0 表示收到零长度数据报，并不等于 TCP 的连接关闭。数组恰好收满时不能写 `buffer[buffer.size()]`；本例始终按长度处理数据，不补写终止符。
+
+## 协议设计边界
+
+- 单个数据报应受应用层长度约束；1500 字节缓冲区只是本例限制，不代表所有网络的安全 UDP 载荷上限。
+- 若业务需要可靠性，增加序列号、确认、去重、重试预算与拥塞控制，或选择已有可靠传输协议。
+- 广播另需 `SO_BROADCAST` 和正确的子网广播地址；只在明确授权的局域网设备发现流程中使用，并限制发送频率。
+- 本例没有认证和加密，不能直接作为机器人运动指令通道。
+
+参考：[Linux udp(7)](https://man7.org/linux/man-pages/man7/udp.7.html)、[Linux recv(2)](https://man7.org/linux/man-pages/man2/recv.2.html)。
+
+
+## 阅读自测与验收
+
+- 测试零长度、正常长度和超出接收缓冲区的数据报；零长度是合法消息，而截断消息不应继续按完整协议解析。
+- 应用需要重传时必须另行设计序号、超时、去重与幂等；一次回显成功不说明 UDP 提供可靠或有序交付。

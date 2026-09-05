@@ -1,5 +1,6 @@
 {{ define "main" }}
   {{- $zh := eq site.Language.Lang "zh-cn" -}}
+  {{ partial "sidebar.html" (dict "context" . "disableSidebar" true) }}
   <main id="content" class="collection-page">
     <header class="collection-hero">
       <p class="chase-section__eyebrow">{{ if $zh }}知识索引{{ else }}Knowledge index{{ end }}</p>

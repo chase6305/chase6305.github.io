@@ -6,6 +6,7 @@
       <div class="latest-card__meta">
         <time datetime="{{ .Date.Format `2006-01-02` }}">{{ .Date.Format "Jan 02, 2006" }}</time>
         {{- with index .Params.categories 0 }}<span>{{ . }}</span>{{ end }}
+        {{ if .Draft }}<span class="blog-draft-label">{{ if eq $.Page.Language.Lang "zh-cn" }}草稿预览{{ else }}Draft preview{{ end }}</span>{{ end }}
       </div>
       <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
       <p>{{ partial "utils/page-description" . }}</p>

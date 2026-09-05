@@ -1,0 +1,20 @@
+{{- if eq .Section "posts" }}{{ partial "blog/topic-nav.html" . }}{{ end -}}
+{{- if and (eq .Section "posts") .Params.related_posts -}}
+  <nav class="blog-related" aria-labelledby="blog-related-title" lang="zh-CN">
+    <h2 id="blog-related-title">继续阅读</h2>
+    <div class="blog-related__grid">
+      {{- range .Params.related_posts -}}
+        {{- with site.GetPage . -}}
+          {{- if not .Draft -}}
+            <a class="blog-related__card" href="{{ .RelPermalink }}">
+              <span class="blog-related__title">{{ .Title }} <span aria-hidden="true">→</span></span>
+              <span class="blog-related__description">{{ .Description | default .Summary | plainify }}</span>
+            </a>
+          {{- end -}}
+        {{- else -}}
+          {{- errorf "Unresolved related post: %s" . -}}
+        {{- end -}}
+      {{- end -}}
+    </div>
+  </nav>
+{{- end -}}

@@ -1,0 +1,1194 @@
+{
+  "reviewed_on": "2026-09-05",
+  "scope": "66 篇：63 已发布，3 草稿；保持原 URL 和草稿状态",
+  "posts": [
+    {
+      "id": 0,
+      "summary": "给出可独立编译的三维栅格 A*，统一 6/26 邻接、欧氏边权、穿角检查和失败返回，并与 Dijkstra 验证路径代价。",
+      "prerequisites": "C++17、优先队列与栅格地图",
+      "focus": "先读搜索不变量，再运行自测；修改邻接或代价时同步调整启发函数。",
+      "related": [
+        1,
+        39
+      ],
+      "path": "content/posts/ai/algorithms/Astar/Astar-cpp/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/algorithms/Astar/Astar-introduction",
+        "/posts/planner/to_mpc_wbc"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 1,
+      "summary": "区分标准 A* 与视线裁剪，说明目标弹出、三维线段碰撞、路径简化以及最优性成立的条件。",
+      "prerequisites": "图搜索与基础几何",
+      "focus": "重点比较搜索后简化和搜索中直连，避免把可行路径误称为最短路径。",
+      "related": [
+        0,
+        39
+      ],
+      "path": "content/posts/ai/algorithms/Astar/Astar-introduction/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/algorithms/Astar/Astar-cpp",
+        "/posts/planner/to_mpc_wbc"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 2,
+      "summary": "按图搜索、强化学习和生成模型梳理算法学习路线，说明状态、目标、约束与评价指标的区别。",
+      "prerequisites": "Python 与基础线性代数",
+      "focus": "从一个可验证的小问题开始，再沿对应专题深入。",
+      "related": [
+        0,
+        47
+      ],
+      "path": "content/posts/ai/algorithms/overview.md",
+      "draft": true,
+      "related_posts": [
+        "/posts/ai/algorithms/Astar/Astar-cpp",
+        "/posts/rl"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 3,
+      "summary": "从前向加噪与反向去噪推导 DDPM，串联 CFG、DDIM、Latent Diffusion 和 DiT，并提供二维 PyTorch 示例。",
+      "prerequisites": "概率分布、神经网络与 PyTorch 张量",
+      "focus": "先核对时间步、噪声目标和张量形状，再理解采样器与网络的分工。",
+      "related": [
+        6,
+        4
+      ],
+      "path": "content/posts/ai/diffusion-models/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/transformer-attention",
+        "/posts/ai/distributed-training-memory"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 4,
+      "summary": "建立训练显存账本，解释 DDP、NCCL、ZeRO 与 FSDP 的数据所有权，并梳理混合精度、重计算和 OOM 排查。",
+      "prerequisites": "PyTorch 训练循环与 GPU 基础",
+      "focus": "沿参数、梯度、优化器状态和激活的生命周期追踪显存，不只计算权重大小。",
+      "related": [
+        20,
+        6
+      ],
+      "path": "content/posts/ai/distributed-training-memory/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/cuda/warp",
+        "/posts/ai/transformer-attention"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 5,
+      "summary": "使用 Gymnasium 运行 LunarLander 随机交互与录像，讲清 reset、step、随机种子以及终止和截断的差别。",
+      "prerequisites": "Python 循环与强化学习基本概念",
+      "focus": "先无窗口验证环境接口；随机动作示例不是训练算法。",
+      "related": [
+        47,
+        43
+      ],
+      "path": "content/posts/ai/gymnasium/1/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/rl",
+        "/posts/python/tqdm"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 6,
+      "summary": "从 Q/K/V、张量形状与掩码理解注意力和 Transformer，进一步讨论多头、位置编码、KV Cache 与实现验证。",
+      "prerequisites": "矩阵乘法、概率与 PyTorch",
+      "focus": "对照形状和掩码逐层阅读，先跑最小实现，再看缓存和性能优化。",
+      "related": [
+        3,
+        4
+      ],
+      "path": "content/posts/ai/transformer-attention/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/diffusion-models",
+        "/posts/ai/distributed-training-memory"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 7,
+      "summary": "介绍 CCTag 同心圆编码与检测思路，区分标签识别、平面几何和完整位姿估计，并说明标定中的适用边界。",
+      "prerequisites": "相机投影与图像特征",
+      "focus": "重点区分识别 ID 和恢复六维位姿，结合运动可观测性选择标记。",
+      "related": [
+        10,
+        9
+      ],
+      "path": "content/posts/calibration/cctag/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/calibration/opencv",
+        "/posts/calibration/model"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 8,
+      "summary": "以 TCP 位置观测建立运动学参数残差，讲清固定点实验、参数 Jacobian、可辨识性和迭代最小二乘验证。",
+      "prerequisites": "正运动学、Jacobian 与最小二乘",
+      "focus": "先明确观测坐标系和待估参数，再检查秩、更新方向与独立验证误差。",
+      "related": [
+        11,
+        9
+      ],
+      "path": "content/posts/calibration/kinematics/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/calibration/zero",
+        "/posts/calibration/model"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 9,
+      "summary": "统一坐标变换记号，推导眼在手上与眼在手外的手眼标定方程，并说明采样退化、求解接口与验收。",
+      "prerequisites": "齐次变换与相机外参",
+      "focus": "沿变换链确认每个矩阵的方向，区分未知手眼外参与固定标定板外参。",
+      "related": [
+        10,
+        8
+      ],
+      "path": "content/posts/calibration/model/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/calibration/opencv",
+        "/posts/calibration/kinematics"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 10,
+      "summary": "用 OpenCV 检测非对称圆点阵，构造有序物体点，并说明点阵方向、物理间距、斜视偏差和标定采样要求。",
+      "prerequisites": "Python、OpenCV 与相机标定",
+      "focus": "先查看检测点顺序并测量板尺寸，再将对应点用于内参或位姿求解。",
+      "related": [
+        7,
+        9
+      ],
+      "path": "content/posts/calibration/opencv/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/calibration/cctag",
+        "/posts/calibration/model"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 11,
+      "summary": "分别建立已知测量位置与未知固定点的关节零偏模型，使用 SVD 最小二乘求解，并检查可观测性与补偿方向。",
+      "prerequisites": "FK、位置 Jacobian 与矩阵秩",
+      "focus": "先选对观测模型，避免用采样数量替代可辨识性分析。",
+      "related": [
+        8,
+        50
+      ],
+      "path": "content/posts/calibration/zero/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/calibration/kinematics",
+        "/posts/robotics/kinematics/jacobian"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 12,
+      "summary": "使用 CasADi 建立上下界和等式约束，区分变量边界与约束边界，并通过可手算例子验证求解状态和结果。",
+      "prerequisites": "Python、微分与约束优化",
+      "focus": "先核对 x、g 及边界维度，再比较数值解和解析预期。",
+      "related": [
+        38,
+        39
+      ],
+      "path": "content/posts/casadi/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/pink",
+        "/posts/planner/to_mpc_wbc"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 13,
+      "summary": "讲解 ExternalProject 的构建期行为、依赖与产物声明，提供无需下载的 CMake 示例，并梳理 ABI 和安装路径问题。",
+      "prerequisites": "CMake target、编译与链接",
+      "focus": "先完成全新目录构建，确认消费者依赖外部产物，再接入真实第三方库。",
+      "related": [
+        16,
+        15
+      ],
+      "path": "content/posts/cmake/ExternalProject_Add/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/cpp/gccs",
+        "/posts/cpp/gcc"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 14,
+      "summary": "演示 CoACD 网格检查、凸分解、逐块导出与 Open3D 可视化，说明阈值单位、预处理和物理引擎加载边界。",
+      "prerequisites": "Python、三角网格与碰撞几何",
+      "focus": "保存原始模型和每次参数，检查功能孔洞在最终引擎中是否仍然存在。",
+      "related": [
+        58,
+        35
+      ],
+      "path": "content/posts/coacd/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/thesis/coacd",
+        "/posts/open3d/introduction"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 15,
+      "summary": "定位 GLIBCXX_3.4.30 缺失时实际加载的 libstdc++，按系统、Conda 与私有库来源选择修复并验证运行路径。",
+      "prerequisites": "Linux 动态链接与环境管理",
+      "focus": "先查被加载的库，不把安装新 GCC 当作运行库已经切换。",
+      "related": [
+        19,
+        16
+      ],
+      "path": "content/posts/cpp/gcc/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/cuda/gcc",
+        "/posts/cpp/gccs"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 16,
+      "summary": "用项目级 CMake 与 CC/CXX 管理多套 GCC，解释 PATH、编译缓存和 alternatives 的边界，避免改坏系统工具链。",
+      "prerequisites": "Linux shell 与 C/C++ 构建",
+      "focus": "每套编译器使用独立构建目录，同时核对 C 与 C++ 编译器。",
+      "related": [
+        13,
+        15
+      ],
+      "path": "content/posts/cpp/gccs/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/cmake/ExternalProject_Add",
+        "/posts/cpp/gcc"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 17,
+      "summary": "通过 RAII、unique_ptr、shared_ptr 和 weak_ptr 理解 C++ 资源所有权，说明复制、循环引用与线程安全边界。",
+      "prerequisites": "C++ 类、析构与值语义",
+      "focus": "先决定谁拥有资源，再选择指针类型；引用计数安全不等于对象访问安全。",
+      "related": [
+        18,
+        46
+      ],
+      "path": "content/posts/cpp/smart-pointer/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/cpp/std",
+        "/posts/queue"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 18,
+      "summary": "解释 std::、重载、宏和 ADL 的关系，修正 abs、min/max 与整数最小值处理中的常见误区，附 C++17 示例。",
+      "prerequisites": "C++ 头文件、模板与数值类型",
+      "focus": "用编译和类型断言验证查找结果，避免以命名空间前缀代替数值安全检查。",
+      "related": [
+        17,
+        16
+      ],
+      "path": "content/posts/cpp/std/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/cpp/smart-pointer",
+        "/posts/cpp/gccs"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 19,
+      "summary": "按驱动、CUDA Toolkit、PyTorch 构建与运行库分层排查 CUDA/GCC 冲突，避免错误替换系统共享库。",
+      "prerequisites": "CUDA 环境与动态链接",
+      "focus": "先记录四层版本和加载路径，再判断是编译兼容还是运行时依赖问题。",
+      "related": [
+        15,
+        34
+      ],
+      "path": "content/posts/cuda/gcc/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/cpp/gcc",
+        "/posts/nvidia/no_devices"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 20,
+      "summary": "区分 CUDA 硬件 warp 与 NVIDIA Warp 库，说明 SIMT、分支、shuffle、核函数和自动微分的正确使用边界。",
+      "prerequisites": "GPU 线程模型与 Python",
+      "focus": "先分清两个 Warp 的层级；检查参与线程、数组边界和可微输出。",
+      "related": [
+        4,
+        19
+      ],
+      "path": "content/posts/cuda/warp/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/distributed-training-memory",
+        "/posts/cuda/gcc"
+      ],
+      "image_decision": "新增 imagegen 概念示意图",
+      "image": "content/posts/cuda/warp/assets/cuda-warp-vs-library.webp"
+    },
+    {
+      "id": 21,
+      "summary": "把 Modbus RTU 请求与响应封装为串口事务，增加 CRC、异常帧、超时和并发检查，并以线程桥接异步调用。",
+      "prerequisites": "Python、串口与 Modbus 基础",
+      "focus": "先用假串口测试协议，再按设备手册接入；示例不自动初始化或移动夹爪。",
+      "related": [
+        22,
+        46
+      ],
+      "path": "content/posts/dialout/dh/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/dialout/udev",
+        "/posts/queue"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 22,
+      "summary": "通过 udev 属性和设备序列号创建稳定串口别名，说明匹配层级、设备权限、规则重载与插拔验收。",
+      "prerequisites": "Linux 设备节点与用户组",
+      "focus": "先检查已有 by-id 路径，规则中的序列号必须来自自己的设备。",
+      "related": [
+        21,
+        40
+      ],
+      "path": "content/posts/dialout/udev/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/dialout/dh",
+        "/posts/process/pid"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 23,
+      "summary": "按日志、显示会话、渲染后端与动态库来源定位 EGL/X11 警告，区分日志抑制和真正修复。",
+      "prerequisites": "Linux 图形环境与共享库",
+      "focus": "先确认程序与渲染是否失败，再决定是否需要调整日志级别。",
+      "related": [
+        65,
+        34
+      ],
+      "path": "content/posts/egl/x11_warnning/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/xcb/post_2",
+        "/posts/nvidia/no_devices"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 24,
+      "summary": "在 Jetson 上区分 PyQt5 xcb 插件缺依赖与显示授权错误，按本机、SSH 和无窗口场景验证最小界面。",
+      "prerequisites": "Jetson、Python 环境与 Qt",
+      "focus": "先查显示会话和插件路径，不用 DISPLAY 或 xhost 掩盖权限问题。",
+      "related": [
+        65,
+        26
+      ],
+      "path": "content/posts/gui/qt/jetson/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/xcb/post_2",
+        "/posts/gui/qt/qt5"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 25,
+      "summary": "将 Qt UI 文件转换为 PySide6 界面类，分离生成代码和业务逻辑，并解释 Unicode 转义与真正国际化的区别。",
+      "prerequisites": "Python 模块与 Qt Designer",
+      "focus": "先确认生成类和窗口基类，再连接业务信号，保持生成文件可重复构建。",
+      "related": [
+        45,
+        61
+      ],
+      "path": "content/posts/gui/qt/pyside6/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/qt/pyside6_matplotlib",
+        "/posts/unicode"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 26,
+      "summary": "定位 Qt 版本、模块和平台插件的来源，使用最小程序确认安装组合，避免系统 Qt 与 Python 环境插件混用。",
+      "prerequisites": "Qt 模块与 Python 包管理",
+      "focus": "先找实际加载的 Qt 和插件，不以重装单个包作为所有错误的答案。",
+      "related": [
+        65,
+        24
+      ],
+      "path": "content/posts/gui/qt/qt5/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/xcb/post_2",
+        "/posts/gui/qt/jetson"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 27,
+      "summary": "排查 Isaac Lab 中 UsdContext 导入失败，核对 AppLauncher 启动顺序、环境和完整异常，避免误删安装扩展。",
+      "prerequisites": "Isaac Lab 启动流程与 Python 导入",
+      "focus": "先启动应用再导入依赖 Kit 的模块，保留第一条错误及版本信息。",
+      "related": [
+        23,
+        64
+      ],
+      "path": "content/posts/isaaclab/UsdContext/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/egl/x11_warnning",
+        "/posts/vscode/two-env"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 28,
+      "summary": "用 watch 周期性查看资源、进程和 EtherCAT 状态，讲清刷新间隔、命令引用与监控副作用。",
+      "prerequisites": "Linux shell 与只读诊断命令",
+      "focus": "监控命令必须可安全重复；瞬时故障和短窗口 CPU 需要专门采样工具。",
+      "related": [
+        40,
+        21
+      ],
+      "path": "content/posts/linux/watch/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/process/pid",
+        "/posts/dialout/dh"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 29,
+      "summary": "用 MeshCat Python 客户端构建几何场景，理解父子变换与对象更新，并配置受保护的远程浏览器查看。",
+      "prerequisites": "Python、齐次变换与浏览器基础",
+      "focus": "先画小场景确认尺度和坐标，再接入机器人 FK 或实时数据。",
+      "related": [
+        35,
+        52
+      ],
+      "path": "content/posts/meshcat/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/open3d/introduction",
+        "/posts/robotics/kinematics/pinocchio"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 30,
+      "summary": "实现带长度前缀的 Linux C++17 TCP 请求响应，处理短读短写、截断消息、长度上限与 socket 生命周期。",
+      "prerequisites": "C++17 与 Linux socket",
+      "focus": "先在回环地址编译验证，完整消息边界和超时策略必须由应用定义。",
+      "related": [
+        31,
+        46
+      ],
+      "path": "content/posts/network-protocol/c++_tcp.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/network-protocol/c++_udp",
+        "/posts/queue"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 31,
+      "summary": "实现带接收超时和截断检查的 Linux C++17 UDP 回环通信，说明报文边界、零长度消息与广播限制。",
+      "prerequisites": "C++17 与 Linux socket",
+      "focus": "先确认一次完整数据报，再按业务需求设计序列号、去重和重试预算。",
+      "related": [
+        30,
+        32
+      ],
+      "path": "content/posts/network-protocol/c++_udp.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/network-protocol/c++_tcp",
+        "/posts/network-protocol/fixed_IP"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 32,
+      "summary": "配置 Ubuntu 静态 IP 时核对网络接口、renderer、路由与 DNS，使用 Netplan 检查和回滚机制降低断连风险。",
+      "prerequisites": "Linux 网络接口与路由",
+      "focus": "先区分外网网卡和机器人直连网卡，远程修改前保留回退通道。",
+      "related": [
+        31,
+        30
+      ],
+      "path": "content/posts/network-protocol/fixed_IP.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/network-protocol/c++_udp",
+        "/posts/network-protocol/c++_tcp"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 33,
+      "summary": "比较 TCP 与 UDP 的传输语义、消息边界与应用责任，并提供从回环实验到局域网部署的学习路线。",
+      "prerequisites": "IP 地址、端口与基本编程",
+      "focus": "先理解字节流和数据报差别，再选择应用层协议与故障恢复方式。",
+      "related": [
+        30,
+        31
+      ],
+      "path": "content/posts/network-protocol/tcp-udp-introduction.md",
+      "draft": true,
+      "related_posts": [
+        "/posts/network-protocol/c++_tcp",
+        "/posts/network-protocol/c++_udp"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 34,
+      "summary": "结合 RTX 5070 Ti 历史排障记录，说明 Blackwell 开放内核模块要求，并按 PCI、模块、签名和固件检查设备识别。",
+      "prerequisites": "Ubuntu 驱动与内核日志",
+      "focus": "历史版本不等于通用安装清单，先核对架构要求和实际加载模块。",
+      "related": [
+        19,
+        63
+      ],
+      "path": "content/posts/nvidia/no_devices/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/cuda/gcc",
+        "/posts/vscode/gdm"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 35,
+      "summary": "按 I/O、空间索引、滤波、配准和重建整理 Open3D 用法，修正八叉树与体素概念，并说明几何验证边界。",
+      "prerequisites": "NumPy、点云与三维坐标变换",
+      "focus": "各示例按章节独立使用，核对 legacy/Tensor API、输入路径和真实几何尺度。",
+      "related": [
+        14,
+        29
+      ],
+      "path": "content/posts/open3d/introduction/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/coacd",
+        "/posts/meshcat"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 36,
+      "summary": "保留 Ubuntu 18.04 GLUT 茶壶实验，修正 VS Code 构建调试配置，并说明固定功能管线和图形上下文的限制。",
+      "prerequisites": "C++、链接选项与 OpenGL 基础",
+      "focus": "这是历史兼容模式示例，先在终端编译，再将同样参数接入调试器。",
+      "related": [
+        62,
+        23
+      ],
+      "path": "content/posts/opengl/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/vscode/debug",
+        "/posts/egl/x11_warnning"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 37,
+      "summary": "区分 PD 与 PID 的适用条件，给出带微分滤波、限幅和条件积分的离散示例，并讨论采样与稳态误差。",
+      "prerequisites": "反馈控制、导数与离散时间",
+      "focus": "先明确误差符号和采样周期，再检查饱和、积分累积与噪声。",
+      "related": [
+        48,
+        39
+      ],
+      "path": "content/posts/pid/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/robotics/control/impedance-control",
+        "/posts/planner/to_mpc_wbc"
+      ],
+      "image_decision": "新增 imagegen 概念示意图",
+      "image": "content/posts/pid/assets/pid-feedback.webp"
+    },
+    {
+      "id": 38,
+      "summary": "用一致的残差与 Jacobian 解释 Pink 微分 IK，区分任务权重和严格优先级，说明限位、积分与求解失败处理。",
+      "prerequisites": "Jacobian、QP 与 Pinocchio",
+      "focus": "把一个控制周期的局部解和全局 IK 分开，权重不能代替缺失的硬约束。",
+      "related": [
+        50,
+        52
+      ],
+      "path": "content/posts/pink/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/robotics/kinematics/jacobian",
+        "/posts/robotics/kinematics/pinocchio"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 39,
+      "summary": "梳理轨迹优化、MPC 与全身控制的职责、反馈链路和接口，说明它们如何组合以及不能相互替代的约束。",
+      "prerequisites": "机器人状态、优化与反馈控制",
+      "focus": "沿目标、状态估计、规划和执行追踪数据流，不用运行频率定义算法类别。",
+      "related": [
+        12,
+        48
+      ],
+      "path": "content/posts/planner/to_mpc_wbc/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/casadi",
+        "/posts/robotics/control/impedance-control"
+      ],
+      "image_decision": "新增 imagegen 概念示意图",
+      "image": "content/posts/planner/to_mpc_wbc/assets/planning-control-loop.webp"
+    },
+    {
+      "id": 40,
+      "summary": "在 Ubuntu 上核对 PID、用户和启动信息，再选择 SIGTERM 或 SIGKILL，说明进程回收与服务自动重启。",
+      "prerequisites": "Linux 进程与信号",
+      "focus": "优先使用应用或服务管理器的停止入口，避免按 python 名称批量终止任务。",
+      "related": [
+        28,
+        62
+      ],
+      "path": "content/posts/process/pid/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/linux/watch",
+        "/posts/vscode/debug"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 41,
+      "summary": "演示 f-string 分隔符、对齐、日期和调试表达式，区分数值精度、显示格式、字符宽度与时区。",
+      "prerequisites": "Python 字符串与基本类型",
+      "focus": "全部示例需要 Python 3.8+；格式化改善展示，不替代精确计算。",
+      "related": [
+        61,
+        43
+      ],
+      "path": "content/posts/python/f_string/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/unicode",
+        "/posts/python/tqdm"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 42,
+      "summary": "定位 libpython3.9.so.1.0 缺失的实际依赖程序，检查 ABI 与加载路径，避免跨版本软链接和替换系统 Python。",
+      "prerequisites": "Linux 共享库与 Python 环境",
+      "focus": "区分库未安装和搜索路径错误，最终验证的是原应用而不只是解释器版本。",
+      "related": [
+        44,
+        15
+      ],
+      "path": "content/posts/python/py39/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/python/version",
+        "/posts/cpp/gcc"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 43,
+      "summary": "介绍 tqdm 基础、嵌套和手动进度条，补充版本查询、日志输出、非 TTY 和刷新开销处理。",
+      "prerequisites": "Python 迭代器与终端",
+      "focus": "先定义进度单位与总量，再配置刷新和日志，异步提交量不等于设备完成量。",
+      "related": [
+        41,
+        28
+      ],
+      "path": "content/posts/python/tqdm/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/python/f_string",
+        "/posts/linux/watch"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 44,
+      "summary": "使用 venv、Conda 和显式解释器管理 Python 版本，核对 pip 与运行路径，并说明系统 Python 的保护边界。",
+      "prerequisites": "Linux shell 与 Python 包安装",
+      "focus": "解释器选择、包安装和终端激活分别验证，不修改系统 python3 软链接。",
+      "related": [
+        42,
+        64
+      ],
+      "path": "content/posts/python/version/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/python/py39",
+        "/posts/vscode/two-env"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 45,
+      "summary": "区分 Matplotlib Agg 与 QtAgg，给出 PySide6 嵌入图表的完整窗口，并说明后端选择、线程与事件循环。",
+      "prerequisites": "PySide6 信号槽与 Matplotlib",
+      "focus": "先验证最小窗口，再加入后台计算；界面与画布更新留在主线程。",
+      "related": [
+        25,
+        26
+      ],
+      "path": "content/posts/qt/pyside6_matplotlib/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/gui/qt/pyside6",
+        "/posts/gui/qt/qt5"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 46,
+      "summary": "区分线程安全、无锁和无等待，给出 Python 有界队列及 C++17 SPSC 环形队列，并解释 acquire/release 发布关系。",
+      "prerequisites": "线程、原子操作与生产者消费者模型",
+      "focus": "确认单生产者单消费者前提，先验证顺序与收尾，再分析内存序和吞吐。",
+      "related": [
+        17,
+        21
+      ],
+      "path": "content/posts/queue/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/cpp/smart-pointer",
+        "/posts/dialout/dh"
+      ],
+      "image_decision": "新增 imagegen 概念示意图",
+      "image": "content/posts/queue/assets/spsc-publication.webp"
+    },
+    {
+      "id": 47,
+      "summary": "从 MDP、回报和价值函数理解强化学习，串联策略评估与更新，并区分随机策略、环境随机性和训练验证。",
+      "prerequisites": "概率、期望与基础优化",
+      "focus": "先统一状态、动作、奖励和终止条件，再对照各算法的估计目标。",
+      "related": [
+        5,
+        39
+      ],
+      "path": "content/posts/rl/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/gymnasium/1",
+        "/posts/planner/to_mpc_wbc"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 48,
+      "summary": "从质量—弹簧—阻尼关系推导机器人阻抗控制，连接操作空间动力学、Pinocchio、整定和分阶段安全验证。",
+      "prerequisites": "机器人动力学、Jacobian 与力矩接口",
+      "focus": "先明确力与运动的坐标系及符号，再完成仿真、限幅和回退检查。",
+      "related": [
+        49,
+        37
+      ],
+      "path": "content/posts/robotics/control/impedance-control/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/robotics/dynamics/parameter-identification",
+        "/posts/pid"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 49,
+      "summary": "从同步采样和激励轨迹建立动力学回归，讨论物理一致性、在线估计、独立验证与候选参数安全部署。",
+      "prerequisites": "刚体动力学、回归与数据处理",
+      "focus": "先完成可回滚的离线辨识闭环，训练残差小不代表参数可以直接上机。",
+      "related": [
+        48,
+        8
+      ],
+      "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/robotics/control/impedance-control",
+        "/posts/calibration/kinematics"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 50,
+      "summary": "用几何直觉和 Pinocchio 理解关节速度到末端 twist 的映射，解释参考系、奇异与阻尼最小二乘校验。",
+      "prerequisites": "FK、矩阵微分与坐标变换",
+      "focus": "先确认 twist 顺序、参考点和表达坐标系，再用有限差分验证每一列。",
+      "related": [
+        52,
+        38
+      ],
+      "path": "content/posts/robotics/kinematics/jacobian/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/robotics/kinematics/pinocchio",
+        "/posts/pink"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 51,
+      "summary": "梳理机器人正逆运动学、坐标约定、Jacobian 与数值验证的基础路线，连接六轴、七轴及批量求解专题。",
+      "prerequisites": "线性代数、三角函数与 Python",
+      "focus": "从同一模型的 FK 闭环验证开始，再增加限位、奇异和碰撞条件。",
+      "related": [
+        50,
+        52
+      ],
+      "path": "content/posts/robotics/kinematics/kinematics-introduction.md",
+      "draft": true,
+      "related_posts": [
+        "/posts/robotics/kinematics/jacobian",
+        "/posts/robotics/kinematics/pinocchio"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 52,
+      "summary": "使用 Pinocchio frame、SE(3) 误差和阻尼最小二乘求 IK，加入限位、回溯和明确失败状态，并用 FK 验证。",
+      "prerequisites": "Pinocchio、Jacobian 与李群基础",
+      "focus": "本例限固定基标量关节，检查 frame 名称和误差坐标，不把失败候选当成功返回。",
+      "related": [
+        50,
+        53
+      ],
+      "path": "content/posts/robotics/kinematics/pinocchio/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/robotics/kinematics/jacobian",
+        "/posts/robotics/kinematics/pytorch"
+      ],
+      "image_decision": "新增 imagegen 概念示意图",
+      "image": "content/posts/robotics/kinematics/pinocchio/assets/numerical-ik-loop.webp"
+    },
+    {
+      "id": 53,
+      "summary": "用 pytorch_kinematics 构建独立 FK–IK–FK 检查，明确批量维度、关节顺序、重试筛选、坐标转换和可微边界。",
+      "prerequisites": "PyTorch 张量与机器人 FK",
+      "focus": "先在 CPU 上验证已知可达目标，筛出收敛且合法的重试后再比较性能。",
+      "related": [
+        52,
+        20
+      ],
+      "path": "content/posts/robotics/kinematics/pytorch/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/robotics/kinematics/pinocchio",
+        "/posts/cuda/warp"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 54,
+      "summary": "以理想 SRS 七自由度结构说明臂角冗余参数，给出解析逆解示例，并补充可达性、分支与 FK 残差检查。",
+      "prerequisites": "DH 变换、三角几何与旋转矩阵",
+      "focus": "先确认肩肘腕结构假设；这不是任意七轴机械臂的通用解析解。",
+      "related": [
+        55,
+        52
+      ],
+      "path": "content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/robotics/kinematics/six-dof-kinematics",
+        "/posts/robotics/kinematics/pinocchio"
+      ],
+      "image_decision": "新增 imagegen 概念示意图",
+      "image": "content/posts/robotics/kinematics/seven-dof-kinematics/assets/srs-arm-angle.webp"
+    },
+    {
+      "id": 55,
+      "summary": "整理 Elfin05 历史 DH 模型和腕心分解，统一参数表与 MATLAB 示例，并解释 C++ 工程片段的依赖和验证边界。",
+      "prerequisites": "DH 参数、矩阵变换与 C++",
+      "focus": "模型数值需按实机核对，先验证 FK，再讨论最多八类逆解候选。",
+      "related": [
+        54,
+        50
+      ],
+      "path": "content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/robotics/kinematics/seven-dof-kinematics",
+        "/posts/robotics/kinematics/jacobian"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 56,
+      "summary": "通过关节随机采样与 FK 估计机器人位置工作空间，给出可复现二连杆示例，并区分覆盖、密度和可达性。",
+      "prerequisites": "FK、NumPy 与随机采样",
+      "focus": "点云是有限采样估计，不包含所有姿态能力或碰撞后的可行集合。",
+      "related": [
+        50,
+        52
+      ],
+      "path": "content/posts/robotics/workspace/whole-workspace/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/robotics/kinematics/jacobian",
+        "/posts/robotics/kinematics/pinocchio"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 57,
+      "summary": "依据 Being-0 论文梳理分层具身智能系统与实验结果，区分论文报告、概念示意和个人工程解读。",
+      "prerequisites": "具身智能、策略与机器人控制",
+      "focus": "按认知、连接和执行层追踪接口，实验数字只适用于原文设置。",
+      "related": [
+        39,
+        6
+      ],
+      "path": "content/posts/thesis/being_0/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/planner/to_mpc_wbc",
+        "/posts/ai/transformer-attention"
+      ],
+      "image_decision": "新增 imagegen 概念示意图",
+      "image": "content/posts/thesis/being_0/assets/being-zero-hierarchy.webp"
+    },
+    {
+      "id": 58,
+      "summary": "整理 CoACD 的碰撞感知凹度、平面切割与多步树搜索，说明理论假设、实验口径和工程复现检查。",
+      "prerequisites": "凸包、几何距离与树搜索",
+      "focus": "先读指标与算法假设，再看实验；有限预算搜索不是全局最优证明。",
+      "related": [
+        14,
+        35
+      ],
+      "path": "content/posts/thesis/coacd/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/coacd",
+        "/posts/open3d/introduction"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 59,
+      "summary": "用 Ruckig 生成一轴和七轴 jerk 受限轨迹，补充返回状态、终点采样、预测状态传递与版本功能边界。",
+      "prerequisites": "位置、速度、加速度与离散采样",
+      "focus": "先验证本地状态到状态问题，中间路径点功能与碰撞规划需另行评估。",
+      "related": [
+        60,
+        39
+      ],
+      "path": "content/posts/trajectory/ruckig/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/trajectory/toppra",
+        "/posts/planner/to_mpc_wbc"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 60,
+      "summary": "使用 TOPP-RA 沿既定路径进行时间参数化，加入速度与加速度约束，检查失败返回、样条几何和采样误差。",
+      "prerequisites": "路径插值与运动学约束",
+      "focus": "路径参数不是时间，时间优化不会自动修复原路径的碰撞和限位问题。",
+      "related": [
+        59,
+        12
+      ],
+      "path": "content/posts/trajectory/toppra/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/trajectory/ruckig",
+        "/posts/casadi"
+      ],
+      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image": null
+    },
+    {
+      "id": 61,
+      "summary": "整理程序中的 Unicode 状态、方向和进度符号，补充编码、字素、终端宽度、可访问性与 ASCII 回退。",
+      "prerequisites": "字符串编码与日志输出",
+      "focus": "符号与状态文字同时保留，不能只靠颜色或 emoji 传达关键结果。",
+      "related": [
+        41,
+        43
+      ],
+      "path": "content/posts/unicode/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/python/f_string",
+        "/posts/python/tqdm"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 62,
+      "summary": "从最小 debugpy 配置讲解 VS Code 断点、模块入口、参数与附加调试，补充解释器核对及调试端口保护。",
+      "prerequisites": "Python 执行入口与 VS Code",
+      "focus": "先复现终端运行环境，再添加远程和多进程配置，暂停会改变程序时序。",
+      "related": [
+        64,
+        40
+      ],
+      "path": "content/posts/vscode/debug/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/vscode/two-env",
+        "/posts/process/pid"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 63,
+      "summary": "按磁盘、显示管理器、用户会话和 GPU 日志排查 Ubuntu 图形登录失败，说明服务重启风险与分支修复。",
+      "prerequisites": "Ubuntu TTY、systemd 与日志",
+      "focus": "先保存证据和回退通道，不同时更换驱动、桌面和显示管理器。",
+      "related": [
+        34,
+        65
+      ],
+      "path": "content/posts/vscode/gdm/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/nvidia/no_devices",
+        "/posts/xcb/post_2"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 64,
+      "summary": "定位 VS Code 终端双环境提示，核对解释器和 Conda 状态，区分新旧自动激活设置与 shell 提示符问题。",
+      "prerequisites": "Conda、venv 与 VS Code 设置",
+      "focus": "以 sys.executable 为准，统一环境激活入口，再检查新建终端的结果。",
+      "related": [
+        44,
+        62
+      ],
+      "path": "content/posts/vscode/two-env/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/python/version",
+        "/posts/vscode/debug"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    },
+    {
+      "id": 65,
+      "summary": "分层排查 Qt xcb 插件错误，定位显示连接、插件依赖和环境混用，避免错误软链接与无效的重装操作。",
+      "prerequisites": "Qt 平台插件与 Linux 动态库",
+      "focus": "先读插件调试日志里的实际路径和首个错误，再针对性处理。",
+      "related": [
+        26,
+        24
+      ],
+      "path": "content/posts/xcb/post_2.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/gui/qt/qt5",
+        "/posts/gui/qt/jetson"
+      ],
+      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image": null
+    }
+  ]
+}

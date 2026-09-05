@@ -3,6 +3,7 @@
   {{- $section := site.Params.archives.section | default "posts" -}}
   {{- $pages := where site.RegularPages "Section" $section -}}
   {{- $groups := $pages.GroupByDate "2006" "desc" -}}
+  {{ partial "sidebar.html" (dict "context" . "disableSidebar" true) }}
   <main id="content" class="collection-page">
     <header class="collection-hero">
       <p class="chase-section__eyebrow">{{ if $zh }}时间线{{ else }}Timeline{{ end }}</p>
@@ -17,7 +18,7 @@
             {{ range .Pages }}
               <a href="{{ .RelPermalink }}">
                 <time datetime="{{ .Date.Format `2006-01-02` }}">{{ if $zh }}{{ .Date.Format "01月02日" }}{{ else }}{{ .Date.Format "Jan 02" }}{{ end }}</time>
-                <span>{{ .Title }}</span>
+                <span>{{ .Title }}{{ if .Draft }} <small class="blog-draft-label">{{ if $zh }}草稿预览{{ else }}Draft preview{{ end }}</small>{{ end }}</span>
               </a>
             {{ end }}
           </div>

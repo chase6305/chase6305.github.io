@@ -1,36 +1,61 @@
 ---
 title: '关于 nvidia-smi: no devices were found 解决方案'
 date: 2025-11-15
-lastmod: 2025-11-15
+lastmod: 2026-09-05
 draft: false
 tags: ["NVIDIA", "Linux", "Troubleshooting"]
 categories: ["系统与工具"]
 authors: ["chase"]
-summary: "关于 nvidia-smi: no devices were found 解决方案"
+summary: "结合 RTX 5070 Ti 历史排障记录，说明 Blackwell 开放内核模块要求，并按 PCI、模块、签名和固件检查设备识别。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+description: "结合 RTX 5070 Ti 历史排障记录，说明 Blackwell 开放内核模块要求，并按 PCI、模块、签名和固件检查设备识别。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "Ubuntu 驱动与内核日志"
+reading_focus: "历史版本不等于通用安装清单，先核对架构要求和实际加载模块。"
+related_posts:
+  - "/posts/cuda/gcc"
+  - "/posts/vscode/gdm"
 ---
 
-## 解决Ubuntu 22.04下RTX 5070显卡驱动安装的曲折历程
+## 结论先行：先核对架构与内核模块类型
+
+这是一份 2025 年 11 月的 RTX 5070 Ti 排障记录，下面的内核、驱动版本和输出均属于当时环境，不是今天所有机器的安装清单。Blackwell GPU 要求使用 NVIDIA 的开放内核模块，不能把 `-open` 仅理解为可选性能优化；它也不等于 Nouveau，用户态驱动仍需匹配。
+
+先只读检查，再决定安装方案：
+
+```bash
+lspci -nnk -d 10de:
+uname -r
+modinfo -F license nvidia
+cat /proc/driver/nvidia/version
+journalctl -k -b | rg -i 'nvidia|nvrm|nouveau|verification|firmware'
+```
+
+如果 PCI 设备不可见，先查硬件、虚拟机直通或 BIOS；如果内核日志报告模块签名失败，检查 Secure Boot 与签名流程；如果日志明确要求 open kernel modules，再修正模块类型。不要仅凭一句 `No devices were found` 判断所有机器的根因相同。
+
+参考：[NVIDIA 内核模块类型与硬件要求](https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/latest/kernel-modules.html)。
+
+## Ubuntu 22.04 下的历史排障记录
 
 ### 问题背景
 
-最近在Ubuntu 22.04系统上安装NVIDIA RTX 5070显卡驱动时，遇到了一系列挑战。尽管按照常规方法安装了官方推荐的驱动，但`nvidia-smi`始终显示"No devices were found"。经过几天的摸索和多次重装，暂时找到了解决方案。
+最近在Ubuntu 22.04系统上安装NVIDIA RTX 5070 Ti 显卡驱动时，遇到了一系列挑战。尽管按照常规方法安装了官方推荐的驱动，但`nvidia-smi`始终显示"No devices were found"。经过几天的摸索和多次重装，暂时找到了解决方案。
 
 ### 系统环境
 
 - **操作系统**: Ubuntu 22.04 LTS
 - **内核版本**: 6.8.0-87-generic
 - **显卡**: NVIDIA RTX 5070 Ti
-- **多显卡配置**: 系统同时配备了NVIDIA RTX 5070和AMD集成显卡
+- **多显卡配置**: 系统同时配备了NVIDIA RTX 5070 Ti 和 AMD集成显卡
 
 ### 问题排查过程
 
 #### 1. 初始硬件检测
 
-```bash
+```text
 # 检查系统内核版本
 chase@chase:~$ uname -r
 6.8.0-87-generic
@@ -41,11 +66,11 @@ chase@chase:~$ lspci | grep -i vga
 79:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 13c0 (rev c9)
 ```
 
-从输出可以看到，系统正确识别到了NVIDIA RTX 5070（设备ID: 2c05）和AMD集成显卡。
+从输出可以看到，系统正确识别到了NVIDIA GPU（设备 ID: 2c05）和AMD集成显卡。
 
 #### 2. 可用驱动检测
 
-```bash
+```text
 chase@chase:~$ ubuntu-drivers devices
 == /sys/devices/pci0000:00/0000:00:01.1/0000:01:00.0 ==
 modalias : pci:v000010DEd00002C05sv00001043sd000089F4bc03sc00i00
@@ -78,6 +103,7 @@ nvidia-smi
 ```
 
 结果令人失望：
+
 ```text
 No devices were found
 ```
@@ -88,9 +114,9 @@ No devices were found
 
 经过多次尝试和排查，发现问题可能源于以下几个方面：
 
-1. **新硬件兼容性问题**: RTX 5070是相对较新的显卡，标准闭源驱动可能存在兼容性问题
-2. **内核模块加载失败**: 闭源驱动可能无法正确加载内核模块
-3. **Secure Boot冲突**: 在某些情况下，Secure Boot可能会阻止专有驱动加载
+1. **模块类型不匹配**：Blackwell 需要开放内核模块，不能使用专有内核模块。
+2. **加载与固件错误**：需要以内核日志确认，不从安装成功推断驱动已经接管设备。
+3. **Secure Boot 与签名**：无论开放还是专有模块，签名策略都可能影响加载；没有日志证据时不能认定它是本次原因。
 
 #### 最终解决方案
 
@@ -108,7 +134,7 @@ sudo apt-get install nvidia-driver-580-open
 
 ### 成功验证
 
-```bash
+```text
 chase@chase:~$ nvidia-smi
 Sat Nov 15 15:27:11 2025
 +-----------------------------------------------------------------------------------------+
@@ -136,26 +162,22 @@ Sat Nov 15 15:27:11 2025
 
 ### 经验总结
 
-1. **新硬件优先尝试开源驱动**: 对于像RTX 5070这样的新发布硬件，开源版本驱动往往具有更好的兼容性
-2. **不要盲目相信"recommended"**: 虽然系统推荐闭源驱动，但实际兼容性可能不如开源版本
-3. **多显卡环境复杂性**: 在NVIDIA和AMD显卡共存的环境中，驱动冲突的可能性更高
-4. **版本选择很重要**: 580版本驱动相比570版本对新硬件支持更好
+1. **先核对架构要求**：Blackwell 对开放内核模块的要求不是一般性的“新卡优先尝试”。
+2. **核对发行版推荐结果**：软件源元数据与硬件要求不一致时，以设备支持表和内核日志继续定位。
+3. **多显卡不等于冲突**：分别确认设备绑定的驱动和显示/计算用途。
+4. **记录完整版本组合**：本例证明当时的 580.95.05-open 组合可用，不能由此推断所有 570 或 580 包的表现。
 
-### 后续优化建议
+### CUDA Toolkit 是另一个安装问题
+
+不要同时照抄发行版 Toolkit 包和 `.run` 安装器两条路线。选择一种与项目要求匹配的安装方式；若使用包含驱动的安装器，避免覆盖已经验证的系统驱动。`nvidia-smi` 里的 CUDA Version 不是本地 `nvcc` 版本。下面保留当时独立安装 CUDA 12.8 后的版本记录。
 
 ```bash
-# 安装CUDA工具包（如需要）
-sudo apt install nvidia-cuda-toolkit
-
-# 这里我是安装cuda 12.8
-sudo sh cuda_12.8.0_570.86.10_linux.run
-
-# 验证CUDA安装
+# 仅在需要本地 CUDA 编译时检查 Toolkit
 nvcc --version
 
 ```
 
-```bash
+```text
 nvcc: NVIDIA (R) Cuda compiler driver
 Copyright (c) 2005-2025 NVIDIA Corporation
 Built on Wed_Jan_15_19:20:09_PST_2025
@@ -165,4 +187,10 @@ Build cuda_12.8.r12.8/compiler.35404655_0
 
 ### 结论
 
-在Ubuntu 22.04上安装RTX 5070显卡驱动时，如果遇到`nvidia-smi`显示"No devices were found"的问题，尝试使用开源版本的驱动（如`nvidia-driver-580-open`）暂时能够解决问题。
+本例通过匹配 Blackwell 所需的开放内核模块恢复设备识别。其他机器仍应按 PCI 枚举、模块加载、固件、签名和用户态库逐层检查；修复后除 `nvidia-smi` 外，还应运行实际应用的最小 GPU 测试。
+
+
+## 阅读自测与验收
+
+- 把 PCI 识别、内核模块加载、模块签名和 nvidia-smi 分开检查，保留原始日志以及驱动安装来源。
+- 修复后在目标内核和重启后的会话中复测；安装命令成功与驱动实际绑定硬件是不同的验收条件。

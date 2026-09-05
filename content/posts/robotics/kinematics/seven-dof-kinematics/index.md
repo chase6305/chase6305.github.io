@@ -1,24 +1,48 @@
 ---
 title: 7DOF-SRS-运动学逆解(几何解析解)实现
 date: 2025-01-13
-lastmod: 2025-01-13
+lastmod: 2026-09-05
 draft: false
 tags: ["Kinematics", "Inverse Kinematics", "C++"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "https://github.com/chase6305/7DofSRSKinematics"
+summary: "以理想 SRS 七自由度结构说明臂角冗余参数，给出解析逆解示例，并补充可达性、分支与 FK 残差检查。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+description: "以理想 SRS 七自由度结构说明臂角冗余参数，给出解析逆解示例，并补充可达性、分支与 FK 残差检查。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "DH 变换、三角几何与旋转矩阵"
+reading_focus: "先确认肩肘腕结构假设；这不是任意七轴机械臂的通用解析解。"
+related_posts:
+  - "/posts/robotics/kinematics/six-dof-kinematics"
+  - "/posts/robotics/kinematics/pinocchio"
+math: true
 ---
 
-你可以到 [https://github.com/chase6305/7DofSRSKinematics](https://github.com/chase6305/7DofSRSKinematics) 查看更详细的介绍.
+本文针对肩—肘—腕（SRS）结构，展示用臂角参数选择冗余解的 Python/NumPy 实现。不同七自由度机器人的轴线结构未必满足这里的几何假设；链接到的 [7DofSRSKinematics 项目](https://github.com/chase6305/7DofSRSKinematics)提供配套背景。
+
+## 1. 为什么需要臂角
+
+固定末端位姿后，七自由度机械臂通常仍保留一个局部冗余自由度。对理想 SRS 结构，肘部可以绕肩—腕连线改变位置，臂角用于描述这个选择。
+
+![固定肩与腕后，肘部沿垂直于肩腕轴的圆周运动，形成不同冗余构型](assets/srs-arm-angle.webp "S、E、W 分别表示肩、肘、腕。图是几何概念示意；具体零位、轴向、工具偏置和臂角参考平面以模型定义为准。")
+
+## 2. 输入、输出与模型约定
+
+- `pose`：基座中的目标齐次变换，长度单位为米。
+- `nsparam`：臂角，单位为弧度。
+- `rconf`：肩、肘、腕的离散分支位；改变它可能使关节解跳变。
+- 返回关节角及对应肩、腕旋转矩阵的系数，最终要用正解重建目标进行验证。
+
+本例不处理关节限位、碰撞约束或所有奇异分支。连续轨迹需要按上一帧关节角选择临近解，不能逐帧任意切换分支。
+
+## 3. NumPy 实现
 
 ```python
 import numpy as np
 from copy import deepcopy
-from IPython import embed
 
 class SRSKinSolver:
     def __init__(self):
@@ -93,16 +117,16 @@ class SRSKinSolver:
 
         # Check reachability and calculate elbow joint angle
         norm_P26 = np.linalg.norm(P_s_to_w)
-        assert (
-            abs(d_bs + d_ew) > norm_P26 > abs(d_bs - d_ew)
-        ), "Specified pose outside reachable workspace."
+        if not d_se + d_ew > norm_P26 > abs(d_se - d_ew):
+            raise ValueError("Unreachable or singular shoulder-wrist distance")
 
         elbow_cos_angle = (norm_P26**2 - d_se**2 - d_ew**2) / (2 * d_se * d_ew)
-        assert abs(elbow_cos_angle) <= 1, "Elbow singularity. End effector at limit."
-        joints[3] = elbow_GC4 * np.arccos(elbow_cos_angle)
+        if abs(elbow_cos_angle) > 1 + 1e-12:
+            raise ValueError("Invalid elbow geometry")
+        joints[3] = elbow_GC4 * np.arccos(np.clip(elbow_cos_angle, -1.0, 1.0))
 
         # Calculate joint 1
-        if np.linalg.norm(P_s_to_w[2]) > 1e-6:
+        if np.linalg.norm(P_s_to_w[:2]) > 1e-6:
             joints[0] = np.arctan2(P_s_to_w[1], P_s_to_w[0])
         else:
             joints[0] = 0
@@ -110,7 +134,8 @@ class SRSKinSolver:
         # Calculate joint 2
         euclidean_norm = np.hypot(P_s_to_w[0], P_s_to_w[1])
         angle_phi = np.arccos(
-            (d_se**2 + norm_P26**2 - d_ew**2) / (2 * d_se * norm_P26)
+            np.clip((d_se**2 + norm_P26**2 - d_ew**2)
+                    / (2 * d_se * norm_P26), -1.0, 1.0)
         )
         joints[1] = (
             np.arctan2(euclidean_norm, P_s_to_w[2]) + elbow_GC4 * angle_phi
@@ -130,17 +155,12 @@ class SRSKinSolver:
         joint_v = np.zeros(7)
         joint_v = self.calculate_joint_angles(P26, elbow_GC4)
 
-        # Lower arm transformation
-        T34_v = np.eye(4)
-        T34_v = self.dh_calc(self.dh_params[3, 0], self.dh_params[3, 1],
-                             self.dh_params[3, 2], joint_v[3])
-        P34_v = T34_v[:3, 3]
-        R34_v = T34_v[:3, :3]
-
-        # Calculate reference elbow position and normal vector to the reference plane
-        v1 = (P34_v - P02) / np.linalg.norm(P34_v - P02)
-        v2 = (P06 - P02) / np.linalg.norm(P06 - P02)
-        V_v_to_sew = np.cross(v1, v2)  # The normal vector to the plane
+        # Express both reference vectors in the base frame.
+        _, transforms = self.compute_total_transform(joint_v)
+        elbow = transforms[2][:3, 3]
+        v1 = (elbow - P02) / np.linalg.norm(elbow - P02)
+        v2 = P26 / np.linalg.norm(P26)
+        V_v_to_sew = np.cross(v1, v2)
 
         R03_v = np.eye(3)
         for i in range(3):
@@ -155,6 +175,13 @@ class SRSKinSolver:
 
     def inverse_kinematics(self, pose: np.ndarray, nsparam: float, rconf: int) -> tuple:
         """Perform inverse kinematics to calculate joint angles given a target pose, normalization parameter, and configuration."""
+        pose = np.asarray(pose, dtype=float)
+        if (pose.shape != (4, 4) or not np.isfinite(pose).all()
+                or not np.isfinite(nsparam) or rconf not in range(8)
+                or not np.allclose(pose[3], [0, 0, 0, 1])
+                or not np.allclose(pose[:3, :3].T @ pose[:3, :3], np.eye(3))
+                or not np.isclose(np.linalg.det(pose[:3, :3]), 1.0)):
+            raise ValueError("Need a rigid pose, finite arm angle and rconf in 0..7")
         arm_config, elbow_config, wrist_config = self.configuration(rconf)
         P_target = pose[:3, 3]
         P02 = np.array([0, 0, self.link_lengths[0]])  # Base to shoulder
@@ -195,7 +222,7 @@ class SRSKinSolver:
 
         # Calculate shoulder joint angles
         joints[0] = np.arctan2(R03[1, 1] * arm_config, R03[0, 1] * arm_config)
-        joints[1] = np.arccos(R03[2, 1]) * arm_config
+        joints[1] = np.arccos(np.clip(R03[2, 1], -1.0, 1.0)) * arm_config
         joints[2] = np.arctan2(-R03[2, 2] * arm_config, -R03[2, 0] * arm_config)
 
         # Calculate wrist joint angles
@@ -208,7 +235,7 @@ class SRSKinSolver:
 
         # Calculate wrist joint angles
         joints[4] = np.arctan2(R47[1, 2] * wrist_config, R47[0, 2] * wrist_config)
-        joints[5] = np.arccos(R47[2, 2]) * wrist_config
+        joints[5] = np.arccos(np.clip(R47[2, 2], -1.0, 1.0)) * wrist_config
         joints[6] = np.arctan2(R47[2, 1] * wrist_config, -R47[2, 0] * wrist_config)
 
         s_mat = np.zeros((3, 3, 3))
@@ -224,11 +251,14 @@ class SRSKinSolver:
             joints,
             s_mat,
             w_mat,
-        )  # Returning joints with placeholders for s_mat and w_mat
+        )  # Shoulder and wrist rotation coefficients accompany the solution.
 
 
     def compute_total_transform(self, joint_angles):
         """Compute the overall transformation matrix and the list of transformation matrices for each joint."""
+        joint_angles = np.asarray(joint_angles, dtype=float)
+        if joint_angles.shape != (7,) or not np.isfinite(joint_angles).all():
+            raise ValueError("Expected seven finite joint angles")
         T_total = np.eye(4)
         T_total_list = []
         for i, params in enumerate(self.dh_params):
@@ -258,10 +288,26 @@ if __name__ == "__main__":
     joints, s_mat, w_mat = kin_solver.inverse_kinematics(pose, nsparam, rconf)
     T_total_1, T_total_list_1 = kin_solver.compute_total_transform(joints)
 
-    from IPython import embed
-    embed()
+    position_error = np.linalg.norm(T_total[:3, 3] - T_total_1[:3, 3])
+    cosine = (np.trace(T_total[:3, :3].T @ T_total_1[:3, :3]) - 1.0) / 2.0
+    rotation_error = np.arccos(np.clip(cosine, -1.0, 1.0))
+    print("Joint solution:", joints)
+    print("Position error (m):", position_error)
+    print("Rotation error (rad):", rotation_error)
+    if position_error > 1e-6 or rotation_error > 1e-6:
+        raise RuntimeError("FK validation failed")
 
 ```
 
 
-7DOF-SRS-运动学逆解（几何解析解）实现
+## 4. 验证边界
+
+先用已知关节角生成目标，再做 FK → IK → FK 闭环验证。关节角不必与原始关节角相同，但末端位姿应在容差内一致。
+
+肩—腕距离需满足由上臂和前臂长度组成的三角不等式；基座到肩的高度不能代替上臂长度。伸直、完全折叠以及肩腕欧拉角提取的奇异情况需要独立分支处理，本例在部分边界会拒绝求解。
+
+
+## 阅读自测与验收
+
+- 固定目标，改变臂角和八类构型分支，分别检查 FK 残差；肘部位置可变化，但目标末端位姿应保持一致。
+- 接近肩腕重合、肘伸直等退化情况时检查失败处理；该理想 SRS 模型不能直接代替任意七轴机器人的实测几何。

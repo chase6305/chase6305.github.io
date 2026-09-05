@@ -42,24 +42,47 @@ def settling_time(
     return max(0.0, rows[settled_index]["time_s"] - start_s)
 
 
+def validate_rows(rows: list[dict[str, float]]) -> None:
+    required = {"time_s", "force_n", "position_m"}
+    if len(rows) < 3:
+        raise ValueError("at least three samples are required")
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict) or not required.issubset(row):
+            raise ValueError(f"sample {index}: missing required fields")
+        for name in required:
+            value = row[name]
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+                raise ValueError(f"sample {index}: {name} must be a finite number")
+    if any(b["time_s"] <= a["time_s"] for a, b in zip(rows, rows[1:])):
+        raise ValueError("time_s must be strictly increasing")
+
+
 def load_rows(path: Path) -> list[dict[str, float]]:
     required = {"time_s", "force_n", "position_m"}
     with path.open(newline="", encoding="utf-8") as source:
         reader = csv.DictReader(source)
-        missing = required.difference(reader.fieldnames or [])
+        fields = reader.fieldnames or []
+        missing = required.difference(fields)
         if missing:
             raise ValueError(f"missing CSV columns: {sorted(missing)}")
-        rows = [{name: float(row[name]) for name in required} for row in reader]
-    if len(rows) < 3:
-        raise ValueError("at least three samples are required")
-    if any(b["time_s"] <= a["time_s"] for a, b in zip(rows, rows[1:])):
-        raise ValueError("time_s must be strictly increasing")
+        if len(set(fields)) != len(fields):
+            raise ValueError("duplicate CSV column names")
+        rows = []
+        for row in reader:
+            if None in row:
+                raise ValueError(f"CSV line {reader.line_num}: extra cells without headers")
+            try:
+                rows.append({name: float(row[name]) for name in required})
+            except (TypeError, ValueError) as error:
+                raise ValueError(f"CSV line {reader.line_num}: missing or nonnumeric value") from error
+    validate_rows(rows)
     return rows
 
 
 def analyze(
     rows: list[dict[str, float]], step_on_s: float, step_off_s: float
 ) -> dict[str, float]:
+    validate_rows(rows)  # Direct API calls must obey the same contract as CSV input.
     if not rows[0]["time_s"] < step_on_s < step_off_s < rows[-1]["time_s"]:
         raise ValueError("step times must lie strictly inside the log interval")
 
@@ -204,7 +227,7 @@ def acceptance_failures(
     return [
         f"{name}: actual={actual:.9g}, limit={limit:.9g}"
         for name, actual, limit in checks
-        if actual > limit
+        if not math.isfinite(actual) or actual > limit
     ]
 
 

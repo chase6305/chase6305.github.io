@@ -1,21 +1,34 @@
 ---
 title: 六自由度机器人正逆运动学
 date: 2021-12-07
-lastmod: 2021-12-07
+lastmod: 2026-09-05
 draft: false
 tags: ["Kinematics", "Inverse Kinematics", "C++"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "本文主要是对传统六自由度机器人进行正逆运动学求解，选取大族机器人Elfin05 为分析的对象，开发语言是C++。"
+summary: "整理 Elfin05 历史 DH 模型和腕心分解，统一参数表与 MATLAB 示例，并解释 C++ 工程片段的依赖和验证边界。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+description: "整理 Elfin05 历史 DH 模型和腕心分解，统一参数表与 MATLAB 示例，并解释 C++ 工程片段的依赖和验证边界。"
+contentLanguage: "zh-CN"
+reading_prerequisites: "DH 参数、矩阵变换与 C++"
+reading_focus: "模型数值需按实机核对，先验证 FK，再讨论最多八类逆解候选。"
+related_posts:
+  - "/posts/robotics/kinematics/seven-dof-kinematics"
+  - "/posts/robotics/kinematics/jacobian"
+math: true
 ---
 
 ## 简介
-本文主要是对传统六自由度机器人进行正逆运动学求解，选取大族机器人Elfin05 为分析的对象，开发语言是C++。（完善中）
+
+本文保留 Elfin05 的历史模型分析与 C++ 算法片段。下方数值描述的是示例坐标系，不是厂商当前标定参数；真实设备必须以对应型号手册、URDF 和控制器零位约定核对。
+
+C++ 部分依赖原工程的 `Kinematics`、`Pose`、矩阵类型及辅助函数，不是独立可编译程序。阅读重点是腕心分解、候选分支与 FK 验证；如需独立数值 IK 示例，可继续阅读 Pinocchio 文章。
+
 ## 机器人正运动学
+
 机器人正运动学推导过程
 
 ![Elfin05_DH](Elfin05_DH.png "Elfin05_DH")
@@ -26,43 +39,37 @@ comments: false
  2. 坐标系的X轴，与沿着相邻两个Z轴的公垂线重合
  3. 坐标系的Y轴，可以通过右手定则来确定
 
-当相邻两个Z轴相交时，确定坐标系的方法如下：
- 1. 坐标系的Y轴，沿着第一个Z轴与下一个X轴相交的延长线为Y轴
- 2. 坐标系的X轴，可通过右手定则确定
+相邻 Z 轴相交时，公法线长度为零，可选择垂直于两轴所在平面的 X 方向；相邻轴平行时，公法线存在选择自由，需要固定原点与正方向。Y 轴始终按右手系由 Z 与 X 确定，不存在通用的“沿下一个 X 轴延长线取 Y”规则。
 
-当相邻两个Z轴平行时，确定坐标系的方法如下：
- 1. 坐标系的X轴：沿着第一个Z轴与下一个X轴相交的延长线为Y轴
- 2. 坐标系的X轴，可通过右手定则确定
+本文 MATLAB 段采用标准 DH：`RotZ(theta) TransZ(d) TransX(a) RotX(alpha)`。以下表格已统一到该段模型；机械零位偏置需单独明确，不把旋转变量、sigma 与 offset 混在同一列。
 
 
-那么：
-杆1-杆2：杆长220mm，关节杆长0mm，绕z旋转0度，绕x旋转90度；
-杆2-杆3：杆长0mm，关节杆长455mm，绕z旋转90度，绕x旋转0度；
-杆3-杆4：杆长0mm，关节杆长0mm，绕z旋转0度，绕x旋转90度；
-杆4-杆5：杆长495mm，关节杆长0mm，绕z旋转0度，绕x旋转90度；
-杆5-杆6：杆长0mm，关节杆长0mm，绕z旋转90度，绕x旋转90度；
-杆6-TCP：杆长-155mm，关节杆长0mm，绕z旋转0度，绕x旋转0度。
+本例的非零长度参数是 `d1=220 mm`、`a2=455 mm`、`d4=495 mm` 和 `d6=-155 mm`；负号来自所选坐标轴方向。表中所有关节角均为变量 `qi`，没有额外添加 90° 零位偏置。换用另一套 DH 坐标系时，应重新核对参数和关节偏置，不能混用不同来源的表格。
 
 ### DH 参数表
 
 | 关节(*i*) | 扭角(*α*) | 连杆长度(*a*) | 关节偏距(*d*) | 关节角(*θ*) | 工作范围 |
 |-----------|-----------|---------------|---------------|-------------|-----------|
-| 1 | 90° | 220mm | 0 | 0° | ±360° |
-| 2 | 0° | 0 | 450mm | 90° | ±360° |
-| 3 | 90° | 0 | 0 | 0° | ±360° |
-| 4 | 90° | 495mm | 0 | 0° | ±360° |
-| 5 | 90° | 0 | 0 | 90° | ±360° |
-| 6 | 90° | -155mm | 0 | 0° | ±360° |
+| 1 | 90° | 0 | 220mm | q1 | 示例 ±360° |
+| 2 | 0° | 455mm | 0 | q2 | 示例 ±360° |
+| 3 | 90° | 0 | 0 | q3 | 示例 ±360° |
+| 4 | 90° | 0 | 495mm | q4 | 示例 ±360° |
+| 5 | 90° | 0 | 0 | q5 | 示例 ±360° |
+| 6 | 0° | 0 | -155mm | q6 | 示例 ±360° |
 
 **参数说明：**
+
 - *α*: 关节扭转角，相邻两连杆之间的角度（绕 X 轴）
 - *a*: 连杆长度，相邻两关节轴线间的垂直距离
 - *d*: 关节偏距，沿关节轴线的位移
 - *θ*: 关节角度，相邻两连杆间的夹角（绕 Z 轴）
 
 
-matlab代码块
-```r
+### MATLAB 模型
+
+代码长度单位为米，角度为弧度，依赖 Peter Corke Robotics Toolbox 的 Link/SerialLink 接口。
+
+```matlab
 % Link函数调用格式： L（i）=Link( [theta，D，A，alpha，sigma]，‘convention’)
 % 其参数与D-H参数相对应
 % 前四个参数依次表示：参数‘theta’代表关节角，参数‘D’代表横距，
@@ -72,20 +79,21 @@ matlab代码块
 clear;
 clc;
 %建立机器人模型
-%       theta    d        a        alpha     offset
+%       theta    d        a        alpha     sigma
 L1=Link([0       0.220     0        pi/2       0     ],'standard'); %定义连杆的D-H参数
 L2=Link([0       0         0.455     0         0     ],'standard');
 L3=Link([0       0         0        pi/2       0     ],'standard');
 L4=Link([0       0.495     0        pi/2       0     ],'standard');
 L5=Link([0       0         0        pi/2       0     ],'standard');
 L6=Link([0       -0.155    0         0         0     ],'standard');
+L = [L1 L2 L3 L4 L5 L6];
 L(1).qlim =[-2*pi, 2*pi];
 L(2).qlim =[-2*pi, 2*pi];
 L(3).qlim =[-2*pi, 2*pi];
 L(4).qlim =[-2*pi, 2*pi];
 L(5).qlim =[-2*pi, 2*pi];
 L(6).qlim =[-2*pi, 2*pi];
-robot=SerialLink([L1 L2 L3 L4 L5 L6],'name','manman'); %连接连杆，机器人取名manman
+robot=SerialLink(L,'name','manman'); %连接连杆，机器人取名manman
 figure(1);
 robot.display();
 teach(robot);
@@ -99,7 +107,7 @@ teach(robot);
 | 输入 | P=[*x,y,z*]<br>E=[*α,β,γ*] | - | P: TCP位置<br>E: TCP姿态欧拉角 |
 | 输出 | [*q1,q2,q3,q4,q5,q6*] | - | 6个关节角度值 |
 | 1 | [*n,s,a*] = forward_euler(*E*) | 欧拉角转换 | 求解TCP的旋转变换矩阵 |
-| 2 | *Pw* = *E - d7×a* | 几何计算 | 求解腕关节中心点WCP位置 |
+| 2 | *Pw* = *P - d7×a* | 几何计算 | 求解腕关节中心点WCP位置 |
 | 3 | [*q1,q2,q3*] = inverse_kinematic(*Pw*) | 解析解法 | 求解前3个关节角度(4组解) |
 | 4 | R0_3 = inverse_kinematic_0_3([*q1,q2,q3*]) | 正解计算 | 求基座到WCP的变换矩阵 |
 | 5 | R3_6 = R0_3^T×[*n,s,a*] | 矩阵运算 | 求WCP到TCP的变换矩阵 |
@@ -107,14 +115,17 @@ teach(robot);
 | 7 | generate_ik([*q1,q2,q3,q4,q5,q6*]) | 解优化 | 在±2π范围内寻找最优解 |
 
 **注意事项：**
+
 - 步骤3可得4组解
 - 步骤6可得2组解
-- 总共可得8组完整解
+- 非奇异且几何可达时最多枚举 8 类候选；奇异、限位或分支重合会改变有效解数量
 - 最后步骤选取关节角范围内的最近解
 
 
 
-c++代码
+### C++ 工程片段
+
+以下片段使用原项目常量与工具外参，不与上面的教学 DH 表自动等价。先验证三角不等式和三角函数定义域，单独处理腕部奇异，再筛选限位；最后对每个候选执行 FK，检查位置与旋转角残差。无效候选不可因“距离当前角度最近”而被返回。
 
 
 
@@ -128,6 +139,7 @@ c++代码
  */
 void Kinematics::computeInverseKinematicsCandidates(const Pose& tcp, const JointAngles& current, std::vector<KinematicsSolutionType> &solutions)
 {
+    solutions.resize(8); // 后续按 0..7 写入，调用方无需预先分配八个元素
     // 1. 逐步计算Angle 0,在TCP 外计算Transformations Matrix T06,通过手腕长度->手腕中心点 沿着TCP方向转换TCP
     // 通过手腕中心点到地面的投影的arctan计算angle 0 ,产生两个可能的解决方案，称为前向解决方案和后向解决方案
     double sinx = sin(tcp.orientation[X]);
@@ -521,3 +533,9 @@ void Kinematics::ToLimits(const std::vector<KinematicsSolutionType> &Solution, s
 }
 
 ```
+
+
+## 阅读自测与验收
+
+- 使用同一 DH 约定、长度单位和零位偏置对照 MATLAB 与 C++ 的 FK，再讨论逆解分支。
+- 把每个逆解候选重新代入 FK，并过滤关节限位与重复解；理论分支数不是任意目标都能获得的有效解数量。
