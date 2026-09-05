@@ -6,7 +6,7 @@ draft: false
 tags: ["CoACD", "Mesh Processing", "Collision Geometry"]
 categories: ["三维视觉"]
 authors: ["chase"]
-summary: "CoACD: 基于碰撞感知凹性与树搜索的近似凸分解"
+summary: "演示 CoACD 网格近似凸分解、Open3D 可视化和参数配置，并比较其与 V-HACD 的算法特点和适用场景。"
 showToc: true
 TocOpen: true
 hidemeta: false

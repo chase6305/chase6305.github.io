@@ -6,7 +6,7 @@ draft: false
 tags: ["C++"]
 categories: ["编程开发"]
 authors: ["chase"]
-summary: "C++中std::前缀函数的必要性：从abs、max到数学函数的全面解析"
+summary: "通过 abs、max、数学函数和泛型代码说明 C++ std:: 前缀、重载解析与 ADL 的规则，并分析常见误用。"
 showToc: true
 TocOpen: true
 hidemeta: false

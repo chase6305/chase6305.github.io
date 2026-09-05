@@ -6,7 +6,7 @@ draft: false
 tags: ["CUDA", "GPU Programming", "NVIDIA Warp"]
 categories: ["编程开发"]
 authors: ["chase"]
-summary: "【CUDA编程】CUDA Warp 与 Warp-Python 学习文档"
+summary: "梳理 CUDA warp 的线程调度、合并访存、分支发散和规约优化，并介绍 NVIDIA Warp Python 的内核编写方式。"
 showToc: true
 TocOpen: true
 hidemeta: false

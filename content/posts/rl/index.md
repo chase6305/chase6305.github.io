@@ -6,7 +6,7 @@ draft: false
 tags: ["Reinforcement Learning", "Artificial Intelligence"]
 categories: ["人工智能"]
 authors: ["chase"]
-summary: "强化学习基础"
+summary: "从马尔可夫性质、MDP、策略和轨迹概率出发，系统梳理强化学习的价值函数、回报、优化目标与基础算法。"
 showToc: true
 TocOpen: true
 hidemeta: false

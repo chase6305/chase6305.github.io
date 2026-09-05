@@ -7,7 +7,7 @@ draft: false
 tags: ["Pink", "Inverse Kinematics", "Optimization"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "Pink: 一个高效易用的机器人逆运动学库"
+summary: "介绍 Pink 的 QP 逆运动学框架、FrameTask 与 PostureTask，说明任务权重、约束配置以及与 Pinocchio、CasADi 的区别。"
 showToc: true
 TocOpen: true
 hidemeta: false

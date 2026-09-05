@@ -6,7 +6,7 @@ draft: false
 tags: ["Lock-Free Queue", "Concurrency", "C++"]
 categories: ["编程开发"]
 authors: ["chase"]
-summary: "无锁队列简介与实现示例"
+summary: "介绍无锁队列的并发特性、原子操作和常见应用，并给出 Python 与 C++ 生产者—消费者实现及运行示例。"
 showToc: true
 TocOpen: true
 hidemeta: false

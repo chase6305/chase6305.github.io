@@ -6,7 +6,7 @@ draft: false
 tags: ["C++"]
 categories: ["编程开发"]
 authors: ["chase"]
-summary: C++ 智能指针学习总结
+summary: "从 RAII 出发解释 unique_ptr、shared_ptr 与 weak_ptr 的所有权语义、典型用法、生命周期差异和选择原则。"
 showToc: true
 TocOpen: true
 hidemeta: false
@@ -169,5 +169,4 @@ int main() {
 - **`std::weak_ptr`**：不拥有对象所有权，不影响对象生命周期，主要用于打破循环引用。
 
 智能指针在C++中提供了更安全和方便的内存管理方式，避免了手动管理动态内存带来的复杂性和潜在的内存泄漏问题。
-
 

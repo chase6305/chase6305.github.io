@@ -6,7 +6,7 @@ draft: false
 tags: ["VS Code", "Python", "Debugging"]
 categories: ["系统与工具"]
 authors: ["chase"]
-summary: "VS Code Python 调试完全指南：从入门到精通"
+summary: "从断点和调试面板入门，系统介绍 VS Code Python 的 launch.json、参数传递、模块调试、远程调试与常见排错。"
 showToc: true
 TocOpen: true
 hidemeta: false

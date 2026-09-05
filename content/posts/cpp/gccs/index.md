@@ -6,7 +6,7 @@ draft: false
 tags: ["C++", "GCC"]
 categories: ["编程开发"]
 authors: ["chase"]
-summary: 在 Ubuntu 上安装和切换多个 GCC 版本
+summary: "介绍在 Ubuntu 中并存多个 GCC/G++ 版本，并使用 update-alternatives 或环境变量完成配对切换与验证。"
 showToc: true
 TocOpen: true
 hidemeta: false

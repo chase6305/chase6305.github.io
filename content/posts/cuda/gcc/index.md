@@ -6,7 +6,7 @@ draft: false
 tags: ["CUDA", "GCC", "Dependencies"]
 categories: ["编程开发"]
 authors: ["chase"]
-summary: "CUDA环境配置->解决CUDA、GLIBCXX及libc++abi依赖问题的指南"
+summary: "系统排查 CUDA、GCC、GLIBCXX 与 libc++abi 的依赖冲突，给出分级修复、环境隔离、风险控制和验证流程。"
 showToc: true
 TocOpen: true
 hidemeta: false

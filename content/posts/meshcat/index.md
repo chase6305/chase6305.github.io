@@ -6,7 +6,7 @@ draft: false
 tags: ["MeshCat", "3D Visualization", "Robotics"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "MeshCat: 基于three.js的远程可控3D可视化工具"
+summary: "介绍 MeshCat 的安装、远程查看器与场景树 API，演示几何体、变换、属性、动画和交互式三维可视化。"
 showToc: true
 TocOpen: true
 hidemeta: false

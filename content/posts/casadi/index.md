@@ -6,7 +6,7 @@ draft: false
 tags: ["CasADi", "Optimization", "Automatic Differentiation"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "CasADi: 数值优化和自动微分库"
+summary: "介绍 CasADi 的符号计算、自动微分和非线性优化能力，并通过上下界与等式约束示例演示问题建模和求解。"
 showToc: true
 TocOpen: true
 hidemeta: false
