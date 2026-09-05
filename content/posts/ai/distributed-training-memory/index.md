@@ -220,7 +220,7 @@ print(f"saved: {output.resolve()}")
 ```
 
 <figure class="article-figure">
-  <img src="assets/zero-memory-comparison.png" alt="1B 模型在 DDP 与 ZeRO 各阶段的每卡持久状态显存" width="900">
+  <img data-zoomable loading="lazy" src="assets/zero-memory-comparison.png" alt="1B 模型在 DDP 与 ZeRO 各阶段的每卡持久状态显存" width="900">
   <figcaption>
     <span class="article-figure__number">图 1</span>
     <span class="article-figure__text">8 卡时 P/G/O 的理论常驻显存；不包含激活、临时张量、通信缓冲和参数 All-Gather 峰值。</span>
@@ -294,7 +294,7 @@ $$
 NCCL（NVIDIA Collective Communications Library）是面向 NVIDIA GPU 的集合通信库。它负责高效执行 All-Reduce、All-Gather、Reduce-Scatter、Broadcast 等原语；DDP/FSDP 是训练策略，NCCL 是它们常用的通信后端，不要把两者视作同一层组件。
 
 <figure class="article-figure">
-  <img src="assets/collective-communications.png" alt="All-Reduce、Reduce-Scatter 与 All-Gather" width="960">
+  <img data-zoomable loading="lazy" src="assets/collective-communications.png" alt="All-Reduce、Reduce-Scatter 与 All-Gather" width="960">
   <figcaption>
     <span class="article-figure__number">图 2</span>
     <span class="article-figure__text">All-Reduce 让所有 Rank 得到相同归约结果；Reduce-Scatter 只保留各自结果分片；All-Gather 将各分片拼回完整张量。</span>
@@ -323,7 +323,7 @@ $$
 #### Broadcast：一份数据复制给所有 Rank
 
 <figure class="article-figure">
-  <img src="assets/collective-broadcast.png" alt="四 Rank Broadcast 前后数据所有权" width="960">
+  <img data-zoomable loading="lazy" src="assets/collective-broadcast.png" alt="四 Rank Broadcast 前后数据所有权" width="960">
   <figcaption>
     <span class="article-figure__number">图 3</span>
     <span class="article-figure__text">Broadcast 只有 source Rank 提供有效输入，操作后每个 Rank 都得到相同的 X；它不做求和。</span>
@@ -335,7 +335,7 @@ $$
 #### All-Gather：分片拼成完整张量
 
 <figure class="article-figure">
-  <img src="assets/collective-all-gather.png" alt="四 Rank All-Gather 前后数据所有权" width="960">
+  <img data-zoomable loading="lazy" src="assets/collective-all-gather.png" alt="四 Rank All-Gather 前后数据所有权" width="960">
   <figcaption>
     <span class="article-figure__number">图 4</span>
     <span class="article-figure__text">Rank 0～3 分别提供 A/B/C/D，所有 Rank 最终按 Rank 顺序得到完整的 `[A|B|C|D]`。</span>
@@ -347,7 +347,7 @@ All-Gather 不做数值归约，只做收集和拼接。若每 Rank 输入 `M/K`
 #### Reduce-Scatter：先归约，再分发结果分片
 
 <figure class="article-figure">
-  <img src="assets/collective-reduce-scatter.png" alt="四 Rank Reduce-Scatter SUM 数值示例" width="960">
+  <img data-zoomable loading="lazy" src="assets/collective-reduce-scatter.png" alt="四 Rank Reduce-Scatter SUM 数值示例" width="960">
   <figcaption>
     <span class="article-figure__number">图 5</span>
     <span class="article-figure__text">四个向量先逐元素求和为 `[1111,2222,3333,4444]`，随后 Rank 0～3 各保留一个不同分片。</span>
@@ -359,7 +359,7 @@ Reduce-Scatter 同时完成 Reduction 和 Sharding。它非常适合 FSDP/ZeRO �
 #### All-Reduce：每个 Rank 都得到完整归约结果
 
 <figure class="article-figure">
-  <img src="assets/collective-all-reduce.png" alt="四 Rank All-Reduce SUM 数值示例" width="960">
+  <img data-zoomable loading="lazy" src="assets/collective-all-reduce.png" alt="四 Rank All-Reduce SUM 数值示例" width="960">
   <figcaption>
     <span class="article-figure__number">图 6</span>
     <span class="article-figure__text">四个输入逐元素求和后，每个 Rank 都获得相同的完整结果 `[1111,2222,3333,4444]`。</span>
@@ -439,7 +439,7 @@ $$
 ZeRO 的核心是消除数据并行 Rank 之间重复保存的模型状态：
 
 <figure class="article-figure">
-  <img src="assets/ddp-zero-sharding.png" alt="DDP 与 ZeRO 三阶段模型状态分片" width="960">
+  <img data-zoomable loading="lazy" src="assets/ddp-zero-sharding.png" alt="DDP 与 ZeRO 三阶段模型状态分片" width="960">
   <figcaption>
     <span class="article-figure__number">图 7</span>
     <span class="article-figure__text">ZeRO-1 分优化器，ZeRO-2 再分梯度，ZeRO-3 进一步分参数；图中不包含激活和临时峰值。</span>
@@ -656,7 +656,7 @@ $$
 若某个 Bucket 的通信时间小于其后可并行的计算窗口，它大部分可以被隐藏；最后一个 Bucket、过大的 Collective 或慢网络通常形成 exposed communication tail。
 
 <figure class="article-figure">
-  <img src="assets/compute-communication-overlap.png" alt="串行通信与计算通信重叠时间线" width="960">
+  <img data-zoomable loading="lazy" src="assets/compute-communication-overlap.png" alt="串行通信与计算通信重叠时间线" width="960">
   <figcaption>
     <span class="article-figure__number">图 8</span>
     <span class="article-figure__text">Bucket 就绪后立即通信可与后续反向计算重叠；真正增加 Step Time 的主要是未被覆盖的通信尾部。</span>

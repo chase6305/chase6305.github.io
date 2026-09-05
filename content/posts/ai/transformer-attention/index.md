@@ -66,7 +66,7 @@ toc: true
 Transformer 处理的不是原始文字，而是 token 对应的向量。一个典型的 Transformer 层由注意力子层和前馈网络组成，两个子层外都有残差连接与归一化。
 
 <figure class="article-figure">
-  <img src="assets/transformer-block-overview.png" alt="Transformer 层总体框架" width="900">
+  <img data-zoomable loading="lazy" src="assets/transformer-block-overview.png" alt="Transformer 层总体框架" width="900">
   <figcaption>
     <span class="article-figure__number">图 1</span>
     <span class="article-figure__text">Post-Norm Transformer 层的主要数据流；弧形箭头表示残差连接。Pre-Norm 会把 Norm 移到子层之前。</span>
@@ -164,7 +164,7 @@ Attention 公式中还会使用以下字母：
 Window、Causal、Sparse 描述的则是**可见范围**：一个 Query 被允许查看哪些 Key。它们可以与单头或多头任意组合。例如“Multi-Head Causal Sliding-Window Attention”表示多个 head 都只查看一定长度的过去窗口。
 
 <figure class="article-figure">
-  <img src="assets/attention-patterns.png" alt="Full、Causal、Sliding Window、Block Sparse 与 Global Token Attention" width="960">
+  <img data-zoomable loading="lazy" src="assets/attention-patterns.png" alt="Full、Causal、Sliding Window、Block Sparse 与 Global Token Attention" width="960">
   <figcaption>
     <span class="article-figure__number">图 2</span>
     <span class="article-figure__text">Head 数量与可见性模式是两个独立设计轴；蓝色区域表示 Query 可以读取的 Key。</span>
@@ -227,7 +227,7 @@ V = self.v_proj(x)
 ```
 
 <figure class="article-figure">
-  <img src="assets/qkv-projection.png" alt="X 通过三个独立线性层投影为 Q、K、V" width="900">
+  <img data-zoomable loading="lazy" src="assets/qkv-projection.png" alt="X 通过三个独立线性层投影为 Q、K、V" width="900">
   <figcaption>
     <span class="article-figure__number">图 3</span>
     <span class="article-figure__text">同一个 X 经过三组不同的可学习参数，得到形状相同但语义不同的 Q、K、V。</span>
@@ -259,7 +259,7 @@ Q、K、V 不是简单复制出来的。它们输入相同，但使用不同权�
 ## 4. 单头缩放点积注意力
 
 <figure class="article-figure">
-  <img src="assets/simple-attention-flow.png" alt="单头缩放点积注意力" width="960">
+  <img data-zoomable loading="lazy" src="assets/simple-attention-flow.png" alt="单头缩放点积注意力" width="960">
   <figcaption>
     <span class="article-figure__number">图 4</span>
     <span class="article-figure__text">单头缩放点积注意力，从相关性分数到 Value 加权汇总。</span>
@@ -311,7 +311,7 @@ $$
 最后三个权重之和为 1，较大的原始分数获得较大的概率。
 
 <figure class="article-figure">
-  <img src="assets/softmax-step-by-step.png" alt="Softmax 数值计算与 Mask 示例" width="960">
+  <img data-zoomable loading="lazy" src="assets/softmax-step-by-step.png" alt="Softmax 数值计算与 Mask 示例" width="960">
   <figcaption>
     <span class="article-figure__number">图 5</span>
     <span class="article-figure__text">逐步计算 row-wise Softmax；被 mask 的负无穷位置在指数运算后变为 0。</span>
@@ -393,7 +393,7 @@ M=\begin{bmatrix}
 $$
 
 <figure class="article-figure">
-  <img src="assets/causal-mask.png" alt="因果掩码将未来位置的注意力权重变为零" width="920">
+  <img data-zoomable loading="lazy" src="assets/causal-mask.png" alt="因果掩码将未来位置的注意力权重变为零" width="920">
   <figcaption>
     <span class="article-figure__number">图 6</span>
     <span class="article-figure__text">上三角的未来位置被屏蔽；softmax 后对应权重严格为 0。</span>
@@ -413,7 +413,7 @@ $$
 因此必须满足 `C % H == 0`。示例中 `C=48`、`H=8`，所以每头 `Dh=6`。
 
 <figure class="article-figure">
-  <img src="assets/multi-head-attention-flow.png" alt="多头注意力的拆分、并行与拼接" width="960">
+  <img data-zoomable loading="lazy" src="assets/multi-head-attention-flow.png" alt="多头注意力的拆分、并行与拼接" width="960">
   <figcaption>
     <span class="article-figure__number">图 7</span>
     <span class="article-figure__text">特征维被拆给多个 head，并行计算后再拼回原维度。</span>
@@ -665,7 +665,7 @@ class InputEmbedding(nn.Module):
 输出形状从 `[B,T]` 变成 `[B,T,C]`。token embedding 回答“是什么”，position embedding 回答“在哪里”。
 
 <figure class="article-figure">
-  <img src="assets/embedding-position-encoding.png" alt="Token Embedding 与位置编码相加" width="960">
+  <img data-zoomable loading="lazy" src="assets/embedding-position-encoding.png" alt="Token Embedding 与位置编码相加" width="960">
   <figcaption>
     <span class="article-figure__number">图 8</span>
     <span class="article-figure__text">Token 向量与位置向量逐元素相加，得到 Transformer 的输入 X。位置编码原始形状通常为 [T,C] 或 [1,T,C]，图中的 [B,T,C] 表示广播到 batch 后的逻辑形状。</span>
@@ -735,7 +735,7 @@ $$
 $$
 
 <figure class="article-figure">
-  <img src="assets/ffn-token-wise-flow.svg" alt="FFN 对每个 token 共享参数并沿特征维升维、激活和降维" width="960">
+  <img data-zoomable loading="lazy" src="assets/ffn-token-wise-flow.svg" alt="FFN 对每个 token 共享参数并沿特征维升维、激活和降维" width="960">
   <figcaption>
     <span class="article-figure__number">图 9</span>
     <span class="article-figure__text">Position-wise FFN 的数据流。B 和 T 保持不变，特征维执行 C → Cff → C；所有 token 共享同一组 W₁、W₂。</span>
@@ -819,7 +819,7 @@ x = x + dropout(ffn(norm2(x)))
 ```
 
 <figure class="article-figure">
-  <img src="assets/pre-post-norm-comparison.svg" alt="Post-Norm 与 Pre-Norm 的残差和归一化顺序对比" width="960">
+  <img data-zoomable loading="lazy" src="assets/pre-post-norm-comparison.svg" alt="Post-Norm 与 Pre-Norm 的残差和归一化顺序对比" width="960">
   <figcaption>
     <span class="article-figure__number">图 10</span>
     <span class="article-figure__text">Post-Norm 与 Pre-Norm 的计算顺序。Post-Norm 在残差相加后归一化；Pre-Norm 在进入子层前归一化，并保留更直接的残差主路径。</span>
@@ -909,7 +909,7 @@ class SinusoidalPositionEncoding(nn.Module):
 两类 mask 解决的问题不同：
 
 <figure class="article-figure">
-  <img src="assets/attention-mask-comparison.png" alt="Causal Mask 与 Padding Mask 对比" width="940">
+  <img data-zoomable loading="lazy" src="assets/attention-mask-comparison.png" alt="Causal Mask 与 Padding Mask 对比" width="940">
   <figcaption>
     <span class="article-figure__number">图 11</span>
     <span class="article-figure__text">Causal Mask 与 Padding Mask 的作用范围。前者屏蔽未来位置，后者屏蔽补齐的 Key 列；二者可在 Softmax 前组合。</span>
@@ -963,7 +963,7 @@ Dropout 只在 `model.train()` 时随机丢弃元素；调用 `model.eval()` 后
 两者使用相同公式，区别在 Q、K、V 的来源：
 
 <figure class="article-figure">
-  <img src="assets/self-vs-cross-attention.png" alt="Self-Attention 与 Cross-Attention 对比" width="940">
+  <img data-zoomable loading="lazy" src="assets/self-vs-cross-attention.png" alt="Self-Attention 与 Cross-Attention 对比" width="940">
   <figcaption>
     <span class="article-figure__number">图 12</span>
     <span class="article-figure__text">Self-Attention 与 Cross-Attention 的输入来源。前者的 Q/K/V 来自同一序列；后者的 Q 来自查询序列，K/V 来自 Context。</span>
@@ -1001,7 +1001,7 @@ Cross-Attention 允许一个序列主动查询另一个序列，例如翻译解�
 生成第 `t` 个 token 时，过去位置的 K、V 不会改变。若每一步都重新计算整个前缀，会产生大量重复工作。KV Cache 保存历史 K、V，新一步只追加一项：
 
 <figure class="article-figure">
-  <img src="assets/training-vs-kv-cache-inference.png" alt="语言模型训练与 KV Cache 推理流程" width="960">
+  <img data-zoomable loading="lazy" src="assets/training-vs-kv-cache-inference.png" alt="语言模型训练与 KV Cache 推理流程" width="960">
   <figcaption>
     <span class="article-figure__number">图 13</span>
     <span class="article-figure__text">训练与自回归推理的数据流。训练并行计算所有位置并反向传播；推理逐 token 生成，并通过 KV Cache 复用历史 K/V。</span>
@@ -1081,7 +1081,7 @@ print(logits.shape, loss.item())
 ### 10.1 三种位置编码与 RoPE
 
 <figure class="article-figure">
-  <img src="assets/position-encoding-comparison.png" alt="可学习位置编码、正弦位置编码与 RoPE 对比" width="960">
+  <img data-zoomable loading="lazy" src="assets/position-encoding-comparison.png" alt="可学习位置编码、正弦位置编码与 RoPE 对比" width="960">
   <figcaption>
     <span class="article-figure__number">图 14</span>
     <span class="article-figure__text">可学习位置编码、正弦位置编码与 RoPE。前两者把位置向量加到 token 向量；RoPE 按位置旋转 Q 和 K，使点积包含相对位置信息。</span>
@@ -1172,7 +1172,7 @@ class SwiGLU(nn.Module):
 ### 10.4 MHA、GQA 与 MQA
 
 <figure class="article-figure">
-  <img src="assets/mha-gqa-mqa-comparison.png" alt="MHA、GQA 与 MQA 的 KV Head 共享方式" width="960">
+  <img data-zoomable loading="lazy" src="assets/mha-gqa-mqa-comparison.png" alt="MHA、GQA 与 MQA 的 KV Head 共享方式" width="960">
   <figcaption>
     <span class="article-figure__number">图 15</span>
     <span class="article-figure__text">MHA、GQA 与 MQA 的 K/V 共享方式。在 Query head 数不变时，共享范围越大，需要保存的 K/V head 越少。</span>
@@ -1209,7 +1209,7 @@ GQA 常用于在模型质量与解码显存/带宽之间折中。它主要减少
 ### 10.5 FlashAttention 在优化什么
 
 <figure class="article-figure">
-  <img src="assets/modern-transformer-flash-attention.png" alt="基础 Transformer、现代 Decoder 与 FlashAttention" width="960">
+  <img data-zoomable loading="lazy" src="assets/modern-transformer-flash-attention.png" alt="基础 Transformer、现代 Decoder 与 FlashAttention" width="960">
   <figcaption>
     <span class="article-figure__number">图 16</span>
     <span class="article-figure__text">基础 Pre-Norm Block、现代 Decoder 组件与 FlashAttention。现代 Decoder 常组合 RMSNorm、RoPE、GQA 和 SwiGLU；FlashAttention 改变分块与内存访问，不改变 Attention 的数学定义。</span>
@@ -1257,7 +1257,7 @@ $$
 也有实现先对所有专家做 Softmax，再截取 Top-K，并选择是否重新归一化；阅读具体模型时需要确认这一细节。
 
 <figure class="article-figure">
-  <img src="assets/moe-routing.png" alt="MoE Router 与 Top-2 专家路由" width="960">
+  <img data-zoomable loading="lazy" src="assets/moe-routing.png" alt="MoE Router 与 Top-2 专家路由" width="960">
   <figcaption>
     <span class="article-figure__number">图 17</span>
     <span class="article-figure__text">Top-2 MoE 路由。Router 为每个 token 选择两个专家；专家结果按 token 分别加权求和，不会混合不同 token，最后恢复原顺序。</span>
@@ -1311,7 +1311,7 @@ MoE 增加模型总参数量，但每个 token 只激活少量专家。训练时
 单张设备放不下模型或算力不足时，可以从三个维度拆分：
 
 <figure class="article-figure">
-  <img src="assets/distributed-parallelism.png" alt="数据并行、张量并行与流水线并行" width="960">
+  <img data-zoomable loading="lazy" src="assets/distributed-parallelism.png" alt="数据并行、张量并行与流水线并行" width="960">
   <figcaption>
     <span class="article-figure__number">图 18</span>
     <span class="article-figure__text">三种分布式并行方式。数据并行拆 batch 并同步梯度；张量并行拆分层内计算；流水线并行把连续层分配到不同设备。</span>
@@ -1376,7 +1376,7 @@ $$
 - Top-P：选择累计概率达到 P 的最小候选集合，也称 nucleus sampling。
 
 <figure class="article-figure">
-  <img src="assets/decoding-strategies.png" alt="采样策略与推测解码" width="960">
+  <img data-zoomable loading="lazy" src="assets/decoding-strategies.png" alt="采样策略与推测解码" width="960">
   <figcaption>
     <span class="article-figure__number">图 19</span>
     <span class="article-figure__text">采样与推测解码。左侧比较 Greedy、Top-K、Top-P 的候选范围；右侧展示 Draft Model 提议和 Target Model 并行验证的概念流程。</span>
@@ -1422,7 +1422,7 @@ print(next_token.shape)  # [2,1]
 前面已经分别实现 Attention、Embedding、FFN、Transformer Block 和 LM Head。现在把它们组合成一个最小因果语言模型。
 
 <figure class="article-figure">
-  <img src="assets/minigpt-training-flow.png" alt="MiniGPT 端到端训练数据流" width="960">
+  <img data-zoomable loading="lazy" src="assets/minigpt-training-flow.png" alt="MiniGPT 端到端训练数据流" width="960">
   <figcaption>
     <span class="article-figure__number">图 20</span>
     <span class="article-figure__text">MiniGPT 的一次训练迭代。输入与目标错开一个 token；Cross-Entropy 产生损失，反向传播计算梯度，优化器更新可学习参数。</span>
@@ -1574,7 +1574,7 @@ print("perplexity:", float(perplexity))
 Transformer 不是只有一种结构。三类架构的核心差异是 Attention 可见范围，以及是否需要 Cross-Attention。
 
 <figure class="article-figure">
-  <img src="assets/transformer-architecture-families.png" alt="三类 Transformer 架构对比" width="960">
+  <img data-zoomable loading="lazy" src="assets/transformer-architecture-families.png" alt="三类 Transformer 架构对比" width="960">
   <figcaption>
     <span class="article-figure__number">图 21</span>
     <span class="article-figure__text">三类 Transformer 架构。Encoder-Only 使用双向注意力，Decoder-Only 使用因果注意力，Encoder-Decoder 通过 Cross-Attention 连接输入与输出。</span>
@@ -1703,7 +1703,7 @@ Padding 过多会浪费计算。Packing 把多条短样本拼入一个固定长�
 ## 16. 训练工程与稳定性
 
 <figure class="article-figure">
-  <img src="assets/training-lifecycle.png" alt="Transformer 训练生命周期" width="960">
+  <img data-zoomable loading="lazy" src="assets/training-lifecycle.png" alt="Transformer 训练生命周期" width="960">
   <figcaption>
     <span class="article-figure__number">图 22</span>
     <span class="article-figure__text">训练生命周期。从数据处理到前向、反向、参数更新、验证和 Checkpoint 形成闭环；验证集只用于评估，不参与梯度更新。</span>
@@ -1827,7 +1827,7 @@ scheduler.step()
 | 信息来源 | Q 与 K/V 来自哪里？ | Self、Cross、Co-Attention、Memory/Retrieval |
 
 <figure class="article-figure">
-  <img src="assets/attention-family-map.png" alt="Attention 方法家族图" width="960">
+  <img data-zoomable loading="lazy" src="assets/attention-family-map.png" alt="Attention 方法家族图" width="960">
   <figcaption>
     <span class="article-figure__number">图 23</span>
     <span class="article-figure__text">Attention 方法族的分类视图。长序列、位置机制、视觉结构、多模态和外部记忆是可组合的设计维度，并非互斥类别。</span>
@@ -1850,7 +1850,7 @@ scheduler.step()
 Additive Attention 用一个小网络学习匹配函数；点积可以直接用矩阵乘法；缩放点积抑制维度增大造成的分数过大；Cosine 只比较方向。无论采用哪一种，后续通常仍是 `mask → Softmax → 加权汇总 V`。
 
 <figure class="article-figure">
-  <img src="assets/attention-scoring-functions.png" alt="Attention 打分函数对比" width="960">
+  <img data-zoomable loading="lazy" src="assets/attention-scoring-functions.png" alt="Attention 打分函数对比" width="960">
   <figcaption>
     <span class="article-figure__number">图 24</span>
     <span class="article-figure__text">四类 Attention 打分函数。它们改变 Query-Key 相关性分数的计算方式；Mask、按 Key 归一化和 Value 加权汇总的后续流程可以保持一致。</span>
@@ -2135,7 +2135,7 @@ Post-Norm 计算 `LN(x + Sublayer(x))`，归一化发生在残差相加之后；
 ## 21. 进一步学习路线
 
 <figure class="article-figure">
-  <img src="assets/transformer-learning-roadmap.png" alt="Transformer 学习路线" width="960">
+  <img data-zoomable loading="lazy" src="assets/transformer-learning-roadmap.png" alt="Transformer 学习路线" width="960">
   <figcaption>
     <span class="article-figure__number">图 25</span>
     <span class="article-figure__text">推荐学习路线。从 Embedding 和 Q/K/V 出发，依次掌握单头、多头、Mask、残差与归一化，最后组合完整 Transformer Block。</span>
