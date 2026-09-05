@@ -23,6 +23,25 @@ def rms(values: list[float]) -> float:
     return math.sqrt(sum(value * value for value in values) / len(values))
 
 
+def settling_time(
+    rows: list[dict[str, float]],
+    start_s: float,
+    target_position_m: float,
+    tolerance_m: float,
+) -> float:
+    """Return time after start when all remaining samples stay in the band."""
+    if tolerance_m <= 0.0:
+        raise ValueError("settling tolerance must be positive")
+    last_violation = -1
+    for index, row in enumerate(rows):
+        if abs(row["position_m"] - target_position_m) > tolerance_m:
+            last_violation = index
+    settled_index = last_violation + 1
+    if settled_index >= len(rows):
+        return math.inf
+    return max(0.0, rows[settled_index]["time_s"] - start_s)
+
+
 def load_rows(path: Path) -> list[dict[str, float]]:
     required = {"time_s", "force_n", "position_m"}
     with path.open(newline="", encoding="utf-8") as source:
@@ -67,6 +86,10 @@ def analyze(
         if step_on_s <= row["time_s"] < step_off_s
     )
     steady_magnitude = abs(displacement)
+    loaded = [
+        row for row in rows if step_on_s <= row["time_s"] < step_off_s
+    ]
+    settling_band_m = 0.02 * steady_magnitude
 
     return {
         "baseline_position_m": baseline_position,
@@ -76,6 +99,12 @@ def analyze(
         "peak_displacement_m": direction * peak_magnitude,
         "overshoot_percent": max(
             0.0, (peak_magnitude - steady_magnitude) / steady_magnitude * 100.0
+        ),
+        "settling_time_2pct_s": settling_time(
+            loaded, step_on_s, steady_position, settling_band_m
+        ),
+        "release_settling_time_2pct_s": settling_time(
+            released, step_off_s, baseline_position, settling_band_m
         ),
         "released_position_rms_m": rms(
             [row["position_m"] - baseline_position for row in released]
@@ -92,6 +121,8 @@ def load_acceptance(path: Path) -> dict[str, float]:
         "stiffness_relative_tolerance",
         "max_overshoot_percent",
         "max_released_position_rms_m",
+        "max_settling_time_2pct_s",
+        "max_release_settling_time_2pct_s",
         "expected_sample_period_s",
         "sample_period_relative_tolerance",
     }
@@ -153,6 +184,16 @@ def acceptance_failures(
             "released_position_rms_m",
             metrics["released_position_rms_m"],
             acceptance["max_released_position_rms_m"],
+        ),
+        (
+            "settling_time_2pct_s",
+            metrics["settling_time_2pct_s"],
+            acceptance["max_settling_time_2pct_s"],
+        ),
+        (
+            "release_settling_time_2pct_s",
+            metrics["release_settling_time_2pct_s"],
+            acceptance["max_release_settling_time_2pct_s"],
         ),
         (
             "sample_period_relative_error",
