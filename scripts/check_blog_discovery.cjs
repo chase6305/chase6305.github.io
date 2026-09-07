@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 // Run against a Hugo preview and a loopback Chrome CDP endpoint.
+// Run UI suites serially on a shared browser; keyboard focus is browser-wide.
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -8,6 +9,8 @@ const base = process.argv[2] || "http://127.0.0.1:13143";
 const port = process.argv[3] || "9229";
 const output = process.argv[4] || "/tmp/chase-blog-round5-discovery";
 const drafts = process.argv.includes("--include-drafts");
+const inventory = JSON.parse(fs.readFileSync(path.join(__dirname, "../docs/blog-editorial-review.json"))).posts;
+const draftCount = drafts ? inventory.filter(post => post.draft).length : 0;
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 let ws;
 
@@ -70,8 +73,8 @@ let ws;
   await viewport(1440, 1000);
   await navigate("/posts/");
   const articles = await evaluate("JSON.parse(document.getElementById('blog-filter-data').textContent)");
-  assert.equal(articles.length, drafts ? 66 : 63);
-  assert.equal(articles.filter(a=>a.draft).length, drafts ? 3 : 0);
+  assert.equal(articles.length, inventory.filter(post => drafts || !post.draft).length);
+  assert.equal(articles.filter(a=>a.draft).length, draftCount);
   assert(await evaluate("!document.querySelector('[data-blog-filter]').hidden"));
   const original = await evaluate("Array.from(document.querySelectorAll('[data-blog-original-list] h2 a')).map(a=>a.getAttribute('href'))");
   assert.equal(original.length, 10);
@@ -92,7 +95,7 @@ let ws;
   ];
   for (const state of states) {
     await checkState(state);
-    if (state.sort === "shortest") assert.equal(await evaluate("document.querySelectorAll('#blog-filter-results .blog-draft-label').length"), drafts ? 3 : 0);
+    if (state.sort === "shortest") assert.equal(await evaluate("document.querySelectorAll('#blog-filter-results .blog-draft-label').length"), draftCount);
   }
   await apply("C++", "cpp");
   assert(!(await evaluate("document.getElementById('blog-filter-results').textContent")).includes("&#43;"), "HTML entities leaked into visible card text");
@@ -175,13 +178,13 @@ let ws;
     await viewport(1440,1000);
     assert(await evaluate("document.documentElement.scrollWidth<=innerWidth+1"), route);
   }
-  if (drafts) {
+  if (draftCount) {
     await navigate(articles.find(a=>a.draft).url);
     assert(await evaluate("!!document.querySelector('.blog-draft-notice')"));
     await screenshot("draft-preview-notice");
   }
   assert.equal(exceptions.length,0,JSON.stringify(exceptions));
-  const report = {articles:articles.length,drafts:drafts?3:0,crossPageSearch:true,
+  const report = {articles:articles.length,drafts:draftCount,crossPageSearch:true,
     shareableURL:true,queryStates:states.length,ime:true,history:true,literalQuery:true,
     noJavaScript:true,malformedDataFallback:true,keyboardControls:true,collections,layouts,exceptions};
   fs.writeFileSync(path.join(output,"results.json"),JSON.stringify(report,null,2));

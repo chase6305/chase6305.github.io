@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 // Read-only browser checks. Start Hugo -D and Chrome's loopback CDP endpoint first.
+// Run UI suites serially on a shared browser; keyboard focus is browser-wide.
 // node scripts/check_blog_browser.cjs [baseURL] [CDP port] [screenshot directory]
 const fs = require("node:fs");
 const path = require("node:path");
@@ -13,8 +14,10 @@ let browserSocket;
 
 (async () => {
   fs.mkdirSync(output, {recursive: true});
-  const tabs = await (await fetch("http://127.0.0.1:" + port + "/json/list")).json();
-  const ws = new WebSocket(tabs.find(tab => tab.type === "page").webSocketDebuggerUrl);
+  // Own the tab: never navigate a user's or another check's existing page.
+  const tab = await (await fetch("http://127.0.0.1:" + port + "/json/new?about:blank",
+    {method: "PUT"})).json();
+  const ws = new WebSocket(tab.webSocketDebuggerUrl);
   browserSocket = ws;
   await new Promise((resolve, reject) => {
     ws.addEventListener("open", resolve, {once: true});
@@ -154,7 +157,7 @@ let browserSocket;
   await navigate("/learning-paths/");
   const learningPaths = await evaluate("({groups:document.querySelectorAll('.blog-topic-index section').length, articles:document.querySelectorAll('.blog-topic-index section ol a').length, jumpLinks:document.querySelectorAll('.blog-topic-index__jump a').length, overflow:document.documentElement.scrollWidth > innerWidth + 1})");
   assert.equal(learningPaths.groups, 10);
-  assert.equal(learningPaths.articles, 66);
+  assert.equal(learningPaths.articles, review.posts.length);
   assert.equal(learningPaths.jumpLinks, 10);
   assert(!learningPaths.overflow);
   await screenshot("mobile-learning-paths");
@@ -177,22 +180,69 @@ let browserSocket;
   await evaluate("document.querySelector('[data-item=light]').click()");
   await screenshot("desktop-blog-list");
   const searches = {};
-  for (const query of ["逆运动学", "PPO", "CasADi", "SPSC", "zzzxxyy987654321notfound"]) {
+  const positiveQueries = ["逆运动学", "PPO", "CasADi", "SPSC", "RynnBrain", "InternVL"];
+  for (const query of [...positiveQueries, "zzzxxyy987654321notfound"]) {
     searches[query] = await evaluate("window.hextraSearch.search(" + JSON.stringify(query) + ")");
   }
-  for (const query of ["逆运动学", "PPO", "CasADi", "SPSC"]) assert(searches[query].length > 0, query + " search failed");
+  for (const query of positiveQueries) assert(searches[query].length > 0, query + " search failed");
   assert.equal(searches["zzzxxyy987654321notfound"].length, 0);
   await evaluate("document.querySelector('[data-search-open]').click(); const input=document.querySelector('.hextra-search-input'); input.value='逆运动学'; input.dispatchEvent(new Event('input', {bubbles:true}))");
   await sleep(600);
   assert(await evaluate("document.getElementById('hextra-search-dialog').open && document.querySelectorAll('.hextra-search-results a').length > 0"));
   await screenshot("desktop-search");
-  const report = {pages: results, learningPaths, zoom, mobileMenu: menu === "true", mobileCards, codeChecks, copyFallbacks, searches, exceptions};
+  const newArticleLayouts = [];
+  const detailSections = {
+    "rynnbrain": ["84-把三维框重新投影回图像", "85-缩放裁剪和相机内参必须属于同一张图", "114-先在-cpu-上检查真实输入"],
+    "internvl-3-5": ["34-沿-8b-hf-源码追踪张量形状", "65-用四个数值检查-clipping-方向", "115-先准备输入再决定是否加载权重"],
+  };
+  const sectionScreenshots = [];
+  const modelArticles = JSON.parse(fs.readFileSync(path.join(root, "docs/multimodal-model-blogs.json"))).articles;
+  for (const article of modelArticles) {
+    const route = "/" + article.replace(/^content\//, "").replace(/\/index\.md$/, "/");
+    const slug = route.split("/").filter(Boolean).at(-1);
+    await navigate(route);
+    for (const width of [320, 390, 768, 1440]) {
+      await viewport(width, width < 768 ? 844 : 1000);
+      for (const theme of ["light", "dark", "warm"]) {
+        await evaluate("document.querySelector('[data-item=" + theme + "]').click(); window.scrollTo(0,0)");
+        await sleep(100);
+        const detail = await evaluate("({overflow:document.documentElement.scrollWidth>innerWidth+1, mathErrors:document.querySelectorAll('.katex-error').length, mathCount:document.querySelectorAll('.katex').length, images:Array.from(document.querySelectorAll('.content img')).map(i=>({loaded:i.complete&&i.naturalWidth>0, width:i.getBoundingClientRect().width}))})");
+        assert(!detail.overflow && !detail.mathErrors && detail.mathCount > 0);
+        assert(detail.images.length > 0 && detail.images.every(i => i.loaded && i.width > 0 && i.width <= width));
+        newArticleLayouts.push({route, width, theme, ...detail});
+        if ((width === 390 && theme === "dark") || (width === 1440 && theme === "light")) {
+          await screenshot(slug + "-" + width + "-" + theme + "-heading");
+          for (let index = 0; index < detail.images.length; index++) {
+            await evaluate("document.querySelectorAll('.content img')[" + index + "].scrollIntoView({block:'center'})");
+            await sleep(100);
+            await screenshot(slug + "-" + width + "-" + theme + "-figure-" + (index + 1));
+          }
+          await evaluate("document.querySelector('.katex-display').scrollIntoView({block:'center'})");
+          await screenshot(slug + "-" + width + "-" + theme + "-formula");
+        }
+      }
+    }
+    for (const [width, theme] of [[390, "dark"], [1440, "light"]]) {
+      await viewport(width, width < 768 ? 844 : 1000);
+      await evaluate("document.querySelector('[data-item=" + theme + "]').click()");
+      for (const [index, id] of detailSections[slug].entries()) {
+        assert(await evaluate("!!document.getElementById(" + JSON.stringify(id) + ")"));
+        await evaluate("document.getElementById(" + JSON.stringify(id) + ").scrollIntoView({block:'start'}); window.scrollBy(0,-90)");
+        await sleep(100);
+        const name = slug + "-" + width + "-" + theme + "-detail-" + (index + 1);
+        await screenshot(name);
+        sectionScreenshots.push({route, id, width, theme, name});
+      }
+    }
+  }
+  const report = {pages: results, learningPaths, zoom, mobileMenu: menu === "true", mobileCards, codeChecks, copyFallbacks, searches, newArticleLayouts, sectionScreenshots, exceptions};
   fs.writeFileSync(path.join(output, "results.json"), JSON.stringify(report, null, 2));
   console.log(JSON.stringify({checked:results.length, zoom, mobileMenu:menu,
-    exceptions, failures:results.filter(r=>r.overflow || r.brokenImages.length ||
+    exceptions, newArticleLayouts: newArticleLayouts.length, failures:results.filter(r=>r.overflow || r.brokenImages.length ||
       r.mathErrors.length || !r.guide || r.lang !== "zh-CN" || !r.mobileToc || !r.selfCheck || !r.schemaValid || !r.topicNavigation || r.desktopOverflow || !r.desktopTocHidden), screenshots:output}, null, 2));
-  ws.close();
   assert(results.every(r => !r.overflow && !r.brokenImages.length && !r.mathErrors.length && r.guide && r.lang === 'zh-CN' && r.mobileToc && r.selfCheck && r.schemaValid && r.topicNavigation && !r.desktopOverflow && r.desktopTocHidden));
   assert(zoom && menu === 'true');
   assert.equal(exceptions.length, 0, 'Unexpected browser JavaScript exceptions');
+  await cdp("Page.close");
+  ws.close();
 })().catch(error => { console.error(error); browserSocket?.close(); process.exitCode = 1; });

@@ -1,0 +1,151 @@
+{
+  "checked_on": "2026-09-05",
+  "scope": "Two new detailed Chinese model explainers; original 66 post states preserved.",
+  "articles": [
+    "content/posts/ai/rynnbrain/index.md",
+    "content/posts/ai/internvl-3-5/index.md"
+  ],
+  "model_revisions": {
+    "Alibaba-DAMO-Academy/RynnBrain1.1-2B": "b4663299019d15468301f64435539632daed7985",
+    "OpenGVLab/InternVL3_5-8B-HF": "741a7d03020411e666c6109218ab71e08151ef86"
+  },
+  "source_snapshots": [
+    {
+      "url": "https://github.com/alibaba-damo-academy/RynnBrain/tree/5b8641993fd265300dba89f079d9b708ffe19ed4",
+      "purpose": "Current 1.1 README and cookbooks; 3D unit/model-path inconsistencies; contact-point contract"
+    },
+    {
+      "url": "https://github.com/alibaba-damo-academy/RynnScale/tree/aaedf103bff9ff2ede3c6c900537b15a49801dd9",
+      "purpose": "Training scripts, dataset format, evaluation commands and VLA placeholder status"
+    },
+    {
+      "url": "https://arxiv.org/html/2602.14979v1",
+      "purpose": "RynnBrain 1.0 problem formulation and historical methods"
+    },
+    {
+      "url": "https://arxiv.org/html/2607.17977v1",
+      "purpose": "RynnBrain 1.1 scope, VLA action groups and table 6 protocol"
+    },
+    {
+      "url": "https://huggingface.co/datasets/Alibaba-DAMO-Academy/RynnBrain-Bench",
+      "purpose": "Benchmark scale and task taxonomy"
+    },
+    {
+      "url": "https://huggingface.co/collections/OpenGVLab/internvl35",
+      "purpose": "User-specified checkpoint collection"
+    },
+    {
+      "url": "https://internvl.github.io/blog/2025-08-26-InternVL-3.5/",
+      "purpose": "Official checkpoint stages, architecture and data scales"
+    },
+    {
+      "url": "https://arxiv.org/html/2508.18265v1",
+      "purpose": "Original InternVL3.5 report; tables 1,17,18; not a present-day leaderboard"
+    },
+    {
+      "url": "https://arxiv.org/html/2411.10442v1",
+      "purpose": "MPO original objective"
+    },
+    {
+      "url": "https://arxiv.org/html/2507.18071v1",
+      "purpose": "GSPO original sequence-level ratio"
+    },
+    {
+      "url": "https://arxiv.org/html/2510.12793v1",
+      "purpose": "Later ViCO paper, explicitly separated from original 3.5 sampling recipe"
+    },
+    {
+      "url": "https://huggingface.co/collections/OpenGVLab/internvl35-flash",
+      "purpose": "Verify Flash release status"
+    },
+    {
+      "url": "https://huggingface.co/OpenGVLab/InternVL3_5-8B",
+      "purpose": "Custom-code loading, preprocessing and Thinking prompt typo"
+    },
+    {
+      "url": "https://huggingface.co/OpenGVLab/InternVL3_5-8B-Flash",
+      "purpose": "Flash interface caveat: several Quick Start examples still name standard checkpoint"
+    },
+    {
+      "url": "https://huggingface.co/OpenGVLab/InternVL3_5-8B-HF",
+      "purpose": "Native HF checkpoint, configuration and usage"
+    },
+    {
+      "url": "https://huggingface.co/docs/transformers/model_doc/internvl",
+      "purpose": "Native AutoProcessor and AutoModelForImageTextToText interface"
+    }
+  ],
+  "inference_status": "Pinned native model-class resolution and the actual inference-script input builders passed on CPU, as did arithmetic and CLI checks. No model weights downloaded for these checks; no model forward pass, training, GPU throughput or physical robot experiment performed.",
+  "refinement_round": {
+    "checked_on": "2026-09-05",
+    "scope": "Deepen the two new articles without altering existing post states or regenerating the three diagrams.",
+    "additions": [
+      "RynnBrain explicit RzRyRx convention, 8-corner reprojection and image/intrinsics consistency",
+      "InternVL native 8B-HF tensor-shape trace, visual-placeholder check and signed clipped-surrogate examples",
+      "Both standalone inference scripts: CPU prepare-only JSON report, local-files-only mode, pinned version guard and explicit EXIF contract",
+      "Early failures checked before Processor/model loading: invalid image, nonidentity EXIF orientation, wrong Transformers version and missing CUDA",
+      "Reading links, troubleshooting tables and multiline mobile-friendly equations"
+    ],
+    "offline_test_groups": 13,
+    "teaching_sanity_checks": 25,
+    "acceptance_checks_all_posts": 141,
+    "prepare_only_cli_tested": true,
+    "hub_offline_mode_used": true,
+    "cuda_disabled_during_processor_tests": true,
+    "weight_loader_forbidden_by_test": true,
+    "new_images": 0,
+    "additional_sources": [
+      "https://github.com/huggingface/transformers/blob/v4.55.0/src/transformers/models/internvl/modeling_internvl.py",
+      "https://github.com/huggingface/transformers/blob/v4.55.0/src/transformers/image_utils.py"
+    ]
+  },
+  "processor_checks": {
+    "script": "scripts/check_model_processors.py",
+    "runtime": "PyTorch 2.8.0+cu128; CPU preprocessing only; separate temporary environments for Transformers 5.2.0 and 4.55.0",
+    "image": "content/posts/ai/transformer-attention/assets/transformer-block-overview.webp",
+    "question": "Describe the diagram.",
+    "rynnbrain": {
+      "transformers": "5.2.0",
+      "implementation": "Qwen3_5ForConditionalGeneration",
+      "processor": "Qwen3VLProcessor",
+      "input_ids_shape": [1, 1526],
+      "pixel_values_shape": [6032, 1536],
+      "image_grid_thw_shape": [1, 3],
+      "non_thinking_prefix_checked": true
+    },
+    "internvl-3-5": {
+      "transformers": "4.55.0",
+      "implementation": "InternVLForConditionalGeneration",
+      "processor": "InternVLProcessor",
+      "input_ids_shape": [1, 2319],
+      "pixel_values_shape": [9, 3, 448, 448]
+    }
+  },
+  "image_generation": {
+    "mode": "built-in image_gen",
+    "style_reference": "content/posts/ai/transformer-attention/assets/transformer-block-overview.webp",
+    "note": "Original educational illustrations, not paper figures, benchmark plots or measured outputs; originals retained in generated_images and final WebP files stored in each page bundle."
+  },
+  "images": [
+    {
+      "key": "rynnbrain-architecture",
+      "path": "content/posts/ai/rynnbrain/assets/embodied-foundation-model.webp",
+      "source_png": "/home/ubuntu/.codex/generated_images/01a07027-d114-7f81-9b3b-f632140bfca3/exec-07e1ed46-1bf2-4d36-aae4-c8be2c13d61c.png",
+      "prompt": "Use case: scientific-educational. Asset type: new landscape technical blog teaching bitmap, 16:9. Primary request: explain RynnBrain embodied foundation model and distinguish its base outputs from an action policy. Match the observed Transformer Attention illustrations: warm white background, pale blue green amber lavender rounded panels with thin colored borders, dark charcoal arrows, large crisp sans-serif English labels, ample whitespace, restrained flat scientific illustration with small camera and robot icons. Title \"RynnBrain: Grounding Before Action\". Top flow left-to-right: blue \"Images / video + instruction\" with a small three-frame scene of a mug moving on a table -> green \"Vision encoder + projector\" -> lavender \"Multimodal backbone\" -> amber \"Text + spatial outputs\". Under the last box show three separate mini cards \"2D boxes / points\", \"3D boxes\", \"Contact point + angle\". Small note under 3D boxes \"1.1: 2B / 9B\". Across bottom a separate dashed grey boundary titled \"Downstream VLA post-training\", containing \"Robot demonstrations\" -> \"Action policy\" -> \"Action chunks\". A dashed downward arrow from Multimodal backbone to Action policy labelled \"initialize\". Bottom note \"Base-model outputs are not motor commands\". Only these labels. No benchmark numbers, logos, fabricated photo, performance chart, watermark, or implied direct link from 2D box to motor.",
+      "revision_prompt": "Edit this educational image. Preserve the entire diagram, all panels, arrows, title, palette, illustrations, and other labels. Change only the small annotation \"1.1: 2B / 9B\": replace it with \"3D: 2B / 9B only\" and place it directly inside the bottom of the middle \"3D boxes\" mini-card so it cannot be mistaken to apply to all three output cards. Use legible type and increase the middle card space slightly only if needed. No other changes."
+    },
+    {
+      "key": "internvl-token-flow",
+      "path": "content/posts/ai/internvl-3-5/assets/visual-token-pipeline.webp",
+      "source_png": "/home/ubuntu/.codex/generated_images/01a07027-d114-7f81-9b3b-f632140bfca3/exec-476d6949-49e0-4967-80bb-1cba410a08ba.png",
+      "prompt": "Use case: scientific-educational. Asset type: new landscape technical blog teaching bitmap, 16:9. Primary request: explain InternVL3.5 image tiles and visual token compression. Match Transformer Attention illustrations: warm white background, pale blue green amber lavender rounded rectangles, fine colored outlines, dark gray arrows, large clean English sans-serif labels, generous whitespace and restrained flat educational graphics. Title \"InternVL3.5: From Pixels to Visual Tokens\". Main top row left-to-right: blue \"Image\" with a stylized document page -> blue \"448 x 448 tile\" -> green \"ViT: 1024 tokens\". From ViT arrow to amber \"Pixel shuffle + MLP\" then arrow to lavender \"LLM: 256 visual tokens\". Small annotation below the ViT \"32 x 32 grid; 14 x 14 pixel patches\". Bottom separate panel titled \"Flash variant: semantic routing\". Green box \"Same ViT features\" -> amber diamond \"ViR\"; ViR splits into exactly two arrows, one to lavender box \"256 tokens\" labelled \"more detail\", one to blue box \"64 tokens\" labelled \"more compression\"; these two paths converge into \"LLM\". Bottom note \"Tile count and tokens per tile are different choices\". Do not imply standard checkpoints include ViR. No performance numbers, no example benchmark, no logos or watermark."
+    },
+    {
+      "key": "internvl-training",
+      "path": "content/posts/ai/internvl-3-5/assets/cascade-rl-training.webp",
+      "source_png": "/home/ubuntu/.codex/generated_images/01a07027-d114-7f81-9b3b-f632140bfca3/exec-989a07bf-7f7e-4afa-8729-ad2612747f88.png",
+      "prompt": "Use case: scientific-educational. Asset type: new landscape bitmap for a technical blog. Explain InternVL3.5 training stages and checkpoint suffixes. Match Transformer Attention reference style already described: white warm neutral background, pastel blue green amber lavender rounded boxes, thin colored outlines, charcoal arrows, crisp large sans-serif English labels, plenty of whitespace, minimal flat instructional icons. Title \"InternVL3.5: Training Stages and Checkpoints\". Main horizontal flow exactly four connected boxes: blue \"CPT\" with subtitle \"Multimodal alignment\"; green \"SFT\" with subtitle \"Instruction following\"; amber \"MPO\" with subtitle \"Offline preferences\"; lavender \"GSPO\" with subtitle \"Online rollouts\". Below each put its checkpoint suffix respectively \"-Pretrained\", \"-Instruct\", \"-MPO\", \"No stage suffix\". Enclose ONLY MPO and GSPO together in one dashed outline labelled \"Cascade RL\". From GSPO a downward arrow to a separate lower green box \"ViCO: consistency training\", then rightward arrow to amber \"ViR: router training\", then arrow to lavender \"-Flash\". A small note under the whole diagram reads \"-HF changes format, not the training stage\". No benchmark scores, logos, real hardware, or watermarks. Maintain clear arrow origins and endpoints and no implication that -HF is another training step.",
+      "revision_prompt": "Edit this training diagram to correct the bottom flow. Preserve the title, top row CPT -> SFT -> MPO -> GSPO, checkpoint suffixes, Cascade RL dashed enclosure, footer, palette and typography. Rebuild ONLY the bottom row. Remove ALL current arrows into or inside the bottom row. Arrange the three lower panels RIGHT TO LEFT: directly below GSPO on the RIGHT put green \"ViCO: consistency training\"; in the CENTER put amber \"ViR: router training\"; on the LEFT put lavender \"-Flash\". Draw exactly one downward arrow from the GSPO checkpoint label \"No stage suffix\" to the RIGHT ViCO box. Draw exactly one left-pointing arrow from ViCO to ViR and exactly one left-pointing arrow from ViR to -Flash. There must be NO direct GSPO -> -Flash arrow. This is a sequential serpentine training flow. No other modifications."
+    }
+  ]
+}

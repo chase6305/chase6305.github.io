@@ -44,16 +44,18 @@
   },
   {
     "id": "ai",
-    "title": "强化学习与生成模型",
-    "description": "先理解交互与训练目标，再选择 Transformer、扩散模型、分布式训练或具身策略。",
+    "title": "强化学习、生成与多模态模型",
+    "description": "先理解交互与训练目标，再选择 Transformer、扩散模型、分布式训练、多模态理解或具身策略。",
     "posts": [
       "posts/ai/algorithms/overview.md",
       "posts/ai/gymnasium/1/index.md",
       "posts/rl/index.md",
       "posts/ai/transformer-attention/index.md",
+      "posts/ai/internvl-3-5/index.md",
       "posts/ai/diffusion-models/index.md",
       "posts/ai/distributed-training-memory/index.md",
-      "posts/thesis/being_0/index.md"
+      "posts/thesis/being_0/index.md",
+      "posts/ai/rynnbrain/index.md"
     ]
   },
   {

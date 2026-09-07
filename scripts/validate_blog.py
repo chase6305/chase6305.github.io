@@ -153,8 +153,17 @@ def main():
     records = {ROOT / post["path"]: post for post in review["posts"]}
     second = json.loads((ROOT / "docs/blog-second-pass.json").read_text())
     self_checks = {ROOT / p["path"]: p["acceptance_checks"] for p in second["posts"]}
+    # Preserve historical round-two records; newly added posts carry their own checks.
+    for path, record in records.items():
+        if "acceptance_checks" in record:
+            if path in self_checks:
+                errors.append(f"Duplicate acceptance source: {path}")
+            self_checks[path] = record["acceptance_checks"]
     if set(self_checks) != expected:
-        errors.append("Second-pass coverage differs from the article inventory")
+        errors.append("Acceptance-check coverage differs from the article inventory")
+    if any(not checks or not all(isinstance(check, str) and check.strip() for check in checks)
+           for checks in self_checks.values()):
+        errors.append("Every article must have nonempty acceptance checks")
     if actual != expected:
         errors.append(f"Review coverage differs: {actual ^ expected}")
     topics = json.loads((ROOT / "data/blog_topics.json").read_text())
@@ -220,6 +229,7 @@ def main():
         except ValueError as error:
             errors.append(f"{path}: {error}")
     images = json.loads((ROOT / "docs/blog-image-prompts.json").read_text())["images"]
+    images += json.loads((ROOT / "docs/multimodal-model-blogs.json").read_text())["images"]
     for image in images:
         path = ROOT / image["path"]
         post = path.parent.parent / "index.md"

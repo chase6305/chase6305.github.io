@@ -16,7 +16,7 @@ const visible = review.filter(post => drafts || !post.draft);
 const route = p => "/" + p.replace(/^content\//, "").replace(/\/index\.md$|\.md$/, "").toLowerCase() + "/";
 assert.equal(articles.length, visible.length);
 assert.deepEqual(new Set(articles.map(a => a.url)), new Set(visible.map(a => route(a.path))));
-assert.equal(articles.filter(a => a.draft).length, drafts ? 3 : 0);
+assert.equal(articles.filter(a => a.draft).length, visible.filter(post => post.draft).length);
 for (const post of visible) {
   const row = articles.find(a => a.url === route(post.path));
   assert.equal(row.summary, post.summary, "Escaped or altered summary: " + post.path);
