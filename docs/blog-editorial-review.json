@@ -1196,17 +1196,25 @@
       "summary": "结合 RynnBrain 1.0/1.1 论文、模型配置和官方示例，解析时空定位、接触点、3D Grounding、跨本体动作建模及复现边界。",
       "prerequisites": "Transformer、相机坐标与机器人策略基础",
       "focus": "先区分基础 VLM、空间输出与动作策略，再沿模型配置、数据格式和评估协议核对每一层。",
-      "related": [67, 57],
+      "related": [
+        67,
+        57
+      ],
       "path": "content/posts/ai/rynnbrain/index.md",
       "draft": false,
-      "related_posts": ["/posts/ai/internvl-3-5", "/posts/thesis/being_0"],
+      "related_posts": [
+        "/posts/ai/internvl-3-5",
+        "/posts/thesis/being_0"
+      ],
       "image_decision": "生成基础模型与动作策略边界概念图，参考 Transformer 现有图示风格",
       "image": "assets/embodied-foundation-model.webp",
       "acceptance_checks": [
         "能否明确区分 1.0 与 1.1、2B/9B 的 3D 能力范围，以及基础 VLM 的空间输出与 VLA 动作块？用官方配置和模型 ID 逐项核对。",
         "运行离线协议测试，解释归一化点、相机内参、角度编码和动作 mask 的作用；面对非法输出应拒绝执行，而不是自动裁剪成貌似可用的命令。",
         "用一个已知三维姿态样本分别检查两种角度解释，记录不能确定的协议；不把生成图、Notebook 可视化或本文自拟算例当成真实机器人结果。",
-        "能否按明确的轴顺序构造八个角点并投影回图像，再用 CPU 预检查验证真实输入预算？区分几何一致、接口可用和模型判断正确这三种结论。"
+        "能否按明确的轴顺序构造八个角点并投影回图像，再用 CPU 预检查验证真实输入预算？区分几何一致、接口可用和模型判断正确这三种结论。",
+        "能否写出 1.0 CoP 的一种带帧索引输出格式，并说明 Thinking 角色与 GRPO 组内采样的作用？",
+        "能否解释 32 步动作块、30/200 Hz 双环与 RTC 引导权重的衔接，并说明过程得分与最终成功率的区别？"
       ]
     },
     {
@@ -1215,10 +1223,16 @@
       "summary": "从 InternVL 3.5 官方模型集合出发，详解视觉 token、MPO/GSPO、ViCO 路由、检查点选择、显存预算与可验证推理流程。",
       "prerequisites": "Transformer、视觉编码器与强化学习基础",
       "focus": "沿像素到 token、预训练到 RL、单次推理到在线服务三条链阅读，区分模型规模、训练阶段和权重格式。",
-      "related": [6, 66],
+      "related": [
+        6,
+        66
+      ],
       "path": "content/posts/ai/internvl-3-5/index.md",
       "draft": false,
-      "related_posts": ["/posts/ai/transformer-attention", "/posts/ai/rynnbrain"],
+      "related_posts": [
+        "/posts/ai/transformer-attention",
+        "/posts/ai/rynnbrain"
+      ],
       "image_decision": "生成视觉 token 流和训练阶段映射图，避免把 HF 格式或 FlashAttention 当成训练阶段",
       "image": "assets/visual-token-pipeline.webp",
       "acceptance_checks": [
@@ -1226,7 +1240,9 @@
         "能否区分 Pretrained、Instruct、MPO、无阶段后缀、HF 与 Flash，并说明 Flash 模型与 FlashAttention 为什么不是同一件事？",
         "运行离线预算脚本，验证半数 tile 使用 64-token 分支时节省 37.5%；解释为什么这个比例不能直接变成实际吞吐提升。",
         "对照一次评测的分辨率、解码预算、硬件和数据 split，分别描述质量与效率；不把生成示意图、CPU 算例或权重内存下限当成模型实测结果。",
-        "能否追踪 8B-HF 的张量形状，核对视觉占位数，并分别计算正负优势下的 clipped surrogate？用 prepare-only 模式检查输入，不把它当成完整模型推理。"
+        "能否追踪 8B-HF 的张量形状，核对视觉占位数，并分别计算正负优势下的 clipped surrogate？用 prepare-only 模式检查输入，不把它当成完整模型推理。",
+        "能否说明 DvD 中视觉服务与语言服务各自承担什么、视觉特征如何传输，并解释 4.05× 吞吐比需要哪些条件？",
+        "能否说明 Thinking 模式官方推荐的解码设置与 TTS 的适用范围，并区分单次 Thinking 与 Best-of-N 的开销？"
       ]
     }
   ]

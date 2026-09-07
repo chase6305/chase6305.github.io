@@ -1,7 +1,7 @@
 ---
 title: "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
 date: 2026-09-05
-lastmod: 2026-09-05
+lastmod: 2026-09-07
 draft: false
 tags: ["InternVL", "VLM", "Multimodal", "Reinforcement Learning", "Paper Notes"]
 categories: ["人工智能"]
@@ -20,7 +20,7 @@ related_posts:
 
 InternVL 3.5 可以沿三个问题理解：**图像怎样变成语言模型能使用的 token，模型怎样学会更可靠地推理，多模态服务怎样降低视觉输入的成本。** 把这三条线连接起来，比记住一个榜单成绩更有帮助。
 
-本文以你指定的 [OpenGVLab / InternVL3.5 集合](https://huggingface.co/collections/OpenGVLab/internvl35)为入口，结合原始报告、作者博客、模型卡、配置与 Transformers 实现进行解析，核对日期为 **2026-09-05**。
+本文以你指定的 [OpenGVLab / InternVL3.5 集合](https://huggingface.co/collections/OpenGVLab/internvl35)为入口，结合原始报告、作者博客、模型卡、配置与 Transformers 实现进行解析，核对日期为 **2026-09-07**。2026-09-07 复核时，集合与相关仓库没有新发布，8B-HF 固定 revision 的配置不变；下文新增的 DvD、Thinking 与部署细节均来自这些固定来源，不是对当前页面的猜测。
 
 范围明确限定为 **3.5 系列**。文中的性能数字属于原论文设置，不是当前所有模型的排行榜；普通版、不同训练阶段、HF 格式、Flash 版分别讨论。本文提供离线数值练习与固定 revision 的单图推理入口，但不声称已本地复现大模型训练、完整权重推理或论文服务吞吐。
 
@@ -74,7 +74,7 @@ InternVL 3.5 可以沿三个问题理解：**图像怎样变成语言模型能�
 | 30B-A3B | InternViT-300M | Qwen3-30B-A3B | 30.8B |
 | 241B-A28B | InternViT-6B | Qwen3-235B-A22B | 240.7B |
 
-来源为[原始报告表 1](https://arxiv.org/html/2508.18265v1#S2)。集合中还包含 GPT-OSS 路线的 Preview 检查点，应按其单独模型卡处理，不能仅修改上面某个 Qwen 版本的名称就假定加载流程完全相同。
+来源为[原始报告表 1](https://arxiv.org/html/2508.18265v2#S2)。集合中还包含 GPT-OSS 路线的 Preview 检查点，应按其单独模型卡处理，不能仅修改上面某个 Qwen 版本的名称就假定加载流程完全相同。
 
 `A3B/A28B` 描述激活规模，不等于整个模型只存储这么多参数。特别是视觉编码器、投影模块和 MoE 专家存储各有成本；总参数、激活参数、训练 FLOPs 与端到端延迟不能相互替代。
 
@@ -201,7 +201,7 @@ $$
 
 ### 5.2 Square averaging 如何改变样本权重
 
-对样本 $i$，若有 $N_i$ 个需要监督的 token，把每个 token 的权重设为 $1/\sqrt{N_i}$，则该样本总权重与 $\sqrt{N_i}$ 成正比。这个归约方式介于“每个 token 等权”和“每个样本等权”之间。[原始报告的训练目标](https://arxiv.org/html/2508.18265v1#S2.S2)
+对样本 $i$，若有 $N_i$ 个需要监督的 token，把每个 token 的权重设为 $1/\sqrt{N_i}$，则该样本总权重与 $\sqrt{N_i}$ 成正比。这个归约方式介于“每个 token 等权”和“每个样本等权”之间。[原始报告的训练目标](https://arxiv.org/html/2508.18265v2#S2.SS2)
 
 可以用一个自拟算例直观看出差异：
 
@@ -238,7 +238,7 @@ w_q\mathcal L_{\mathrm{BCO}}+
 w_g\mathcal L_{\mathrm{LM}}.
 $$
 
-其中 DPO 关注较优回答相对于较差回答，BCO 提供质量层面的约束，LM 项保留对较好回答的生成学习。[MPO 原始论文](https://arxiv.org/html/2411.10442v1)
+其中 DPO 关注较优回答相对于较差回答，BCO 提供质量层面的约束，LM 项保留对较好回答的生成学习。[MPO 原始论文](https://arxiv.org/html/2411.10442v2)
 
 不展开整套实现，也可以理解一个重要问题：如果两个候选都很差，单纯把其中一个排得更高，并不表示模型已经学会了高质量答案。因此“谁更好”和“是否足够好”是互补的学习信号。
 
@@ -256,7 +256,7 @@ s_i(\theta)=\exp\left[
 \right].
 $$
 
-同一问题的多个回答组成一个 group，奖励在组内归一化形成优势；再利用 clipped surrogate 限制更新幅度。[GSPO 原始论文](https://arxiv.org/html/2507.18071v1)
+同一问题的多个回答组成一个 group，奖励在组内归一化形成优势；再利用 clipped surrogate 限制更新幅度。[GSPO 原始论文](https://arxiv.org/html/2507.18071v2)
 
 用自拟数据理解：若两个 token 的新旧概率比为 2 和 0.5，则序列几何平均比为 $\sqrt{2\times0.5}=1$，而算术平均是 1.25。二者不是同一个量。
 
@@ -271,7 +271,7 @@ $$
 
 ### 6.4 训练数据为什么要筛选难度
 
-官方给出 [MMPR-v1.2](https://huggingface.co/datasets/OpenGVLab/MMPR-v1.2) 作为离线偏好数据，约 200K 对；在线阶段使用 [MMPR-Tiny](https://huggingface.co/datasets/OpenGVLab/MMPR-Tiny)，约 70K 个问题。作者说明中包含基于已有 rollout 正确率筛选中等难度问题的过程。
+官方给出 [MMPR-v1.2](https://huggingface.co/datasets/OpenGVLab/MMPR-v1.2) 作为离线偏好数据，约 200K 对；在线阶段使用 [MMPR-Tiny](https://huggingface.co/datasets/OpenGVLab/MMPR-Tiny)，约 70K 个问题。这两个数量来自[作者发布说明](https://internvl.github.io/blog/2025-08-26-InternVL-3.5/)，两个数据集卡本身没有写死样本总数。作者说明中的筛选过程是：计算每个 query 在已有 rollout 上的准确率，只保留 0.2～0.8 之间的中等难度样本，再并入近期多模态数据构成 MMPR-Tiny。
 
 一个直观解释是：如果某组采样全部正确，奖励差异可能很小；全部错误也可能缺少有效的相对信号。适当难度的样本更容易提供区分，但“对旧模型难度合适”并不保证训练全程都合适，所以还需要关注数据与当前策略的分布变化。
 
@@ -287,7 +287,7 @@ J&=\frac1G\sum_{i=1}^{G}j_i.
 \end{aligned}
 $$
 
-采用梯度下降时，对应基础 loss 是 $-J$。这里的 `min` 比较的是乘上优势后的两项，不是简单地“无论如何都先把比率裁进区间”。[GSPO 原始目标，第 4.1 节](https://arxiv.org/html/2507.18071v1)
+采用梯度下降时，对应基础 loss 是 $-J$。这里的 `min` 比较的是乘上优势后的两项，不是简单地“无论如何都先把比率裁进区间”。[GSPO 原始目标，第 4.1 节](https://arxiv.org/html/2507.18071v2#S4.SS1)
 
 以下取 $\epsilon=0.2$ **仅为便于手算**，不是 InternVL 发布配方的超参数：
 
@@ -313,6 +313,12 @@ assert clipped_surrogate(1.5, -1, epsilon=0.2) == -1.5
 ## 7. Thinking 与 Best-of-N：增加推理预算不等于免费涨分
 
 官方区分更长的单次推理与多候选选择；后者使用 VisualPRM-v1.1 作为评判模型。普通模型卡还给出了 Thinking 的系统提示方式与采样建议。[Thinking 设置](https://huggingface.co/OpenGVLab/InternVL3_5-8B#thinking-mode)、[Test-Time Scaling 说明](https://huggingface.co/OpenGVLab/InternVL3_5-8B#test-time-scaling)
+
+按模型卡的描述，有三个容易误读的细节：
+
+- **输出协议**：先用 `<think>...</think>` 包裹逐步推理，换行后再给出最终答案；
+- **解码设置**：卡片建议开启 Thinking 时使用 `do_sample=True` 与 `temperature=0.6` 以减轻重复输出；
+- **TTS 适用范围**：报告中的评测分数默认**没有**应用 TTS（Test-Time Scaling）；作者说明 TTS 目前只用于推理类基准，感知与理解类任务开启后提升不明显。
 
 评估时至少区分三种预算：
 
@@ -355,7 +361,7 @@ $$
 
 ### 8.3 为什么先训练一致性，再训练路由器
 
-如果直接把未经适配的表示从 256 压到 64，语言模型未必知道怎样利用新分布。ViCO 的思想是先训练压缩条件下的回答分布接近参考分布，再学习哪些图块对压缩更敏感；路由器训练阶段冻结主要多模态模型。[ViCO 后续专项论文](https://arxiv.org/html/2510.12793v1)
+如果直接把未经适配的表示从 256 压到 64，语言模型未必知道怎样利用新分布。ViCO 的思想是先训练压缩条件下的回答分布接近参考分布，再学习哪些图块对压缩更敏感；路由器训练阶段冻结主要多模态模型。[ViCO 后续专项论文](https://arxiv.org/html/2510.12793v2)
 
 一个便于理解的形式是：
 
@@ -387,6 +393,13 @@ $$
 
 DvD 将 ViT、MLP 及可选的 ViR 放在视觉服务，把 LLM 放在语言服务，中间传递视觉特征并组织异步流水。它是服务架构，不是把整个模型随意平均分到几张卡。[官方 DvD 说明](https://huggingface.co/OpenGVLab/InternVL3_5-8B-Flash#decoupled-vision-language-deployment)
 
+按官方模型卡的实现说明，拆分的依据与做法是：
+
+- **分工**：视觉服务负责 ViT 与 MLP（Flash 版还含 ViR），语言服务只执行 LLM；
+- **通信**：单向，通过 TCP 传输 BF16 视觉特征，可选 RDMA 提速；
+- **流水**：视觉处理、特征传输与语言处理组织成异步三段流水，让阶段之间互相重叠；
+- **理由**：两种计算的瓶颈不同——视觉编码高度可并行、不依赖长历史状态；语言解码自回归、对显存带宽和延迟更敏感。同卡部署时两者会互相阻塞，分离后视觉侧提高利用率，语言侧不再被视觉计算卡住。
+
 用一个没有真实测量含义的模型解释：设视觉阶段耗时 $a$，传输耗时 $b$，语言阶段耗时 $c$。对孤立请求，依赖关系仍要求视觉特征先产生；理想稳态流水线处理很多请求时，吞吐则可能由最慢阶段约束，接近：
 
 $$
@@ -397,7 +410,7 @@ $$
 
 ### 9.2 “4.05×”应如何引用
 
-原始报告表 18 在 896 分辨率、38B 设置中，列出 baseline 2.71 requests/s，与 DvD + ViR 的 10.97 requests/s，比值约为 4.05。该表注明语言模型运行在 8 张 A100 上，并采用指定负载条件。[完整吞吐表与协议](https://arxiv.org/html/2508.18265v1#S3.S15)
+原始报告表 18 在 896 分辨率、38B 设置中，列出 baseline 2.71 requests/s，与 DvD + ViR 的 10.97 requests/s，比值约为 4.05。该表注明语言模型运行在 8 张 A100 上，并采用指定负载条件。[完整吞吐表与协议](https://arxiv.org/html/2508.18265v2#S3.SS15)
 
 因此，这个数字不是“任意单卡单次回答快 4.05 倍”，也不是“只换 3.5 权重便快 4.05 倍”。还必须交代是否有独立视觉资源，以及总资源、输入、输出和并发设置。
 
@@ -416,6 +429,16 @@ $$
 
 其余部分至少包括：视觉编码的中间激活、文本 prefill 激活、KV Cache、采样缓冲和框架开销。所谓“16-bit 权重能放下”不是“足够运行任意长度的多图请求”。
 
+官方 Flash 模型卡的 Quick Start 还给出一个部署量级参考：[部署量级出处](https://huggingface.co/OpenGVLab/InternVL3_5-8B-Flash#quick-start)
+
+| 总参数规模 | 官方参考量级 |
+| --- | --- |
+| 不超过 30B | 单张 A100 |
+| 38B | 两张 A100 |
+| 235B（即 241B-A28B 检查点在报告中的命名） | 八张 A100 |
+
+这是官方给出的参考量级，不是对任意并发与上下文长度的承诺，也不等于最小可运行配置。
+
 ### 10.2 用 8B 配置估算 KV Cache
 
 对普通全注意力 + GQA 骨干，一个基础估算式是：
@@ -433,6 +456,8 @@ $$
 ### 10.3 降成本的顺序建议
 
 先量化任务真实需要，再优化实现：减少无关图片或历史轮次、控制 tile 和帧数、限制输出预算、合理批处理；之后再比较权重量化、KV 量化、Flash 变体或模型并行。
+
+推理框架方面，官方模型卡提示大多数情况下 LMDeploy 与 vLLM 都可用，但 GPT-OSS 路线的 20B-A4B 推荐使用 vLLM。不要只凭一个框架名就假定所有规模都能正常加载，权重格式与引擎支持程度要一起核对。
 
 每一次压缩都应在同一个保留集上复测。视觉问答总体不变，不代表小字、数字、坐标和格式有效率同样不变。
 
@@ -458,7 +483,7 @@ python -m pip install "transformers==4.55.0" pillow
 python infer_image.py --image /absolute/path/to/document.png
 ```
 
-这里固定 4.55.0 是为了对应所核对的检查点配置，不是断言它是当前最新版本。脚本使用普通 SDPA 路线，不强制安装 FlashAttention；首次运行仍需要下载约 17 GB 的 BF16 权重，实际显存需求更高。
+这里固定 4.55.0 是为了对应所核对的检查点配置，不是断言它是当前最新版本。官方模型卡要求 transformers>=4.52.1 才能正常工作，20B 版本要求 >=4.55.0；本文固定的 4.55.0 满足前者，也与所核对检查点配置中的 `transformers_version` 一致。脚本使用普通 SDPA 路线，不强制安装 FlashAttention；首次运行仍需要下载约 17 GB 的 BF16 权重，实际显存需求更高。
 
 脚本会检查图像、CUDA、输入与输出长度预算，打印真实输入 token 数和生成 token 数。它不是性能评测器，本文也没有在本地执行完整模型推理。
 
@@ -474,7 +499,7 @@ Processor 负责图像预处理、图块数量和模板中的视觉占位。自�
 
 核对的普通模型卡定义了 `R1_SYSTEM_PROMPT`，随后赋值示例却写成 `R1_SYSTEMP_PROMPT`。照抄会得到未定义变量错误。本文不复制这一拼写错误，也不把添加一个系统提示误称为重新训练模型。[模型卡原示例](https://huggingface.co/OpenGVLab/InternVL3_5-8B#thinking-mode)
 
-第一次跑通时，建议先用短回答完成输入链检查。之后再按官方模板启用 Thinking，并记录完整生成预算、采样设置和停止条件。
+第一次跑通时，建议先用短回答完成输入链检查。之后再按官方模板启用 Thinking；官方建议此时使用 `do_sample=True`、`temperature=0.6` 以减轻重复输出，并记录完整生成预算、采样设置和停止条件（Thinking 的输出协议见第 7 节）。
 
 ### 11.4 Flash 模型卡也要核对实际模型名
 
@@ -559,7 +584,7 @@ CPU 预检查成功只证明输入链可用，仍需独立记录模型回答的�
 | InternVL3.5-8B | 92.3 | 73.4 | 78.4 | 80.2 |
 | InternVL3.5-8B-Flash | 91.9 | 72.9 | 78.0 | 79.8 |
 
-这些是作者在特定设置下报告的分数，最后一列不是前三列的平均。[完整表 17](https://arxiv.org/html/2508.18265v1#S3.S15)
+这些是作者在特定设置下报告的分数，最后一列不是前三列的平均。[完整表 17](https://arxiv.org/html/2508.18265v2#S3.SS15)
 
 更有价值的解读是：在该实验里，视觉压缩换来了较小的平均质量变化；这值得在自己的任务上验证。但表中并没有证明每张图片都无损，也没有替你完成最坏情况测试。
 
@@ -627,13 +652,15 @@ python3 token_budget.py
 - 运行离线预算脚本，验证半数 tile 使用 64-token 分支时节省 37.5%；解释为什么这个比例不能直接变成实际吞吐提升。
 - 对照一次评测的分辨率、解码预算、硬件和数据 split，分别描述质量与效率；不把生成示意图、CPU 算例或权重内存下限当成模型实测结果。
 - 能否追踪 8B-HF 的张量形状，核对视觉占位数，并分别计算正负优势下的 clipped surrogate？用 prepare-only 模式检查输入，不把它当成完整模型推理。
+- 能否说明 DvD 中视觉服务与语言服务各自承担什么、视觉特征如何传输，并解释 4.05× 吞吐比需要哪些条件？
+- 能否说明 Thinking 模式官方推荐的解码设置与 TTS 的适用范围，并区分单次 Thinking 与 Best-of-N 的开销？
 
 ## 参考材料与版本记录
 
 - [用户指定的 InternVL3.5 集合](https://huggingface.co/collections/OpenGVLab/internvl35)：模型与阶段清单入口。
-- [原始技术报告：2508.18265v1](https://arxiv.org/html/2508.18265v1)：本文引用的原始评测版本。
+- [原始技术报告：2508.18265v2](https://arxiv.org/html/2508.18265v2)：本文引用的原始评测版本。
 - [作者发布博客](https://internvl.github.io/blog/2025-08-26-InternVL-3.5/)：规模、训练路径与模型格式说明。
-- [MPO 原始论文](https://arxiv.org/html/2411.10442v1)与[GSPO 原始论文](https://arxiv.org/html/2507.18071v1)：后训练目标的原始来源。
-- [ViCO 专项论文](https://arxiv.org/html/2510.12793v1)：后续视觉一致性与路由训练研究，应与原始 3.5 配方区分。
+- [MPO 原始论文](https://arxiv.org/html/2411.10442v2)与[GSPO 原始论文](https://arxiv.org/html/2507.18071v2)：后训练目标的原始来源。
+- [ViCO 专项论文](https://arxiv.org/html/2510.12793v2)：后续视觉一致性与路由训练研究，应与原始 3.5 配方区分。
 - [8B-HF 固定权重文件](https://huggingface.co/OpenGVLab/InternVL3_5-8B-HF/tree/741a7d03020411e666c6109218ab71e08151ef86)：本文推理脚本和配置分析使用的 revision。
 - [Transformers InternVL 文档](https://huggingface.co/docs/transformers/model_doc/internvl)：原生处理器与推理接口；页面随库版本变化。

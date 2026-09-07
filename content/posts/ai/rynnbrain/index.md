@@ -1,7 +1,7 @@
 ---
 title: "RynnBrain 深度解析：从时空 Grounding、Chain-of-Point 到 1.1 跨本体 VLA"
 date: 2026-09-05
-lastmod: 2026-09-05
+lastmod: 2026-09-07
 draft: false
 tags: ["RynnBrain", "VLM", "VLA", "Embodied AI", "Paper Notes"]
 categories: ["人工智能"]
@@ -20,7 +20,7 @@ related_posts:
 
 RynnBrain 最值得研究的地方，不是把机器人接到一个能聊天的模型上，而是尝试让模型的回答具有明确的**对象、位置、时间和交互含义**。例如，“拿起杯子”需要继续回答：哪一个杯子、出现在哪一帧、接触哪里、目标是否仍然可见，以及这个判断如何进入动作策略。
 
-本文核对到 **2026-09-05**。[官方仓库](https://github.com/alibaba-damo-academy/RynnBrain)的主分支此时已是 **RynnBrain 1.1**；1.0 的推理、导航与规划代码保留在历史分支。全文以 1.1 为主线，同时解释 1.0 提出的基础思路，不把不同版本的规模、模型名、训练脚本和实验数字混在一起。
+本文核对到 **2026-09-07**；复核时，主分支仍停在此前固定的提交，1.0 分支与 RynnScale 的固定提交也未移动。下文新补充的 CoP 数据格式与 VLA 部署细节均来自这些固定版本，不是对当前头部的猜测。[官方仓库](https://github.com/alibaba-damo-academy/RynnBrain)的主分支已是 **RynnBrain 1.1**；1.0 的推理、导航与规划代码保留在历史分支。全文以 1.1 为主线，同时解释 1.0 提出的基础思路，不把不同版本的规模、模型名、训练脚本和实验数字混在一起。
 
 文中有三类内容：官方材料直接支持的事实、基于接口与数学的个人分析、本文提供的离线教学实验。**没有在本地复现大模型训练、权重推理或真实机器人成功率**；文中的实验指标均标明出处。
 
@@ -51,13 +51,13 @@ RynnBrain 最值得研究的地方，不是把机器人接到一个能聊天的�
 | 下游研究方向 | CoP、Nav、Plan、VLA | 强调跨本体动作建模及真实机器人迁移 |
 | 阅读入口 | `rynnbrain1.0` 分支 | 当前主分支与 RynnScale |
 
-这些是版本定位，不是完整权重清单；例如 1.0 后续还发布了 4B。完整发布状态应分别查[1.0 分支](https://github.com/alibaba-damo-academy/RynnBrain/tree/rynnbrain1.0)与[当前 Model Zoo](https://github.com/alibaba-damo-academy/RynnBrain#model-zoo)，不能用首篇论文的表格代替当前模型仓库。
+这些是版本定位，不是完整权重清单；例如 1.0 后续还发布了 4B。完整发布状态应分别查[1.0 分支](https://github.com/alibaba-damo-academy/RynnBrain/tree/rynnbrain1.0)、[1.1 HF 集合](https://huggingface.co/collections/Alibaba-DAMO-Academy/rynnbrain-11)与[当前 Model Zoo](https://github.com/alibaba-damo-academy/RynnBrain#model-zoo)，不能用首篇论文的表格代替当前模型仓库。
 
 `122B-A10B` 中的两个数字分别描述总规模与激活规模。即使每个 token 只路由到一部分专家，大多数部署方式仍需存放完整专家权重，因此不能按“10B 模型”计算全部显存。
 
 ### 2.2 原生 3D 能力的范围要单独注明
 
-1.1 报告将原生 3D Grounding 的明确训练与评估范围限定在 **2B 和 9B**；接触点预测则是该系列新增能力。不能因为 122B 更大，就自行给它补上相同的三维监督与评估结论。[来源：1.1 报告](https://arxiv.org/html/2607.17977v1)
+1.1 报告将原生 3D Grounding 的明确训练与评估范围限定在 **2B 和 9B**；接触点预测则是该系列新增能力。不能因为 122B 更大，就自行给它补上相同的三维监督与评估结论。[来源：1.1 报告](https://arxiv.org/html/2607.17977v2)
 
 这是一个很有启发性的例子：模型规模、数据覆盖和任务接口是三个独立维度。选模型时应先问“有没有针对这个任务训练和验证”，再看参数量。
 
@@ -158,7 +158,33 @@ $$
 
 ## 5. 1.0 的 Chain-of-Point：把语言推理与空间证据连接起来
 
-1.0 的 CoP（Chain-of-Point）把语言判断与空间定位交织组织；配套历史代码提供 SFT 与 RL 流程，RL 示例使用 GRPO。这里不能把 InternVL 3.5 的 GSPO 配方挪过来当成 RynnBrain-CoP 的实现。[CoP 代码与训练流程](https://github.com/alibaba-damo-academy/RynnBrain/tree/rynnbrain1.0/reasoning)
+1.0 的 CoP（Chain-of-Point）把语言判断与空间定位交织组织；配套历史代码提供 SFT 与 RL 流程，RL 示例使用 GRPO。这里不能把 InternVL 3.5 的 GSPO 配方挪过来当成 RynnBrain-CoP 的实现。[CoP 代码与训练流程（固定提交）](https://github.com/alibaba-damo-academy/RynnBrain/blob/8cfcc5888816dd02c73d4a707899b5eaf272cb11/reasoning/README.md)
+
+### 5.1 官方任务类型给出的空间输出格式
+
+固定提交的 reasoning README 列出六类任务及其输出格式。坐标同样归一化到 0–1000，并且视频类回答可以带帧索引 `<frame i>`，把空间证据固定到具体时间上：
+
+```text
+trajectory → <trajectory><frame i> (X_1, Y_1), ..., (X_N, Y_N)</trajectory>
+affordance → <affordance><frame i> (X, Y)</affordance>
+area       → <area><frame i> (X_1, Y_1), ...</area>
+counting   → <counting>N</counting>
+segment    → <object><frame i> (X_min, Y_min), (X_max, Y_max)</object>
+general    → 自由文本
+```
+
+这与第 4.1 节的 1.1 任务并不完全重合：例如 1.1 新增的接触点预测，在这个 1.0 分支中还没有对应标签。两版的空间格式不能互相替代。
+
+### 5.2 数据管线：SFT 在前，RL 在后
+
+下面是 1.0 数据管线的接口事实，不是对论文结果的复述：
+
+- 对话中允许出现独立的 `Thinking` 角色；`preprocess_cot.py` 的 `--keep_images` 决定思考过程是否保留图像，`--simple` 则生成不含 Thinking 角色的简化格式。
+- 训练顺序是 SFT 在前：`preprocess_cot.py` → `format_data.py` 统一为 ChatML 风格 → 交给 RynnScale 的 SFT 入口。
+- RL 在后：`preprocess_rl.py` 输出 parquet → verl 的 `main_ppo`。
+- README 的 RL 示例使用 `algorithm.adv_estimator=grpo`，每个提示采样 `n=5` 个回答，`max_response_length=2048`，并带 KL 损失项（系数 0.02）。
+
+### 5.3 概念例子：证据要落点，落点要可查
 
 下面是为理解接口写的概念例子，不是模型实测输出，也不是必须逐字使用的官方模板：
 
@@ -171,6 +197,8 @@ $$
 ```
 
 它的价值在于给推理建立可检查的中间落点。但“写出了坐标”不保证证据真实。一个错误点如果被后续步骤当成事实，可能产生比纯语言回答更难察觉的连锁错误。
+
+### 5.4 三组消融：检查历史、时序与空间证据
 
 我会用三组消融来判断这种设计是否真正起作用：
 
@@ -370,7 +398,7 @@ $$
 
 ### 9.1 从文本生成切换到动作块预测
 
-1.1 的 VLA 描述采用 single-stream DiT 与 flow matching，将语言、视觉、机器人状态和带噪动作块放入一个交互模型；动作块位于序列末端以支持前缀缓存。这属于下游动作策略，不是基础模型 `.generate()` 多输出几行文本。[1.1 报告，第 4 节](https://arxiv.org/html/2607.17977v1#S4)
+1.1 的 VLA 描述采用 single-stream DiT 与 flow matching，将语言、视觉、机器人状态和带噪动作块放入一个交互模型；动作块位于序列末端以支持前缀缓存。这属于下游动作策略，不是基础模型 `.generate()` 多输出几行文本。[1.1 报告，第 4 节](https://arxiv.org/html/2607.17977v2#S4)
 
 下面用一般 flow matching 写法解释它在学什么，**不是逐行复刻官方实现**。设 $A$ 是示教动作块，$\epsilon$ 是噪声，取：
 
@@ -402,7 +430,15 @@ $$
 | Head | 3 |
 | 合计 | 81 |
 
-具体机器人只激活可用部分。G1 的独立 64 维 SONIC latent **不包含在这 81 维中**，不能把二者相加后说成每个平台都输出同样的关节向量。[动作空间出处：报告图 3 与第 4.2 节](https://arxiv.org/html/2607.17977v1#S4.S2)
+具体机器人只激活可用部分。报告图 3 附近给出的评估本体激活情况是：
+
+| 本体 | 在 81 维中激活的组 | 说明 |
+| --- | --- | --- |
+| Unitree G1 | Hand（14 维，每手 7 维） | 另有一个独立预测的 64 维 SONIC latent，**不在 81 维中** |
+| Astribot S1 | Arm-Joint（14）、Gripper（2）、Head（3）、Torso（4） | 合计 23 维 |
+| Tianji-Wuji | Arm-Joint（14）与 Hand（40） | 灵巧手平台 |
+
+G1 的独立 64 维 SONIC latent 与 81 维统一空间是并行输出，不能把二者相加后说成每个平台都输出同样的关节向量。[动作空间出处：报告图 3 与第 4.2 节](https://arxiv.org/html/2607.17977v2#S4.SS2)
 
 理解 mask 的关键：不存在的自由度不应被当作“目标值恰好为零”的有效训练标签。一个教学损失可以写为：
 
@@ -423,7 +459,27 @@ $$
 
 假设推理耗时 $d$ 秒，控制周期为 $\Delta t$。在新结果返回时，大约已有 $d/\Delta t$ 个控制步过去。若每次把一个新动作块从头强行覆盖旧动作，可能产生不连续。
 
-因此应区分策略推理频率、动作块覆盖时长与底层伺服频率。论文讨论的 RTC 是处理动作块实时衔接的一部分；不能由“模型能够一次预测多个动作”推出它能够直接替代底层实时控制与安全监控。[RTC 相关设计出处](https://arxiv.org/html/2607.17977v1#S4.S4)
+因此应区分策略推理频率、动作块覆盖时长与底层伺服频率。不能由“模型能够一次预测多个动作”推出它能够直接替代底层实时控制与安全监控；1.1 给出的实时衔接方案是下一节的 RTC。
+
+### 9.5 三层部署框架与 RTC：动作块怎样变成连续控制
+
+1.1 报告给出的跨本体部署框架分三层：[框架出处：第 4.3 节](https://arxiv.org/html/2607.17977v2#S4.SS3)
+
+- **Model layer**：运行 VLA 策略，在标准动作空间中产出 32 步动作块；
+- **Control layer**：两个独立循环——30 Hz 的低频环负责推理时机、交互界面与动作源切换，200 Hz 的高频环把动作块插值到目标控制频率并下发命令，二者通过共享内存通信；
+- **Embodiment layer**：把标准格式动作分发给对应执行器，并把机器人状态与多相机图像（字典键与训练时的命名一致）格式化回模型层。
+
+新增一个本体只需要实现 Embodiment layer，不必修改模型与控制层。
+
+RTC（Real-Time Chunking）解决的是动作块之间的衔接：[RTC 出处：第 4.4 节](https://arxiv.org/html/2607.17977v2#S4.SS4)
+
+- **触发时机**：模型预测 32 步动作块，但不等待整块执行完——每执行 5 步就触发一次新推理；
+- **action-guidance**：新块去噪时，上一块尚未执行的部分按 action-guidance 公式引导去噪，强度 $\beta=10.0$；
+- **引导权重分三段**：前 5 步以及推理期间会被消耗的步（用最近 10 次推理耗时的滑动平均估计）权重为 1，随后平滑过渡到 0，块尾不施加一致性约束。
+
+这样既保证块边界连续，又允许模型依据新观测调整后续动作。
+
+这正好回应第 9.4 节的延迟问题：RTC 让“旧块还在执行、新块已在计算”成为常态，而不是等整块结束再切换。但它处理的是策略层的实时衔接；200 Hz 插值、限位与急停仍属于底层控制，不能由 RTC 替代。
 
 ## 10. 实验怎么读：离线空间能力与机器人完成率要分开
 
@@ -445,12 +501,14 @@ $$
 | RynnBrain-VLA | 85 | 80 | 95 | 86.67 |
 | RynnBrain-VLA Generalist | 85 | 95 | 95 | 91.67 |
 
-每个任务进行 20 次尝试；前两个任务在 Astribot，第三个在 Tianji-Wuji。表中前两种模型采用相同 VLA 后训练配方与动作块长度，因而比跨不同完整系统的比较更接近“更换基础模型”的研究问题。[原始协议与完整对照表](https://arxiv.org/html/2607.17977v1#S5.S6)
+每个任务进行 20 次尝试，初始物体摆放随机；前两个任务在 Astribot，第三个在 Tianji-Wuji。表中前两种模型采用相同 VLA 后训练配方与 32 步动作块长度，因而比跨不同完整系统的比较更接近“更换基础模型”的研究问题。原始表还包含 GR00T N1.7 与 π0.5 两个完整基线，它们使用各自更长的动作块（40 与 50 步）。[原始协议与完整对照表](https://arxiv.org/html/2607.17977v2#S5.SS6)
+
+报告同时给出过程得分：三个任务分别有 4、5、3 个子任务，过程得分是 20 次试验中完成的子任务比例。三个模型的过程得分平均为 68.33、91.28 与 94.14，与成功率同方向但不重合。部署侧还有一个容易漏掉的事实：这些实验的推理在一台配备单张 RTX 4090 的工作站上完成，数字不能直接推广到其他硬件组合。
 
 个人解读有四点：
 
 - 20 次试验中，一次成败对应 5 个百分点，因此不应把小差异解释为极其精确的总体概率差。
-- 过程得分高表示完成了更多子任务，不表示整项任务成功。
+- 过程得分衡量子任务完成比例，不表示整项任务成功。
 - Generalist 的改进支持在这些设置下联合训练的价值，不证明任意新机器人都能零样本迁移。
 - 若比较完整基线，应保留动作块、控制器和数据设置；不能只拎出一个平均数做“全面领先”的结论。
 
@@ -572,11 +630,13 @@ RynnBrain 更适合沿“时空观测—空间语义—机器人策略迁移”�
 - 运行离线协议测试，解释归一化点、相机内参、角度编码和动作 mask 的作用；面对非法输出应拒绝执行，而不是自动裁剪成貌似可用的命令。
 - 用一个已知三维姿态样本分别检查两种角度解释，记录不能确定的协议；不把生成图、Notebook 可视化或本文自拟算例当成真实机器人结果。
 - 能否按明确的轴顺序构造八个角点并投影回图像，再用 CPU 预检查验证真实输入预算？区分几何一致、接口可用和模型判断正确这三种结论。
+- 能否写出 1.0 CoP 的一种带帧索引输出格式，并说明 Thinking 角色与 GRPO 组内采样的作用？
+- 能否解释 32 步动作块、30/200 Hz 双环与 RTC 引导权重的衔接，并说明过程得分与最终成功率的区别？
 
 ## 参考材料与版本快照
 
 - [RynnBrain 1.0 报告：2602.14979v1](https://arxiv.org/html/2602.14979v1)：原始问题定义与 CoP、Nav、Plan、VLA 研究路线。
-- [RynnBrain 1.1 报告：2607.17977v1](https://arxiv.org/html/2607.17977v1)：1.1 能力范围、动作空间与实验协议。
+- [RynnBrain 1.1 报告：2607.17977v2](https://arxiv.org/html/2607.17977v2)：1.1 能力范围、动作空间与实验协议。
 - [RynnBrain 仓库快照：5b86419](https://github.com/alibaba-damo-academy/RynnBrain/tree/5b8641993fd265300dba89f079d9b708ffe19ed4)：本文源码核对基线。
 - [RynnScale 快照：aaedf10](https://github.com/alibaba-damo-academy/RynnScale/tree/aaedf103bff9ff2ede3c6c900537b15a49801dd9)：公开训练与评估入口。
 - [RynnBrain1.1-2B 模型卡](https://huggingface.co/Alibaba-DAMO-Academy/RynnBrain1.1-2B)：权重 revision 为 `b4663299019d15468301f64435539632daed7985`。
