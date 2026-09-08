@@ -163,7 +163,7 @@ def evaluate(logits, reference, rewards):
     }
 
 
-def train(algorithm, *, steps=120, seed=7, group_size=8, preference_flips=0):
+def train(algorithm, *, steps=120, seed=7, group_size=8, preference_flips=0, grpo_prompts=16):
     if algorithm not in ("ppo", "dpo", "grpo"):
         raise ValueError("Unknown algorithm")
     if type(steps) is not int or steps < 1 or type(group_size) is not int or group_size < 2:
@@ -172,6 +172,8 @@ def train(algorithm, *, steps=120, seed=7, group_size=8, preference_flips=0):
         raise ValueError("preference_flips must be an integer in [0, 12]")
     if preference_flips and algorithm != "dpo":
         raise ValueError("Preference flips apply only to DPO")
+    if type(grpo_prompts) is not int or grpo_prompts < 1:
+        raise ValueError("grpo_prompts must be a positive integer")
     torch.set_num_threads(1)
     generator = torch.Generator(device="cpu").manual_seed(seed)
     rewards = reward_table()
@@ -251,7 +253,7 @@ def train(algorithm, *, steps=120, seed=7, group_size=8, preference_flips=0):
                 advantage = returns - critic[x].detach()
                 zero_fraction = 0.0
             else:
-                x = torch.randint(contexts, (16,), generator=generator)
+                x = torch.randint(contexts, (grpo_prompts,), generator=generator)
                 a = torch.multinomial(old_all[x].exp(), group_size, replacement=True,
                                       generator=generator)
                 old_logp = old_all[x].gather(-1, a)
@@ -302,7 +304,7 @@ def train(algorithm, *, steps=120, seed=7, group_size=8, preference_flips=0):
         "clip_epsilon": epsilon, "target_old_policy_kl": target_kl,
         "kl_beta": 0 if algorithm == "dpo" else kl_beta, "dpo_beta": dpo_beta,
         "group_size": group_size if algorithm == "grpo" else None,
-        "online_batch_prompts": 128 if algorithm == "ppo" else 16 if algorithm == "grpo" else 0,
+        "online_batch_prompts": 128 if algorithm == "ppo" else grpo_prompts if algorithm == "grpo" else 0,
         "offline_preference_pairs": len(pairs) if algorithm == "dpo" else 0,
         "reward_table": rewards.tolist(), "reference": "fixed uniform",
         "scope": "one-step tabular contextual bandit; no language model or held-out generalization",
@@ -339,12 +341,16 @@ def main():
     parser.add_argument("--steps", type=int, default=120)
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument("--group-size", type=int, default=8)
+    parser.add_argument("--grpo-prompts", type=int, default=16,
+                        help="Prompt groups per GRPO rollout; actions per batch = prompts * group-size")
     parser.add_argument("--preference-flips", type=int, default=0,
                         help="Swap labels in N of 12 fixed DPO pairs, once per run")
     parser.add_argument("--output", type=Path, default=Path("results"))
     args = parser.parse_args()
     if args.steps < 1 or args.group_size < 2 or not 0 <= args.seed < 2**63:
         parser.error("Require steps >= 1, group-size >= 2, and seed in [0, 2**63)")
+    if args.grpo_prompts < 1:
+        parser.error("grpo-prompts must be positive")
     if not 0 <= args.preference_flips <= 12:
         parser.error("preference-flips must be in [0, 12]")
     if args.preference_flips and args.algorithm not in ("dpo", "all"):
@@ -356,7 +362,8 @@ def main():
     algorithms = ("ppo", "dpo", "grpo") if args.algorithm == "all" else (args.algorithm,)
     for name in algorithms:
         rows, settings = train(name, steps=args.steps, seed=args.seed, group_size=args.group_size,
-                               preference_flips=args.preference_flips if name == "dpo" else 0)
+                               preference_flips=args.preference_flips if name == "dpo" else 0,
+                               grpo_prompts=args.grpo_prompts)
         with (args.output / f"{name}.csv").open("w", newline="") as stream:
             writer = csv.DictWriter(stream, fieldnames=list(rows[0]), lineterminator="\n")
             writer.writeheader()

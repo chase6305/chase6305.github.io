@@ -52,6 +52,8 @@ def main():
                 ["rl_lab.py", "--algorithm", "all", "--steps", "3", "--output", "results"],
                 ["rl_lab.py", "--algorithm", "dpo", "--preference-flips", "3",
                  "--steps", "3", "--output", "results-noisy-dpo"],
+                ["rl_lab.py", "--algorithm", "grpo", "--group-size", "4",
+                 "--grpo-prompts", "32", "--steps", "3", "--output", "results-grpo-g4"],
                 ["ppo_chain.py", "--steps", "3", "--output", "results-chain"],
                 ["token_objectives.py", "--output", "results-tokens.json"],
             )

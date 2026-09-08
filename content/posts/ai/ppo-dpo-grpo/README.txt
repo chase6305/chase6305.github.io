@@ -13,7 +13,7 @@ PPO / DPO / GRPO CPU 实验包
     python -m pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cpu
     python -B -m unittest -v test_rl_lab.py
 
-当前版本应运行 18 项测试，并以 OK 结束。测试包括三种算法、三个 seed、
+当前版本应运行 19 项测试，并以 OK 结束。测试包括三种算法、三个 seed、
 两步 PPO、EOS/PAD、loss/梯度方向与停止梯度；只打印 loss 不代表验收通过。
 Windows 可用 py -3.10 -m venv .venv 创建环境，并在 PowerShell 执行
 .venv\Scripts\Activate.ps1；环境激活后使用相同的 python 命令。
@@ -59,6 +59,14 @@ DPO 标签对照，保持用于评估的原始奖励表不变：
 比较更新后的 dpo_training_loss、dpo_clean_loss 与 expected_reward：
 全量反转时，训练 loss 仍下降，但原始标签 loss 上升，真实奖励下降。
 clean loss 使用同一批上下文的原始标签，并非独立验证集。
+
+GRPO 固定每轮 128 个动作，比较分组方式：
+    python -B rl_lab.py --algorithm grpo --group-size 2 --grpo-prompts 64 --output results-grpo-g2
+    python -B rl_lab.py --algorithm grpo --group-size 8 --grpo-prompts 16 --output results-grpo-g8
+
+--grpo-prompts 是每轮抽取的 prompt 组数，可重复；采样动作数为组数乘 group-size。
+固定动作数不代表固定上下文覆盖、FLOPs 或运行时间。零方差组全对、全错都会出现，
+因此要同时观察 expected_reward，不能只凭 zero_group_fraction 判定训练失效。
 
 同名输出会覆盖，改 seed 或设置时请换目录。先保持其余配置不变，再比较一个因素。
 JSON 保存环境、设置和首末指标；CSV 保存迭代记录。默认 120 轮，--steps 3 可快速

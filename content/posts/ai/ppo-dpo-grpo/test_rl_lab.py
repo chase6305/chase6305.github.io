@@ -126,6 +126,19 @@ class AtomicAlgorithms(unittest.TestCase):
 
 
 class TrainingLoops(unittest.TestCase):
+    def test_grpo_fixed_action_budget(self):
+        for group_size in (2, 4, 8, 16):
+            prompts = 128 // group_size
+            rows, settings = lab.train("grpo", steps=8, group_size=group_size, grpo_prompts=prompts)
+            self.assertEqual(settings["online_batch_prompts"], prompts)
+            self.assertEqual(rows[-1]["sampled_actions"], 8 * 128)
+            self.assertTrue(all(0 <= row["zero_group_fraction"] <= 1 for row in rows))
+        default = lab.train("grpo", steps=8)
+        self.assertEqual(default, lab.train("grpo", steps=8, group_size=8, grpo_prompts=16))
+        for count in (0, -1, 2.5, True):
+            with self.assertRaises(ValueError):
+                lab.train("grpo", grpo_prompts=count)
+
     def test_preference_corruption_separates_loss_from_reward(self):
         for seed in (0, 7, 19):
             with self.subTest(seed=seed):
