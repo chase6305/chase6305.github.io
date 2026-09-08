@@ -1,0 +1,22 @@
+{
+  "reviewed_on": "2026-09-08",
+  "source_kind": "local WholeBodyX working tree; no resolvable HEAD",
+  "files": {
+    "README.md": "cf7d046d367f8e9030f2281810e915f0486d450f138be8cc45267eec16e37b1f",
+    "python/wholebodyx/mpc.py": "9a93dc2f3821fae6e781e744021b56b705d5ac2b5f326e19c5c7f5395c89c016",
+    "python/wholebodyx/wbc.py": "23e7c1f26b990545f1b54efc52e4545d93b27679786e7377b5169c8761de1a7e",
+    "python/wholebodyx/runtime.py": "65b8f954d39da1dcca970f6e47d52336e9d34525edec3718203dba5af9701911",
+    "python/wholebodyx/tasks.py": "bea9409832ae2c4849a44998449518b84378a620e77389bcfa36577c7a6d0f75",
+    "python/wholebodyx/types.py": "15f6621bd9bcfc54d3ac34e2a043cf064a4a82ad14055d52dd63975b27dd726b",
+    "examples/python/h1_mpc_wbc.py": "b5547226fc38facd09e8a3f78aac29513cf3a04ff5d4eb525c3c10f228e4b32e",
+    "docs/runtime.md": "31166c8c7505c5eab28d9c5029c097d2eca02d4cee7d098f23ad66c1fcf16fe5",
+    "python/wholebodyx/model.py": "033a195fb9a50df938b38741a3dae5981d46a9e5f2e96c6cefd74b1dfa6197ac",
+    "python/wholebodyx/simulation.py": "d5e298a62c757c51b9a2cdb374c74273fdbc59f411cec22433bc26af3f477b62",
+    "pyproject.toml": "509474307112757746fdf3d6e2c37d70f025984c7ea3a84b3e080179fb9a6b4f"
+  },
+  "secondary_reference": {
+    "url": "https://zhuanlan.zhihu.com/p/2080588693757224044",
+    "access": "HTTP 403; user supplied article text used as conceptual reference",
+    "title": "从 MPC 到 WBC：人形机器人如何规划并执行全身运动？"
+  }
+}

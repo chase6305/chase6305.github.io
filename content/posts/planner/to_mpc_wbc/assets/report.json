@@ -1,0 +1,40 @@
+{
+  "scope": "six-joint fixed-base integrator; posture tasks only; no learned policy",
+  "dt": 0.02,
+  "steps": 250,
+  "numpy": "2.3.5",
+  "scipy": "1.17.1",
+  "osqp": "1.1.3",
+  "wbc": {
+    "initial_joint_error_rad": 0.529150262212918,
+    "final": {
+      "step": 250,
+      "time": 4.999999999999981,
+      "replan_reason": "direct",
+      "joint_error_rad": 7.182944671351421e-10,
+      "max_velocity_bound_violation": 0.0,
+      "solver_violation": 0.0
+    },
+    "replan_reasons": {
+      "direct": 250
+    },
+    "max_velocity_bound_violation": 3.068506559955608e-11
+  },
+  "mpc-wbc": {
+    "initial_joint_error_rad": 0.529150262212918,
+    "final": {
+      "step": 250,
+      "time": 4.999999999999981,
+      "replan_reason": "reused",
+      "joint_error_rad": 5.026748538604307e-16,
+      "max_velocity_bound_violation": 0.0,
+      "solver_violation": 0.0
+    },
+    "replan_reasons": {
+      "initial": 1,
+      "reused": 200,
+      "periodic": 49
+    },
+    "max_velocity_bound_violation": 1.1131162658273297e-09
+  }
+}
