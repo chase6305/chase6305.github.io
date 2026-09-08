@@ -23,14 +23,15 @@ related_posts:
 
 本文把“原子算法”理解为能单独解释、计算和测试的基础模块：log-probability、REINFORCE、baseline、TD/GAE、重要性采样、KL、clipping、Bradley–Terry 偏好模型。先拆解，再组装训练循环。PPO 以原始 **PPO-Clip** 为主，DPO 以原始 sigmoid 目标为主，GRPO 以 DeepSeekMath 的 outcome-supervision 版本为主；后来的变体单独讨论。
 
-附带的实验在 CPU 上真实执行采样、反向传播和优化器更新。为让读者能逐项核对，它使用**四个上下文、三个动作的一步任务**，不下载语言模型，也不依赖 Gym。另附一个**两步决策树 PPO 实验**，实际调用 GAE 传递延迟奖励；文末说明如何迁移到环境交互与自回归文本。
+附带的实验在 CPU 上真实执行采样、反向传播和优化器更新。为让读者能逐项核对，它使用**四个上下文、三个动作的一步任务**，不下载语言模型，也不依赖 Gym。另附一个**两步决策树 PPO 实验**，实际调用 GAE 传递延迟奖励，以及一个**变长 token 目标实验**，核对回答概率、EOS/PAD 和归约。三层实验分别检查更新机制、时间边界和序列边界。
 
 | 阅读目标 | 建议入口 | 要验证什么 |
 | --- | --- | --- |
 | 先跑起来 | [第 1 节](#run) | 参数确实更新，结果可重复 |
 | 理解基础公式 | [第 2～3 节](#notation) | 区分奖励、价值、优势与概率比 |
 | 对比三种方法 | [PPO](#ppo)、[DPO](#dpo)、[GRPO](#grpo) | 数据流、目标与梯度 |
-| 迁移到 LLM | [第 7 节](#llm) | token 对齐、mask、采样与奖励协议 |
+| 验证多步 PPO | [两步决策树](#ppo-chain) | 终点奖励传向前面的决策，不跨回合串联 |
+| 迁移到 LLM | [第 7 节](#llm)、[token 实验](#token-lab) | token 对齐、mask、采样与奖励协议 |
 | 排错与继续研究 | [验收](#diagnostics)、[扩展](#extensions) | 用证据判断失败发生在哪一层 |
 
 ![PPO 从 rollout 和 critic 构造优势，DPO 比较偏好对相对参考策略的概率，GRPO 使用同题回答的组内优势](assets/policy-optimization-overview.webp "图 1：由 imagegen 生成的算法数据流概念图。蓝色为 PPO，橙色为 DPO，绿色为原始 outcome GRPO；三行分别表示三种方法。")
@@ -39,7 +40,7 @@ related_posts:
 
 ## 1. 先运行完整实验 {#run}
 
-下载并解压 [完整实验代码包](rl-lab.zip)，或把以下文件保存到同一个目录：
+下载并完整解压 [实验代码包](rl-lab.zip)，包内的 [README.txt](README.txt) 包含离线使用说明、预期结果和排错步骤。也可把以下源码文件保存到同一个目录：
 
 | 文件 | 用途 |
 | --- | --- |
@@ -75,6 +76,8 @@ python -B token_objectives.py --output results-tokens.json
 python -B -m unittest -v test_rl_lab.py
 ```
 
+测试应以 `Ran 16 tests` 和 `OK` 结束；其中一步训练与两步 PPO 均检查 seed 0、7、19。若只想检查命令入口，训练命令可加 `--steps 3`；三轮结果不能用于判断收敛。
+
 安装完成后，这些运行命令不需要网络。只测试某种方法时，可使用 `--algorithm ppo`、`dpo` 或 `grpo`；`--group-size` 只改变 GRPO 的同题采样数。
 
 训练输出 `ppo/dpo/grpo.csv` 与对应 JSON。CSV 记录每个外层迭代的指标；JSON 保存配置、奖励表、软件版本及首末指标。输出目录同名文件会被覆盖，改变 seed 时应换目录：
@@ -83,7 +86,7 @@ python -B -m unittest -v test_rl_lab.py
 python -B rl_lab.py --algorithm grpo --seed 19 --group-size 4 --output results-seed19-g4
 ```
 
-核心结果不是“打印一个 loss”，而是检查最优动作概率是否从初始的 $1/3$ 上升。这个有限任务的策略是一张可训练 logits 表，没有神经网络泛化难题，因此通过它只说明更新链条工作正常。
+一步任务的核心结果不是“打印一个 loss”，而是检查最优动作概率是否从初始的 $1/3$ 上升。两步任务检查 `expected_return` 和轨迹中的优势，token 案例检查 mask、loss 与梯度；三者应按各自标准验收。有限任务使用可训练 logits 表，没有神经网络泛化难题，因此通过它们只说明相应计算链条工作正常。
 
 ## 2. 统一符号：先区分三个策略、两类模型 {#notation}
 
@@ -787,13 +790,13 @@ $$
 - 能否解释 GRPO 零方差组、RLOO baseline 与 GSPO 序列概率比，并设计一个只改变单项因素的扩展实验？
 
 <details>
-<summary>展开核对：五个关键问题的答案</summary>
+<summary>展开核对：按上面五个问题逐项验收</summary>
 
-- old 固定于本批 rollout；reference 固定于声明的参考阶段。它们一般不是同一个快照。
-- $\rho=1.5,A=-1$ 时，最大化 surrogate 取 −1.5；最小化 loss 对 logp 的导数为 +1.5。
-- 当前策略等于参考策略时，DPO loss 为 $\log2$，但偏好间隔仍得到更新梯度。
-- 外部时间截断通常保留 final observation 的 bootstrap，同时阻止 GAE 跨到 reset 后的 episode。
-- 同组奖励全相同会使奖励优势为零；混合奖励下平均 surrogate 为零却未必没有梯度。
+1. **策略、模型与停止梯度**：current 每个 optimizer step 更新；old 固定于本批 rollout；reference 固定于声明的参考阶段。reward model 评分，critic 预测后续回报。old/ref logps、优势和 value targets 在各自损失中都应停止梯度；当前策略和 critic 分别通过自己的损失更新。对应[第 2 节](#notation)与测试中的 frozen 数据检查。
+2. **三类原子计算**：第 4.2 节四行 surrogate 依次为 **1.2、−0.8、−1.5、0.5**；前两行平坦，后两行保留纠正梯度。DPO 在 current=reference、β=0.5 时 loss 为 log 2，对 chosen/rejected logp 的导数为 −0.25/+0.25。真实终止关闭 bootstrap；外部截断保留 final observation 的 bootstrap，但停止 GAE 跨到 reset 回合。分别对照[原子模块](#atoms)和[两步实验](#ppo-chain)。
+3. **token 与长度**：位置 t 的 logits 预测 t+1，mask 应作用于目标 token。真实 EOS 计分，PAD 不计分，即使两者 ID 相同。DPO 先对回答 logps 求和；原始 outcome GRPO 先按各回答有效长度平均，再平均回答。运行[token 案例](#token-lab)，检查长度 `[2,3]`，并确认追加 PAD 不改变 loss 和参数梯度。
+4. **实验与成本**：运行三种一步训练，保存 JSON 配置及 CSV；默认初始奖励约 0.2333，训练后应明显上升。PPO/GRPO 每轮各采样 128 个动作、最多更新 4 次；DPO 每轮访问 12 对固定偏好、更新 1 次，目标和 KL 方式也不同。应一起记录 `sampled_actions`、`pair_presentations`、`optimizer_steps`，不能按相同外层轮数认定成本相同。参考[第 8 节](#results)。
+5. **组优势与扩展**：等值奖励组的奖励优势为零，KL 仍可能有梯度；混合奖励组的平均 loss 为零，也不代表梯度为零。RLOO 用其余 G−1 个回答的均值作 baseline；GSPO 使用 token 概率比的几何平均进行序列层面的更新约束。可只改变 G，并同时记录零方差组比例与采样成本，其余设置固定；解释时说明增加 G 也改变了本实验的动作预算。定义和边界见[第 10 节](#extensions)。
 
 </details>
 

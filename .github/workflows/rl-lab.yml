@@ -1,0 +1,38 @@
+name: Check RL article download
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "content/posts/ai/ppo-dpo-grpo/**"
+      - "scripts/package_rl_lab.py"
+      - ".github/workflows/rl-lab.yml"
+  pull_request:
+    paths:
+      - "content/posts/ai/ppo-dpo-grpo/**"
+      - "scripts/package_rl_lab.py"
+      - ".github/workflows/rl-lab.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-download:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: content/posts/ai/ppo-dpo-grpo/requirements.txt
+      - name: Check download matches source
+        run: python scripts/package_rl_lab.py --check
+      - name: Install CPU dependencies
+        run: python -m pip install -r content/posts/ai/ppo-dpo-grpo/requirements.txt --index-url https://download.pytorch.org/whl/cpu
+      - name: Test extracted download and command line examples
+        run: python scripts/package_rl_lab.py --check --test
