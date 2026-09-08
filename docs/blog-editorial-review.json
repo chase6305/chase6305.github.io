@@ -1262,8 +1262,8 @@
         "/posts/ai/internvl-3-5",
         "/posts/ai/distributed-training-memory"
       ],
-      "image_decision": "从实际 CPU 训练 CSV 用 Matplotlib 生成曲线，明确不同算法预算",
-      "image": "assets/training-curves.svg",
+      "image_decision": "使用 imagegen 生成算法数据流与 GRPO 组内优势图，配色和卡片样式对齐已有文章；实际 CPU 曲线继续由 Matplotlib 从 CSV 生成",
+      "image": "assets/policy-optimization-overview.webp",
       "acceptance_checks": [
         "能否区分 current、old、reference 与 reward model、critic，并说明哪些张量应停止梯度？",
         "运行原子模块与测试，解释 PPO 四种 clipping 情况、DPO 的初始梯度方向以及 GAE 的终止/截断边界。",

@@ -1,0 +1,23 @@
+{
+  "mode": "built-in imagegen",
+  "date": "2026-09-08",
+  "style_reference": [
+    "content/posts/ai/internvl-3-5/assets/cascade-rl-training.webp",
+    "content/posts/ai/distributed-training-memory/assets/ddp-zero-sharding.webp"
+  ],
+  "notes": "Conceptual teaching figures, not measured results. Generated PNG originals remain in the generation directory. WebP conversion uses ffmpeg at quality 85.",
+  "images": [
+    {
+      "key": "policy-optimization-overview",
+      "path": "content/posts/ai/ppo-dpo-grpo/assets/policy-optimization-overview.webp",
+      "prompt": "Use case: scientific-educational\nAsset type: conceptual infographic for a Chinese technical blog article about PPO, DPO, GRPO.\nPrimary request: create a polished, accurate comparison diagram, landscape 3:2. Match the site's existing educational diagrams: pure white background, crisp flat vector-like rounded rectangular cards with thin colored borders, very pale blue/amber/green fills, black connecting arrows, dark navy sans-serif typography, generous whitespace, restrained simple line icons. No photographic elements, no shadows, no gradient, no watermark.\nTitle verbatim: \"PPO · DPO · GRPO\"\nSubtitle verbatim: \"Three ways to improve a policy\"\nComposition: three stacked horizontal lanes, each with a large algorithm label at left and exactly three connected boxes from left to right. PPO lane blue; DPO lane amber; GRPO lane green. Big readable English labels, no equations or Chinese.\nPPO lane: \"Rollouts + rewards\" → \"Critic → advantages\" → \"Clipped policy update\".\nDPO lane: \"Chosen / rejected\" → \"Policy vs reference\" → \"Preference loss\".\nGRPO lane: \"Same prompt × G\" → \"Group-relative advantages\" → \"Clipped policy + KL\".\nEach lane has a short note below its boxes: PPO \"Learned value baseline\"; DPO \"Offline preference pairs\"; GRPO \"No learned critic\".\nA separate bottom strip contains exactly: \"old policy: sampling snapshot     reference policy: fixed anchor\".\nAccuracy: these are separate methods, do not connect the three lanes together, do not imply DPO uses rollouts or a critic. GRPO is the original outcome-supervised formulation. Keep all text verbatim and sharply legible. Simple sample-sheet/checkmark/group icons may supplement labels. This is a conceptual explanation, no empirical charts or numeric performance claims.",
+      "revision_prompt": null
+    },
+    {
+      "key": "group-relative-advantages",
+      "path": "content/posts/ai/ppo-dpo-grpo/assets/group-relative-advantages.webp",
+      "prompt": "Use case: scientific-educational\nAsset type: conceptual teaching infographic for a PPO / DPO / GRPO blog article.\nPrimary request: show how rewards within ONE prompt become GRPO advantages, using an exact four-answer example. Landscape 3:2. Match educational diagrams in the same blog: white background, flat rounded panels with thin blue green amber purple outlines, pale pastel fills, dark navy bold sans-serif English labels, clear dark arrows, generous whitespace. Large readable typography, simple line icons. No photography, watermark, empirical plot, dense formulas or decorative background.\nTitle verbatim: \"GRPO: Compare Within One Prompt\"\nTop: one small blue card \"One prompt\", which branches to exactly four equal answer cards in a row, labelled \"Answer 1\", \"Answer 2\", \"Answer 3\", \"Answer 4\".\nBelow those cards aligned columns show a row labelled \"Reward\" with values exactly \"0\", \"0\", \"1\", \"1\".\nThen a full-width pale purple normalization strip: \"Group mean = 0.5     Population std = 0.5\".\nBelow aligned with the same four answers, a row labelled \"Advantage\" has values exactly \"-1\", \"-1\", \"+1\", \"+1\". Negative values in amber, positive values in green. At the right or beneath: \"Ignoring numerical epsilon\".\nBelow the advantages, a short label: \"Relative signal for the policy update\".\nBottom separate pale neutral card, title \"Equal rewards\". It contains exactly \"1, 1, 1, 1  →  0, 0, 0, 0\" and subtitle \"Zero reward-driven advantage; KL can still contribute\".\nFooter verbatim: \"Normalize each prompt separately\".\nAccuracy: exactly four answers and precisely corresponding values, never mix prompts, population standard deviation is 0.5 for [0,0,1,1]. Equal rewards produce zero advantages, not necessarily zero total gradient. Avoid implying a direct guaranteed increase in individual token probability. No extra mathematical symbols or formulas.",
+      "revision_prompt": null
+    }
+  ]
+}
