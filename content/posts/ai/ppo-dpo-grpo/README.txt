@@ -13,7 +13,7 @@ PPO / DPO / GRPO CPU 实验包
     python -m pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cpu
     python -B -m unittest -v test_rl_lab.py
 
-当前版本应运行 16 项测试，并以 OK 结束。测试包括三种算法、三个 seed、
+当前版本应运行 18 项测试，并以 OK 结束。测试包括三种算法、三个 seed、
 两步 PPO、EOS/PAD、loss/梯度方向与停止梯度；只打印 loss 不代表验收通过。
 Windows 可用 py -3.10 -m venv .venv 创建环境，并在 PowerShell 执行
 .venv\Scripts\Activate.ps1；环境激活后使用相同的 python 命令。
@@ -49,6 +49,16 @@ Windows 可用 py -3.10 -m venv .venv 创建环境，并在 PowerShell 执行
     python -B rl_lab.py --algorithm grpo --seed 19 --group-size 4 --output results-seed19-g4
     python -B ppo_chain.py --seed 7 --gae-lambda 0 --output results-chain-lambda0
     python -B ppo_chain.py --seed 7 --gae-lambda 1 --output results-chain-lambda1
+
+DPO 标签对照，保持用于评估的原始奖励表不变：
+    python -B rl_lab.py --algorithm dpo --preference-flips 0 --output results-dpo-clean
+    python -B rl_lab.py --algorithm dpo --preference-flips 3 --output results-dpo-flips3
+    python -B rl_lab.py --algorithm dpo --preference-flips 12 --output results-dpo-reversed
+
+--preference-flips 为 0～12 的整数，按 seed 选择固定 N 对标签交换，并记录实际数据。
+比较更新后的 dpo_training_loss、dpo_clean_loss 与 expected_reward：
+全量反转时，训练 loss 仍下降，但原始标签 loss 上升，真实奖励下降。
+clean loss 使用同一批上下文的原始标签，并非独立验证集。
 
 同名输出会覆盖，改 seed 或设置时请换目录。先保持其余配置不变，再比较一个因素。
 JSON 保存环境、设置和首末指标；CSV 保存迭代记录。默认 120 轮，--steps 3 可快速

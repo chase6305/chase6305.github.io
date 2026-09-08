@@ -76,7 +76,7 @@ python -B token_objectives.py --output results-tokens.json
 python -B -m unittest -v test_rl_lab.py
 ```
 
-测试应以 `Ran 16 tests` 和 `OK` 结束；其中一步训练与两步 PPO 均检查 seed 0、7、19。若只想检查命令入口，训练命令可加 `--steps 3`；三轮结果不能用于判断收敛。
+测试应以 `Ran 18 tests` 和 `OK` 结束；其中一步训练与两步 PPO 均检查 seed 0、7、19。若只想检查命令入口，训练命令可加 `--steps 3`；三轮结果不能用于判断收敛。
 
 安装完成后，这些运行命令不需要网络。只测试某种方法时，可使用 `--algorithm ppo`、`dpo` 或 `grpo`；`--group-size` 只改变 GRPO 的同题采样数。
 
@@ -479,7 +479,7 @@ print(chosen.grad.item(), rejected.grad.item())  # -0.25 0.25
 
 本文固定奖励表中，每个上下文有三个候选动作，按奖励大小构造三对偏好，共 12 对。`train("dpo")` 重复使用这份离线数据，每轮做一次 full-batch 更新；reference 的 pair logps 可以预先缓存。
 
-它没有在线采样、critic 或额外 reward model，也没有显式添加第二个 KL loss。由于偏好完整且无噪声，训练很容易记住动作排序；这正适合验算更新方向，却不能说明对新 prompt 的泛化。
+它没有在线采样、critic 或额外 reward model，也没有显式添加第二个 KL loss。默认偏好完整且无噪声，训练很容易记住动作排序；这正适合验算更新方向，却不能说明对新 prompt 的泛化。第 10.3 节提供[偏好翻转对照](#dpo-noise)，可以只改变训练标签，检查 loss 与真实奖励怎样分离。
 
 ## 6. GRPO：同题多次采样，构造组内相对优势 {#grpo}
 
@@ -676,11 +676,12 @@ GRPO 使用奖励 `[1,0]`，忽略稳定项时组优势为 `[+1,−1]`。每回�
 | --- | --- |
 | `expected_reward`、`best_action_probability`、`kl_reference` | 本轮更新后，按完整动作分布精确评估 |
 | `loss`、`value_loss` | 本轮最后一次 optimizer step **之前**的训练目标；DPO/GRPO 不训练 critic，`value_loss` 为占位零 |
+| `dpo_training_loss`、`dpo_clean_loss` | 仅 DPO 输出：更新后分别在实际训练标签、未翻转标签上计算的偏好 loss；两者都使用相同当前策略与 reference |
 | `clip_fraction` | 更新后概率比超出 clip 区间的样本比例；还需结合优势符号，才能判断 surrogate 是否进入平坦分支 |
 | `old_policy_kl` | 更新后的 old 到 current 的精确 KL；DPO 无 rollout old policy，对应字段为占位零 |
 | `zero_group_fraction` | 当前 GRPO 采样批次中，奖励标准差为零的组比例；其他方法为占位零 |
 
-`step=0` 是更新前的初始评估，训练统计字段均为占位零。其余行中，不能把 loss 与更新后奖励视为同一参数时点，也不能仅凭 `clip_fraction` 推断有多少样本失去了策略梯度。
+`step=0` 是更新前的初始评估，`loss`、`value_loss` 和采样/更新计数为占位零；新增两项 DPO 诊断 loss 会真实计算，初始均为 log 2。其余行中，不能把 `loss` 与更新后奖励视为同一参数时点；需要同期对照时使用 `dpo_training_loss`。也不能仅凭 `clip_fraction` 推断有多少样本失去了策略梯度。
 
 自行重画：
 
@@ -765,13 +766,36 @@ $$
 
 它是 token 概率比的几何平均，既不是算术平均，也不是未归一化的完整序列概率比。与本文 GRPO 的逐 token clipping 不同。具体例子可继续阅读 [InternVL 3.5 的 GSPO 部分](../internvl-3-5/#63-gspo-的序列级重要性比)。
 
-### 10.3 三个可继续运行的实验
+### 10.3 可运行对照：偏好标签与真实奖励 {#dpo-noise}
 
-1. **奖励平移**：给同一上下文所有动作加常数，观察 group 标准化优势保持不变；检查 PPO critic 是否跟上新的回报零点。
-2. **奖励稀疏与 G**：把奖励改为只有最优动作得 1，分别用 G=2、4、8、16 运行。除 reward 外，同时比较零方差组比例与采样动作总数。
-3. **偏好翻转**：复制一份 DPO 固定偏好数据，随机翻转部分 chosen/rejected，观察训练 loss、真实奖励表下的策略表现怎样分离。
+DPO 优化的是提供给它的偏好数据；标签与实际任务目标不一致时，低 loss 也可能对应差行为。下面只修改训练标签：从固定 12 对偏好中按 seed 随机选 N 对，将 chosen/rejected 交换一次，之后每轮复用同一份数据。**奖励表、参考策略、学习率、训练步数和偏好总数均保持不变。**
 
-每个实验只改变一个因素，并记录新奖励表或偏好数据版本。不要直接改完脚本后沿用本文参考结果的标题与图注。
+```bash
+# N=0/3/6/12 分别翻转 0%/25%/50%/100% 的固定偏好
+for n in 0 3 6 12; do
+  python -B rl_lab.py --algorithm dpo --seed 7 --steps 120 \
+    --preference-flips "$n" --output "results-dpo-flips$n"
+done
+```
+
+`--preference-flips` 是整数个数，不是每轮重新抽样的翻转概率。它只作用于 DPO；`--algorithm all` 时其他两种方法保持默认数据。JSON 保存 `flipped_pair_indices`、`clean_preference_pairs` 和 `training_preference_pairs`，三列含义为 context/chosen/rejected，方便核对究竟改了哪条数据。
+
+本地 seed=7、120 次更新的实际结果如下。所有 loss 与期望奖励都在最后一次更新**之后**计算；初始两项 loss 均为 0.693147，初始期望奖励为 0.233333。
+
+| 翻转对数 | 训练标签 loss | 原始标签 loss | 原始奖励表下的期望奖励 |
+| ---: | ---: | ---: | ---: |
+| 0 / 12 | 0.052461 | 0.052461 | 0.995038 |
+| 3 / 12 | 0.052461 | 0.900474 | 0.597673 |
+| 6 / 12 | 0.212633 | 1.484653 | 0.036860 |
+| 12 / 12 | 0.052461 | 3.444512 | −0.495651 |
+
+可下载[完整配置与首末指标](assets/dpo-noise-results.json)，以及各轮 CSV：[0 对](assets/dpo.csv)、[3 对](assets/dpo-flips3.csv)、[6 对](assets/dpo-flips6.csv)、[12 对](assets/dpo-flips12.csv)。四组均访问 1440 次偏好对、执行 120 次 optimizer step；本对照控制了这些预算。
+
+全量反转组把最差动作当成最优方向，训练 loss 同样降到约 0.0525，行为回报却接近理论下限 −0.5。这说明优化器可以正确执行一个错误的任务目标。**原始标签 loss 也只是同一批上下文上的一致性诊断，不是独立验证集指标。** 真实应用仍需独立任务评测。
+
+部分翻转是否形成循环偏好、是否集中在某些上下文，都取决于实际选中的标签；不能从一个 seed 推断任意翻转比例与性能之间的单调关系。100% 反转是便于核对的极端对照，不代表真实标注噪声分布。测试检查三个 seed 下全量反转时“训练 loss 下降、原始标签 loss 上升、真实回报下降”，也检查部分翻转的数量与重现性。
+
+还可以在此基础上修改脚本继续研究两件事：给同一上下文的奖励整体加常数，检查优势与 critic 的反应；或改为稀疏奖励，再改变 G，同时记录零方差组比例与采样成本。每次只改变一个因素，并为修改后的奖励表和数据保存独立版本。
 
 ### 10.4 从表格策略走向环境和 LLM
 

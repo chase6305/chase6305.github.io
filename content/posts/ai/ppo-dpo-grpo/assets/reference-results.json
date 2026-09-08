@@ -114,7 +114,138 @@
         ]
       ],
       "reference": "fixed uniform",
-      "scope": "one-step tabular contextual bandit; no language model or held-out generalization"
+      "scope": "one-step tabular contextual bandit; no language model or held-out generalization",
+      "preference_flips": 0,
+      "flipped_pair_indices": [],
+      "clean_preference_pairs": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          1,
+          0
+        ],
+        [
+          1,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          0
+        ],
+        [
+          2,
+          0,
+          1
+        ],
+        [
+          2,
+          2,
+          0
+        ],
+        [
+          2,
+          2,
+          1
+        ],
+        [
+          3,
+          0,
+          1
+        ],
+        [
+          3,
+          0,
+          2
+        ],
+        [
+          3,
+          2,
+          1
+        ]
+      ],
+      "training_preference_pairs": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          1,
+          0
+        ],
+        [
+          1,
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          0
+        ],
+        [
+          2,
+          0,
+          1
+        ],
+        [
+          2,
+          2,
+          0
+        ],
+        [
+          2,
+          2,
+          1
+        ],
+        [
+          3,
+          0,
+          1
+        ],
+        [
+          3,
+          0,
+          2
+        ],
+        [
+          3,
+          2,
+          1
+        ]
+      ],
+      "preference_columns": [
+        "context",
+        "chosen",
+        "rejected"
+      ]
     },
     "initial": {
       "algorithm": "dpo",
@@ -130,7 +261,9 @@
       "value_loss": 0.0,
       "clip_fraction": 0.0,
       "old_policy_kl": 0.0,
-      "zero_group_fraction": 0.0
+      "zero_group_fraction": 0.0,
+      "dpo_training_loss": 0.6931471805599453,
+      "dpo_clean_loss": 0.6931471805599453
     },
     "final": {
       "algorithm": "dpo",
@@ -146,7 +279,9 @@
       "value_loss": 0.0,
       "clip_fraction": 0.0,
       "old_policy_kl": 0.0,
-      "zero_group_fraction": 0.0
+      "zero_group_fraction": 0.0,
+      "dpo_training_loss": 0.05246112303660775,
+      "dpo_clean_loss": 0.05246112303660775
     }
   },
   "grpo": {

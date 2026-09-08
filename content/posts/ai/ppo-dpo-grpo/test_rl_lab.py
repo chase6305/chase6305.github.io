@@ -126,6 +126,33 @@ class AtomicAlgorithms(unittest.TestCase):
 
 
 class TrainingLoops(unittest.TestCase):
+    def test_preference_corruption_separates_loss_from_reward(self):
+        for seed in (0, 7, 19):
+            with self.subTest(seed=seed):
+                rows, settings = lab.train("dpo", steps=80, seed=seed, preference_flips=12)
+                self.assertLess(rows[-1]["dpo_training_loss"], rows[0]["dpo_training_loss"])
+                self.assertGreater(rows[-1]["dpo_clean_loss"], rows[0]["dpo_clean_loss"])
+                self.assertLess(rows[-1]["expected_reward"], -.4)
+                self.assertEqual(settings["reward_table"], lab.reward_table().tolist())
+                for clean, noisy in zip(settings["clean_preference_pairs"], settings["training_preference_pairs"]):
+                    self.assertEqual(noisy, [clean[0], clean[2], clean[1]])
+
+    def test_preference_flip_count_and_reproducibility(self):
+        first, settings = lab.train("dpo", steps=5, seed=7, preference_flips=3)
+        self.assertEqual((first, settings), lab.train("dpo", steps=5, seed=7, preference_flips=3))
+        changed = [i for i, (a, b) in enumerate(zip(settings["clean_preference_pairs"],
+                                                    settings["training_preference_pairs"])) if a != b]
+        self.assertEqual(changed, settings["flipped_pair_indices"])
+        self.assertEqual(len(changed), 3)
+        self.assertEqual(first[-1]["pair_presentations"], 60)
+        clean, _ = lab.train("dpo", steps=5)
+        self.assertTrue(all(row["dpo_training_loss"] == row["dpo_clean_loss"] for row in clean))
+        for flips in (-1, 13, .5, True):
+            with self.assertRaises(ValueError):
+                lab.train("dpo", preference_flips=flips)
+        with self.assertRaises(ValueError):
+            lab.train("ppo", preference_flips=1)
+
     def test_learning_across_seeds(self):
         for name in ("ppo", "dpo", "grpo"):
             for seed in (0, 7, 19):
@@ -148,12 +175,17 @@ class TrainingLoops(unittest.TestCase):
         from pathlib import Path
         from unittest.mock import patch
         with tempfile.TemporaryDirectory() as tmp:
-            args = ["rl_lab.py", "--algorithm", "all", "--steps", "3", "--output", tmp]
+            args = ["rl_lab.py", "--algorithm", "all", "--steps", "3",
+                    "--preference-flips", "3", "--output", tmp]
             with patch.object(sys, "argv", args), contextlib.redirect_stdout(io.StringIO()):
                 lab.main()
             for name in ("ppo", "dpo", "grpo"):
                 data = json.loads((Path(tmp)/f"{name}.json").read_text())
                 self.assertEqual(data["final"]["step"], 3)
+                if name == "dpo":
+                    self.assertEqual(data["settings"]["preference_flips"], 3)
+                else:
+                    self.assertNotIn("preference_flips", data["settings"])
                 self.assertEqual(len((Path(tmp)/f"{name}.csv").read_text().splitlines()), 5)
 
 

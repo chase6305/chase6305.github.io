@@ -50,6 +50,8 @@ def main():
                 ["-m", "unittest", "-v", "test_rl_lab.py"],
                 ["rl_lab.py", "--algorithm", "atoms"],
                 ["rl_lab.py", "--algorithm", "all", "--steps", "3", "--output", "results"],
+                ["rl_lab.py", "--algorithm", "dpo", "--preference-flips", "3",
+                 "--steps", "3", "--output", "results-noisy-dpo"],
                 ["ppo_chain.py", "--steps", "3", "--output", "results-chain"],
                 ["token_objectives.py", "--output", "results-tokens.json"],
             )
