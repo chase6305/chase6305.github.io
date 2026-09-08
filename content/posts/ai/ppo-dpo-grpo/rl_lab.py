@@ -120,11 +120,15 @@ def gae(rewards, values, next_values, terminated, boundary, gamma=0.99, lam=0.95
     if not (math.isfinite(gamma) and math.isfinite(lam) and 0 <= gamma <= 1 and 0 <= lam <= 1):
         raise ValueError("gamma and lambda must be in [0, 1]")
     with torch.no_grad():
-        delta = rewards + gamma * (~terminated) * next_values - values
+        # Convert masks first: float * bool otherwise uses the default float32,
+        # silently rounding gamma/lambda even when the trajectory is float64.
+        bootstrap = (~terminated).to(dtype=rewards.dtype)
+        trace = (~boundary).to(dtype=rewards.dtype)
+        delta = rewards + gamma * bootstrap * next_values - values
         advantages = torch.zeros_like(rewards)
         carry = torch.zeros_like(rewards[0])
         for t in reversed(range(len(rewards))):
-            carry = delta[t] + gamma * lam * (~boundary[t]) * carry
+            carry = delta[t] + gamma * lam * trace[t] * carry
             advantages[t] = carry
         returns = advantages + values
     return advantages, returns

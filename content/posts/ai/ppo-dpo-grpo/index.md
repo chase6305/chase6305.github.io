@@ -23,7 +23,7 @@ related_posts:
 
 本文把“原子算法”理解为能单独解释、计算和测试的基础模块：log-probability、REINFORCE、baseline、TD/GAE、重要性采样、KL、clipping、Bradley–Terry 偏好模型。先拆解，再组装训练循环。PPO 以原始 **PPO-Clip** 为主，DPO 以原始 sigmoid 目标为主，GRPO 以 DeepSeekMath 的 outcome-supervision 版本为主；后来的变体单独讨论。
 
-附带的实验在 CPU 上真实执行采样、反向传播和优化器更新。为让读者能逐项核对，它使用**四个上下文、三个动作的一步任务**，不下载语言模型，也不依赖 Gym。多步信用分配由独立 GAE 算例与测试覆盖；文末说明如何迁移到环境交互与自回归文本。
+附带的实验在 CPU 上真实执行采样、反向传播和优化器更新。为让读者能逐项核对，它使用**四个上下文、三个动作的一步任务**，不下载语言模型，也不依赖 Gym。另附一个**两步决策树 PPO 实验**，实际调用 GAE 传递延迟奖励；文末说明如何迁移到环境交互与自回归文本。
 
 | 阅读目标 | 建议入口 | 要验证什么 |
 | --- | --- | --- |
@@ -43,7 +43,8 @@ related_posts:
 
 | 文件 | 用途 |
 | --- | --- |
-| [rl_lab.py](rl_lab.py) | 原子函数与 PPO/DPO/GRPO 训练循环 |
+| [rl_lab.py](rl_lab.py) | 原子函数与 PPO/DPO/GRPO 一步训练循环 |
+| [ppo_chain.py](ppo_chain.py) | 两步决策树 PPO：完整轨迹、GAE 与价值回归 |
 | [test_rl_lab.py](test_rl_lab.py) | 梯度方向、GAE、mask、重现性与训练测试 |
 | [requirements.txt](requirements.txt) | 核心依赖：PyTorch 2.8.0 |
 | [plot_results.py](plot_results.py) | 从 CSV 绘图，单独依赖 Matplotlib |
@@ -63,7 +64,10 @@ python -B rl_lab.py --algorithm atoms
 # 分别执行三种训练，默认 seed=7、120 个外层迭代
 python -B rl_lab.py --algorithm all --output results
 
-# 包括三个 seed 的训练收敛检查
+# 两步延迟奖励实验，实际调用 GAE
+python -B ppo_chain.py --output results-chain
+
+# 包括一步任务、两步任务与三个 seed 的训练检查
 python -B -m unittest -v test_rl_lab.py
 ```
 
@@ -338,6 +342,53 @@ $$
 - **当前策略相对 ref 的 KL**：限制相对训练起点的长期偏移。
 
 前者小，不代表后者小：每轮只走一小步，经过很多轮仍可能离起点很远。日志里应分开保存，而不是只有一个名叫 `kl` 的字段。
+
+### 4.5 两步实验：第一步没有奖励，为什么还能学会选路 {#ppo-chain}
+
+一步任务可以验证 loss，却无法检验跨时间的信用分配。[ppo_chain.py](ppo_chain.py) 增加一个两步决策树：从状态 0 出发，动作 0 进入状态 1，动作 1 进入状态 2；第一步奖励始终为 0。第二步动作决定终点奖励，随后结束回合。
+
+| 完整路线 | 第一步奖励 | 第二步奖励 | 总回报 |
+| --- | ---: | ---: | ---: |
+| 状态 0 → 状态 1 → 动作 0 | 0 | 1 | 1 |
+| 状态 0 → 状态 1 → 动作 1 | 0 | 0 | 0 |
+| 状态 0 → 状态 2 → 动作 0 | 0 | 0 | 0 |
+| 状态 0 → 状态 2 → 动作 1 | 0 | 0.2 | 0.2 |
+
+策略是一张 `3×2` logits 表，critic 为三个状态各预测一个标量。每轮采集 64 个完整回合，按“回合 0 的两步、回合 1 的两步……”排列 128 条 transition，再调用第 3 节的 `gae`。**不能先堆完所有回合的第一步，再堆第二步**，否则一维反向递推会串到别的回合。
+
+取 $\gamma=1,\lambda=0.95$，初始 critic 全为零。对获得终点奖励 1 的回合，手算为：
+
+$$
+\delta_1=1,\qquad \delta_0=0,\qquad
+\hat A_1=1,\qquad \hat A_0=0+1\times0.95\times1=0.95.
+$$
+
+第一步虽然没有即时奖励，仍获得正优势。`returns = advantages + old_values` 得到供 critic 回归的 **GAE λ-return**；当 λ 小于 1 时，它不必等于整条轨迹的 Monte Carlo 回报。采样、旧价值、优势与 targets 均停止梯度，在同一批的更新期间保持固定。
+
+```bash
+python -B ppo_chain.py --seed 7 --gae-lambda 0.95 --output results-chain
+
+# 控制变量：只改变 lambda，输出到不同目录
+python -B ppo_chain.py --seed 7 --gae-lambda 0 --output results-chain-lambda0
+python -B ppo_chain.py --seed 7 --gae-lambda 1 --output results-chain-lambda1
+```
+
+JSON 的 `first_rollout_trace` 保存第一批前四个完整回合，可以逐项检查状态、动作、奖励、旧价值、边界、优势和 λ-return。λ=0 时，**第一批**中起点优势为零；critic 学到后续价值后，起点仍可通过 TD bootstrap 获得信号，所以不能把“λ=0 永远无法学习”作为验收条件。
+
+训练仍使用 clip=0.2、Adam 学习率 0.08、每批最多 4 次更新，value loss 权重 0.5。这里没有 reference KL、entropy bonus、优势标准化或 value clipping；old→current KL 只用于提前停止后续更新。KL 对 rollout 中出现的状态取平均，对两个动作精确求和。该简化循环对应 [PPO-Clip 的采样、优势估计和价值回归步骤](https://spinningup.openai.com/en/latest/algorithms/ppo.html#pseudocode)，不是论文训练配置的复现。
+
+评估枚举全部四条路线，计算从起点出发的期望总回报：
+
+$$
+J=\pi(0\mid0)\pi(0\mid1)
++0.2\,\pi(1\mid0)\pi(1\mid2).
+$$
+
+初始均匀策略的 $J=0.3$，理论最优值为 1。本地 seed=7、120 轮的结果为 **0.9996**，起点选择状态 1 的概率约 **0.9997**；原始 [CSV](assets/ppo-chain.csv) 和 [JSON](assets/ppo-chain.json) 包含配置、采样成本与首批轨迹。这是与第 8 节一步任务不同的环境，回报不能放进同一排行榜。
+
+`value_start` 是学习得到的价值估计，可能暂时略高于 1；`expected_return` 才是由当前策略精确计算的行为指标。所有 CSV 指标均在本轮更新后记录，`step=0` 为初始评估。测试检查三个 seed 下的学习趋势，同时验证奖励不跨回合传播。
+
+这个环境每回合都真实终止，因此 `terminated` 与 `boundary` 在第二步同时为真。外部时间截断的情形仍由第 3.3 节及独立测试覆盖；接入 Gymnasium 时应保留 [final observation 的 bootstrap 与 reset 边界区分](https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/)。
 
 ## 5. DPO：把偏好建模代入 KL 正则化最优策略 {#dpo}
 
@@ -682,7 +733,7 @@ $$
 
 ### 10.4 从表格策略走向环境和 LLM
 
-迁移到多步环境时，用网络代替 logits 表，加入环境 reset/step、轨迹缓冲区、GAE、mini-batch 与独立评估；首先保留本文的边界与梯度测试。
+迁移到通用多步环境时，可从[两步 PPO 实验](#ppo-chain)出发，用网络代替 logits 表，接入环境 reset/step、可变长度轨迹缓冲区、mini-batch 与独立评估；保留 GAE 的边界与梯度测试。
 
 迁移到 LLM 时，新增自回归生成、response mask、可复核奖励、固定参考模型、old logps 缓存与分布式组管理。TRL 的 [DPOTrainer](https://huggingface.co/docs/trl/dpo_trainer) 和 [GRPOTrainer](https://huggingface.co/docs/trl/grpo_trainer) 可作为接口阅读入口，但库中的默认 loss、归约与 KL 设置可能随版本变化。应锁定完整依赖和配置，逐项映射到本文公式。
 
@@ -714,4 +765,4 @@ $$
 - [DeepSeekMath：2402.03300v3](https://arxiv.org/html/2402.03300v3)：原始 GRPO、outcome/process supervision 与 KL 项。
 - [Spinning Up 策略梯度](https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html)、[PPO](https://spinningup.openai.com/en/latest/algorithms/ppo.html)：原理与实现步骤。
 - [Gymnasium 时间限制](https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/)：终止与截断的价值 bootstrap。
-- 本文代码基线为 PyTorch 2.8.0，图由 Matplotlib 3.10.6 从本地实验数据生成；框架文档核对日期为 2026-09-08。教学超参数与简化条件已经单独声明，未复现论文的大模型训练和榜单结果。
+- 本文代码基线为 PyTorch 2.8.0；概念图由 imagegen 生成，训练曲线由 Matplotlib 3.10.6 从本地实验数据生成；框架文档核对日期为 2026-09-08。教学超参数与简化条件已经单独声明，未复现论文的大模型训练和榜单结果。

@@ -8,6 +8,7 @@ import unittest
 import torch
 
 import rl_lab as lab
+import ppo_chain as chain
 
 D = torch.float64
 
@@ -153,6 +154,43 @@ class TrainingLoops(unittest.TestCase):
                 data = json.loads((Path(tmp)/f"{name}.json").read_text())
                 self.assertEqual(data["final"]["step"], 3)
                 self.assertEqual(len((Path(tmp)/f"{name}.csv").read_text().splitlines()), 5)
+
+
+class MultistepPPO(unittest.TestCase):
+    def test_delayed_reward_credit_and_episode_order(self):
+        actor = torch.zeros(3, 2, dtype=D, requires_grad=True)
+        critic = torch.zeros(3, dtype=D, requires_grad=True)
+        batch = chain.rollout(actor, critic, torch.Generator().manual_seed(7))
+        rewards = batch["rewards"].reshape(-1, 2)
+        self.assertTrue((rewards[:, 0] == 0).all())
+        self.assertTrue((rewards[:, 1] == 1).any())
+        self.assertTrue((rewards[:, 1] == 0).any())
+        states = batch["states"].reshape(-1, 2)
+        actions = batch["actions"].reshape(-1, 2)
+        torch.testing.assert_close(states[:, 0], torch.zeros(64, dtype=torch.long))
+        torch.testing.assert_close(states[:, 1], actions[:, 0] + 1)
+        for lam in (0., .95, 1.):
+            advantage, returns = lab.gae(
+                batch["rewards"], batch["values"], batch["next_values"],
+                batch["terminated"], batch["boundary"], gamma=1., lam=lam,
+            )
+            # Each first decision inherits ONLY its own terminal reward.
+            torch.testing.assert_close(advantage[::2], lam * rewards[:, 1], rtol=0, atol=1e-14)
+            torch.testing.assert_close(advantage[1::2], rewards[:, 1])
+            self.assertFalse(returns.requires_grad)
+        self.assertTrue(all(not value.requires_grad for value in batch.values()))
+
+    def test_multistep_learning_and_reproducibility(self):
+        for seed in (0, 7, 19):
+            with self.subTest(seed=seed):
+                rows, report = chain.train(steps=80, seed=seed)
+                self.assertAlmostEqual(rows[0]["expected_return"], .3)
+                self.assertGreater(rows[-1]["expected_return"], .97)
+                self.assertGreater(rows[-1]["left_probability"], .97)
+                self.assertEqual(rows[-1]["sampled_transitions"], 80 * 128)
+                self.assertTrue(all(math.isfinite(v) for row in rows for v in row.values()))
+                self.assertFalse(report["settings"]["reference_kl"])
+        self.assertEqual(chain.train(steps=5, seed=7), chain.train(steps=5, seed=7))
 
 
 if __name__ == "__main__":
