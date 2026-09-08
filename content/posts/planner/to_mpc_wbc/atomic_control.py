@@ -95,6 +95,49 @@ def coupled_wbc():
                 task_residuals=(jacobian @ command - targets).tolist(), kkt=residuals)
 
 
+def priority_wbc():
+    """Weighted tasks vs an analytically reduced two-level hierarchy.
+
+    The high-priority sum target is feasible, so its optimum residual is zero.
+    Preserve it exactly by writing u = [t, target - t] in the lower-level QP.
+    This is a specific two-task example, not a general hierarchical QP solver.
+    """
+    target, regularization = .6, .1
+    lower, upper = np.array([-.2, -.8]), np.array([.2, .8])
+    jacobian = np.array([[1., 1.], [1., -1.]])
+    weighted = []
+    for weight in (4., 40., 400.):
+        weights = np.diag([weight, 1.])
+        h = jacobian.T @ weights @ jacobian + regularization * np.eye(2)
+        g = -jacobian.T @ weights @ np.array([target, 0.])
+        command, _ = solve_tiny_qp(h, g, np.eye(2), lower, upper)
+        # Independent scalar derivative with the first joint at its upper bound.
+        expected_second = (.4 * weight + .2) / (weight + 1.1)
+        np.testing.assert_allclose(command, [.2, expected_second], atol=1e-9, rtol=0)
+        weighted.append(dict(weight=weight, command=command.tolist(),
+                             high_residual=float(command.sum() - target),
+                             low_residual=float(command[0] - command[1])))
+
+    if not lower.sum() <= target <= upper.sum():
+        raise AssertionError("This tutorial requires a feasible high-priority target")
+    anchor, null = np.array([0., target]), np.array([[1.], [-1.]])
+    low_jacobian = jacobian[1:]
+    low_h = low_jacobian.T @ low_jacobian + regularization * np.eye(2)
+    reduced_h = null.T @ low_h @ null
+    reduced_g = (null.T @ low_h @ anchor).reshape(1)
+    t_lower = max(lower[0], target - upper[1])
+    t_upper = min(upper[0], target - lower[1])
+    t, residuals = solve_tiny_qp(reduced_h, reduced_g, np.ones((1, 1)),
+                               np.array([t_lower]), np.array([t_upper]))
+    command = anchor + (null @ t).reshape(2)
+    np.testing.assert_allclose(command, [.2, .4], atol=1e-9, rtol=0)
+    if abs(command.sum() - target) > 1e-12:
+        raise AssertionError("Lower-priority solve changed the high-priority optimum")
+    return dict(weighted=weighted, hierarchical=dict(command=command.tolist(),
+                high_residual=float(command.sum() - target),
+                low_residual=float(command[0] - command[1]), reduced_kkt=residuals))
+
+
 def rollout():
     """Replan from the measured integrator state; apply only the first velocity."""
     q, v, goal, rows = 0., 0., .3, []
@@ -128,7 +171,8 @@ def main():
         expected = np.sign(case["goal"]) * np.array([.2, .4])
         np.testing.assert_allclose(case["velocity"], expected, atol=1e-9, rtol=0)
     rows = rollout()
-    report = dict(numpy=np.__version__, mpc=cases, wbc=wbc(), coupled_wbc=coupled_wbc(), infeasible_rejected=rejected,
+    report = dict(numpy=np.__version__, mpc=cases, wbc=wbc(), coupled_wbc=coupled_wbc(),
+                  priority_wbc=priority_wbc(), infeasible_rejected=rejected,
                   rollout=dict(steps=len(rows), final=rows[-1]))
     args.output.mkdir(parents=True, exist_ok=True)
     with (args.output / "rollout.csv").open("w", newline="") as stream:
