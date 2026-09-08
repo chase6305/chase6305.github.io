@@ -77,6 +77,8 @@ class Page(HTMLParser):
         self.links = []
         self.images = []
         self.schemas = []
+        self.unrendered_math = []
+        self._math_literal_depth = 0
         self.filter_data = None
         self.has_draft_notice = False
         self.topic_links = []
@@ -87,6 +89,8 @@ class Page(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        if tag in ("pre", "code", "script", "style", "math"):
+            self._math_literal_depth += 1
         if tag == "nav":
             self._in_topic_nav = "blog-topic-nav" in attrs.get("class", "").split()
         if tag == "a" and self._in_topic_nav:
@@ -112,12 +116,18 @@ class Page(HTMLParser):
                     self.links.append(candidate.strip().split()[0])
 
     def handle_data(self, data):
+        # Goldmark attributes may consume a TeX line beginning with {} while
+        # leaving the display delimiters as prose, without any KaTeX error.
+        if not self._math_literal_depth and re.search(r"(?m)^\s*\$\$\s*$", data):
+            self.unrendered_math.append(data.strip()[:160])
         if self._schema_text is not None:
             self._schema_text += data
         if self._filter_text is not None:
             self._filter_text += data
 
     def handle_endtag(self, tag):
+        if tag in ("pre", "code", "script", "style", "math"):
+            self._math_literal_depth = max(0, self._math_literal_depth - 1)
         if tag == "nav":
             self._in_topic_nav = False
         if tag == "script" and self._schema_text is not None:
@@ -137,6 +147,9 @@ class Page(HTMLParser):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--public", type=Path, default=ROOT / "public")
+    parser.add_argument("--strict-math", nargs="*", metavar="PAGE",
+                        help="Fail on unrendered display math in selected output paths "
+                             "(all pages if no paths follow); otherwise report warnings")
     parser.add_argument("--python-snippets", action="store_true")
     parser.add_argument("--structured-snippets", action="store_true",
                         help="Parse Bash/sh, JSON/JSONC and XML; do not execute commands")
@@ -144,6 +157,7 @@ def main():
     args = parser.parse_args()
     review = json.loads((ROOT / "docs/blog-editorial-review.json").read_text())
     errors = []
+    math_warnings = []
     snippets = []
     for artifact in (ROOT / "content/posts").rglob("*.pyc"):
         errors.append(f"Python bytecode must not be published as a blog resource: {artifact}")
@@ -239,6 +253,9 @@ def main():
     html = {path: Page(path.read_text(encoding="utf-8")) for path in public.rglob("*.html")}
     if not html:
         errors.append("No Hugo output; run hugo --minify first")
+    for requested in args.strict_math or []:
+        if public / requested not in html:
+            errors.append(f"Unknown strict-math output path: {requested}")
     learning = html.get(public / "learning-paths/index.html")
     if learning is None:
         errors.append("Missing learning-path index")
@@ -317,6 +334,12 @@ def main():
                     page.links.extend(tag["url"] for tag in row.get("tags", []))
         if page.duplicate_ids:
             errors.append(f"Duplicate HTML ids: {relative}: {sorted(page.duplicate_ids)}")
+        if page.unrendered_math:
+            warning = f"Unrendered display math: {relative}: {page.unrendered_math}"
+            math_warnings.append(warning)
+            if args.strict_math is not None and (
+                    not args.strict_math or relative in args.strict_math):
+                errors.append(warning)
         base = "https://chase6305.github.io/" + relative
         for destination in page.links:
             url = urlsplit(urljoin(base, destination))
@@ -338,7 +361,8 @@ def main():
                       "syntax_checked_by_language": dict(sorted(syntax_counts.items())),
                       "html_pages": len(html), "local_references_checked": checked,
                       "collection_pages_checked": collection_pages, "filter_indexes_checked": filter_indexes,
-                      "errors": sorted(set(errors)), "python_fragment_warnings": snippets},
+                      "errors": sorted(set(errors)), "python_fragment_warnings": snippets,
+                      "unrendered_math_warnings": math_warnings},
                      ensure_ascii=False, indent=2))
     return bool(errors or snippets)
 

@@ -1,7 +1,7 @@
 ---
 title: "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
 date: 2026-09-05
-lastmod: 2026-09-07
+lastmod: 2026-09-08
 draft: false
 tags: ["InternVL", "VLM", "Multimodal", "Reinforcement Learning", "Paper Notes"]
 categories: ["人工智能"]
@@ -14,17 +14,25 @@ toc: true
 reading_prerequisites: "Transformer、视觉编码器与强化学习基础"
 reading_focus: "沿像素到 token、预训练到 RL、单次推理到在线服务三条链阅读，区分模型规模、训练阶段和权重格式。"
 related_posts:
+  - "/posts/ai/distributed-training-memory"
   - "/posts/ai/transformer-attention"
   - "/posts/ai/rynnbrain"
 ---
 
 InternVL 3.5 可以沿三个问题理解：**图像怎样变成语言模型能使用的 token，模型怎样学会更可靠地推理，多模态服务怎样降低视觉输入的成本。** 把这三条线连接起来，比记住一个榜单成绩更有帮助。
 
-本文以你指定的 [OpenGVLab / InternVL3.5 集合](https://huggingface.co/collections/OpenGVLab/internvl35)为入口，结合原始报告、作者博客、模型卡、配置与 Transformers 实现进行解析，核对日期为 **2026-09-07**。2026-09-07 复核时，集合与相关仓库没有新发布，8B-HF 固定 revision 的配置不变；下文新增的 DvD、Thinking 与部署细节均来自这些固定来源，不是对当前页面的猜测。
+本文以 [OpenGVLab / InternVL3.5 集合](https://huggingface.co/collections/OpenGVLab/internvl35)为入口，结合技术报告、模型卡和固定 revision 的配置与源码展开。**规模、训练阶段、权重格式与 Flash 变体是不同的选择维度**；文末集中记录来源版本，便于复查。
 
 范围明确限定为 **3.5 系列**。文中的性能数字属于原论文设置，不是当前所有模型的排行榜；普通版、不同训练阶段、HF 格式、Flash 版分别讨论。本文提供离线数值练习与固定 revision 的单图推理入口，但不声称已本地复现大模型训练、完整权重推理或论文服务吞吐。
 
-首次阅读可以从 [张量形状](#34-沿-8b-hf-源码追踪张量形状)建立直觉，再看 [GSPO 数值算例](#65-用四个数值检查-clipping-方向)，最后运行 [CPU 输入检查](#115-先准备输入再决定是否加载权重)。准备部署时重点回看第 9～12 节；研究训练方法时重点阅读第 5～8 节。
+| 阅读目标 | 建议路线 | 关键产出 |
+| --- | --- | --- |
+| 理解表示 | 第 1～4 节：模型家族、图块与张量形状 | 算出真实视觉 token 数 |
+| 研究训练 | 第 5～8 节：SFT、Cascade RL 与 Flash | 区分训练目标、推理预算与压缩策略 |
+| 准备部署 | 第 9～12 节：服务、显存与输入检查 | 跑通 Processor，建立资源预算 |
+| 评测或微调 | 第 13～16 节：对照实验与复现 | 用一致协议比较质量和成本 |
+
+想先动手，可以从 [8B 预算算例](#104-算例把图块上下文与显存放在同一本账里)开始，再运行 [CPU 输入检查](#115-先准备输入再决定是否加载权重)。
 
 ## 1. 先建立全貌：3.5 改进的是哪几层
 
@@ -80,7 +88,7 @@ InternVL 3.5 可以沿三个问题理解：**图像怎样变成语言模型能�
 
 ### 2.3 Flash 的发布状态不能停留在最初公告
 
-最初作者博客写着 Flash 将后续发布；核对时已存在独立的 [InternVL3.5-Flash 集合](https://huggingface.co/collections/OpenGVLab/internvl35-flash)。因此本文既不把 Flash 写成“尚未发布”，也不把用户指定的普通集合自动当成 Flash 集合。
+最初作者博客写着 Flash 将后续发布；核对时已存在独立的 [InternVL3.5-Flash 集合](https://huggingface.co/collections/OpenGVLab/internvl35-flash)。选择检查点时，应分别检查普通版与 Flash 版的模型卡和加载路径。
 
 类似地，后续的 Core 集合有自己的范围，本文不把它的配方或指标倒灌进原始 3.5 报告。
 
@@ -209,13 +217,35 @@ $$
 | --- | --- | --- | --- |
 | 100 与 400 | 1:4 | 1:1 | 1:2 |
 
-这说明配方里的“任务采样比例”不一定等于它最终贡献的梯度比例。如果一个数据源总是产生很长的解释，它可能在损失中获得比问答条数更大的实际权重。
+把这个规则写成归一化目标更容易实现。设 $\ell_{it}$ 是有效答案位置上的 token loss，$\bar\ell_i$ 是样本内均值，一种与上述权重关系一致的写法为：
 
-### 5.3 SFT 学到的是输出范式，不是正确性证明
+$$
+\mathcal L=\frac{\sum_i N_i^{-1/2}\sum_{t=1}^{N_i}\ell_{it}}
+{\sum_i\sqrt{N_i}}
+=\sum_i w_i\bar\ell_i,
+$$
 
-高质量示范可以教会模型按要求输出答案、解释、工具相关内容或结构化结果。但示范式训练并不会自动比较同一问题的多个候选答案。
+$$
+w_i=\frac{\sqrt{N_i}}{\sum_j\sqrt{N_j}}.
+$$
 
-这正是偏好训练和在线优化值得讨论的原因：当一个问题有正确、错误、冗长、格式错误等多个输出时，训练可以进一步学习它们之间的区别。
+例如两段答案长度为 100 和 400，样本内平均 loss 为 2 和 1，则 token 等权得到 1.2，样本等权得到 1.5，square averaging 得到 $4/3$。这固定的是损失系数；实际梯度大小和方向还取决于模型与样本。
+
+该式用于解释归约方式。实现时须排除 padding、图像占位和未监督前缀，并处理 $N_i=0$ 的样本。分布式训练还要对齐归一化范围：各 Rank 各自归一化后再平均，通常不等于对全局 batch 一次归一化，参见[梯度归一化推导](/posts/ai/distributed-training-memory/#44-变长文本平均局部均值未必等于全局-token-均值)。
+
+### 5.3 Loss mask、Attention mask 与冻结参数 {#53-sft-学到的是输出范式不是正确性证明}
+
+这三个设置作用于不同位置，微调多模态模型时尤其容易混淆：
+
+| 设置 | 它控制什么 | 对图像输入的影响 |
+| --- | --- | --- |
+| Loss mask / `labels=-100` | 哪些目标位置直接计入交叉熵 | 图像位置可以不作为预测目标，仍参与答案生成 |
+| Attention mask | 哪些位置可以参与注意力计算 | 错误屏蔽视觉位置会阻止答案利用图像信息 |
+| `requires_grad=False` | 哪些参数不累积自身梯度 | 冻结模块仍可能需要传递输入梯度 |
+
+用链式法则理解：答案 loss 依赖语言模型，语言模型依赖视觉投影，因此图像占位本身不计 loss，并不阻止梯度回到投影层或视觉编码器。能否更新这些模块，取决于参数是否可训练、计算图是否连通，以及训练器是否保留了这条路径。[PyTorch Autograd 规则](https://docs.pytorch.org/docs/2.8/notes/autograd.html#setting-requires-grad)
+
+SFT 在选定的答案位置学习示范；后续 MPO 和 GSPO 则进一步引入偏好或奖励信号。排查训练效果前，应先核对监督位置和梯度路径。
 
 ## 6. Cascade RL：为什么先 MPO，再 GSPO
 
@@ -225,7 +255,7 @@ Cascade RL 不是让两个模型同时“投票”，而是串行后训练：离
 
 从工程上理解，前者可以复用离线数据，采样成本相对集中；后者能追踪当前模型最常犯的错误，但需要持续生成回答并计算奖励。先把模型调整到较好的起点，再进行在线采样，是一种训练成本与优化效果的权衡。
 
-这不等于“离线一定不会 reward hacking”或“串起来一定优于任何其他算法”。奖励设计、样本难度、输出长度和训练预算仍然重要。
+比较两阶段收益时，需要控制奖励设计、样本难度、输出长度与训练预算。
 
 ### 6.2 MPO 不只是一个 DPO 损失
 
@@ -242,7 +272,7 @@ $$
 
 不展开整套实现，也可以理解一个重要问题：如果两个候选都很差，单纯把其中一个排得更高，并不表示模型已经学会了高质量答案。因此“谁更好”和“是否足够好”是互补的学习信号。
 
-本文不自行指定三个损失的通用最优权重，也不把普通 DPO 命令包装成完整 MPO 复现。
+复现 MPO 时，三个损失的权重和数据处理方式都应按对应配方固定。
 
 ### 6.3 GSPO 的序列级重要性比
 
@@ -267,7 +297,7 @@ $$
 - 重要性比在何处 detach，采样策略是否与记录的旧概率一致；
 - 最终实现是最大化目标还是最小化其负值。
 
-这些检查比只把函数名字写成 `gspo_loss` 更重要。尤其不能漏掉最后一点，写出一个公式正确、优化方向反了的训练器。
+调试时先用第 6.5 节的正负优势算例确认优化方向，再接入真实采样器。
 
 ### 6.4 训练数据为什么要筛选难度
 
@@ -328,7 +358,7 @@ assert clipped_surrogate(1.5, -1, epsilon=0.2) == -1.5
 | 单次 Thinking | 更多生成 token 与更长时间 | 不能只报告最终答案的 token 数 |
 | Best-of-N | 多次生成 + 评判模型 | 选出的答案正确率不等于随机一次采样的正确率 |
 
-一个自拟的概率例子：若每个候选独立正确的概率为 $p$，那么 N 个候选中“至少有一个正确”的概率是 $1-(1-p)^N$。但实际回答并不独立，而且评判模型也可能选错，因此这个式子只能解释理想化上界趋势，不能代替实测 Best-of-N 成绩。
+一个自拟的概率例子：若各候选独立、正确率均为 $p$，则 N 个候选中至少一个正确的概率是 $1-(1-p)^N$。在这个假设下，它对应能认出正确答案的理想选择器；真实 Best-of-N 还受候选相关性和评判错误影响。该公式也不是任意相关分布下的上界，评测时应分别记录“候选中有正确答案”和“最终选中了正确答案”的比例。
 
 对于 OCR 看不清的小字，增加解释长度可能只会让错误答案更详细。应先确认视觉信息进入模型，再增加推理预算。
 
@@ -363,13 +393,13 @@ $$
 
 如果直接把未经适配的表示从 256 压到 64，语言模型未必知道怎样利用新分布。ViCO 的思想是先训练压缩条件下的回答分布接近参考分布，再学习哪些图块对压缩更敏感；路由器训练阶段冻结主要多模态模型。[ViCO 后续专项论文](https://arxiv.org/html/2510.12793v2)
 
-一个便于理解的形式是：
+一个便于理解的形式是（固定同一问题 $Q$ 与回答前缀 $y_{<t}$）：
 
 $$
 \mathcal L_{\mathrm{consistency}}
 =\mathbb E\left[\mathrm{KL}
-\left(p_{\mathrm{ref}}(\cdot\mid I)
-\;\|\;p_\theta(\cdot\mid I_{\mathrm{compressed}})\right)\right].
+\left(p_{\mathrm{ref}}(\cdot\mid I,Q,y_{<t})
+\;\|\;p_\theta(\cdot\mid I_{\mathrm{compressed}},Q,y_{<t})\right)\right].
 $$
 
 它约束的是响应分布，不是要求压缩后的每一个视觉向量逐项相等。随后根据压缩造成的损失变化生成路由监督，让模型学习“哪里可以节省表示预算”。
@@ -414,7 +444,17 @@ $$
 
 因此，这个数字不是“任意单卡单次回答快 4.05 倍”，也不是“只换 3.5 权重便快 4.05 倍”。还必须交代是否有独立视觉资源，以及总资源、输入、输出和并发设置。
 
-对自己的服务，更有用的是同时记录：吞吐、首 token 延迟（TTFT）、每个输出 token 时间、P95/P99 延迟、失败率与总 GPU 成本。吞吐改善可能伴随更大的批处理等待，仅看平均 tokens/s 会遗漏体验问题。
+对自己的服务，应同时记录吞吐、TTFT、P95/P99 延迟、失败率与总 GPU 成本，并声明计时位置。客户端测量包含网络与排队，服务端指标可能采用不同起点，不能直接混算。[vLLM 指标定义](https://docs.vllm.ai/en/v0.12.0/design/metrics/)
+
+用一个人工时间线区分指标：请求在 0 秒提交，第一个 token 在 0.8 秒到达，第 101 个 token 在 2.8 秒到达，随后立即结束。假设能观测每个 token 的到达时间：
+
+| 指标 | 本例计算 | 说明 |
+| --- | --- | --- |
+| TTFT | 0.8 秒 | 从提交到首 token，包含此前等待 |
+| 生成间隔均值 | `(2.8−0.8)/(101−1)=0.02` 秒 | 首 token 之后平均 20 ms/token |
+| 单请求输出速率 | `101/2.8≈36.1` token/s | 包含首 token 等待，分母不同 |
+
+流式响应的一块文本可能包含多个 token，不能把响应块数当 token 数。并发服务吞吐应使用同一观测窗口的总完成请求数或总输出 token 数除以窗口时长；不能把每个请求的速率直接相加。首次模型加载、编译与缓存预热另行记录，稳态对比固定到达速率、并发上限及输入/输出长度分布。
 
 ## 10. 显存预算：8B、30B-A3B 到底要多少资源
 
@@ -447,11 +487,34 @@ $$
 M_{\mathrm{KV}}=2BLSH_{\mathrm{kv}}D_hs,
 $$
 
-其中前面的 2 表示 K 和 V，$B$ 是 batch，$L$ 是层数，$S$ 是缓存序列长度，$H_{\mathrm{kv}}$ 是 KV heads，$D_h$ 是每个 head 的维度，$s$ 是单元素字节数。
+其中前面的 2 表示 K 和 V，$B$ 是 batch，$L$ 是层数，$S$ 是每个 batch 槽位实际分配的缓存长度，$H_{\mathrm{kv}}$ 是 KV heads，$D_h$ 是每个 head 的维度，$s$ 是单元素字节数。对矩形缓存，$S$ 不能直接填入样本的平均有效长度。
 
 8B-HF 配置给出 $L=36$、$H_{\mathrm{kv}}=8$、$D_h=128$。若采用 BF16、batch 为 1、缓存长度为 32768，则理论缓存约为 **4.5 GiB**。[配置来源](https://huggingface.co/OpenGVLab/InternVL3_5-8B-HF/blob/741a7d03020411e666c6109218ab71e08151ef86/config.json)
 
-这是完整缓存的理想化估算，尚未包括分页块浪费、工作区等开销。对于不同注意力架构、缓存量化或部分卸载配置，公式要重新核对，尤其不能直接用于上一篇 RynnBrain 1.1 的混合注意力骨干。
+缓存布局决定如何合并长短请求。仍用该 8B 配置，假设同一时刻两个请求需要保留的有效长度分别为 2048 和 8192，不共享前缀：
+
+| 缓存布局假设 | 需要存储的位置数 | BF16 KV 理论值 |
+| --- | ---: | ---: |
+| 矩形缓存，两行都分配到 8192 | `2×8192=16384` | 2.25 GiB |
+| 理想按请求长度分别分配 | `2048+8192=10240` | 1.40625 GiB |
+
+第二行忽略分页块取整与元数据，不能当作框架实测值。可用 [token_budget.py](token_budget.py) 复算：
+
+```python
+from token_budget import kv_cache_bytes
+
+lengths = (2048, 8192)
+shape = dict(layers=36, kv_heads=8, head_dim=128)
+dense = kv_cache_bytes(
+    sequence=max(lengths), batch=len(lengths), **shape,
+)
+separate = sum(kv_cache_bytes(sequence=n, **shape) for n in lengths)
+print(dense / 2**30, separate / 2**30)  # 2.25 1.40625
+```
+
+Attention mask 屏蔽 padding 的参与，不会自动释放矩形 Tensor 中对应位置的存储。Static Cache 还可能预先分配更长的最大容量；分页缓存则按块组织每个请求的 KV，实际分配仍有取整与空闲池成本。[Transformers 缓存策略](https://huggingface.co/docs/transformers/v4.55.4/en/kv_cache)、[vLLM 分页布局](https://docs.vllm.ai/en/v0.12.0/design/paged_attention/)
+
+以上只估算完整全注意力缓存，不含工作区。不同注意力架构、量化或卸载需要重算，尤其不能直接套到 RynnBrain 1.1 的混合注意力骨干。
 
 ### 10.3 降成本的顺序建议
 
@@ -460,6 +523,37 @@ $$
 推理框架方面，官方模型卡提示大多数情况下 LMDeploy 与 vLLM 都可用，但 GPT-OSS 路线的 20B-A4B 推荐使用 vLLM。不要只凭一个框架名就假定所有规模都能正常加载，权重格式与引擎支持程度要一起核对。
 
 每一次压缩都应在同一个保留集上复测。视觉问答总体不变，不代表小字、数字、坐标和格式有效率同样不变。
+
+### 10.4 算例：把图块、上下文与显存放在同一本账里
+
+以下是**单请求、标准 8B-HF、BF16、完整 GQA 缓存**的人工预算。假设 Processor 实际生成 13 个 tile（含缩略图），文本与模板共 768 token，最多生成 4096 token：
+
+| 项目 | 计算 | 结果 |
+| --- | --- | ---: |
+| 视觉输入 | $13\times256$ | 3328 token |
+| 完整输入 | $3328+768$ | 4096 token |
+| 缓存长度预算 | $4096+4096$ | 8192 token |
+| BF16 KV Cache | 第 10.2 节公式，$B=1,S=8192$ | 1.125 GiB |
+| 权重 + KV 小计 | $15.89+1.125$ | 约 17.01 GiB |
+
+把 [token_budget.py](token_budget.py) 放到当前目录，可以独立复算：
+
+```python
+from token_budget import visual_tokens, kv_cache_bytes
+
+input_tokens = visual_tokens(13) + 768
+cache_gib = kv_cache_bytes(
+    layers=36, sequence=input_tokens + 4096,
+    kv_heads=8, head_dim=128,
+) / 2**30
+print(input_tokens, cache_gib)  # 4096 1.125
+```
+
+17.01 GiB 只是两项小计，不能据此承诺在某张显卡上运行。视觉编码与 prefill 仍需中间张量，服务框架还可能提前预留 KV 块；动态缓存的实际长度则随生成增长。应将估算与**同一缓存策略、同一请求负载**下的峰值测量比较。
+
+这个例子还能解释并发成本：若同时处理 4 个同长度请求且不共享前缀，KV 项约为 4.5 GiB，而单份模型权重保持约 15.89 GiB。增加请求数与增加模型副本是两种不同的显存变化。
+
+微调时则要另建训练账本：冻结层、可训练参数、梯度、优化器状态和激活分别统计，不能把上面的推理预算乘一个固定倍数。对应计算方法见[分布式训练与显存优化](/posts/ai/distributed-training-memory/)。
 
 ## 11. 单图推理：普通格式与 HF 格式不要混用
 
@@ -470,7 +564,7 @@ $$
 | 原始自定义格式 | `AutoModel`、`model.chat()` | 自定义图块处理、Tokenizer、图像 token 对应 |
 | `-HF` 原生格式 | `AutoModelForImageTextToText`、`AutoProcessor` | 由匹配的 Processor 与 chat template 构造输入 |
 
-本文提供第二条路线的 [infer_image.py](infer_image.py)，固定使用 `OpenGVLab/InternVL3_5-8B-HF` 及 revision `741a7d03020411e666c6109218ab71e08151ef86`，不执行远程自定义代码。[HF 模型卡](https://huggingface.co/OpenGVLab/InternVL3_5-8B-HF)、[Transformers 原生接口](https://huggingface.co/docs/transformers/model_doc/internvl)
+下载第二条路线的 [infer_image.py](infer_image.py)，进入文件所在目录。脚本固定使用 `OpenGVLab/InternVL3_5-8B-HF` 及 revision `741a7d03020411e666c6109218ab71e08151ef86`，不执行远程自定义代码。[HF 模型卡](https://huggingface.co/OpenGVLab/InternVL3_5-8B-HF)、[Transformers 原生接口](https://huggingface.co/docs/transformers/model_doc/internvl)
 
 安装应独立于 RynnBrain 环境：
 
@@ -480,14 +574,12 @@ source .venv-internvl35/bin/activate
 python -m pip install --upgrade pip
 # 先安装适合本机驱动/CUDA 的 PyTorch 与匹配的 torchvision。
 python -m pip install "transformers==4.55.0" pillow
-python infer_image.py --image /absolute/path/to/document.png
+python infer_image.py --image /absolute/path/to/document.png --prepare-only
 ```
 
-这里固定 4.55.0 是为了对应所核对的检查点配置，不是断言它是当前最新版本。官方模型卡要求 transformers>=4.52.1 才能正常工作，20B 版本要求 >=4.55.0；本文固定的 4.55.0 满足前者，也与所核对检查点配置中的 `transformers_version` 一致。脚本使用普通 SDPA 路线，不强制安装 FlashAttention；首次运行仍需要下载约 17 GB 的 BF16 权重，实际显存需求更高。
+4.55.0 对应本文核对的检查点配置；示例采用 SDPA，无需额外安装 FlashAttention。先运行 `--prepare-only` 检查输入，确认后在兼容的 CUDA 设备上去掉该参数，才会加载约 17 GB 的 BF16 权重并生成回答。生成阶段会打印输入和输出 token 数；显存预算见第 10 节。
 
-脚本会检查图像、CUDA、输入与输出长度预算，打印真实输入 token 数和生成 token 数。它不是性能评测器，本文也没有在本地执行完整模型推理。
-
-本次确实验证了固定 revision 的原生类解析及 CPU 输入构造：使用本站 Transformer 文章的结构图和提示词 `Describe the diagram.`，Processor 产生 9 个 `448×448` 图块，输入序列共 2319 个 token，其中视觉位置为 $9\times256=2304$，其余来自文本与模板。这个结果取决于示例图和提示词，不是任意单图的固定开销；检查中没有加载模型参数或执行前向计算。
+此前的 CPU 检查验证了固定 revision 的原生类解析及 CPU 输入构造：使用本站 Transformer 文章的结构图和提示词 `Describe the diagram.`，Processor 产生 9 个 `448×448` 图块，输入序列共 2319 个 token，其中视觉位置为 $9\times256=2304$，其余来自文本与模板。这个结果取决于示例图和提示词，不是任意单图的固定开销；检查中没有加载模型参数或执行前向计算。
 
 ### 11.2 为什么必须用匹配的 Processor
 
@@ -503,19 +595,15 @@ Processor 负责图像预处理、图块数量和模板中的视觉占位。自�
 
 ### 11.4 Flash 模型卡也要核对实际模型名
 
-本次查看的 Flash 模型卡，其部分 Quick Start 代码仍填写普通 `InternVL3_5-8B` 路径。即使该代码正常运行，也不能据此说已经测试了 Flash 路由。[Flash Quick Start](https://huggingface.co/OpenGVLab/InternVL3_5-8B-Flash#quick-start)
+本文核对的 Flash 模型卡快照，其部分 Quick Start 代码仍填写普通 `InternVL3_5-8B` 路径。即使该代码正常运行，也不能据此说已经测试了 Flash 路由。[Flash Quick Start](https://huggingface.co/OpenGVLab/InternVL3_5-8B-Flash#quick-start)
 
 确认是否运行 Flash，应检查实际下载的配置与实现、视觉路由模块以及进入 LLM 的 token 数；不能只看页面标题，也不能把 `use_flash_attn=True` 当成证据。
 
 ### 11.5 先准备输入，再决定是否加载权重
 
-附带脚本增加了 CPU 预检查模式；安装匹配版本的 Transformers、Pillow、CPU PyTorch 与 torchvision 后，可以在页面包目录运行：
+第 11.1 节的 `--prepare-only` 命令输出 JSON 报告：模型 revision、处理器版本、实际图块张量、输入 token 数与计划输出预算。其中 `reserved_output_tokens` 是生成上限，不表示已经分配缓存。
 
-```bash
-python infer_image.py --image /absolute/path/to/document.png --prepare-only
-```
-
-输出 JSON 会列出模型 revision、处理器版本、实际图块张量、输入 token 数与保留的输出预算。这个模式不要求 CUDA，不加载约 17 GB 的模型权重，也不执行模型前向；首次可能下载少量配置与 Tokenizer 文件。
+该模式不要求 CUDA，不加载模型权重，也不执行前向；首次可能下载少量配置与 Tokenizer 文件。检查时把 `inputs.pixel_values.shape` 对应的 tile 数与第 4 节预算相互核对，再用 `input_tokens` 统计完整输入。
 
 文件已缓存后，可以检查真正的无网络准备流程：
 
@@ -527,9 +615,9 @@ HF_HUB_OFFLINE=1 python infer_image.py \
 
 如果只把输入上限设为 `1`，正常图片应在加载权重之前被拒绝。这是一个很有用的负向测试：证明保护逻辑先于昂贵的权重加载，而不是已经占用大量显存之后才发现输入不合适。
 
-当前脚本默认输入上限 8192，最多允许设置为 28672；输出上限最多 4096，两者合计不超过本例采用的 32768-token 保守预算。它不会自动增加 tile 数去“用满”上下文，也不会通过截断视觉占位凑出一个合法长度。
+脚本默认输入上限 8192，可设置到 28672；输出上限为 4096，合计不超过本例的 32768-token 预算。`--max-input-tokens` 是处理完成后的验收阈值，不会改变 Processor 的 tile 数。超限时应调整图像或文本后重新准备，不能截断视觉占位。
 
-对于前面的 9-tile 示例，2319 是实际完整输入长度，2304 只是视觉占位数。token 预算应使用前者加生成预算，而不是只把图块数乘 256。
+前述 9-tile 示例的预算应使用完整输入长度 2319 加生成预算；2304 只计入了视觉位置。
 
 ### 11.6 常见故障与检查顺序
 
@@ -588,14 +676,30 @@ CPU 预检查成功只证明输入链可用，仍需独立记录模型回答的�
 
 更有价值的解读是：在该实验里，视觉压缩换来了较小的平均质量变化；这值得在自己的任务上验证。但表中并没有证明每张图片都无损，也没有替你完成最坏情况测试。
 
-### 13.3 如何设计自己的公平比较
+### 13.3 公平比较：等输入对照与部署选型分开 {#133-如何设计自己的公平比较}
 
-建议至少设置两条轴：
+先确定自己在比较什么，再选择控制变量：
 
-1. **等资源比较**：相同硬件、相同输出预算和近似延迟约束，哪种配置最好？
-2. **等质量比较**：达到同一保留集目标分数，哪种配置成本最低？
+| 比较目标 | 固定什么 | 允许变化什么 |
+| --- | --- | --- |
+| 比较 Flash 变体 | 图像、tile/帧采样、问题、输出预算与评分器 | 模型变体及其实际视觉 token 数 |
+| 固定资源下选型 | 总 GPU 资源、质量下限与延迟要求 | tile 数、batch、量化与服务配置 |
+| 固定质量下降本 | 任务集及质量门槛 | 型号、推理配置和部署资源 |
 
-把普通版、Flash、量化版和小模型放入这两条轴，比无条件寻找“最强型号”更能指导实际部署。
+第一行控制输入与评测预算，后两行服务于部署决策。标准版与 Flash 的对照仍包含压缩训练和路由等变化；若要单独归因到路由器，还需在同一 Flash 检查点下比较固定路由与学习路由。若同时换了分辨率和 Thinking 设置，就更难解释某个模块的独立贡献。
+
+平均准确率之外，还应按同一个样本 ID 配对检查。下面是 **100 题的人工对照**：
+
+| 标准版结果 | Flash 结果 | 题数 |
+| --- | --- | ---: |
+| 正确 | 正确 | 80 |
+| 正确 | 错误 | 8 |
+| 错误 | 正确 | 6 |
+| 错误 | 错误 | 6 |
+
+标准版为 88%，Flash 为 86%，平均只差 2 个百分点，但有 14 题的正确性发生变化，其中 8 题退化。应进一步检查这些退化是否集中在小字、刻度或细线等特定任务；仅用平均分会掩盖错误分布的变化。
+
+每条记录至少包含：样本 ID、模型 revision、实际 tile/视觉 token 数、输入与生成长度、解码设置、原始回答、解析状态和评分。超时、OOM 与无法解析的输出也要保留；若允许重试，单独统计调用开销。带随机采样的设置需多次运行，不能用一次配对结果判断稳定差异。
 
 ## 14. 离线教学实验：不下载权重，也能验证关键推导
 
@@ -614,7 +718,7 @@ python3 token_budget.py
 
 其中使用 12 个 tile、6 个保留高分辨率分支的人工例子：标准表示为 3072 token，混合表示为 1920 token，保留比例为 0.625。它只验证计数公式，**不模拟 ViR 的真实决策，也不测量 GPU 加速比**。
 
-建议接着做三组实测，但不要把建议当成本文已完成的实验：
+按第 13.3 节的记录方式，可以进一步安排以下实测：
 
 | 实验 | 控制变量 | 应记录的结果 |
 | --- | --- | --- |
@@ -635,7 +739,7 @@ python3 token_budget.py
 5. 用少量样本验证数据加载、loss mask、保存与重载，再扩展训练规模。
 6. 同时评估领域集和通用回归集，检查是否出现灾难性遗忘或输出风格偏移。
 
-模型卡列出的训练框架只是入口，具体可训练模块、LoRA 目标层、视觉冻结策略与多图格式，需要对照对应框架版本。本文不提供未经执行的“通用最优 LoRA 配方”。[官方微调入口](https://huggingface.co/OpenGVLab/InternVL3_5-8B-HF#finetune)
+选定训练框架后，明确可训练模块、LoRA 目标层、视觉冻结策略与多图格式；先检查第 5.3 节的梯度路径，再按[部分微调显存账本](/posts/ai/distributed-training-memory/#34-部分微调冻结参数后还剩哪些显存)估算资源。[官方微调入口](https://huggingface.co/OpenGVLab/InternVL3_5-8B-HF#finetune)
 
 许可证方面，相关模型卡标注 Apache-2.0；仍需分别核对所选检查点、底座与所用数据的具体条款，不能用集合页面代替全部依赖的许可检查。
 
@@ -655,9 +759,19 @@ python3 token_budget.py
 - 能否说明 DvD 中视觉服务与语言服务各自承担什么、视觉特征如何传输，并解释 4.05× 吞吐比需要哪些条件？
 - 能否说明 Thinking 模式官方推荐的解码设置与 TTS 的适用范围，并区分单次 Thinking 与 Best-of-N 的开销？
 
+<details>
+<summary>展开核对：token、Loss 与显存算例</summary>
+
+- 12 个局部 tile 加 1 个缩略图，共 `13×256=3328` 个视觉 token；完整输入还包括文本与模板。
+- 12 个 tile 中一半走 64-token 分支：`6×256+6×64=1920`，相比 3072 减少 37.5%。
+- 长度 100、400 的两个样本，在 square averaging 下总权重为 `1/3、2/3`；若各自平均 loss 为 2、1，归约后为 `4/3`。
+- 第 10.4 节的 8192-token 缓存占 1.125 GiB；约 17.01 GiB 的权重加 KV 小计仍未包含激活与运行时开销。
+
+</details>
+
 ## 参考材料与版本记录
 
-- [用户指定的 InternVL3.5 集合](https://huggingface.co/collections/OpenGVLab/internvl35)：模型与阶段清单入口。
+- [InternVL3.5 官方集合](https://huggingface.co/collections/OpenGVLab/internvl35)：模型与阶段清单入口。
 - [原始技术报告：2508.18265v2](https://arxiv.org/html/2508.18265v2)：本文引用的原始评测版本。
 - [作者发布博客](https://internvl.github.io/blog/2025-08-26-InternVL-3.5/)：规模、训练路径与模型格式说明。
 - [MPO 原始论文](https://arxiv.org/html/2411.10442v2)与[GSPO 原始论文](https://arxiv.org/html/2507.18071v2)：后训练目标的原始来源。

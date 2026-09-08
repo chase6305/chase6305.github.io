@@ -93,9 +93,18 @@ def core():
     expect_error(ValueError, list, code_blocks("```python\nx=1"))
     assert list(code_blocks("  ~~~python\n  x = 1\n  ~~~")) == [("python", "x = 1\n", 1)]
     assert Page('<a id="same"></a><h2 id="same"></h2>').duplicate_ids == {"same"}
+    # Failed Goldmark passthrough can leave delimiters without a KaTeX error.
+    assert Page('<p>$$\n</p><p>$$</p>').unrendered_math == ["$$", "$$"]
+    assert Page('<p>$$\n\\begin{aligned}</p>').unrendered_math
+    literal_math = ('<pre><code>$$</code>$$</pre><code>$$</code>'
+                    '<script>$$</script><style>$$</style>'
+                    '<math><semantics><annotation>$$</annotation></semantics></math>')
+    assert not Page(literal_math).unrendered_math
+    assert Page(literal_math + '<p>$$</p>').unrendered_math == ["$$"]
+    assert not Page('<p>Cost: $2 + $3</p>').unrendered_math
     return {"f_string_blocks": len(formatting), "unicode_blocks": len(unicode_blocks),
             "unicode_cpp": standards, "exception_propagation": "passed",
-            "validator_regression": "fences, JSONC, shell non-execution, XML, duplicate ids passed"}
+            "validator_regression": "fences, JSONC, shell non-execution, XML, duplicate ids, unrendered math passed"}
 
 
 def jacobian():
