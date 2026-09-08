@@ -1,0 +1,69 @@
+{
+  "scope": "single-joint integrator; position offset; no WBC or physical impulse",
+  "offset_time": 3.0,
+  "offset_rad": -0.08,
+  "cases": {
+    "replay": {
+      "first_after_offset": {
+        "step": 31,
+        "time": 3.1,
+        "offset": -0.08,
+        "measured_position": 0.22000000000432224,
+        "position": 0.22000000000157172,
+        "velocity": -2.750532125294182e-11,
+        "absolute_error": 0.07999999999842827
+      },
+      "final": {
+        "step": 100,
+        "time": 10.0,
+        "offset": 0.0,
+        "measured_position": 0.22000000000000003,
+        "position": 0.22000000000000003,
+        "velocity": -0.0,
+        "absolute_error": 0.07999999999999996
+      }
+    },
+    "feedback": {
+      "first_after_offset": {
+        "step": 31,
+        "time": 3.1,
+        "offset": -0.08,
+        "measured_position": 0.22000000000432224,
+        "position": 0.23999999999675828,
+        "velocity": 0.19999999992436046,
+        "absolute_error": 0.06000000000324171
+      },
+      "final": {
+        "step": 100,
+        "time": 10.0,
+        "offset": 0.0,
+        "measured_position": 0.3,
+        "position": 0.3,
+        "velocity": -0.0,
+        "absolute_error": 0.0
+      }
+    }
+  },
+  "horizon_trap": {
+    "first_plan": {
+      "goal": 0.5,
+      "velocity": [
+        0.6000000000000001,
+        0.4000000000000001
+      ],
+      "positions": [
+        0.4,
+        0.46,
+        0.5
+      ],
+      "kkt": {
+        "primal": 4.163336342344337e-17,
+        "dual": 0.0,
+        "stationarity": 6.938893903907228e-18
+      }
+    },
+    "next_position": 0.46,
+    "next_velocity": 0.6000000000000001,
+    "next_solve_rejected": true
+  }
+}
