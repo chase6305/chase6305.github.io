@@ -1,0 +1,227 @@
+{
+  "ppo": {
+    "settings": {
+      "algorithm": "ppo",
+      "seed": 7,
+      "steps": 120,
+      "dtype": "torch.float64",
+      "device": "cpu",
+      "torch": "2.8.0+cu128",
+      "learning_rate": 0.08,
+      "update_epochs": 4,
+      "clip_epsilon": 0.2,
+      "target_old_policy_kl": 0.05,
+      "kl_beta": 0.03,
+      "dpo_beta": 0.5,
+      "group_size": null,
+      "online_batch_prompts": 128,
+      "offline_preference_pairs": 0,
+      "reward_table": [
+        [
+          1.0,
+          0.2,
+          -0.5
+        ],
+        [
+          -0.5,
+          1.0,
+          0.2
+        ],
+        [
+          0.2,
+          -0.5,
+          1.0
+        ],
+        [
+          1.0,
+          -0.5,
+          0.2
+        ]
+      ],
+      "reference": "fixed uniform",
+      "scope": "one-step tabular contextual bandit; no language model or held-out generalization"
+    },
+    "initial": {
+      "algorithm": "ppo",
+      "step": 0,
+      "optimizer_steps": 0,
+      "sampled_actions": 0,
+      "pair_presentations": 0,
+      "expected_reward": 0.23333333333333334,
+      "best_action_probability": 0.3333333333333333,
+      "entropy": 1.0986122886681096,
+      "kl_reference": 0.0,
+      "loss": 0.0,
+      "value_loss": 0.0,
+      "clip_fraction": 0.0,
+      "old_policy_kl": 0.0,
+      "zero_group_fraction": 0.0
+    },
+    "final": {
+      "algorithm": "ppo",
+      "step": 120,
+      "optimizer_steps": 480,
+      "sampled_actions": 15360,
+      "pair_presentations": 0,
+      "expected_reward": 0.99885050831871,
+      "best_action_probability": 0.9989755746792244,
+      "entropy": 0.008646679537353352,
+      "kl_reference": 1.0899656091307564,
+      "loss": 0.0022407055442133102,
+      "value_loss": 8.610314668351705e-07,
+      "clip_fraction": 0.0,
+      "old_policy_kl": 1.989139685476378e-09,
+      "zero_group_fraction": 0.0
+    }
+  },
+  "dpo": {
+    "settings": {
+      "algorithm": "dpo",
+      "seed": 7,
+      "steps": 120,
+      "dtype": "torch.float64",
+      "device": "cpu",
+      "torch": "2.8.0+cu128",
+      "learning_rate": 0.08,
+      "update_epochs": 1,
+      "clip_epsilon": 0.2,
+      "target_old_policy_kl": 0.05,
+      "kl_beta": 0,
+      "dpo_beta": 0.5,
+      "group_size": null,
+      "online_batch_prompts": 0,
+      "offline_preference_pairs": 12,
+      "reward_table": [
+        [
+          1.0,
+          0.2,
+          -0.5
+        ],
+        [
+          -0.5,
+          1.0,
+          0.2
+        ],
+        [
+          0.2,
+          -0.5,
+          1.0
+        ],
+        [
+          1.0,
+          -0.5,
+          0.2
+        ]
+      ],
+      "reference": "fixed uniform",
+      "scope": "one-step tabular contextual bandit; no language model or held-out generalization"
+    },
+    "initial": {
+      "algorithm": "dpo",
+      "step": 0,
+      "optimizer_steps": 0,
+      "sampled_actions": 0,
+      "pair_presentations": 0,
+      "expected_reward": 0.23333333333333334,
+      "best_action_probability": 0.3333333333333333,
+      "entropy": 1.0986122886681096,
+      "kl_reference": 0.0,
+      "loss": 0.0,
+      "value_loss": 0.0,
+      "clip_fraction": 0.0,
+      "old_policy_kl": 0.0,
+      "zero_group_fraction": 0.0
+    },
+    "final": {
+      "algorithm": "dpo",
+      "step": 120,
+      "optimizer_steps": 120,
+      "sampled_actions": 0,
+      "pair_presentations": 1440,
+      "expected_reward": 0.9950378892642915,
+      "best_action_probability": 0.993830465052959,
+      "entropy": 0.0377723143394775,
+      "kl_reference": 1.0608399743286323,
+      "loss": 0.052985320336784214,
+      "value_loss": 0.0,
+      "clip_fraction": 0.0,
+      "old_policy_kl": 0.0,
+      "zero_group_fraction": 0.0
+    }
+  },
+  "grpo": {
+    "settings": {
+      "algorithm": "grpo",
+      "seed": 7,
+      "steps": 120,
+      "dtype": "torch.float64",
+      "device": "cpu",
+      "torch": "2.8.0+cu128",
+      "learning_rate": 0.08,
+      "update_epochs": 4,
+      "clip_epsilon": 0.2,
+      "target_old_policy_kl": 0.05,
+      "kl_beta": 0.03,
+      "dpo_beta": 0.5,
+      "group_size": 8,
+      "online_batch_prompts": 16,
+      "offline_preference_pairs": 0,
+      "reward_table": [
+        [
+          1.0,
+          0.2,
+          -0.5
+        ],
+        [
+          -0.5,
+          1.0,
+          0.2
+        ],
+        [
+          0.2,
+          -0.5,
+          1.0
+        ],
+        [
+          1.0,
+          -0.5,
+          0.2
+        ]
+      ],
+      "reference": "fixed uniform",
+      "scope": "one-step tabular contextual bandit; no language model or held-out generalization"
+    },
+    "initial": {
+      "algorithm": "grpo",
+      "step": 0,
+      "optimizer_steps": 0,
+      "sampled_actions": 0,
+      "pair_presentations": 0,
+      "expected_reward": 0.23333333333333334,
+      "best_action_probability": 0.3333333333333333,
+      "entropy": 1.0986122886681096,
+      "kl_reference": 0.0,
+      "loss": 0.0,
+      "value_loss": 0.0,
+      "clip_fraction": 0.0,
+      "old_policy_kl": 0.0,
+      "zero_group_fraction": 0.0
+    },
+    "final": {
+      "algorithm": "grpo",
+      "step": 120,
+      "optimizer_steps": 480,
+      "sampled_actions": 15360,
+      "pair_presentations": 0,
+      "expected_reward": 0.9988252368613543,
+      "best_action_probability": 0.9990314815282928,
+      "entropy": 0.008159542943892876,
+      "kl_reference": 1.090452745724217,
+      "loss": 0.032773108800449445,
+      "value_loss": 0.0,
+      "clip_fraction": 0.0,
+      "old_policy_kl": 1.758443622083082e-07,
+      "zero_group_fraction": 1.0
+    }
+  }
+}

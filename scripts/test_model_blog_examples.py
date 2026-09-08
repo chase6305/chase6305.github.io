@@ -201,9 +201,11 @@ class ModelBlogExamples(unittest.TestCase):
                 self.assertGreaterEqual(len(record["acceptance_checks"]), 2)
                 for check in record["acceptance_checks"]:
                     self.assertIn(check, article)
-                script = (ROOT / record["path"]).with_name("infer_image.py").read_text()
-                self.assertIn("trust_remote_code=False", script)
-                self.assertRegex(script, r'REVISION = "[0-9a-f]{40}"')
+                # Only model inference explainers require a pinned loading CLI.
+                if Path(record["path"]).parent.name in ("rynnbrain", "internvl-3-5"):
+                    script = (ROOT / record["path"]).with_name("infer_image.py").read_text()
+                    self.assertIn("trust_remote_code=False", script)
+                    self.assertRegex(script, r'REVISION = "[0-9a-f]{40}"')
 
 
 if __name__ == "__main__":

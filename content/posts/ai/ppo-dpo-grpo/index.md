@@ -1,0 +1,697 @@
+---
+title: "PPO、DPO 与 GRPO 详解：从策略梯度原子模块到可运行 Python 实验"
+date: 2026-09-08
+lastmod: 2026-09-08
+draft: false
+tags: ["Reinforcement Learning", "PPO", "DPO", "GRPO", "RLHF", "PyTorch"]
+categories: ["人工智能"]
+authors: ["chase"]
+summary: "从 REINFORCE、baseline、GAE、重要性采样、KL 与偏好建模推导 PPO、DPO、GRPO，提供 CPU 可运行训练、梯度测试与扩展路线。"
+description: "从 REINFORCE、baseline、GAE、重要性采样、KL 与偏好建模推导 PPO、DPO、GRPO，提供 CPU 可运行训练、梯度测试与扩展路线。"
+contentLanguage: "zh-CN"
+math: true
+toc: true
+reading_prerequisites: "概率、梯度下降与 PyTorch Tensor 基础"
+reading_focus: "先验证奖励、优势、概率比与梯度方向，再理解三种目标如何组装，以及从小任务迁移到语言模型需要补齐什么。"
+related_posts:
+  - "/posts/rl"
+  - "/posts/ai/internvl-3-5"
+  - "/posts/ai/distributed-training-memory"
+---
+
+**PPO 用交互得到的优势更新策略；DPO 用偏好对直接更新策略；GRPO 用同题多次采样的相对奖励构造优势。** 三者共享概率模型与梯度下降，但数据从哪里来、比较谁、如何控制更新幅度并不相同。
+
+本文把“原子算法”理解为能单独解释、计算和测试的基础模块：log-probability、REINFORCE、baseline、TD/GAE、重要性采样、KL、clipping、Bradley–Terry 偏好模型。先拆解，再组装训练循环。PPO 以原始 **PPO-Clip** 为主，DPO 以原始 sigmoid 目标为主，GRPO 以 DeepSeekMath 的 outcome-supervision 版本为主；后来的变体单独讨论。
+
+附带的实验在 CPU 上真实执行采样、反向传播和优化器更新。为让读者能逐项核对，它使用**四个上下文、三个动作的一步任务**，不下载语言模型，也不依赖 Gym。多步信用分配由独立 GAE 算例与测试覆盖；文末说明如何迁移到环境交互与自回归文本。
+
+| 阅读目标 | 建议入口 | 要验证什么 |
+| --- | --- | --- |
+| 先跑起来 | [第 1 节](#run) | 参数确实更新，结果可重复 |
+| 理解基础公式 | [第 2～3 节](#notation) | 区分奖励、价值、优势与概率比 |
+| 对比三种方法 | [PPO](#ppo)、[DPO](#dpo)、[GRPO](#grpo) | 数据流、目标与梯度 |
+| 迁移到 LLM | [第 7 节](#llm) | token 对齐、mask、采样与奖励协议 |
+| 排错与继续研究 | [验收](#diagnostics)、[扩展](#extensions) | 用证据判断失败发生在哪一层 |
+
+## 1. 先运行完整实验 {#run}
+
+下载并解压 [完整实验代码包](rl-lab.zip)，或把以下文件保存到同一个目录：
+
+| 文件 | 用途 |
+| --- | --- |
+| [rl_lab.py](rl_lab.py) | 原子函数与 PPO/DPO/GRPO 训练循环 |
+| [test_rl_lab.py](test_rl_lab.py) | 梯度方向、GAE、mask、重现性与训练测试 |
+| [requirements.txt](requirements.txt) | 核心依赖：PyTorch 2.8.0 |
+| [plot_results.py](plot_results.py) | 从 CSV 绘图，单独依赖 Matplotlib |
+| [参考结果](assets/reference-results.json) | 本文运行环境、配置及三种方法的首末指标 |
+
+以下命令在上述文件所在目录执行。本次验证使用 Python 3.10、PyTorch 2.8.0，计算设备显式为 CPU；Python 3.10/3.11 可作为环境起点。
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cpu
+
+# 单独观察基础模块的数值
+python -B rl_lab.py --algorithm atoms
+
+# 分别执行三种训练，默认 seed=7、120 个外层迭代
+python -B rl_lab.py --algorithm all --output results
+
+# 包括三个 seed 的训练收敛检查
+python -B -m unittest -v test_rl_lab.py
+```
+
+安装完成后，这些运行命令不需要网络。只测试某种方法时，可使用 `--algorithm ppo`、`dpo` 或 `grpo`；`--group-size` 只改变 GRPO 的同题采样数。
+
+训练输出 `ppo/dpo/grpo.csv` 与对应 JSON。CSV 记录每个外层迭代的指标；JSON 保存配置、奖励表、软件版本及首末指标。输出目录同名文件会被覆盖，改变 seed 时应换目录：
+
+```bash
+python -B rl_lab.py --algorithm grpo --seed 19 --group-size 4 --output results-seed19-g4
+```
+
+核心结果不是“打印一个 loss”，而是检查最优动作概率是否从初始的 $1/3$ 上升。这个有限任务的策略是一张可训练 logits 表，没有神经网络泛化难题，因此通过它只说明更新链条工作正常。
+
+## 2. 统一符号：先区分三个策略、两类模型 {#notation}
+
+| 符号 | 含义 | 何时变化 |
+| --- | --- | --- |
+| $\pi_\theta$ | 当前待训练策略 | 每次 optimizer step |
+| $\pi_{\mathrm{old}}$ | 产生当前 rollout 的行为策略 | 下轮采样时更新快照 |
+| $\pi_{\mathrm{ref}}$ | 参考策略，约束偏离的起点 | 本文实验始终固定 |
+| $r$ / $R$ | 单步奖励 / 回答级评分 | 由环境、规则或奖励模型给出 |
+| $V_\phi(s)$ | 状态的预期回报，critic | PPO 中回归更新 |
+| $\hat A$ | 相对 baseline 的优势估计 | 由当前批次计算后固定 |
+
+**old 与 ref 解决的是两个问题。** old 回答“这些样本由谁产生”，ref 回答“希望保留哪个策略的行为”。把二者都每个梯度步刷新，会同时破坏概率比和参考约束。
+
+Reward model 与 critic 也不同：前者评价动作或回答的质量，后者预测某状态之后的预期回报。GRPO 去掉的是学习得到的 critic，不代表所有 GRPO 任务都能去掉奖励模型；只有奖励能由规则可靠计算时，才可以用规则替代它。
+
+### 2.1 环境动作与语言 token 怎样对应
+
+多步环境中，策略看到 $s_t$，采样 $a_t$，环境产生 $r_t,s_{t+1}$。语言模型中，可以把 prompt 与已生成前缀视为状态，把下一个 token 视为动作：
+
+$$
+s_t=(x,y_{<t}),\qquad a_t=y_t.
+$$
+
+一段回答的对数概率是条件 log-probability 的**和**：
+
+$$
+\log\pi_\theta(y\mid x)
+=\sum_{t=1}^{T}\log\pi_\theta(y_t\mid x,y_{<t}).
+$$
+
+下面的一步实验把整个候选回答压缩为一个离散动作，所以序列级与 token 级目标在该实验里没有长度差异。真实文本中的长度归一化、EOS 和 padding 问题将在第 7 节单独展开。
+
+### 2.2 SFT、奖励学习、策略优化处在不同位置
+
+| 阶段 | 训练样本 | 典型目标 |
+| --- | --- | --- |
+| SFT | prompt 与示范答案 | 增大示范答案的条件概率 |
+| Reward modeling | 同题 chosen/rejected | 学习相对质量评分 |
+| PPO / GRPO | 当前策略采样与评分 | 提高有利行为的概率 |
+| DPO | 已有同题偏好对 | 相对参考策略扩大偏好间隔 |
+
+DPO 可以省掉“先训练一个显式奖励模型、再做在线 RL”的路径；它仍需要偏好数据，数据收集本身可能涉及模型采样与人工判断。PPO 和 GRPO 也不专属于 RLHF：奖励来源不同，可以是人类偏好、可验证答案或真实环境回报。
+
+## 3. 原子模块：从概率到可用梯度 {#atoms}
+
+### 3.1 Log-softmax 与 REINFORCE
+
+离散策略以 logits $z_a$ 表示：
+
+$$
+\pi_\theta(a\mid s)=\frac{\exp z_a}{\sum_b\exp z_b}.
+$$
+
+计算时使用 `log_softmax`，避免先 softmax 再 log 的数值损失。若轨迹 $\tau$ 的回报为 $R(\tau)$，对数导数技巧给出策略梯度：
+
+$$
+\nabla_\theta J
+=\mathbb E_{\tau\sim\pi_\theta}
+\left[R(\tau)\nabla_\theta\log p_\theta(\tau)\right].
+$$
+
+环境转移不依赖策略参数时，轨迹对数概率中的可训练部分来自动作概率。只使用动作之后的 reward-to-go 可以避免把过去奖励重复当作当前动作的学习信号。这里不要求对采样操作或奖励函数求导。[策略梯度推导](https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html)
+
+```python
+# logp 来自当前策略；returns 是采样后得到、停止梯度的回报
+loss = -(logp * returns.detach()).mean()
+```
+
+正回报提升已采样动作的概率，但回报的绝对零点会影响梯度方差，baseline 正是为此引入。
+
+### 3.2 Baseline 与 advantage：奖励高不等于动作有优势
+
+对于与当前采样动作无关的状态 baseline $b(s)$：
+
+$$
+\mathbb E_{a\sim\pi_\theta}
+[b(s)\nabla_\theta\log\pi_\theta(a\mid s)]=0.
+$$
+
+所以可以把回报换成 $R-b(s)$，不改变相应策略梯度的期望。常用 $b(s)=V_\phi(s)$：
+
+$$
+A^\pi(s,a)=Q^\pi(s,a)-V^\pi(s).
+$$
+
+例如某状态通常能拿到 8 分，某动作得到 6 分，即使绝对分数为正，其相对优势仍是 −2；另一个困难状态通常 1 分，得到 3 分则优势为 +2。
+
+```python
+advantage = returns - old_values
+policy_loss = -(logp * advantage.detach()).mean()
+value_loss = (current_values - returns.detach()).square().mean()
+```
+
+PPO 的 actor 更新不应通过 advantage 反向训练 critic。critic 通过自己的回归目标学习，actor 通过动作概率学习；共享骨干时，两种 loss 仍可能共同更新共享参数。
+
+### 3.3 TD residual、GAE 与时间边界
+
+单步 TD residual 为：
+
+$$
+\delta_t=r_t+\gamma b_t V(s_{t+1})-V(s_t),
+$$
+
+其中 $b_t=0$ 表示真正终止，不再 bootstrap。GAE 用递推混合多步 residual：
+
+$$
+\hat A_t=\delta_t+\gamma\lambda c_t\hat A_{t+1}.
+$$
+
+$c_t$ 控制是否继续跨时间递推。$\lambda=0$ 得到一步 TD；$\lambda=1$ 在正确终止/截断处理下累积全部可用 residual。它控制偏差与方差的权衡，不是“越大越准确”的单向开关。[GAE 原论文](https://arxiv.org/abs/1506.02438)
+
+**bootstrap 与递推边界不能始终共用一个 done。**
+
+| 情况 | 是否 bootstrap 下一状态价值 | 是否跨到下一个 episode 递推 |
+| --- | --- | --- |
+| 环境真正终止 | 否 | 否 |
+| 外部时间上限截断 | 通常是 | 否 |
+| rollout 缓冲区在中途收满 | 是 | 当前缓冲区在此结束 |
+| 普通连续转移 | 是 | 是 |
+
+时间上限截断时，应取截断前 final observation 的价值，不能误取自动 reset 后初始状态的价值。若有限时域本身就是任务定义的一部分，则要按真正的任务终止语义处理。[Gymnasium 时间边界说明](https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/)
+
+附带 `gae` 用 `terminated` 控制 bootstrap，用 `boundary` 控制递推。一个终点奖励为 1、$\gamma=\lambda=1$、所有旧价值为 0 的三步例子：
+
+```python
+import torch
+from rl_lab import gae
+
+rewards = torch.tensor([0., 0., 1.], dtype=torch.float64)
+values = torch.zeros_like(rewards)
+terminated = torch.tensor([False, False, True])
+advantages, returns = gae(
+    rewards, values, values, terminated, terminated,
+    gamma=1.0, lam=1.0,
+)
+print(advantages.tolist())  # [1.0, 1.0, 1.0]
+```
+
+这说明终点奖励可以沿时间回传到此前动作。测试还覆盖截断 bootstrap 与 episode 之间的隔离。
+
+### 3.4 重要性比：为什么必须保存 old log-probability
+
+在同一个状态与动作上：
+
+$$
+\rho_t(\theta)=
+\frac{\pi_\theta(a_t\mid s_t)}
+{\pi_{\mathrm{old}}(a_t\mid s_t)}
+=\exp(\log\pi_\theta-\log\pi_{\mathrm{old}}).
+$$
+
+同批数据的多轮优化中，分母必须固定。否则每次用当前策略同时算分子分母，会让比率恒等于 1，失去对相对变化的度量。
+
+完整轨迹重要性采样还涉及轨迹分布；PPO 的 token/动作级 surrogate 不应被表述成对任意陈旧离线数据都严格无偏。行为策略与当前策略越远，数据重用越需要谨慎。
+
+### 3.5 三种 clipping，含义完全不同
+
+| 操作 | 作用对象 | 示例 |
+| --- | --- | --- |
+| PPO ratio clipping | surrogate 中的概率比 | 限制继续朝有利方向变化的激励 |
+| Gradient clipping | 参数梯度范数 | `clip_grad_norm_(parameters, 1.0)` |
+| Reward clipping | 奖励数值 | 改变奖励尺度，可能改变目标 |
+
+PPO-Clip 并不会执行“更新完后把每个概率比强制拉回区间”。共享参数、其他样本梯度、价值损失与优化器动量，都可能使比率越界；因此仍需监测 KL 和 clip fraction。
+
+### 3.6 KL：方向、采样分布与梯度分别核对
+
+离散动作空间中的正向 KL 为：
+
+$$
+D_{\mathrm{KL}}(\pi_\theta\Vert\pi_{\mathrm{ref}})
+=\sum_a\pi_\theta(a)\left(\log\pi_\theta(a)-\log\pi_{\mathrm{ref}}(a)\right).
+$$
+
+本文只有三个动作，`categorical_kl` 可以直接求和并通过当前概率反向传播。语言模型词表较大时，经常使用采样估计，但必须写清方向与采样分布。
+
+令 $\ell=\log\pi_{\mathrm{ref}}(a)-\log\pi_\theta(a)$，GRPO 论文使用的单样本表达式是：
+
+$$
+k_3=\exp(\ell)-\ell-1\geq0.
+$$
+
+当 $a\sim\pi_\theta$ 且支持集满足要求时，其期望等于上述正向 KL。若样本来自固定的 $\pi_{\mathrm{old}}$，这个等式不能不加条件地沿用；离散采样的期望与对固定样本直接求导，也不是同一个操作。本文训练实验使用**精确分类 KL**，没有把该采样表达式冒充精确 KL 梯度。[DeepSeekMath 的 KL 项](https://arxiv.org/html/2402.03300v3#S4.SS1.SSS1)
+
+## 4. PPO：用 critic 与受限 surrogate 迭代改进 {#ppo}
+
+### 4.1 从 vanilla policy gradient 到 PPO-Clip
+
+固定一个 rollout 的 advantage 后，PPO-Clip 的最大化目标是：
+
+$$
+\begin{aligned}
+q_t&=\operatorname{clip}(\rho_t,1-\epsilon,1+\epsilon),\\
+J_{\mathrm{clip}}&=\mathbb E_t
+[\min(\rho_t\hat A_t,q_t\hat A_t)].
+\end{aligned}
+$$
+
+通常用梯度下降实现其负值，并加 value regression 与可选 entropy bonus：
+
+$$
+L=-J_{\mathrm{clip}}+c_vL_V-c_hH(\pi_\theta).
+$$
+
+PPO 是方法族，原论文也讨论 KL-penalty 版本；此处展开最常用的 clipped surrogate，不把 clip 当成严格 trust-region 约束。[PPO 原论文](https://arxiv.org/abs/1707.06347)、[PPO-Clip 实现说明](https://spinningup.openai.com/en/latest/algorithms/ppo.html)
+
+### 4.2 四个数值看清正负优势
+
+设 $\epsilon=0.2$：
+
+| $\rho$ | $\hat A$ | 未 clip 项 | clip 后项 | 取 min |
+| ---: | ---: | ---: | ---: | ---: |
+| 1.5 | +1 | 1.5 | 1.2 | 1.2 |
+| 0.5 | −1 | −0.5 | −0.8 | −0.8 |
+| 1.5 | −1 | −1.5 | −1.2 | −1.5 |
+| 0.5 | +1 | 0.5 | 0.8 | 0.5 |
+
+前两行已经朝有利方向变化过多，目标进入平坦区域；后两行属于不利变化，继续保留纠正信号。**必须先乘 advantage 再比较两项**，负优势时把顺序写反会改变目标。
+
+不仅比较数值，还可以验证对 log-probability 的导数：
+
+```python
+import torch
+from rl_lab import clipped_policy_loss
+
+logp = torch.tensor([1.5, .5, 1.5, .5], dtype=torch.float64).log()
+logp.requires_grad_()
+advantages = torch.tensor([1., -1., -1., 1.], dtype=torch.float64)
+loss = clipped_policy_loss(logp, torch.zeros_like(logp), advantages)
+loss.sum().backward()
+print(logp.grad.tolist())  # [0.0, 0.0, 1.5, -0.5]，浮点末位可能略有差异
+```
+
+这是**最小化 loss** 的梯度，故第三项为正意味着梯度下降会降低这个负优势动作的 log-probability。
+
+### 4.3 完整的一轮训练顺序
+
+1. 复制行为策略快照，采样新 rollout，保存 actions、old logps、旧价值、奖励和终止信息。
+2. 计算 GAE 与 value targets，将它们停止梯度。
+3. 对同一批数据执行若干 epoch；当前策略重新计算 logps，old 数据保持不变。
+4. 计算策略损失与 value loss；反向、梯度裁剪、optimizer step。
+5. 监测相对 old 的 KL，必要时提前结束该批更新，再采集新数据。
+
+本文一步任务的终止回报为：
+
+$$
+R_{\mathrm{shaped}}=
+R-\beta_{\mathrm{KL}}
+(\log\pi_{\mathrm{old}}(a\mid x)-\log\pi_{\mathrm{ref}}(a\mid x)).
+$$
+
+随后 $\hat A=R_{\mathrm{shaped}}-V_{\mathrm{old}}(x)$。它是 LLM RLHF 中 KL reward shaping 的一个小型对应；不使用多步 GAE 是因为每个 episode 只有一步，而不是 PPO 无需处理时间。
+
+在 `train("ppo")` 中，128 个上下文动作样本用于一次 rollout，最多更新 4 次；相对 old 的精确 KL 超过 0.05 时停止后续更新。这个阈值只能阻止进一步漂移，不能撤销已经完成的一步。实验不额外添加 entropy bonus，也没有 value clipping。
+
+### 4.4 PPO 里最容易混淆的两个 KL
+
+- **当前策略相对 old 的 KL**：监测本批数据上的更新幅度，控制是否继续使用这批 rollout。
+- **当前策略相对 ref 的 KL**：限制相对训练起点的长期偏移。
+
+前者小，不代表后者小：每轮只走一小步，经过很多轮仍可能离起点很远。日志里应分开保存，而不是只有一个名叫 `kl` 的字段。
+
+## 5. DPO：把偏好建模代入 KL 正则化最优策略 {#dpo}
+
+### 5.1 先建立 Bradley–Terry 偏好概率
+
+对于同一 prompt 的较优答案 $y_w$ 与较差答案 $y_l$，用奖励差表达偏好：
+
+$$
+P(y_w\succ y_l\mid x)
+=\sigma(r(x,y_w)-r(x,y_l)).
+$$
+
+这个模型表达相对偏好，不保证 $y_w$ 绝对正确。“两个错误答案里较好的一个”仍然可能得到 chosen 标签。
+
+### 5.2 从奖励目标得到策略形式
+
+对每个 prompt 考虑：
+
+$$
+\max_\pi\;
+\mathbb E_{y\sim\pi}[r(x,y)]
+-\beta D_{\mathrm{KL}}(\pi\Vert\pi_{\mathrm{ref}}).
+$$
+
+加入概率和为 1 的约束，对各个 $\pi(y\mid x)$ 求导，可得到：
+
+$$
+\pi^*(y\mid x)
+=\frac{\pi_{\mathrm{ref}}(y\mid x)\exp(r(x,y)/\beta)}{Z(x)}.
+$$
+
+反过来表达奖励：
+
+$$
+r(x,y)=
+\beta\log\frac{\pi^*(y\mid x)}{\pi_{\mathrm{ref}}(y\mid x)}
++\beta\log Z(x).
+$$
+
+同题两个回答相减时，$Z(x)$ 消失。以可训练的 $\pi_\theta$ 代替目标策略，便得到 DPO 的偏好分类损失。这一步是理论上的重参数化关系，不等于有限数据和有限容量下必然找到真实奖励的最优策略。[DPO 原论文，第 4 节](https://arxiv.org/html/2305.18290v3)
+
+### 5.3 DPO loss 与一次梯度更新
+
+定义相对参考策略的偏好间隔：
+
+$$
+\begin{aligned}
+\Delta_\theta
+&=\log\pi_\theta(y_w\mid x)-\log\pi_\theta(y_l\mid x),\\
+\Delta_{\mathrm{ref}}
+&=\log\pi_{\mathrm{ref}}(y_w\mid x)-\log\pi_{\mathrm{ref}}(y_l\mid x),\\
+L_{\mathrm{DPO}}
+&=-\log\sigma(\beta(\Delta_\theta-\Delta_{\mathrm{ref}})).
+\end{aligned}
+$$
+
+用 `-F.logsigmoid(...)` 实现，避免不稳定的 `-log(sigmoid(...))`。当当前策略等于参考策略时，loss 为 $\log2\approx0.6931$，但梯度不为零。
+
+```python
+import torch
+from rl_lab import dpo_loss
+
+chosen = torch.tensor([-2.], dtype=torch.float64, requires_grad=True)
+rejected = torch.tensor([-2.], dtype=torch.float64, requires_grad=True)
+reference = torch.tensor([-2.], dtype=torch.float64)
+loss = dpo_loss(chosen, rejected, reference, reference, beta=.5).mean()
+loss.backward()
+print(round(loss.item(), 4))  # 0.6931
+print(chosen.grad.item(), rejected.grad.item())  # -0.25 0.25
+```
+
+这只是把两项 log-probability 当成独立变量来检查方向。真实 softmax 模型中，概率受归一化与共享参数耦合影响；偏好间隔变大，不保证 chosen 的绝对概率单调上升。
+
+### 5.4 为什么 β 不能只按“力度旋钮”理解
+
+理论上，固定奖励目标中的较大 β 更强调贴近参考策略。可是在有限偏好数据的 DPO loss 中，β 同时改变 sigmoid 输入与梯度尺度。因此不能承诺“把 β 调大，实测 KL 一定减小”，应结合数据、学习率、训练步数与参考模型共同验证。
+
+原始 DPO 使用**回答 token log-probability 求和**。改成平均相当于改变偏好模型中的分数，不能仍称为完全相同的原始目标。后续算法会有不同的长度处理，应显式命名。
+
+### 5.5 实验怎样构造离线偏好
+
+本文固定奖励表中，每个上下文有三个候选动作，按奖励大小构造三对偏好，共 12 对。`train("dpo")` 重复使用这份离线数据，每轮做一次 full-batch 更新；reference 的 pair logps 可以预先缓存。
+
+它没有在线采样、critic 或额外 reward model，也没有显式添加第二个 KL loss。由于偏好完整且无噪声，训练很容易记住动作排序；这正适合验算更新方向，却不能说明对新 prompt 的泛化。
+
+## 6. GRPO：同题多次采样，构造组内相对优势 {#grpo}
+
+### 6.1 从 critic baseline 切换为 group baseline
+
+对同一个问题 $x$，从 $\pi_{\mathrm{old}}$ 独立采样 $G$ 个回答，得到奖励 $R_1,\ldots,R_G$。本文采用总体标准差：
+
+$$
+\begin{aligned}
+\bar R&=\frac1G\sum_iR_i,\\
+\sigma_R&=\sqrt{\frac1G\sum_i(R_i-\bar R)^2},\\
+\hat A_i&=\frac{R_i-\bar R}{\sigma_R+\varepsilon_{\mathrm{num}}}.
+\end{aligned}
+$$
+
+这里 $\varepsilon_{\mathrm{num}}$ 是数值稳定项，与 PPO clip 宽度 $\epsilon$ 无关。不能跨不同 prompt 把全部奖励合成一个 group；问题难度不同，混合会改变比较基准。
+
+```python
+import torch
+from rl_lab import group_advantages
+
+rewards = torch.tensor([[0., 0., 1., 1.], [5., 5., 5., 5.]], dtype=torch.float64)
+print(group_advantages(rewards))
+# 第一组约为 [-1, -1, 1, 1]；第二组为全零。
+```
+
+组均值包含样本自身，且除以随机标准差，所以它不等于第 3.2 节中与当前动作独立的状态 baseline。应把它看作组相对学习规则，而不是直接套用“baseline 不引入偏差”的证明。
+
+### 6.2 原始 outcome GRPO 的 token 目标
+
+为每个回答 token 定义：
+
+$$
+\rho_{i,t}=
+\frac{\pi_\theta(y_{i,t}\mid x,y_{i,<t})}
+{\pi_{\mathrm{old}}(y_{i,t}\mid x,y_{i,<t})}.
+$$
+
+单个 prompt 的目标可紧凑地写为：
+
+$$
+\begin{aligned}
+S_{i,t}
+&=\min\left(\rho_{i,t}\hat A_i,
+\operatorname{clip}(\rho_{i,t},1-\epsilon,1+\epsilon)\hat A_i\right),\\
+J_{\mathrm{GRPO}}
+&=\frac1G\sum_i\frac1{T_i}
+\sum_{t=1}^{T_i}(S_{i,t}-\beta k_{i,t}).
+\end{aligned}
+$$
+
+Outcome supervision 将回答级优势赋给该回答的所有有效 token；这不意味着它已经识别出具体哪一步推理造成成功或失败。原始目标先对每条回答按长度平均，再对回答平均。[DeepSeekMath 的 GRPO 目标](https://arxiv.org/html/2402.03300v3#S4.SS1)
+
+在本文一步实验中 $T_i=1$，每组采样 8 个动作，直接使用同一个 `clipped_policy_loss`，再加精确分类 KL。没有 critic 或 value loss；reward 来自固定表，也无需训练奖励模型。
+
+### 6.3 全对、全错与没有梯度
+
+如果同组二值奖励全为 0 或全为 1，则所有 $\hat A_i=0$。此时奖励驱动的 surrogate 梯度为零；如果保留 KL loss，它仍可能更新参数。
+
+这个现象还需要与另一个情况区分：混合奖励组的优势均值为零，在 $\rho=1$ 时平均 surrogate 的**数值**也可能为零，但对策略 log-probability 的梯度仍可能非零。不能看到 loss 接近 0 就认定训练停止。
+
+日志里的 `zero_group_fraction` 统计真正无组内奖励差异的比例。若它持续很高，可以检查任务难度、采样多样性、评分粒度及 group size；简单增加 G 会增加 rollout 成本，也不保证每个问题都有有效信号。
+
+### 6.4 去掉 critic 后仍有哪些成本
+
+一个 batch 有 $B$ 个 prompt，每题采样 G 个回答，平均回答长度 T，则至少涉及约 $BGT$ 个生成 token。old logps、reference 计算、奖励验证、长回答 KV 与反向激活仍需资源。
+
+对于数学或代码任务，验证器也可能成为瓶颈。降低模型状态显存，不保证端到端训练更快；应记录有效回答 token/s、奖励计算时间、失败/超时比例和每次更新使用的真实样本量。
+
+## 7. 迁移到语言模型：最容易写错的是数据轴 {#llm}
+
+### 7.1 先做 causal shift，再选择 response mask
+
+设 logits 形状为 `[B,T,V]`。位置 t 的 logits 预测位置 t+1 的 token；所以应该用：
+
+```python
+logp = logits[:, :-1].log_softmax(dim=-1)
+targets = input_ids[:, 1:]
+token_logp = logp.gather(-1, targets.unsqueeze(-1)).squeeze(-1)
+valid = response_mask[:, 1:]
+sequence_logp = token_logp.masked_fill(~valid, 0).sum(dim=-1)
+```
+
+以上变量由模型前向和 tokenizer 提供；附带 `response_logps` 实现同样计算并验证形状。response mask 表示**目标 token** 是否属于回答；prompt 为 False，padding 为 False，有效 EOS 通常为 True。
+
+例如 `[prompt0,prompt1,answer,EOS,PAD]` 的 mask 为 `[0,0,1,1,0]`。评分位置是 logits 的 1、2 两行，不能再向右错移一位。使用 EOS 兼作 padding token 时，更不能用 `token_id != eos_id` 构造 mask，否则会删掉真正的终止 token。
+
+### 7.2 Attention mask 与 loss mask 分开
+
+Attention mask 决定模型读取哪些上下文；response/loss mask 决定哪些位置计入训练目标。prompt 不计算直接 loss，仍必须作为回答的条件输入。
+
+拼接 chosen/rejected 时，应确保两者对应完全相同的 prompt 和预处理协议；Tokenizer 在字符串拼接边界的行为也要核对，不能随意把单独编码的 prompt 长度当成最终边界。使用 chat template 时尤其要保留角色分隔和结束标记。[TRL 偏好数据与模板说明](https://huggingface.co/docs/trl/dpo_trainer)
+
+### 7.3 每个序列等权与每个 token 等权不同
+
+两条回答分别有 10、100 个有效 token：
+
+- 先各自 mean，再取回答 mean：两条回答各占一半权重。
+- 把全部有效 token 求和后除以 110：长回答获得 $100/110$ 的总权重。
+
+原始 DPO 的序列概率求和、原始 outcome GRPO 的每回答 token 平均、某些变体的全局 token 归约不是可互换的小优化。多卡训练还要处理不同 Rank 的有效 token 数，参见[分布式 Loss 分母](../distributed-training-memory/#44-变长文本平均局部均值未必等于全局-token-均值)。
+
+### 7.4 采样设置属于行为策略定义
+
+Temperature、top-k/top-p、EOS、最大生成长度、chat template 都会影响实际采样分布。若 rollout 经过重整化采样，训练却把未调整的概率当成严格行为概率，importance ratio 的假设就发生变化。
+
+生产框架可能使用特定近似或采样修正；必须记录该选择，不能只保存 model ID。Dropout 也会导致同一输入多次重算 logps 不一致；`eval()` 控制模块行为，但**不会关闭梯度**，可在确定性前向下训练参数。`no_grad()` 才会关闭该段 autograd。
+
+### 7.5 奖励协议本身就是算法的一部分
+
+| 奖励来源 | 首先固定 | 典型误判 |
+| --- | --- | --- |
+| 数学答案 | 提取规则、数值容差、单位与等价表达 | 格式正确被当成数学正确 |
+| 代码测试 | 固定测试集、资源限制、超时与隔离执行 | 测试泄漏、只对可见样例过拟合 |
+| 人类/模型偏好 | 比较顺序、评分 rubrics、重复标注 | 长度偏好被误当成能力提升 |
+| 环境回报 | 成功条件、终止条件、观测协议 | 奖励投机与真实任务脱节 |
+
+保留原始回答、解析结果、奖励分项与失败原因，防止解析器修改掩盖模型失败。训练集与独立评测集应分离；本文的四上下文任务只做闭环验算，不声称具有独立评测意义。
+
+## 8. 本地实验结果与如何解释 {#results}
+
+三种策略均从全零 logits 开始，即每个动作概率相同。奖励表为：
+
+| 上下文 | 动作 0 | 动作 1 | 动作 2 |
+| --- | ---: | ---: | ---: |
+| 0 | 1.0 | 0.2 | −0.5 |
+| 1 | −0.5 | 1.0 | 0.2 |
+| 2 | 0.2 | −0.5 | 1.0 |
+| 3 | 1.0 | −0.5 | 0.2 |
+
+初始期望奖励是 $(1+0.2-0.5)/3=0.2333$，理论最大值为 1。评估按四个上下文等权、对全部动作概率精确求和，没有评估采样噪声。
+
+本地 seed=7、120 个外层迭代的参考结果：
+
+| 方法 | 初始期望奖励 | 最终期望奖励 | 最优动作概率 |
+| --- | ---: | ---: | ---: |
+| PPO | 0.2333 | 0.9989 | 0.9990 |
+| DPO | 0.2333 | 0.9950 | 0.9938 |
+| GRPO | 0.2333 | 0.9988 | 0.9990 |
+
+![三个一步上下文任务的期望奖励训练曲线，横轴为各方法自身的外层迭代](assets/training-curves.svg)
+
+图中数据来自本文脚本实际运行，可下载 [PPO CSV](assets/ppo.csv)、[DPO CSV](assets/dpo.csv)、[GRPO CSV](assets/grpo.csv)，并用 [plot_results.py](plot_results.py) 重画。横轴只表示各方法自身的外层迭代，**不是等数据、等 FLOPs 或等时间的公平比较**：
+
+- PPO 每轮采样 128 个动作，训练 actor 与 critic，最多更新 4 次。
+- GRPO 每轮采样 `16×8=128` 个动作，无 critic，最多更新 4 次。
+- DPO 每轮访问 12 对固定偏好并更新 1 次，没有新增在线采样。
+- PPO 使用 sampled KL reward shaping，GRPO 使用直接精确 KL 正则，DPO 使用偏好目标中的 β；这些目标并不完全相同。
+
+`sampled_actions`、`pair_presentations` 与 `optimizer_steps` 已随 CSV 记录。三条曲线用来检查各自有没有学到奖励表，不能用最后几位小数判断真实 LLM 任务应选谁。
+
+自行重画：
+
+```bash
+python -m pip install "matplotlib==3.10.6"
+python plot_results.py --input results --output training-curves.svg
+```
+
+软件版本、平台或 seed 改变时，末位数可能不同；测试检查合理的学习趋势与数值正确性，不要求跨机器逐 bit 重现图中结果。
+
+## 9. 用梯度与行为验收，而不是只看 loss {#diagnostics}
+
+附带测试分别验证：
+
+| 检查 | 应观察到的证据 |
+| --- | --- |
+| PPO 正负优势与 clipping | 两个平坦区导数为 0，不利变化仍有纠正梯度 |
+| DPO 方向 | chosen logp 的 loss 导数为负，rejected 为正 |
+| frozen 数据 | old、ref 和 advantage 不获得 actor 的梯度 |
+| GAE | 终点奖励向前传播，截断 bootstrap，重置 episode 不串联 |
+| response mask | causal shift 正确，增加 padding 不改变序列分数 |
+| KL | 同分布为 0，非同分布非负，当前策略可反向传播 |
+| 训练 | 三个 seed 下三种方法都提高最优动作概率 |
+
+排查真实训练时，按下表先定位：
+
+| 现象 | 先检查 |
+| --- | --- |
+| loss 改变但策略概率不动 | optimizer 是否包含 actor；是否错误 detach 当前 logps |
+| PPO 一开始 ratio 远离 1 | old 快照、dropout、采样与重算概率、模板是否一致 |
+| KL 突然飙升 | 学习率、数据重复轮数、奖励尺度、有效 token 分母 |
+| DPO loss 下降但生成退化 | 偏好质量、chosen/rejected 长度、绝对似然与独立评测 |
+| GRPO 大量无效更新 | 零方差组比例、奖励解析、prompt 内分组和采样多样性 |
+| 扩卡后训练曲线改变 | global batch、组是否跨 Rank 完整、Loss 分母与同步 |
+| 回答越来越长但正确率不变 | 长度奖励、截断规则、token 归约与评测口径 |
+
+PPO 的 value loss、DPO 的偏好分类 loss、GRPO 的 surrogate 不是同一个量，不能跨方法比较谁的 loss 更小。即使同一种方法，也应把 loss 与 reward、KL、entropy、输出长度和失败率一起看。
+
+## 10. 三种方法怎么选，怎样继续拓展 {#extensions}
+
+### 10.1 按数据与反馈条件选起点
+
+| 已有条件 | 可优先尝试 | 需要接受的成本 |
+| --- | --- | --- |
+| 成对偏好充足，在线评分昂贵 | DPO | 离线覆盖不足、分布偏移与偏好噪声 |
+| 有多步环境、需要状态价值与时间信用分配 | PPO | critic 学习、rollout 与更新调度 |
+| 同题可多次采样，答案能可靠打分 | GRPO | group rollout、零方差组和奖励验证 |
+| 只有示范答案 | 先建立 SFT 基线 | 数据并非自动构成偏好对或 reward |
+
+这不是“新算法淘汰旧算法”的排序。数据覆盖、任务可验证性、模型起点与计算预算会改变结果。
+
+### 10.2 沿原子模块理解后续工作
+
+| 扩展方向 | 改动的模块 | 建议研究问题 |
+| --- | --- | --- |
+| TRPO | 显式 KL 约束与受限优化 | clip surrogate 与真正约束优化的差别 |
+| RLOO | baseline 改为同组其他回答的均值 | 与包含自身的 group mean 有何区别 |
+| DAPO | 非对称 clip、动态采样、token 归约、超长处理 | 哪个改动解决探索，哪个改动改变样本权重 |
+| Dr. GRPO | 长度与奖励标准化偏差 | 长短回答、难易问题怎样被重新加权 |
+| GSPO | token ratio 改为长度归一化的序列 ratio | 长输出与 MoE 下如何降低更新噪声 |
+| IPO 等偏好目标 | 偏好损失与正则化形式 | 可分偏好数据是否导致过度拟合 |
+
+这些名称代表具体目标与训练选择，不应只换一个 loss 名字就声称复现。参考 [TRPO](https://arxiv.org/abs/1502.05477)、[RLOO / REINFORCE 风格后训练](https://arxiv.org/abs/2402.14740)、[DAPO](https://arxiv.org/html/2503.14476v2)、[Dr. GRPO 分析](https://arxiv.org/html/2503.20783v1)、[GSPO](https://arxiv.org/html/2507.18071v2)、[IPO](https://arxiv.org/abs/2310.12036)。
+
+RLOO 的一个可直接推导的 baseline 是：
+
+$$
+b_{-i}=\frac{\sum_{j\ne i}R_j}{G-1}.
+$$
+
+它与包含自身的均值中心化满足
+$R_i-b_{-i}=\frac{G}{G-1}(R_i-\bar R)$。
+只有在条件独立采样等假设成立时，才能使用其 baseline 独立性论证；再除标准差又会引入另一层变化。
+
+GSPO 的一个关键量是：
+
+$$
+s_i=\exp\left(
+\frac1{T_i}\sum_t(\log\pi_\theta-\log\pi_{\mathrm{old}})
+\right).
+$$
+
+它是 token 概率比的几何平均，既不是算术平均，也不是未归一化的完整序列概率比。与本文 GRPO 的逐 token clipping 不同。具体例子可继续阅读 [InternVL 3.5 的 GSPO 部分](../internvl-3-5/#63-gspo-的序列级重要性比)。
+
+### 10.3 三个可继续运行的实验
+
+1. **奖励平移**：给同一上下文所有动作加常数，观察 group 标准化优势保持不变；检查 PPO critic 是否跟上新的回报零点。
+2. **奖励稀疏与 G**：把奖励改为只有最优动作得 1，分别用 G=2、4、8、16 运行。除 reward 外，同时比较零方差组比例与采样动作总数。
+3. **偏好翻转**：复制一份 DPO 固定偏好数据，随机翻转部分 chosen/rejected，观察训练 loss、真实奖励表下的策略表现怎样分离。
+
+每个实验只改变一个因素，并记录新奖励表或偏好数据版本。不要直接改完脚本后沿用本文参考结果的标题与图注。
+
+### 10.4 从表格策略走向环境和 LLM
+
+迁移到多步环境时，用网络代替 logits 表，加入环境 reset/step、轨迹缓冲区、GAE、mini-batch 与独立评估；首先保留本文的边界与梯度测试。
+
+迁移到 LLM 时，新增自回归生成、response mask、可复核奖励、固定参考模型、old logps 缓存与分布式组管理。TRL 的 [DPOTrainer](https://huggingface.co/docs/trl/dpo_trainer) 和 [GRPOTrainer](https://huggingface.co/docs/trl/grpo_trainer) 可作为接口阅读入口，但库中的默认 loss、归约与 KL 设置可能随版本变化。应锁定完整依赖和配置，逐项映射到本文公式。
+
+显存预算还要统计 actor、critic、reference、reward 的实际存储方式、是否共享骨干、是否缓存 logps，以及 rollout KV 和训练激活。不能简单认定 PPO 永远需要四份完整模型、GRPO 永远只需两份；具体账本见[分布式训练与显存优化](../distributed-training-memory/)。
+
+## 阅读自测与验收
+
+- 能否区分 current、old、reference 与 reward model、critic，并说明哪些张量应停止梯度？
+- 运行原子模块与测试，解释 PPO 四种 clipping 情况、DPO 的初始梯度方向以及 GAE 的终止/截断边界。
+- 能否正确对齐回答 token 的 log-probability，并解释 DPO 求和与 GRPO 每回答平均的差别？
+- 运行三个 CPU 训练，记录 seed、配置、奖励、KL 与样本成本，说明这些曲线为什么不能构成公平的 LLM 排行榜。
+- 能否解释 GRPO 零方差组、RLOO baseline 与 GSPO 序列概率比，并设计一个只改变单项因素的扩展实验？
+
+<details>
+<summary>展开核对：五个关键问题的答案</summary>
+
+- old 固定于本批 rollout；reference 固定于声明的参考阶段。它们一般不是同一个快照。
+- $\rho=1.5,A=-1$ 时，最大化 surrogate 取 −1.5；最小化 loss 对 logp 的导数为 +1.5。
+- 当前策略等于参考策略时，DPO loss 为 $\log2$，但偏好间隔仍得到更新梯度。
+- 外部时间截断通常保留 final observation 的 bootstrap，同时阻止 GAE 跨到 reset 后的 episode。
+- 同组奖励全相同会使奖励优势为零；混合奖励下平均 surrogate 为零却未必没有梯度。
+
+</details>
+
+## 参考资料与版本边界
+
+- [PPO：1707.06347v2](https://arxiv.org/abs/1707.06347v2)、[GAE：1506.02438](https://arxiv.org/abs/1506.02438)：策略更新与优势估计。
+- [DPO：2305.18290v3](https://arxiv.org/html/2305.18290v3)：偏好模型与 KL 正则化策略的关系。
+- [DeepSeekMath：2402.03300v3](https://arxiv.org/html/2402.03300v3)：原始 GRPO、outcome/process supervision 与 KL 项。
+- [Spinning Up 策略梯度](https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html)、[PPO](https://spinningup.openai.com/en/latest/algorithms/ppo.html)：原理与实现步骤。
+- [Gymnasium 时间限制](https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/)：终止与截断的价值 bootstrap。
+- 本文代码基线为 PyTorch 2.8.0，图由 Matplotlib 3.10.6 从本地实验数据生成；框架文档核对日期为 2026-09-08。教学超参数与简化条件已经单独声明，未复现论文的大模型训练和榜单结果。

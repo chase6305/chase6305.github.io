@@ -62,6 +62,9 @@ let browserSocket;
     }
     await evaluate("Promise.all(Array.from(document.querySelectorAll('.content img')).map(img => { img.loading='eager'; return img.decode().catch(() => null); }))");
     await sleep(120);
+    // KaTeX HTML/CSS version drift can break sizing without a parse error.
+    const mathStyles = await evaluate("(() => { const base = document.querySelector('.katex-html > .base'); const sub = document.querySelector('.katex .sizing.reset-size6.size3'); return {base: !base || getComputedStyle(base).display === 'inline-block', sub: !sub || parseFloat(getComputedStyle(sub).fontSize) < 0.8 * parseFloat(getComputedStyle(sub.closest('.katex')).fontSize)}; })()");
+    assert(mathStyles.base && mathStyles.sub, 'KaTeX stylesheet does not match rendered HTML: ' + JSON.stringify(mathStyles));
   };
   const screenshot = async name => {
     const {data} = await cdp("Page.captureScreenshot", {format: "png"});

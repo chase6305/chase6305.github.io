@@ -64,6 +64,12 @@ minify:
   minifyOutput: true
 
 params:
+  # Match Hugo 0.165.0's embedded KaTeX renderer; latest CSS changes class names.
+  # Source: gohugoio/hugo v0.165.0 internal/warpc/katex.go
+  math:
+    engine: katex
+    katex:
+      base: "https://cdn.jsdelivr.net/npm/katex@0.16.21/dist"
   description: "Robotics Engineer focused on Embodied AI, VLA, motion planning, robot control, and open-source robotics."
   externalLinkDecoration: true
   displayUpdatedDate: true
