@@ -863,7 +863,7 @@ MPC 可以使用质心、单刚体或全身模型；某些实现优化接触力�
 
 动力学 WBC 常联合求广义加速度、接触力和关节力矩，满足浮动基动力学、接触与执行器约束；速度级 WBC 则可能仅求关节速度，使各任务的雅可比残差尽量小。后者即使跟踪很好，也不能据此证明摩擦、平衡或力矩可行。加权 QP 也不等于严格任务层级。相关方程见 [WBC 章节](../../planner/to_mpc_wbc/#wbc)。
 
-本文参考的 WholeBodyX 当前实现属于固定基座运动学基线：`JointMPC` 输出关节位置/速度参考，`MPCReferenceManager` 管理时间戳、有效期与重规划，`KinematicWBC` 输出速度命令，`JointIntegrator` 完成积分执行。它尚未把浮动基动力学、真实接触和力矩执行纳入闭环。源码映射与 [WholeBodyX 可运行对照](../../planner/to_mpc_wbc/#run-control)单独展开，避免将框架中的 H1 运动展示误读成动态行走验证。
+本文参考的 WholeBodyX 当前实现属于固定基座运动学基线：`JointMPC` 输出关节位置/速度参考，`MPCReferenceManager` 管理时间戳、有效期与重规划，`KinematicWBC` 输出速度命令，`JointIntegrator` 完成积分执行。它尚未把浮动基动力学、真实接触和力矩执行纳入闭环。不具备该源码环境时，可先运行[仅依赖 NumPy 的 MPC/QP 原子算例](../../planner/to_mpc_wbc/#atomic-control)。源码映射与 [WholeBodyX 可运行对照](../../planner/to_mpc_wbc/#run-control)单独展开，避免将框架中的 H1 运动展示误读成动态行走验证。
 
 ### 11.3 学习策略接入控制器时，先固定动作契约
 

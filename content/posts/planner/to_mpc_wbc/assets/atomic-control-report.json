@@ -1,0 +1,80 @@
+{
+  "numpy": "2.3.5",
+  "mpc": [
+    {
+      "goal": 0.3,
+      "velocity": [
+        0.2,
+        0.4
+      ],
+      "positions": [
+        0.0,
+        0.020000000000000004,
+        0.06000000000000001
+      ],
+      "kkt": {
+        "primal": 0.0,
+        "dual": 0.0,
+        "stationarity": 1.1102230246251565e-16
+      }
+    },
+    {
+      "goal": -0.3,
+      "velocity": [
+        -0.2,
+        -0.4
+      ],
+      "positions": [
+        0.0,
+        -0.020000000000000004,
+        -0.06000000000000001
+      ],
+      "kkt": {
+        "primal": 0.0,
+        "dual": 0.0,
+        "stationarity": 1.1102230246251565e-16
+      }
+    },
+    {
+      "goal": 0.0,
+      "velocity": [
+        -0.0,
+        0.0
+      ],
+      "positions": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "kkt": {
+        "primal": 0.0,
+        "dual": 0.0,
+        "stationarity": 0.0
+      }
+    }
+  ],
+  "wbc": {
+    "unconstrained": 0.5490196078431373,
+    "command": 0.2,
+    "task_residuals": [
+      -0.6000000000000001,
+      0.6000000000000001
+    ],
+    "kkt": {
+      "primal": 0.0,
+      "dual": 0.0,
+      "stationarity": 0.0
+    }
+  },
+  "infeasible_rejected": true,
+  "rollout": {
+    "steps": 100,
+    "final": {
+      "step": 100,
+      "time": 10.0,
+      "position": 0.3,
+      "velocity": -0.0,
+      "absolute_error": 0.0
+    }
+  }
+}
