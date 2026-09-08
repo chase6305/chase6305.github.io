@@ -9,6 +9,7 @@ import torch
 
 import rl_lab as lab
 import ppo_chain as chain
+import token_objectives as tokens
 
 D = torch.float64
 
@@ -154,6 +155,45 @@ class TrainingLoops(unittest.TestCase):
                 data = json.loads((Path(tmp)/f"{name}.json").read_text())
                 self.assertEqual(data["final"]["step"], 3)
                 self.assertEqual(len((Path(tmp)/f"{name}.csv").read_text().splitlines()), 5)
+
+
+class TokenObjectives(unittest.TestCase):
+    def test_equal_policy_length_and_nonzero_grpo_gradient(self):
+        report = tokens.run()
+        self.assertEqual(report["alignment"]["lengths"], [2, 3])
+        self.assertAlmostEqual(report["dpo"]["initial_loss"], math.log(2))
+        self.assertAlmostEqual(report["dpo"]["relative_margin_before"], 0)
+        self.assertAlmostEqual(report["grpo"]["initial_loss"], 0)
+        self.assertAlmostEqual(report["initial_global_token_loss"], .2)
+        for name in ("dpo", "grpo"):
+            self.assertGreater(report[name]["gradient_norm"], 0)
+            self.assertLess(report[name]["final_loss"], report[name]["initial_loss"])
+            self.assertGreater(report[name]["relative_margin_after"], 0)
+
+    def test_padding_preserves_losses_and_parameter_gradients(self):
+        for name in ("dpo", "grpo"):
+            results = []
+            for padding in (0, 4):
+                actor = (torch.arange(25, dtype=D).reshape(5, 5) / 37).requires_grad_()
+                old = torch.zeros_like(actor, requires_grad=True)
+                reference = torch.zeros_like(actor, requires_grad=True)
+                ids, mask = tokens.fixture(padding)
+                loss = tokens.objectives(actor, old, reference, ids, mask)[name]
+                loss.backward()
+                self.assertIsNone(old.grad)
+                self.assertIsNone(reference.grad)
+                results.append((loss.detach(), actor.grad))
+            torch.testing.assert_close(results[0], results[1])
+
+    def test_eos_shared_with_padding_still_counts(self):
+        ids, mask = tokens.fixture()
+        logits = torch.zeros(2, 5, 5, dtype=D)
+        correct = lab.response_logps(logits, ids, mask)
+        wrongly_removed_eos = lab.response_logps(logits, ids, mask & (ids != 4))
+        torch.testing.assert_close(wrongly_removed_eos - correct,
+                                   torch.full((2,), math.log(5), dtype=D))
+        self.assertEqual(mask[0, 3:].tolist(), [True, False])
+        self.assertEqual(ids[0, 3:].tolist(), [4, 4])
 
 
 class MultistepPPO(unittest.TestCase):

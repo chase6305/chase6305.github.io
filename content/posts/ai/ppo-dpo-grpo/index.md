@@ -45,6 +45,7 @@ related_posts:
 | --- | --- |
 | [rl_lab.py](rl_lab.py) | 原子函数与 PPO/DPO/GRPO 一步训练循环 |
 | [ppo_chain.py](ppo_chain.py) | 两步决策树 PPO：完整轨迹、GAE 与价值回归 |
+| [token_objectives.py](token_objectives.py) | 变长回答、EOS/PAD、DPO/GRPO 序列目标与一次更新 |
 | [test_rl_lab.py](test_rl_lab.py) | 梯度方向、GAE、mask、重现性与训练测试 |
 | [requirements.txt](requirements.txt) | 核心依赖：PyTorch 2.8.0 |
 | [plot_results.py](plot_results.py) | 从 CSV 绘图，单独依赖 Matplotlib |
@@ -67,7 +68,10 @@ python -B rl_lab.py --algorithm all --output results
 # 两步延迟奖励实验，实际调用 GAE
 python -B ppo_chain.py --output results-chain
 
-# 包括一步任务、两步任务与三个 seed 的训练检查
+# token 对齐、变长归约与一次梯度更新
+python -B token_objectives.py --output results-tokens.json
+
+# 原子模块、序列目标与三个 seed 的训练检查
 python -B -m unittest -v test_rl_lab.py
 ```
 
@@ -560,7 +564,7 @@ valid = response_mask[:, 1:]
 sequence_logp = token_logp.masked_fill(~valid, 0).sum(dim=-1)
 ```
 
-以上变量由模型前向和 tokenizer 提供；附带 `response_logps` 实现同样计算并验证形状。response mask 表示**目标 token** 是否属于回答；prompt 为 False，padding 为 False，有效 EOS 通常为 True。
+以上变量由模型前向和 tokenizer 提供；附带 `response_token_logps` 返回 `[B,T-1]` 的已 mask 分数和有效位置，`response_logps` 再按序列求和。两者共用同一套形状与边界校验。response mask 表示**目标 token** 是否属于回答；prompt 为 False，padding 为 False，有效 EOS 通常为 True。
 
 例如 `[prompt0,prompt1,answer,EOS,PAD]` 的 mask 为 `[0,0,1,1,0]`。评分位置是 logits 的 1、2 两行，不能再向右错移一位。使用 EOS 兼作 padding token 时，更不能用 `token_id != eos_id` 构造 mask，否则会删掉真正的终止 token。
 
@@ -595,6 +599,41 @@ Temperature、top-k/top-p、EOS、最大生成长度、chat template 都会影�
 | 环境回报 | 成功条件、终止条件、观测协议 | 奖励投机与真实任务脱节 |
 
 保留原始回答、解析结果、奖励分项与失败原因，防止解析器修改掩盖模型失败。训练集与独立评测集应分离；本文的四上下文任务只做闭环验算，不声称具有独立评测意义。
+
+### 7.6 可运行的序列目标：同一个 EOS 编号，两个不同角色 {#token-lab}
+
+[token_objectives.py](token_objectives.py) 用一张可训练的 `5×5` bigram 表预测下一个 token：模型只看上一个 token，五个编号分别表示 BOS、prompt、good、bad、EOS/PAD。它在 CPU 上执行模型前向、两个目标的反向传播和各自一次 SGD 更新，无需下载模型或 tokenizer。
+
+两条固定回答对应相同 prompt，故意采用不同长度：
+
+| 回答 | 完整 token ID | response mask | 计分 token 数 |
+| --- | --- | --- | ---: |
+| chosen | `[0,1,2,4,4]` | `[0,0,1,1,0]` | 2 |
+| rejected | `[0,1,3,3,4]` | `[0,0,1,1,1]` | 3 |
+
+chosen 的倒数第二个 `4` 是真实 EOS，最后一个 `4` 是 PAD；编号相同，是否计分由位置和序列边界决定。如果使用 `mask & (ids != 4)`，两条回答都会漏掉一个有效 EOS。测试会检查这一错误，也会检查追加四个 PAD 后 loss 与**模型参数梯度**均保持不变。
+
+```bash
+python -B token_objectives.py --output results-tokens.json
+python -B -m unittest -v test_rl_lab.TokenObjectives
+```
+
+完整输出见[参考 JSON](assets/token-objectives.json)。全零初始化时，每个 token 的 log-probability 为 $-\log5$，可以手算：
+
+| 检查量 | 初始值 | 为什么 |
+| --- | ---: | --- |
+| chosen 序列 logp | −3.218876 | 两个有效 token 求和 |
+| rejected 序列 logp | −4.828314 | 三个有效 token 求和 |
+| 两条回答各自的平均 logp | 均为 −1.609438 | 除以各自有效长度 |
+| DPO loss | 0.693147 | 当前与 reference 的序列间隔相同，相减后为零 |
+| GRPO 每回答平均的 loss | 约 0 | 概率比为 1，正负组优势抵消 |
+| 改为全局 token 平均的 loss | 约 0.2 | 长度 3 的负优势回答获得更高权重 |
+
+GRPO 使用奖励 `[1,0]`，忽略稳定项时组优势为 `[+1,−1]`。每回答平均的 loss 为 $(-1+1)/2=0$；全局 token 平均为 $(-2+3)/5=0.2$。这是**归约方式改变目标**的可核对例子，而不是哪一种 loss 更好看的比较。
+
+两个目标分别从相同初始化出发，用学习率 0.1 做一次更新，DPO 的 loss 从 0.693147 降至约 0.668435；GRPO 初始 loss 虽接近零，参数梯度范数约为 0.414997，更新后 loss 约为 −0.017285。`old`、`reference` 固定且不接收梯度。这里的相对偏好间隔也在增大，但这不构成任意模型与学习率下的单步改进保证。
+
+**这个案例验证序列目标的接线，不是完整 GRPO 训练。** 两条回答是预先写好的测试输入，并非 old policy 的在线采样；没有自回归生成循环、Transformer attention mask 或独立质量评测。GRPO 的 KL 在各个已观察前缀上对五个 token 精确求和，替代原始目标中的采样估计。迁移到真实模型时，仍须补齐第 7.2～7.5 节的数据与采样协议，并分别对照 [DPO 序列目标](https://arxiv.org/html/2305.18290v3#S4) 与 [原始 GRPO 的长度归约](https://arxiv.org/html/2402.03300v3#S4.SS1)。
 
 ## 8. 本地实验结果与如何解释 {#results}
 

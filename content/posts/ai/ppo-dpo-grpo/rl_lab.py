@@ -75,8 +75,8 @@ def categorical_kl(logits, reference_logits):
     return (logp.exp() * (logp - logq)).sum(dim=-1)
 
 
-def response_logps(logits, input_ids, response_mask):
-    """Causal shift and response-only SUM. mask[:, j] marks target token j.
+def response_token_logps(logits, input_ids, response_mask):
+    """Causal shift -> masked token logps and target mask, both [B,T-1].
 
     EOS may be marked True. Prompt/padding must be False. All sequences must
     contain at least one scored response token. No model is called here.
@@ -97,7 +97,13 @@ def response_logps(logits, input_ids, response_mask):
         raise ValueError("Every response must contain a scored token")
     logp = logits[:, :-1].log_softmax(dim=-1)
     selected = logp.gather(-1, input_ids[:, 1:, None]).squeeze(-1)
-    return selected.masked_fill(~valid, 0).sum(dim=-1)
+    return selected.masked_fill(~valid, 0), valid
+
+
+def response_logps(logits, input_ids, response_mask):
+    """Response-only sequence SUM, using the same validated token alignment."""
+    token_logps, _ = response_token_logps(logits, input_ids, response_mask)
+    return token_logps.sum(dim=-1)
 
 
 def gae(rewards, values, next_values, terminated, boundary, gamma=0.99, lam=0.95):
