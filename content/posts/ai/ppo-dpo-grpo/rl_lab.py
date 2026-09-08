@@ -318,7 +318,7 @@ def main():
     for name in algorithms:
         rows, settings = train(name, steps=args.steps, seed=args.seed, group_size=args.group_size)
         with (args.output / f"{name}.csv").open("w", newline="") as stream:
-            writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
+            writer = csv.DictWriter(stream, fieldnames=list(rows[0]), lineterminator="\n")
             writer.writeheader()
             writer.writerows(rows)
         report = {"settings": settings, "initial": rows[0], "final": rows[-1]}

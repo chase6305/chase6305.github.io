@@ -49,6 +49,9 @@ def main():
         fig.savefig(args.output, bbox_inches="tight", facecolor="white",
                     metadata={"Date": None} if args.output.suffix == ".svg" else {})
     plt.close(fig)
+    if args.output.suffix == ".svg":
+        lines = args.output.read_text().splitlines()
+        args.output.write_text("\n".join(line.rstrip() for line in lines) + "\n")
     print(args.output)
 
 
