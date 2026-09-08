@@ -1,0 +1,38 @@
+name: Check control article download
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "content/posts/planner/to_mpc_wbc/**"
+      - "scripts/package_control_lab.py"
+      - ".github/workflows/control-lab.yml"
+  pull_request:
+    paths:
+      - "content/posts/planner/to_mpc_wbc/**"
+      - "scripts/package_control_lab.py"
+      - ".github/workflows/control-lab.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-download:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: content/posts/planner/to_mpc_wbc/requirements-atomic.txt
+      - name: Check download matches source
+        run: python scripts/package_control_lab.py --check
+      - name: Install NumPy
+        run: python -m pip install -r content/posts/planner/to_mpc_wbc/requirements-atomic.txt
+      - name: Run extracted QP and feedback examples
+        run: python scripts/package_control_lab.py --check --test

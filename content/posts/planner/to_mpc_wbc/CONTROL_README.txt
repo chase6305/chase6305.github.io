@@ -13,7 +13,7 @@ MPC / WBC 教程实验包
 2. 原子 QP 与滚动闭环
    python atomic_control.py
    输出 results-atomic/report.json 和 rollout.csv。
-   检查正向/反向/零目标、WBC 标量任务冲突、不可行边界和 100 步闭环。
+   检查正向/反向/零目标、WBC 标量与双关节耦合任务冲突、不可行边界和 100 步闭环。
 
 3. 状态偏移与短时域反例
    python feedback_demo.py --output results-feedback
@@ -44,3 +44,10 @@ MPC / WBC 教程实验包
 - 运动学限位、QP 数值精度不能证明动态平衡、摩擦、碰撞或力矩可行性。
 - 初始状态满足逐项边界，也可能已无法在边界内制动。
 - 请正常运行脚本，不要用 python -O 禁用参考失效测试中的断言。
+
+博客仓库维护者
+- 在仓库根目录执行 python scripts/package_control_lab.py 重建下载包。
+- 执行 python scripts/package_control_lab.py --check 检查 ZIP 成员与源码逐字节一致。
+- 安装 NumPy 后执行 python scripts/package_control_lab.py --check --test，
+  从临时解压目录运行原子与反馈实验，并检查 JSON 报告与标准输出一致。
+- control-lab.yml 自动检查上述 NumPy 实验，不包含 WholeBodyX 集成或绘图。

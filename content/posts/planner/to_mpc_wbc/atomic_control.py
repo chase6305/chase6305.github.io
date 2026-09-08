@@ -69,6 +69,32 @@ def wbc():
                 task_residuals=(command[0] - targets).tolist(), kkt=residuals)
 
 
+def coupled_wbc():
+    """Two coupled velocity tasks: clipping is feasible but not optimal."""
+    jacobian = np.array([[1., 1.], [1., -1.]])
+    targets = np.array([1., 0.])
+    weights = np.diag([4., 1.])
+    regularization = .1
+    h = jacobian.T @ weights @ jacobian + regularization * np.eye(2)
+    g = -jacobian.T @ weights @ targets
+    lower, upper = np.array([-.2, -.8]), np.array([.2, .8])
+    unconstrained = np.linalg.solve(h, -g)
+    clipped = np.clip(unconstrained, lower, upper)
+    command, residuals = solve_tiny_qp(h, g, np.eye(2), lower, upper)
+
+    def objective(u):
+        error = jacobian @ u - targets
+        return float(.5 * (error @ weights @ error + regularization * (u @ u)))
+
+    np.testing.assert_allclose(command, [.2, 2. / 3.], atol=1e-9, rtol=0)
+    if objective(command) >= objective(clipped) - 1e-9:
+        raise AssertionError("Coupled QP should improve over elementwise clipping")
+    return dict(unconstrained=unconstrained.tolist(), clipped=clipped.tolist(),
+                command=command.tolist(), clipped_objective=objective(clipped),
+                optimal_objective=objective(command),
+                task_residuals=(jacobian @ command - targets).tolist(), kkt=residuals)
+
+
 def rollout():
     """Replan from the measured integrator state; apply only the first velocity."""
     q, v, goal, rows = 0., 0., .3, []
@@ -102,7 +128,7 @@ def main():
         expected = np.sign(case["goal"]) * np.array([.2, .4])
         np.testing.assert_allclose(case["velocity"], expected, atol=1e-9, rtol=0)
     rows = rollout()
-    report = dict(numpy=np.__version__, mpc=cases, wbc=wbc(), infeasible_rejected=rejected,
+    report = dict(numpy=np.__version__, mpc=cases, wbc=wbc(), coupled_wbc=coupled_wbc(), infeasible_rejected=rejected,
                   rollout=dict(steps=len(rows), final=rows[-1]))
     args.output.mkdir(parents=True, exist_ok=True)
     with (args.output / "rollout.csv").open("w", newline="") as stream:

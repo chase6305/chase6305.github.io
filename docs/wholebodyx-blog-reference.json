@@ -13,10 +13,5 @@
     "python/wholebodyx/model.py": "033a195fb9a50df938b38741a3dae5981d46a9e5f2e96c6cefd74b1dfa6197ac",
     "python/wholebodyx/simulation.py": "d5e298a62c757c51b9a2cdb374c74273fdbc59f411cec22433bc26af3f477b62",
     "pyproject.toml": "509474307112757746fdf3d6e2c37d70f025984c7ea3a84b3e080179fb9a6b4f"
-  },
-  "secondary_reference": {
-    "url": "https://zhuanlan.zhihu.com/p/2080588693757224044",
-    "access": "HTTP 403; user supplied article text used as conceptual reference",
-    "title": "从 MPC 到 WBC：人形机器人如何规划并执行全身运动？"
   }
 }
