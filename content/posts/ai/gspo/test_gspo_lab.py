@@ -121,6 +121,19 @@ class GspoTests(unittest.TestCase):
         torch.testing.assert_close(full_grad, weighted_grad)
         self.assertFalse(torch.allclose(full_grad, wrong_grad))
 
+    def test_online_configuration_validation_and_budget(self):
+        from gspo_online import run
+        for kwargs in ({'rounds': 0}, {'groups': 1.5}, {'group_size': 1},
+                       {'epsilon': 1.}, {'learning_rate': float('nan')}, {'beta': -1.}):
+            with self.assertRaises(ValueError):
+                run(**kwargs)
+        result = run(rounds=2, groups=3, group_size=4, updates=1,
+                     learning_rate=.1, epsilon=.1, beta=.2)
+        self.assertEqual(result['sampled_responses'], 24)
+        self.assertEqual(result['sampled_tokens'], 48)
+        self.assertEqual(result['learning_rate'], .1)
+        self.assertEqual(result['epsilon'], .1)
+
     def test_initial_grpo_and_gspo_gradients_agree(self):
         old = torch.full((1, 3), -3., dtype=torch.float64)
         current = old.clone().requires_grad_()

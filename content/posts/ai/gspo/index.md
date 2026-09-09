@@ -322,7 +322,7 @@ GSPO 在作者报告的实验中不依赖 Routing Replay，仍保持较好的训
 
 ## 9. 可运行 Python：核对公式与梯度 {#run}
 
-下载 [gspo_lab.py](gspo_lab.py)、[test_gspo_lab.py](test_gspo_lab.py)、[gspo_update.py](gspo_update.py)、[gspo_online.py](gspo_online.py) 和 [requirements.txt](requirements.txt)，放在同一目录。使用 Python 3.10+：
+可以直接下载 [完整实验包](gspo-lab.zip)，解压后进入 `gspo-lab` 目录；包内 [README](README.txt) 列出了依赖、命令和预期结果。也可以逐个下载 [gspo_lab.py](gspo_lab.py)、[test_gspo_lab.py](test_gspo_lab.py)、[gspo_update.py](gspo_update.py)、[gspo_online.py](gspo_online.py) 和 [requirements.txt](requirements.txt)，放在同一目录。使用 Python 3.10+：
 
 ```bash
 python3 -m venv .venv-gspo
@@ -332,7 +332,7 @@ python -m unittest -v test_gspo_lab.py
 python gspo_lab.py --output results.json
 ```
 
-本文实际运行环境为 PyTorch 2.8.0+cu128，全部实验张量仍在 CPU 上；上面的安装命令选择 CPU wheel，不需要 GPU。十一项测试检查正负优势的单侧裁剪、变长回答下 GSPO-token 的一阶梯度等价、old 与优势停止梯度、NaN padding 的屏蔽、零方差组与空回答，以及 current=old 时的梯度一致性；另外用有限差分独立核对梯度，并检查实际参数更新进入裁剪平台的行为。
+本文实际运行环境为 PyTorch 2.8.0+cu128，全部实验张量仍在 CPU 上；上面的安装命令选择 CPU wheel，不需要 GPU。十二项测试检查正负优势的单侧裁剪、变长回答下 GSPO-token 的一阶梯度等价、old 与优势停止梯度、NaN padding 的屏蔽、零方差组与空回答，以及 current=old 时的梯度一致性；另外用有限差分独立核对梯度，并检查实际参数更新进入裁剪平台的行为。
 
 ### 9.1 关键实现只有几步，但归约顺序不能错
 
@@ -467,7 +467,7 @@ $$
 python plot_online.py --input online-results.json --output online-training.png
 ```
 
-脚本只读取已保存数据，不重新训练、不平滑曲线，也不补造论文实验点。改变训练参数后，应先用新配置重新运行 `gspo_online.py` 中的 `run(...)` 并保存结果，再绘图；仅修改图例不能代表完成了新实验。
+脚本只读取已保存数据，不重新训练、不平滑曲线，也不补造论文实验点。改变训练参数后，应先用新配置重新运行 `gspo_online.py` 并保存结果，再绘图；仅修改图例不能代表完成了新实验。
 
 每次运行均采样 1280 条回答、2560 个 token，执行 60 次参数更新。这些数值只说明该玩具问题上奖励与参考策略偏离的取舍，不是 GSPO/GRPO 排名，也不是论文超参数建议。两种 beta 使用相同 seed，但策略变化后，后续采样的回答会不同，不能把它们描述为完全相同的数据集。
 
@@ -475,7 +475,32 @@ JSON 特意把 `sampled_reward_before_update` 和 `exact_reward_after_update` �
 
 beta=0 的最终一轮中，75%–87.5% 的组奖励完全相同；策略越接近总输出 11，越容易抽到全对组，组内优势反而消失。这说明零方差组增多可能来自任务太难，也可能来自任务已经太容易，需要结合奖励水平判断。加入 KL 后，即使某个组的策略优势为零，固定 reference 的正则项仍可贡献梯度。
 
-### 9.5 零方差组出现的概率，可以直接算出来
+### 9.5 用命令行完成一次可追溯的对照 {#experiment-config}
+
+在线脚本的默认参数对应本文已保存的六次运行；现在也可以直接指定实验配置，不必修改源码：
+
+```bash
+python gspo_online.py --help
+python gspo_online.py --seeds 7 --betas 0.2 --rounds 10 \
+  --groups 8 --group-size 4 --updates 2 \
+  --learning-rate 0.1 --epsilon 0.1 --output custom-results.json
+python plot_online.py --input custom-results.json --output custom-training.png
+```
+
+这个自定义示例采样 `10×8×4=320` 条回答、640 个 token，共进行 `10×2=20` 次参数更新。它同时改变了多项因素，只用于展示参数入口，**不能用它与默认结果比较后归因于某一个超参数**。输出 JSON 会记录实际配置和预算。
+
+若想单独研究 rollout 复用次数，固定 seeds、betas、rounds、groups、group-size、learning-rate 与 epsilon，只比较 `--updates 1` 和 `--updates 3`。两组名义采样预算相同，但梯度计算预算不同；策略开始分化后，后续实际采样内容也会不同。若想研究组大小，则同时报告每轮采样回答数、组数和同分组比例，说明自己固定的是哪一种预算。
+
+解压包中的 `assets/` 是文章使用的参考结果，读者的新输出默认写到当前目录，便于保留原始对照。运行后按顺序核对：
+
+1. 测试先通过，确认导数、detach 与分母约定没有被破坏。
+2. JSON 中参数与本次命令一致，采样回答数和 token 数能手算复核。
+3. 每轮首次计算的 `initial_ratio_max_error` 为零，`old_logps_max_change` 为零；这只检查本玩具实现的时序约定，不代表双引擎系统也会精确相等。
+4. 最后再比较奖励、KL 与同分组比例，保留每个 seed 的原始结果。
+
+跨 PyTorch 版本或平台运行时，随机采样与浮点末位不必逐字节相同。应先确认环境、参数与预算，再定位差异；固定一个 seed 也不代表已经估计了结果的不确定性。
+
+### 9.6 零方差组出现的概率，可以直接算出来
 
 假设同题回答独立采样，离散奖励取值分别以概率 $q_1,\ldots,q_m$ 出现。G 条回答的奖励完全相同，当且仅当它们全部落在某一种奖励上，因此：
 
@@ -551,7 +576,7 @@ GSPO 的序列比例已经在每条回答内部平均 log-ratio；这并不替�
 ## 阅读自测与验收
 
 - 能否区分 token 比例、原始序列比例和长度归一化比例，并解释为什么后者不保留原始重要性采样恒等式？
-- 运行十一项测试，解释正负优势的裁剪方向，以及 GSPO-token 与 GSPO 一阶梯度等价的条件。
+- 运行十二项测试，解释正负优势的裁剪方向，以及 GSPO-token 与 GSPO 一阶梯度等价的条件。
 - 能否区分论文的训练趋势、裁剪比例与工程潜力，不把 CPU 原子实验当作 MoE 训练复现？
 - 运行两 token 参数更新实验，解释初始目标为零仍能学习、比例可以越界，以及单批数据平台为何不等于最优策略。
 - 运行在线扩展，区分 old 刷新和固定 reference，并解释奖励统计的时间点以及不等大小 micro-batch 的权重。
