@@ -802,7 +802,7 @@ s_i=\exp\left(
 \right).
 $$
 
-它是 token 概率比的几何平均，既不是算术平均，也不是未归一化的完整序列概率比。与本文 GRPO 的逐 token clipping 不同。具体例子可继续阅读 [InternVL 3.5 的 GSPO 部分](../internvl-3-5/#63-gspo-的序列级重要性比)。
+它是 token 概率比的几何平均，既不是算术平均，也不是未归一化的完整序列概率比。与本文 GRPO 的逐 token clipping 不同。完整推导、GSPO-token 与可运行梯度对照见 [GSPO 论文详解](../gspo/)。模型应用可继续阅读 [InternVL 3.5 的 GSPO 部分](../internvl-3-5/#63-gspo-的序列级重要性比)。
 
 ### 10.3 可运行对照：偏好标签与真实奖励 {#dpo-noise}
 

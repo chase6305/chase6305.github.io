@@ -1271,6 +1271,30 @@
         "运行三个 CPU 训练，记录 seed、配置、奖励、KL 与样本成本，说明这些曲线为什么不能构成公平的 LLM 排行榜。",
         "能否解释 GRPO 零方差组、RLOO baseline 与 GSPO 序列概率比，并设计一个只改变单项因素的扩展实验？"
       ]
+    },
+    {
+      "id": 69,
+      "added_on": "2026-09-09",
+      "summary": "分析 GSPO 的序列概率比、长度归一化、裁剪与梯度，核对 Qwen3 MoE 实验的证据边界，并提供可运行 PyTorch 对照。",
+      "prerequisites": "概率、自动微分、PPO/GRPO 概念与 PyTorch 基础",
+      "focus": "分清原始重要性权重与长度归一化替代目标，沿公式、梯度和实验逐项核对 GSPO。",
+      "related": [
+        68,
+        4
+      ],
+      "path": "content/posts/ai/gspo/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/ppo-dpo-grpo",
+        "/posts/ai/distributed-training-memory"
+      ],
+      "image_decision": "使用 Matplotlib 从 CPU 自动微分结果绘制梯度与长度归一化机制图，明确区别于论文训练曲线",
+      "image": "assets/ratio-gradient.png",
+      "acceptance_checks": [
+        "能否区分 token 比例、原始序列比例和长度归一化比例，并解释为什么后者不保留原始重要性采样恒等式？",
+        "运行六项测试，解释正负优势的裁剪方向，以及 GSPO-token 与 GSPO 一阶梯度等价的条件。",
+        "能否区分论文的训练趋势、裁剪比例与工程潜力，不把 CPU 原子实验当作 MoE 训练复现？"
+      ]
     }
   ]
 }
