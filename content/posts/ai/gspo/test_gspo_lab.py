@@ -55,6 +55,34 @@ class GspoTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             objective(torch.zeros((1, 2)), torch.zeros((1, 2)), torch.zeros((1, 2), dtype=torch.bool), torch.ones(1))
 
+    def test_gradient_matches_finite_difference(self):
+        old = torch.full((2, 3), -3., dtype=torch.float64)
+        current = old + torch.tensor([[.03, -.02, .01], [-.04, .02, 0.]], dtype=torch.float64)
+        current.requires_grad_()
+        mask = torch.tensor([[True, True, True], [True, True, False]])
+        advantages = torch.tensor([1., -1.], dtype=torch.float64)
+        analytic, = torch.autograd.grad(objective(current, old, mask, advantages), current)
+        numerical = torch.zeros_like(current)
+        h = 1e-6
+        for row in range(2):
+            for col in range(3):
+                plus, minus = current.detach().clone(), current.detach().clone()
+                plus[row, col] += h
+                minus[row, col] -= h
+                numerical[row, col] = (objective(plus, old, mask, advantages) -
+                                       objective(minus, old, mask, advantages)) / (2*h)
+        torch.testing.assert_close(analytic, numerical, rtol=1e-6, atol=1e-9)
+
+    def test_normalized_policy_update_and_clipping_plateau(self):
+        from gspo_update import run
+        rows = run()['history']
+        self.assertEqual(rows[0]['objective'], 0.)
+        self.assertGreater(rows[1]['exact_expected_reward'], rows[0]['exact_expected_reward'])
+        self.assertAlmostEqual(rows[1]['exact_expected_reward'], .544079442108941)
+        self.assertGreater(rows[3]['ratios'][-1], 1.2)
+        self.assertEqual(rows[3]['flat_fraction'], .5)
+        self.assertEqual(rows[3]['exact_expected_reward'], rows[5]['exact_expected_reward'])
+
     def test_initial_grpo_and_gspo_gradients_agree(self):
         old = torch.full((1, 3), -3., dtype=torch.float64)
         current = old.clone().requires_grad_()
