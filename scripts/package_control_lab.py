@@ -7,6 +7,7 @@ python scripts/package_control_lab.py --check --test
 WholeBodyX integration and optional plots are outside this NumPy-only check.
 """
 import argparse
+import csv
 import json
 import math
 from pathlib import Path
@@ -58,6 +59,46 @@ def compare_report(actual, expected, path="report"):
         raise SystemExit(f"Published result differs at {path}: {actual!r} != {expected!r}")
 
 
+def check_trajectory(path, published, final):
+    """Check the default 0.1 s, target=0.3 rad integrator experiment's CSV."""
+    def read(source):
+        with source.open(newline="") as stream:
+            reader = csv.DictReader(stream)
+            names = reader.fieldnames
+            if not names or len(set(names)) != len(names):
+                raise SystemExit(f"Invalid CSV header: {source}")
+            rows = []
+            for row in reader:
+                if None in row or any(value is None for value in row.values()):
+                    raise SystemExit(f"Invalid CSV row: {source}")
+                try:
+                    rows.append({key: float(value) for key, value in row.items()})
+                except ValueError as exc:
+                    raise SystemExit(f"Non-numeric CSV row: {source}") from exc
+            return names, rows
+
+    names, rows = read(path)
+    expected_names, expected = read(published)
+    if names != expected_names or not rows:
+        raise SystemExit(f"CSV columns changed or trajectory empty: {path.name}")
+    compare_report(rows, expected, path.name)
+    q, velocity = 0., 0.
+    for step, row in enumerate(rows, 1):
+        compare_report(row["step"], step, f"{path.name}.step")
+        compare_report(row["time"], .1 * step, f"{path.name}[{step}].time")
+        measured = q + row.get("offset", 0.)
+        if "measured_position" in row:
+            compare_report(row["measured_position"], measured, f"{path.name}[{step}].measurement")
+        compare_report(row["position"], measured + .1 * row["velocity"], f"{path.name}[{step}].integration")
+        compare_report(row["absolute_error"], abs(.3 - row["position"]), f"{path.name}[{step}].error")
+        if (abs(row["position"]) > .5 + 1e-8 or abs(row["velocity"]) > 1. + 1e-8
+                or abs(row["velocity"] - velocity) > .2 + 1e-8):
+            raise SystemExit(f"Default integrator bound violated: {path.name}, step {step}")
+        q, velocity = row["position"], row["velocity"]
+    compare_report(rows[-1], final, f"{path.name}.final")
+    print(f"Verified {path.name}: {len(rows)} rows, dynamics, bounds and report endpoint.", flush=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="Check ZIP without modifying it")
@@ -90,6 +131,14 @@ def main():
                     raise SystemExit(f"{script}: saved report differs from stdout")
                 expected = json.loads((BUNDLE / "assets" / snapshot).read_text())
                 compare_report(report, expected)
+                if script == "atomic_control.py":
+                    check_trajectory(root / output / "rollout.csv", BUNDLE / "assets/atomic-control-rollout.csv",
+                                     report["rollout"]["final"])
+                else:
+                    for name, published in (("replay", "feedback-replay.csv"),
+                                            ("feedback", "feedback-replan.csv")):
+                        check_trajectory(root / output / f"{name}.csv", BUNDLE / "assets" / published,
+                                         report["cases"][name]["final"])
                 print(f"Passed extracted {script}: assertions, output and published report consistency.", flush=True)
 
 
