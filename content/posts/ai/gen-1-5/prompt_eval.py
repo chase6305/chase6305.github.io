@@ -36,8 +36,25 @@ def summarize(tasks):
                 micro=sum(s for s, n in tasks)/sum(n for s, n in tasks))
 
 
+def paired_outcomes(left, right):
+    """Aligned independent trial pairs; caller must establish matching conditions."""
+    if not left or len(left) != len(right):
+        raise ValueError('Use nonempty, equal-length paired outcomes')
+    if any(type(value) is not bool for value in [*left, *right]):
+        raise ValueError('Outcomes must be booleans, with no missing trials')
+    both = sum(a and b for a, b in zip(left, right))
+    left_only = sum(a and not b for a, b in zip(left, right))
+    right_only = sum(not a and b for a, b in zip(left, right))
+    neither = len(left) - both - left_only - right_only
+    return dict(pairs=len(left), both=both, left_only=left_only,
+                right_only=right_only, neither=neither,
+                success_rate_difference=(left_only-right_only)/len(left))
+
+
 if __name__ == '__main__':
     print(json.dumps(dict(scope='invented examples; not reported GEN-1.5 trial counts',
         context=context_budget(30, [6, 8], 12, 100),
         evaluation=summarize([(9, 10), (10, 20)]),
+        paired=paired_outcomes([True, True, True, True, True, False, False, False],
+                              [True, True, False, False, False, True, False, False]),
         illustrative_19_of_30_wilson95=wilson(19, 30)), indent=2))

@@ -9,6 +9,14 @@
     "macro": 0.7,
     "micro": 0.6333333333333333
   },
+  "paired": {
+    "pairs": 8,
+    "both": 2,
+    "left_only": 3,
+    "right_only": 1,
+    "neither": 2,
+    "success_rate_difference": 0.25
+  },
   "illustrative_19_of_30_wilson95": [
     0.4551356365479487,
     0.7812607919389929
