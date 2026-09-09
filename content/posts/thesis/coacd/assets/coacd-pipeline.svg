@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" role="img" aria-labelledby="title desc">
+<title id="title">CoACD outer decomposition and inner search</title><desc id="desc">Evaluate each pending component using combined concavity. Accept if within threshold, otherwise search and refine the first plane, cut the component, and enqueue children. After the pending queue empties, merge and export convex hulls.</desc>
+<defs><marker id="a" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#475569"/></marker></defs>
+<rect width="1000" height="720" rx="18" fill="#f8fafc"/>
+<g font-family="Arial,sans-serif" fill="#0f172a" text-anchor="middle">
+<text x="500" y="42" font-size="26" font-weight="bold">CoACD: evaluate outside, look ahead inside</text>
+<rect x="30" y="75" width="440" height="520" rx="14" fill="#eff6ff" stroke="#93c5fd"/>
+<text x="250" y="110" font-size="22" font-weight="bold">Outer decomposition loop</text>
+<rect x="80" y="135" width="340" height="70" rx="10" fill="white" stroke="#2563eb"/>
+<text x="250" y="163" font-size="20">Pending solid components</text><text x="250" y="190" font-size="18">Take one component C</text>
+<rect x="80" y="250" width="340" height="80" rx="10" fill="white" stroke="#2563eb"/>
+<text x="250" y="282" font-size="20">Build hull, evaluate C</text><text x="250" y="311" font-size="18">Combined boundary + volume metric</text>
+<rect x="80" y="415" width="340" height="70" rx="10" fill="white" stroke="#16a34a"/>
+<text x="250" y="444" font-size="20">Accept component and hull</text><text x="250" y="471" font-size="18">Then process the next item</text>
+<text x="250" y="555" font-size="19">Repeat until pending queue is empty</text>
+<rect x="525" y="75" width="445" height="520" rx="14" fill="#fff7ed" stroke="#fdba74"/>
+<text x="748" y="110" font-size="22" font-weight="bold">Inner look-ahead search</text>
+<rect x="560" y="145" width="375" height="235" rx="10" fill="white" stroke="#ea580c"/>
+<text x="748" y="180" font-size="20">Node = temporary set of pieces</text>
+<text x="748" y="222" font-size="20">Select → Expand → Simulate</text>
+<text x="748" y="260" font-size="20">Score path → Back up best value</text>
+<text x="748" y="305" font-size="18">Fast volume proxy · finite budget</text>
+<text x="748" y="348" font-size="20" font-weight="bold">Return only the FIRST plane</text>
+<rect x="560" y="430" width="375" height="90" rx="10" fill="white" stroke="#ea580c"/>
+<text x="748" y="465" font-size="20">Refine plane and cut original C</text><text x="748" y="497" font-size="18">Close cut surfaces; enqueue children</text>
+<rect x="80" y="635" width="855" height="60" rx="10" fill="#ecfdf5" stroke="#16a34a"/>
+<text x="507" y="672" font-size="21">After queue is empty: merge eligible components → export convex hulls</text>
+</g>
+<g stroke="#475569" stroke-width="2.5" fill="none" marker-end="url(#a)"><path d="M250 205 V248"/><path d="M250 330 V413"/><path d="M420 290 H558"/><path d="M748 380 V428"/><path d="M935 475 H985 V125 H435 V170 H422"/><path d="M80 450 H50 V170 H78"/><path d="M250 575 V633"/></g>
+<g font-family="Arial,sans-serif" font-size="17" fill="#475569" text-anchor="middle"><text x="320" y="380">Within threshold</text><text x="490" y="273">Too concave</text><text x="710" y="137">New children return to pending queue</text></g>
+</svg>

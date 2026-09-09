@@ -1048,9 +1048,9 @@
     },
     {
       "id": 58,
-      "summary": "整理 CoACD 的碰撞感知凹度、平面切割与多步树搜索，说明理论假设、实验口径和工程复现检查。",
+      "summary": "详解 CoACD 的三项核心设计：碰撞感知凹度、直接网格切割与 MCTS，逐步追踪评分、选刀、细化、递归和合并。",
       "prerequisites": "凸包、几何距离与树搜索",
-      "focus": "先读指标与算法假设，再看实验；有限预算搜索不是全局最优证明。",
+      "focus": "沿输入实体、凹度判定、搜索第一刀、递归分块与合并阅读，区分几何定义、搜索代理和实现边界。",
       "related": [
         14,
         35
@@ -1061,8 +1061,8 @@
         "/posts/coacd",
         "/posts/open3d/introduction"
       ],
-      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
-      "image": null
+      "image_decision": "原创 SVG 展示外层凹度验收与内层切割搜索，避免将示意图误作实际分解结果",
+      "image": "assets/coacd-pipeline.svg"
     },
     {
       "id": 59,
