@@ -17,7 +17,7 @@ import zipfile
 
 BUNDLE = Path(__file__).resolve().parents[1] / "content/posts/planner/to_mpc_wbc"
 FILES = {name: name for name in ("atomic_control.py", "feedback_demo.py", "plot_feedback.py",
-                                 "wholebodyx_demo.py", "reference_failures.py")}
+                                 "wholebodyx_demo.py", "reference_failures.py", "test_atomic_control.py")}
 FILES.update({"CONTROL_README.txt": "README.txt", "requirements-atomic.txt": "requirements.txt"})
 
 
@@ -77,6 +77,8 @@ def main():
             with zipfile.ZipFile(BUNDLE / "control-lab.zip") as archive:
                 archive.extractall(directory)  # Exact member allowlist checked above.
             root = Path(directory) / "control-lab"
+            subprocess.run([sys.executable, "-B", "-m", "unittest", "-v", "test_atomic_control.py"],
+                           cwd=root, check=True, timeout=60)
             for script, output, snapshot in (("atomic_control.py", "results-atomic", "atomic-control-report.json"),
                                              ("feedback_demo.py", "results-feedback", "feedback-report.json")):
                 result = subprocess.run([sys.executable, "-B", script, "--output", output],

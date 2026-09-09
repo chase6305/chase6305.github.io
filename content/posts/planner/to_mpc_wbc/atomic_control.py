@@ -12,6 +12,14 @@ import json
 import numpy as np
 
 
+class InvalidQPInput(ValueError):
+    """Data shape, finiteness or convexity is outside this example's contract."""
+
+
+class QPSolveError(ValueError):
+    """No valid command: infeasible constraints or numerically unresolved solve."""
+
+
 def solve_tiny_qp(h, g, a, lower, upper):
     """Solve strictly convex min .5*x'Hx + g'x, lower <= A*x <= upper.
 
@@ -19,11 +27,29 @@ def solve_tiny_qp(h, g, a, lower, upper):
     nonnegative multipliers and stationarity (the convex KKT certificate).
     Only intended for finite bounds and at most two decision variables.
     """
-    n = len(g)
-    if n > 2 or not all(np.isfinite(v).all() for v in (h, g, a, lower, upper)):
-        raise ValueError("This example requires finite data and at most two variables")
-    if not np.allclose(h, h.T) or np.linalg.eigvalsh(h).min() <= 0:
-        raise ValueError("H must be symmetric positive definite")
+    data = (h, g, a, lower, upper)
+    try:
+        if any(np.iscomplexobj(value) for value in data):
+            raise InvalidQPInput("QP data must be real")
+        h, g, a, lower, upper = (np.asarray(value, dtype=float) for value in data)
+    except (TypeError, ValueError) as exc:
+        raise InvalidQPInput("QP data must be real numeric arrays") from exc
+    if g.ndim != 1 or not 1 <= g.size <= 2:
+        raise InvalidQPInput("g must be a vector with one or two elements")
+    n = g.size
+    if h.shape != (n, n) or a.ndim != 2 or a.shape[1] != n or a.shape[0] < 1:
+        raise InvalidQPInput("H must be n-by-n and A must be m-by-n with m >= 1")
+    if lower.shape != (a.shape[0],) or upper.shape != lower.shape:
+        raise InvalidQPInput("lower and upper must be vectors with one entry per row of A")
+    if not all(np.isfinite(value).all() for value in (h, g, a, lower, upper)):
+        raise InvalidQPInput("This example requires finite QP data")
+    if not np.allclose(h, h.T, rtol=0, atol=1e-12):
+        raise InvalidQPInput("H must be symmetric within absolute tolerance 1e-12")
+    h = h / 2 + h.T / 2
+    if np.linalg.eigvalsh(h).min() <= 0:
+        raise InvalidQPInput("H must be positive definite for this tiny solver")
+    if np.any(lower > upper):
+        raise QPSolveError("Infeasible bounds: lower exceeds upper")
     c, d = np.vstack((a, -a)), np.concatenate((upper, -lower))
     for count in range(n + 1):
         for active in combinations(range(len(d)), count):
@@ -33,13 +59,20 @@ def solve_tiny_qp(h, g, a, lower, upper):
                 solution = np.linalg.solve(system, np.r_[-g, d[list(active)]])
             except np.linalg.LinAlgError:
                 continue
+            if not np.isfinite(solution).all():
+                continue
             x, multipliers = solution[:n], solution[n:]
-            primal = max(0., float(np.max(c @ x - d)))
+            with np.errstate(over="ignore", invalid="ignore"):
+                feasibility = c @ x - d
+                gradient = h @ x + g + ca.T @ multipliers
+            if not np.isfinite(feasibility).all() or not np.isfinite(gradient).all():
+                continue
+            primal = max(0., float(np.max(feasibility)))
             dual = max(0., float(np.max(-multipliers))) if count else 0.
-            stationarity = float(np.max(np.abs(h @ x + g + ca.T @ multipliers)))
+            stationarity = float(np.max(np.abs(gradient)))
             if max(primal, dual, stationarity) <= 1e-9:
                 return x, dict(primal=primal, dual=dual, stationarity=stationarity)
-    raise ValueError("No KKT candidate found; infeasible or numerically unresolved")
+    raise QPSolveError("No KKT candidate found; infeasible or numerically unresolved")
 
 
 def mpc(goal, q0=0., v0=0.):

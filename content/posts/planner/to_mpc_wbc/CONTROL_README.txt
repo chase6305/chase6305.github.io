@@ -11,6 +11,7 @@ MPC / WBC 教程实验包
    python -m pip install -r requirements.txt
 
 2. 原子 QP 与滚动闭环
+   python -m unittest -v test_atomic_control.py
    python atomic_control.py
    输出 results-atomic/report.json 和 rollout.csv。
    检查正向/反向/零目标、WBC 标量与双关节耦合任务冲突、加权/两级优先级对照、不可达高层目标、不可行边界和 100 步闭环。
@@ -49,8 +50,14 @@ MPC / WBC 教程实验包
 - 在仓库根目录执行 python scripts/package_control_lab.py 重建下载包。
 - 执行 python scripts/package_control_lab.py --check 检查 ZIP 成员与源码逐字节一致。
 - 安装 NumPy 后执行 python scripts/package_control_lab.py --check --test，
-  从临时解压目录运行原子与反馈实验，并检查 JSON 报告与标准输出一致。
+  从临时解压目录运行求解器边界回归测试、原子与反馈实验，并检查 JSON 报告与标准输出一致。
   同时对照正文附带的默认 JSON 结果：数字使用相对 1e-6、绝对 1e-8 容差，
   忽略根节点的 NumPy 版本差异；其余字段、数组长度与状态必须匹配。
   这不证明不同依赖环境完全等价，也不检查 WholeBodyX 或绘图结果。
 - control-lab.yml 自动检查上述 NumPy 实验，不包含 WholeBodyX 集成或绘图。
+
+输入与失败类型
+- InvalidQPInput：形状错误、非有限/非实数据，或 H 不符合微型求解器的对称正定要求。
+- QPSolveError：上下界矛盾，或未找到通过数值检查的 KKT 候选。
+- 二者都继承 ValueError；出现错误后不会返回可执行命令。
+- 六项 unittest 覆盖形状、NaN/Inf、凸性、约束矛盾和非有限线性求解结果。
