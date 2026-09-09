@@ -13,7 +13,7 @@ MPC / WBC 教程实验包
 2. 原子 QP 与滚动闭环
    python atomic_control.py
    输出 results-atomic/report.json 和 rollout.csv。
-   检查正向/反向/零目标、WBC 标量与双关节耦合任务冲突、加权/两级优先级对照、不可行边界和 100 步闭环。
+   检查正向/反向/零目标、WBC 标量与双关节耦合任务冲突、加权/两级优先级对照、不可达高层目标、不可行边界和 100 步闭环。
 
 3. 状态偏移与短时域反例
    python feedback_demo.py --output results-feedback

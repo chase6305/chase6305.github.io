@@ -135,6 +135,38 @@
       }
     }
   },
+  "unreachable_priority": [
+    {
+      "target": 1.2,
+      "achieved_sum": 1.0,
+      "command": [
+        0.19999999999999996,
+        0.8
+      ],
+      "high_residual": -0.19999999999999996,
+      "low_residual": -0.6000000000000001,
+      "remaining_interval": [
+        0.19999999999999996,
+        0.2
+      ],
+      "hard_target_rejected": true
+    },
+    {
+      "target": -1.2,
+      "achieved_sum": -1.0,
+      "command": [
+        -0.2,
+        -0.8
+      ],
+      "high_residual": 0.19999999999999996,
+      "low_residual": 0.6000000000000001,
+      "remaining_interval": [
+        -0.2,
+        -0.19999999999999996
+      ],
+      "hard_target_rejected": true
+    }
+  ],
   "infeasible_rejected": true,
   "rollout": {
     "steps": 100,

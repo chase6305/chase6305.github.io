@@ -138,6 +138,39 @@ def priority_wbc():
                 low_residual=float(command[0] - command[1]), reduced_kkt=residuals))
 
 
+def unreachable_priority():
+    """Distinguish an unreachable soft task from inconsistent hard constraints.
+
+    Here the optimal sum is at a box vertex, leaving no freedom for level two.
+    The analytical interval argument is specific to this scalar sum task.
+    """
+    lower, upper = np.array([-.2, -.8]), np.array([.2, .8])
+    cases = []
+    for target in (1.2, -1.2):
+        achieved = float(np.clip(target, lower.sum(), upper.sum()))
+        t_lower = max(lower[0], achieved - upper[1])
+        t_upper = min(upper[0], achieved - lower[1])
+        if not np.isclose(t_lower, t_upper, atol=1e-12, rtol=0):
+            raise AssertionError("This vertex example should have no remaining freedom")
+        command = np.array([t_lower, achieved - t_lower])
+        np.testing.assert_allclose(command, np.sign(target) * upper, atol=1e-12, rtol=0)
+        np.testing.assert_allclose(abs(command.sum() - target), .2, atol=1e-12, rtol=0)
+        # The same target imposed as an exact equality makes the feasible set empty.
+        a = np.vstack((np.eye(2), np.ones((1, 2))))
+        try:
+            solve_tiny_qp(np.eye(2), np.zeros(2), a,
+                          np.r_[lower, target], np.r_[upper, target])
+        except ValueError:
+            rejected = True
+        else:
+            raise AssertionError("An impossible hard sum target was accepted")
+        cases.append(dict(target=target, achieved_sum=achieved, command=command.tolist(),
+                          high_residual=float(command.sum() - target),
+                          low_residual=float(command[0] - command[1]),
+                          remaining_interval=[t_lower, t_upper], hard_target_rejected=rejected))
+    return cases
+
+
 def rollout():
     """Replan from the measured integrator state; apply only the first velocity."""
     q, v, goal, rows = 0., 0., .3, []
@@ -172,7 +205,8 @@ def main():
         np.testing.assert_allclose(case["velocity"], expected, atol=1e-9, rtol=0)
     rows = rollout()
     report = dict(numpy=np.__version__, mpc=cases, wbc=wbc(), coupled_wbc=coupled_wbc(),
-                  priority_wbc=priority_wbc(), infeasible_rejected=rejected,
+                  priority_wbc=priority_wbc(), unreachable_priority=unreachable_priority(),
+                  infeasible_rejected=rejected,
                   rollout=dict(steps=len(rows), final=rows[-1]))
     args.output.mkdir(parents=True, exist_ok=True)
     with (args.output / "rollout.csv").open("w", newline="") as stream:
