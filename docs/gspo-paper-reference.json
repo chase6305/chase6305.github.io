@@ -5,5 +5,18 @@
   "pages": 7,
   "version": "arXiv:2507.18071v1",
   "source_url": "https://arxiv.org/abs/2507.18071v1",
-  "figures": "Original mechanism plots from assets/results.json; no reconstructed benchmark curves"
+  "figures": "Original mechanism plots from assets/results.json and online-results.json; paper Figure 1 additionally rendered directly from user-provided PDF page 5.",
+  "paper_figure_1": {
+    "path": "content/posts/ai/gspo/assets/paper-figure-1.png",
+    "page": 5,
+    "renderer": "pdftoppm",
+    "scale_to": 1600,
+    "crop_pixels": {
+      "x": 124,
+      "y": 300,
+      "width": 885,
+      "height": 560
+    },
+    "notes": "Original axes, legend and caption preserved; no data redrawing."
+  }
 }

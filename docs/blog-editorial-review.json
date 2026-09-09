@@ -1288,10 +1288,11 @@
         "/posts/ai/ppo-dpo-grpo",
         "/posts/ai/distributed-training-memory"
       ],
-      "image_decision": "使用 Matplotlib 从 CPU 自动微分结果绘制梯度与长度归一化机制图，明确区别于论文训练曲线",
+      "image_decision": "Matplotlib 绘制 CPU 目标与训练算例；另从用户提供的 v1 PDF 提取原文图 1，保留轴、图例与图注以区分实测证据",
       "image": "assets/ratio-gradient.png",
       "acceptance_checks": [
         "能否区分 token 比例、原始序列比例和长度归一化比例，并解释为什么后者不保留原始重要性采样恒等式？",
+        "能否推导仅做组内中心化时的 (1−1/G) 缩放，并说明加入随机标准差、长度平均或裁剪后为何不能直接沿用结论？",
         "运行十二项测试，解释正负优势的裁剪方向，以及 GSPO-token 与 GSPO 一阶梯度等价的条件。",
         "能否区分论文的训练趋势、裁剪比例与工程潜力，不把 CPU 原子实验当作 MoE 训练复现？",
         "运行两 token 参数更新实验，解释初始目标为零仍能学习、比例可以越界，以及单批数据平台为何不等于最优策略。",
@@ -1314,10 +1315,11 @@
         "/posts/ai/rynnbrain",
         "/posts/ai/ppo-dpo-grpo"
       ],
-      "image_decision": "原创 SVG 对比输入上下文与参数更新两条路径，明确非官方模型结构",
-      "image": "assets/adaptation-paths.svg",
+      "image_decision": "保留 SVG 适应路径图，新增 imagegen 任务歧义示意，蓝橙配色与已有文章对齐，明确非官方实验",
+      "image": "assets/demonstration-ambiguity.png",
       "acceptance_checks": [
         "能否区分上下文适应与参数适应，并说明一次示范、一个 batch 和一步梯度更新为何不是同一单位？",
+        "能否为同一段示范列出两种任务解释，并设计一段能区分它们的追加示范及独立测试？",
         "运行五项测试，解释时间窗口、动作采样点、模型 token 与推理频率之间不能直接换算的原因。",
         "用自拟成功次数计算 macro 与 micro，并说明标准差为何不能直接当作置信区间。"
       ]
