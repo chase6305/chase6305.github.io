@@ -76,6 +76,22 @@ def solve_tiny_qp(h, g, a, lower, upper):
 
 
 def mpc(goal, q0=0., v0=0.):
+    """Plan from bounded scalar state; the finite soft goal may be outside bounds."""
+    values = []
+    for name, value in (("goal", goal), ("q0", q0), ("v0", v0)):
+        try:
+            raw = np.asarray(value)
+        except (TypeError, ValueError) as exc:
+            raise InvalidQPInput(f"{name} must be a real numeric scalar") from exc
+        if raw.shape != () or raw.dtype.kind not in "fiu":
+            raise InvalidQPInput(f"{name} must be a real numeric scalar")
+        value = float(raw)
+        if not np.isfinite(value):
+            raise InvalidQPInput(f"{name} must be finite")
+        values.append(value)
+    goal, q0, v0 = values
+    if not -.5 <= q0 <= .5 or not -1. <= v0 <= 1.:
+        raise InvalidQPInput("Initial q0 must be within [-0.5, 0.5] and v0 within [-1, 1]")
     dt = .1
     prediction = dt * np.tril(np.ones((2, 2)))
     weights = np.diag([10., 30.])
@@ -193,7 +209,7 @@ def unreachable_priority():
         try:
             solve_tiny_qp(np.eye(2), np.zeros(2), a,
                           np.r_[lower, target], np.r_[upper, target])
-        except ValueError:
+        except QPSolveError:
             rejected = True
         else:
             raise AssertionError("An impossible hard sum target was accepted")
@@ -228,7 +244,7 @@ def main():
     # Include a deliberately infeasible box; never turn solver failure into a command.
     try:
         solve_tiny_qp(np.eye(1), np.zeros(1), np.ones((1, 1)), np.ones(1), np.zeros(1))
-    except ValueError:
+    except QPSolveError:
         rejected = True
     else:
         raise AssertionError("Infeasible constraints were accepted")

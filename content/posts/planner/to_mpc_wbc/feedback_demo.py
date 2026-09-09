@@ -8,7 +8,7 @@ import csv
 import json
 from pathlib import Path
 
-from atomic_control import mpc, rollout
+from atomic_control import QPSolveError, mpc, rollout
 
 
 def run(replan, nominal):
@@ -34,7 +34,7 @@ def horizon_trap():
     q, v = first["positions"][1], first["velocity"][0]
     try:
         mpc(.5, q0=q, v0=v)
-    except ValueError:
+    except QPSolveError:
         return dict(first_plan=first, next_position=q, next_velocity=v,
                     next_solve_rejected=True)
     raise AssertionError("The short-horizon trap should have no feasible continuation")

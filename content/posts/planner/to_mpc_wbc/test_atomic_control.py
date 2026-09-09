@@ -3,7 +3,8 @@ import unittest
 from unittest.mock import patch
 
 import numpy as np
-from atomic_control import InvalidQPInput, QPSolveError, solve_tiny_qp
+from atomic_control import InvalidQPInput, QPSolveError, mpc, solve_tiny_qp
+from feedback_demo import horizon_trap
 
 
 class TinyQPTests(unittest.TestCase):
@@ -46,6 +47,26 @@ class TinyQPTests(unittest.TestCase):
                            side_effect=lambda matrix, rhs: np.full(rhs.shape, value)):
                     with self.assertRaises(QPSolveError):
                         solve_tiny_qp([[1]], [0], [[1]], [-1], [1])
+
+    def test_mpc_rejects_invalid_scalar_or_initial_state(self):
+        for kwargs in ({"goal": [.3]}, {"goal": [.3, .4]}, {"goal": [[.3], [.3, .4]]}, {"goal": True},
+                       {"goal": ".3"}, {"goal": 1j}, {"goal": np.inf},
+                       {"goal": .3, "q0": .51}, {"goal": .3, "q0": np.nan},
+                       {"goal": .3, "v0": -1.01}):
+            with self.subTest(kwargs=kwargs), self.assertRaises(InvalidQPInput):
+                mpc(**kwargs)
+
+    def test_mpc_allows_unreachable_soft_goal(self):
+        plan = mpc(2.)
+        np.testing.assert_allclose(plan["velocity"], [.2, .4], atol=1e-9, rtol=0)
+        self.assertLessEqual(max(plan["positions"]), .5)
+        self.assertGreater(abs(plan["positions"][-1] - plan["goal"]), 1.)
+
+    def test_horizon_trap_does_not_hide_input_errors(self):
+        first = {"positions": [.4, .46, .5], "velocity": [.6, .4]}
+        with patch("feedback_demo.mpc", side_effect=[first, InvalidQPInput("invalid input")]):
+            with self.assertRaises(InvalidQPInput):
+                horizon_trap()
 
 
 if __name__ == "__main__":
