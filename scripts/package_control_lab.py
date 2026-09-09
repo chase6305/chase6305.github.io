@@ -8,6 +8,7 @@ WholeBodyX integration and optional plots are outside this NumPy-only check.
 """
 import argparse
 import json
+import math
 from pathlib import Path
 import subprocess
 import sys
@@ -32,6 +33,31 @@ def check_archive():
     print(f"Verified {len(FILES)} ZIP members against article sources.", flush=True)
 
 
+def compare_report(actual, expected, path="report"):
+    """Check published default results with numeric tolerance; ignore root NumPy version.
+
+    Versions are still recorded in each report. This checks numerical examples,
+    not equivalence of dependency environments or real-time performance.
+    """
+    if isinstance(actual, dict) and isinstance(expected, dict):
+        ignored = {"numpy"} if path == "report" else set()
+        if set(actual) - ignored != set(expected) - ignored:
+            raise SystemExit(f"Published report keys differ at {path}")
+        for key in expected.keys() - ignored:
+            compare_report(actual[key], expected[key], f"{path}.{key}")
+    elif isinstance(actual, list) and isinstance(expected, list):
+        if len(actual) != len(expected):
+            raise SystemExit(f"Published report length differs at {path}")
+        for index, (got, wanted) in enumerate(zip(actual, expected)):
+            compare_report(got, wanted, f"{path}[{index}]")
+    elif type(actual) in (int, float) and type(expected) in (int, float):
+        if not (math.isfinite(actual) and math.isfinite(expected)
+                and math.isclose(actual, expected, rel_tol=1e-6, abs_tol=1e-8)):
+            raise SystemExit(f"Published numeric result differs at {path}: {actual} != {expected}")
+    elif type(actual) is not type(expected) or actual != expected:
+        raise SystemExit(f"Published result differs at {path}: {actual!r} != {expected!r}")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="Check ZIP without modifying it")
@@ -51,8 +77,8 @@ def main():
             with zipfile.ZipFile(BUNDLE / "control-lab.zip") as archive:
                 archive.extractall(directory)  # Exact member allowlist checked above.
             root = Path(directory) / "control-lab"
-            for script, output in (("atomic_control.py", "results-atomic"),
-                                   ("feedback_demo.py", "results-feedback")):
+            for script, output, snapshot in (("atomic_control.py", "results-atomic", "atomic-control-report.json"),
+                                             ("feedback_demo.py", "results-feedback", "feedback-report.json")):
                 result = subprocess.run([sys.executable, "-B", script, "--output", output],
                                         cwd=root, text=True, capture_output=True, timeout=60)
                 if result.returncode:
@@ -60,7 +86,9 @@ def main():
                 report = json.loads((root / output / "report.json").read_text())
                 if report != json.loads(result.stdout):
                     raise SystemExit(f"{script}: saved report differs from stdout")
-                print(f"Passed extracted {script}: assertions and report consistency.", flush=True)
+                expected = json.loads((BUNDLE / "assets" / snapshot).read_text())
+                compare_report(report, expected)
+                print(f"Passed extracted {script}: assertions, output and published report consistency.", flush=True)
 
 
 if __name__ == "__main__":

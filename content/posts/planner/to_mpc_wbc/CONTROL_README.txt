@@ -50,4 +50,7 @@ MPC / WBC 教程实验包
 - 执行 python scripts/package_control_lab.py --check 检查 ZIP 成员与源码逐字节一致。
 - 安装 NumPy 后执行 python scripts/package_control_lab.py --check --test，
   从临时解压目录运行原子与反馈实验，并检查 JSON 报告与标准输出一致。
+  同时对照正文附带的默认 JSON 结果：数字使用相对 1e-6、绝对 1e-8 容差，
+  忽略根节点的 NumPy 版本差异；其余字段、数组长度与状态必须匹配。
+  这不证明不同依赖环境完全等价，也不检查 WholeBodyX 或绘图结果。
 - control-lab.yml 自动检查上述 NumPy 实验，不包含 WholeBodyX 集成或绘图。
