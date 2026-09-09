@@ -1292,9 +1292,34 @@
       "image": "assets/ratio-gradient.png",
       "acceptance_checks": [
         "能否区分 token 比例、原始序列比例和长度归一化比例，并解释为什么后者不保留原始重要性采样恒等式？",
-        "运行八项测试，解释正负优势的裁剪方向，以及 GSPO-token 与 GSPO 一阶梯度等价的条件。",
+        "运行十一项测试，解释正负优势的裁剪方向，以及 GSPO-token 与 GSPO 一阶梯度等价的条件。",
         "能否区分论文的训练趋势、裁剪比例与工程潜力，不把 CPU 原子实验当作 MoE 训练复现？",
-        "运行两 token 参数更新实验，解释初始目标为零仍能学习、比例可以越界，以及单批数据平台为何不等于最优策略。"
+        "运行两 token 参数更新实验，解释初始目标为零仍能学习、比例可以越界，以及单批数据平台为何不等于最优策略。",
+        "运行在线扩展，区分 old 刷新和固定 reference，并解释奖励统计的时间点以及不等大小 micro-batch 的权重。"
+      ]
+    },
+    {
+      "id": 70,
+      "added_on": "2026-09-09",
+      "summary": "解读 GEN-1.5 的示范上下文与少步适应，区分任务提示、参数更新和轨迹重放，并提供上下文预算与评测统计练习。",
+      "prerequisites": "模仿学习、条件概率与机器人观测—动作闭环基础",
+      "focus": "先判断任务信息进入上下文还是权重，再核对成功率的实验口径，用独立算例理解工程与评测边界。",
+      "related": [
+        66,
+        68
+      ],
+      "path": "content/posts/ai/gen-1-5/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/rynnbrain",
+        "/posts/ai/ppo-dpo-grpo"
+      ],
+      "image_decision": "原创 SVG 对比输入上下文与参数更新两条路径，明确非官方模型结构",
+      "image": "assets/adaptation-paths.svg",
+      "acceptance_checks": [
+        "能否区分上下文适应与参数适应，并说明一次示范、一个 batch 和一步梯度更新为何不是同一单位？",
+        "运行三项测试，解释时间窗口、动作采样点、模型 token 与推理频率之间不能直接换算的原因。",
+        "用自拟成功次数计算 macro 与 micro，并说明标准差为何不能直接当作置信区间。"
       ]
     }
   ]
