@@ -1483,7 +1483,9 @@ article main#content > .content {
 .content .hextra-code-copy-btn:disabled { cursor: wait; }
 .blog-mobile-toc summary:focus-visible,
 .content pre:focus-visible,
-.content table:focus-visible {
+.content table:focus-visible,
+.content .katex-display:focus-visible,
+.content mjx-container[display="true"]:focus-visible {
   outline: 2px solid var(--chase-accent);
   outline-offset: 3px;
 }
@@ -1529,3 +1531,15 @@ article main#content > .content {
     transform: none;
   }
 }
+
+/* Only overflowing equations get a hint and a keyboard tab stop. */
+.content .blog-math-scroll-hint {
+  display: block;
+  margin-top: 1.2rem;
+  color: var(--chase-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+.content .blog-math-scroll-hint[hidden] { display: none; }
+.content .blog-math-scroll-hint:not([hidden]) + .katex-display,
+.content .blog-math-scroll-hint:not([hidden]) + mjx-container { margin-top: 0.25rem; }

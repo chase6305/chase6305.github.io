@@ -50,3 +50,18 @@ node scripts/check_blog_browser.cjs http://127.0.0.1:13157 9247 /tmp/chase-all-b
 ```
 
 没有修改主题、站点配置或部署工作流。没有安装 ELMP 依赖、训练神经网络或执行机器人实验。
+
+## 后续整体阅读优化：长公式键盘访问
+
+共享阅读脚本为实际溢出的公式增加可见操作提示、Tab 停靠点、区域名称与提示关联。公式能完整显示时移除提示和停靠点，避免所有公式都占用键盘导航。窗口调整、字体加载及折叠章节展开后重新测量宽度；使用 ResizeObserver 跟踪容器变化。关闭 JavaScript 时保留原有 CSS 横向滚动，不依赖脚本展示公式正文。
+
+ELMP 原子教程补充了实际终端输出与断言失败排查方向，没有改变算法或数学结论。
+
+更新 `check_blog_browser.cjs`，逐篇检查残留的显示公式分隔符及滚动公式的键盘入口；新 `check_blog_math.cjs` 实际发送方向键，验证滚动位移、390/1440 px 下提示和 Tab 停靠点切换、浅色/深色主题，以及折叠公式展开后更新。
+
+验证结果：72 篇全站浏览器回归无失败、无 JS 异常；公式专项通过；生产构建与严格数学检查通过，14,726 处站内引用有效。ELMP 原子练习复跑通过。截图在 `/tmp/chase-reading-math` 和 `/tmp/chase-reading-browser`。
+
+```bash
+node scripts/check_blog_math.cjs http://127.0.0.1:13157 9247 /tmp/chase-reading-math
+node scripts/check_blog_browser.cjs http://127.0.0.1:13157 9247 /tmp/chase-reading-browser
+```

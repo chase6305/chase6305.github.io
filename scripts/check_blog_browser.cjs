@@ -82,13 +82,29 @@ let browserSocket;
       .replace(/\/index\.md$/, "").replace(/\.md$/, "").toLowerCase() + "/";
     await navigate(route);
     const result = await evaluate("(() => ({title: document.title, lang: document.querySelector('article')?.lang, guide: !!document.querySelector('.blog-reading-guide'), related: document.querySelectorAll('.blog-related__card').length, overflow: document.documentElement.scrollWidth > innerWidth + 1, brokenImages: Array.from(document.querySelectorAll('.content img')).filter(i => !i.complete || !i.naturalWidth).map(i=>i.getAttribute('src')), mathErrors: Array.from(document.querySelectorAll('.katex-error')).map(e=>({text:e.textContent,error:e.title})), mathCount: document.querySelectorAll('.katex').length, responsiveImages: document.querySelectorAll('.content img[srcset]').length}))()");
+    const mathReading = await evaluate(`(() => {
+      const content = document.querySelector('.content');
+      const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT);
+      const rawMath = [];
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        if (!node.parentElement.closest('pre, code, .katex') && node.textContent.includes('$$')) rawMath.push(node.textContent.slice(0, 100));
+      }
+      const mathAccessibilityErrors = [...content.querySelectorAll('.katex-display')].filter(formula => {
+        if (!formula.clientWidth) return false;
+        const overflow = formula.scrollWidth > formula.clientWidth + 1;
+        const description = document.getElementById(formula.getAttribute('aria-describedby'));
+        return overflow ? formula.tabIndex !== 0 || !description || description.hidden : formula.hasAttribute('tabindex');
+      }).map(formula => formula.textContent.slice(0, 100));
+      return {rawMath, mathAccessibilityErrors};
+    })()`);
     const editorial = await evaluate("(() => { const toc=document.querySelector('.blog-mobile-toc'); const node=document.querySelector('script[type=\"application/ld+json\"]'); const schema=node ? JSON.parse(node.textContent) : null; return {mobileToc: !!toc && getComputedStyle(toc).display !== 'none', selfCheck: !!document.getElementById('阅读自测与验收'), schemaValid: schema?.['@type'] === 'BlogPosting' && schema.inLanguage === 'zh-CN' && !!schema.author?.length && !!schema.dateModified}; })()");
     const topic = await evaluate("(() => {const nav=document.querySelector('.blog-topic-nav'); return {topicNavigation:!!nav, topicLinks:nav ? Array.from(nav.querySelectorAll('a')).map(a=>a.getAttribute('href')) : []};})()");
     await viewport(1440, 1000);
     await sleep(30);
     const desktop = await evaluate("({desktopOverflow:document.documentElement.scrollWidth > innerWidth + 1, desktopTocHidden:getComputedStyle(document.querySelector('.blog-mobile-toc')).display === 'none'})");
     await viewport(390, 844);
-    results.push({route, draft: post.draft, ...result, ...editorial, ...topic, ...desktop});
+    results.push({route, draft: post.draft, ...result, ...mathReading, ...editorial, ...topic, ...desktop});
     if (results.length % 15 === 0) console.log("checked pages:", results.length);
   }
   await navigate("/posts/robotics/kinematics/pinocchio/");
@@ -242,8 +258,8 @@ let browserSocket;
   fs.writeFileSync(path.join(output, "results.json"), JSON.stringify(report, null, 2));
   console.log(JSON.stringify({checked:results.length, zoom, mobileMenu:menu,
     exceptions, newArticleLayouts: newArticleLayouts.length, failures:results.filter(r=>r.overflow || r.brokenImages.length ||
-      r.mathErrors.length || !r.guide || r.lang !== "zh-CN" || !r.mobileToc || !r.selfCheck || !r.schemaValid || !r.topicNavigation || r.desktopOverflow || !r.desktopTocHidden), screenshots:output}, null, 2));
-  assert(results.every(r => !r.overflow && !r.brokenImages.length && !r.mathErrors.length && r.guide && r.lang === 'zh-CN' && r.mobileToc && r.selfCheck && r.schemaValid && r.topicNavigation && !r.desktopOverflow && r.desktopTocHidden));
+      r.mathErrors.length || r.rawMath.length || r.mathAccessibilityErrors.length || !r.guide || r.lang !== "zh-CN" || !r.mobileToc || !r.selfCheck || !r.schemaValid || !r.topicNavigation || r.desktopOverflow || !r.desktopTocHidden), screenshots:output}, null, 2));
+  assert(results.every(r => !r.overflow && !r.brokenImages.length && !r.mathErrors.length && !r.rawMath.length && !r.mathAccessibilityErrors.length && r.guide && r.lang === 'zh-CN' && r.mobileToc && r.selfCheck && r.schemaValid && r.topicNavigation && !r.desktopOverflow && r.desktopTocHidden));
   assert(zoom && menu === 'true');
   assert.equal(exceptions.length, 0, 'Unexpected browser JavaScript exceptions');
   await cdp("Page.close");

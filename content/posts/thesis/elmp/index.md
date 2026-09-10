@@ -237,6 +237,18 @@ Cabinet 与 Bin 迁移实验中，零样本成功率为 57.3%；APG 微调后约
 python3 elmp_math_checks.py
 ```
 
+一次本地运行的输出如下；有限差分误差的末位可能随平台略有变化：
+
+```text
+Collision gradient max error: 7.030e-11
+Sphere-aware penalty: 0.010 m; centre-only: 0.000 m
+Chordal derivative at 180 degrees: 4.899e-16
+200K problems, serial sampling: 4.556 hours
+Local mathematical checks passed; no policy was trained.
+```
+
+第一行验证解析关节梯度与数值差分一致；第二行展示漏减半径的后果。若断言失败，应先检查距离正负号、单位以及差分位置是否接近不可微点，不要直接放宽误差阈值。
+
 脚本做四件具体的事：
 
 1. 在自拟的平面二连杆模型上计算末端点到圆形障碍的净间隙。
