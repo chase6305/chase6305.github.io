@@ -1,7 +1,7 @@
 ---
 title: '强化学习基础'
 date: 2025-12-08
-lastmod: 2026-09-05
+lastmod: 2026-09-10
 draft: false
 tags: ["Reinforcement Learning", "Artificial Intelligence"]
 categories: ["人工智能"]
@@ -1842,43 +1842,21 @@ $$
 - 这就会让训练过程出现：
 - 不稳定（两个头互相干扰）
 - 收敛缓慢（梯度方向不一致）
-- 解决方案：联合优化（combined loss）
-- 必须使用一个联合损失函数，通常写成：
+共享参数时，一种常见做法是联合优化策略、价值和熵项。先统一优化方向：下面的 $J$ 是要最大化的收益目标，而交给梯度下降优化器的是损失 $L=-J$。联合训练可以协调梯度来源，但并不保证两个任务的梯度没有冲突。
+
 $$
-L(\theta) = L_{\text{policy}}(\theta) + c_1 L_{\text{value}}(\theta)
-{}- c_2 S\!\left\lbrack\pi_{\theta}\right\rbrack(s)
+J(\theta)=\mathbb E_t\left[L_t^{\mathrm{CLIP}}(\theta)-c_1(V_\theta(s_t)-V_t^{\mathrm{target}})^2+c_2\mathcal H(\pi_\theta(\cdot\mid s_t))\right].
 $$
 
-- 其中
-- $L_{policy}$: 策略的代理损失(surrogate loss)函数（例如 PPO 的裁剪形式）
-- $L_{value}$: 价值函数误差（如价值函数 $V$的 MSE）
-- $S[\pi_{\theta}]$: 熵项，用于增加探索；
-- $c_1, c_2$: 系统控制平衡
-- 作用
-- 梯度统一来源：共享参数的梯度更新同时考虑两个任务
-- 特征共享稳定化：底层网络学到的特征既能支持策略区分，又能预测状态价值
+其中 $c_1,c_2\geq0$ 分别控制价值误差和熵奖励。裁剪项必须把优势乘在两个候选项上：
+
 $$
-L^{\text{PPO}}(\theta) = \mathbb{E}_t\!\left\lbrack
-L^{\text{CLIP}}_{t}(\theta) - c_1 L^{\text{VF}}_{t}(\theta)
-{}+ c_2 S\!\left\lbrack\pi_{\theta}\right\rbrack(s)
-\right\rbrack
+L_t^{\mathrm{CLIP}}(\theta)=\min\left(r_t(\theta)\hat A_t,\operatorname{clip}(r_t(\theta),1-\epsilon,1+\epsilon)\hat A_t\right).
 $$
 
-- 其中  $L^{CLIP}_t(\theta) = \min(r_t(\theta)\hat{A_t}, clip(r_t(\theta), 1 - \epsilon), 1 + \epsilon)\hat(A_t)$
-- PPO 不是利用整个迹的数据训练，而其最小训练单元是Horizon
-- PPO 的损失函数确实写成期望形式，比如：
-$$
-    L^{\mathrm{CLIP}}(\theta)=\mathbb{E}_t\!\left[\min\left(r_t(\theta)\hat A_t,\;\operatorname{clip}(r_t(\theta),1-\epsilon,1+\epsilon)\hat A_t\right)\right]
-$$
+这是 [PPO 原论文公式 7 与 9](https://arxiv.org/pdf/1707.06347) 的最大化约定。若使用最小化损失，策略项和熵项前面取负号，价值误差前面取正号；不能把两种写法混在同一个优化器中。
 
-- 看起来好像要对整个 episode 的所有时间步求期望。但这里的「期望」，不是说算法执行时要真的等完整轨迹、计算整个迹中数据的期望。
-- 在实现时，这个期望是用采样的 mini-batch 平均值来近似的。
-$$
-    \mathbb{E}_t[\cdot] \approx \frac{1}{N} \sum_{t \in mini-batch} (\cdot)
-$$
-(利用GAE实现)
-
-- 此时，PPO在训练时，GAE没用上整条迹，而是采样T时间步（叫做Horizon），这个T就是输入GAE的长度。
+采样长度（horizon）与优化 mini-batch 大小是两个参数。多个环境各采集 T 步，先计算回报目标和优势，再把数据分成 mini-batch 进行多轮更新。T 不必等于完整 episode 的长度，也不是最小训练单元。非终止片段末尾通常需要价值 bootstrap；真正终止与时间截断的处理应按环境语义区分。
 
 #### PPO是On-Policy学习
 

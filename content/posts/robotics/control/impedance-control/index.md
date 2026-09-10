@@ -1,7 +1,7 @@
 ---
 title: "机器人阻抗控制：从弹簧阻尼模型到笛卡尔力矩控制"
 date: 2026-09-03
-lastmod: 2026-09-05
+lastmod: 2026-09-10
 draft: false
 math: true
 tags: ["Robotics", "Control", "Impedance Control", "Pinocchio"]
@@ -362,8 +362,8 @@ $$
 于是 twist 与 wrench 分别按互为对偶的方式变换：
 
 $$
-{}^Bv=A\,{}^Tv,\qquad
-{}^BF=A^{-T}\,{}^TF
+\phantom{}^Bv=A\,{}^Tv,\qquad
+\phantom{}^BF=A^{-T}\,{}^TF
 $$
 
 这里的逆转置保证功率不随坐标表示改变：
@@ -1097,8 +1097,7 @@ $$
 
 $$
 \frac{d}{dt}
-\begin{bmatrix}e\\\dot e\end{bmatrix}
-=
+\begin{bmatrix}e\\\dot e\end{bmatrix} =
 \underbrace{\begin{bmatrix}
 0&1\\
 -K_d/M_d&-D_d/M_d
@@ -1657,14 +1656,14 @@ $$\hat F_{ext}=J^{T\#}\tau_{ext}$$
 腕部传感器的原始值不能直接当作环境接触力。统一在传感器坐标系 $S$ 表达时，可以把测量模型写成：
 
 $$
-{}^SF_{raw}={}^SF_{contact}+{}^SF_{tool}(q,\dot q,\ddot q)
+\phantom{}^SF_{raw}={}^SF_{contact}+{}^SF_{tool}(q,\dot q,\ddot q)
 +{}^Sb+{}^Sn
 $$
 
 其中 $F_{tool}$ 是传感器下游工具和 payload 的重力、惯性以及旋转运动贡献，$b$ 是零偏，$n$ 是噪声。因此接触 wrench 估计为：
 
 $$
-{}^S\hat F_{contact}={}^SF_{raw}-{}^S\hat b-{}^S\hat F_{tool}
+\phantom{}^S\hat F_{contact}={}^SF_{raw}-{}^S\hat b-{}^S\hat F_{tool}
 $$
 
 公式中的正负号必须以传感器厂商定义和静态实验确认。某些设备输出“传感器受到的 wrench”，另一些接口可能已经改成“工具受到的 wrench”；如果不查接口契约，完整模型也可能整体差一个负号。

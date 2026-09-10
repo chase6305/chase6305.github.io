@@ -1,7 +1,7 @@
 ---
 title: "机器人动力学参数辨识：从数据采集到安全验证"
 date: 2026-09-03
-lastmod: 2026-09-05
+lastmod: 2026-09-10
 draft: false
 authors: ["chase"]
 math: true
@@ -80,9 +80,7 @@ $$\boldsymbol{\tau}=Y(\boldsymbol q,\dot{\boldsymbol q},\ddot{\boldsymbol q})\bo
 其中 $Y$ 是由运动状态计算得到的回归矩阵；$\boldsymbol\theta$ 包含质量、质心一阶矩、转动惯量，也可以追加黏性摩擦、库仑摩擦和力矩偏置；$\boldsymbol\epsilon$ 是测量噪声与未建模动力学。采集 $N$ 个样本后，将各个 $Y_i$ 和 $\tau_i$ 叠加即可用最小二乘求解：
 
 $$
-\underbrace{\begin{bmatrix}\tau_1\\\tau_2\\\vdots\\\tau_N\end{bmatrix}}_{\bar\tau}
-=
-\underbrace{\begin{bmatrix}Y_1\\Y_2\\\vdots\\Y_N\end{bmatrix}}_{\bar Y}
+\underbrace{\begin{bmatrix}\tau_1\\\tau_2\\\vdots\\\tau_N\end{bmatrix}}_{\bar\tau} = \underbrace{\begin{bmatrix}Y_1\\Y_2\\\vdots\\Y_N\end{bmatrix}}_{\bar Y}
 \theta+\bar\epsilon
 $$
 

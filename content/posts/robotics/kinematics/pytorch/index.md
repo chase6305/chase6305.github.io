@@ -1,7 +1,7 @@
 ---
 title: pytorch 机械臂逆运动学迭代数值解
 date: 2025-02-26
-lastmod: 2026-09-05
+lastmod: 2026-09-10
 draft: false
 tags: ["Kinematics", "PyTorch", "Inverse Kinematics"]
 categories: ["机器人技术"]
@@ -122,8 +122,7 @@ if position_error > 2e-4 or rotation_error > 2e-4:
 如果目标描述的是 TCP，而 chain 的末端是 flange，应先用已知工具外参把目标换算到 flange。世界坐标目标也需转换到 chain 根坐标系：
 
 $$
-{}^rT_f=({}^wT_r)^{-1}\,{}^wT_{\mathrm{tcp}}\,
-({}^fT_{\mathrm{tcp}})^{-1}.
+\phantom{}^rT_f=({}^wT_r)^{-1}\,{}^wT_{\mathrm{tcp}}\,({}^fT_{\mathrm{tcp}})^{-1}.
 $$
 
 本文使用列向量，$ {}^aT_b$ 把 b 系坐标变到 a 系。不要把别的图形库的行向量变换直接复制进来。

@@ -1,7 +1,7 @@
 ---
 title: "机器人雅可比矩阵：从关节速度到末端速度"
 date: 2026-09-03
-lastmod: 2026-09-05
+lastmod: 2026-09-10
 draft: false
 tags: ["Kinematics", "Jacobian", "Pinocchio", "Python"]
 categories: ["机器人技术"]
@@ -56,9 +56,7 @@ $$
 这组影响按列排在一起，就是雅可比矩阵。也就是说，**第 $i$ 列回答“第 $i$ 个关节转得多快，会给末端带来什么速度”**，而矩阵乘法只是把所有关节的贡献相加。二维平面中的简化例子如下：
 
 $$
-\begin{bmatrix}\dot x\\\dot y\end{bmatrix}
-=
-\underbrace{\begin{bmatrix}J_{x1}&J_{x2}\\J_{y1}&J_{y2}\end{bmatrix}}_{\text{两个关节各自的影响}}
+\begin{bmatrix}\dot x\\\dot y\end{bmatrix} = \underbrace{\begin{bmatrix}J_{x1}&J_{x2}\\J_{y1}&J_{y2}\end{bmatrix}}_{\text{两个关节各自的影响}}
 \begin{bmatrix}\dot q_1\\\dot q_2\end{bmatrix}.
 $$
 
@@ -105,9 +103,7 @@ $$J_i=\begin{bmatrix}z_i\\0\end{bmatrix}.$$
 
 $$
 J(q)\in\mathbb{R}^{6\times7},\qquad
-\begin{bmatrix}v_x\\v_y\\v_z\\\omega_x\\\omega_y\\\omega_z\end{bmatrix}
-=
-\underbrace{\begin{bmatrix}
+\begin{bmatrix}v_x\\v_y\\v_z\\\omega_x\\\omega_y\\\omega_z\end{bmatrix} = \underbrace{\begin{bmatrix}
 J_{11}&\cdots&J_{17}\\
 \vdots&&\vdots\\
 J_{61}&\cdots&J_{67}
