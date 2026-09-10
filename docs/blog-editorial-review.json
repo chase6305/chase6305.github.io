@@ -1323,6 +1323,33 @@
         "运行五项测试，解释时间窗口、动作采样点、模型 token 与推理频率之间不能直接换算的原因。",
         "用自拟成功次数计算 macro 与 micro，并说明标准差为何不能直接当作置信区间。"
       ]
+    },
+    {
+      "id": 71,
+      "added_on": "2026-09-10",
+      "summary": "从工具点云、行为克隆和可微运动学展开理解 ELMP，详解梯度路径、碰撞损失、实验口径与复现边界。",
+      "prerequisites": "正运动学、Jacobian、神经网络反向传播与行为克隆基础",
+      "focus": "沿点云输入、关节增量、可微展开和损失回传阅读，区分训练几何、部署观测及三种时间指标。",
+      "related": [
+        53,
+        58,
+        68
+      ],
+      "path": "content/posts/thesis/elmp/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/robotics/kinematics/pytorch",
+        "/posts/thesis/coacd",
+        "/posts/ai/ppo-dpo-grpo"
+      ],
+      "image_decision": "引用用户提供 PDF 的图 2，保留两阶段结构，注明来源与裁剪区域",
+      "image": "assets/paper-method.png",
+      "acceptance_checks": [
+        "能否说明 BC 预训练与 APG 微调分别需要什么数据，为什么后者不等于完全无专家训练？",
+        "能否从 SDF 空间梯度推导关节梯度，并解释碰撞球半径、限位和不可微点的影响？",
+        "能否区分首动作延迟、完整求解时间、CPU 累积时间与并行墙钟时间？",
+        "运行原子练习，确认有限差分误差，并说明该练习没有覆盖哪些论文模块。"
+      ]
     }
   ]
 }

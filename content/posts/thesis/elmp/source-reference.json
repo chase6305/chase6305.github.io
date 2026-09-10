@@ -1,0 +1,23 @@
+{
+  "title": "ELMP: Efficient Learning for Motion Planning via Analytical Policy Gradients",
+  "source": "User-provided ELMP.pdf",
+  "version_as_printed": "arXiv:2607.00215v1, 30 Jun 2026",
+  "pages": 9,
+  "sha256": "44e96a33a7d57d92e88e2c6e777a5c7007084a24759044f0cd768bea632f12a3",
+  "figure": {
+    "source_page_1_based": 3,
+    "number": 2,
+    "asset": "assets/paper-method.png",
+    "extraction": "pdftoppm, 144 dpi, x=95 y=90 width=1040 height=340 pixels; figure body only"
+  },
+  "evidence": {
+    "method": "Sections III.A–D, equations 1–5, Algorithm 1",
+    "simulation": "Tables I–III, Figures 4 and 6",
+    "hardware": "Section IV.G and Table IV"
+  },
+  "limitations": [
+    "No author training or hardware reproduction",
+    "Primitive mathematical checks are independent teaching examples",
+    "CPU-hours versus wall-clock parallelism is not specified sufficiently in the source"
+  ]
+}
