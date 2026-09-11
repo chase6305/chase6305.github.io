@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="650" viewBox="0 0 1120 650" role="img" aria-labelledby="title desc">
+<title id="title">Training-time RTC: learn the continuation</title><desc id="desc">H = 8   |   d = 2   |   clean prefix + noisy suffix + per-action flow time</desc>
+<rect width="100%" height="100%" rx="20" fill="#f8fafc"/>
+<g font-family="Arial, sans-serif">
+<text x="42" y="53" font-size="29" fill="#16334d" text-anchor="start" font-weight="bold">Training-time RTC: learn the continuation</text>
+<text x="42" y="85" font-size="18" fill="#52687b" text-anchor="start" font-weight="normal">H = 8   |   d = 2   |   clean prefix + noisy suffix + per-action flow time</text>
+<text x="42" y="191" font-size="20" fill="#16334d" text-anchor="start" font-weight="bold">Input x</text>
+<rect x="215" y="157" width="96" height="54" rx="5" fill="#f6c58a"/>
+<text x="263" y="191" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">A0</text>
+<rect x="320" y="157" width="96" height="54" rx="5" fill="#f6c58a"/>
+<text x="368" y="191" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">A1</text>
+<rect x="425" y="157" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="473" y="191" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">x2(tau)</text>
+<rect x="530" y="157" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="578" y="191" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">x3(tau)</text>
+<rect x="635" y="157" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="683" y="191" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">x4(tau)</text>
+<rect x="740" y="157" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="788" y="191" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">x5(tau)</text>
+<rect x="845" y="157" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="893" y="191" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">x6(tau)</text>
+<rect x="950" y="157" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="998" y="191" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">x7(tau)</text>
+<text x="42" y="289" font-size="20" fill="#16334d" text-anchor="start" font-weight="bold">Flow time</text>
+<rect x="215" y="255" width="96" height="54" rx="5" fill="#f6c58a"/>
+<text x="263" y="289" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">1.0</text>
+<rect x="320" y="255" width="96" height="54" rx="5" fill="#f6c58a"/>
+<text x="368" y="289" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">1.0</text>
+<rect x="425" y="255" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="473" y="289" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">tau</text>
+<rect x="530" y="255" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="578" y="289" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">tau</text>
+<rect x="635" y="255" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="683" y="289" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">tau</text>
+<rect x="740" y="255" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="788" y="289" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">tau</text>
+<rect x="845" y="255" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="893" y="289" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">tau</text>
+<rect x="950" y="255" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="998" y="289" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">tau</text>
+<text x="42" y="546" font-size="20" fill="#16334d" text-anchor="start" font-weight="bold">Loss mask</text>
+<rect x="215" y="512" width="96" height="54" rx="5" fill="#f6c58a"/>
+<text x="263" y="546" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">0</text>
+<rect x="320" y="512" width="96" height="54" rx="5" fill="#f6c58a"/>
+<text x="368" y="546" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">0</text>
+<rect x="425" y="512" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="473" y="546" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">1</text>
+<rect x="530" y="512" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="578" y="546" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">1</text>
+<rect x="635" y="512" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="683" y="546" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">1</text>
+<rect x="740" y="512" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="788" y="546" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">1</text>
+<rect x="845" y="512" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="893" y="546" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">1</text>
+<rect x="950" y="512" width="96" height="54" rx="5" fill="#bddcf4"/>
+<text x="998" y="546" font-size="20" fill="#16334d" text-anchor="middle" font-weight="normal">1</text>
+<text x="312" y="136" font-size="19" fill="#16334d" text-anchor="middle" font-weight="normal">Known / clean</text>
+<text x="733" y="136" font-size="19" fill="#16334d" text-anchor="middle" font-weight="normal">To be generated / noisy</text>
+<rect x="215" y="361" width="831" height="86" rx="12" fill="#dfebf3"/>
+<text x="630" y="396" font-size="24" fill="#16334d" text-anchor="middle" font-weight="bold">Conditional action network</text>
+<text x="630" y="426" font-size="18" fill="#52687b" text-anchor="middle" font-weight="normal">observation o + action x + time for each action token</text>
+<line x1="311" y1="318" x2="311" y2="350" stroke="#52687b" stroke-width="2" stroke-dasharray=""/>
+<line x1="311" y1="350" x2="305" y2="341" stroke="#52687b" stroke-width="2" stroke-dasharray=""/>
+<line x1="311" y1="350" x2="317" y2="341" stroke="#52687b" stroke-width="2" stroke-dasharray=""/>
+<line x1="311" y1="454" x2="311" y2="497" stroke="#52687b" stroke-width="2" stroke-dasharray=""/>
+<line x1="311" y1="497" x2="305" y2="488" stroke="#52687b" stroke-width="2" stroke-dasharray=""/>
+<line x1="311" y1="497" x2="317" y2="488" stroke="#52687b" stroke-width="2" stroke-dasharray=""/>
+<line x1="733" y1="318" x2="733" y2="350" stroke="#52687b" stroke-width="2" stroke-dasharray=""/>
+<line x1="733" y1="350" x2="727" y2="341" stroke="#52687b" stroke-width="2" stroke-dasharray=""/>
+<line x1="733" y1="350" x2="739" y2="341" stroke="#52687b" stroke-width="2" stroke-dasharray=""/>
+<line x1="733" y1="454" x2="733" y2="497" stroke="#52687b" stroke-width="2" stroke-dasharray=""/>
+<line x1="733" y1="497" x2="727" y2="488" stroke="#52687b" stroke-width="2" stroke-dasharray=""/>
+<line x1="733" y1="497" x2="739" y2="488" stroke="#52687b" stroke-width="2" stroke-dasharray=""/>
+<text x="42" y="612" font-size="19" fill="#52687b" text-anchor="start" font-weight="normal">Sampling: restore the prefix before every network call; execute only the live suffix.</text>
+</g></svg>

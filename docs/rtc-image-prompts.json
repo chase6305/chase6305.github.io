@@ -1,0 +1,28 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "date": "2026-09-12",
+  "images": [
+    {
+      "path": "content/posts/ai/real-time-chunking/assets/rtc-overview.png",
+      "prompt": "Use case: scientific-educational. Asset type: conceptual lead illustration for a detailed Chinese robotics blog article about Real-Time Chunking (RTC). Primary request: illustrate a robot continuing its already committed motion while a policy computes a compatible future action chunk in the background. Landscape about 16:9. Style: clean technical editorial illustration matching the site's X-VLA diagrams: white/off-white background, navy typography and outlines, translucent light blue and lavender panels, warm orange for committed actions, teal for new future actions, softly rendered realistic white robot and camera, restrained 3D depth, ample whitespace. Composition: large central tabletop scene with a single white 6-axis robot arm with a parallel gripper moving toward a blue block, a small camera observing the table. Show a short orange dotted motion path close to its current gripper (committed motion), continuing into a teal dotted curve toward the block (future plan), with subtle ghost poses, physically plausible joints. On the upper right a translucent lavender policy-compute inset with stacked neural network layers and small action token tiles, visually separate from the robot motion. Thin directional arrows: camera observation into policy, policy continuation into an action-queue inset below, queue into robot. The action queue is one clean horizontal strip with an orange prefix then teal future tiles; no numbers, no exact timing claim. Use only the following brief English text, exactly: top title 'RTC: Plan While Moving'; camera label 'OBSERVE'; policy label 'PLAN'; robot label 'EXECUTE'; below queue segments 'Committed prefix' and 'New continuation'. Avoid extra text, Chinese text, formulas, axes, brand logos, watermark, comparative performance claims, humanoids, collision hazards, duplicated robots. This is an original conceptual illustration, not a reproduction of a paper figure and not a measured experimental trajectory.",
+      "role": "Concept illustration; not measured trajectory or timing",
+      "source": "original generation"
+    },
+    {
+      "path": "content/posts/ai/real-time-chunking/assets/wam-video-action.png",
+      "prompt": "Use case: scientific-educational. Generate one NEW landscape editorial teaching illustration for a detailed Chinese robotics blog, approximately 16:9. Use the referenced RTC illustration ONLY as a style reference: warm white background, deep navy large sans-serif typography, pale blue and lavender rounded cards, amber and teal accents, crisp restrained 3D robot hardware, soft shading, generous white space. Do not copy its composition or labels.\nTitle exactly \"Predicting Video and Actions Together\".\nShow one clear left-to-right visual story. Left: a pale blue card labeled \"Observed now\", containing ONE small image of a white robot gripper above a blue cube on a beige table with a gray tray. Center: one lavender shared model block labeled \"World-action model\", with a subtle stack-of-layers motif. A single arrow connects the observed-image card to the model.\nRight: TWO parallel output rows branching from the SAME shared model block. Upper row label \"Predicted video\", containing exactly three small film frames of the SAME gripper-and-cube scene progressing coherently: reach toward cube, lift cube, carry cube toward gray tray. Lower row label \"Predicted actions\", containing exactly three amber rounded action-token cards with simple gripper pose icons, one under each video frame. Short horizontal arrows show temporal progression WITHIN each output row. Subtle vertical dotted alignment marks pair each video frame with its action card. The images in the upper row must be visibly framed as model outputs, not live camera feeds. No graph axes, numeric data, formulas, probabilities, latency numbers, or performance claims.\nBelow the whole composition, separated by whitespace, a small standalone physical camera icon and the sentence exactly \"Future observations still need sensors\". Do not connect generated video frames back into the observed-image input with a feedback arrow. Do not imply generated imagery replaces actual sensor feedback, or imply a precise architecture from a particular paper.\nBottom footer exactly \"Conceptual illustration | not measured data\".\nKeep labels limited to the specified English text, highly readable. No watermark, logos, Chinese text, extra captions, faux charts, or tiny illegible text. The scene is an original educational illustration, not a benchmark photo or reproduction of a paper figure.",
+      "role": "Illustration of jointly predicted video and actions; generated video does not replace future sensor observations. Not a measured model output.",
+      "source": "original generation",
+      "style_reference": "content/posts/ai/real-time-chunking/assets/rtc-overview.png"
+    }
+  ],
+  "deterministic_figures": {
+    "generator": "content/posts/ai/real-time-chunking/make_figures.py",
+    "assets": [
+      "chunk-timeline.svg",
+      "prefix-weights.svg",
+      "training-conditioning.svg"
+    ],
+    "note": "Exact index and mask diagrams, generated from code rather than imagegen."
+  }
+}

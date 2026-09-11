@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="570" viewBox="0 0 1120 570" role="img" aria-labelledby="title desc">
+<title id="title">Same action count, different target times</title>
+<desc id="desc">Two sets of thirty future actions span one and four seconds on the same time axis. The state is a separate sample at zero.</desc>
+<rect width="1120" height="570" rx="20" fill="#f8fafc"/>
+<g font-family="Arial,sans-serif" fill="#16334d">
+<text x="42" y="53" font-size="29" text-anchor="start" font-weight="bold">Same action count, different target times</text>
+<text x="42" y="86" font-size="18" text-anchor="start" font-weight="normal">H = 30 future targets   |   one state sample at time 0   |   shared time scale</text>
+<line x1="220" y1="133" x2="220" y2="360" stroke="#c8d6e2" stroke-width="1.5" stroke-dasharray="5 5"/>
+<text x="220" y="399" font-size="18" text-anchor="middle" font-weight="normal">0 s</text>
+<line x1="425" y1="133" x2="425" y2="360" stroke="#c8d6e2" stroke-width="1.5" stroke-dasharray="5 5"/>
+<text x="425" y="399" font-size="18" text-anchor="middle" font-weight="normal">1 s</text>
+<line x1="630" y1="133" x2="630" y2="360" stroke="#c8d6e2" stroke-width="1.5" stroke-dasharray="5 5"/>
+<text x="630" y="399" font-size="18" text-anchor="middle" font-weight="normal">2 s</text>
+<line x1="835" y1="133" x2="835" y2="360" stroke="#c8d6e2" stroke-width="1.5" stroke-dasharray="5 5"/>
+<text x="835" y="399" font-size="18" text-anchor="middle" font-weight="normal">3 s</text>
+<line x1="1040" y1="133" x2="1040" y2="360" stroke="#c8d6e2" stroke-width="1.5" stroke-dasharray="5 5"/>
+<text x="1040" y="399" font-size="18" text-anchor="middle" font-weight="normal">4 s</text>
+<text x="42" y="184" font-size="23" text-anchor="start" font-weight="bold">Q = 1 s</text>
+<text x="42" y="213" font-size="17" text-anchor="start" font-weight="normal">spacing: 1/30 s</text>
+<line x1="220" y1="190" x2="1040" y2="190" stroke="#cad5df" stroke-width="1.5" stroke-dasharray=""/>
+<circle cx="226.8333" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="233.6667" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="240.5000" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="247.3333" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="254.1667" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="261.0000" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="267.8333" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="274.6667" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="281.5000" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="288.3333" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="295.1667" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="302.0000" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="308.8333" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="315.6667" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="322.5000" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="329.3333" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="336.1667" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="343.0000" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="349.8333" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="356.6667" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="363.5000" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="370.3333" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="377.1667" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="384.0000" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="390.8333" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="397.6667" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="404.5000" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="411.3333" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="418.1667" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="425.0000" cy="190" r="2.6" fill="#bf7429"/>
+<circle cx="220" cy="190" r="5" fill="#f8fafc" stroke="#16334d" stroke-width="2"/>
+<text x="425" y="168" font-size="17" text-anchor="middle" font-weight="normal">action[29]</text>
+<text x="42" y="304" font-size="23" text-anchor="start" font-weight="bold">Q = 4 s</text>
+<text x="42" y="333" font-size="17" text-anchor="start" font-weight="normal">spacing: 2/15 s</text>
+<line x1="220" y1="310" x2="1040" y2="310" stroke="#cad5df" stroke-width="1.5" stroke-dasharray=""/>
+<circle cx="247.3333" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="274.6667" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="302.0000" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="329.3333" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="356.6667" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="384.0000" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="411.3333" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="438.6667" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="466.0000" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="493.3333" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="520.6667" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="548.0000" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="575.3333" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="602.6667" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="630.0000" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="657.3333" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="684.6667" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="712.0000" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="739.3333" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="766.6667" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="794.0000" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="821.3333" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="848.6667" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="876.0000" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="903.3333" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="930.6667" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="958.0000" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="985.3333" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="1012.6667" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="1040.0000" cy="310" r="2.6" fill="#278a86"/>
+<circle cx="220" cy="310" r="5" fill="#f8fafc" stroke="#16334d" stroke-width="2"/>
+<text x="1040" y="288" font-size="17" text-anchor="middle" font-weight="normal">action[29]</text>
+<text x="220" y="434" font-size="19" text-anchor="start" font-weight="normal">Open circle: state     Filled dots: action[0] ... action[29]</text>
+<line x1="42" y1="467" x2="1078" y2="467" stroke="#dce5ed" stroke-width="1.5" stroke-dasharray=""/>
+<text x="42" y="502" font-size="20" text-anchor="start" font-weight="bold">First target: +1/30 s in the upper row, +2/15 s in the lower row.</text>
+<text x="42" y="535" font-size="18" text-anchor="start" font-weight="normal">Target-time spacing is a data convention; controller playback must be defined separately.</text>
+</g></svg>
