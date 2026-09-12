@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-12",
+  "mode": "built-in imagegen",
+  "style_reference": "content/posts/ai/real-time-chunking/assets/rtc-overview.png",
+  "images": [
+    {
+      "path": "content/posts/ai/light-loco-parkour/assets/whole-body-contacts-clean.png",
+      "prompt": "Use case: scientific-educational. Asset type: wide raster concept illustration for an existing Chinese robotics engineering blog. Create an original illustration titled exactly 'One Policy, Many Contacts'. Match the established site artwork: warm-white background, deep navy clean sans-serif headings, pale blue and soft lavender cards, restrained amber and teal accents, thin outlines, softly shaded miniature silver robotic hardware, generous white space. Main scene across the upper two thirds: three separated snapshots of the SAME generic compact humanoid (not a branded robot). Left snapshot: walking toward a low rectangular platform. Center snapshot: climbing the platform with BOTH palms clearly planted on its top surface, elbows bent and one knee braced on the platform; contacts must be physically legible, no floating hands, no extra limbs. Right snapshot: standing upright on the platform after the climb. Small captions under the snapshots exactly 'Approach', 'Whole-body support', 'Continue'. A pale-blue translucent viewing cone from the center robot's chest-mounted depth camera points toward the platform edge; a small teal accent marks each palm contact. Lower third: a clean left-to-right information flow, input card 'Depth + proprioception + command', arrow to ONE lavender card 'Recurrent policy', arrow to amber card 'Joint targets'. A small memory loop on the policy card. Footer exactly 'Conceptual illustration | not an experiment'. Do not depict three separate policy networks, a state machine, a skill selector, a language model, runtime motion references, precise joint counts, performance numbers or fabricated plots. The three snapshots illustrate a possible continuous behavior, not a claimed trajectory from the paper. No logos or watermarks.",
+      "edit_prompt": "Edit this illustration only by removing the small decorative text blocks and small decorative horizontal rules in the upper left and upper right corners. Remove 'PERCEIVE PLAN ACT IN THE REAL WORLD', 'SAME ROBOT DIFFERENT CONTACTS CONTINUOUS BEHAVIOR', and 'A MORE CAPABLE PHYSICAL WORLD'. Fill their areas seamlessly with the existing warm-white background. Preserve the large title 'One Policy, Many Contacts', all three robot snapshots and contact poses, all platform geometry, the chest-camera cone, all lower cards and arrows, the lower labels, the footer, colors, spacing, image dimensions and every other element unchanged. Add nothing.",
+      "validation": "Generic humanoid concept illustration; visually inspected contact poses and the single policy diagram. Not the actual Lightbot 0, a paper trajectory or a dynamics validation."
+    }
+  ],
+  "deterministic_figures": {
+    "generator": "content/posts/ai/light-loco-parkour/make_figures.py",
+    "assets": [
+      "assets/training-deployment.svg",
+      "assets/reward-memory.svg",
+      "assets/phase-prior.svg",
+      "assets/teacher-student-gap.svg"
+    ],
+    "note": "Flow and teaching formulas; the last figure transcribes paper v1 Table V values and is not a local performance experiment."
+  }
+}

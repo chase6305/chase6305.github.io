@@ -1411,6 +1411,36 @@
         "核对固定源码的 CLI、checkpoint 目录索引、重新初始化优化器与默认评测扫描范围。",
         "解压实验包独立运行，并说明源码公式对照没有验证 JAX 性能或机器人闭环。"
       ]
+    },
+    {
+      "id": 74,
+      "added_on": "2026-09-12",
+      "summary": "结合原论文与 lucidrains 实现，拆解地形配对参考增强、多专家 DAgger、阶段条件 AMP 和深度 GRU 策略，并用 CPU 实验核对奖励、PPO、蒸馏与时序接口。",
+      "prerequisites": "PPO、模仿学习、PyTorch 张量与机器人观测—动作闭环基础",
+      "focus": "沿参考数据、技能学习、衔接训练与深度部署阅读，区分论文系统和组件实现，重点核对训练条件、奖励符号、记忆及损失的数据来源。",
+      "related": [
+        68,
+        72,
+        73,
+        66
+      ],
+      "path": "content/posts/ai/light-loco-parkour/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/ppo-dpo-grpo",
+        "/posts/ai/x-vla",
+        "/posts/ai/real-time-chunking",
+        "/posts/ai/rynnbrain"
+      ],
+      "image_decision": "imagegen 原创全身接触概念图；四张 SVG 分别由流程、公式及论文报告值重建，图注区分来源与适用范围",
+      "image": "assets/whole-body-contacts-clean.png",
+      "acceptance_checks": [
+        "区分原论文完整系统与固定第三方仓库的组件范围，解释全量测试为何无法直接通过。",
+        "说明参考增强、单技能 DAgger、多专家合并、衔接 RL 与深度蒸馏分别改变什么训练条件。",
+        "运行 CPU 练习，核对脚部加速度的符号、GAE 目标、阶段权重与蒸馏 reduction。",
+        "用源码探针解释堆帧缓存、GRU 隐藏状态及潜变量默认开关为什么影响结果。",
+        "按论文各自评测口径解释 75 cm 攀爬的师生差距和 98% 衔接成功率。"
+      ]
     }
   ]
 }

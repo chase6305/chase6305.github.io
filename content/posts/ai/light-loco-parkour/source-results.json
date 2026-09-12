@@ -1,0 +1,151 @@
+{
+  "source_commit": "963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b",
+  "source_module": "light_loco_parkour/__init__.py",
+  "scope": "CPU component probes; no simulator, humanoid training, checkpoint or hardware",
+  "versions": {
+    "torch": "2.9.0+cpu",
+    "numpy": "2.2.6",
+    "light-loco-parkour": "0.0.29",
+    "assoc-scan": "0.0.5",
+    "mean-conc-beta": "0.0.8",
+    "torch-einops-utils": "0.1.25",
+    "x-mlps-pytorch": "0.5.1",
+    "hl-gauss-pytorch": "0.3.0"
+  },
+  "results": {
+    "foot_acceleration": {
+      "filtered": [
+        20.0,
+        14.330626487731934,
+        10.268342971801758
+      ],
+      "default_weight": 0.01,
+      "default_reward_contribution": 0.19999998807907104,
+      "paper_weight": -0.01
+    },
+    "streaming": {
+      "1": {
+        "max_absolute_error": 8.940696716308594e-08
+      },
+      "5": {
+        "max_absolute_error": 0.010015606880187988
+      }
+    },
+    "latent_default": {
+      "None": {
+        "active": true,
+        "loss": 0.008614587597548962
+      },
+      "False": {
+        "active": false,
+        "loss": 0.0
+      },
+      "True": {
+        "active": true,
+        "loss": 0.011923599056899548
+      }
+    },
+    "weighted_distillation": {
+      "actual": 14.0,
+      "sum_weight_normalized_alternative": 7.0
+    },
+    "gae": {
+      "returns": [
+        [
+          2.51200008392334,
+          2.0
+        ]
+      ],
+      "advantages": [
+        [
+          2.01200008392334,
+          1.600000023841858
+        ]
+      ]
+    },
+    "phase_prior": {
+      "positions": [
+        [
+          0.8999999761581421,
+          1.0,
+          1.100000023841858,
+          2.0,
+          2.0999999046325684
+        ]
+      ],
+      "hard_phases": [
+        [
+          0,
+          0,
+          1,
+          1,
+          2
+        ]
+      ],
+      "smooth_weights": [
+        [
+          [
+            0.5986876487731934,
+            0.3891838788986206,
+            0.012128434143960476
+          ],
+          [
+            0.5,
+            0.4820137917995453,
+            0.01798621006309986
+          ],
+          [
+            0.40131235122680664,
+            0.5720906257629395,
+            0.026596995070576668
+          ],
+          [
+            0.0179862380027771,
+            0.4820137619972229,
+            0.5
+          ],
+          [
+            0.012128472328186035,
+            0.3891839385032654,
+            0.5986875891685486
+          ]
+        ]
+      ],
+      "unsorted_min_weight": -0.5720906257629395,
+      "single_prior_shares_weights": true
+    },
+    "recurrent_replay": {
+      "ratio_with_unchanged_weights_but_missing_initial_hidden": [
+        [
+          1.0092695951461792,
+          1.0048257112503052,
+          1.0021750926971436
+        ]
+      ]
+    },
+    "detached_amp": {
+      "gradient_with_detached_reward": 4.0,
+      "gradient_without_reward": 4.0
+    },
+    "action_contract": {
+      "default_type": "Normal",
+      "distribution_mean_shape": [
+        1,
+        6,
+        3
+      ],
+      "deterministic_shape": [
+        1,
+        6,
+        3
+      ]
+    },
+    "beta_default": {
+      "raw_zero_mean": 0.0,
+      "base_alpha": 6.0,
+      "base_beta": 6.0,
+      "concentration_before_unimodality_floor": 10.0
+    }
+  },
+  "passed": true
+}

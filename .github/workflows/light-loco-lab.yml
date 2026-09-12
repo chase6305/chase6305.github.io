@@ -1,0 +1,32 @@
+name: Check Light-Loco-Parkour article examples
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "content/posts/ai/light-loco-parkour/**"
+      - ".github/workflows/light-loco-lab.yml"
+  pull_request:
+    paths:
+      - "content/posts/ai/light-loco-parkour/**"
+      - ".github/workflows/light-loco-lab.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  teaching-examples:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Run standard-library teaching examples
+        run: python content/posts/ai/light-loco-parkour/parkour_lab.py
+      - name: Check figures match their generator
+        run: python content/posts/ai/light-loco-parkour/make_figures.py --check

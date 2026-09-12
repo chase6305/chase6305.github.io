@@ -1,0 +1,72 @@
+{
+  "scope": "Deterministic teaching math; no model or robot performance",
+  "acceleration_memory": [
+    20.0,
+    14.330626211475785,
+    10.268342380651841
+  ],
+  "continuous_excess_steady_value": 70.55452946314259,
+  "default_positive_weight_contribution": [
+    0.2,
+    0.14330626211475786,
+    0.10268342380651842
+  ],
+  "paper_negative_weight_contribution": [
+    -0.2,
+    -0.14330626211475786,
+    -0.10268342380651842
+  ],
+  "gae_value_targets": [
+    2.5120000000000005,
+    2.0
+  ],
+  "timeout_value_targets": [
+    2.7064000000000004,
+    2.27
+  ],
+  "hard_phases": [
+    0,
+    0,
+    1,
+    1,
+    2
+  ],
+  "smooth_phase_weights": [
+    [
+      0.598687660112452,
+      0.38918390490327376,
+      0.012128434984274237
+    ],
+    [
+      0.5,
+      0.48201379003790845,
+      0.01798620996209156
+    ],
+    [
+      0.4013123398875479,
+      0.5720906665355863,
+      0.026596993576865863
+    ],
+    [
+      0.01798620996209155,
+      0.48201379003790845,
+      0.5
+    ],
+    [
+      0.012128434984274294,
+      0.3891839049032736,
+      0.5986876601124521
+    ]
+  ],
+  "weighted_standardized_advantage": [
+    -0.612363250671875,
+    0.0,
+    0.612363250671875
+  ],
+  "weighted_distillation_valid_token_mean": 14.0,
+  "weighted_distillation_sum_weight_mean": 7.0,
+  "equal_mean_gaussian_KL": 0.3181471805599453,
+  "shifted_beta_density_at_0_4": 0.63,
+  "shifted_beta_entropy": 0.568054377998557,
+  "passed": true
+}
