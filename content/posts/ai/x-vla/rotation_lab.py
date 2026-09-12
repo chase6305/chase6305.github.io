@@ -82,6 +82,36 @@ def check_interpolation_and_targets():
     print("gripper: interpolated target=0.5; BCE logit gradient verified as sigmoid(z)-g")
 
 
+def check_relative_pose_frames():
+    # Pose maps tool coordinates into the base frame, with column vectors.
+    current_r = np.array([[0., -1., 0.], [1., 0., 0.], [0., 0., 1.]])
+    local_dr = np.array([[1., 0., 0.], [0., 0., -1.], [0., 1., 0.]])
+    current_p = np.array([1., 2., 0.])
+    target_p = np.array([1., 2.1, 0.])
+    target_r = current_r @ local_dr
+    base_dp = target_p - current_p
+    local_dp = current_r.T @ base_dp
+    base_dr = target_r @ current_r.T
+    np.testing.assert_allclose(local_dp, [.1, 0., 0.], atol=1e-12)
+    np.testing.assert_allclose(current_p + current_r @ local_dp, target_p)
+    np.testing.assert_allclose(base_dr @ current_r, target_r)
+    assert not np.allclose(current_p + local_dp, target_p)
+    assert not np.allclose(local_dr @ current_r, target_r)
+    # Left multiplication of a complete SE(3) transform needs a different translation.
+    current = np.eye(4)
+    current[:3, :3], current[:3, 3] = current_r, current_p
+    target = np.eye(4)
+    target[:3, :3], target[:3, 3] = target_r, target_p
+    local_delta = np.linalg.inv(current) @ target
+    base_delta = target @ np.linalg.inv(current)
+    np.testing.assert_allclose(current @ local_delta, target, atol=1e-12)
+    np.testing.assert_allclose(base_delta @ current, target, atol=1e-12)
+    np.testing.assert_allclose(base_delta[:3, 3], target_p - base_dr @ current_p)
+    assert not np.allclose(base_delta[:3, 3], base_dp)
+    print("pose frames: base displacement [0, 0.1, 0] equals tool displacement [0.1, 0, 0]")
+    print("SE(3): both composition orders reconstruct the target; naive translation does not")
+
+
 def main():
     identity = np.eye(3)
     angle = np.deg2rad(37.0)
@@ -119,6 +149,7 @@ def main():
             raise AssertionError("A degenerate input was accepted")
     print("degenerate inputs: rejected")
     check_interpolation_and_targets()
+    check_relative_pose_frames()
     print(f"one prompt: {32 * 1024:,} parameters")
     print(f"30-domain prompt table: {30 * 32 * 1024:,} parameters")
 

@@ -69,6 +69,14 @@ def checks():
     print("30 targets at 30 Hz: 1 s nominal cycle; 4 s labels compressed by factor 4")
     print("at 0.20 s: index 1 if equality allowed; index 2 if strictly future")
     print("at 0.25 s: next target is index 2 at 0.30 s; expiry checks passed")
+    # Distinct anchor frames do not make future-label windows independent.
+    train_targets = set(sample_times(10, 20, 4, 30)[1:])
+    validation_targets = set(sample_times(12, 20, 4, 30)[1:])
+    shared = train_targets & validation_targets
+    assert len(shared) == 15 and min(shared) == F(182, 15) and max(shared) == 14
+    separate_targets = set(sample_times(15, 20, 4, 30)[1:])
+    assert not train_targets & separate_targets
+    print("split windows: anchors 10/12 s share 15 of 30 future-label times; 10/15 s do not")
     print("All timing checks passed. No robot timing or learned policy was measured.")
 
 

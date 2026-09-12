@@ -22,9 +22,10 @@ X-VLA：独立 CPU 教学实验
   还检查噪声配对、参数量、采样权重、单位换算与输入屏蔽。
   成功时最后打印 All exact-arithmetic checks passed.
 - rotation_lab.py：两种 6D 排列分别往返通过；故意混用排列的例子产生
-  约 83.29 度误差。检查退化旋转、6D 插值边界和夹爪软标签。
+  约 83.29 度误差。检查退化旋转、6D 插值边界、夹爪软标签，以及基座／工具坐标和 SE(3) 增量组合。
 - timing_lab.py：1 秒、4 秒和 0.4 秒窗口的目标间隔分别为
-  1/30、2/15、1/75 秒。成功时打印 All timing checks passed.
+  1/30、2/15、1/75 秒；10/12 秒起始的两个 4 秒窗口共享 15 个未来标签时间。
+  成功时打印 All timing checks passed.
 
 预期的退化输入会被程序内部捕获；它们不是实验运行失败。
 可选执行 python timing_lab.py --write-figure，在当前实验目录的 assets/

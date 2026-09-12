@@ -6,6 +6,12 @@
     10.268342380651841
   ],
   "continuous_excess_steady_value": 70.55452946314259,
+  "same_tau_different_control_rates": {
+    "steady_50hz": 70.55452946314259,
+    "steady_100hz": 130.2776492619491,
+    "amplitude_ratio": 1.8464817248906131,
+    "impulse_decay_after_60ms": 0.36787944117144233
+  },
   "default_positive_weight_contribution": [
     0.2,
     0.14330626211475786,

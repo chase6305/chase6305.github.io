@@ -56,6 +56,27 @@ def main():
     rows['foot_acceleration'] = dict(filtered=filtered, default_weight=weight,
         default_reward_contribution=actual_contribution, paper_weight=-0.01)
 
+    # A global reset cannot isolate an episode boundary in one vectorized environment.
+    batched = FootAccelerationPenalty()
+    two_impulses = SimpleNamespace(foot_acceleration=torch.tensor(
+        [[[50., 0., 0.]], [[70., 0., 0.]]]))
+    two_rest = SimpleNamespace(foot_acceleration=torch.zeros(2, 1, 3))
+    first = batched(two_impulses, hparams)
+    unchanged = batched(two_rest, hparams)
+    batched.reset_()
+    global_reset = batched(two_rest, hparams)
+    expected_selective = unchanged.clone()
+    expected_selective[0] = 0.
+    torch.testing.assert_close(first, torch.tensor([20., 40.]))
+    torch.testing.assert_close(global_reset, torch.zeros(2))
+    assert float(unchanged[0]) > 0 and float(expected_selective[1]) > 0
+    rows['vectorized_reset'] = {
+        'initial_memory': first.tolist(), 'without_reset_next': unchanged.tolist(),
+        'global_reset_next': global_reset.tolist(),
+        'desired_next_if_only_environment_zero_resets': expected_selective.tolist(),
+        'selective_reset_is_upstream_feature': False,
+    }
+
     def actor(frames=1, recurrent=False, latent=None, actions=1):
         return Actor(16, state_encoder=StateEncoder(16, dim_state=2,
             num_stacked_frames=frames, use_rnn=recurrent), num_actions=actions,
@@ -88,7 +109,7 @@ def main():
         model((states,), deterministic=True)
         active = model.to_actions.next_latent_prediction_loss is not None
         assert active == (setting is not False)
-        rows['latent_default'][label] = {'active':active, 'loss':float(model.next_latent_prediction_loss)}
+        rows['latent_default'][label] = {'active':active, 'loss':float(model.next_latent_prediction_loss.detach())}
 
     # Distillation weights scale a valid-token mean; they are not normalized by their sum.
     class FixedActor(nn.Module):

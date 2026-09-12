@@ -23,6 +23,25 @@
       "default_reward_contribution": 0.19999998807907104,
       "paper_weight": -0.01
     },
+    "vectorized_reset": {
+      "initial_memory": [
+        20.0,
+        40.0
+      ],
+      "without_reset_next": [
+        14.330626487731934,
+        28.661252975463867
+      ],
+      "global_reset_next": [
+        0.0,
+        0.0
+      ],
+      "desired_next_if_only_environment_zero_resets": [
+        0.0,
+        28.661252975463867
+      ],
+      "selective_reset_is_upstream_feature": false
+    },
     "streaming": {
       "1": {
         "max_absolute_error": 8.940696716308594e-08

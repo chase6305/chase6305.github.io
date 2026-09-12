@@ -54,6 +54,58 @@ def live_suffix(chunk, observation_step, next_command_step, *, committed_until_s
     return chunk[index:]
 
 
+def candidate_suffix(chunk, *, result_session, active_session, request_id,
+                     installed_request_id, observation_step, next_command_step,
+                     committed_until_step):
+    """Pure teaching decision; a real caller must check and install under one lock."""
+    if result_session != active_session:
+        raise ValueError("result belongs to a previous control session")
+    if request_id <= installed_request_id:
+        raise ValueError("duplicate or out-of-order result")
+    return live_suffix(chunk, observation_step, next_command_step,
+                       committed_until_step=committed_until_step)
+
+
+def check_session_and_freshness():
+    chunk = np.arange(200, 212)
+    common = dict(active_session=8, installed_request_id=2, observation_step=0,
+                  next_command_step=3, committed_until_step=4)
+    # Old session's high ID and valid-looking time must not defeat the session guard.
+    for session, request in ((7, 99), (8, 2), (8, 1)):
+        try:
+            candidate_suffix(chunk, result_session=session, request_id=request, **common)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("accepted old-session, duplicate, or out-of-order result")
+    actual = candidate_suffix(chunk, result_session=8, request_id=3, **common)
+    np.testing.assert_array_equal(actual, [204, 205, 206, 207, 208, 209, 210, 211])
+    # Equal 80 ms request-to-install time, but different sensor age at request time.
+    horizon_ms, wait_ms, old_queue_ms = 16 * 20, 80, 200
+    remaining = [horizon_ms - age - wait_ms for age in (0, 200)]
+    assert remaining == [240, 40] and old_queue_ms - wait_ms == 120
+    assert horizon_ms - 240 - wait_ms == 0  # fresh suffix completely exhausted
+    print("session guard: old-session ID 99 rejected; active-session ID 3 accepted")
+    print("freshness: equal 80 ms waits leave 240/40 ms of prediction; queue margin stays 120 ms")
+
+
+def check_variable_latency():
+    # Serialized requests, same time grid, no request/installation overhead.
+    horizon = 8
+    def feasible(previous_delay, current_delay, spacing):
+        return spacing >= previous_delay and spacing + current_delay <= horizon
+    assert feasible(2, 5, 2)  # an isolated delay > H/2 may be covered
+    assert not feasible(5, 5, 5)  # sustained delay cannot be hidden
+    assert feasible(5, 2, 5)
+    assert not feasible(2, 5, 1)  # would overlap inference requests
+    assert not feasible(2, 5, 4)  # waiting too long consumes the coverage margin
+    for previous in range(9):
+        for current in range(9):
+            exists = any(feasible(previous, current, spacing) for spacing in range(9))
+            assert exists == (previous + current <= horizon)
+    print("variable latency: H=8 covers delays 2 then 5 at spacing 2; two consecutive 5s fail")
+
+
 def conditioned_input(action, noise, time, delays):
     """action/noise: [B,H,D], time/delays: [B]."""
     prefix = np.arange(action.shape[1])[None, :] < delays[:, None]
@@ -359,6 +411,8 @@ def main():
     parser.add_argument("--source-model", type=Path)
     args = parser.parse_args()
     check_timeline()
+    check_session_and_freshness()
+    check_variable_latency()
     check_committed_prefix()
     check_masks(args.source_model)
     check_vjp()
