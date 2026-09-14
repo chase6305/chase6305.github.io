@@ -253,6 +253,29 @@ def run_examples() -> dict:
     rejects("valid_nan_is_rejected", lambda: masked_mse([[1.0]], [[float("nan")]], [[True]]), "not finite")
     rejects("mask_does_not_hide_shape_errors", lambda: masked_mse([[1.0, 2.0]], [[None]], [[False]]), "dimensions")
 
+    # Equal source sampling: 100 robot and 100 human windows, but only 25
+    # human windows have a usable action target. One coordinate per window
+    # isolates reduction semantics; squared errors are 0 (robot) and 1 (human).
+    robot_predictions, human_predictions = [[0.0]] * 100, [[1.0]] * 100
+    robot_targets, human_targets = [[0.0]] * 100, [[0.0]] * 25 + [[None]] * 75
+    robot_valid, human_valid = [[True]] * 100, [[True]] * 25 + [[False]] * 75
+    pooled_loss = masked_mse(robot_predictions + human_predictions,
+                             robot_targets + human_targets, robot_valid + human_valid)
+    robot_loss = masked_mse(robot_predictions, robot_targets, robot_valid)
+    human_loss = masked_mse(human_predictions, human_targets, human_valid)
+    source_mean_loss = (robot_loss + human_loss) / 2
+    # Repeating valid human elements four times demonstrates an explicit
+    # frequency-weighted mean, not a recommendation to duplicate real data.
+    weighted_loss = masked_mse(robot_predictions + human_predictions * 4,
+                               robot_targets + human_targets * 4, robot_valid + human_valid * 4)
+    check("equal_sampling_has_unequal_valid_supervision", math.isclose(pooled_loss, 0.2))
+    check("per_source_means_change_the_objective", math.isclose(source_mean_loss, 0.5))
+    check("explicit_frequency_weight_changes_pooled_mean", math.isclose(weighted_loss, 0.5))
+    robot_count = sum(row[0] for row in robot_valid)
+    human_count = sum(row[0] for row in human_valid)
+    fixed_denominator_loss = (robot_count * robot_loss + 4 * human_count * human_loss) / (robot_count + human_count)
+    check("weight_normalization_changes_absolute_loss_scale", math.isclose(fixed_denominator_loss, 0.8))
+
     records = [dict(id="seed-a", family="family-a", scene="kitchen-a", split="train"),
                dict(id="child-a", family="family-a", scene="kitchen-b", split="train"),
                dict(id="seed-b", family="family-b", scene="kitchen-c", split="test")]
@@ -279,6 +302,15 @@ def run_examples() -> dict:
         "future_training_action_window": window,
         "masked_mse": loss,
         "all_missing_action_loss": None,
+        "source_mixing": {
+            "sampled_windows": {"robot": 100, "human": 100},
+            "valid_action_windows": {"robot": 100, "human": 25},
+            "pooled_valid_mse": pooled_loss,
+            "equal_source_mean_mse": source_mean_loss,
+            "human_frequency_weight_4_mse": weighted_loss,
+            "weight_4_with_unweighted_denominator_mse": fixed_denominator_loss,
+            "note": "Synthetic errors 0/1 isolate reduction weights; not gradient shares or a tuned recipe.",
+        },
     }
 
 

@@ -1,6 +1,6 @@
 {
   "scope": "synthetic teaching examples; no policy training or robot validation",
-  "checks_passed": 26,
+  "checks_passed": 30,
   "checks": [
     "exclude_not_yet_received_frame",
     "age_uses_capture_not_receipt",
@@ -20,6 +20,10 @@
     "all_missing_means_skip_action_loss",
     "valid_nan_is_rejected",
     "mask_does_not_hide_shape_errors",
+    "equal_sampling_has_unequal_valid_supervision",
+    "per_source_means_change_the_objective",
+    "explicit_frequency_weight_changes_pooled_mean",
+    "weight_normalization_changes_absolute_loss_scale",
     "distinct_families_and_scenes_pass",
     "synthetic_descendant_leakage",
     "scene_sharing_depends_on_evaluation_goal",
@@ -53,5 +57,20 @@
     ]
   ],
   "masked_mse": 2.5,
-  "all_missing_action_loss": null
+  "all_missing_action_loss": null,
+  "source_mixing": {
+    "sampled_windows": {
+      "robot": 100,
+      "human": 100
+    },
+    "valid_action_windows": {
+      "robot": 100,
+      "human": 25
+    },
+    "pooled_valid_mse": 0.2,
+    "equal_source_mean_mse": 0.5,
+    "human_frequency_weight_4_mse": 0.5,
+    "weight_4_with_unweighted_denominator_mse": 0.8,
+    "note": "Synthetic errors 0/1 isolate reduction weights; not gradient shares or a tuned recipe."
+  }
 }

@@ -163,7 +163,7 @@
       "category": "human-video-transfer",
       "paper": "https://arxiv.org/abs/2302.12422",
       "project_or_official_resource": "https://mimic-play.github.io/",
-      "reading_note": "人类高层计划与机器人底层控制；作者包含 Li Fei-Fei。"
+      "reading_note": "标定双相机重建三维手轨迹学习高层计划；机器人示范学习底层控制；作者包含 Li Fei-Fei。"
     },
     {
       "id": "lapa",
