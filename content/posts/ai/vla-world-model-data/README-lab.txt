@@ -12,7 +12,8 @@ Linux 上可先核对下载内容：
 
 data_contract_lab.py：30 项人工示例检查，其中一项遍历 400 个规则动作窗口。
 lab-results.json：本次实际运行结果。脚本输出可与此文件比较。
-make_figures.py：重新生成 assets/ 下三张原创 SVG。
+make_figures.py：重建精确时间图，以及监督关系、场景流程的可编辑 SVG 版本。
+文章中的新版流程插图单独随网页发布，不包含在这个轻量实验包中。
 source-map.json：37 项论文／项目阅读索引、两个固定源码提交、设备文档及两项格式文档入口。
 source_probe.py：可选的固定源码实验，额外需要 NumPy 和两个本地 Git 仓库。
 source-probe-results.json：固定源码探针的实际输出及所读文件哈希。
