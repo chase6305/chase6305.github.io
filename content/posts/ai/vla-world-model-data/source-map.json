@@ -31,6 +31,15 @@
       "reading_note": "主从系统与动作块学习算法分别理解。"
     },
     {
+      "id": "gello",
+      "title": "GELLO",
+      "year": 2023,
+      "category": "leader-follower",
+      "paper": "https://arxiv.org/abs/2309.13037v2",
+      "project_or_official_resource": "https://wuphilipp.github.io/gello_site/",
+      "reading_note": "按目标臂运动学设计主手；原论文展示 Franka、UR5、xArm，用户研究结论有具体任务范围。"
+    },
+    {
       "id": "mobile-aloha",
       "title": "Mobile ALOHA",
       "year": 2024,
@@ -346,5 +355,17 @@
     "https://developer.picoxr.com/document/unreal-openxr/camera-access/",
     "https://github.com/XR-Robotics/XRoboToolkit-Unity-Client",
     "https://github.com/realsenseai/librealsense/blob/v2.58.4/include/librealsense2/h/rs_frame.h"
+  ],
+  "data_format_docs": [
+    {
+      "title": "RLDS dataset format",
+      "url": "https://github.com/google-research/rlds#dataset-format",
+      "reading_note": "is_last 与 is_terminal；最后观察与无效动作的区别。"
+    },
+    {
+      "title": "LeRobotDataset v3.0",
+      "url": "https://huggingface.co/docs/lerobot/main/en/lerobot-dataset-v3#format-design",
+      "reading_note": "官方 main 文档核对于 2026-09-14；多 episode 共享文件，依靠元数据恢复轨迹边界。"
+    }
   ]
 }
