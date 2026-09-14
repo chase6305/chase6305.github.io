@@ -1462,7 +1462,7 @@
         "/posts/ai/light-loco-parkour",
         "/posts/ai/rynnbrain"
       ],
-      "image_decision": "五张场景概念图、五张按 Transformer Attention 风格绘制的技术流程图，以及一张精确时间 SVG；全部配有中文图注和替代文本。",
+      "image_decision": "五张场景概念图、五张按 Transformer Attention 风格绘制的技术流程图，以及一张精确时间 SVG；全部采用统一图号、左对齐中文图注、替代文本与原图入口。",
       "image": "assets/data-sources.png",
       "acceptance_checks": [
         "区分 VR 接口、第一视角、人体追踪与机器人动作，解释为什么这些类别可以重叠。",

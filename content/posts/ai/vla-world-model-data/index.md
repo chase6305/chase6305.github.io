@@ -24,19 +24,25 @@ related_posts:
 
 这篇文章围绕一个具体问题展开：**如果要让机器人在真实环境中看懂任务、做出动作并预测后果，哪些数据可以直接使用，哪些需要重建、映射或补采？** 资料核对截至 **2026-09-14**，主要依据论文、作者项目页、官方代码和数据说明。论文结果、开放数据和企业产品进展分别标明；文中的工程建议是基于这些材料的归纳，不是各项目共同采用的标准。
 
-![六个独立场景依次展示 VR 操控、主从机械臂、手持夹爪、第一视角采集、仿真厨房与人类动作视频](assets/data-sources.png "图 1：六类机器人学习数据来源。上排是 VR 操控、主从机械臂和手持夹爪，下排是第一视角记录、仿真环境和人类视频。它们分别强调采集接口、观察方式或执行环境，可以组合使用；设备与场景为概念示意。")
+<figure class="article-figure" id="fig-data-sources">
+  {{< post-image src="assets/data-sources.png" alt="六个独立场景依次展示 VR 操控、主从机械臂、手持夹爪、第一视角采集、仿真厨房与人类动作视频" >}}
+  <figcaption>
+    <span class="article-figure__number">图 1</span>
+    <span class="article-figure__text"><strong>六类数据来源。</strong>上排是 VR、主从机械臂和手持夹爪，下排是第一视角、仿真和人类视频。它们强调的分类维度不同，可以组合使用；设备与场景为示意。 <a href="assets/data-sources.png" aria-label="查看图 1 原图">查看原图</a></span>
+  </figcaption>
+</figure>
 
-| 想回答的问题 | 阅读入口 |
+**按目标跳读：**
+
+| 当前问题 | 建议入口 |
 | --- | --- |
-| VR、UMI、egocentric 到底是不是同一层分类 | [分类与监督](#taxonomy)、[来源对照](#comparison) |
-| PICO 能记录什么，怎样与机器人连接 | [VR／PICO](#vr-pico)、[时间与坐标](#data-contract) |
-| 主从机械臂和手持夹爪怎么选 | [ALOHA、GELLO 与 BRS](#leader-follower)、[UMI](#umi) |
-| 只有人的视频，如何训练机器人的动作 | [第一视角](#egocentric)、[Human Video](#human-video)、[训练接口对照](#human-supervision-interfaces) |
-| 不同研究方向怎样连接成数据生产流程 | [研究衔接](#research-connections)、[世界模型](#world-models) |
-| 仿真和生成数据能替代多少真机数据 | [仿真](#simulation)、[配比与评测](#evaluation) |
-| 想开始搭采集方案 | [源码核对](#xr-source)、[交付与验收](#collection-delivery)、[实施路线](#recipes) |
-| 转换数据格式后如何避免错误监督 | [RLDS 与 LeRobot 边界](#dataset-format-boundaries)、[时间与坐标](#data-contract) |
-| 想运行检查与位姿例子 | [数据实验](#data-lab)、[UMI 坐标约定](#umi-action-frame) |
+| 比较采集方案 | [分类与监督](#taxonomy) → [VR／PICO](#vr-pico)、[主从](#leader-follower)、[UMI](#umi) |
+| 利用人类视频 | [第一视角](#egocentric) → [Human Video](#human-video) → [训练接口对照](#human-supervision-interfaces) |
+| 扩展仿真与世界模型 | [仿真数据](#simulation) → [研究衔接](#research-connections) → [世界模型](#world-models) |
+| 整理数据并开始实验 | [数据契约](#data-contract) → [格式边界](#dataset-format-boundaries) → [交付与验收](#collection-delivery)、[实施路线](#recipes) |
+| 运行例子或追查来源 | [随文实验](#data-lab)、[UMI 位姿探针](#umi-action-frame)、[研究与资源索引](#research-progress) |
+
+英文流程标签由相邻正文和中文图注解释；需要查看密集流程或坐标细节时，可打开每张图下方的“查看原图”。
 
 ## 1. 先拆开三个维度：接口、视角和监督 {#taxonomy}
 
@@ -50,13 +56,13 @@ related_posts:
 
 ### 1.1 VLA 要学什么
 
-以输出动作块的策略为例：
+VLA（Vision-Language-Action，视觉语言动作模型）把视觉与语言条件映射到动作。以输出动作块的策略为例：
 
 $$
 p_\theta(a_{t:t+H-1}\mid I_{\le t},q_t,\ell).
 $$
 
-这里 $I$ 是图像或视觉历史，$q_t$ 是可用的机器人本体状态，$\ell$ 是任务指令，$a$ 是模型所使用的动作表示。要用动作监督训练它，至少需要知道动作的含义、坐标系、单位、时间范围和适用机器人。
+这里 $I$ 是图像或视觉历史，$q_t$ 是可用的机器人本体状态，$\ell$ 是任务指令，$a$ 是模型所使用的动作表示；$H$ 是动作块包含的目标步数，其对应时长取决于动作采样周期。要用动作监督训练它，至少需要知道动作的含义、坐标系、单位、时间范围和适用机器人。
 
 “动作向量有 7 个数”远远不够：它可能是 7 个关节角，也可能是三维位移、旋转参数与夹爪量；绝对位姿与增量位姿即使形状相同，语义也完全不同。不同具身可以共享表征或部分动作空间，但仍需要定义适配方式。[X-VLA 专题]({{< relref "/posts/ai/x-vla" >}})进一步讨论了动作表示与多具身接入。
 
@@ -69,11 +75,17 @@ $$
 | 空间重建与视角生成 | 场景表示与相机条件渲染 | 换个位置看，场景是什么样？ |
 {.table-readable}
 
-$z$ 可以是视觉特征、潜变量或其他状态表征，不一定是 RGB 像素。三种能力可以放进同一个模型，但训练监督和验证方法仍须分别讨论。
+$z$ 可以是视觉特征、潜变量或其他状态表征，不一定是 RGB 像素；$K$ 表示这里预测的未来步数，不必与策略的动作块长度 $H$ 相同。三种能力可以放进同一个模型，但训练监督和验证方法仍须分别讨论。
 
 **相机轨迹不是机器人控制轨迹；生成连续视频也不等于验证了接触动力学。** 对动作条件模型而言，必须进一步问：条件是电机目标、末端位姿、人体动作、潜在动作编码，还是仅仅相机运动？
 
-![真实机器人、人类示范和仿真分别经过动作契约、人体映射或物理执行检查，进入策略、时序预测与空间建模目标](assets/supervision-map-flow.png "图 2：从数据来源到学习目标的三条路径。每行从左到右依次说明原始数据、必要处理和监督用途；真实机器人重在执行契约，人类示范重在对齐或表征学习，仿真重在物理与数据检查。箭头表示可构建的处理路径，不代表接口已经天然兼容。")
+<figure class="article-figure" id="fig-supervision-map-flow">
+  {{< post-image src="assets/supervision-map-flow.png" alt="真实机器人、人类示范和仿真分别经过动作契约、人体映射或物理执行检查，进入策略、时序预测与空间建模目标" >}}
+  <figcaption>
+    <span class="article-figure__number">图 2</span>
+    <span class="article-figure__text"><strong>从数据来源到学习目标。</strong>每行依次展示原始数据、必要处理和监督用途。真实机器人需要执行契约，人类示范需要对齐或表征学习，仿真需要物理与数据检查。 <a href="assets/supervision-map-flow.png" aria-label="查看图 2 原图">查看原图</a></span>
+  </figcaption>
+</figure>
 
 ## 2. 六类来源各自贡献什么 {#comparison}
 
@@ -93,7 +105,13 @@ $z$ 可以是视觉特征、潜变量或其他状态表征，不一定是 RGB �
 
 ## 3. VR 与 PICO：把人的意图变成可记录的控制 {#vr-pico}
 
-![操作者的头手输入经工作站映射为机器人运动目标，机器人相机画面沿反方向返回头显](assets/teleoperation-loop.png "图 3：遥操作中的控制与视觉反馈。上方橙色路径表示人端输入经过坐标与控制处理后驱动机器人；下方青色路径表示机器人相机画面返回操作者。两条路径各有时间开销，头显追踪流不能直接替代机器人执行日志。设备为接口示意。")
+<figure class="article-figure" id="fig-teleoperation-loop">
+  {{< post-image src="assets/teleoperation-loop.png" alt="操作者的头手输入经工作站映射为机器人运动目标，机器人相机画面沿反方向返回头显" >}}
+  <figcaption>
+    <span class="article-figure__number">图 3</span>
+    <span class="article-figure__text"><strong>遥操作中的控制与视觉反馈。</strong>橙色路径把人端输入送往机器人，青色路径把相机画面返回操作者。两条路径各有延迟，应分别记录；设备为接口示意。 <a href="assets/teleoperation-loop.png" aria-label="查看图 3 原图">查看原图</a></span>
+  </figcaption>
+</figure>
 
 图中间的工作站代表重定向、坐标变换与控制服务，不只是视频转发。实际采集时，需要把人端意图、机器人接受的命令和执行后的观测分别记录下来，才能定位延迟或跟踪误差来自哪一层。
 
@@ -101,15 +119,21 @@ $z$ 可以是视觉特征、潜变量或其他状态表征，不一定是 RGB �
 
 这套系统包含人端追踪、动作映射、控制执行和反馈显示。图中将视觉回传与本体状态反馈分开：
 
-![XR 输入经过重定向与控制器驱动机器人，机器人相机经网络返回操作者，本体状态另行反馈控制器](assets/xr-control-feedback-flow.png "图 4：XR 遥操作的分层闭环。上排从头手输入依次经过重定向、控制器到机器人；下排把相机画面经网络与显示送回操作者。实测状态单独反馈控制器，不经过相机链路。每条记录都要保留自己的时间与来源。")
+<figure class="article-figure" id="fig-xr-control-feedback-flow">
+  {{< post-image src="assets/xr-control-feedback-flow.png" alt="XR 输入经过重定向与控制器驱动机器人，机器人相机经网络返回操作者，本体状态另行反馈控制器" >}}
+  <figcaption>
+    <span class="article-figure__number">图 4</span>
+    <span class="article-figure__text"><strong>XR 遥操作的分层闭环。</strong>上排是追踪、重定向与控制执行，下排是视觉回传。绿色分支把实测状态送回控制器，与相机链路分开。 <a href="assets/xr-control-feedback-flow.png" aria-label="查看图 4 原图">查看原图</a></span>
+  </figcaption>
+</figure>
 
-图中的 **Retargeting** 对应坐标变换、动作缩放、离合和重定位，**Controller** 对应 IK 或全身控制器。**Measured state** 是机器人状态反馈，**Robot cameras** 提供视觉观测：两者都来自执行过程，但数据类型、频率和用途不同，不能串成同一条传感器链。图中的力、深度与多视角是可选模态示例，是否可记录以实际传感器与接口为准。
+图中的 **Retargeting** 对应坐标变换、动作缩放、离合和重定位，**Controller** 对应逆运动学（IK）或全身控制器。**Measured state** 是机器人状态反馈，**Robot cameras** 提供视觉观测：两者都来自执行过程，但数据类型、频率和用途不同，不能串成同一条传感器链。图中的力、深度与多视角是可选模态示例，是否可记录以实际传感器与接口为准。
 
 头显提供的是人端输入与显示。机器人末端能否到达目标、接触时如何施力、底盘如何保持平衡，依赖后面的控制系统。
 
-**Open-TeleVision（2024）**将立体视觉反馈与人的头、手运动结合，使操作者能主动改变观察方向，再用采集的机器人示范训练策略。它说明“看得清、看得到”也是示范质量的一部分，不能只优化控制器采样率。[论文与项目](https://robot-tv.github.io/)
+**Open-TeleVision**（2024）将立体视觉反馈与人的头、手运动结合，使操作者能主动改变观察方向，再用采集的机器人示范训练策略。它说明“看得清、看得到”也是示范质量的一部分，不能只优化控制器采样率。[论文与项目](https://robot-tv.github.io/)
 
-**XRoboToolkit（2025）**将 XR 端、PC 服务、追踪传输与机器人侧接入拆成模块，以 OpenXR 等接口支持跨设备遥操作。对使用 PICO 的团队，它提供了比从零写头显客户端更具体的系统起点。应沿官方组织中的 Unity Client、PC Service 和 Teleop Sample 阅读，而不是把工具包当成已经适配所有机器人的完整采集产品。[论文](https://arxiv.org/abs/2508.00097)、[项目](https://xr-robotics.github.io/)、[官方仓库组织](https://github.com/XR-Robotics)
+**XRoboToolkit**（2025）将 XR 端、PC 服务、追踪传输与机器人侧接入拆成模块，以 OpenXR 等接口支持跨设备遥操作。对使用 PICO 的团队，它提供了比从零写头显客户端更具体的系统起点。应沿官方组织中的 Unity Client、PC Service 和 Teleop Sample 阅读，而不是把工具包当成已经适配所有机器人的完整采集产品。[论文](https://arxiv.org/abs/2508.00097)、[项目](https://xr-robotics.github.io/)、[官方仓库组织](https://github.com/XR-Robotics)
 
 论文还给出了一条具体的 VLA 数据链：在 ARX R5 双臂折毯任务中，以 50 FPS 记录 14 维机器人关节状态、14 维位置控制命令，以及三路 424 × 240 RGB 图像；用采集的 100 条示范对 π₀ 做 LoRA 微调。这个例子说明 XR 输入最终应落成机器人侧的状态、命令与视觉记录，而不是只保存头显的手部轨迹。[论文 Section IV-B](https://arxiv.org/html/2508.00097v1)
 
@@ -126,7 +150,7 @@ $z$ 可以是视觉特征、潜变量或其他状态表征，不一定是 RGB �
 
 ### 3.3 EgoHumanoid：同一种 VR 设备连接两条数据链
 
-**EgoHumanoid（2026）**是非常具体的例子：人体采集使用 PICO、身体追踪器与头戴 ZED X Mini；机器人采集则用 PICO 遥操作 Unitree G1。论文的人体 RGB 由另装相机记录，不能将其描述成“直接读取 PICO 透视画面”。人体数据经过视角与动作对齐，再与机器人数据共同训练。[论文 Section III-B／III-C](https://arxiv.org/html/2602.10106v1)
+**EgoHumanoid**（2026）是非常具体的例子：人体采集使用 PICO、身体追踪器与头戴 ZED X Mini；机器人采集则用 PICO 遥操作 Unitree G1。论文的人体 RGB 由另装相机记录，不能将其描述成“直接读取 PICO 透视画面”。人体数据经过视角与动作对齐，再与机器人数据共同训练。[论文 Section III-B／III-C](https://arxiv.org/html/2602.10106v1)
 
 这条路线的关键是把“带不带机器人出门”变成可分工的问题：机器人示范提供目标具身的执行依据，人类示范提供更多场景。具体如何消除差异，见[第一视角迁移](#ego-transfer)。
 
@@ -180,15 +204,15 @@ ALOHA 用人操纵的主手机械臂带动从手机器人，采集双臂操作�
 
 主从常见优势是运动关系直观、持续接触操作方便，并能记录目标机器人自身的传感器反馈。代价是主手装置的机械维护、关节零位与映射，以及采集空间对整套机器人系统的依赖。
 
-**GELLO（2023，IROS 2024）**给出了另一种主手设计：针对目标机械臂，用打印件和现成电机构建具有相同运动学结构的控制装置。论文展示了 Franka、UR5、xArm 三类机械臂的实现，并在用户研究中与 VR 控制器、三维鼠标比较示范采集。这里的“通用”指设计框架可适配多种机械臂，不表示一个固定主手无需改动就能对应所有机器人。[论文](https://arxiv.org/abs/2309.13037v2)、[硬件与软件入口](https://wuphilipp.github.io/gello_site/)
+**GELLO**（2023，IROS 2024）给出了另一种主手设计：针对目标机械臂，用打印件和现成电机构建具有相同运动学结构的控制装置。论文展示了 Franka、UR5、xArm 三类机械臂的实现，并在用户研究中与 VR 控制器、三维鼠标比较示范采集。这里的“通用”指设计框架可适配多种机械臂，不表示一个固定主手无需改动就能对应所有机器人。[论文](https://arxiv.org/abs/2309.13037v2)、[硬件与软件入口](https://wuphilipp.github.io/gello_site/)
 
 从数据角度看，GELLO 提醒我们：主手的运动学结构也是采集接口的一部分。选型时应实测关节零位、方向、限位及从手跟踪误差；同样需要保存主手目标与从手反馈。论文用户研究中的优势适用于其测试任务与映射设置，不能直接推广成所有主从装置都优于 VR。接触任务做得好，也不等于数据中自动包含可用的力／触觉标签。
 
-**Mobile ALOHA（2024）**进一步将双臂操作扩展到移动底盘，使示范覆盖移动与操作的组合。把桌面夹取数据扩展成移动操作，增加的不仅是底盘动作维度，还包括接近位置、相机观察和操作阶段之间的协调。[论文](https://arxiv.org/abs/2401.02117)、[项目](https://mobile-aloha.github.io/)
+**Mobile ALOHA**（2024）进一步将双臂操作扩展到移动底盘，使示范覆盖移动与操作的组合。把桌面夹取数据扩展成移动操作，增加的不仅是底盘动作维度，还包括接近位置、相机观察和操作阶段之间的协调。[论文](https://arxiv.org/abs/2401.02117)、[项目](https://mobile-aloha.github.io/)
 
 ### 4.2 BRS 与 JoyLo：采集全身协调行为
 
-**BEHAVIOR Robot Suite（BRS，2025）**面向双臂、移动底盘和可调躯干组成的全身操作平台。其 **JoyLo** 将低成本运动学主手与 Joy-Con 输入结合，服务于全身遥操作；**WB-VIMA** 则是对应的视觉运动策略。[BRS 项目、硬件与代码入口](https://behavior-robot-suite.github.io/)
+**BEHAVIOR Robot Suite**（BRS，2025）面向双臂、移动底盘和可调躯干组成的全身操作平台。其 **JoyLo** 将低成本运动学主手与 Joy-Con 输入结合，服务于全身遥操作；**WB-VIMA** 则是对应的视觉运动策略。[BRS 项目、硬件与代码入口](https://behavior-robot-suite.github.io/)
 
 它提供了一个重要视角：**手臂轨迹是否有效，取决于底盘和躯干怎样配合。** 同一个手部目标，可能因底盘位置不同而不可达；同一个躯干动作，又可能显著改变相机观察。采集全身示范时，需要把这些关系作为一个联合行为记录下来。
 
@@ -216,7 +240,7 @@ RoboMIND 2.0 的意义在于把多具身、移动与接触模态放进同一研�
 
 当已有基础策略后，继续让人从标准初态完成漂亮示范，不一定最能解决真实失败。机器人会进入示范中少见的状态，例如杯子抓歪、门只打开一半，或移动后手臂够不到物体。
 
-**RECAP／π*0.6（2025）**研究将自主执行经验、人工接管纠错与结果反馈用于改进策略。接管示范针对策略实际访问的失败附近状态；自主轨迹则需要通过结果与价值等信号学习，不能把所有旧动作都当成好标签照抄。[官方方法介绍](https://www.pi.website/blog/pistar06)
+**RECAP／π*0.6**（2025）研究将自主执行经验、人工接管纠错与结果反馈用于改进策略。接管示范针对策略实际访问的失败附近状态；自主轨迹则需要通过结果与价值等信号学习，不能把所有旧动作都当成好标签照抄。[官方方法介绍](https://www.pi.website/blog/pistar06)
 
 **AgiBot World 2026 Theme 3**提供了对应的数据发布实例。9 月 1 日的官方说明报告 11,430 条真实轨迹，包含专家示范、自主成功／失败及人工接管纠错，并提供进度、错误、扰动和干预标注。这是特定主题批次的发布数字，不能与旧版 AgiBot World 的总体规模混用。[官方发布说明](https://www.agibot.com/article/231/detail/95.html)
 
@@ -226,17 +250,29 @@ RoboMIND 2.0 的意义在于把多具身、移动与接触模态放进同一研�
 
 ### 5.1 为什么不是直接拍人手
 
-**Universal Manipulation Interface（UMI，RSS 2024）**让人手持带相机的平行夹爪完成操作。这样，接触工具、局部视角与将来机器人使用的接口更接近；人仍然可以在不搬运机器人到现场的情况下采集示范。[UMI 论文](https://arxiv.org/abs/2402.10329)
+**Universal Manipulation Interface**（UMI，RSS 2024）让人手持带相机的平行夹爪完成操作。这样，接触工具、局部视角与将来机器人使用的接口更接近；人仍然可以在不搬运机器人到现场的情况下采集示范。[UMI 论文](https://arxiv.org/abs/2402.10329)
 
 与自由人手相比，这种选择主动牺牲了一部分灵巧度，换来更清楚的“工具位姿与开合”表示。抓杯子的手指接触分布很复杂；如果示范者和机器人都使用相近的平行夹爪，迁移问题会收敛到更明确的接口。
 
-![左侧人手持带相机的平行夹爪抓杯子，右侧机器人使用相似工具，中央图标分别表示坐标、时间与可达性检查](assets/umi-interface-transfer.png "图 5：从手持工具示范到机器人执行。左右两侧保持相近的夹爪接触方式与局部观察，但工具的运动分别由人和机器人提供。中央三项检查对应坐标表示、时序匹配和机器人可达性；相似的工具外形不能自动完成迁移。硬件为概念示意。")
+<figure class="article-figure" id="fig-umi-interface-transfer">
+  {{< post-image src="assets/umi-interface-transfer.png" alt="左侧人手持带相机的平行夹爪抓杯子，右侧机器人使用相似工具，中央图标分别表示坐标、时间与可达性检查" >}}
+  <figcaption>
+    <span class="article-figure__number">图 5</span>
+    <span class="article-figure__text"><strong>从手持工具到机器人执行。</strong>两侧保持相近的夹爪接触方式与局部视角。中央图标对应坐标、时间和可达性检查；相似工具并不自动保证迁移成功，硬件为示意。 <a href="assets/umi-interface-transfer.png" aria-label="查看图 5 原图">查看原图</a></span>
+  </figcaption>
+</figure>
 
 这张对照图强调 UMI 主动缩小的是工具接口差异。人的手腕能到达某个位置，不保证目标机械臂也能以相同速度和姿态到达；因此，工具轨迹仍需经过下面的数据处理与部署检查。
 
 ### 5.2 一条 UMI 数据处理链
 
-![UMI 从手持夹爪记录开始，依次重建运动、检查轨迹、构建动作目标、训练策略，最后在匹配接口的机器人上部署](assets/umi-data-processing-flow.png "图 6：UMI 从示范到部署的六个环节。沿上排从左向右读取，再沿下排从右向左读取；轨迹重建和质量检查完成后，才构造相对动作与时间对齐的训练目标。机器人部署还需匹配工具、可达性和延迟。")
+<figure class="article-figure" id="fig-umi-data-processing-flow">
+  {{< post-image src="assets/umi-data-processing-flow.png" alt="UMI 从手持夹爪记录开始，依次重建运动、检查轨迹、构建动作目标、训练策略，最后在匹配接口的机器人上部署" >}}
+  <figcaption>
+    <span class="article-figure__number">图 6</span>
+    <span class="article-figure__text"><strong>UMI 从示范到部署。</strong>沿上排向右、下排向左，按 1—6 读取。运动重建与质量检查之后，再构造目标、训练并部署；相对表示和时序需与机器人接口匹配。 <a href="assets/umi-data-processing-flow.png" aria-label="查看图 6 原图">查看原图</a></span>
+  </figcaption>
+</figure>
 
 第 2 步重建工具运动与夹爪开合，第 3 步检查轨迹及双夹爪相对关系，第 4 步再把它们整理为模型使用的动作目标。图中将 **Train policy** 与 **Deploy on robot** 分开，是为了明确训练数据可用之后仍然需要执行端适配。
 
@@ -249,7 +285,10 @@ UMI 的贡献不只是夹爪硬件。原工作还强调**相对轨迹表示、�
 UMI 论文的相对轨迹以本次推理的当前末端位姿为共同参考。令 $T_t$ 将末端坐标变换到某个共同参考系，则目标序列可写成：
 
 $$
-A_{t,k}=T_t^{-1}T_{t+k},\qquad T_{t+k}=T_t A_{t,k}.
+\begin{aligned}
+A_{t,k} &= T_t^{-1}T_{t+k},\\
+T_{t+k} &= T_t A_{t,k}.
+\end{aligned}
 $$
 
 每个目标都相对于同一个 $T_t$。逐步增量则相对于前一个目标，需要沿序列累积。两者都可能被口头称为“相对动作”，却有不同的解码规则。[论文 Policy Interface／Figure 6](https://arxiv.org/html/2402.10329v1)
@@ -290,10 +329,15 @@ python source_probe.py \
 
 ## 6. Egocentric：从“看到人的生活”到“监督机器人的动作” {#egocentric}
 
-![三个独立画面分别展示普通人类视频、带手部姿态追踪的第一视角记录，以及具有动作轨迹的机器人操作](assets/human-video-supervision.png "图 7：相同的抓取行为可以对应三种监督条件。左侧视频提供外观和时序变化；中间追踪记录增加人体几何信息；右侧机器人交互才能直接对应特定具身的动作与反馈。三栏不是自动转换流水线，人体姿态仍需对齐、重定向和验证。")
+<figure class="article-figure" id="fig-human-video-supervision">
+  {{< post-image src="assets/human-video-supervision.png" alt="三个独立画面分别展示普通人类视频、带手部姿态追踪的第一视角记录，以及具有动作轨迹的机器人操作" >}}
+  <figcaption>
+    <span class="article-figure__number">图 7</span>
+    <span class="article-figure__text"><strong>同一行为的三种监督条件。</strong>左侧只有视频，中间增加人体姿态追踪，右侧包含机器人交互。三栏不是自动转换流水线：人体运动仍需对齐与执行验证。 <a href="assets/human-video-supervision.png" aria-label="查看图 7 原图">查看原图</a></span>
+  </figcaption>
+</figure>
 
 阅读这张图时，应先看每栏能够提供的标签，而不是相机是否戴在头上。普通视频可以学习行为结构，追踪设备可以增加人体运动监督；要回答机器人应该发送什么命令，还需要明确的动作接口和机器人数据依据。
-
 
 ### 6.1 第一视角数据有不同层级
 
@@ -307,7 +351,7 @@ python source_probe.py \
 
 [Ego4D](https://ego4d-data.org/)覆盖广泛日常活动；[Ego-Exo4D](https://ego-exo4d-data.org/)增加同步外部视角，以更好地研究技能表现。它们对理解“发生了什么、如何发生”很有价值，但不能仅凭第一视角视频数量推导可直接训练的机器人动作小时数。
 
-**EgoDex（2025）**使用 Apple Vision Pro 与 ARKit，提供第一视角视频、头部／上身／手部三维姿态及语言标注。官方当前说明为 **829 小时**，约分为 725 小时训练、7 小时测试、97 小时额外数据；829 小时不能整体当成论文训练集。这里的动作信息来自人体追踪，仍需要机器人适配。[官方数据与代码](https://github.com/apple-aiml-research/ml-egodex)
+**EgoDex**（2025）使用 Apple Vision Pro 与 ARKit，提供第一视角视频、头部／上身／手部三维姿态及语言标注。官方当前说明为 **829 小时**，约分为 725 小时训练、7 小时测试、97 小时额外数据；829 小时不能整体当成论文训练集。这里的动作信息来自人体追踪，仍需要机器人适配。[官方数据与代码](https://github.com/apple-aiml-research/ml-egodex)
 
 ### 6.2 迁移要同时处理视角与动作 {#ego-transfer}
 
@@ -321,9 +365,9 @@ python source_probe.py \
 
 ### 6.3 2026 年进展：EgoScale 扩大的究竟是什么
 
-**EgoScale（2026-02）**研究大规模人类动作预训练，再通过对齐的人机数据和目标任务数据迁移到灵巧机器人。项目报告使用超过 20,000 小时的 **action-labeled egocentric human video**，并给出高自由度手部操作实验。[论文](https://arxiv.org/abs/2602.16710)、[项目](https://research.nvidia.com/labs/gear/egoscale/)
+**EgoScale**（2026-02）研究大规模人类动作预训练，再通过对齐的人机数据和目标任务数据迁移到灵巧机器人。项目报告使用超过 20,000 小时的 **action-labeled egocentric human video**，并给出高自由度手部操作实验。[论文](https://arxiv.org/abs/2602.16710)、[项目](https://research.nvidia.com/labs/gear/egoscale/)
 
-这里最重要的限定词是 **action-labeled**，但还应追问标签是怎样得到的。论文中的大规模视频经过 SLAM 与手部姿态估计，再把人体手指映射到机器人手部表示；其中相当一部分属于**估计与重定向标签**。精确追踪的 EgoDex 数据与更小规模的人机对齐数据又提供不同质量的监督。[论文 Section 2](https://arxiv.org/html/2602.16710v1)
+这里最重要的限定词是 **action-labeled**，但还应追问标签是怎样得到的。论文中的大规模视频经过同时定位与建图（SLAM）及手部姿态估计，再把人体手指映射到机器人手部表示；其中相当一部分属于**估计与重定向标签**。精确追踪的 EgoDex 数据与更小规模的人机对齐数据又提供不同质量的监督。[论文 Section 2](https://arxiv.org/html/2602.16710v1)
 
 | 阶段 | 数据侧的主要作用 | 不能省略的限定 |
 | --- | --- | --- |
@@ -338,7 +382,7 @@ python source_probe.py \
 
 ### 6.4 另一条扩展轴：机器人底座越强，越能利用人类数据？
 
-Physical Intelligence 的 **Emergence of Human to Robot Transfer in VLAs（2025-12）**研究了与 EgoScale 互补的问题：固定人类迁移数据，增加机器人预训练数据的规模与多样性，模型吸收人类示范的能力会怎样变化。其方法将带三维手部位置的人类数据作为一种具身，与相关机器人数据共同微调。[官方研究与论文入口](https://www.pi.website/research/human_to_robot)
+Physical Intelligence 的 **Emergence of Human to Robot Transfer in VLAs**（2025-12）研究了与 EgoScale 互补的问题：固定人类迁移数据，增加机器人预训练数据的规模与多样性，模型吸收人类示范的能力会怎样变化。其方法将带三维手部位置的人类数据作为一种具身，与相关机器人数据共同微调。[官方研究与论文入口](https://www.pi.website/research/human_to_robot)
 
 两条线不矛盾：EgoScale 主要研究扩大人类预训练数据；这项工作强调机器人基础能力与数据多样性也影响迁移效果。由此可以提出更有针对性的实验问题：**当前瓶颈是人类示范不够，还是机器人底座尚未具备利用这些示范的能力？**
 
@@ -346,7 +390,7 @@ Physical Intelligence 的 **Emergence of Human to Robot Transfer in VLAs（2025-
 
 ## 7. Human Video：没有机器人动作时，可以走哪些路 {#human-video}
 
-带追踪器的人体示范与普通 RGB 视频之间，有很大的监督差距。对没有动作标签的视频，常见用途可以分成四条路线。
+带追踪器的人体示范与普通 RGB 视频之间，有很大的监督差距。下面先介绍视觉表征、高层计划、潜在动作和人体运动重建四条路线，再讨论生成视频的作用，并对照各方法的训练接口。
 
 ### 7.1 先学视觉和时序表征
 
@@ -360,7 +404,7 @@ Physical Intelligence 的 **Emergence of Human to Robot Transfer in VLAs（2025-
 
 ### 7.2 学高层计划，再交给机器人控制器
 
-**MimicPlay（2023）**利用人类 play 数据学习高层潜在计划，再结合机器人遥操作数据学习底层控制。人的示范提供任务推进与运动结构，机器人数据负责落到目标具身上。[论文](https://arxiv.org/abs/2302.12422)、[项目](https://mimic-play.github.io/)
+**MimicPlay**（2023）利用人类 play 数据学习高层潜在计划，再结合机器人遥操作数据学习底层控制。人的示范提供任务推进与运动结构，机器人数据负责落到目标具身上。[论文](https://arxiv.org/abs/2302.12422)、[项目](https://mimic-play.github.io/)
 
 原始方法的人类数据还包括**两台标定相机重建的三维手轨迹**。高层学习以当前观察与目标图像为条件，用手轨迹预测学习潜在计划，再让机器人底层策略使用这些计划。这里的人类示范没有机器人关节命令，却有专门构造的几何监督；只有普通单目视频时，还需要解决这部分数据如何得到。[论文 Section 3.1–3.2](https://arxiv.org/html/2302.12422v2)
 
@@ -368,17 +412,25 @@ Physical Intelligence 的 **Emergence of Human to Robot Transfer in VLAs（2025-
 
 ### 7.3 学潜在动作，再对接物理动作
 
-**LAPA：Latent Action Pretraining from Videos（2024）**从图像变化学习离散潜在动作，再用于策略预训练，之后借助机器人数据与实际动作建立联系。[论文](https://arxiv.org/abs/2410.11758)
+**LAPA：Latent Action Pretraining from Videos**（2024）从图像变化学习离散潜在动作，再用于策略预训练，之后借助机器人数据与实际动作建立联系。[论文](https://arxiv.org/abs/2410.11758)
 
-可用下式表达这种思路，符号为本文简化：
+按“量化标签、潜在动作预训练、机器人动作微调”三个训练阶段，可以简写为：
 
 $$
-z_t^{a}=E(I_t,I_{t+\Delta}),\qquad
-\pi_\theta(z_t^{a}\mid I_t,\ell),\qquad
-\hat a_t=g_\phi(z_t^{a},q_t).
+\begin{gathered}
+z_t^{a}=E(I_t,I_{t+\Delta}),\\
+\pi_\theta(z_t^{a}\mid I_t,\ell),\\
+\pi_\phi(a_t\mid I_t,\ell).
+\end{gathered}
 $$
 
-第一步得到的是解释视觉变化的编码；最后一步才涉及具身动作落地。实际论文架构不必恰好是三个独立网络。**潜在动作编号没有天然的米、弧度或牛顿单位**，还可能混入相机移动、人体运动和外部物体变化。
+第一行用间隔 $\Delta$ 的两帧构造潜在动作标签；第二行学习根据当前图像与指令预测标签；第三行经过机器人动作监督微调，输出目标具身的实际动作表示。$\theta$ 与 $\phi$ 区分微调前后的策略参数，后者继承预训练底座，符号为本文简化。
+
+**LAPA 的动作微调会丢弃潜在动作输出头，换成新的机器人动作输出头。** 因此，上面表达的是训练阶段的衔接，不是部署时依次执行三个网络。量化模型中的图像解码器负责重建未来帧，也不能与机器人动作头混为一谈。[论文 v2 Section 3.1–3.3](https://arxiv.org/html/2410.11758v2#S3)
+
+潜在动作预训练仍需要与视频配对的任务描述；“没有机器人动作标签”不等于没有语言条件。**潜在动作编号没有天然的米、弧度或牛顿单位**，还可能混入相机移动、人体运动和外部物体变化。作者项目提供了这类潜在编码的可视化。[项目与资源](https://latentactionpretraining.github.io/)
+
+公开的 LAPA-7B-openx 示例推理输出潜在动作；部署示例使用动作微调后的 checkpoint，并加载配套动作尺度文件。下载到权重后，仍应先确认它属于哪个训练阶段。[官方代码的推理与微调说明](https://github.com/LatentActionPretraining/LAPA#fine-tuning-lapa)
 
 ### 7.4 重建人体运动，再重定向与验证
 
@@ -397,7 +449,7 @@ $$
 | 生成场景后重新执行策略 | 场景资产与执行日志 | 碰撞、质量、关节、传感器及任务定义 |
 {.table-readable}
 
-**DreamGen（2025）**给出了一条具体的四阶段路线：适配目标机器人视频模型，按初始画面与指令生成视频，通过潜在动作模型或逆动力学模型生成伪动作，再用这些“神经轨迹”训练策略。[论文](https://arxiv.org/abs/2505.12705v2)、[官方项目](https://research.nvidia.com/labs/gear/dreamgen/)
+**DreamGen**（2025）给出了一条具体的四阶段路线：适配目标机器人视频模型，按初始画面与指令生成视频，通过潜在动作模型或逆动力学模型生成伪动作，再用这些“神经轨迹”训练策略。[论文](https://arxiv.org/abs/2505.12705v2)、[官方项目](https://research.nvidia.com/labs/gear/dreamgen/)
 
 它与 MimicGen 的区别很明确：MimicGen 的新轨迹通过显式仿真执行；DreamGen 从视频世界模型输出中推断动作。后者的视觉多样性很有价值，但标签来源仍然是推断，不能自动升级成物理测量。
 
@@ -430,13 +482,13 @@ $$
 
 ### 8.2 MimicGen：扩展示范，而不是复制视频
 
-**MimicGen（2023）**将少量原始示范按子任务处理，利用物体相关的运动关系产生新配置下的示范，并通过仿真执行检查结果。[论文](https://arxiv.org/abs/2310.17596)、[项目](https://mimicgen.github.io/)
+**MimicGen**（2023）将少量原始示范按子任务处理，利用物体相关的运动关系产生新配置下的示范，并通过仿真执行检查结果。[论文](https://arxiv.org/abs/2310.17596)、[项目](https://mimicgen.github.io/)
 
 需要注意“源示范多样性”和“派生轨迹数量”的区别。同一条示范可以派生很多轨迹，但它们可能继承相同的接近方式、抓取选择与恢复策略。训练／测试划分也应保留这种派生关系，避免同一示范的近亲同时进入两边。
 
 ### 8.3 RoboCasa365：规模口径必须写完整
 
-**RoboCasa365（2026）**将家庭操作仿真扩展到 365 个任务、2,500 个厨房环境，论文报告约 **612 小时人工遥操作示范与 1,615 小时合成示范**。[论文](https://arxiv.org/abs/2603.04356)、[官方项目](https://robocasa.ai/)
+**RoboCasa365**（2026）将家庭操作仿真扩展到 365 个任务、2,500 个厨房环境，论文报告约 **612 小时人工遥操作示范与 1,615 小时合成示范**。[论文](https://arxiv.org/abs/2603.04356)、[官方项目](https://robocasa.ai/)
 
 这里的两类小时数**都属于仿真数据**。人工遥操作意味着动作来源是人，不能把 612 小时写成真实机器人执行时长；合成示范也不应与人工源示范视为同等独立样本。
 
@@ -458,11 +510,17 @@ $$
 
 ### 8.6 SimFoundry：把真实场景带进模拟器
 
-**SimFoundry（2026）**研究从真实场景视频构建用于策略学习与评测的环境，将视觉背景与可交互对象的表示组合起来。[官方项目与论文](https://research.nvidia.com/labs/gear/simfoundry/)
+**SimFoundry**（2026）研究从真实场景视频构建用于策略学习与评测的环境，将视觉背景与可交互对象的表示组合起来。[官方项目与论文](https://research.nvidia.com/labs/gear/simfoundry/)
 
 这条路线连接了真实图像、空间重建和仿真数据生产。需要独立检查的是：视觉重建是否准确、可交互物体是否有正确物理属性，以及模拟结果能否预测真机表现。一个场景可以在渲染上很好看，却仍然不适合验证抽屉阻力或柔性物体接触。
 
-![从照片或视频建立场景后，必须补足碰撞、质量关节、控制传感器与任务条件，再执行和验证，才能产生带动作的训练轨迹](assets/scene-to-rollout-flow.png "图 8：从空间资产到训练数据的六个环节。视觉输入先补足交互物理属性、控制与任务定义，再执行轨迹、检查数据并训练，最后用独立真机任务评测。外侧虚线把评测发现的问题反馈给环境设计；画面逼真与物理有效需要分别验证。")
+<figure class="article-figure" id="fig-scene-to-rollout-flow">
+  {{< post-image src="assets/scene-to-rollout-flow.png" alt="从照片或视频建立场景后，必须补足碰撞、质量关节、控制传感器与任务条件，再执行和验证，才能产生带动作的训练轨迹" >}}
+  <figcaption>
+    <span class="article-figure__number">图 8</span>
+    <span class="article-figure__text"><strong>从空间资产到训练数据。</strong>视觉输入需要补足物理属性、控制和任务定义，再执行、检查与训练。外侧虚线把真机评测发现的问题反馈给交互资产设计。 <a href="assets/scene-to-rollout-flow.png" aria-label="查看图 8 原图">查看原图</a></span>
+  </figcaption>
+</figure>
 
 <span id="fei-fei"></span>
 
@@ -488,7 +546,7 @@ $$
 
 ### 10.1 V-JEPA 2：无动作预训练与动作条件训练可以分阶段
 
-**V-JEPA 2（2025）**研究通过大规模视频自监督学习视觉预测表征，再构建动作条件的 **V-JEPA 2-AC** 用于机器人规划。其动作条件阶段使用机器人交互数据，而不是仅凭互联网视频自动获得物理控制接口。[论文](https://arxiv.org/abs/2506.09985)、[Meta 官方研究说明](https://ai.meta.com/research/publications/v-jepa-2-self-supervised-video-models-enable-understanding-prediction-and-planning/)
+**V-JEPA 2**（2025）研究通过大规模视频自监督学习视觉预测表征，再构建动作条件的 **V-JEPA 2-AC** 用于机器人规划。其动作条件阶段使用机器人交互数据，而不是仅凭互联网视频自动获得物理控制接口。[论文](https://arxiv.org/abs/2506.09985)、[Meta 官方研究说明](https://ai.meta.com/research/publications/v-jepa-2-self-supervised-video-models-enable-understanding-prediction-and-planning/)
 
 这提供了一种清晰分工：广泛视频覆盖外观和时序规律；较少的机器人交互把动作与后果联系起来。论文中的“无标注机器人视频”也不能被理解成动作条件模型完全没有动作信息：缺少人工任务注释，与缺少控制动作，是两件不同的事。
 
@@ -500,7 +558,7 @@ $$
 
 ### 10.2 DreamZero：联合预测视频与动作
 
-**DreamZero（2026）**以预训练视频扩散模型为基础，联合建模未来视频与机器人动作，将世界预测与策略输出结合成 World Action Model。它使用异构机器人数据，并研究额外的人类或其他机器人纯视频怎样帮助迁移。[论文](https://arxiv.org/abs/2602.15922)、[项目与评测](https://dreamzero0.github.io/)
+**DreamZero**（2026）以预训练视频扩散模型为基础，联合建模未来视频与机器人动作，将世界预测与策略输出结合成 World Action Model。它使用异构机器人数据，并研究额外的人类或其他机器人纯视频怎样帮助迁移。[论文](https://arxiv.org/abs/2602.15922)、[项目与评测](https://dreamzero0.github.io/)
 
 从数据角度看，这与前面的几种路线形成清楚的对照：V-JEPA 2-AC 学动作条件潜在预测并用于规划；DreamGen 生产带伪动作的训练轨迹；DreamZero 将视频与动作联合生成用于控制。额外视频可以提供运动信息，但底座、机器人数据与动作接口仍是系统的一部分。
 
@@ -522,10 +580,15 @@ Atlas 的技术介绍未给出足以重建其完整训练语料的数据清单�
 
 ### 10.4 为什么还需要失败与干预
 
-![同一抓取初态分成两条动作序列：左侧移动到托盘后释放，右侧提前张开夹爪使物块落在托盘外](assets/world-model-action-outcomes.png "图 9：动作条件预测需要区分不同动作带来的后果。上方是共同初态；左下在托盘上方释放，右下提前释放。半透明姿态表示各分支中的中间动作。这是解释动作与后果关系的示例，不是某个世界模型的预测画面或实测成功率。")
+<figure class="article-figure" id="fig-world-model-action-outcomes">
+  {{< post-image src="assets/world-model-action-outcomes.png" alt="同一抓取初态分成两条动作序列：左侧移动到托盘后释放，右侧提前张开夹爪使物块落在托盘外" >}}
+  <figcaption>
+    <span class="article-figure__number">图 9</span>
+    <span class="article-figure__text"><strong>不同动作对应不同后果。</strong>从共同初态出发，左下在托盘上方释放，右下提前释放；半透明姿态表示中间动作。画面是教学示例，不是模型预测或实测结果。 <a href="assets/world-model-action-outcomes.png" aria-label="查看图 9 原图">查看原图</a></span>
+  </figcaption>
+</figure>
 
 若训练数据只有左侧这种顺利完成的轨迹，模型可能很熟悉“物块最终进入托盘”的画面，却没有充分学到改变释放时机后的结果。用于规划的预测器需要接受不同候选动作，并通过对应的执行数据检验预测是否可靠。
-
 
 策略模仿常常偏重成功示范；但世界模型还需要理解错误动作的后果。例如抽屉拉不动，可能是未解锁、施力方向错误，也可能是夹爪没有抓住把手。
 
@@ -604,7 +667,13 @@ $$
 
 推荐先按目标泛化问题分组，再切训练窗口：
 
-![原始会话、场景和源示范家族先按组划分，再分别在训练、验证和测试集合内构造窗口与派生样本](assets/grouped-data-split-flow.png "图 10：先确定数据归属，再制作训练样本。源会话、场景或示范家族经过分组划分后，分别进入 Train、Validation 和 Test；切窗与派生处理在各自集合内部进行，同源后代保留相同集合归属。分组键取决于需要评测的泛化能力。")
+<figure class="article-figure" id="fig-grouped-data-split-flow">
+  {{< post-image src="assets/grouped-data-split-flow.png" alt="原始会话、场景和源示范家族先按组划分，再分别在训练、验证和测试集合内构造窗口与派生样本" >}}
+  <figcaption>
+    <span class="article-figure__number">图 10</span>
+    <span class="article-figure__text"><strong>先分组，再制作样本。</strong>确定 Train、Validation、Test 归属后，分别切窗和生成派生样本；同源后代留在同一集合。分组键由泛化评测目标决定。 <a href="assets/grouped-data-split-flow.png" aria-label="查看图 10 原图">查看原图</a></span>
+  </figcaption>
+</figure>
 
 三个分支之间没有数据回流。这里的 **Group split** 表示按评测目标选定的分组规则，而不是默认每个任务都必须同时隔离操作者、场景和所有物体；关键是先定义要测什么，再保证相应分组及其派生样本不跨集合。
 
@@ -623,7 +692,9 @@ $$
 
 在第二行，未来动作是**给定的候选条件**，可以作为模型输入；未来观测才是待预测结果。在第一行，未来动作恰恰是待学习的输出。讨论“用了未来信息”时，必须先说明它在当前任务中扮演条件还是目标。
 
-这里还有一个建模边界：离线日志中的动作可能由操作者根据未记录的触觉或后续观察作出，因而**条件预测准确，并不自动证明对任意替换动作的干预预测准确**。例如人在感觉杯子即将滑落时突然加大夹紧量，日志同时包含“大夹紧量”和“滑落风险”，不能仅凭相关性断言前者造成后者。服务于规划时，需要记录影响决策的状态，并通过匹配初态、改变动作的执行实验检验模型；这也是失败与干预数据的价值所在。
+这里还有一个建模边界：离线日志中的动作可能由操作者根据未记录的触觉或后续观察作出，因而**条件预测准确，并不自动证明对任意替换动作的干预预测准确**。
+
+例如人在感觉杯子即将滑落时突然加大夹紧量，日志同时包含“大夹紧量”和“滑落风险”，不能仅凭相关性断言前者造成后者。服务于规划时，需要记录影响决策的状态，并通过匹配初态、改变动作的执行实验检验模型；这也是失败与干预数据的价值所在。
 
 同样，只有 RGB 的人类视频可以为视频预测提供目标，却缺少真实机器人动作条件；带人体追踪的记录可构造人体运动条件，但要对接机器人候选动作仍需映射。数据容器能复用，标签语义和训练目标不能省略。
 
@@ -631,7 +702,7 @@ $$
 
 ### 11.6 一个可独立运行的数据检查实验 {#data-lab}
 
-下载 [完整实验包](data-contract-lab.zip)（含脚本、结果、SVG 与阅读索引），或单独下载 [data_contract_lab.py](data_contract_lab.py)。使用 Python 3.10 或更新版本运行：
+下载 [完整实验包](data-contract-lab.zip)（含脚本、结果、SVG 与阅读索引），或单独下载 [data_contract_lab.py](data_contract_lab.py)。解压后进入包含脚本的目录；若单独下载脚本，则在其所在目录使用 Python 3.10 或更新版本运行：
 
 ```bash
 python data_contract_lab.py
@@ -654,7 +725,13 @@ python data_contract_lab.py
 
 示例中推理决策时刻为 1.040 秒，可用图像采集于 1.000 秒、到达于 1.020 秒，所以**观测年龄是 40 ms**，并不是 20 ms。另一帧虽然采集更晚，却在 1.080 秒才到达，不能作为这次在线决策的输入。
 
-![图像 A 在决策前已到达，图像 B 尚未到达；下方的未来动作窗口作为训练目标而非提前可见的输入](assets/observation-time.svg "图 11：数据契约实验中的人工时间示例。横轴为校准后的公共时钟，数值不是 PICO 或任何机器人的实测延迟。")
+<figure class="article-figure" id="fig-observation-time">
+  {{< post-image src="assets/observation-time.svg" alt="图像 A 在决策前已到达，图像 B 尚未到达；下方的未来动作窗口作为训练目标而非提前可见的输入" >}}
+  <figcaption>
+    <span class="article-figure__number">图 11</span>
+    <span class="article-figure__text"><strong>观测可用时间与训练目标。</strong>决策时只使用已经到达的观测，未来动作仍可作为训练目标。横轴是校准后的公共时钟，数值来自人工示例。 <a href="assets/observation-time.svg" aria-label="查看图 11 原图">查看原图</a></span>
+  </figcaption>
+</figure>
 
 实验还在 5 种周期、400 个规则窗口上检查边界索引。即使两个时间在数学上相等，二进制浮点的计算顺序也可能让比较偏向前一条命令；程序将相对公共时钟统一到声明的整数纳秒网格再比较。观测选择也采用同一比较网格，包含“校准后的图像恰好在决策时刻到达”的回归例子。这是在消除数值比较伪差，**不会把传感器精度提升到纳秒**。实际日志应保留原始整数计数及时间域，不能把大数值浮点时间戳反推成不存在的精度。
 
@@ -684,7 +761,9 @@ VLA 中的语言不是一个任意附加字符串。建议区分：
 
 **RLDS 的最后一步不一定有有效动作。** 官方约定中，`is_last` 标记含最后观测的步骤，此步的 `action`、`reward`、`discount` 无效；`is_terminal` 描述环境终止，不能当作任务成功标签。以 `is_terminal=false` 结束的轨迹属于截断。转换器应保留这些区别，而不是把最后一行的占位动作纳入策略监督。[RLDS 数据模型](https://github.com/google-research/rlds#dataset-format)
 
-一个简化例子是：初始观察 → 两次动作与状态转移 → 最后观察。这可以有三条观测记录，却只有两个有效动作目标。若动作块长度为三，末尾窗口应被过滤或带有效性掩码补齐；复制最后动作可以是明确选择的补齐策略，但复制值不能默认成为有效标签。对世界模型，最后观测仍可能是前一个有效转移的预测目标；轨迹末尾的动作无效，不等于整条轨迹都无用。这些是依据字段语义设计训练样本的建议，不是 RLDS 自动执行的训练规则。
+例如，一条只执行两次动作的轨迹，可以包含初始、中间、最终三个观测，却只有两个有效动作目标。若动作块长度为三，末尾窗口应被过滤或带有效性掩码补齐；复制最后动作可以是明确选择的补齐策略，但复制值不能默认成为有效标签。
+
+对世界模型，最后观测仍可能是前一个有效转移的预测目标；轨迹末尾的动作无效，不等于整条轨迹都无用。这些是依据字段语义设计训练样本的建议，不是 RLDS 自动执行的训练规则。
 
 **LeRobotDataset v3 的物理文件边界不是轨迹边界。** 官方设计允许一个 Parquet／MP4 文件容纳多条 episode，通过元数据中的索引与偏移恢复各自范围。因此，不能把“同一个 MP4 中连续的两帧”直接认作一次环境转移，也不能按文件随机划分训练与测试。应先恢复 episode，再结合会话、场景与源示范家族完成划分。[LeRobot v3 格式说明](https://huggingface.co/docs/lerobot/main/en/lerobot-dataset-v3#format-design)
 
@@ -729,12 +808,16 @@ VLA 中的语言不是一个任意附加字符串。建议区分：
 针对已经定义好的动作监督目标，可以用一个简化账本估算有效产出：
 
 $$
-N_{\mathrm{usable}}=N_{\mathrm{raw}}\cdot r_{\mathrm{sync}}
-\cdot r_{\mathrm{tracking}\mid\mathrm{sync}}
-\cdot r_{\mathrm{task}\mid\mathrm{previous}}.
+\begin{aligned}
+N_{\mathrm{usable}} &= N_{\mathrm{raw}}\cdot r_{\mathrm{sync}}\\
+&\quad\cdot r_{\mathrm{tracking}\mid\mathrm{sync}}\\
+&\quad\cdot r_{\mathrm{task}\mid\mathrm{previous}}.
+\end{aligned}
 $$
 
 这里各比例是**依次筛选后的条件通过率**，不是假设同步、追踪和任务质量相互独立。真正用于比较时，还要单独报告覆盖的场景、物体、任务和独立源示范数。某段记录不适合精确动作监督，也可能仍有视觉预训练价值，因此“有效率”必须附带训练目标，不能给数据一个跨用途通用的好坏分数。
+
+一个人工账本例子：10,000 个候选窗口先通过同步检查，保留 90%；再在这些窗口中通过追踪检查，保留 80%；最后通过任务质量检查，保留 75%，最终得到 5,400 个窗口。这三个比例的分母依次是 10,000、9,000 和 7,200，不能把它们当作三个独立的全量合格率。计数时还需固定窗口长度与步长，避免仅靠提高重叠率就把“产出”做大。
 
 例如“100 小时原始记录”可能包含大量等待与复位；“20 小时动作标注视频”与“20 小时任意生活录像”也提供不同监督。数据处理、标注、重采和机器人维护成本都应计入，而不只是头显或夹爪售价。
 
@@ -743,11 +826,14 @@ $$
 训练时可以写成多来源目标：
 
 $$
-\mathcal L=\sum_s\lambda_s\,\mathbb E_{x\sim D_s}
-\left[\mathcal L_{\mathrm{shared}}(x)+m_s(x)\mathcal L_{\mathrm{action}}(x)\right].
+\begin{aligned}
+\mathcal L &= \sum_s\lambda_s\,\mathbb E_{x\sim D_s}[\mathcal L_s(x)],\\
+\mathcal L_s(x) &= \mathcal L_{\mathrm{shared}}(x)\\
+&\quad + m_s(x)\mathcal L_{\mathrm{action}}(x).
+\end{aligned}
 $$
 
-这是本文的概念表达：$m_s$ 控制某个样本是否具有当前动作头可用的标签，$\lambda_s$ 控制来源权重。若不同来源使用不同动作头或不同损失，还要显式拆开；不能因为存在一个掩码，就把人体关节与机器人关节混进同一监督空间。
+这是本文的概念表达：$D_s$ 是来源 $s$ 的数据分布，$\mathcal L_s(x)$ 是该来源中样本 $x$ 的损失，$m_s$ 控制某个样本是否具有当前动作头可用的标签，$\lambda_s$ 控制来源权重。若不同来源使用不同动作头或不同损失，还要显式拆开；不能因为存在一个掩码，就把人体关节与机器人关节混进同一监督空间。
 
 不建议按原始帧数直接混采：一段高帧率长视频可能压过大量短而多样的机器人示范。可以按轨迹、任务或来源设计采样，再通过消融判断收益。
 
@@ -822,33 +908,51 @@ $$
 
 以下是本文重点工作的阅读顺序与资源定位，不是按成功率排名。时间采用首发年份或明确的发布事件；资源状态以 2026-09-14 核对的官方入口为准，后续可能变化。
 
-| 时间 | 工作 | 最值得阅读的内容 | 资源与边界 |
-| --- | --- | --- | --- |
-| 2023 | [ALOHA／ACT](https://tonyzhaozh.github.io/aloha/) | 主从采集与动作块学习 | 论文、代码与硬件资料；采集与策略分开理解 |
-| 2023 | [MimicPlay](https://mimic-play.github.io/) | 人类高层计划与机器人底层控制 | 论文与代码；不是完全去掉机器人示范 |
-| 2023 | [MimicGen](https://mimicgen.github.io/) | 从少量示范生成新仿真轨迹 | 论文、代码与数据入口；注意派生关系 |
-| 2024 | [UMI](https://umi-gripper.github.io/) | 工具、相对动作与延迟接口 | 论文、代码、硬件与采集教程 |
-| 2024 | [Open-TeleVision](https://robot-tv.github.io/) | 沉浸式主动视觉反馈 | 论文、代码、硬件与数据入口 |
-| 2024 | [LAPA](https://arxiv.org/abs/2410.11758) | 无动作视频的潜在动作预训练 | 论文；物理动作仍需后续对接 |
-| 2025 | [XRoboToolkit](https://xr-robotics.github.io/) | PICO 等 XR 设备的分层接入 | 论文与模块代码；硬件支持需看具体版本 |
-| 2025 | [EgoDex](https://github.com/apple-aiml-research/ml-egodex) | 第一视角视频与人体三维姿态 | 数据下载与代码；数据条款需单独核对 |
-| 2025 | [BRS](https://behavior-robot-suite.github.io/) | 全身主从采集与策略 | 论文、硬件、算法与控制代码入口 |
-| 2025 | [DreamGen](https://research.nvidia.com/labs/gear/dreamgen/) | 视频世界模型生产伪动作轨迹 | 论文与代码；与物理仿真生成区分 |
-| 2025-11 | [RECAP／π*0.6](https://www.pi.website/blog/pistar06) | 自主经验、接管与结果反馈 | 方法介绍与论文入口；不是纯示范复制 |
-| 2025-12 | [Human-to-Robot Transfer](https://www.pi.website/research/human_to_robot) | 机器人预训练规模对人类迁移的影响 | 研究与论文；人类数据包含三维手部监督 |
-| 2025 | [V-JEPA 2](https://arxiv.org/abs/2506.09985) | 视频预训练与动作条件世界模型 | 论文；区分通用表征和机器人 AC 阶段 |
-| 2026-02 | [EgoHumanoid](https://opendrivelab.com/EgoHumanoid/) | PICO 人体／机器人双链采集 | 论文与代码入口；对齐后联合训练 |
-| 2026-02 | [DreamZero](https://dreamzero0.github.io/) | 未来视频与动作联合建模 | 论文、代码与评测；额外视频依托机器人训练底座 |
-| 2026-02 | [EgoScale](https://research.nvidia.com/labs/gear/egoscale/) | 大规模有动作标注的人类预训练 | 论文；项目页代码仍标 Coming Soon |
-| 2026-03 论文 | [RoboCasa365](https://arxiv.org/abs/2603.04356) | 家庭仿真任务与示范扩展 | 官方环境、代码与数据入口；人工数据也在仿真中 |
-| 2026 版本 | [BEHAVIOR Challenge](https://behavior.stanford.edu/challenge/dataset.html) | 100 任务、20,000 条仿真轨迹 | 数据与格式说明；不能混用 2025 数字 |
-| 2026 | [SimFoundry](https://research.nvidia.com/labs/gear/simfoundry/) | 视频到可交互模拟环境 | 论文与代码入口；需独立检查 sim-to-real |
-| 2025-12 首发 | [RoboMIND 2.0](https://arxiv.org/abs/2512.24653v3) | 多具身、触觉与移动操作 | 论文与数据入口；真机主体、模态子集与仿真分别计数 |
-| 2026 版本 | [AgiBot World 2026](https://huggingface.co/datasets/agibot-world/AgiBotWorld2026) | 分层任务、真实经验与接管标注 | 多主题发布；Theme 3 包含成功与失败的自主轨迹 |
-| 2026-09-01 | [Atlas](https://www.worldlabs.ai/blog/atlas) | 空间与时空世界建模 | 企业技术发布、早期访问；非完整训练语料公开 |
+### 13.1 真实采集与数据资源
+
+| 工作与时间 | 最值得阅读的内容 | 资源与边界 |
+| --- | --- | --- |
+| [ALOHA／ACT](https://tonyzhaozh.github.io/aloha/)<br>（2023） | 主从采集与动作块学习 | 论文、代码与硬件资料；采集与策略分开理解 |
+| [UMI](https://umi-gripper.github.io/)<br>（2024） | 工具、相对动作与延迟接口 | 论文、代码、硬件与采集教程 |
+| [Open-TeleVision](https://robot-tv.github.io/)<br>（2024） | 沉浸式主动视觉反馈 | 论文、代码、硬件与数据入口 |
+| [XRoboToolkit](https://xr-robotics.github.io/)<br>（2025） | PICO 等 XR 设备的分层接入 | 论文与模块代码；硬件支持需看具体版本 |
+| [EgoDex](https://github.com/apple-aiml-research/ml-egodex)<br>（2025） | 第一视角视频与人体三维姿态 | 数据下载与代码；数据条款需单独核对 |
+| [BRS](https://behavior-robot-suite.github.io/)<br>（2025） | 全身主从采集与策略 | 论文、硬件、算法与控制代码入口 |
+| [RECAP／π*0.6](https://www.pi.website/blog/pistar06)<br>（2025-11） | 自主经验、接管与结果反馈 | 方法介绍与论文入口；不是纯示范复制 |
+| [RoboMIND 2.0](https://arxiv.org/abs/2512.24653v3)<br>（2025-12 首发） | 多具身、触觉与移动操作 | 论文与数据入口；真机主体、模态子集与仿真分别计数 |
+| [AgiBot World 2026](https://huggingface.co/datasets/agibot-world/AgiBotWorld2026)<br>（2026 版本） | 分层任务、真实经验与接管标注 | 多主题发布；Theme 3 包含成功与失败的自主轨迹 |
 {.table-readable}
 
-[下载论文与项目阅读索引](source-map.json)，可按类别检索 37 项论文／项目，以及固定源码版本、设备文档与两项数据格式文档；[图示生成脚本](make_figures.py)可以重建精确时间图，以及[监督关系](assets/supervision-map.svg)和[场景流程](assets/scene-to-rollout.svg)的可编辑 SVG 版本。索引只列阅读入口与证据边界，不代表各论文完整训练数据都已公开。
+### 13.2 人类数据迁移
+
+| 工作与时间 | 最值得阅读的内容 | 资源与边界 |
+| --- | --- | --- |
+| [MimicPlay](https://mimic-play.github.io/)<br>（2023） | 人类高层计划与机器人底层控制 | 论文与代码；不是完全去掉机器人示范 |
+| [LAPA](https://latentactionpretraining.github.io/)<br>（2024） | 无动作视频的潜在动作预训练 | 论文、代码与模型入口；机器人动作头仍需微调 |
+| [Human-to-Robot Transfer](https://www.pi.website/research/human_to_robot)<br>（2025-12） | 机器人预训练规模对人类迁移的影响 | 研究与论文；人类数据包含三维手部监督 |
+| [EgoHumanoid](https://opendrivelab.com/EgoHumanoid/)<br>（2026-02） | PICO 人体／机器人双链采集 | 论文与代码入口；对齐后联合训练 |
+| [EgoScale](https://research.nvidia.com/labs/gear/egoscale/)<br>（2026-02） | 大规模有动作标注的人类预训练 | 论文；项目页代码仍标 Coming Soon |
+{.table-readable}
+
+### 13.3 仿真、生成与世界模型
+
+| 工作与时间 | 最值得阅读的内容 | 资源与边界 |
+| --- | --- | --- |
+| [MimicGen](https://mimicgen.github.io/)<br>（2023） | 从少量示范生成新仿真轨迹 | 论文、代码与数据入口；注意派生关系 |
+| [DreamGen](https://research.nvidia.com/labs/gear/dreamgen/)<br>（2025） | 视频世界模型生产伪动作轨迹 | 论文与代码；与物理仿真生成区分 |
+| [V-JEPA 2](https://arxiv.org/abs/2506.09985)<br>（2025） | 视频预训练与动作条件世界模型 | 论文；区分通用表征和机器人 AC 阶段 |
+| [DreamZero](https://dreamzero0.github.io/)<br>（2026-02） | 未来视频与动作联合建模 | 论文、代码与评测；额外视频依托机器人训练底座 |
+| [RoboCasa365](https://arxiv.org/abs/2603.04356)<br>（2026-03 论文） | 家庭仿真任务与示范扩展 | 官方环境、代码与数据入口；人工数据也在仿真中 |
+| [BEHAVIOR Challenge](https://behavior.stanford.edu/challenge/dataset.html)<br>（2026 版本） | 100 任务、20,000 条仿真轨迹 | 数据与格式说明；不能混用 2025 数字 |
+| [SimFoundry](https://research.nvidia.com/labs/gear/simfoundry/)<br>（2026） | 视频到可交互模拟环境 | 论文与代码入口；需独立检查 sim-to-real |
+| [Atlas](https://www.worldlabs.ai/blog/atlas)<br>（2026-09-01） | 空间与时空世界建模 | 企业技术发布、早期访问；非完整训练语料公开 |
+{.table-readable}
+
+**配套资源：**
+
+- [论文与项目阅读索引](source-map.json)：按类别检索 37 项论文／项目，以及固定源码版本、设备文档与两项数据格式文档。索引列出阅读入口与证据边界，不代表各论文完整训练数据都已公开。
+- [可编辑图示脚本](make_figures.py)：重建精确时间图，以及[监督关系](assets/supervision-map.svg)和[场景流程](assets/scene-to-rollout.svg)的 SVG 版本。
+- [完整实验包](data-contract-lab.zip)：下载后可按[第 11.6 节](#data-lab)运行数据检查，核对时间、缺失标签与划分规则。
 
 完整阅读时，可以沿三条线推进：**XRoboToolkit → ALOHA／BRS**理解直接采集；**UMI → EgoMimic／EgoHumanoid → EgoScale／LAPA**理解人机迁移；**MimicGen → BEHAVIOR／RoboCasa → SimFoundry → 世界模型**理解环境、动作与预测的关系。
 

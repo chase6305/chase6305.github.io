@@ -179,9 +179,9 @@
       "title": "Latent Action Pretraining from Videos",
       "year": 2024,
       "category": "latent-action",
-      "paper": "https://arxiv.org/abs/2410.11758v1",
-      "project_or_official_resource": null,
-      "reading_note": "潜在动作学习与机器人动作落地分开。"
+      "paper": "https://arxiv.org/abs/2410.11758v2",
+      "project_or_official_resource": "https://latentactionpretraining.github.io/",
+      "reading_note": "v2 Section 3.1–3.3：量化标签、带语言条件的潜在动作预训练、替换输出头后的机器人动作微调；项目另有代码与模型入口。"
     },
     {
       "id": "epic-kitchens",
