@@ -1,0 +1,20 @@
+{
+  "date": "2026-09-14",
+  "mode": "built-in imagegen",
+  "images": [
+    {
+      "path": "content/posts/ai/vla-world-model-data/assets/data-sources.png",
+      "prompt": "Use case: scientific-educational. Asset type: wide editorial hero illustration for a Chinese robotics research blog. Create a refined 3 by 2 grid of six softly separated isometric miniature scenes illustrating sources of robot learning data. Top left: human wearing an unbranded VR headset holding two controllers beside a robot arm. Top middle: human moving a small leader arm while a larger follower robot arm mirrors it. Top right: human hand carrying an instrumented parallel-jaw handheld gripper with a small camera, manipulating a cup without a robot. Bottom left: person wearing small camera glasses looking at hands arranging tabletop objects. Bottom middle: a simulated robot kitchen with subtle wireframe overlays on cabinets and objects. Bottom right: a video sequence represented by three film frames showing a human picking and placing an object. Style: sophisticated clean academic editorial illustration, pale ice-blue and lavender backgrounds, dark navy outlines, restrained amber highlights, soft matte materials, generous whitespace. Accurate recognizable robot hardware, coherent hands. Each scene independent; no arrows suggesting all videos contain robot commands. Wide landscape 3:2 composition, no text, no letters, no logos, no performance charts, no watermark. This is a conceptual illustration, not a measurement diagram or a product advertisement.",
+      "validation": "Visually inspected six independent collection scenes. Conceptual hardware only; not a product photograph, paper figure or experiment."
+    }
+  ],
+  "deterministic_figures": {
+    "generator": "content/posts/ai/vla-world-model-data/make_figures.py",
+    "assets": [
+      "assets/supervision-map.svg",
+      "assets/scene-to-rollout.svg",
+      "assets/observation-time.svg"
+    ],
+    "note": "原创教学图；观测时间图数值来自人工例子，不是硬件测量。"
+  }
+}

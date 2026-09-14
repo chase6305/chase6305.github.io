@@ -1,0 +1,57 @@
+{
+  "scope": "synthetic teaching examples; no policy training or robot validation",
+  "checks_passed": 26,
+  "checks": [
+    "exclude_not_yet_received_frame",
+    "age_uses_capture_not_receipt",
+    "clock_scale_and_offset",
+    "calibrated_frame_on_decision_boundary_is_usable",
+    "stale_observation",
+    "reset_invalidates_old_frames",
+    "bad_clock_is_not_silently_repaired",
+    "future_training_targets_are_allowed",
+    "held_target_is_not_nearest_future_command",
+    "no_padding_past_episode_end",
+    "detect_reset_between_sample_grid_points",
+    "hold_does_not_apply_to_delta_commands",
+    "reject_duplicate_command_times",
+    "400_regular_windows_preserve_boundary_indices",
+    "mask_before_arithmetic_and_normalization",
+    "all_missing_means_skip_action_loss",
+    "valid_nan_is_rejected",
+    "mask_does_not_hide_shape_errors",
+    "distinct_families_and_scenes_pass",
+    "synthetic_descendant_leakage",
+    "scene_sharing_depends_on_evaluation_goal",
+    "unseen_scene_protocol_rejects_shared_scene",
+    "real_recorded_command_gate",
+    "human_retarget_is_not_executed_command",
+    "state_difference_is_not_executed_command",
+    "human_operated_sim_is_still_sim"
+  ],
+  "observation": {
+    "chosen": "available",
+    "age_ms": 40.0
+  },
+  "action_target_times_seconds": [
+    1.04,
+    1.06,
+    1.08
+  ],
+  "future_training_action_window": [
+    [
+      0.5,
+      0.6
+    ],
+    [
+      0.7,
+      0.8
+    ],
+    [
+      0.9,
+      1.0
+    ]
+  ],
+  "masked_mse": 2.5,
+  "all_missing_action_loss": null
+}

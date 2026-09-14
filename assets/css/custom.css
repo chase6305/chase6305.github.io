@@ -124,6 +124,17 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+/* Keep comparison columns readable inside the existing horizontal scroller. */
+.content table.table-readable th,
+.content table.table-readable td {
+  min-width: 9rem;
+}
+
+.content table.table-readable th:first-child,
+.content table.table-readable td:first-child {
+  min-width: 7rem;
+}
+
 .content img {
   border-radius: 0.8rem;
   box-shadow: 0 12px 32px rgb(15 23 42 / 9%);

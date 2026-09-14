@@ -1,0 +1,350 @@
+{
+  "checked_on": "2026-09-14",
+  "scope": "阅读索引，不是完整训练语料、许可证目录或每项资源的下载验证。年份用于阅读定位；具体版本与发布日期见链接。",
+  "evidence_rule": "论文结果、官方数据说明、当前代码与企业产品发布应分别引用；null 表示本清单未单列该入口。",
+  "papers_and_projects": [
+    {
+      "id": "xr-toolkit",
+      "title": "XRoboToolkit",
+      "year": 2025,
+      "category": "xr-teleoperation",
+      "paper": "https://arxiv.org/abs/2508.00097v1",
+      "project_or_official_resource": "https://xr-robotics.github.io/",
+      "reading_note": "追踪流、视觉反馈与机器人接入；论文硬件范围不等于任意设备支持。"
+    },
+    {
+      "id": "open-television",
+      "title": "Open-TeleVision",
+      "year": 2024,
+      "category": "xr-teleoperation",
+      "paper": "https://arxiv.org/abs/2407.01512",
+      "project_or_official_resource": "https://robot-tv.github.io/",
+      "reading_note": "立体主动视觉反馈与真人遥操作示范。"
+    },
+    {
+      "id": "aloha",
+      "title": "ALOHA / ACT",
+      "year": 2023,
+      "category": "leader-follower",
+      "paper": "https://arxiv.org/abs/2304.13705",
+      "project_or_official_resource": "https://tonyzhaozh.github.io/aloha/",
+      "reading_note": "主从系统与动作块学习算法分别理解。"
+    },
+    {
+      "id": "mobile-aloha",
+      "title": "Mobile ALOHA",
+      "year": 2024,
+      "category": "leader-follower",
+      "paper": "https://arxiv.org/abs/2401.02117",
+      "project_or_official_resource": "https://mobile-aloha.github.io/",
+      "reading_note": "移动与双臂的联合示范。"
+    },
+    {
+      "id": "brs",
+      "title": "BEHAVIOR Robot Suite",
+      "year": 2025,
+      "category": "whole-body-teleoperation",
+      "paper": null,
+      "project_or_official_resource": "https://behavior-robot-suite.github.io/",
+      "reading_note": "真实机器人、JoyLo 接口与 WB-VIMA；作者包含 Li Fei-Fei。"
+    },
+    {
+      "id": "droid",
+      "title": "DROID",
+      "year": 2024,
+      "category": "real-robot-dataset",
+      "paper": null,
+      "project_or_official_resource": "https://droid-dataset.github.io/",
+      "reading_note": "真实机器人多场景数据；使用时核对后续标定与标注更新。"
+    },
+    {
+      "id": "oxe",
+      "title": "Open X-Embodiment",
+      "year": 2023,
+      "category": "real-robot-dataset",
+      "paper": null,
+      "project_or_official_resource": "https://robotics-transformer-x.github.io/",
+      "reading_note": "跨来源集合；统一读取格式不等于动作语义统一。"
+    },
+    {
+      "id": "umi",
+      "title": "Universal Manipulation Interface",
+      "year": 2024,
+      "category": "handheld-tool",
+      "paper": "https://arxiv.org/abs/2402.10329v1",
+      "project_or_official_resource": "https://umi-gripper.github.io/",
+      "reading_note": "手持夹爪、相对轨迹与延迟匹配；作者 Shuran Song 等。"
+    },
+    {
+      "id": "fastumi",
+      "title": "FastUMI",
+      "year": 2024,
+      "category": "handheld-tool",
+      "paper": "https://arxiv.org/abs/2409.19499",
+      "project_or_official_resource": null,
+      "reading_note": "硬件与追踪流程扩展；按论文版本确认具体配置。"
+    },
+    {
+      "id": "umi-legs",
+      "title": "UMI on Legs",
+      "year": 2024,
+      "category": "handheld-tool",
+      "paper": "https://arxiv.org/abs/2407.10353",
+      "project_or_official_resource": null,
+      "reading_note": "手持示范与移动机器人控制结合。"
+    },
+    {
+      "id": "ego4d",
+      "title": "Ego4D",
+      "year": 2022,
+      "category": "human-video-dataset",
+      "paper": null,
+      "project_or_official_resource": "https://ego4d-data.org/",
+      "reading_note": "日常活动视频；各子集模态与标注不同。"
+    },
+    {
+      "id": "ego-exo4d",
+      "title": "Ego-Exo4D",
+      "year": 2023,
+      "category": "human-video-dataset",
+      "paper": null,
+      "project_or_official_resource": "https://ego-exo4d-data.org/",
+      "reading_note": "同步第一与第三视角；人体技能不等于机器人命令。"
+    },
+    {
+      "id": "egodex",
+      "title": "EgoDex",
+      "year": 2025,
+      "category": "tracked-human-dataset",
+      "paper": "https://arxiv.org/abs/2505.11709",
+      "project_or_official_resource": "https://github.com/apple-aiml-research/ml-egodex",
+      "reading_note": "人体姿态与语言；829 小时包括训练、测试及额外数据。"
+    },
+    {
+      "id": "egomimic",
+      "title": "EgoMimic",
+      "year": 2024,
+      "category": "human-robot-transfer",
+      "paper": "https://arxiv.org/abs/2410.24221",
+      "project_or_official_resource": "https://egomimic.github.io/",
+      "reading_note": "共享人体／机器人位姿输出，机器人关节输出独立。"
+    },
+    {
+      "id": "egohumanoid",
+      "title": "EgoHumanoid",
+      "year": 2026,
+      "category": "human-robot-transfer",
+      "paper": "https://arxiv.org/abs/2602.10106v1",
+      "project_or_official_resource": "https://opendrivelab.com/EgoHumanoid/",
+      "reading_note": "PICO 与外接头戴相机；视角／动作对齐；平均阶段得分不等于整任务成功率。"
+    },
+    {
+      "id": "egoscale",
+      "title": "EgoScale",
+      "year": 2026,
+      "category": "human-robot-transfer",
+      "paper": "https://arxiv.org/abs/2602.16710v1",
+      "project_or_official_resource": "https://research.nvidia.com/labs/gear/egoscale/",
+      "reading_note": "大规模人体动作标签含估计与重定向；项目代码入口仍标 Coming Soon。"
+    },
+    {
+      "id": "pi-human-transfer",
+      "title": "Emergence of Human to Robot Transfer in VLAs",
+      "year": 2025,
+      "category": "human-robot-transfer",
+      "paper": null,
+      "project_or_official_resource": "https://www.pi.website/research/human_to_robot",
+      "reading_note": "机器人预训练规模与多样性影响吸收人类数据的能力。"
+    },
+    {
+      "id": "mimicplay",
+      "title": "MimicPlay",
+      "year": 2023,
+      "category": "human-video-transfer",
+      "paper": "https://arxiv.org/abs/2302.12422",
+      "project_or_official_resource": "https://mimic-play.github.io/",
+      "reading_note": "人类高层计划与机器人底层控制；作者包含 Li Fei-Fei。"
+    },
+    {
+      "id": "lapa",
+      "title": "Latent Action Pretraining from Videos",
+      "year": 2024,
+      "category": "latent-action",
+      "paper": "https://arxiv.org/abs/2410.11758v1",
+      "project_or_official_resource": null,
+      "reading_note": "潜在动作学习与机器人动作落地分开。"
+    },
+    {
+      "id": "epic-kitchens",
+      "title": "EPIC-KITCHENS-100",
+      "year": 2020,
+      "category": "human-video-dataset",
+      "paper": "https://arxiv.org/abs/2006.13256",
+      "project_or_official_resource": "https://epic-kitchens.github.io/2023",
+      "reading_note": "厨房行为、叙述与动作片段；不是逐帧机器人控制量。"
+    },
+    {
+      "id": "howto100m",
+      "title": "HowTo100M",
+      "year": 2019,
+      "category": "human-video-dataset",
+      "paper": "https://arxiv.org/abs/1906.03327",
+      "project_or_official_resource": "https://www.di.ens.fr/willow/research/howto100m/",
+      "reading_note": "教学视频与字幕；图文／时序表征用途。"
+    },
+    {
+      "id": "recap",
+      "title": "RECAP / pi-star-0.6",
+      "year": 2025,
+      "category": "autonomous-experience",
+      "paper": null,
+      "project_or_official_resource": "https://www.pi.website/blog/pistar06",
+      "reading_note": "自主经验、人工接管与结果反馈。"
+    },
+    {
+      "id": "mimicgen",
+      "title": "MimicGen",
+      "year": 2023,
+      "category": "simulation-trajectory",
+      "paper": "https://arxiv.org/abs/2310.17596",
+      "project_or_official_resource": "https://mimicgen.github.io/",
+      "reading_note": "源示范变换后仿真执行；保留派生家族关系。"
+    },
+    {
+      "id": "robocasa365",
+      "title": "RoboCasa365",
+      "year": 2026,
+      "category": "simulation-dataset",
+      "paper": "https://arxiv.org/abs/2603.04356v1",
+      "project_or_official_resource": "https://robocasa.ai/",
+      "reading_note": "人工遥操作与合成小时数都属于仿真数据。"
+    },
+    {
+      "id": "behavior",
+      "title": "BEHAVIOR-1K / OmniGibson",
+      "year": null,
+      "category": "simulation-environment",
+      "paper": null,
+      "project_or_official_resource": "https://behavior.stanford.edu/",
+      "reading_note": "家庭活动与仿真体系总入口；各论文与数据版本分别引用。"
+    },
+    {
+      "id": "behavior2026",
+      "title": "2026 BEHAVIOR Challenge demos",
+      "year": 2026,
+      "category": "simulation-dataset",
+      "paper": null,
+      "project_or_official_resource": "https://behavior.stanford.edu/challenge/dataset.html",
+      "reading_note": "20,000 条、100 任务；与 2025 版本分开。"
+    },
+    {
+      "id": "behavior2025",
+      "title": "2025 BEHAVIOR Challenge demos",
+      "year": 2025,
+      "category": "simulation-dataset",
+      "paper": null,
+      "project_or_official_resource": "https://behavior.stanford.edu/challenge/archive/2025/dataset.html",
+      "reading_note": "10,000 条、50 任务；官方 joint_efforts 回放字段警告属于此版本。"
+    },
+    {
+      "id": "momagen",
+      "title": "MoMaGen",
+      "year": 2025,
+      "category": "simulation-trajectory",
+      "paper": null,
+      "project_or_official_resource": "https://momagen.github.io/",
+      "reading_note": "移动操作数据生成；作者包含 Li Fei-Fei。"
+    },
+    {
+      "id": "simfoundry",
+      "title": "SimFoundry",
+      "year": 2026,
+      "category": "real-to-sim",
+      "paper": null,
+      "project_or_official_resource": "https://research.nvidia.com/labs/gear/simfoundry/",
+      "reading_note": "真实场景视频到可交互环境；作者包含 Li Fei-Fei。"
+    },
+    {
+      "id": "dreamgen",
+      "title": "DreamGen",
+      "year": 2025,
+      "category": "generated-video",
+      "paper": "https://arxiv.org/abs/2505.12705v2",
+      "project_or_official_resource": "https://research.nvidia.com/labs/gear/dreamgen/",
+      "reading_note": "视频生成、伪动作标注、策略训练；不是显式物理仿真轨迹。"
+    },
+    {
+      "id": "vjepa2",
+      "title": "V-JEPA 2 / V-JEPA 2-AC",
+      "year": 2025,
+      "category": "world-model",
+      "paper": "https://arxiv.org/abs/2506.09985v1",
+      "project_or_official_resource": null,
+      "reading_note": "无动作表征预训练；机器人 AC 阶段以相邻末端状态变化构造动作。"
+    },
+    {
+      "id": "dreamzero",
+      "title": "DreamZero",
+      "year": 2026,
+      "category": "world-action-model",
+      "paper": "https://arxiv.org/abs/2602.15922",
+      "project_or_official_resource": "https://dreamzero0.github.io/",
+      "reading_note": "联合视频与动作；额外视频迁移依托已训练机器人底座。"
+    },
+    {
+      "id": "marble",
+      "title": "Marble",
+      "year": 2025,
+      "category": "spatial-world-model",
+      "paper": null,
+      "project_or_official_resource": "https://www.worldlabs.ai/blog/marble-world-model",
+      "reading_note": "企业产品发布；空间资产输出不等于完整机器人交互数据。"
+    },
+    {
+      "id": "atlas",
+      "title": "Atlas",
+      "year": 2026,
+      "category": "spatial-world-model",
+      "paper": null,
+      "project_or_official_resource": "https://www.worldlabs.ai/blog/atlas",
+      "reading_note": "2026-09-01 企业技术发布，部分伙伴早期访问；完整训练语料未公开列出。"
+    },
+    {
+      "id": "robomind2",
+      "title": "RoboMIND 2.0",
+      "year": 2025,
+      "category": "real-and-simulation-datasets",
+      "paper": "https://arxiv.org/abs/2512.24653v3",
+      "project_or_official_resource": "https://log2r.github.io/RoboMIND2.0/",
+      "reading_note": "真实轨迹中的触觉／移动子集与另行提供的仿真数据分别计数。"
+    },
+    {
+      "id": "agibot2026",
+      "title": "AgiBot World 2026",
+      "year": 2026,
+      "category": "robot-experience-dataset",
+      "paper": null,
+      "project_or_official_resource": "https://huggingface.co/datasets/agibot-world/AgiBotWorld2026",
+      "reading_note": "按主题与子目录核对；Theme 3 包含专家、自主执行和接管；官方 9 月说明报告 11,430 条。"
+    }
+  ],
+  "pinned_code": [
+    {
+      "name": "XRoboToolkit Python examples",
+      "commit": "79e5cb8a56e3455515ce1b476e993c764ec58739",
+      "url": "https://github.com/XR-Robotics/XRoboToolkit-Teleop-Sample-Python/tree/79e5cb8a56e3455515ce1b476e993c764ec58739",
+      "scope": "Read logger, controller threading, ARX state/target fields and camera timestamps; did not run hardware."
+    },
+    {
+      "name": "Universal Manipulation Interface",
+      "commit": "d095ba9590df789df5189eea5ee7e431689038a6",
+      "url": "https://github.com/real-stanford/universal_manipulation_interface/tree/d095ba9590df789df5189eea5ee7e431689038a6",
+      "scope": "Read dataset planning and bimanual latency scheduling; executed fixed pose_repr_util rel/relative branches with synthetic inputs. Did not reproduce training or robot execution."
+    }
+  ],
+  "official_device_docs": [
+    "https://developer.picoxr.com/document/unreal-openxr/camera-access/",
+    "https://github.com/XR-Robotics/XRoboToolkit-Unity-Client",
+    "https://github.com/realsenseai/librealsense/blob/v2.58.4/include/librealsense2/h/rs_frame.h"
+  ]
+}

@@ -1441,6 +1441,37 @@
         "用源码探针解释堆帧缓存、GRU 隐藏状态、逐环境重置及潜变量默认开关为什么影响结果。",
         "按论文各自评测口径解释 75 cm 攀爬的师生差距和 98% 衔接成功率。"
       ]
+    },
+    {
+      "id": 75,
+      "added_on": "2026-09-14",
+      "summary": "从 PICO 遥操作、主从机械臂、UMI 与人类视频，到 BEHAVIOR、RoboCasa 和空间世界模型，比较数据监督、动作迁移、采集工程与截至 2026 年 9 月的研究进展。",
+      "prerequisites": "模仿学习、机器人坐标系与视觉观测基础；不要求熟悉具体采集设备",
+      "focus": "先区分采集接口、视角与动作标签，再沿真实机器人、人类示范和合成环境三条线理解数据如何支持策略学习与世界预测。",
+      "related": [
+        72,
+        73,
+        74,
+        66
+      ],
+      "path": "content/posts/ai/vla-world-model-data/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/x-vla",
+        "/posts/ai/real-time-chunking",
+        "/posts/ai/light-loco-parkour",
+        "/posts/ai/rynnbrain"
+      ],
+      "image_decision": "imagegen 六类采集概念图；三张原创 SVG 解释监督、空间资产到执行轨迹及观测可用时间",
+      "image": "assets/data-sources.png",
+      "acceptance_checks": [
+        "区分 VR 接口、第一视角、人体追踪与机器人动作，解释为什么这些类别可以重叠。",
+        "沿 PICO、主从和 UMI 各写出一条从原始传感器到机器人训练标签的处理链。",
+        "说明 MimicPlay、LAPA 与 EgoHumanoid 如何使用人类数据，以及分别还需要什么机器人监督。",
+        "区分真机、人工遥操作仿真、合成示范与生成视频，按版本解释公开数据规模。",
+        "运行数据契约实验，区分未来标签与未来输入，核对观测年龄、缺失值和同源划分。",
+        "为 VLA、动作条件世界模型和空间生成分别设计数据字段、划分规则与闭环验证方法。"
+      ]
     }
   ]
 }
