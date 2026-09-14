@@ -1462,7 +1462,7 @@
         "/posts/ai/light-loco-parkour",
         "/posts/ai/rynnbrain"
       ],
-      "image_decision": "imagegen 六类采集概念图；三张原创 SVG 解释监督、空间资产到执行轨迹及观测可用时间",
+      "image_decision": "五张概念插图覆盖数据来源、遥操作、工具迁移、人体监督和动作后果；三张 SVG 解释监督链、仿真执行条件与观测时间，每张配有图注。",
       "image": "assets/data-sources.png",
       "acceptance_checks": [
         "区分 VR 接口、第一视角、人体追踪与机器人动作，解释为什么这些类别可以重叠。",

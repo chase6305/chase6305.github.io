@@ -55,7 +55,7 @@
       "category": "whole-body-teleoperation",
       "paper": null,
       "project_or_official_resource": "https://behavior-robot-suite.github.io/",
-      "reading_note": "真实机器人、JoyLo 接口与 WB-VIMA；作者包含 Li Fei-Fei。"
+      "reading_note": "真实机器人、JoyLo 接口与 WB-VIMA。"
     },
     {
       "id": "droid",
@@ -172,7 +172,7 @@
       "category": "human-video-transfer",
       "paper": "https://arxiv.org/abs/2302.12422",
       "project_or_official_resource": "https://mimic-play.github.io/",
-      "reading_note": "标定双相机重建三维手轨迹学习高层计划；机器人示范学习底层控制；作者包含 Li Fei-Fei。"
+      "reading_note": "标定双相机重建三维手轨迹学习高层计划；机器人示范学习底层控制。"
     },
     {
       "id": "lapa",
@@ -262,7 +262,7 @@
       "category": "simulation-trajectory",
       "paper": null,
       "project_or_official_resource": "https://momagen.github.io/",
-      "reading_note": "移动操作数据生成；作者包含 Li Fei-Fei。"
+      "reading_note": "移动操作数据生成。"
     },
     {
       "id": "simfoundry",
@@ -271,7 +271,7 @@
       "category": "real-to-sim",
       "paper": null,
       "project_or_official_resource": "https://research.nvidia.com/labs/gear/simfoundry/",
-      "reading_note": "真实场景视频到可交互环境；作者包含 Li Fei-Fei。"
+      "reading_note": "真实场景视频到可交互环境。"
     },
     {
       "id": "dreamgen",
