@@ -1,0 +1,27 @@
+{{- /* Blog bundles use Type=blog, even though their root Section is posts. */ -}}
+{{- $pages := (where .RegularPagesRecursive "Draft" false).ByDate.Reverse -}}
+{{- $limit := .Site.Config.Services.RSS.Limit -}}
+{{- if ge $limit 1 -}}{{- $pages = first $limit $pages -}}{{- end -}}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ .Site.Title }} – {{ .Title }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>{{ .Description | default .Title }}</description>
+    <language>{{ .Params.contentLanguage | default .Language.Locale }}</language>
+    {{- with .OutputFormats.Get "RSS" }}
+    <atom:link href="{{ .Permalink }}" rel="self" type="application/rss+xml" />
+    {{- end }}
+    {{- with $pages }}
+    <lastBuildDate>{{ (index . 0).Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</lastBuildDate>
+    {{- end }}
+    {{- range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <guid isPermaLink="true">{{ .Permalink }}</guid>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
+      <description>{{ .Summary | html }}</description>
+    </item>
+    {{- end }}
+  </channel>
+</rss>
