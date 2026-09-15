@@ -1,7 +1,7 @@
 ---
 title: "X-VLA 详解：软提示如何连接跨本体学习、动作生成与机器人控制"
 date: 2026-09-11
-lastmod: 2026-09-12
+lastmod: 2026-09-15
 draft: false
 tags: ["X-VLA", "VLA", "Embodied AI", "Flow Matching", "Soft Prompt", "Paper Notes"]
 categories: ["人工智能"]
@@ -12,7 +12,7 @@ contentLanguage: "zh-CN"
 math: true
 toc: true
 reading_prerequisites: "Transformer、模仿学习、旋转矩阵与机器人观测—动作闭环基础"
-reading_focus: "沿数据域、视觉编码、动作块和控制接口阅读，重点核对软提示的作用位置、生成目标、旋转排列与微调参数组。"
+reading_focus: "沿数据域、视觉编码、动作块和控制接口阅读，重点核对软提示、生成目标、旋转排列，以及微调参数组、学习率计划与训练预算。"
 related_posts:
   - "/posts/ai/real-time-chunking"
   - "/posts/ai/transformer-attention"
@@ -23,7 +23,7 @@ related_posts:
 
 **X-VLA 研究的是：不同机器人的数据混在一起训练时，怎样共享操作知识，又保留各自的相机、动作和控制差异。** 它给不同数据域配置可学习的软提示，再通过共享 Transformer 生成连续动作块。理解这套方法，需要同时看网络、训练数据和执行接口。
 
-本文以 [X-VLA 官方仓库](https://github.com/2toinf/X-VLA)、[论文 v1](https://arxiv.org/html/2510.10274v1)和[项目主页](https://thu-air-dream.github.io/X-VLA/)为入口。源码固定在提交 [`6bc2513`](https://github.com/2toinf/X-VLA/tree/6bc2513f5f1cbec715cc668b414392a6cae5c671)，核对日期为 2026-09-12。文中的“当前实现”均指这一提交；模型成绩来自作者报告，数值练习由本文独立编写并在 CPU 上验证。
+本文以 [X-VLA 官方仓库](https://github.com/2toinf/X-VLA)、[论文 v1](https://arxiv.org/html/2510.10274v1)和[项目主页](https://thu-air-dream.github.io/X-VLA/)为入口。源码固定在提交 [`6bc2513`](https://github.com/2toinf/X-VLA/tree/6bc2513f5f1cbec715cc668b414392a6cae5c671)，主文核对日期为 2026-09-12；第 8.7—8.9 节的训练预算与框架调度对照补充核对于 2026-09-15。文中的“当前实现”均指这一提交；模型成绩来自作者报告，数值练习由本文独立编写并在 CPU 上验证。
 
 先把整条链路连起来：相机与任务语言提供“当前看到什么、想做什么”，状态与数据域提供“动作应该按什么约定解释”，模型据此生成一段未来动作，再由客户端转换并交给控制器执行。**软提示主要解决跨域条件建模；动作表示和执行闭环仍由整条数据链共同决定。**
 
@@ -34,6 +34,7 @@ related_posts:
 | Flow Matching 在代码中怎样实现 | [动作生成](#generation) |
 | 为什么输出 20 维还不能直接控制机器人 | [EE6D 与旋转约定](#action-space)、[控制闭环](#control) |
 | 怎样微调、怎样启动服务 | [数据管线](#data)、[训练](#training)、[服务字段与相机槽位](#http-request) |
+| 改 `iters` 为什么会改变学习率，怎样比较训练预算 | [训练步数与衰减终点](#training-budget)、[框架对照](#scheduler-frameworks)、[公平比较](#training-budget-comparison) |
 | 想让推理与机器人执行重叠 | [RTC 接入边界](#rtc-integration)、[RTC 专文]({{< relref "/posts/ai/real-time-chunking" >}}) |
 | 如何理解成绩与验证接口 | [实验口径](#evaluation)、[独立实验包](#lab-download)、[CPU 练习](#lab) |
 
@@ -800,6 +801,90 @@ LoRA 通过低秩增量改变层的映射；软提示则增加作为输入条件
 
 这与 RTC 仓库[从权重重新微调的语义]({{< relref "/posts/ai/real-time-chunking" >}}#checkpoint-semantics)相似。需要连续恢复时，应明确保存并恢复优化器、随机数与调度进度；仅凭目录名或存在 `state.json`，不能认定入口已经实现了这些行为。比较训练预算时，记录权重来源、旧运行已完成更新数及新运行的实际更新数。
 
+### 8.7 修改 `iters`，同时改变了什么 {#training-budget}
+
+**启用余弦调度时，`iters` 既是停止训练的预算，也是学习率衰减的终点。** 固定源码的 `update_group_lrs` 把 `args.iters` 传给 `linear_warmup_cosine` 的 `total`；训练循环又在完成相应更新数后退出。因此，设置 200,000 步、训练到第 100,000 步，与设置 100,000 步并训完，通常会得到不同的优化轨迹。[调度函数与调用](https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/train.py#L150)、[训练循环](https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/train.py#L224)
+
+这里有一个入口差异：本文固定的官方 `train.py` 默认关闭 `use_cosine_decay`，需要显式开启。另一些派生训练入口会默认开启，例如本次对照的 `train_xvla_bf16.py`。判断自己的配置时，应同时检查参数默认值和实际调度调用；**关闭余弦调度时，这个入口中的 `iters` 只控制训练停止预算。**
+
+令 $F$ 为冻结阶段长度、$W$ 为随后 warmup 的长度、$T$ 为 `iters`，$m$ 为最低学习率比例。对 $T>F+W$ 且 $s\ge F+W$ 的余弦阶段，可将代码写成：
+
+$$
+\begin{aligned}
+u_s &= \min\!\left(1,\frac{s-F-W}{T-F-W}\right),\\
+c_s &= \frac{1+\cos(\pi u_s)}{2},\\
+\eta_s &= \eta_0\left[m+(1-m)c_s\right].
+\end{aligned}
+$$
+
+其中 $s$ 是调度函数接收的 step，$\eta_0$ 是当前参数组的基础学习率。冻结阶段与 warmup 的分组行为见第 8.2 节。保持 `freeze_steps=1000`、`warmup_steps=2000`、`min_lr_ratio=0.1`，以主干／动作头的 $\eta_0=10^{-4}$ 为例：
+
+| 调度 step | `iters=100000` | `iters=200000` |
+| --- | --- | --- |
+| 3,000 | `1.00e-4` | `1.00e-4` |
+| 50,000 | 约 `5.72e-5` | 约 `8.79e-5` |
+| 100,000 | `1.00e-5`，曲线终点 | 约 `5.61e-5` |
+| 200,000 | 原训练预算已结束 | `1.00e-5`，曲线终点 |
+{.table-readable}
+
+这组数字由固定源码中的调度函数复算，不是训练效果测量。若 VLM／软提示的 `learning_coef=0.1`，相应余弦阶段学习率再乘 0.1。`F` 和 `W` 都是固定步数，不会随 `iters` 自动翻倍；两条曲线在第 3,000 步后才开始分离。
+
+<figure class="article-figure" id="fig-learning-rate-budget">
+  {{< post-image src="assets/learning-rate-budget.svg" alt="十万步和二十万步预算使用不同的余弦衰减曲线；同在五万或十万步时，二十万步方案的学习率更高" >}}
+  <figcaption>
+    <span class="article-figure__number">图 7</span>
+    <span class="article-figure__text"><strong>训练预算改变了整个衰减阶段。</strong>蓝线在十万步达到最低值，橙线到二十万步才达到同一最低值。图中只画 warmup 完成后的调度，十万步方案的曲线在其预算终点结束；这是公式曲线，不是 loss 或成功率。<a href="assets/learning-rate-budget.svg">查看原图</a> · <a href="lr_schedule_plot.py">绘图脚本</a></span>
+  </figcaption>
+</figure>
+
+还应区分日志 step 与 checkpoint 编号。固定 `train.py` 在更新前设置学习率，更新后才令 `global_step += 1`：100,000 次更新对应调度输入 0—99,999；表中的 100,000 是公式终点参考值。`ckpt-100000` 表示已完成的更新数，不能反过来认定最后一次更新调用了 `schedule(100000)`。
+
+训练样本的累计曝光量也会变化。假设实际启动 8 个数据并行进程、每进程 batch 为 48、每个 batch 执行一次优化器更新且没有梯度累积，则每次更新处理 384 个窗口，200,000 次更新累计处理 **76,800,000 个图像—动作窗口**。这包括重复采样，不是独立轨迹数；仅凭这些数字也算不出遍历数据集的 epoch 数。存在梯度累积时，还要计入每次更新包含的 microbatch 数；模型并行下也不能把总 GPU 数直接当成数据并行进程数。
+
+### 8.8 常见框架是否也把总步数与衰减绑定 {#scheduler-frameworks}
+
+两种设计都很常见：可以让学习率计划跟随训练总预算，也可以独立配置停止点与衰减终点。下面列的是具体接口的行为，不能推广到同一框架的所有调度器。
+
+| 框架／接口 | 训练总量与学习率的关系 | 配置时要注意什么 |
+| --- | --- | --- |
+| Hugging Face Transformers `Trainer` | 内置 linear／cosine 调度通常接收 Trainer 计算的 `num_training_steps`；修改总更新数会改变曲线 | 自定义 scheduler 或常量调度可以采用其他规则；默认 cosine 的最低值也不同于本文的 10% 下限 |
+| PyTorch `CosineAnnealingLR` | `T_max` 由调用方单独传入，训练循环何时退出由调用方控制 | 调度单位取决于何时调用 `scheduler.step()`；这个调度器本身不附带 warmup |
+| Megatron-LM | 分别提供 `train_iters` 与 `lr_decay_iters` | 未指定 `lr_decay_iters` 时默认采用训练迭代数；分开配置之后仍需核对 warmup、最低学习率与恢复规则 |
+{.table-readable}
+
+对应依据是 [Transformers 调度接口](https://huggingface.co/docs/transformers/main_classes/optimizer_schedules#transformers.get_cosine_schedule_with_warmup)、[Trainer 创建调度器的实现（v4.57.1）](https://github.com/huggingface/transformers/blob/v4.57.1/src/transformers/trainer.py)、[PyTorch `CosineAnnealingLR` 文档（2.9）](https://docs.pytorch.org/docs/2.9/generated/torch.optim.lr_scheduler.CosineAnnealingLR.html)和 [Megatron-LM 调度配置](https://github.com/NVIDIA/Megatron-LM/blob/main/megatron/training/config/training_config.py)。
+
+**“到达最低学习率”与“以后一直保持最低学习率”还要分别确认。** 本文 X-VLA 的公式用 `min(1.0, ...)` 截断进度，所以超过衰减终点后仍保持下限。PyTorch `CosineAnnealingLR` 则持续增加内部步数，超过 `T_max` 后继续调用会沿余弦公式回升；这不等同于 `CosineAnnealingWarmRestarts` 的重启机制。若希望额外训练阶段保持固定低学习率，应显式设计后续调度，而不是只延长循环。[PyTorch 的公式与步数约定](https://docs.pytorch.org/docs/2.9/generated/torch.optim.lr_scheduler.CosineAnnealingLR.html)
+
+Megatron Bridge 的配置名称也不能脱离上下文解释：当前文档中的 `SchedulerConfig.max_steps` 用于让较短测试运行沿用较长完整运行的学习率／权重衰减计划，而 `TrainingConfig.train_iters` 控制实际运行长度。这里的 `max_steps` 就不是一个通用的“停止步数”同义词。[Bridge 调度配置说明](https://docs.nvidia.com/nemo/megatron-bridge/latest/apidocs/bridge/bridge.training.config.html#bridge.training.config.SchedulerConfig.max_steps)
+
+### 8.9 怎样比较训练时长，怎样设计独立衰减参数 {#training-budget-comparison}
+
+先确定要回答哪个问题，再固定相应变量：
+
+| 实验问题 | 保持一致的条件 | 比较对象 |
+| --- | --- | --- |
+| 同一训练计划继续运行有没有收益 | 固定 `iters=200000`、数据采样和评测协议 | 同一次运行的 50k、100k、150k、200k checkpoint |
+| 10 万步和 20 万步完整配方哪个好 | 相同初始化、数据配置和评测任务，记录随机种子 | 两次独立运行；停止点与余弦曲线一起变化 |
+| 相同学习率计划下，多更新一些是否有用 | 固定调度终点、warmup、分组系数与采样方式 | 在同一预定曲线上的不同停止点；超出衰减终点的行为需事先定义 |
+{.table-readable}
+
+第一种比较衡量的是沿同一计划继续训练的收益，后半程自然包含更低的学习率；它并没有单独隔离学习率与样本曝光量的影响。也不要先按十万步曲线训完，再临时把 `iters` 改成二十万：即使正确恢复了所有训练状态，新的余弦公式也可能把学习率从约 `1e-5` 拉回约 `5.61e-5`，并且无法改写已经经历过的前半段曲线。本文官方入口还没有完整恢复机制，见[第 8.6 节](#training-resume)。
+
+如果要改造自己的训练入口，可以采用下面的**拟议配置**；`lr_decay_iters` 不是本文固定 X-VLA 入口已经支持的参数：
+
+```yaml
+iters: 200000          # 实际停止预算
+lr_decay_iters: 100000 # 拟新增：余弦衰减的绝对终点
+freeze_steps: 1000
+warmup_steps: 2000
+min_lr_ratio: 0.1
+```
+
+实现时，让循环仍使用 `iters`，只将调度函数的 `total` 改接 `lr_decay_iters`；未提供新参数时回退到 `iters`，以保留原行为。这里明确采用“从全局第 0 步算起的终点”语义，因此实际余弦区间为第 3,000—100,000 步，并不是在 warmup 后再衰减十万步。对于这个示例，应校验衰减终点大于 `freeze_steps + warmup_steps`；沿用当前的进度截断后，后十万步才会保持最低学习率。
+
+最后用相同的观测、动作解码、执行频率、任务划分与评测次数比较 checkpoint，分别报告动作误差、完整任务成功率和失败类型。更多步数可能改善拟合，也可能过拟合；单看训练 loss 更低，无法判断真机表现是否更好。累计曝光量、数据混合比例和独立场景的计数，可结合[数据来源文章的训练预算对照]({{< relref "/posts/ai/vla-world-model-data" >}}#data-ablation-plan)一起记录。
+
 ## 9. 本地部署：先固定一条完整的数据与模型链 {#deployment}
 
 ### 9.1 固定源码，使用独立环境
@@ -1085,3 +1170,4 @@ python timing_lab.py --write-figure
 - 解释 domain_id 选择的参数，以及相机槽位、旋转排列、坐标系、夹爪屏蔽和动作单位如何影响接入。
 - 为 H+1 查询点写出状态及未来目标时间，区分数据窗口、生成步数与控制周期。
 - 解压实验包独立运行，说明这些检查为何不代表 checkpoint 推理或机器人成功率复现。
+- 解释为什么改变 iters 会改变余弦曲线，并为同一学习率计划下的训练时长比较设计对照。
