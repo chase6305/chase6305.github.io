@@ -35,7 +35,7 @@ related_posts:
 | 排错与继续研究 | [验收](#diagnostics)、[扩展](#extensions) | 用证据判断失败发生在哪一层 |
 | 接入机器人控制 | [MPC 与 WBC](#mpc-wbc) | 区分策略训练、预测规划与当前拍执行 |
 
-![PPO 从 rollout 和 critic 构造优势，DPO 比较偏好对相对参考策略的概率，GRPO 使用同题回答的组内优势](assets/policy-optimization-overview.webp "图 1：由 imagegen 生成的算法数据流概念图。蓝色为 PPO，橙色为 DPO，绿色为原始 outcome GRPO；三行分别表示三种方法。")
+![PPO 从 rollout 和 critic 构造优势，DPO 比较偏好对相对参考策略的概率，GRPO 使用同题回答的组内优势](assets/policy-optimization-overview.webp "图 1：蓝色为 PPO，橙色为 DPO，绿色为原始 outcome GRPO；三行分别表示三种方法。")
 
 读图时先沿每一行看数据怎样变成更新信号：PPO 的 critic 提供价值 baseline，DPO 比较 chosen/rejected 相对 reference 的概率间隔，GRPO 比较同题回答的奖励。底部的 old 是采样快照，reference 是固定参照；具体目标中的 KL 和 clipping 位置见后文公式。
 
@@ -509,7 +509,7 @@ print(group_advantages(rewards))
 
 组均值包含样本自身，且除以随机标准差，所以它不等于第 3.2 节中与当前动作独立的状态 baseline。应把它看作组相对学习规则，而不是直接套用“baseline 不引入偏差”的证明。
 
-![同一问题的四个回答奖励为 0、0、1、1，总体标准差为 0.5，忽略数值稳定项后的优势为负一、负一、正一、正一；相同奖励得到零优势](assets/group-relative-advantages.webp "图 2：由 imagegen 生成的 GRPO 组内归一化概念图。每个 prompt 独立成组；图中忽略数值稳定项，等值奖励组的奖励驱动优势为零，KL 仍可能贡献梯度。")
+![同一问题的四个回答奖励为 0、0、1、1，总体标准差为 0.5，忽略数值稳定项后的优势为负一、负一、正一、正一；相同奖励得到零优势](assets/group-relative-advantages.webp "图 2：每个 prompt 独立成组；图中忽略数值稳定项，等值奖励组的奖励驱动优势为零，KL 仍可能贡献梯度。")
 
 图中的 `0, 0, 1, 1` 对应上方代码的第一行。第二个例子使用全 1 奖励，代码使用全 5；减去各自均值后都为零。优势的正负是相对于**本组平均奖励**而言，不能直接解释成回答绝对正确或错误。
 
@@ -906,4 +906,4 @@ DPO 可以学习对控制策略或轨迹的偏好，但偏好 loss 不会自动�
 - [DeepSeekMath：2402.03300v3](https://arxiv.org/html/2402.03300v3)：原始 GRPO、outcome/process supervision 与 KL 项。
 - [Spinning Up 策略梯度](https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html)、[PPO](https://spinningup.openai.com/en/latest/algorithms/ppo.html)：原理与实现步骤。
 - [Gymnasium 时间限制](https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/)：终止与截断的价值 bootstrap。
-- 本文代码基线为 PyTorch 2.8.0；概念图由 imagegen 生成，训练曲线由 Matplotlib 3.10.6 从本地实验数据生成；框架文档核对日期为 2026-09-08。教学超参数与简化条件已经单独声明，未复现论文的大模型训练和榜单结果。
+- 本文代码基线为 PyTorch 2.8.0；训练曲线由 Matplotlib 3.10.6 从本地实验数据绘制；框架文档核对日期为 2026-09-08。教学超参数与简化条件已经单独声明，未复现论文的大模型训练和榜单结果。

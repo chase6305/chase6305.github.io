@@ -98,7 +98,7 @@ let browserSocket;
       }).map(formula => formula.textContent.slice(0, 100));
       return {rawMath, mathAccessibilityErrors};
     })()`);
-    const editorial = await evaluate("(() => { const toc=document.querySelector('.blog-mobile-toc'); const node=document.querySelector('script[type=\"application/ld+json\"]'); const schema=node ? JSON.parse(node.textContent) : null; return {mobileToc: !!toc && getComputedStyle(toc).display !== 'none', selfCheck: !!document.getElementById('阅读自测与验收'), schemaValid: schema?.['@type'] === 'BlogPosting' && schema.inLanguage === 'zh-CN' && !!schema.author?.length && !!schema.dateModified}; })()");
+    const editorial = await evaluate("(() => { const toc=document.querySelector('.blog-mobile-toc'); const node=document.querySelector('script[type=\"application/ld+json\"]'); const schema=node ? JSON.parse(node.textContent) : null; return {mobileToc: !!toc && getComputedStyle(toc).display !== 'none', selfCheck: Array.from(document.querySelectorAll('.content h2')).some(h => h.textContent.trim().startsWith('阅读自测与验收')), schemaValid: schema?.['@type'] === 'BlogPosting' && schema.inLanguage === 'zh-CN' && !!schema.author?.length && !!schema.dateModified}; })()");
     const topic = await evaluate("(() => {const nav=document.querySelector('.blog-topic-nav'); return {topicNavigation:!!nav, topicLinks:nav ? Array.from(nav.querySelectorAll('a')).map(a=>a.getAttribute('href')) : []};})()");
     await viewport(1440, 1000);
     await sleep(30);

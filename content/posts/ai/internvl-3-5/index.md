@@ -46,7 +46,7 @@ InternVL 3.5 可以沿三个问题理解：**图像怎样变成语言模型能�
 
 这些设计并不是一个统一的“加速开关”。更强的后训练主要改变模型分布；视觉压缩主要改变送入 LLM 的序列长度；服务解耦改变资源调度。它们可以组合，但生效条件不同。[作者发布说明](https://internvl.github.io/blog/2025-08-26-InternVL-3.5/)
 
-![InternVL 3.5 将图像分块编码，再通过像素重排和投影进入语言模型，Flash 版额外选择视觉 token 压缩分支](assets/visual-token-pipeline.webp "图 1：由 imagegen 生成的教学示意，不是论文原图。图中的小方格仅示意特征布局；标准版每个 tile 的视觉表示与 Flash 的 256/64-token 路由分开绘制。")
+![InternVL 3.5 将图像分块编码，再通过像素重排和投影进入语言模型，Flash 版额外选择视觉 token 压缩分支](assets/visual-token-pipeline.webp "图 1：图中的小方格仅示意特征布局；标准版每个 tile 的视觉表示与 Flash 的 256/64-token 路由分开绘制。")
 
 ## 2. 模型集合怎么选：规模、阶段、格式是三个维度
 
@@ -65,7 +65,7 @@ InternVL 3.5 可以沿三个问题理解：**图像怎样变成语言模型能�
 
 注意“无后缀”的意思是没有 `-Pretrained/-Instruct/-MPO` 这类**阶段后缀**，而不是说 `-HF` 权重质量更低。正式选择时要同时确认模型卡中的训练路径、架构和格式。[阶段对照来源](https://internvl.github.io/blog/2025-08-26-InternVL-3.5/)
 
-![InternVL 3.5 的 CPT、SFT、MPO、GSPO 与 Flash 训练分支及检查点名称之间的对应关系](assets/cascade-rl-training.webp "图 2：由 imagegen 生成的训练流程概念图。Cascade RL 包括 MPO 与 GSPO；ViCO 的一致性训练及路由器训练形成 Flash 变体，-HF 只描述格式。")
+![InternVL 3.5 的 CPT、SFT、MPO、GSPO 与 Flash 训练分支及检查点名称之间的对应关系](assets/cascade-rl-training.webp "图 2：Cascade RL 包括 MPO 与 GSPO；ViCO 的一致性训练及路由器训练形成 Flash 变体，-HF 只描述格式。")
 
 ### 2.2 参数规模与骨干对应
 
