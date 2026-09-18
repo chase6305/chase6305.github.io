@@ -117,7 +117,11 @@ let closePage;
   // Progressive enhancement: a disabled script must not leave stale results visible.
   await cdp('Emulation.setScriptExecutionDisabled', {value: true});
   await cdp('Page.reload', {ignoreCache: true});
-  await sleep(1000);
+  for (let attempt = 0; attempt < 150; attempt++) {
+    await sleep(100);
+    if (await evaluate("document.readyState === 'complete' && !!document.querySelector('.llm-budget noscript')")) break;
+    if (attempt === 149) throw Error('No-JavaScript page reload timed out');
+  }
   assert(await evaluate("document.querySelector('.llm-budget__interactive').hidden && document.querySelector('.llm-budget noscript').textContent.includes('JavaScript')"));
   await cdp('Emulation.setScriptExecutionDisabled', {value: false});
   await closePage();
