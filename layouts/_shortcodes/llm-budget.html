@@ -1,0 +1,68 @@
+{{- $id := printf "llm-budget-%d" .Ordinal -}}
+{{- $css := resources.Get "css/llm-budget.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/llm-budget.js" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section class="llm-budget" data-llm-budget aria-label="权重与 KV 缓存载荷计算器">
+  <p class="llm-budget__title"><strong>动手算：权重与 KV 缓存</strong></p>
+  <p class="llm-budget__intro">改变位宽、并发或缓存长度，比较两项理论载荷。所有计算都在当前页面完成。</p>
+  <noscript><p>此计算器需要 JavaScript。也可以使用正文公式或下载指标计算脚本。</p></noscript>
+  <div class="llm-budget__interactive" hidden>
+    <div class="llm-budget__presets" aria-label="载入示例配置">
+      <button type="button" data-preset="example">70 亿参数算例</button>
+      <button type="button" data-preset="qwen">Qwen2.5-7B 配置</button>
+    </div>
+    <form class="llm-budget__form" novalidate>
+      <div class="llm-budget__fields">
+      <label for="{{ $id }}-parameters">参数量（十亿，B）
+        <input id="{{ $id }}-parameters" name="parameters" type="number" min="0.000001" max="10000" step="any" value="7" required inputmode="decimal">
+      </label>
+      <label for="{{ $id }}-weight-bits">权重存储位宽
+        <select id="{{ $id }}-weight-bits" name="weightBits">
+          <option value="4">4-bit（理想载荷）</option>
+          <option value="8">8-bit（理想载荷）</option>
+          <option value="16" selected>16-bit（FP16 / BF16）</option>
+          <option value="32">32-bit（FP32）</option>
+        </select>
+      </label>
+      <label for="{{ $id }}-batch">并发序列数 B
+        <input id="{{ $id }}-batch" name="batch" type="number" min="1" max="4096" step="1" value="1" required inputmode="numeric">
+      </label>
+      <label for="{{ $id }}-tokens">每条缓存 token 数 T
+        <input id="{{ $id }}-tokens" name="tokens" type="number" min="1" max="10000000" step="1" value="4096" required inputmode="numeric">
+      </label>
+      </div>
+      <details class="llm-budget__advanced">
+        <summary>结构与 KV 设置<span data-structure-summary></span></summary>
+        <div class="llm-budget__fields">
+      <label for="{{ $id }}-layers">层数 L
+        <input id="{{ $id }}-layers" name="layers" type="number" min="1" max="1024" step="1" value="32" required inputmode="numeric">
+      </label>
+      <label for="{{ $id }}-heads">KV 头数
+        <input id="{{ $id }}-heads" name="kvHeads" type="number" min="1" max="1024" step="1" value="8" required inputmode="numeric">
+      </label>
+      <label for="{{ $id }}-head-dim">每头维度
+        <input id="{{ $id }}-head-dim" name="headDim" type="number" min="1" max="8192" step="1" value="128" required inputmode="numeric">
+      </label>
+      <label for="{{ $id }}-kv-bits">KV 存储位宽
+        <select id="{{ $id }}-kv-bits" name="kvBits">
+          <option value="8">8-bit（理想载荷）</option>
+          <option value="16" selected>16-bit</option>
+          <option value="32">32-bit</option>
+        </select>
+      </label>
+        </div>
+      </details>
+    </form>
+    <p class="llm-budget__error" role="alert" hidden></p>
+    <div class="llm-budget__results" aria-live="polite" aria-atomic="true">
+      <div><span>原始权重</span><output data-value="weights"></output></div>
+      <div><span>KV 缓存</span><output data-value="kv"></output></div>
+      <div><span>两项合计</span><output data-value="total"></output></div>
+    </div>
+    <div class="llm-budget__bar" aria-hidden="true"><span data-bar="weights"></span><span data-bar="kv"></span></div>
+    <p class="llm-budget__legend"><span>蓝：权重</span><span>橙：KV 缓存</span></p>
+    <p class="llm-budget__detail" data-detail></p>
+  </div>
+  <p class="llm-budget__limits">按完整注意力、等长序列、无分片、无前缀共享计算。合计不含激活、量化元数据、工作区、预留空间及运行环境，不能直接当作所需显存。</p>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
