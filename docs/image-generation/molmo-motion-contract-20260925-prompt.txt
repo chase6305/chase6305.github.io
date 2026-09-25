@@ -1,0 +1,11 @@
+Use case: infographic-diagram
+Create a polished technical diagram for a Chinese robotics blog. Landscape 3:2, opaque white background, flat illustration, thin rounded outlines, restrained pastel blue/purple/orange/green fills, generous spacing, dark-gray arrows, large legible English sans-serif labels. No photo, texture, glow, shadows, decorative border, watermark or logo.
+Title: "MolmoMotion: predict object motion in 3D"
+Main flow left to right in three generous columns:
+LEFT: "Observed at t0" with a compact stack of three RGB-style schematic frames (a hand and a cup), eight tiny colored dots attached to the cup in the last frame. Below it three separate short labels: "RGB history", "Query points + 3D history", "Instruction: move the cup". These are inputs, not outputs.
+CENTER: one rounded purple block labeled "MolmoMotion" with subtitle "Language-conditioned forecasting".
+RIGHT: "Future object-point trajectories" with eight smooth colored dotted curves tracing the cup moving forward in a minimalist 3D coordinate system. A fixed camera symbol at the origin labeled "Camera frame at t0". Short labels "XYZ in meters" and "Future steps". This is predicted geometry, not joint angles.
+Connect LEFT -> CENTER -> RIGHT using clear arrows.
+LOWER ROW: the predicted trajectories lead downward to a compact green box "Task adapter / planner", then to an orange box "Robot controller". Label this row "Additional downstream components". There must be no direct arrow from the model to a motor or robot controller. Add one small robot-arm illustration at the right end of this lower row.
+Small footer: "Point trajectories are an intermediate representation"
+All labels short and accurate. Keep camera-at-t0 frame clear and no implication that input contains future frames. Do not add performance numbers.

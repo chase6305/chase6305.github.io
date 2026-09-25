@@ -1,0 +1,9 @@
+Use case: infographic-diagram
+Create a clean technical overview diagram for robotics signal processing. Landscape 3:2. Pure opaque white background, flat vector-like line art, thin rounded outlines, very pale pastel blue/purple/orange/green, dark gray arrows, generous whitespace, large legible sans-serif English labels. No photo, texture, glow, shadow, 3D-render materials, watermark or logo. Do not draw numerical plots.
+Title: "Where filtering belongs in a robot"
+Two clearly separate horizontal signal paths.
+TOP PATH heading "Measurements": simple sensor icon -> blue box "Validate time, units, frame" -> purple box "Denoise / reject outliers" -> green box "Estimate state" -> an orange box at far right "Controller". Use arrows connecting every box in that sequence. Under denoise short examples "Low-pass · Median · Notch"; under state estimate short examples "Kalman · Complementary".
+BOTTOM PATH heading "Targets": simple human joystick icon -> blue box "Target pose" -> purple box "Smooth reference" -> green box "Enforce motion limits" -> an upward arrow into THE SAME far-right Controller box from the top path. Under smooth reference examples "One Euro · Spring-damper"; under limits examples "Velocity · Acceleration · Jerk".
+The single Controller box has a right-pointing arrow to a small flat robot-arm silhouette at far right. Both paths enter Controller independently; do not connect state estimates into the target smoother or target smoother into the state estimator. Do not draw a feedback loop in this compact overview.
+Bottom note: "Less noise, more delay: choose for the task"
+Keep all examples and labels inside their own column, no crowded overlapping text. The Controller and robot can span both rows. Large arrows and well-separated lanes. Treat this as a functional diagram, not a performance claim.

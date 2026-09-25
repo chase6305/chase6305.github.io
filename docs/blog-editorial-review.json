@@ -1572,6 +1572,71 @@
         "**没有目标具身的折衣服数据，是否意味着训练从未出现折衣服？** 不是；这是需要明确任务与具身组合的泛化问题。",
         "**技术报告发布是否代表权重已开放？** 不是；应分别检查论文、官方代码、checkpoint 与数据。"
       ]
+    },
+    {
+      "id": 79,
+      "added_on": "2026-09-25",
+      "summary": "从输入坐标系、点轨迹表示、AR 与 Flow Matching、视频标注和两阶段训练，理解 MolmoMotion 的机器人迁移价值，并核对论文指标与开源复现边界。",
+      "prerequisites": "相机坐标系、Transformer 与监督学习的基本概念；不要求运行过机器人基础模型",
+      "focus": "先确定模型预测什么，再连接数据、目标函数、评估协议和下游控制；区分论文设计与公开代码。",
+      "related": [
+        78,
+        75,
+        3,
+        80
+      ],
+      "path": "content/posts/ai/molmo-motion/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/vla-evolution",
+        "/posts/ai/vla-world-model-data",
+        "/posts/ai/diffusion-models",
+        "/posts/robotics/control/robot-filters"
+      ],
+      "image_decision": "四张概念图解释运动接口、AR／FM 架构、视频标注与机器人主干迁移，一张数值图演示可见性与 FDE 端点口径；附坐标量化、解析覆盖和评估算例。",
+      "image": "assets/motion-contract.png",
+      "acceptance_checks": [
+        "**MolmoMotion 的主要输出是关节动作吗？** 不是，是固定参考系中的物体点三维轨迹；机器人执行还需要适配。",
+        "**共同锚点是每个点自己的起点吗？** 不是，所有点共享第一个查询点在参考时刻的位置。",
+        "**毫米量化是否意味着毫米级预测精度？** 不意味着；编码分辨率与模型误差是不同概念。",
+        "**10 次 Flow Matching 更新是否表示 10 个未来动作？** 不是，每次生成更新作用于整个未来轨迹张量。",
+        "**论文 best-of-5 与当前默认评估可直接比较吗？** 不可；采样、起点、有效点与聚合方式必须一致。",
+        "**训练日志里的 test loss 是否必然来自独立留出集？** 不是；当前默认 human 训练已合并原 train／test 条目，需要核对实际清单。",
+        "**机器人迁移成功率是否证明真实机械臂已经闭环验证？** 不证明；模拟闭环与 DROID 视频轨迹评估需要分开阅读。"
+      ]
+    },
+    {
+      "id": 80,
+      "added_on": "2026-09-25",
+      "summary": "系统比较机器人中的滑动平均、Butterworth、One Euro、弹簧阻尼、鲁棒滤波与状态估计，解释参数、延迟、位姿几何和工程接入，并提供可复现算例。",
+      "prerequisites": "离散采样、向量和基本反馈控制；位姿部分需要了解旋转矩阵或四元数",
+      "focus": "按噪声类型、延迟预算和信号几何选择方法，区分测量滤波、状态估计、参考平滑与运动约束。",
+      "related": [
+        48,
+        59,
+        37,
+        79
+      ],
+      "path": "content/posts/robotics/control/robot-filters/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/robotics/control/impedance-control",
+        "/posts/trajectory/ruckig",
+        "/posts/pid",
+        "/posts/ai/molmo-motion"
+      ],
+      "image_decision": "三张概念图区分测量／参考链路、One Euro 自适应机制与位姿处理，五张数值图对照频率响应、姿态边界、二阶动态、跟随和 126 组参数取舍；附五方法交互实验与可运行脚本。",
+      "image": "assets/filter-map.png",
+      "acceptance_checks": [
+        "**Butterworth 的通带平坦是否表示零延迟？** 不是，幅值与相位是不同性质。",
+        "**相同四点权重在任何采样率下都一样吗？** 不是，物理时间窗与延迟随更新率变化。",
+        "**One Euro 换成毫米输入还能直接沿用原来的 β 吗？** 不能，速度数值与参数单位必须同步换算。",
+        "**四元数逐分量平均后归一化是否总是正确？** 不是，符号等价、最短弧与旋转几何必须处理。",
+        "**质量–弹簧–阻尼目标平滑是否自动保证速度与 jerk 上限？** 不保证，硬约束需要单独设计。",
+        "**离线零相位曲线是否可以证明在线控制同样无延迟？** 不可以，两者可用的信息不同。",
+        "**曲线更平滑是否足以判断滤波器更好？** 不足，还要检查延迟、失真、异常行为和闭环任务表现。",
+        "**静止标准差小于 1 mm 是否等于位置误差小于 1 mm？** 不是；标准差描述波动，均值偏差与动态误差需要另外统计。"
+      ]
     }
   ]
 }

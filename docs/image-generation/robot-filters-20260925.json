@@ -1,0 +1,96 @@
+{
+  "date": "2026-09-25",
+  "tool": "built-in image_gen",
+  "style_reference": "content/posts/ai/transformer-attention/assets/",
+  "design": "Opaque white canvas; thin rounded outlines; pastel blue inputs, purple processing, orange transformation, green outputs. English labels with Chinese article explanations.",
+  "published_generation_commentary": false,
+  "article": "content/posts/robotics/control/robot-filters/index.md",
+  "figures": [
+    {
+      "file": "content/posts/robotics/control/robot-filters/assets/filter-map.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGB",
+      "bytes": 1269383,
+      "sha256": "cf96f0afcec4538bc6d9043f46cda6b10c8fb492b5495fea01ebec8ce0f3f92c",
+      "generated_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-8d4ed873-fbc2-4248-9c9c-50bcb9903aa4.png",
+      "prompt_files": [
+        "robot-filters-map-20260925-prompt.txt"
+      ],
+      "inspection": "Measurement estimation and target smoothing branches meet at controller; modules are optional roles, not mandatory cascade."
+    },
+    {
+      "file": "content/posts/robotics/control/robot-filters/assets/one-euro-adaptation.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGB",
+      "bytes": 1306092,
+      "sha256": "52673228e4fc2b9fb413824094704bd9e17c0f76685cab79805502520b0bae71",
+      "generated_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-97f6e759-be11-49d7-af4e-737c9cb532c3.png",
+      "prompt_files": [
+        "robot-filters-one-euro-20260925-prompt.txt"
+      ],
+      "inspection": "Current input and previous filtered state determine innovation rate. Smoothed rate adapts cutoff and alpha; original current measurement is filtered independently of derivative branch."
+    },
+    {
+      "file": "content/posts/robotics/control/robot-filters/assets/pose-filter-pipeline.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGB",
+      "bytes": 1405802,
+      "sha256": "591d46818455004e0cf0e19d73cd1a2cfa43a857b3a44a2c012a6ef4799ac1ce",
+      "generated_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-81cb7664-70dc-48eb-b25f-cf6ef8d1fc45.png",
+      "prompt_files": [
+        "robot-filters-pose-20260925-prompt.txt"
+      ],
+      "inspection": "Shared timestamp; translation uses independent scalar filters; rotation uses low-passed innovation angle rate to choose gain. Rotation vector bypass reaches SO(3) update alongside the gain. Quaternions are dimensionless; rad refers to angle and Log map, stated in caption."
+    }
+  ],
+  "quantitative_assets": {
+    "tool": "NumPy / SciPy where applicable / Matplotlib",
+    "script": "content/posts/robotics/control/robot-filters/robot_filters_lab.py",
+    "data": "Explicit synthetic values; no robot or MolmoMotion inference measurements",
+    "exports": [
+      {
+        "file": "content/posts/robotics/control/robot-filters/assets/iir-frequency-delay.png",
+        "width": 1700,
+        "height": 1275,
+        "mode": "RGBA",
+        "bytes": 198808,
+        "sha256": "953ce0553cef6080c11469244e7dc41d937bab805326216dc62cac76247f00ff"
+      },
+      {
+        "file": "content/posts/robotics/control/robot-filters/assets/rotation-wrap.png",
+        "width": 1700,
+        "height": 1190,
+        "mode": "RGBA",
+        "bytes": 127752,
+        "sha256": "d619ecc05006f2d597ffdd034af7652c9b1b89b27806c8312d7c0900be6f4d08"
+      },
+      {
+        "file": "content/posts/robotics/control/robot-filters/assets/spring-damper-response.png",
+        "width": 1870,
+        "height": 765,
+        "mode": "RGBA",
+        "bytes": 166131,
+        "sha256": "96cf5cec3cda8e6c4c17aa32aa9840ba8d3817b4cc4d9f98b78efa52f5527758"
+      },
+      {
+        "file": "content/posts/robotics/control/robot-filters/assets/tracking-tradeoff.png",
+        "width": 1870,
+        "height": 1530,
+        "mode": "RGBA",
+        "bytes": 432328,
+        "sha256": "f51af6340ae3b32a31ac212b091076c47f6772b757196323387018c9e675edbc"
+      },
+      {
+        "file": "content/posts/robotics/control/robot-filters/assets/parameter-tradeoff.png",
+        "width": 1700,
+        "height": 1020,
+        "mode": "RGBA",
+        "bytes": 179744,
+        "sha256": "9181b592a41b6971e92ff8a2d474f84186ce8d63c5cae046f19a981b63b9cae9"
+      }
+    ]
+  }
+}

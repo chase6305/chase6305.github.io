@@ -28,7 +28,8 @@
       "posts/robotics/dynamics/parameter-identification/index.md",
       "posts/robotics/control/impedance-control/index.md",
       "posts/planner/to_mpc_wbc/index.md",
-      "posts/thesis/elmp/index.md"
+      "posts/thesis/elmp/index.md",
+      "posts/robotics/control/robot-filters/index.md"
     ]
   },
   {
@@ -66,7 +67,8 @@
       "posts/ai/x-vla/index.md",
       "posts/ai/real-time-chunking/index.md",
       "posts/ai/light-loco-parkour/index.md",
-      "posts/ai/vla-world-model-data/index.md"
+      "posts/ai/vla-world-model-data/index.md",
+      "posts/ai/molmo-motion/index.md"
     ]
   },
   {

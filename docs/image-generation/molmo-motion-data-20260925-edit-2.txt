@@ -1,0 +1,5 @@
+Edit target: the current MolmoMotion data-pipeline diagram.
+Change only the final footer sentence at the bottom. Replace it with this exact text:
+"Offline labels can use the full video; inference uses history, query points and language."
+Preserve every box, arrow, color, illustration, other label, spacing, and the white background. The revised footer should fit on one line in clear, readable sans-serif text, centered below the pipeline.
+Reason: the previous shorthand "inference receives only history" can be read as omitting the known query points and language condition. The scientific distinction is access to future observations during offline label construction, not the removal of query or language inputs at inference.

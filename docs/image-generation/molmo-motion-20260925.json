@@ -1,0 +1,82 @@
+{
+  "date": "2026-09-25",
+  "tool": "built-in image_gen",
+  "style_reference": "content/posts/ai/transformer-attention/assets/",
+  "design": "Opaque white canvas; thin rounded outlines; pastel blue inputs, purple processing, orange transformation, green outputs. English labels with Chinese article explanations.",
+  "published_generation_commentary": false,
+  "article": "content/posts/ai/molmo-motion/index.md",
+  "figures": [
+    {
+      "file": "content/posts/ai/molmo-motion/assets/motion-contract.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGB",
+      "bytes": 1411406,
+      "sha256": "69519ae35c848887a4fa8afb76fbc4cc44e56f3caa76e64ded2286416cc6603d",
+      "generated_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-3be8da99-f335-448f-b70b-cf7d9ceeda34.png",
+      "prompt_files": [
+        "molmo-motion-contract-20260925-prompt.txt",
+        "molmo-motion-contract-20260925-edit.txt"
+      ],
+      "inspection": "Inputs are historical RGB, language and fixed-frame point history; output is object XYZ trajectories. Downstream planner/controller route is a possible use, distinct from paper backbone transfer."
+    },
+    {
+      "file": "content/posts/ai/molmo-motion/assets/ar-fm-architecture.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGB",
+      "bytes": 1640719,
+      "sha256": "33c2caccbdd29682ddcd1df1473f4575e9e10b7c6041715afc1b248d90e0fc59",
+      "generated_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-05a445ab-b42b-46bd-973e-803d515895d6.png",
+      "prompt_files": [
+        "molmo-motion-heads-20260925-prompt.txt",
+        "molmo-motion-heads-20260925-edit.txt",
+        "molmo-motion-heads-20260925-edit-2.txt"
+      ],
+      "inspection": "AR coordinate decoding and FM whole-trajectory updates. Corrected velocity-field/state/output arrows. Flow time is omitted visually and explained in text. Paper point-feature architecture separated from release config audit."
+    },
+    {
+      "file": "content/posts/ai/molmo-motion/assets/data-pipeline-v2.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGB",
+      "bytes": 1615112,
+      "sha256": "1a53c8fa5d16ffd9340239c87de1724638854f03e2a564647d8c3d95eab78980",
+      "generated_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-aca0f093-9cbc-4ffa-8995-0002a38633d5.png",
+      "prompt_files": [
+        "molmo-motion-data-20260925-prompt.txt",
+        "molmo-motion-data-20260925-edit.txt",
+        "molmo-motion-data-20260925-edit-2.txt"
+      ],
+      "inspection": "Separate 2D tracking and video geometry branches merge at lifting; low-trust rejection precedes depth-ray smoothing and motion clipping. Removed redundant connector. Full-video offline labels distinguished from causal inference inputs; footer explicitly includes known queries and language."
+    },
+    {
+      "file": "content/posts/ai/molmo-motion/assets/robot-policy-transfer.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGB",
+      "bytes": 1433435,
+      "sha256": "5ae7554f4cce10c0836a4736e1aeeca38a095fa718c88ac014789ad367e31c2f",
+      "generated_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-ae2a771b-9d26-4b6b-a61a-a7070ebc938f.png",
+      "prompt_files": [
+        "molmo-motion-transfer-20260925-prompt.txt"
+      ],
+      "inspection": "Backbone initialization and action training are separate from rollout. Original policy grasps, held trigger plus eight sim steps hands off; adapted policy predicts 16 eight-dimensional actions and executes eight. This is simulated post-grasp transfer."
+    }
+  ],
+  "quantitative_assets": {
+    "tool": "NumPy / SciPy where applicable / Matplotlib",
+    "script": "content/posts/ai/molmo-motion/trajectory_contract_lab.py",
+    "data": "Explicit synthetic values; no robot or MolmoMotion inference measurements",
+    "exports": [
+      {
+        "file": "content/posts/ai/molmo-motion/assets/metric-mask-example.png",
+        "width": 1870,
+        "height": 765,
+        "mode": "RGBA",
+        "bytes": 88709,
+        "sha256": "3f4f7c4bd60935e24fa84953c8a3a4ac579de506fa14580d6c98ba136bfcb21a"
+      }
+    ]
+  }
+}

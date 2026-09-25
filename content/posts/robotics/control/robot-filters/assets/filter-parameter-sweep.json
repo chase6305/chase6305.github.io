@@ -1,0 +1,1022 @@
+{
+  "experiment": "synthetic; grid exploration, not a universal ranking",
+  "static_window_s": [
+    0.8,
+    1.8
+  ],
+  "ramp_window_s": [
+    2.5,
+    3.5
+  ],
+  "intervals": "left closed, right open",
+  "rows": [
+    {
+      "family": "Weighted moving average",
+      "parameter": "window_samples",
+      "value": 1.0,
+      "stationary_std_mm": 6.220245850003313,
+      "stationary_bias_mm": 1.0373393869417629,
+      "ramp_equivalent_lag_ms": -1.5282331605520414
+    },
+    {
+      "family": "Weighted moving average",
+      "parameter": "window_samples",
+      "value": 2.0,
+      "stationary_std_mm": 4.7587727782422675,
+      "stationary_bias_mm": 1.0393911799763846,
+      "ramp_equivalent_lag_ms": 0.05021503375570724
+    },
+    {
+      "family": "Weighted moving average",
+      "parameter": "window_samples",
+      "value": 3.0,
+      "stationary_std_mm": 4.0735725534724905,
+      "stationary_bias_mm": 1.039030957274092,
+      "ramp_equivalent_lag_ms": 1.6954422770364326
+    },
+    {
+      "family": "Weighted moving average",
+      "parameter": "window_samples",
+      "value": 4.0,
+      "stationary_std_mm": 3.5688523400034615,
+      "stationary_bias_mm": 1.036928480660739,
+      "ramp_equivalent_lag_ms": 3.379441406513628
+    },
+    {
+      "family": "Weighted moving average",
+      "parameter": "window_samples",
+      "value": 6.0,
+      "stationary_std_mm": 2.8746551696605716,
+      "stationary_bias_mm": 1.0340802542897465,
+      "ramp_equivalent_lag_ms": 6.751779318516043
+    },
+    {
+      "family": "Weighted moving average",
+      "parameter": "window_samples",
+      "value": 8.0,
+      "stationary_std_mm": 2.343057206249825,
+      "stationary_bias_mm": 1.0350849455898274,
+      "ramp_equivalent_lag_ms": 10.116727146995306
+    },
+    {
+      "family": "Weighted moving average",
+      "parameter": "window_samples",
+      "value": 12.0,
+      "stationary_std_mm": 1.7257200648446112,
+      "stationary_bias_mm": 1.0448909477870045,
+      "ramp_equivalent_lag_ms": 16.829955688392463
+    },
+    {
+      "family": "Weighted moving average",
+      "parameter": "window_samples",
+      "value": 16.0,
+      "stationary_std_mm": 1.4494834019217782,
+      "stationary_bias_mm": 1.0576153876951127,
+      "ramp_equivalent_lag_ms": 23.542545115639168
+    },
+    {
+      "family": "Weighted moving average",
+      "parameter": "window_samples",
+      "value": 24.0,
+      "stationary_std_mm": 1.0853969926268265,
+      "stationary_bias_mm": 1.0720263568851889,
+      "ramp_equivalent_lag_ms": 36.99224624474112
+    },
+    {
+      "family": "Weighted moving average",
+      "parameter": "window_samples",
+      "value": 32.0,
+      "stationary_std_mm": 0.8847185226909441,
+      "stationary_bias_mm": 1.0782171618086802,
+      "ramp_equivalent_lag_ms": 50.42993646579129
+    },
+    {
+      "family": "Weighted moving average",
+      "parameter": "window_samples",
+      "value": 48.0,
+      "stationary_std_mm": 0.7141882176653734,
+      "stationary_bias_mm": 1.0638210677009012,
+      "ramp_equivalent_lag_ms": 77.26067377003228
+    },
+    {
+      "family": "Weighted moving average",
+      "parameter": "window_samples",
+      "value": 64.0,
+      "stationary_std_mm": 0.5982534500703456,
+      "stationary_bias_mm": 1.054395299233318,
+      "ramp_equivalent_lag_ms": 104.07011151331469
+    },
+    {
+      "family": "Weighted moving average",
+      "parameter": "window_samples",
+      "value": 96.0,
+      "stationary_std_mm": 0.4382012184802554,
+      "stationary_bias_mm": 1.0301305394611349,
+      "ramp_equivalent_lag_ms": 157.90907680694377
+    },
+    {
+      "family": "Weighted moving average",
+      "parameter": "window_samples",
+      "value": 128.0,
+      "stationary_std_mm": 0.3683343540908709,
+      "stationary_bias_mm": 0.9983300796134519,
+      "ramp_equivalent_lag_ms": 211.72277308818065
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 0.5,
+      "stationary_std_mm": 0.2649700471530612,
+      "stationary_bias_mm": 0.7495867362681924,
+      "ramp_equivalent_lag_ms": 464.70111494388595
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 0.5,
+      "stationary_std_mm": 0.3020660105062023,
+      "stationary_bias_mm": 0.9659507986369903,
+      "ramp_equivalent_lag_ms": 298.1816119563791
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 0.5,
+      "stationary_std_mm": 0.5811624204067793,
+      "stationary_bias_mm": 1.1227450925960285,
+      "ramp_equivalent_lag_ms": 25.92935909076408
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 0.5,
+      "stationary_std_mm": 0.12051887402689626,
+      "stationary_bias_mm": 0.9343132865562517,
+      "ramp_equivalent_lag_ms": 550.5348259896899
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 0.5731991788545353,
+      "stationary_std_mm": 0.3401527696314463,
+      "stationary_bias_mm": 0.7844343277643399,
+      "ramp_equivalent_lag_ms": 408.87335384787
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 0.5731991788545353,
+      "stationary_std_mm": 0.33672233476000013,
+      "stationary_bias_mm": 0.9725472990832204,
+      "ramp_equivalent_lag_ms": 265.25595000520764
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 0.5731991788545353,
+      "stationary_std_mm": 0.5983644280785804,
+      "stationary_bias_mm": 1.1207828519376084,
+      "ramp_equivalent_lag_ms": 25.73120804203951
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 0.5731991788545353,
+      "stationary_std_mm": 0.17561695446732847,
+      "stationary_bias_mm": 0.9041143913725819,
+      "ramp_equivalent_lag_ms": 500.5548150841523
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 0.657114597279027,
+      "stationary_std_mm": 0.39246725376779984,
+      "stationary_bias_mm": 0.838719609207319,
+      "ramp_equivalent_lag_ms": 356.79837579393916
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 0.657114597279027,
+      "stationary_std_mm": 0.3719676038903294,
+      "stationary_bias_mm": 0.9831033523905869,
+      "ramp_equivalent_lag_ms": 234.77905252536945
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 0.657114597279027,
+      "stationary_std_mm": 0.6179452113105748,
+      "stationary_bias_mm": 1.1190585680150154,
+      "ramp_equivalent_lag_ms": 25.506062646641713
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 0.657114597279027,
+      "stationary_std_mm": 0.2278039410807626,
+      "stationary_bias_mm": 0.8934304774055468,
+      "ramp_equivalent_lag_ms": 451.3857359540219
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 0.7533150951473337,
+      "stationary_std_mm": 0.4199591003509934,
+      "stationary_bias_mm": 0.898322594659324,
+      "ramp_equivalent_lag_ms": 309.65801960546537
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 0.7533150951473337,
+      "stationary_std_mm": 0.40867081270659605,
+      "stationary_bias_mm": 0.9956552623819719,
+      "ramp_equivalent_lag_ms": 206.9134025174033
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 0.7533150951473337,
+      "stationary_std_mm": 0.6407167683801993,
+      "stationary_bias_mm": 1.117224497954406,
+      "ramp_equivalent_lag_ms": 25.250594517720646
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 0.7533150951473337,
+      "stationary_std_mm": 0.27334495195743796,
+      "stationary_bias_mm": 0.8981652223915271,
+      "ramp_equivalent_lag_ms": 404.02338979772804
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 0.8635991879143556,
+      "stationary_std_mm": 0.4292934894335038,
+      "stationary_bias_mm": 0.9518857233425618,
+      "ramp_equivalent_lag_ms": 267.99182147859466
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 0.8635991879143556,
+      "stationary_std_mm": 0.44785578175625357,
+      "stationary_bias_mm": 1.0086033086333699,
+      "ramp_equivalent_lag_ms": 181.71284566792053
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 0.8635991879143556,
+      "stationary_std_mm": 0.6670874076948127,
+      "stationary_bias_mm": 1.1156372072334697,
+      "ramp_equivalent_lag_ms": 24.96117626447699
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 0.8635991879143556,
+      "stationary_std_mm": 0.31104267152613413,
+      "stationary_bias_mm": 0.9134881845561771,
+      "ramp_equivalent_lag_ms": 359.2893786053926
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 0.9900286907439042,
+      "stationary_std_mm": 0.43246855944175466,
+      "stationary_bias_mm": 0.9931208711060915,
+      "ramp_equivalent_lag_ms": 231.74990508220853
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 0.9900286907439042,
+      "stationary_std_mm": 0.4904865995020661,
+      "stationary_bias_mm": 1.020807843742741,
+      "ramp_equivalent_lag_ms": 159.1361360736242
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 0.9900286907439042,
+      "stationary_std_mm": 0.696559258713659,
+      "stationary_bias_mm": 1.1141838861788114,
+      "ramp_equivalent_lag_ms": 24.633894138052426
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 0.9900286907439042,
+      "stationary_std_mm": 0.3417257582716371,
+      "stationary_bias_mm": 0.9346948124663335,
+      "ramp_equivalent_lag_ms": 317.7809393957945
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 1.134967265153673,
+      "stationary_std_mm": 0.44149625466936293,
+      "stationary_bias_mm": 1.0208626682458732,
+      "ramp_equivalent_lag_ms": 200.5012926827228
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 1.134967265153673,
+      "stationary_std_mm": 0.537326953153007,
+      "stationary_bias_mm": 1.031587818503728,
+      "ramp_equivalent_lag_ms": 139.06700872166005
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 1.134967265153673,
+      "stationary_std_mm": 0.7301236580590407,
+      "stationary_bias_mm": 1.112811259388607,
+      "ramp_equivalent_lag_ms": 24.26457750080063
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 1.134967265153673,
+      "stationary_std_mm": 0.36764078847264114,
+      "stationary_bias_mm": 0.9578902307036413,
+      "ramp_equivalent_lag_ms": 279.85681168988503
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 1.3011246088257262,
+      "stationary_std_mm": 0.46360614271330625,
+      "stationary_bias_mm": 1.0376637115788514,
+      "ramp_equivalent_lag_ms": 173.6617587153958
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 1.3011246088257262,
+      "stationary_std_mm": 0.588902747575445,
+      "stationary_bias_mm": 1.0406438140503929,
+      "ramp_equivalent_lag_ms": 121.33673788352242
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 1.3011246088257262,
+      "stationary_std_mm": 0.7685865602367188,
+      "stationary_bias_mm": 1.1105380626655297,
+      "ramp_equivalent_lag_ms": 23.848851940979152
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 1.3011246088257262,
+      "stationary_std_mm": 0.39162552392540123,
+      "stationary_bias_mm": 0.9803558247760275,
+      "ramp_equivalent_lag_ms": 245.655341022691
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 1.4916071147326693,
+      "stationary_std_mm": 0.49936027953380346,
+      "stationary_bias_mm": 1.047847175548413,
+      "ramp_equivalent_lag_ms": 150.63302429410862
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 1.4916071147326693,
+      "stationary_std_mm": 0.6455503432092229,
+      "stationary_bias_mm": 1.0479421728986242,
+      "ramp_equivalent_lag_ms": 105.74565061956949
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 1.4916071147326693,
+      "stationary_std_mm": 0.8119382701919404,
+      "stationary_bias_mm": 1.1078093055871365,
+      "ramp_equivalent_lag_ms": 23.382219556776096
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 1.4916071147326693,
+      "stationary_std_mm": 0.4162899568386923,
+      "stationary_bias_mm": 1.0005758416928623,
+      "ramp_equivalent_lag_ms": 215.13406603105537
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 1.709975946676697,
+      "stationary_std_mm": 0.5442214193034576,
+      "stationary_bias_mm": 1.0554109858036458,
+      "ramp_equivalent_lag_ms": 130.8516528333268
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 1.709975946676697,
+      "stationary_std_mm": 0.7075082954792337,
+      "stationary_bias_mm": 1.0535973732697015,
+      "ramp_equivalent_lag_ms": 92.08127186421933
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 1.709975946676697,
+      "stationary_std_mm": 0.8608869675414992,
+      "stationary_bias_mm": 1.1045122765248176,
+      "ramp_equivalent_lag_ms": 22.86018100654104
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 1.709975946676697,
+      "stationary_std_mm": 0.44348194161677207,
+      "stationary_bias_mm": 1.0180055657474196,
+      "ramp_equivalent_lag_ms": 188.11825927035653
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 1.9603136169921784,
+      "stationary_std_mm": 0.591970836664548,
+      "stationary_bias_mm": 1.0625517036137861,
+      "ramp_equivalent_lag_ms": 113.80663359583393
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 1.9603136169921784,
+      "stationary_std_mm": 0.7750120133955974,
+      "stationary_bias_mm": 1.0577792118892446,
+      "ramp_equivalent_lag_ms": 80.13208905258433
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 1.9603136169921784,
+      "stationary_std_mm": 0.9154618667619161,
+      "stationary_bias_mm": 1.1009287458951564,
+      "ramp_equivalent_lag_ms": 22.278406135127845
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 1.9603136169921784,
+      "stationary_std_mm": 0.47419534034613964,
+      "stationary_bias_mm": 1.0327179167150167,
+      "ramp_equivalent_lag_ms": 164.34839451395365
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 2.2473003111145617,
+      "stationary_std_mm": 0.6379782744766027,
+      "stationary_bias_mm": 1.0697138304842642,
+      "ramp_equivalent_lag_ms": 99.05675703068691
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 2.2473003111145617,
+      "stationary_std_mm": 0.8483640732264454,
+      "stationary_bias_mm": 1.0606559489006977,
+      "ramp_equivalent_lag_ms": 69.69692971107747
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 2.2473003111145617,
+      "stationary_std_mm": 0.975615369237645,
+      "stationary_bias_mm": 1.0975306532611662,
+      "ramp_equivalent_lag_ms": 21.632959283972834
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 2.2473003111145617,
+      "stationary_std_mm": 0.508871344198467,
+      "stationary_bias_mm": 1.0450602360801136,
+      "ramp_equivalent_lag_ms": 143.52062801753647
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 2.5763013859408166,
+      "stationary_std_mm": 0.6811768205896672,
+      "stationary_bias_mm": 1.0766691452269657,
+      "ramp_equivalent_lag_ms": 86.23923627665134
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 2.5763013859408166,
+      "stationary_std_mm": 0.927966129229412,
+      "stationary_bias_mm": 1.062371054425521,
+      "ramp_equivalent_lag_ms": 60.59053212082318
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 2.5763013859408166,
+      "stationary_std_mm": 1.0427026126571837,
+      "stationary_bias_mm": 1.09403362024318,
+      "ramp_equivalent_lag_ms": 20.92058519231086
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 2.5763013859408166,
+      "stationary_std_mm": 0.54787981799563,
+      "stationary_bias_mm": 1.0554022844866138,
+      "ramp_equivalent_lag_ms": 125.31792427334479
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 2.953467677806154,
+      "stationary_std_mm": 0.7245192314934813,
+      "stationary_bias_mm": 1.0832100742677992,
+      "ramp_equivalent_lag_ms": 75.06335778921249
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 2.953467677806154,
+      "stationary_std_mm": 1.0143094192563353,
+      "stationary_bias_mm": 1.0630437487417417,
+      "ramp_equivalent_lag_ms": 52.64613736110164
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 2.953467677806154,
+      "stationary_std_mm": 1.1175103080053512,
+      "stationary_bias_mm": 1.0898741393861249,
+      "ramp_equivalent_lag_ms": 20.13906651782124
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 2.953467677806154,
+      "stationary_std_mm": 0.5919340251483923,
+      "stationary_bias_mm": 1.0639951690566603,
+      "ramp_equivalent_lag_ms": 109.43171769751031
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 3.3858504953837976,
+      "stationary_std_mm": 0.7741878934044814,
+      "stationary_bias_mm": 1.0889400481885356,
+      "ramp_equivalent_lag_ms": 65.29698959452278
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 3.3858504953837976,
+      "stationary_std_mm": 1.1079315946504065,
+      "stationary_bias_mm": 1.0627822009202976,
+      "ramp_equivalent_lag_ms": 45.71596371455614
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 3.3858504953837976,
+      "stationary_std_mm": 1.2004038752079067,
+      "stationary_bias_mm": 1.0850171719395127,
+      "ramp_equivalent_lag_ms": 19.287634342683116
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 3.3858504953837976,
+      "stationary_std_mm": 0.6422644898827908,
+      "stationary_bias_mm": 1.070922927936534,
+      "ramp_equivalent_lag_ms": 95.57522929175646
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 3.881533447356429,
+      "stationary_std_mm": 0.8374283032343015,
+      "stationary_bias_mm": 1.0928699901680636,
+      "ramp_equivalent_lag_ms": 56.75345817886019
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 3.881533447356429,
+      "stationary_std_mm": 1.2093565826062052,
+      "stationary_bias_mm": 1.0617001901591305,
+      "ramp_equivalent_lag_ms": 39.67033432806971
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 3.881533447356429,
+      "stationary_std_mm": 1.2919847800259991,
+      "stationary_bias_mm": 1.0798876270794011,
+      "ramp_equivalent_lag_ms": 18.367423847287117
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 3.881533447356429,
+      "stationary_std_mm": 0.7004964891507905,
+      "stationary_bias_mm": 1.0761218598528859,
+      "ramp_equivalent_lag_ms": 83.4901385053931
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 4.449783569442236,
+      "stationary_std_mm": 0.9192990613232802,
+      "stationary_bias_mm": 1.0936752908049232,
+      "ramp_equivalent_lag_ms": 49.28007865956461
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 4.449783569442236,
+      "stationary_std_mm": 1.3190367908671456,
+      "stationary_bias_mm": 1.0599304771447395,
+      "ramp_equivalent_lag_ms": 34.39607693003029
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 4.449783569442236,
+      "stationary_std_mm": 1.3925365082643535,
+      "stationary_bias_mm": 1.0748103698889362,
+      "ramp_equivalent_lag_ms": 17.381921133119157
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 4.449783569442236,
+      "stationary_std_mm": 0.768311472325771,
+      "stationary_bias_mm": 1.079448741257709,
+      "ramp_equivalent_lag_ms": 72.9484681528824
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 5.101224576169386,
+      "stationary_std_mm": 1.0207166313184253,
+      "stationary_bias_mm": 1.0905241438053008,
+      "ramp_equivalent_lag_ms": 42.747650825673595
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 5.101224576169386,
+      "stationary_std_mm": 1.4373108080221417,
+      "stationary_bias_mm": 1.0576303430368694,
+      "ramp_equivalent_lag_ms": 29.794643156284707
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 5.101224576169386,
+      "stationary_std_mm": 1.5022767188741377,
+      "stationary_bias_mm": 1.0689890690941377,
+      "ramp_equivalent_lag_ms": 16.337348520902513
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 5.101224576169386,
+      "stationary_std_mm": 0.8470843911402965,
+      "stationary_bias_mm": 1.0807772394208761,
+      "ramp_equivalent_lag_ms": 63.75140867384205
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 5.848035476425731,
+      "stationary_std_mm": 1.139335907029945,
+      "stationary_bias_mm": 1.0836820007877443,
+      "ramp_equivalent_lag_ms": 37.04261188784337
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 5.848035476425731,
+      "stationary_std_mm": 1.5643783003539202,
+      "stationary_bias_mm": 1.0549773811781895,
+      "ramp_equivalent_lag_ms": 25.780234644058492
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 5.848035476425731,
+      "stationary_std_mm": 1.621868768897322,
+      "stationary_bias_mm": 1.0636044741152586,
+      "ramp_equivalent_lag_ms": 15.242899906074186
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 5.848035476425731,
+      "stationary_std_mm": 0.9377001859136245,
+      "stationary_bias_mm": 1.080091409342792,
+      "ramp_equivalent_lag_ms": 55.72650547855564
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 6.704178265998841,
+      "stationary_std_mm": 1.2718699559434146,
+      "stationary_bias_mm": 1.0744565064462048,
+      "ramp_equivalent_lag_ms": 32.06334265619941
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 6.704178265998841,
+      "stationary_std_mm": 1.7002841109807123,
+      "stationary_bias_mm": 1.0521568699825012,
+      "ramp_equivalent_lag_ms": 22.278091408762027
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 6.704178265998841,
+      "stationary_std_mm": 1.751161394726828,
+      "stationary_bias_mm": 1.0589176068638768,
+      "ramp_equivalent_lag_ms": 14.110718265028758
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 6.704178265998841,
+      "stationary_std_mm": 1.0406356860028572,
+      "stationary_bias_mm": 1.0775417113638623,
+      "ramp_equivalent_lag_ms": 48.72425419497941
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 7.685658953929914,
+      "stationary_std_mm": 1.4166641194628258,
+      "stationary_bias_mm": 1.0645703317277748,
+      "ramp_equivalent_lag_ms": 27.718921737331858
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 7.685658953929914,
+      "stationary_std_mm": 1.8449009635645113,
+      "stationary_bias_mm": 1.049344887811578,
+      "ramp_equivalent_lag_ms": 19.22300284206069
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 7.685658953929914,
+      "stationary_std_mm": 1.8899770786822858,
+      "stationary_bias_mm": 1.0545097348041477,
+      "ramp_equivalent_lag_ms": 12.955531898290957
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 7.685658953929914,
+      "stationary_std_mm": 1.1562280702793335,
+      "stationary_bias_mm": 1.0734439641214613,
+      "ramp_equivalent_lag_ms": 42.61476346978826
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 8.810826802697267,
+      "stationary_std_mm": 1.5755633938344507,
+      "stationary_bias_mm": 1.0552924910724275,
+      "ramp_equivalent_lag_ms": 23.928281458980802
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 8.810826802697267,
+      "stationary_std_mm": 1.9979050931379971,
+      "stationary_bias_mm": 1.0466923727883084,
+      "ramp_equivalent_lag_ms": 16.558042721073633
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 8.810826802697267,
+      "stationary_std_mm": 2.0380444563373112,
+      "stationary_bias_mm": 1.0506657941122641,
+      "ramp_equivalent_lag_ms": 11.793936806003817
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 8.810826802697267,
+      "stationary_std_mm": 1.2849495522487098,
+      "stationary_bias_mm": 1.0682291839940112,
+      "ramp_equivalent_lag_ms": 37.28481479748642
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 10.10071737667121,
+      "stationary_std_mm": 1.7533220123785203,
+      "stationary_bias_mm": 1.0470358643265707,
+      "ramp_equivalent_lag_ms": 20.619386579491653
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 10.10071737667121,
+      "stationary_std_mm": 2.1587478504859017,
+      "stationary_bias_mm": 1.044314148634253,
+      "ramp_equivalent_lag_ms": 14.233500590900965
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 10.10071737667121,
+      "stationary_std_mm": 2.1945561897300143,
+      "stationary_bias_mm": 1.0474122523616838,
+      "ramp_equivalent_lag_ms": 10.643347991285163
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 10.10071737667121,
+      "stationary_std_mm": 1.4275147800441785,
+      "stationary_bias_mm": 1.0623739357842008,
+      "ramp_equivalent_lag_ms": 32.6354179588897
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 11.579445812299342,
+      "stationary_std_mm": 1.9551118445719473,
+      "stationary_bias_mm": 1.0398022878282938,
+      "ramp_equivalent_lag_ms": 17.72827660878989
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 11.579445812299342,
+      "stationary_std_mm": 2.326633808340112,
+      "stationary_bias_mm": 1.042284439599018,
+      "ramp_equivalent_lag_ms": 12.205973220576201
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 11.579445812299342,
+      "stationary_std_mm": 2.358576779484137,
+      "stationary_bias_mm": 1.0446837339855748,
+      "ramp_equivalent_lag_ms": 9.520755549212241
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 11.579445812299342,
+      "stationary_std_mm": 1.5847350069656805,
+      "stationary_bias_mm": 1.056341682771813,
+      "ramp_equivalent_lag_ms": 28.579835807667052
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 13.274657662401143,
+      "stationary_std_mm": 2.1845962890058783,
+      "stationary_bias_mm": 1.033812387119249,
+      "ramp_equivalent_lag_ms": 15.198054586891248
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 13.274657662401143,
+      "stationary_std_mm": 2.5005184065932617,
+      "stationary_bias_mm": 1.0406380976802752,
+      "ramp_equivalent_lag_ms": 10.437582240527743
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 13.274657662401143,
+      "stationary_std_mm": 2.528873797983757,
+      "stationary_bias_mm": 1.0426211539903207,
+      "ramp_equivalent_lag_ms": 8.441521086081435
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 13.274657662401143,
+      "stationary_std_mm": 1.7571483085213846,
+      "stationary_bias_mm": 1.0505475803820217,
+      "ramp_equivalent_lag_ms": 25.042004304429874
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 15.218045743326801,
+      "stationary_std_mm": 2.4423223028428245,
+      "stationary_bias_mm": 1.0296041965491207,
+      "ramp_equivalent_lag_ms": 12.978751677645356
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 15.218045743326801,
+      "stationary_std_mm": 2.6791346967342284,
+      "stationary_bias_mm": 1.0393756752669214,
+      "ramp_equivalent_lag_ms": 8.895290896524934
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 15.218045743326801,
+      "stationary_std_mm": 2.704174938639383,
+      "stationary_bias_mm": 1.0411124773523486,
+      "ramp_equivalent_lag_ms": 7.418399422861954
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 15.218045743326801,
+      "stationary_std_mm": 1.9445568687593167,
+      "stationary_bias_mm": 1.045339318935912,
+      "ramp_equivalent_lag_ms": 21.955262649735566
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 17.44594264769135,
+      "stationary_std_mm": 2.7225789973914307,
+      "stationary_bias_mm": 1.0276480465621045,
+      "ramp_equivalent_lag_ms": 11.027799711673909
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 17.44594264769135,
+      "stationary_std_mm": 2.8610509097463344,
+      "stationary_bias_mm": 1.0384705689410083,
+      "ramp_equivalent_lag_ms": 7.550300447568749
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 17.44594264769135,
+      "stationary_std_mm": 2.883035279123205,
+      "stationary_bias_mm": 1.0399680641179314,
+      "ramp_equivalent_lag_ms": 6.460938299254508
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 17.44594264769135,
+      "stationary_std_mm": 2.1456684264503165,
+      "stationary_bias_mm": 1.040980970580848,
+      "ramp_equivalent_lag_ms": 19.261308871916782
+    },
+    {
+      "family": "Butterworth 2nd",
+      "parameter": "cutoff_hz",
+      "value": 20.0,
+      "stationary_std_mm": 3.0111555559738266,
+      "stationary_bias_mm": 1.0279016184219372,
+      "ramp_equivalent_lag_ms": 9.309115501862706
+    },
+    {
+      "family": "One Euro beta=0",
+      "parameter": "minimum_cutoff_hz",
+      "value": 20.0,
+      "stationary_std_mm": 3.044751480629078,
+      "stationary_bias_mm": 1.0378770302912446,
+      "ramp_equivalent_lag_ms": 6.377513452505975
+    },
+    {
+      "family": "One Euro beta=4",
+      "parameter": "minimum_cutoff_hz",
+      "value": 20.0,
+      "stationary_std_mm": 3.0639010472435113,
+      "stationary_bias_mm": 1.0391788999353737,
+      "ramp_equivalent_lag_ms": 5.575304215127394
+    },
+    {
+      "family": "Critical MSD",
+      "parameter": "natural_hz",
+      "value": 20.0,
+      "stationary_std_mm": 2.358042475091748,
+      "stationary_bias_mm": 1.0376359017121055,
+      "ramp_equivalent_lag_ms": 16.909306749111316
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+Use case: infographic-diagram
+Create a precise, elegant technical flow diagram for the One Euro filter. Landscape 3:2, pure opaque white background, flat vector-like line art, thin rounded outlines, pale blue/purple/orange/green fills, dark-gray arrows, large readable English sans-serif type, ample spacing. No photo, glow, decorative border, 3D render, numerical performance plot or watermark.
+Title: "One Euro: adapt smoothing to motion"
+Use two clean horizontal lanes with enough whitespace between them.
+UPPER lane, heading "Choose the bandwidth": left light-blue input "Current x + previous filtered x + dt" -> purple box "Estimate change rate" -> purple box "Low-pass the change rate" -> orange box "Speed magnitude" -> orange box "cutoff = min_cutoff + beta × speed". Every arrow goes left to right. If necessary wrap the final formula onto two legible lines.
+LOWER lane, heading "Filter the signal": light-blue box "Current sample x" -> a large purple box "Signal low-pass" -> green box "Filtered output". Add a small blue box "dt" below the top cutoff box, and a purple box "Compute alpha" between the upper and lower lanes. The cutoff box and dt box both feed Compute alpha; Compute alpha feeds ONLY the Signal low-pass via a downward control arrow labeled "Adaptive gain". The current sample reaches Signal low-pass directly, not through the speed estimation chain.
+Under the two lanes, two side-by-side callouts (no graphs):
+"Slow motion → lower cutoff → less jitter" and "Fast motion → higher cutoff → less lag".
+Footer: "State and timestamps are part of the filter"
+Keep the upper lane and lower lane clearly distinct. The upper lane already explicitly receives the previous filtered sample as stored input, so do not add an instantaneous feedback loop. Do not put future measurements anywhere. No tensor shapes or unrelated robot control boxes.

@@ -1,0 +1,21 @@
+Use case: infographic-diagram
+Asset type: technical diagram for a Chinese robotics article explaining One Euro pose filtering.
+Primary request: Show one explicitly specified implementation, with separate translation and rotation paths and a shared measurement timestamp. This diagram must make units and rotation geometry obvious without being crowded.
+Style: opaque white background, very thin navy rounded outlines, generous whitespace, large readable sans-serif text, restrained pastel blue inputs, purple processing, orange adaptation, green outputs. Match the understated technical diagrams in the blog's transformer-attention article. Landscape 1536 by 1024. No watermark, no logo, no decorative charts.
+Composition: title on top, then two horizontal processing lanes, then a small common-time footer. Keep ALL arrows directional left-to-right except two clearly labelled gain-to-update connectors. Do not overlap arrows with labels. Avoid showing a robot controller or motor output.
+Title exact: "One pose, two geometric update rules"
+Top lane, labeled "Translation (m)":
+1. Blue input box "Position p[k]" and "Measurement time t[k]" with a tiny XYZ triad.
+2. Purple box "Three scalar One Euro filters". Inside short supporting line "Innovation -> filtered rate -> cutoff". Second supporting line "Independent x, y, z gains".
+3. Green output box "Filtered position" with symbol "p_hat[k]".
+Bottom lane, labeled "Rotation (rad)":
+1. Blue input box "Unit quaternion q[k]" and "xyzw order" with a small oriented cube.
+2. Purple box "Relative rotation" with short supporting lines "From previous filtered orientation" and "SO(3) Log: shortest rotation".
+3. Orange box "Adaptive gain" with exact short lines "angle / dt -> low-pass speed" and "cutoff -> alpha". This branch determines one scalar gain for the rotation update, not independent gains on quaternion components.
+4. Green output box "SO(3) update" with two exact supporting lines "Scale rotation vector by alpha" and "Exp, then compose". Below it "Filtered orientation q_hat[k]".
+The rotation arrows must communicate measurement -> relative rotation -> adaptive gain -> SO(3) update. In addition a thin labeled connector "rotation vector" directly from Relative rotation to SO(3) update must visibly bypass the Adaptive gain box, routed beneath the boxes without overlapping the footer. This is required because the update needs the innovation vector as well as alpha.
+Footer a light gray rounded panel with exactly three short lines:
+"One shared dt = t[k] - t[k-1]"
+"Separate translation and rotation parameters"
+"Validate timestamps and reset after tracking discontinuities"
+Scientific invariants: Translation uses three independent scalar filters. Rotation adapts its scalar cutoff using a low-passed nonnegative angular-speed magnitude computed from the previous filtered orientation. Its geometric update is on SO(3), not quaternion component averaging. No six-dimensional norm combining metres and radians. No claimed robot experiment or performance numbers. Keep labels brief and text exact.

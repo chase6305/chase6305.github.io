@@ -1,0 +1,56 @@
+{{- $id := printf "robot-filter-lab-%d" .Ordinal -}}
+{{- $css := resources.Get "css/robot-filter-lab.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/robot-filter-lab.js" | minify | fingerprint -}}
+{{- $signal := .Page.Resources.Get "assets/filter-signal.json" -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section class="robot-filter-lab" data-robot-filter-lab data-signal="{{ $signal.RelPermalink }}" aria-label="机器人滤波参数实验">
+  <p class="robot-filter-lab__title"><strong>动手调：抖动与跟随</strong></p>
+  <p>同一段 200 Hz 合成位置记录，改变算法与参数，观察静止片段和运动开始。位置单位为米，图上换算为毫米。</p>
+  <noscript><p>交互实验需要 JavaScript；下方曲线和 Python 脚本提供完整的静态结果。</p></noscript>
+  <p data-filter-status role="status" hidden>正在读取实验信号…</p>
+  <div data-filter-interactive hidden>
+    <form class="robot-filter-lab__form">
+      <label for="{{ $id }}-method">方法
+        <select id="{{ $id }}-method" name="method">
+          <option value="oneEuro">One Euro</option>
+          <option value="butterworth">二阶 Butterworth</option>
+          <option value="wma">加权滑动平均</option>
+          <option value="ema">一阶低通（后向 Euler）</option>
+          <option value="msd">质量–弹簧–阻尼</option>
+        </select>
+      </label>
+      <label for="{{ $id }}-noise">噪声倍率 <output data-control="noise">1.0</output>
+        <input id="{{ $id }}-noise" name="noise" type="range" min="0" max="2" step="0.1" value="1">
+      </label>
+      <label for="{{ $id }}-frequency" data-parameter="frequency"><span data-frequency-label>最低截止频率（Hz）</span> <output data-control="frequency">1.0</output>
+        <input id="{{ $id }}-frequency" name="frequency" type="range" min="0.2" max="20" step="0.1" value="1">
+      </label>
+      <label for="{{ $id }}-beta" data-parameter="beta">β（Hz / (m/s)） <output data-control="beta">4.0</output>
+        <input id="{{ $id }}-beta" name="beta" type="range" min="0" max="20" step="0.1" value="4">
+      </label>
+      <label for="{{ $id }}-window" data-parameter="window" hidden>窗口点数 <output data-control="window">4</output>
+        <input id="{{ $id }}-window" name="window" type="range" min="1" max="31" step="1" value="4">
+      </label>
+      <label for="{{ $id }}-damping" data-parameter="damping" hidden>阻尼比 ζ <output data-control="damping">1.00</output>
+        <input id="{{ $id }}-damping" name="damping" type="range" min="0.3" max="2" step="0.05" value="1">
+      </label>
+    </form>
+    <div class="robot-filter-lab__views" aria-label="观察区间">
+      <button type="button" data-view="all" aria-pressed="true">全程</button>
+      <button type="button" data-view="still" aria-pressed="false">静止片段</button>
+      <button type="button" data-view="onset" aria-pressed="false">开始运动</button>
+      <button type="button" data-filter-reset>恢复示例参数</button>
+    </div>
+    <canvas class="robot-filter-lab__chart" role="img" aria-label="合成位置与滤波输出随时间变化；下方提供数值指标"></canvas>
+    <p class="robot-filter-lab__legend"><span>灰线：测量</span><span>虚线：真值</span><span>蓝线：输出</span></p>
+    <div class="robot-filter-lab__metrics" aria-live="polite" aria-atomic="true">
+      <div>静止标准差<output data-metric="jitter">—</output></div>
+      <div>匀速等效滞后<output data-metric="lag">—</output></div>
+      <div>全程位置 RMSE<output data-metric="rmse">—</output></div>
+    </div>
+    <p class="robot-filter-lab__note" data-filter-note></p>
+    <p class="robot-filter-lab__error" role="alert" data-filter-error hidden></p>
+  </div>
+  <p class="robot-filter-lab__limits">使用同一固定信号，参数未统一到相同带宽。等效滞后只统计指定匀速段，不能当作全频率固定延迟；这些结果不代表真实机器人闭环表现。</p>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
