@@ -1,0 +1,83 @@
+{
+  "date": "2026-09-26",
+  "tool": "built-in image_gen",
+  "intent": "generate",
+  "prompt_files": [
+    "robot-avatar-simple-20260926-prompt.txt"
+  ],
+  "generated_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-ca6097cf-3da1-4acc-9c31-4ea4aeb484df.png",
+  "exports": [
+    {
+      "file": "content/robot-avatar-simple.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 10658,
+      "sha256": "0dc73916564c8caec482d873bb50b43ec8a6ee1f61a7a6bcad6a90e41c5d512c",
+      "hugo_transform": "512x512 webp q90"
+    },
+    {
+      "file": "content/robot-avatar-simple-64.webp",
+      "width": 64,
+      "height": 64,
+      "bytes": 1524,
+      "sha256": "b51399fec0fdaef5dcdd0419cd4a676b05fd401436b71134cd52bc659e06fbb6",
+      "hugo_transform": "64x64 webp q95"
+    }
+  ],
+  "design": "Simple blue and white robot head with circular eyes, a small smile and an antenna on a pale blue background. No body or mechanical detail.",
+  "preserved_original": {
+    "file": "content/cjt.jpg",
+    "sha256": "2e7f7d1c466d7aa5da7f1024e92a47d4df6c73a366ca365046c74b342127bf9c"
+  },
+  "previous_robot_files_preserved": [
+    "content/robot-avatar.webp",
+    "content/robot-avatar-64.webp"
+  ],
+  "integration": {
+    "navbar": "config.yaml: params.navbar.logo.path",
+    "home_pages": [
+      "content/_index.md",
+      "content/_index.zh-cn.md"
+    ],
+    "portrait_layout": "square on desktop; circular on mobile",
+    "mobile_status": "Positioned below the face so eyes and smile remain visible."
+  },
+  "validation": {
+    "hugo": "0.165.0 production build passed",
+    "blog_validator": {
+      "reviewed_posts": 81,
+      "acceptance_checks": 230,
+      "html_pages": 268,
+      "errors": []
+    },
+    "browser": {
+      "page_variants": 24,
+      "widths": [
+        320,
+        390,
+        1440
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "routes": [
+        "/",
+        "/zh-cn/",
+        "/posts/",
+        "/posts/ai/transformer-attention/"
+      ],
+      "checks": [
+        "navigation avatar loads at 32px",
+        "homepage avatar loads at 512px source resolution",
+        "desktop square and mobile circular crop",
+        "localized alt text",
+        "no horizontal overflow",
+        "old photo no longer referenced"
+      ],
+      "visual_review": "Desktop English light and mobile Chinese dark screenshots inspected; face and antenna remain visible, and the mobile status label sits below the smile."
+    },
+    "private_article_excluded": true,
+    "original_avatar_unchanged": true
+  }
+}

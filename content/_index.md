@@ -17,7 +17,7 @@ layout: hextra-home
     </div>
   </div>
   <div class="chase-portrait">
-    <img src="/cjt.jpg" alt="Portrait of Chase">
+    <img src="/robot-avatar-simple.webp" alt="Chase's blue and white robot avatar" width="512" height="512" decoding="async">
     <span class="chase-portrait__status">Open to collaboration</span>
   </div>
 </section>

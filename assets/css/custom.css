@@ -938,7 +938,7 @@ article main#content > .content {
 .chase-portrait img {
   display: block;
   width: 16rem;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1;
   border: 1px solid var(--chase-border);
   border-radius: 1.4rem;
   box-shadow: 0 24px 55px rgb(15 23 42 / 18%);
@@ -1226,6 +1226,10 @@ article main#content > .content {
 
   .chase-portrait::before {
     border-radius: 50%;
+  }
+
+  .chase-portrait__status {
+    bottom: -0.5rem;
   }
 
   .chase-about,
