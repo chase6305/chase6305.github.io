@@ -17,7 +17,7 @@ layout: hextra-home
     </div>
   </div>
   <div class="chase-portrait">
-    <img src="/robot-avatar-simple.webp" alt="Chase 的蓝白机器人头像" width="512" height="512" decoding="async">
+    <img src="/orca-avatar.webp" alt="Chase 的虎鲸头像" width="512" height="512" decoding="async">
     <span class="chase-portrait__status">期待开源合作</span>
   </div>
 </section>

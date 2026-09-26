@@ -79,7 +79,7 @@ params:
     displayTitle: true
     displayLogo: true
     logo:
-      path: robot-avatar-simple-64.webp
+      path: orca-avatar-64.webp
       width: 32
       height: 32
       link: /
