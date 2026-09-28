@@ -1,0 +1,13 @@
+{
+  "date": "2026-09-28",
+  "method": "built-in image_gen",
+  "prompt": "docs/image-generation/tcp-framing-20260928-prompt.txt",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-83074b17-bdd0-4737-8e0a-5997cc5678df.png",
+  "asset": "content/posts/network-protocol/c++_tcp/assets/tcp-framing.webp",
+  "dimensions": [
+    1536,
+    1024
+  ],
+  "sha256": "ab337dd0582e4cca8225a56e8231680d0f22c4e99dc6dc6c4fefa2055d00e188",
+  "review": "Inspected all 13 bytes: frames 7+6, recv chunks 2+6+5, exact order preserved. Header length counts payload only; return arrow starts a new frame, shared deadline covers header and payload of each frame."
+}

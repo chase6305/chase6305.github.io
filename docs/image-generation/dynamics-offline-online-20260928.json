@@ -1,0 +1,16 @@
+{
+  "date": "2026-09-28",
+  "method": "built-in image_gen: generate, then edit",
+  "prompt": "docs/image-generation/dynamics-offline-online-20260928-prompt.txt",
+  "edit_prompt": "docs/image-generation/dynamics-offline-online-20260928-edit.txt",
+  "initial_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-5784fce6-b517-4bc4-bcd9-df83b1ebb94c.png",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-bb1caed4-ed56-45d1-8f96-8594348a80bf.png",
+  "asset": "content/posts/robotics/dynamics/parameter-identification/assets/offline-online-workflow.webp",
+  "dimensions": [
+    1774,
+    887
+  ],
+  "sha256": "d1ad2e3ca059c8ad04e58dffa3d7620b8bd255d3788773171612781d5a13ea6e",
+  "review": "Excitation precedes data collection; validation uses a separate dataset; validated candidate initializes online estimates. Invalid data branches to hold. No direct overwrite of a controller and no unconstrained closed form shown as constrained solution.",
+  "conversion": "WebP quality 90, method 6; no diagram edits outside image_gen"
+}

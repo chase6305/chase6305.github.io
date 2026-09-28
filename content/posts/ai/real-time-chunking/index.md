@@ -1,7 +1,7 @@
 ---
 title: "RTC 详解：动作块如何实时执行，从推理时引导到训练时条件与世界动作模型"
 date: 2026-09-11
-lastmod: 2026-09-12
+lastmod: 2026-09-28
 draft: false
 tags: ["RTC", "Action Chunking", "Flow Matching", "VLA", "World Action Model", "Paper Notes"]
 categories: ["人工智能"]
@@ -30,7 +30,7 @@ related_posts:
 | [Training-Time Action Conditioning for Efficient Real-Time Chunking](https://arxiv.org/abs/2512.05964v2)，Black、Ren、Equi、Levine | v2，2025-12-09 | 能否把前缀条件加入训练，省去推理时引导开销？ |
 | [World Action Models in Real Time: An Empirical Study of Smooth Execution via Asynchronous Deployment](https://arxiv.org/abs/2608.01880v2)，Motubrain Team | v2，2026-08-11 | 在视频与动作联合生成、延迟更高的系统中，各种衔接方法表现如何？ |
 
-下文分别简称为 **原始 RTC、训练时 RTC、WAM 实证研究**。论文结果均为作者报告；本文的图示与 CPU 算例是独立编写的教学材料。Kinetix 仓库对应前两篇论文的模拟实验，不包含第三篇论文的完整 WAM 部署系统。
+下文分别简称为 **原始 RTC、训练时 RTC、WAM 实证研究**。论文结果均为作者报告；文中的 CPU 算例用于核对动作时间、前缀条件和调度边界。Kinetix 仓库对应前两篇论文的模拟实验，不包含第三篇论文的完整 WAM 部署系统。
 
 | 阅读目的 | 推荐入口 |
 | --- | --- |

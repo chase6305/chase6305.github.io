@@ -1,0 +1,58 @@
+{
+  "numpy": "2.2.6",
+  "seed": 20260928,
+  "trials": 2500,
+  "samples_per_trial": 200,
+  "sample_period_s": 0.01,
+  "position_amplitude_m": 0.03,
+  "motion_frequency_hz": 0.7,
+  "force_noise_marginal_std_N": 0.05,
+  "noise_ar1_coefficient": 0.9,
+  "noise_innovation_std_N": 0.021794494717703367,
+  "regressor_rank": 2,
+  "true_OLS_covariance": [
+    [
+      0.001137559146207352,
+      7.83579453135123e-05
+    ],
+    [
+      7.835794531351224e-05,
+      0.022871340843070534
+    ]
+  ],
+  "independent_noise_covariance": [
+    [
+      7.066477293185383e-05,
+      1.3652097795814558e-05
+    ],
+    [
+      1.3652097795814557e-05,
+      0.0015178352267467081
+    ]
+  ],
+  "scope": "fixed exact regressors; known Gaussian noise covariance; no ridge or constraints",
+  "results": [
+    {
+      "parameter": "mass",
+      "unit": "kg",
+      "truth": 2.0,
+      "mean_estimate": 1.9999811230532796,
+      "std_if_noise_independent": 0.008406234170652982,
+      "std_with_temporal_covariance": 0.033727720738397846,
+      "monte_carlo_std": 0.033566987054664155,
+      "nominal_95pct_coverage_if_independent": 0.3784,
+      "nominal_95pct_coverage_with_known_covariance": 0.952
+    },
+    {
+      "parameter": "damping",
+      "unit": "N*s/m",
+      "truth": 0.4,
+      "mean_estimate": 0.4001960377854408,
+      "std_if_noise_independent": 0.03895940485616674,
+      "std_with_temporal_covariance": 0.1512327373390779,
+      "monte_carlo_std": 0.14916767560410277,
+      "nominal_95pct_coverage_if_independent": 0.3964,
+      "nominal_95pct_coverage_with_known_covariance": 0.9512
+    }
+  ]
+}

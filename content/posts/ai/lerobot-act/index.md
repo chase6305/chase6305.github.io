@@ -1,7 +1,7 @@
 ---
 title: "LeRobot 与 ACT 详解：从机器人示教数据到动作分块、训练与部署"
 date: 2026-09-16
-lastmod: 2026-09-16
+lastmod: 2026-09-28
 draft: false
 tags: ["LeRobot", "ACT", "Imitation Learning", "Transformer", "Embodied AI"]
 categories: ["人工智能", "机器人"]
@@ -381,6 +381,21 @@ L1 督促动作重建，KL 约束后验靠近先验，减少训练潜变量与�
 这几个公式对应核对版本的 `ACTPolicy.forward()`；不同历史实现对 padding 后的平均方式可能不同，因此同名 loss 的绝对数值未必能直接横向比较。[损失实现](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/modeling_act.py)
 
 对照原论文时还有一个细节：Algorithm 1 的伪代码写作 MSE，但第 IV-C 节明确说明实际采用 L1 重建损失。本文遵循已核对源码中的 L1 实现，不把伪代码里的 MSE 当成当前训练目标。[原论文](https://arxiv.org/html/2304.13705)
+
+#### 多卡与梯度累积：L1 和 KL 的分母不同
+
+上面的 batch 指一次策略前向收到的张量；不能据此推断多卡和多个 micro-batch 合起来也恰好按全部有效动作元素等权。若两张卡分别得到“4 个误差为 1 的有效元素”和“1 个误差为 3 的有效元素”，本地先求均值、再平均两卡梯度，对应的是 `(1+3)/2=2`；全局有效元素均值则是 `7/5=1.4`。两者优化的加权目标不同。
+
+在默认 DDP 平均梯度的前提下，若希望一个完整累积窗口中的 L1 按有效动作元素平均，而 KL 仍按示例平均，应分别汇总分母。设 $S^{\mathrm{L1}}_{rj}$ 是某 Rank、某 micro-batch 的有效 L1 总和，$S^{\mathrm{KL}}_{rj}$ 是逐示例 KL 总和；全局有效动作元素数为 $N_a$，全局示例数为 $N_b$，数据并行度为 $R$。该 micro-batch 反向使用的目标应为：
+
+$$
+\frac{R S^{\mathrm{L1}}_{rj}}{N_a}
++\beta\frac{R S^{\mathrm{KL}}_{rj}}{N_b}.
+$$
+
+这里的 $N_a$ 已包含动作维度，$S^{\mathrm{KL}}$ 已包含前面高斯 KL 公式的 $1/2$。不能把合并后的整个 loss 统一乘一个“padding 修正系数”，否则可能同时改变 KL 的相对权重；也不能在已经使用完整窗口分母后，再重复除以累积步数。
+
+这是对**所选全局目标**的推导，不是声称本文固定版本的训练入口已经执行了这套分母归约。接入 Accelerate、FSDP 或自定义通信时，应核对框架是否已经缩放 loss。一个不用机器人与 GPU 的实际双进程对照见[DDP 的 token 均值实验]({{< relref "/posts/ai/distributed-training-memory" >}}#44-变长文本平均局部均值未必等于全局-token-均值)。动作元素与 token 虽然含义不同，局部均值和全局均值的区别相同。
 
 ### 6.3 episode 尾部必须屏蔽填充
 

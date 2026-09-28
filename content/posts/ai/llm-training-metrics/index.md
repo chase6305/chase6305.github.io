@@ -673,6 +673,48 @@ $$
 
 平局计半分的偏好胜率、逐题 pass@k 估计值和 F1，也不是简单的二元成功计数；不能把它们的平均值乘样本量后机械地塞进 Wilson 公式。
 
+### 9.7 配对还不够：同一文档下的问题要怎样抽样 {#clustered-evaluation}
+
+配对解决“两模型是否使用同一批题目索引”，分组解决“哪些观察可以视为独立单位”。例如每份文档派生 20 道题，同一文档的背景知识、检索结果或标注错误可能共同影响这些题。将两模型逐题配对之后，仍不能默认所有题彼此独立。API 中的 `paired=True` 只保证各数组共享抽样索引，不会自动发现文档或用户分组。[SciPy 的 paired 参数定义](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html)
+
+构造一个便于看清差别的极端算例：20 个题组，每组 20 条记录；组内的基线／候选正确性完全一致。6 组全部改对、4 组全部改错、5 组都正确、5 组都错误。因此基线为 45%、候选为 55%，差值为 +10 个百分点。
+
+固定这份构造数据，做 20,000 次百分位 bootstrap：
+
+| 重采样单位 | 95% 百分位区间 | 对本例的含义 |
+| --- | --- | --- |
+| 将 400 条配对记录当作 IID | [3.25, 16.75] pp | 忽略组内重复信息，区间过窄 |
+| 抽取 20 个组，每次携带该组全部配对记录 | [−20, 40] pp | 保留本例的组内依赖，区间包含零 |
+
+这些是构造评分的重采样结果，不是真实 LLM 的性能比较，也不是对 20 组百分位区间覆盖率的验证。组数很少时，区间本身仍可能不稳定；分组合理也不意味着数据一定代表真实用户。
+
+<figure class="article-figure" id="fig-cluster-evaluation">
+  {{< post-image src="assets/cluster-evaluation.png" alt="构造数据上逐条重采样给出正的狭窄区间，按题组重采样的区间包含零；复制同组记录只会使错误的独立行假设下标准误缩小" >}}
+  <figcaption><span class="article-figure__number">图 10</span><span class="article-figure__text">左图比较固定构造数据的两种百分位区间；右图计算相应经验 bootstrap 分布的标准误。独立组数始终为 20，复制组内记录不增加独立信息。</span></figcaption>
+</figure>
+
+这里每组大小相同，且组内差值完全相同，所以按组抽样等价于对 20 个组均值抽样。若组大小为 $m$、独立组数为 $G$，组差值的经验方差为 $s_G^2$（此处分母用 $G$），两种经验 bootstrap 均值分布的方差分别为：
+
+$$
+\operatorname{Var}_{boot}(\bar d_{group})=\frac{s_G^2}{G},\qquad
+\operatorname{Var}_{boot}(\bar d_{row})=\frac{s_G^2}{Gm}.
+$$
+
+于是本例错误的逐条标准误缩小了 $\sqrt{20}\approx4.47$ 倍。这个倍数依赖“组内完全相同、组大小一致”的构造，不能拿去修正任意相关题集。
+
+**组大小不同时，先确定要估计的平均值。** 设第 $g$ 组有 $n_g$ 道题、组内平均差值 $\bar d_g$：
+
+$$
+\Delta_{question}=\frac{\sum_g n_g\bar d_g}{\sum_g n_g},\qquad
+\Delta_{group}=\frac1G\sum_g\bar d_g.
+$$
+
+前者让每道题等权，后者让每个组等权。若一个组有 2 题、全部改对，另一个组有 8 题、全部改错，题目平均差值为 −60 pp，组平均却为 0 pp。按组 bootstrap 题目平均时，每次抽组后仍应重新累计分子、分母；不能因为“按组抽了”，就顺手把目标指标改成组均值的平均。
+
+下载 [cluster_eval_demo.py](cluster_eval_demo.py) 与[结果文件](assets/cluster-evaluation.json)。运行 `python cluster_eval_demo.py` 只需 NumPy；加上 `--figure cluster-evaluation.png` 并安装 Matplotlib 可复画曲线。它是单独的构造算例，原有 `paired_eval.py` 仍只处理独立题目的二元评分。
+
+真实评估应预先保存 `question_id` 与 `group_id` 的对应关系，按文档、用户、会话或采集场景中真正共享随机因素的单位分组，同时保留两模型的配对关系。时间相关、层级抽样和分层抽样各有额外假设，不能一律用相同的抽组方式替代实验设计。语音评估中对相关样本进行分块处理的讨论可见 [Modeling Dependent Structure for Utterances in ASR Evaluation](https://arxiv.org/abs/2209.05281)。
+
 ## 10. 一份能读懂、能复查的实验报告 {#report}
 
 ### 10.1 最小记录模板
@@ -744,7 +786,7 @@ results:
 
 ## 11. 可运行的指标算例 {#lab}
 
-可以一次下载 [完整算例包](llm-metrics-lab.zip)，解压后进入 `llm-metrics-lab` 目录。需要 Python 3.8 或更新版本，只使用标准库，不联网，也不加载模型权重。下面也提供各文件的独立下载链接。
+可以一次下载 [完整算例包](llm-metrics-lab.zip)，解压后进入 `llm-metrics-lab` 目录。核心的 `metrics_lab.py` 与 `paired_eval.py` 需要 Python 3.8 或更新版本，只使用标准库。新增题组重采样算例 `cluster_eval_demo.py` 使用 Python 3.10 与 NumPy，绘图另需 Matplotlib。所有实验运行时均不联网、不加载模型权重；下面也提供独立下载链接。
 
 ### 11.1 复算公式与模型配置
 

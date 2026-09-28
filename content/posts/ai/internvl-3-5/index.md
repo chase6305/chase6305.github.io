@@ -1,7 +1,7 @@
 ---
 title: "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
 date: 2026-09-05
-lastmod: 2026-09-08
+lastmod: 2026-09-28
 draft: false
 tags: ["InternVL", "VLM", "Multimodal", "Reinforcement Learning", "Paper Notes"]
 categories: ["人工智能"]
@@ -251,7 +251,7 @@ SFT 在选定的答案位置学习示范；后续 MPO 和 GSPO 则进一步引�
 
 ### 6.1 两个阶段的数据来源不同
 
-Cascade RL 不是让两个模型同时“投票”，而是串行后训练：离线 MPO 使用已有偏好样本，在线 GSPO 则从当前策略采样新的回答进行优化。[3.5 后训练说明](https://huggingface.co/OpenGVLab/InternVL3_5-8B#post-training)
+Cascade RL 不是让两个模型同时“投票”，而是串行后训练：离线 MPO 使用已有偏好样本，在线 GSPO 则从当前策略采样新的回答进行优化。[3.5 后训练说明](https://huggingface.co/OpenGVLab/InternVL3_5-8B#cascade-reinforcement-learning)
 
 从工程上理解，前者可以复用离线数据，采样成本相对集中；后者能追踪当前模型最常犯的错误，但需要持续生成回答并计算奖励。先把模型调整到较好的起点，再进行在线采样，是一种训练成本与优化效果的权衡。
 

@@ -1,0 +1,60 @@
+{
+  "torch": "2.13.0+cu130",
+  "device": "cpu",
+  "dtype": "float64",
+  "seed": 20260928,
+  "qkv_shape": [
+    2,
+    2,
+    8,
+    4
+  ],
+  "past_tokens": 3,
+  "query_chunk": 2,
+  "correct_mask": [
+    [
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    [
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  ],
+  "incorrect_upper_left_mask": [
+    [
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      1,
+      1,
+      0,
+      0,
+      0
+    ]
+  ],
+  "correct_chunk_max_abs_error": 2.220446049250313e-16,
+  "incorrect_chunk_max_abs_error": 2.1030654717359547,
+  "incorrect_single_token_max_abs_error": 1.4548944363182605,
+  "padding_and_unused_slots_max_abs_error": 2.220446049250313e-16,
+  "checks": [
+    "full reference",
+    "three chunk partitions",
+    "single appended token",
+    "batched key padding",
+    "unfilled cache slots",
+    "forbidden-entry invariance",
+    "future valid-key invariance for the first query"
+  ],
+  "scope": "Attention operator only; no positional embedding, transformer layers, generation benchmark or fused GPU-kernel claim."
+}

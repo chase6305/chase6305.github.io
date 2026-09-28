@@ -44,6 +44,13 @@ Windows 可用 py -3.10 -m venv .venv 创建环境，并在 PowerShell 执行
     检查有效长度 [2,3]、初始 DPO loss≈0.6931、初始 GRPO loss≈0 但梯度非零。
     EOS 与 PAD 共用编号，真实 EOS 仍计分；这不是在线采样的 GRPO 训练。
 
+KL 数值与梯度的独立检查：
+    python -B kl_gradient_check.py --output kl-gradient-results.json
+
+    完整枚举三个动作，比较精确 KL、冻结采样权重和可微重要性权重。
+    相同的 KL 前向值不保证相同的 logit 梯度；脚本同时核对中心差分。
+    固定上下文，不处理策略改变后的前缀分布，也不增加训练实验的预算。
+
 3. 复现与改参数
 
     python -B rl_lab.py --algorithm grpo --seed 19 --group-size 4 --output results-seed19-g4

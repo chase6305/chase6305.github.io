@@ -1,17 +1,17 @@
 ---
-title: 'Ruckig: 高效实时运动规划库'
+title: 'Ruckig 轨迹生成：jerk 约束、同步与终点状态'
 date: 2025-03-15
-lastmod: 2026-09-05
+lastmod: 2026-09-28
 draft: false
 tags: ["Trajectory Generation", "Ruckig", "Motion Planning"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "用 Ruckig 生成一轴和七轴 jerk 受限轨迹，补充返回状态、终点采样、预测状态传递与版本功能边界。"
+summary: "用可运行例子理解 Ruckig 的状态可行性、时间与相位同步、非零终点速度和离散采样，区分轨迹结束与机器人停止。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
-description: "用 Ruckig 生成一轴和七轴 jerk 受限轨迹，补充返回状态、终点采样、预测状态传递与版本功能边界。"
+description: "用可运行例子理解 Ruckig 的状态可行性、时间与相位同步、非零终点速度和离散采样，区分轨迹结束与机器人停止。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "位置、速度、加速度与离散采样"
 reading_focus: "先验证本地状态到状态问题，中间路径点功能与碰撞规划需另行评估。"
@@ -30,10 +30,10 @@ Ruckig 从当前与目标的 **位置、速度、加速度** 出发，在速度�
 ## 安装与单位
 
 ```bash
-python -m pip install ruckig numpy matplotlib
+python -m pip install "ruckig==0.19.4" numpy matplotlib
 ```
 
-旋转关节采用 rad、rad/s、rad/s²、rad/s³，时间采用秒。移动关节应对应使用米。下面的限制只是教学值，不是任何实机的安全配置。
+本文脚本在 Ruckig Community 0.19.4 上验证；官网文档和商业版功能可能对应其他版本，复现时先打印 `ruckig.__version__`。旋转关节采用 rad、rad/s、rad/s²、rad/s³，时间采用秒。移动关节应对应使用米。下面的限制只是教学值，不是任何实机的安全配置。
 
 | 输入 | 作用 |
 | --- | --- |
@@ -161,6 +161,53 @@ plt.show()
 非零目标速度时，`Finished` 不表示机器人已经静止，越过终点后的状态也不必仍是目标位置。本例使用零目标速度和加速度，因此才断言最后一帧停在目标处。
 
 输入校验、返回状态及 `at_time` 的定义见 [Ruckig 官方教程](https://docs.ruckig.com/tutorial.html)。
+
+## 当前状态各项未超限，为什么仍然不可行？
+
+只分别判断 $|v|\le v_{\max}$、$|a|\le a_{\max}$ 还不够。假设当前速度朝上限运动、加速度 $a>0$，即使立即施加最大的负 jerk $-j_{\max}$，也需要 $a/j_{\max}$ 秒才能把加速度降到零。这段时间中至少还会增加
+
+$$
+\Delta v=\int_0^{a/j_{\max}}(a-j_{\max}t)\,dt
+=\frac{a^2}{2j_{\max}}.
+$$
+
+因此避免越过速度上限的必要条件是 $v+a^2/(2j_{\max})\le v_{\max}$。例如 $v=0.99$ rad/s、$a=0.5$ rad/s²、$j_{\max}=1$ rad/s³，无法避免的速度峰值为 $1.115$ rad/s，已经超过 1 rad/s 的限制。这里初始速度和初始加速度本身都没有单独超限。
+
+方向同样重要：保持 $v=0.99$，改为 $a=-0.5$ 时，机器人正在减速，不能把这个例子与正加速度混为一谈。随文脚本验证前者被拒绝、后者通过输入检查。`validate_input(inp, True, True)` 的两个布尔量控制当前与目标状态检查；在本例中显式开启两者。接口语义见[官方输入校验说明](https://github.com/pantor/ruckig#input-validation)。
+
+## Time 与 Phase：在哪个空间里“走直线”？
+
+时间同步让各轴按同步时长到达各自边界状态；这不要求各轴的归一化运动进度始终相等。相位同步在条件允许时建立共同进度，得到规划坐标中的直线；本文的规划坐标是**关节角**，经过非线性 FK 后仍可能是弯曲的 TCP 路径。相位同步无法满足边界条件时，还需核对实际采用的同步策略，不能只看设置枚举。
+
+下图使用两个转动关节，目标为 $[1,0.4]$ rad，起止速度与加速度为零，各轴速度、加速度和 jerk 上限都为 1（采用各自的 SI 单位）。TCP 轨迹来自长度为 1 m 和 0.6 m 的二连杆 FK。
+
+<figure class="article-figure">
+{{< post-image src="assets/ruckig-synchronization.png" alt="两轴 Ruckig 时间同步与相位同步的关节空间轨迹，以及经过二连杆正运动学后弯曲的 TCP 路径" >}}
+<figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">两种设置的时长均约为 3.1748 s。Phase 在关节平面形成直线，但右图 TCP 路径偏离起终点连线；改变时间规律和改变空间路径是两件事。</span></figcaption>
+</figure>
+
+在该样本中，Time 的最大 $|q_2-0.4q_1|$ 约为 0.03484 rad，而 Phase 为数值舍入量级。这个反例说明“到达时间相同”不自动推出“中间路径相同”，并不表示每一条 Time 轨迹都会偏离关节直线。官方同步选项可查[输入参数说明](https://github.com/pantor/ruckig#input-parameter)。
+
+## 非零终点速度与 Finished 的时间含义
+
+一轴从静止的 0 rad 运动到 1 rad，指定终点速度 0.3 rad/s、终点加速度零，控制周期为 10 ms。下面是 0.19.4 中同一脚本的一次离线结果：
+
+| 时长设置 | 规划时长 $T$ | 首次返回 Finished 的记录时间 | 此时的位置 |
+| --- | ---: | ---: | ---: |
+| Continuous | 2.695913 s | 2.700 s | 1.001226 rad |
+| Discrete | 2.700000 s | 2.710 s | 1.003000 rad |
+
+`trajectory.at_time(T)` 在两种情况下都返回目标状态 $[1,0.3,0]$。离散循环到达 $T+\varepsilon$ 后，零目标加速度下的位置继续按 $1+0.3\varepsilon$ 推进。`Discrete` 约束规划时长为周期的整数倍，但这个版本的累计浮点时间可能在数学上相等的 tick 略小于 $T$，于是下一 tick 才报告 `Finished`；表中的具体 tick 不应当被写成跨版本保证。
+
+因此，“目标状态已到达”“当前循环拿到 Finished”“目标要求静止”是三个不同条件。若要在非零速度的边界衔接下一段，需明确边界时刻与状态传递；若任务要求停止，应把目标速度与加速度设为零，并另外验证执行器反馈。
+
+下载 [ruckig_boundary_checks.py](ruckig_boundary_checks.py)，运行：
+
+```bash
+python -B ruckig_boundary_checks.py --output-dir results
+```
+
+脚本核对上述可行性反例、精确终点、越过终点后的状态、两种同步方式及二连杆 FK，并输出本图和 `ruckig-boundary-results.json`。这些检查没有使用中间路径点，也没有调用远程规划服务。数值一致性不包含碰撞、驱动力矩或实时截止时间验证。
 
 ## 阅读自测与验收
 

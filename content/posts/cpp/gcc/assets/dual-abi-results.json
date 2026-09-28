@@ -1,0 +1,88 @@
+{
+  "runs": [
+    {
+      "compiler": "g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "library_defined_symbols": {
+        "0": "label()",
+        "1": "label[abi:cxx11]()"
+      },
+      "cases": [
+        {
+          "library_abi": 0,
+          "caller_abi": 0,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": true,
+          "program_output": "robot"
+        },
+        {
+          "library_abi": 1,
+          "caller_abi": 1,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": true,
+          "program_output": "robot"
+        },
+        {
+          "library_abi": 0,
+          "caller_abi": 1,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": false,
+          "missing_symbol": "label[abi:cxx11]()"
+        },
+        {
+          "library_abi": 1,
+          "caller_abi": 0,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": false,
+          "missing_symbol": "label()"
+        }
+      ],
+      "scope": "One std::string-returning function across two translation units. No shared-library replacement, GLIBCXX version failure, cross-compiler compatibility claim or application ABI audit."
+    },
+    {
+      "compiler": "g++-12 (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0",
+      "library_defined_symbols": {
+        "0": "label()",
+        "1": "label[abi:cxx11]()"
+      },
+      "cases": [
+        {
+          "library_abi": 0,
+          "caller_abi": 0,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": true,
+          "program_output": "robot"
+        },
+        {
+          "library_abi": 1,
+          "caller_abi": 1,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": true,
+          "program_output": "robot"
+        },
+        {
+          "library_abi": 0,
+          "caller_abi": 1,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": false,
+          "missing_symbol": "label[abi:cxx11]()"
+        },
+        {
+          "library_abi": 1,
+          "caller_abi": 0,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": false,
+          "missing_symbol": "label()"
+        }
+      ],
+      "scope": "One std::string-returning function across two translation units. No shared-library replacement, GLIBCXX version failure, cross-compiler compatibility claim or application ABI audit."
+    }
+  ]
+}

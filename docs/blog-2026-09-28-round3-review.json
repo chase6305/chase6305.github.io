@@ -1,0 +1,3409 @@
+{
+  "schema_version": 1,
+  "title": "2026-09-28 第三轮全站优化验证记录",
+  "status": "complete",
+  "started_at_utc": "2026-09-28T07:53:56+00:00",
+  "target_end_at_utc": "2026-09-28T09:53:56+00:00",
+  "last_verified_at_utc": "2026-09-28T09:54:25.381313+00:00",
+  "completed_at_utc": "2026-09-28T09:54:25.381313+00:00",
+  "elapsed_seconds": 7229,
+  "timezone": "Asia/Shanghai",
+  "baseline_commit": "dcd6f01d1e293de52a017ee65d3348b184acd1fc",
+  "deployment": {
+    "committed": false,
+    "pushed": false,
+    "deployed": false,
+    "mode": "local-only"
+  },
+  "prior_round_reports": [
+    "docs/blog-2026-09-28-review.json",
+    "docs/blog-2026-09-28-round2-review.json"
+  ],
+  "scope": {
+    "site_articles": 81,
+    "public_articles": 78,
+    "draft_articles": 3,
+    "articles_changed_this_round": 14,
+    "substantive_article_changes": 13,
+    "citation_only_changes": 1,
+    "new_downloadable_programs": 15,
+    "new_figures": 9,
+    "conceptual_figures": 3,
+    "numerical_figures": 6,
+    "numerical_result_files": 13,
+    "new_or_updated_page_resources": 40,
+    "archives_updated": 2
+  },
+  "changed_articles": [
+    "content/posts/ai/diffusion-models/index.md",
+    "content/posts/ai/internvl-3-5/index.md",
+    "content/posts/ai/llm-training-metrics/index.md",
+    "content/posts/ai/ppo-dpo-grpo/index.md",
+    "content/posts/ai/transformer-attention/index.md",
+    "content/posts/calibration/model/index.md",
+    "content/posts/cmake/ExternalProject_Add/index.md",
+    "content/posts/cpp/gcc/index.md",
+    "content/posts/dialout/udev/index.md",
+    "content/posts/open3d/introduction/index.md",
+    "content/posts/robotics/control/impedance-control/index.md",
+    "content/posts/robotics/kinematics/jacobian/index.md",
+    "content/posts/robotics/kinematics/pinocchio/index.md",
+    "content/posts/robotics/kinematics/pytorch/index.md"
+  ],
+  "programs": [
+    {
+      "path": "content/posts/ai/diffusion-models/parameterization_check.py",
+      "bytes": 6730,
+      "sha256": "e613b5855d556a438ebb3b9073f3cba415beed88a0385db28a16d508cbf07711"
+    },
+    {
+      "path": "content/posts/ai/llm-training-metrics/cluster_eval_demo.py",
+      "bytes": 5952,
+      "sha256": "151b4d9a56dfc0956836384259e47ea4676103cf7c3fcdcac0907b192f3f844e"
+    },
+    {
+      "path": "content/posts/ai/ppo-dpo-grpo/kl_gradient_check.py",
+      "bytes": 4901,
+      "sha256": "cef369fedf9aa8a65e9d6f785e9da8301e0e6c1e3e2f154fb0d3960f1afe2265"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/cache_mask_check.py",
+      "bytes": 7015,
+      "sha256": "c65045eeb035790ecb343389431c572e37eb45e761f30aeba73924054b5ca111"
+    },
+    {
+      "path": "content/posts/calibration/model/handeye_conventions.py",
+      "bytes": 5700,
+      "sha256": "36b6b45a1fd9b125ad265c07fbc8261be5122a9cc5fc51d539c90640b8007ea3"
+    },
+    {
+      "path": "content/posts/cpp/gcc/dual_abi_check.py",
+      "bytes": 4213,
+      "sha256": "334ecc108d1fa7407910c28cc30653d6a60e309a4f2d2c58c4041f7848cf3224"
+    },
+    {
+      "path": "content/posts/open3d/introduction/icp_observability.py",
+      "bytes": 6687,
+      "sha256": "90f4876cdbd8d1bfe07491d34e05b980018840a75e8e266dc3fd78360b9bd5a8"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/external_wrench_check.py",
+      "bytes": 3314,
+      "sha256": "068ec3511d0011424872fe48d8f5f362996e1745a1f036de78087501e8fe0aaa"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/nullspace_projection.py",
+      "bytes": 7210,
+      "sha256": "6eccffb94c18c37bfa86b71b34629ee9d095105ae248cb9b1d41ef36c27033d8"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/stiffness_checks.py",
+      "bytes": 6139,
+      "sha256": "cfc567a4a1baab95dd3f5ca675f95829e42c5c1f2eb743eb0516419d0c869540"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/jacobian/frame_conventions.py",
+      "bytes": 6953,
+      "sha256": "f308f19ac0325ef396d020c7c2d8e5d820884f6218d4543cd25b0185fbc8d487"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pinocchio/frame_ik.py",
+      "bytes": 5540,
+      "sha256": "6ae76c3d29ecca7a8aebc32c7c00f76c96d921398fa4e12e62b2f5000e60f31b"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pinocchio/ik_validation.py",
+      "bytes": 5644,
+      "sha256": "b9df01832e987ea7871c0cfeda88d50f753dd3c376c68c296c6eb1a01dc72c12"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pytorch/check_ik.py",
+      "bytes": 2514,
+      "sha256": "be146ddaef15c69bdc7eb3e0800d17029982685fddc31dc6b40c87f8813716ce"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pytorch/gradient_check.py",
+      "bytes": 4950,
+      "sha256": "cb5c77f5e6819b41128098341f86e7ce004edf9d04c6b8a4eeff7cc76cc62de4"
+    }
+  ],
+  "figures": [
+    {
+      "path": "content/posts/ai/diffusion-models/assets/prediction-sensitivity.png",
+      "bytes": 85515,
+      "sha256": "2b62d62b19fa0c569ba7f693238ca87e19a4b28173449dac0907da3cd48a4f28"
+    },
+    {
+      "path": "content/posts/ai/llm-training-metrics/assets/cluster-evaluation.png",
+      "bytes": 112859,
+      "sha256": "5a9fd34cd475f81e1f84f768c5981fbb628de83bd98fe9f4be3febbe6e961921"
+    },
+    {
+      "path": "content/posts/ai/ppo-dpo-grpo/assets/kl-gradients.png",
+      "bytes": 51157,
+      "sha256": "49972dddc373e6b6c6c86fac4cd78587b35fa7491f4c18649e6c06cc8bef9575"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/assets/cache-mask-alignment.png",
+      "bytes": 41051,
+      "sha256": "5388ebd875d44fc7aed42105100615166a7c75bbd4978c6d3b274a98d2cfb902"
+    },
+    {
+      "path": "content/posts/open3d/introduction/assets/icp-observability.webp",
+      "bytes": 96872,
+      "sha256": "b301859ebe3d9b9d7eb1f5f5731d977b9f219d0623eff72f79a2b729b06444bb"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/assets/contact-force-directions.webp",
+      "bytes": 81054,
+      "sha256": "0341d404cc754ee40618cb1d9769e9ee24d62b0366d3f0723961656fd1e8401a"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/assets/nullspace-projection.png",
+      "bytes": 94745,
+      "sha256": "4050de8ea799d9492323049e9a9356ae67afc8e29be3c466441bae106c0d8bb8"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/assets/stiffness-energy.png",
+      "bytes": 108498,
+      "sha256": "7c060e3fa86f4333045176b5de0494c27c5507e0195f18e52568ef31c03c38b5"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/jacobian/assets/reference-points.webp",
+      "bytes": 91666,
+      "sha256": "6007ba7ce985ecb376b292dfb982bb0e668c1e19943d4da3b1584c9df258a745"
+    }
+  ],
+  "numerical_results": [
+    {
+      "path": "content/posts/ai/diffusion-models/assets/parameterization-results.json",
+      "bytes": 2631,
+      "sha256": "3893a8b27e619a918ef1716f19d8dd30c1cd474adcc2411d85dbb9c57b08f8fb"
+    },
+    {
+      "path": "content/posts/ai/llm-training-metrics/assets/cluster-evaluation.json",
+      "bytes": 1009,
+      "sha256": "321e37e83ce25fab3b35a84a0d99b236dd9e4900ac3c6722e5a645c579b35be2"
+    },
+    {
+      "path": "content/posts/ai/ppo-dpo-grpo/assets/kl-gradient-results.json",
+      "bytes": 1646,
+      "sha256": "6da7e2a29e2dccff01c9201f1dc5a394de9f005689b4f2d136c2ecc1865af734"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/assets/cache-mask-results.json",
+      "bytes": 1084,
+      "sha256": "59d15834695cdb8b14e03d4e0b08e3c199d7618f056428fce454d02fb428f718"
+    },
+    {
+      "path": "content/posts/calibration/model/assets/handeye-results.json",
+      "bytes": 1557,
+      "sha256": "ccbb6d291347b13a87fbe35ef5174de2fc99a88eb8cde0a07710a2af6a4514cf"
+    },
+    {
+      "path": "content/posts/cpp/gcc/assets/dual-abi-results.json",
+      "bytes": 2632,
+      "sha256": "24ecc2d8e179bd505fabda8a6506e9e2a1ee7ea8e9ce6954714192788aa09c34"
+    },
+    {
+      "path": "content/posts/open3d/introduction/assets/icp-observability.json",
+      "bytes": 1574,
+      "sha256": "cddc00fb9fb10830f8099780eb67dd3a9b55139ef1bc4f00b7c7e064f874b2cc"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/assets/external-wrench-results.json",
+      "bytes": 2467,
+      "sha256": "c4326289fa36e702f5c23db89becc1cd7e7e27f124750c6fba87c59b4764b7fa"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/assets/nullspace-projection.json",
+      "bytes": 3851,
+      "sha256": "00de335ac9fe074a5fe5c15c69ebf010b3b67a0cdd49d324f1003fb5259c905f"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/assets/stiffness-results.json",
+      "bytes": 2469,
+      "sha256": "5924e551c9de4d56c71611a7f470e75a150a7722e2d118b992e30391fa278f38"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/jacobian/assets/frame-conventions.json",
+      "bytes": 2014,
+      "sha256": "f37b17faa37958ccd7f375888e0d63a053a01763e38021ece532ee22bb9c6652"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pinocchio/assets/ik-validation.json",
+      "bytes": 1076,
+      "sha256": "c87d9454883056ea18c9a6bfe791220cecbd04f351ac94761bf450f0dfb203c5"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pytorch/assets/gradient-results.json",
+      "bytes": 1649,
+      "sha256": "0ffe118d4f15b97bfecb86c699445f60f32aa637095dfcf0d25fa972b10d4a0a"
+    }
+  ],
+  "production_validation": {
+    "reviewed_posts": 81,
+    "learning_paths": 11,
+    "acceptance_checks": 230,
+    "blog_posting_schemas": 78,
+    "classified_tags": 160,
+    "code_blocks": 526,
+    "syntax_checked_by_language": {
+      "bash": 195,
+      "json": 6,
+      "jsonc": 6,
+      "python": 195,
+      "sh": 10,
+      "xml": 1
+    },
+    "html_pages": 268,
+    "local_references_checked": 20128,
+    "collection_pages_checked": 258,
+    "filter_indexes_checked": 8,
+    "errors": [],
+    "python_fragment_warnings": [],
+    "unrendered_math_warnings": []
+  },
+  "draft_validation": {
+    "reviewed_posts": 81,
+    "learning_paths": 11,
+    "acceptance_checks": 230,
+    "blog_posting_schemas": 81,
+    "classified_tags": 164,
+    "code_blocks": 526,
+    "syntax_checked_by_language": {
+      "bash": 195,
+      "json": 6,
+      "jsonc": 6,
+      "python": 195,
+      "sh": 10,
+      "xml": 1
+    },
+    "html_pages": 279,
+    "local_references_checked": 21099,
+    "collection_pages_checked": 269,
+    "filter_indexes_checked": 9,
+    "errors": [],
+    "python_fragment_warnings": [],
+    "unrendered_math_warnings": []
+  },
+  "filter_production": {
+    "articles": 78,
+    "drafts": 0,
+    "topics": 11,
+    "metadata_bytes": 45829,
+    "tests": "normalization, literal/AND matching, sorting, immutability, URL state, exact coverage passed"
+  },
+  "filter_drafts": {
+    "articles": 81,
+    "drafts": 3,
+    "topics": 11,
+    "metadata_bytes": 47451,
+    "tests": "normalization, literal/AND matching, sorting, immutability, URL state, exact coverage passed"
+  },
+  "toc_fixtures": {
+    "toc_variants": 2,
+    "headings_per_variant": 7,
+    "literal_dollars": "preserved",
+    "both_math_delimiters": "passed",
+    "nested_links": "absent",
+    "automatic_section": "passed"
+  },
+  "browser": {
+    "full_inventory_pages": 81,
+    "full_inventory_checkpoint": "browser-drafts snapshot after first nine article changes",
+    "changed_article_layouts": 117,
+    "changed_articles": 14,
+    "citation_only_internvl_layouts": {
+      "posts": 1,
+      "layouts": 9,
+      "zooms": 0,
+      "exceptions": [],
+      "results": [
+        {
+          "route": "/posts/ai/internvl-3-5/",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
+        },
+        {
+          "route": "/posts/ai/internvl-3-5/",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
+        },
+        {
+          "route": "/posts/ai/internvl-3-5/",
+          "width": 320,
+          "theme": "warm",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
+        },
+        {
+          "route": "/posts/ai/internvl-3-5/",
+          "width": 390,
+          "theme": "light",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
+        },
+        {
+          "route": "/posts/ai/internvl-3-5/",
+          "width": 390,
+          "theme": "dark",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
+        },
+        {
+          "route": "/posts/ai/internvl-3-5/",
+          "width": 390,
+          "theme": "warm",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
+        },
+        {
+          "route": "/posts/ai/internvl-3-5/",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
+        },
+        {
+          "route": "/posts/ai/internvl-3-5/",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
+        },
+        {
+          "route": "/posts/ai/internvl-3-5/",
+          "width": 1440,
+          "theme": "warm",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
+        }
+      ]
+    },
+    "widths": [
+      320,
+      390,
+      1440
+    ],
+    "themes": [
+      "light",
+      "dark",
+      "warm"
+    ],
+    "zoom_checks": 24,
+    "later_impedance_open3d_layouts": 18,
+    "later_zoom_checks": 8,
+    "final_wrench_translation_layouts": {
+      "posts": 1,
+      "layouts": 9,
+      "zooms": 6,
+      "exceptions": [],
+      "results": [
+        {
+          "route": "/posts/robotics/control/impedance-control/",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "机器人阻抗控制：从弹簧阻尼模型到笛卡尔力矩控制"
+        },
+        {
+          "route": "/posts/robotics/control/impedance-control/",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "机器人阻抗控制：从弹簧阻尼模型到笛卡尔力矩控制"
+        },
+        {
+          "route": "/posts/robotics/control/impedance-control/",
+          "width": 320,
+          "theme": "warm",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "机器人阻抗控制：从弹簧阻尼模型到笛卡尔力矩控制"
+        },
+        {
+          "route": "/posts/robotics/control/impedance-control/",
+          "width": 390,
+          "theme": "light",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "机器人阻抗控制：从弹簧阻尼模型到笛卡尔力矩控制"
+        },
+        {
+          "route": "/posts/robotics/control/impedance-control/",
+          "width": 390,
+          "theme": "dark",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "机器人阻抗控制：从弹簧阻尼模型到笛卡尔力矩控制"
+        },
+        {
+          "route": "/posts/robotics/control/impedance-control/",
+          "width": 390,
+          "theme": "warm",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "机器人阻抗控制：从弹簧阻尼模型到笛卡尔力矩控制"
+        },
+        {
+          "route": "/posts/robotics/control/impedance-control/",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "机器人阻抗控制：从弹簧阻尼模型到笛卡尔力矩控制"
+        },
+        {
+          "route": "/posts/robotics/control/impedance-control/",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "机器人阻抗控制：从弹簧阻尼模型到笛卡尔力矩控制"
+        },
+        {
+          "route": "/posts/robotics/control/impedance-control/",
+          "width": 1440,
+          "theme": "warm",
+          "overflow": false,
+          "mathErrors": 0,
+          "captionOverflow": [],
+          "broken": [],
+          "heading": "机器人阻抗控制：从弹簧阻尼模型到笛卡尔力矩控制"
+        }
+      ]
+    },
+    "later_zoom_wait": "medium-zoom:opened and medium-zoom:closed events; fixed sleep race resolved in audit harness",
+    "discovery": {
+      "articles": 81,
+      "drafts": 3,
+      "crossPageSearch": true,
+      "shareableURL": true,
+      "queryStates": 15,
+      "ime": true,
+      "history": true,
+      "literalQuery": true,
+      "noJavaScript": true,
+      "malformedDataFallback": true,
+      "keyboardControls": true,
+      "collections": [
+        "/tags/",
+        "/categories/",
+        "/archives/",
+        "/learning-paths/",
+        "/",
+        "/zh-cn/",
+        "/projects/",
+        "/zh-cn/projects/",
+        "/tags/robotics/"
+      ],
+      "exceptions": []
+    },
+    "discovery_layouts": 12,
+    "discovery_tag_layouts": 9,
+    "exceptions": []
+  },
+  "example_checks": {
+    "download_source_matches": [
+      {
+        "article": "content/posts/robotics/kinematics/pinocchio/index.md",
+        "download": "frame_ik.py",
+        "AST_matches_displayed_code": true
+      },
+      {
+        "article": "content/posts/robotics/kinematics/pytorch/index.md",
+        "download": "check_ik.py",
+        "AST_matches_displayed_code": true
+      }
+    ],
+    "core": {
+      "cpp": {
+        "astar": "A* checks passed; path length = 6.97469",
+        "astar_random_cases": 400,
+        "spsc": "Consumed 100000 values; sum = 4999950000",
+        "ownership": "ownership checks passed",
+        "std_programs": 2
+      },
+      "cmake": "fresh/no-op/source-edit/deleted-library rebuilds passed",
+      "python": {
+        "pid": "saturation, anti-windup, invalid dt passed",
+        "cliff_last_100_mean": {
+          "sarsa": -21.64,
+          "q_learning": -39.08
+        },
+        "n_step_advantage": "termination and truncation passed",
+        "srs": {
+          "cases": 800,
+          "max_transform_error": 8.992806499463768e-15
+        },
+        "pinocchio": {
+          "reachable_cases": 30,
+          "unreachable_reported": true,
+          "max_residual": 8.82040200707649e-05,
+          "version": "4.1.0"
+        }
+      },
+      "modbus": "CRC, byte-wise reads, write echo, concurrency, faults and timeout passed",
+      "network": "TCP echo/fragmentation/frame deadlines; UDP echo/empty/truncated datagrams passed"
+    },
+    "cmake_make": {
+      "result": "fresh/no-op/source-edit/deleted-library rebuilds passed",
+      "generator": "Unix Makefiles"
+    },
+    "cmake_ninja": {
+      "result": "fresh/no-op/source-edit/deleted-library rebuilds passed",
+      "generator": "Ninja",
+      "ninja": "1.13.2",
+      "cmake": "3.22.1"
+    },
+    "llm_metrics_unittests": 8,
+    "rl_download_unittests": 19,
+    "rl_download_cli_runs": 7,
+    "rl_download_torch": "2.8.0+cpu",
+    "rl_zip_members": 8,
+    "llm_zip_members": 5,
+    "llm_extracted": [
+      {
+        "program": "metrics_lab.py",
+        "exit_code": 0
+      },
+      {
+        "program": "paired_eval.py",
+        "exit_code": 0
+      },
+      {
+        "program": "cluster_eval_demo.py",
+        "exit_code": 0
+      }
+    ],
+    "cache_mask_torch28": {
+      "torch": "2.8.0+cpu",
+      "device": "cpu",
+      "dtype": "float64",
+      "seed": 20260928,
+      "qkv_shape": [
+        2,
+        2,
+        8,
+        4
+      ],
+      "past_tokens": 3,
+      "query_chunk": 2,
+      "correct_mask": [
+        [
+          1,
+          1,
+          1,
+          1,
+          0
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      ],
+      "incorrect_upper_left_mask": [
+        [
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          0,
+          0
+        ]
+      ],
+      "correct_chunk_max_abs_error": 2.220446049250313e-16,
+      "incorrect_chunk_max_abs_error": 2.1030654717359547,
+      "incorrect_single_token_max_abs_error": 1.4548944363182605,
+      "padding_and_unused_slots_max_abs_error": 2.220446049250313e-16,
+      "checks": [
+        "full reference",
+        "three chunk partitions",
+        "single appended token",
+        "batched key padding",
+        "unfilled cache slots",
+        "forbidden-entry invariance",
+        "future valid-key invariance for the first query"
+      ],
+      "scope": "Attention operator only; no positional embedding, transformer layers, generation benchmark or fused GPU-kernel claim."
+    },
+    "dual_abi_gcc11": {
+      "compiler": "g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "library_defined_symbols": {
+        "0": "label()",
+        "1": "label[abi:cxx11]()"
+      },
+      "cases": [
+        {
+          "library_abi": 0,
+          "caller_abi": 0,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": true,
+          "program_output": "robot"
+        },
+        {
+          "library_abi": 1,
+          "caller_abi": 1,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": true,
+          "program_output": "robot"
+        },
+        {
+          "library_abi": 0,
+          "caller_abi": 1,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": false,
+          "missing_symbol": "label[abi:cxx11]()"
+        },
+        {
+          "library_abi": 1,
+          "caller_abi": 0,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": false,
+          "missing_symbol": "label()"
+        }
+      ],
+      "scope": "One std::string-returning function across two translation units. No shared-library replacement, GLIBCXX version failure, cross-compiler compatibility claim or application ABI audit."
+    },
+    "dual_abi_gcc12": {
+      "compiler": "g++-12 (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0",
+      "library_defined_symbols": {
+        "0": "label()",
+        "1": "label[abi:cxx11]()"
+      },
+      "cases": [
+        {
+          "library_abi": 0,
+          "caller_abi": 0,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": true,
+          "program_output": "robot"
+        },
+        {
+          "library_abi": 1,
+          "caller_abi": 1,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": true,
+          "program_output": "robot"
+        },
+        {
+          "library_abi": 0,
+          "caller_abi": 1,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": false,
+          "missing_symbol": "label[abi:cxx11]()"
+        },
+        {
+          "library_abi": 1,
+          "caller_abi": 0,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": false,
+          "missing_symbol": "label()"
+        }
+      ],
+      "scope": "One std::string-returning function across two translation units. No shared-library replacement, GLIBCXX version failure, cross-compiler compatibility claim or application ABI audit."
+    },
+    "handeye": {
+      "opencv": "4.13.0",
+      "numpy": "2.2.6",
+      "seed": 20260928,
+      "training_poses": 18,
+      "held_out_poses": 6,
+      "eye_in_hand_transform_max_error": 7.771561172376096e-16,
+      "eye_in_hand_held_out_closure_matrix_max_error": 7.771561172376096e-16,
+      "eye_to_hand_direct_transform_max_error": 5.551115123125783e-16,
+      "eye_to_hand_two_routes_max_difference": 7.216449660063518e-16,
+      "eye_to_hand_held_out_closure_matrix_max_error": 9.992007221626409e-16,
+      "degeneracy": [
+        {
+          "motion": "translation_only",
+          "translation_design_rank": 0,
+          "singular_values": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "wrong_handeye_translation_m": 0.1,
+          "wrong_candidate_max_closure_error_m": 3.188872858294072e-16
+        },
+        {
+          "motion": "single_z_rotation_axis",
+          "translation_design_rank": 2,
+          "singular_values": [
+            3.7153657099875907,
+            3.7153657099875907,
+            0.0
+          ],
+          "wrong_handeye_translation_m": 0.1,
+          "wrong_candidate_max_closure_error_m": 2.498001805406602e-16
+        },
+        {
+          "motion": "multiple_rotation_axes",
+          "translation_design_rank": 3,
+          "singular_values": [
+            4.26522625499979,
+            4.076430229101725,
+            2.5878727627936087
+          ],
+          "wrong_handeye_translation_m": 0.1,
+          "wrong_candidate_max_closure_error_m": 0.1010473496213231
+        }
+      ],
+      "scope": "Exact transforms only; rank describes the translation subsystem after fixing hand-eye rotation, not the entire joint calibration problem. No image visibility or measured-noise model."
+    },
+    "external_wrench": {
+      "pinocchio": "4.1.0",
+      "numpy": "2.2.6",
+      "tool_wrench_n_nm": [
+        3.0,
+        -2.0,
+        5.0,
+        0.4,
+        -0.3,
+        0.2
+      ],
+      "cases": [
+        {
+          "case": "static",
+          "no_contact_inverse_dynamics_nm": [
+            -19.336914024548104,
+            24.510058827840577,
+            0.35470807625848266,
+            18.7181881785299,
+            -0.7933264766313085,
+            4.2031330613254445
+          ],
+          "actuator_torque_with_external_wrench_nm": [
+            -20.421791515214494,
+            16.275794140751294,
+            -2.1487854732999576,
+            14.684329155468959,
+            -1.385368000999165,
+            4.439175747478665
+          ],
+          "model_minus_actuator_nm": [
+            1.0848774906663898,
+            8.234264687089283,
+            2.5034935495584403,
+            4.033859023060941,
+            0.5920415243678564,
+            -0.23604268615322077
+          ],
+          "jacobian_transpose_wrench_nm": [
+            1.0848774906663907,
+            8.234264687089283,
+            2.50349354955844,
+            4.033859023060941,
+            0.5920415243678564,
+            -0.23604268615322083
+          ],
+          "torque_identity_max_error_nm": 8.881784197001252e-16,
+          "forward_dynamics_max_error_rad_s2": 1.3322676295501878e-15
+        },
+        {
+          "case": "moving",
+          "no_contact_inverse_dynamics_nm": [
+            -18.720165136941592,
+            26.240026484496198,
+            0.3292144676636544,
+            19.18851191221129,
+            -0.4550421841196796,
+            4.168834187079343
+          ],
+          "actuator_torque_with_external_wrench_nm": [
+            -19.80504262760799,
+            18.005761797406926,
+            -2.1742790818947864,
+            15.15465288915035,
+            -1.0470837084875362,
+            4.404876873232563
+          ],
+          "model_minus_actuator_nm": [
+            1.084877490666397,
+            8.234264687089272,
+            2.5034935495584407,
+            4.0338590230609395,
+            0.5920415243678565,
+            -0.23604268615322077
+          ],
+          "jacobian_transpose_wrench_nm": [
+            1.0848774906663907,
+            8.234264687089283,
+            2.50349354955844,
+            4.033859023060941,
+            0.5920415243678564,
+            -0.23604268615322083
+          ],
+          "torque_identity_max_error_nm": 1.0658141036401503e-14,
+          "forward_dynamics_max_error_rad_s2": 5.509481759702339e-15
+        }
+      ],
+      "equation": "M*qdd + h = actuator_torque + J.T*environment_on_robot_wrench",
+      "scope": "Exact model consistency, including a rotated and offset tool frame. No sensor, actuator tracking, friction, acceleration estimation or observer validation."
+    }
+  },
+  "environments": {
+    "hugo": "0.165.0",
+    "python": "3.10",
+    "numpy": "2.2.6",
+    "matplotlib": "3.10.9",
+    "pinocchio": "4.1.0",
+    "opencv": "4.13.0",
+    "open3d": "0.19.0 CPU",
+    "pytorch_kinematics": "0.10.0",
+    "torch": [
+      "2.13.0+cu130 CPU operations",
+      "2.8.0+cpu"
+    ],
+    "pytorch_kinematics_venv": "Temporary venv with system-site-packages reusing existing PyTorch; not a full dependency consistency audit",
+    "cmake": "3.22.1",
+    "ninja": "1.13.2",
+    "gxx": [
+      "11.4.0",
+      "12.3.0"
+    ]
+  },
+  "compatibility": {
+    "articles": 81,
+    "old_ids_preserved": 2400,
+    "old_heading_anchors_preserved": 1837,
+    "date_draft_url_slug_aliases": "unchanged"
+  },
+  "privacy": {
+    "markdown_files": 3,
+    "ignored": true,
+    "searched_outputs": 1008,
+    "exposed_markers": []
+  },
+  "protected_files": "config, AGENTS, templates, site assets, data, historical acceptance records and prior reports unchanged relative to this round baseline",
+  "download_http": {
+    "resources": 40,
+    "checks": 80,
+    "ports": [
+      1365,
+      1366
+    ],
+    "all_status": 200,
+    "source_hashes_match": true,
+    "results": [
+      {
+        "path": "content/posts/ai/diffusion-models/assets/parameterization-results.json",
+        "port": 1365,
+        "status": 200,
+        "sha256": "3893a8b27e619a918ef1716f19d8dd30c1cd474adcc2411d85dbb9c57b08f8fb"
+      },
+      {
+        "path": "content/posts/ai/diffusion-models/assets/parameterization-results.json",
+        "port": 1366,
+        "status": 200,
+        "sha256": "3893a8b27e619a918ef1716f19d8dd30c1cd474adcc2411d85dbb9c57b08f8fb"
+      },
+      {
+        "path": "content/posts/ai/diffusion-models/assets/prediction-sensitivity.png",
+        "port": 1365,
+        "status": 200,
+        "sha256": "2b62d62b19fa0c569ba7f693238ca87e19a4b28173449dac0907da3cd48a4f28"
+      },
+      {
+        "path": "content/posts/ai/diffusion-models/assets/prediction-sensitivity.png",
+        "port": 1366,
+        "status": 200,
+        "sha256": "2b62d62b19fa0c569ba7f693238ca87e19a4b28173449dac0907da3cd48a4f28"
+      },
+      {
+        "path": "content/posts/ai/diffusion-models/parameterization_check.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "e613b5855d556a438ebb3b9073f3cba415beed88a0385db28a16d508cbf07711"
+      },
+      {
+        "path": "content/posts/ai/diffusion-models/parameterization_check.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "e613b5855d556a438ebb3b9073f3cba415beed88a0385db28a16d508cbf07711"
+      },
+      {
+        "path": "content/posts/ai/llm-training-metrics/assets/cluster-evaluation.json",
+        "port": 1365,
+        "status": 200,
+        "sha256": "321e37e83ce25fab3b35a84a0d99b236dd9e4900ac3c6722e5a645c579b35be2"
+      },
+      {
+        "path": "content/posts/ai/llm-training-metrics/assets/cluster-evaluation.json",
+        "port": 1366,
+        "status": 200,
+        "sha256": "321e37e83ce25fab3b35a84a0d99b236dd9e4900ac3c6722e5a645c579b35be2"
+      },
+      {
+        "path": "content/posts/ai/llm-training-metrics/assets/cluster-evaluation.png",
+        "port": 1365,
+        "status": 200,
+        "sha256": "5a9fd34cd475f81e1f84f768c5981fbb628de83bd98fe9f4be3febbe6e961921"
+      },
+      {
+        "path": "content/posts/ai/llm-training-metrics/assets/cluster-evaluation.png",
+        "port": 1366,
+        "status": 200,
+        "sha256": "5a9fd34cd475f81e1f84f768c5981fbb628de83bd98fe9f4be3febbe6e961921"
+      },
+      {
+        "path": "content/posts/ai/llm-training-metrics/cluster_eval_demo.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "151b4d9a56dfc0956836384259e47ea4676103cf7c3fcdcac0907b192f3f844e"
+      },
+      {
+        "path": "content/posts/ai/llm-training-metrics/cluster_eval_demo.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "151b4d9a56dfc0956836384259e47ea4676103cf7c3fcdcac0907b192f3f844e"
+      },
+      {
+        "path": "content/posts/ai/ppo-dpo-grpo/assets/kl-gradient-results.json",
+        "port": 1365,
+        "status": 200,
+        "sha256": "6da7e2a29e2dccff01c9201f1dc5a394de9f005689b4f2d136c2ecc1865af734"
+      },
+      {
+        "path": "content/posts/ai/ppo-dpo-grpo/assets/kl-gradient-results.json",
+        "port": 1366,
+        "status": 200,
+        "sha256": "6da7e2a29e2dccff01c9201f1dc5a394de9f005689b4f2d136c2ecc1865af734"
+      },
+      {
+        "path": "content/posts/ai/ppo-dpo-grpo/assets/kl-gradients.png",
+        "port": 1365,
+        "status": 200,
+        "sha256": "49972dddc373e6b6c6c86fac4cd78587b35fa7491f4c18649e6c06cc8bef9575"
+      },
+      {
+        "path": "content/posts/ai/ppo-dpo-grpo/assets/kl-gradients.png",
+        "port": 1366,
+        "status": 200,
+        "sha256": "49972dddc373e6b6c6c86fac4cd78587b35fa7491f4c18649e6c06cc8bef9575"
+      },
+      {
+        "path": "content/posts/ai/ppo-dpo-grpo/kl_gradient_check.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "cef369fedf9aa8a65e9d6f785e9da8301e0e6c1e3e2f154fb0d3960f1afe2265"
+      },
+      {
+        "path": "content/posts/ai/ppo-dpo-grpo/kl_gradient_check.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "cef369fedf9aa8a65e9d6f785e9da8301e0e6c1e3e2f154fb0d3960f1afe2265"
+      },
+      {
+        "path": "content/posts/ai/transformer-attention/assets/cache-mask-alignment.png",
+        "port": 1365,
+        "status": 200,
+        "sha256": "5388ebd875d44fc7aed42105100615166a7c75bbd4978c6d3b274a98d2cfb902"
+      },
+      {
+        "path": "content/posts/ai/transformer-attention/assets/cache-mask-alignment.png",
+        "port": 1366,
+        "status": 200,
+        "sha256": "5388ebd875d44fc7aed42105100615166a7c75bbd4978c6d3b274a98d2cfb902"
+      },
+      {
+        "path": "content/posts/ai/transformer-attention/assets/cache-mask-results.json",
+        "port": 1365,
+        "status": 200,
+        "sha256": "59d15834695cdb8b14e03d4e0b08e3c199d7618f056428fce454d02fb428f718"
+      },
+      {
+        "path": "content/posts/ai/transformer-attention/assets/cache-mask-results.json",
+        "port": 1366,
+        "status": 200,
+        "sha256": "59d15834695cdb8b14e03d4e0b08e3c199d7618f056428fce454d02fb428f718"
+      },
+      {
+        "path": "content/posts/ai/transformer-attention/cache_mask_check.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "c65045eeb035790ecb343389431c572e37eb45e761f30aeba73924054b5ca111"
+      },
+      {
+        "path": "content/posts/ai/transformer-attention/cache_mask_check.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "c65045eeb035790ecb343389431c572e37eb45e761f30aeba73924054b5ca111"
+      },
+      {
+        "path": "content/posts/calibration/model/assets/handeye-results.json",
+        "port": 1365,
+        "status": 200,
+        "sha256": "ccbb6d291347b13a87fbe35ef5174de2fc99a88eb8cde0a07710a2af6a4514cf"
+      },
+      {
+        "path": "content/posts/calibration/model/assets/handeye-results.json",
+        "port": 1366,
+        "status": 200,
+        "sha256": "ccbb6d291347b13a87fbe35ef5174de2fc99a88eb8cde0a07710a2af6a4514cf"
+      },
+      {
+        "path": "content/posts/calibration/model/handeye_conventions.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "36b6b45a1fd9b125ad265c07fbc8261be5122a9cc5fc51d539c90640b8007ea3"
+      },
+      {
+        "path": "content/posts/calibration/model/handeye_conventions.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "36b6b45a1fd9b125ad265c07fbc8261be5122a9cc5fc51d539c90640b8007ea3"
+      },
+      {
+        "path": "content/posts/cpp/gcc/assets/dual-abi-results.json",
+        "port": 1365,
+        "status": 200,
+        "sha256": "24ecc2d8e179bd505fabda8a6506e9e2a1ee7ea8e9ce6954714192788aa09c34"
+      },
+      {
+        "path": "content/posts/cpp/gcc/assets/dual-abi-results.json",
+        "port": 1366,
+        "status": 200,
+        "sha256": "24ecc2d8e179bd505fabda8a6506e9e2a1ee7ea8e9ce6954714192788aa09c34"
+      },
+      {
+        "path": "content/posts/cpp/gcc/dual_abi_check.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "334ecc108d1fa7407910c28cc30653d6a60e309a4f2d2c58c4041f7848cf3224"
+      },
+      {
+        "path": "content/posts/cpp/gcc/dual_abi_check.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "334ecc108d1fa7407910c28cc30653d6a60e309a4f2d2c58c4041f7848cf3224"
+      },
+      {
+        "path": "content/posts/open3d/introduction/assets/icp-observability.json",
+        "port": 1365,
+        "status": 200,
+        "sha256": "cddc00fb9fb10830f8099780eb67dd3a9b55139ef1bc4f00b7c7e064f874b2cc"
+      },
+      {
+        "path": "content/posts/open3d/introduction/assets/icp-observability.json",
+        "port": 1366,
+        "status": 200,
+        "sha256": "cddc00fb9fb10830f8099780eb67dd3a9b55139ef1bc4f00b7c7e064f874b2cc"
+      },
+      {
+        "path": "content/posts/open3d/introduction/assets/icp-observability.webp",
+        "port": 1365,
+        "status": 200,
+        "sha256": "b301859ebe3d9b9d7eb1f5f5731d977b9f219d0623eff72f79a2b729b06444bb"
+      },
+      {
+        "path": "content/posts/open3d/introduction/assets/icp-observability.webp",
+        "port": 1366,
+        "status": 200,
+        "sha256": "b301859ebe3d9b9d7eb1f5f5731d977b9f219d0623eff72f79a2b729b06444bb"
+      },
+      {
+        "path": "content/posts/open3d/introduction/icp_observability.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "90f4876cdbd8d1bfe07491d34e05b980018840a75e8e266dc3fd78360b9bd5a8"
+      },
+      {
+        "path": "content/posts/open3d/introduction/icp_observability.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "90f4876cdbd8d1bfe07491d34e05b980018840a75e8e266dc3fd78360b9bd5a8"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/assets/contact-force-directions.webp",
+        "port": 1365,
+        "status": 200,
+        "sha256": "0341d404cc754ee40618cb1d9769e9ee24d62b0366d3f0723961656fd1e8401a"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/assets/contact-force-directions.webp",
+        "port": 1366,
+        "status": 200,
+        "sha256": "0341d404cc754ee40618cb1d9769e9ee24d62b0366d3f0723961656fd1e8401a"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/assets/external-wrench-results.json",
+        "port": 1365,
+        "status": 200,
+        "sha256": "c4326289fa36e702f5c23db89becc1cd7e7e27f124750c6fba87c59b4764b7fa"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/assets/external-wrench-results.json",
+        "port": 1366,
+        "status": 200,
+        "sha256": "c4326289fa36e702f5c23db89becc1cd7e7e27f124750c6fba87c59b4764b7fa"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/assets/nullspace-projection.json",
+        "port": 1365,
+        "status": 200,
+        "sha256": "00de335ac9fe074a5fe5c15c69ebf010b3b67a0cdd49d324f1003fb5259c905f"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/assets/nullspace-projection.json",
+        "port": 1366,
+        "status": 200,
+        "sha256": "00de335ac9fe074a5fe5c15c69ebf010b3b67a0cdd49d324f1003fb5259c905f"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/assets/nullspace-projection.png",
+        "port": 1365,
+        "status": 200,
+        "sha256": "4050de8ea799d9492323049e9a9356ae67afc8e29be3c466441bae106c0d8bb8"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/assets/nullspace-projection.png",
+        "port": 1366,
+        "status": 200,
+        "sha256": "4050de8ea799d9492323049e9a9356ae67afc8e29be3c466441bae106c0d8bb8"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/assets/stiffness-energy.png",
+        "port": 1365,
+        "status": 200,
+        "sha256": "7c060e3fa86f4333045176b5de0494c27c5507e0195f18e52568ef31c03c38b5"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/assets/stiffness-energy.png",
+        "port": 1366,
+        "status": 200,
+        "sha256": "7c060e3fa86f4333045176b5de0494c27c5507e0195f18e52568ef31c03c38b5"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/assets/stiffness-results.json",
+        "port": 1365,
+        "status": 200,
+        "sha256": "5924e551c9de4d56c71611a7f470e75a150a7722e2d118b992e30391fa278f38"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/assets/stiffness-results.json",
+        "port": 1366,
+        "status": 200,
+        "sha256": "5924e551c9de4d56c71611a7f470e75a150a7722e2d118b992e30391fa278f38"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/external_wrench_check.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "068ec3511d0011424872fe48d8f5f362996e1745a1f036de78087501e8fe0aaa"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/external_wrench_check.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "068ec3511d0011424872fe48d8f5f362996e1745a1f036de78087501e8fe0aaa"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/nullspace_projection.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "6eccffb94c18c37bfa86b71b34629ee9d095105ae248cb9b1d41ef36c27033d8"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/nullspace_projection.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "6eccffb94c18c37bfa86b71b34629ee9d095105ae248cb9b1d41ef36c27033d8"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/stiffness_checks.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "cfc567a4a1baab95dd3f5ca675f95829e42c5c1f2eb743eb0516419d0c869540"
+      },
+      {
+        "path": "content/posts/robotics/control/impedance-control/stiffness_checks.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "cfc567a4a1baab95dd3f5ca675f95829e42c5c1f2eb743eb0516419d0c869540"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/jacobian/assets/frame-conventions.json",
+        "port": 1365,
+        "status": 200,
+        "sha256": "f37b17faa37958ccd7f375888e0d63a053a01763e38021ece532ee22bb9c6652"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/jacobian/assets/frame-conventions.json",
+        "port": 1366,
+        "status": 200,
+        "sha256": "f37b17faa37958ccd7f375888e0d63a053a01763e38021ece532ee22bb9c6652"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/jacobian/assets/reference-points.webp",
+        "port": 1365,
+        "status": 200,
+        "sha256": "6007ba7ce985ecb376b292dfb982bb0e668c1e19943d4da3b1584c9df258a745"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/jacobian/assets/reference-points.webp",
+        "port": 1366,
+        "status": 200,
+        "sha256": "6007ba7ce985ecb376b292dfb982bb0e668c1e19943d4da3b1584c9df258a745"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/jacobian/frame_conventions.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "f308f19ac0325ef396d020c7c2d8e5d820884f6218d4543cd25b0185fbc8d487"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/jacobian/frame_conventions.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "f308f19ac0325ef396d020c7c2d8e5d820884f6218d4543cd25b0185fbc8d487"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/pinocchio/assets/ik-validation.json",
+        "port": 1365,
+        "status": 200,
+        "sha256": "c87d9454883056ea18c9a6bfe791220cecbd04f351ac94761bf450f0dfb203c5"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/pinocchio/assets/ik-validation.json",
+        "port": 1366,
+        "status": 200,
+        "sha256": "c87d9454883056ea18c9a6bfe791220cecbd04f351ac94761bf450f0dfb203c5"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/pinocchio/frame_ik.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "6ae76c3d29ecca7a8aebc32c7c00f76c96d921398fa4e12e62b2f5000e60f31b"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/pinocchio/frame_ik.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "6ae76c3d29ecca7a8aebc32c7c00f76c96d921398fa4e12e62b2f5000e60f31b"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/pinocchio/ik_validation.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "b9df01832e987ea7871c0cfeda88d50f753dd3c376c68c296c6eb1a01dc72c12"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/pinocchio/ik_validation.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "b9df01832e987ea7871c0cfeda88d50f753dd3c376c68c296c6eb1a01dc72c12"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/pytorch/assets/gradient-results.json",
+        "port": 1365,
+        "status": 200,
+        "sha256": "0ffe118d4f15b97bfecb86c699445f60f32aa637095dfcf0d25fa972b10d4a0a"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/pytorch/assets/gradient-results.json",
+        "port": 1366,
+        "status": 200,
+        "sha256": "0ffe118d4f15b97bfecb86c699445f60f32aa637095dfcf0d25fa972b10d4a0a"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/pytorch/check_ik.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "be146ddaef15c69bdc7eb3e0800d17029982685fddc31dc6b40c87f8813716ce"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/pytorch/check_ik.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "be146ddaef15c69bdc7eb3e0800d17029982685fddc31dc6b40c87f8813716ce"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/pytorch/gradient_check.py",
+        "port": 1365,
+        "status": 200,
+        "sha256": "cb5c77f5e6819b41128098341f86e7ce004edf9d04c6b8a4eeff7cc76cc62de4"
+      },
+      {
+        "path": "content/posts/robotics/kinematics/pytorch/gradient_check.py",
+        "port": 1366,
+        "status": 200,
+        "sha256": "cb5c77f5e6819b41128098341f86e7ce004edf9d04c6b8a4eeff7cc76cc62de4"
+      },
+      {
+        "path": "content/posts/ai/llm-training-metrics/llm-metrics-lab.zip",
+        "port": 1365,
+        "status": 200,
+        "sha256": "e0713009c71cbd1c684b5c22c3bd7a8407f03645c47fa4e0a3f90075d9c08053"
+      },
+      {
+        "path": "content/posts/ai/llm-training-metrics/llm-metrics-lab.zip",
+        "port": 1366,
+        "status": 200,
+        "sha256": "e0713009c71cbd1c684b5c22c3bd7a8407f03645c47fa4e0a3f90075d9c08053"
+      },
+      {
+        "path": "content/posts/ai/ppo-dpo-grpo/README.txt",
+        "port": 1365,
+        "status": 200,
+        "sha256": "09cb84eab8e01faff4fcf659ba92b9576c304b41078b10ecece185d1996edeee"
+      },
+      {
+        "path": "content/posts/ai/ppo-dpo-grpo/README.txt",
+        "port": 1366,
+        "status": 200,
+        "sha256": "09cb84eab8e01faff4fcf659ba92b9576c304b41078b10ecece185d1996edeee"
+      },
+      {
+        "path": "content/posts/ai/ppo-dpo-grpo/rl-lab.zip",
+        "port": 1365,
+        "status": 200,
+        "sha256": "84f263dc66a3b00e8f902fbe63fa9ef242a3fe3a665a16fcb16a117b0d009e7e"
+      },
+      {
+        "path": "content/posts/ai/ppo-dpo-grpo/rl-lab.zip",
+        "port": 1366,
+        "status": 200,
+        "sha256": "84f263dc66a3b00e8f902fbe63fa9ef242a3fe3a665a16fcb16a117b0d009e7e"
+      }
+    ]
+  },
+  "external_links": {
+    "unique_urls": 628,
+    "statuses": {
+      "200": 538,
+      "None": 2,
+      "403": 5,
+      "429": 82,
+      "503": 1
+    },
+    "confirmed_404_410": 0,
+    "scope": "Rendered external anchor hrefs including navigation/edit links; HTTP availability only; fragments checked separately",
+    "unverified_not_declared_broken": [
+      {
+        "url": "https://docs.ruckig.com/",
+        "status": null,
+        "error": "<urlopen error _ssl.c:980: The handshake operation timed out>",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/robotics/control/robot-filters/index.md"
+        ]
+      },
+      {
+        "url": "https://docs.ruckig.com/tutorial.html",
+        "status": null,
+        "error": "<urlopen error _ssl.c:980: The handshake operation timed out>",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/robotics/control/robot-filters/index.md",
+          "content/posts/trajectory/ruckig/index.md"
+        ]
+      },
+      {
+        "url": "https://doi.org/10.1115/1.3140702",
+        "status": 403,
+        "final_url": "https://asmedigitalcollection.asme.org/dynamicsystems/article/107/1/1/400604/Impedance-Control-An-Approach-to-Manipulation-Part",
+        "method": "GET",
+        "articles": [
+          "content/posts/robotics/control/impedance-control/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/datasets/domain_config.py",
+        "status": 429,
+        "final_url": "https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/datasets/domain_config.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/x-vla/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/datasets/domain_handler/base.py",
+        "status": 429,
+        "final_url": "https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/datasets/domain_handler/base.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/x-vla/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/datasets/domain_handler/droid.py",
+        "status": 429,
+        "final_url": "https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/datasets/domain_handler/droid.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/x-vla/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/datasets/domain_handler/simulations.py",
+        "status": 429,
+        "final_url": "https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/datasets/domain_handler/simulations.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/x-vla/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/evaluation/simpler/README.md",
+        "status": 429,
+        "final_url": "https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/evaluation/simpler/README.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/x-vla/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/models/modeling_xvla.py",
+        "status": 429,
+        "final_url": "https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/models/modeling_xvla.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/x-vla/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/EleutherAI/lm-evaluation-harness/blob/main/docs/task_guide.md",
+        "status": 429,
+        "final_url": "https://github.com/EleutherAI/lm-evaluation-harness/blob/main/docs/task_guide.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/llm-training-metrics/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/LatentActionPretraining/LAPA",
+        "status": 429,
+        "final_url": "https://github.com/LatentActionPretraining/LAPA",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-world-model-data/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/Physical-Intelligence/openpi/blob/215abfb217dbac7d5f1273282331b9b1866c0479/src/openpi/models/pi0_config.py",
+        "status": 429,
+        "final_url": "https://github.com/Physical-Intelligence/openpi/blob/215abfb217dbac7d5f1273282331b9b1866c0479/src/openpi/models/pi0_config.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/Physical-Intelligence/real-time-chunking-kinetix/tree/9296f31d62d5bfeb5779dcb2f9bcf71ca37f448b",
+        "status": 429,
+        "final_url": "https://github.com/Physical-Intelligence/real-time-chunking-kinetix/tree/9296f31d62d5bfeb5779dcb2f9bcf71ca37f448b",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/real-time-chunking/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/SarahWeiii/CoACD/blob/1401ce2a7ae1ed89c65ab958b48d489350c233c7/src/process.cpp",
+        "status": 429,
+        "final_url": "https://github.com/SarahWeiii/CoACD/blob/1401ce2a7ae1ed89c65ab958b48d489350c233c7/src/process.cpp",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/thesis/coacd/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/XR-Robotics",
+        "status": 429,
+        "final_url": "https://github.com/XR-Robotics",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-world-model-data/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/XR-Robotics/XRoboToolkit-Teleop-Sample-Python/blob/79e5cb8a56e3455515ce1b476e993c764ec58739/xrobotoolkit_teleop/hardware/interface/realsense.py",
+        "status": 429,
+        "final_url": "https://github.com/XR-Robotics/XRoboToolkit-Teleop-Sample-Python/blob/79e5cb8a56e3455515ce1b476e993c764ec58739/xrobotoolkit_teleop/hardware/interface/realsense.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-world-model-data/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/XR-Robotics/XRoboToolkit-Teleop-Sample-Python/tree/79e5cb8a56e3455515ce1b476e993c764ec58739",
+        "status": 429,
+        "final_url": "https://github.com/XR-Robotics/XRoboToolkit-Teleop-Sample-Python/tree/79e5cb8a56e3455515ce1b476e993c764ec58739",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-world-model-data/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/XR-Robotics/XRoboToolkit-Unity-Client",
+        "status": 429,
+        "final_url": "https://github.com/XR-Robotics/XRoboToolkit-Unity-Client",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-world-model-data/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/alibaba-damo-academy/RynnBrain",
+        "status": 429,
+        "final_url": "https://github.com/alibaba-damo-academy/RynnBrain",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/rynnbrain/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/alibaba-damo-academy/RynnScale/tree/aaedf103bff9ff2ede3c6c900537b15a49801dd9",
+        "status": 429,
+        "final_url": "https://github.com/alibaba-damo-academy/RynnScale/tree/aaedf103bff9ff2ede3c6c900537b15a49801dd9",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/rynnbrain/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/allenai/molmo-motion/blob/61f5b21b694ad8f854ec7ecd2400005acc73f685/src/molmo_motion/data/trajectory_3d_dataset.py",
+        "status": 429,
+        "final_url": "https://github.com/allenai/molmo-motion/blob/61f5b21b694ad8f854ec7ecd2400005acc73f685/src/molmo_motion/data/trajectory_3d_dataset.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/allenai/molmo-motion/blob/61f5b21b694ad8f854ec7ecd2400005acc73f685/src/molmo_motion/util.py",
+        "status": 429,
+        "final_url": "https://github.com/allenai/molmo-motion/blob/61f5b21b694ad8f854ec7ecd2400005acc73f685/src/molmo_motion/util.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/allenai/molmo-motion/tree/61f5b21b694ad8f854ec7ecd2400005acc73f685",
+        "status": 429,
+        "final_url": "https://github.com/allenai/molmo-motion/tree/61f5b21b694ad8f854ec7ecd2400005acc73f685",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/allenai/molmobot",
+        "status": 429,
+        "final_url": "https://github.com/allenai/molmobot",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/ai/gen-1-5/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Fai%2Fgen-1-5%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/gen-1-5/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/ai/internvl-3-5/index.md",
+        "status": 429,
+        "final_url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/ai/internvl-3-5/index.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/internvl-3-5/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/ai/llm-training-metrics/index.md",
+        "status": 429,
+        "final_url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/ai/llm-training-metrics/index.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/llm-training-metrics/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/ai/ppo-dpo-grpo/index.md",
+        "status": 429,
+        "final_url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/ai/ppo-dpo-grpo/index.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/ppo-dpo-grpo/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/robotics/control/robot-filters/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Frobotics%2Fcontrol%2Frobot-filters%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/robotics/control/robot-filters/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/robotics/dynamics/parameter-identification/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Frobotics%2Fdynamics%2Fparameter-identification%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/robotics/dynamics/parameter-identification/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/robotics/kinematics/jacobian/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Frobotics%2Fkinematics%2Fjacobian%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/robotics/kinematics/jacobian/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/robotics/kinematics/kinematics-introduction.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Frobotics%2Fkinematics%2Fkinematics-introduction.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/robotics/kinematics/kinematics-introduction.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/robotics/kinematics/pinocchio/index.md",
+        "status": 429,
+        "final_url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/robotics/kinematics/pinocchio/index.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/robotics/kinematics/pinocchio/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/robotics/kinematics/pytorch/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Frobotics%2Fkinematics%2Fpytorch%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/robotics/kinematics/pytorch/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Frobotics%2Fkinematics%2Fseven-dof-kinematics%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/robotics/kinematics/seven-dof-kinematics/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Frobotics%2Fkinematics%2Fsix-dof-kinematics%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/robotics/kinematics/six-dof-kinematics/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/robotics/workspace/whole-workspace/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Frobotics%2Fworkspace%2Fwhole-workspace%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/robotics/workspace/whole-workspace/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/thesis/being_0/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Fthesis%2Fbeing_0%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/thesis/being_0/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/thesis/coacd/index.md",
+        "status": 429,
+        "final_url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/thesis/coacd/index.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/thesis/coacd/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/trajectory/ruckig/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Ftrajectory%2Fruckig%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/trajectory/ruckig/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/trajectory/toppra/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Ftrajectory%2Ftoppra%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/trajectory/toppra/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/unicode/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Funicode%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/unicode/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/vscode/debug/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Fvscode%2Fdebug%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/vscode/debug/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/vscode/gdm/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Fvscode%2Fgdm%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/vscode/gdm/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/vscode/two-env/index.md",
+        "status": 429,
+        "final_url": "https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fchase6305%2Fchase6305.github.io%2Fedit%2Fmain%2Fcontent%2Fposts%2Fvscode%2Ftwo-env%2Findex.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/vscode/two-env/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/xcb/post_2.md",
+        "status": 429,
+        "final_url": "https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/xcb/post_2.md",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/xcb/post_2.md"
+        ]
+      },
+      {
+        "url": "https://github.com/ethz-asl/kalibr/wiki/IMU-Noise-Model",
+        "status": 429,
+        "final_url": "https://github.com/ethz-asl/kalibr/wiki/IMU-Noise-Model",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/robotics/control/robot-filters/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/docs/source/inference.mdx",
+        "status": 429,
+        "final_url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/docs/source/inference.mdx",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/lerobot-act/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/pyproject.toml",
+        "status": 429,
+        "final_url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/pyproject.toml",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/lerobot-act/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/configs/dataset.py",
+        "status": 429,
+        "final_url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/configs/dataset.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/lerobot-act/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/configs/train.py",
+        "status": 429,
+        "final_url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/configs/train.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/lerobot-act/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/datasets/factory.py",
+        "status": 429,
+        "final_url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/datasets/factory.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/lerobot-act/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/datasets/utils.py",
+        "status": 429,
+        "final_url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/datasets/utils.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/lerobot-act/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/pretrained.py",
+        "status": 429,
+        "final_url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/pretrained.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/lerobot-act/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/utils.py",
+        "status": 429,
+        "final_url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/utils.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/lerobot-act/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/processor/normalize_processor.py",
+        "status": 429,
+        "final_url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/processor/normalize_processor.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/lerobot-act/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/robots/so_follower/so_follower.py",
+        "status": 429,
+        "final_url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/robots/so_follower/so_follower.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/lerobot-act/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/scripts/lerobot_record.py",
+        "status": 429,
+        "final_url": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/scripts/lerobot_record.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/lerobot-act/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/huggingface/transformers/blob/v4.55.0/src/transformers/models/internvl/modeling_internvl.py",
+        "status": 429,
+        "final_url": "https://github.com/huggingface/transformers/blob/v4.55.0/src/transformers/models/internvl/modeling_internvl.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/internvl-3-5/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/lucidrains/light-loco-parkour",
+        "status": 429,
+        "final_url": "https://github.com/lucidrains/light-loco-parkour",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/light-loco-parkour/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/tests/test_light_loco.py",
+        "status": 429,
+        "final_url": "https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/tests/test_light_loco.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/light-loco-parkour/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/validate_pendulum.py",
+        "status": 429,
+        "final_url": "https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/validate_pendulum.py",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/light-loco-parkour/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/openvla/openvla",
+        "status": 429,
+        "final_url": "https://github.com/openvla/openvla",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://github.com/tonyzhaozh/act",
+        "status": 429,
+        "final_url": "https://github.com/tonyzhaozh/act",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/lerobot-act/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/allenai/MolmoMotion-4B-H1-F32",
+        "status": 429,
+        "final_url": "https://huggingface.co/allenai/MolmoMotion-4B-H1-F32",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/allenai/MolmoMotion-4B-H3-F30",
+        "status": 429,
+        "final_url": "https://huggingface.co/allenai/MolmoMotion-4B-H3-F30",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/allenai/MolmoMotion-4B-H3-F30/blob/3f5e790a511ff2cdf21c8d2a14cb4d8409c94629/config.yaml",
+        "status": 429,
+        "final_url": "https://huggingface.co/allenai/MolmoMotion-4B-H3-F30/blob/3f5e790a511ff2cdf21c8d2a14cb4d8409c94629/config.yaml",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/allenai/MolmoMotion-4B-H3-F30/tree/3f5e790a511ff2cdf21c8d2a14cb4d8409c94629",
+        "status": 429,
+        "final_url": "https://huggingface.co/allenai/MolmoMotion-4B-H3-F30/tree/3f5e790a511ff2cdf21c8d2a14cb4d8409c94629",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/datasets/allenai/PointMotionBench",
+        "status": 429,
+        "final_url": "https://huggingface.co/datasets/allenai/PointMotionBench",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/datasets/allenai/molmo-motion-1m",
+        "status": 429,
+        "final_url": "https://huggingface.co/datasets/allenai/molmo-motion-1m",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/docs/text-generation-inference/en/reference/metrics",
+        "status": 429,
+        "final_url": "https://huggingface.co/docs/text-generation-inference/en/reference/metrics",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/llm-training-metrics/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/docs/trl/v0.24.0/en/reward_trainer",
+        "status": 429,
+        "final_url": "https://huggingface.co/docs/trl/v0.24.0/en/reward_trainer",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/llm-training-metrics/index.md"
+        ]
+      },
+      {
+        "url": "https://pypi.org/project/numpy/2.3.5/",
+        "status": 503,
+        "final_url": "https://pypi.org/project/numpy/2.3.5/",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/planner/to_mpc_wbc/index.md"
+        ]
+      },
+      {
+        "url": "https://www.mathworks.com/help/dsp/ref/dsp.lmsfilter-system-object.html",
+        "status": 403,
+        "final_url": "https://www.mathworks.com/help/dsp/ref/dsp.lmsfilter-system-object.html",
+        "method": "GET",
+        "articles": [
+          "content/posts/robotics/control/robot-filters/index.md"
+        ]
+      },
+      {
+        "url": "https://www.mathworks.com/help/dsp/ref/dsp.rlsfilter-system-object.html",
+        "status": 403,
+        "final_url": "https://www.mathworks.com/help/dsp/ref/dsp.rlsfilter-system-object.html",
+        "method": "GET",
+        "articles": [
+          "content/posts/robotics/control/robot-filters/index.md"
+        ]
+      },
+      {
+        "url": "https://www.mathworks.com/help/signal/ref/hampel.html",
+        "status": 403,
+        "final_url": "https://www.mathworks.com/help/signal/ref/hampel.html",
+        "method": "GET",
+        "articles": [
+          "content/posts/robotics/control/robot-filters/index.md"
+        ]
+      },
+      {
+        "url": "https://www.pi.website/blog/openpi",
+        "status": 429,
+        "final_url": "https://www.pi.website/blog/openpi",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://www.pi.website/blog/pi0",
+        "status": 429,
+        "final_url": "https://www.pi.website/blog/pi0",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://www.pi.website/blog/pi05",
+        "status": 429,
+        "final_url": "https://www.pi.website/blog/pi05",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://www.pi.website/blog/pi07",
+        "status": 429,
+        "final_url": "https://www.pi.website/blog/pi07",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://www.pi.website/blog/pistar06",
+        "status": 429,
+        "final_url": "https://www.pi.website/blog/pistar06",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md",
+          "content/posts/ai/vla-world-model-data/index.md"
+        ]
+      },
+      {
+        "url": "https://www.pi.website/download/pi05.pdf",
+        "status": 429,
+        "final_url": "https://www.pi.website/download/pi05.pdf",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://www.pi.website/download/pi05_KI.pdf",
+        "status": 429,
+        "final_url": "https://www.pi.website/download/pi05_KI.pdf",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://www.pi.website/download/pi07.pdf",
+        "status": 429,
+        "final_url": "https://www.pi.website/download/pi07.pdf",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://www.pi.website/download/pistar06.pdf",
+        "status": 429,
+        "final_url": "https://www.pi.website/download/pistar06.pdf",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://www.pi.website/research/fast",
+        "status": 429,
+        "final_url": "https://www.pi.website/research/fast",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://www.pi.website/research/human_to_robot",
+        "status": 429,
+        "final_url": "https://www.pi.website/research/human_to_robot",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-world-model-data/index.md"
+        ]
+      },
+      {
+        "url": "https://www.pi.website/research/knowledge_insulation",
+        "status": 429,
+        "final_url": "https://www.pi.website/research/knowledge_insulation",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://www.pi.website/research/memory",
+        "status": 429,
+        "final_url": "https://www.pi.website/research/memory",
+        "method": "HEAD",
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://x-io.co.uk/downloads/madgwick_internal_report.pdf",
+        "status": 403,
+        "final_url": "https://x-io.co.uk/downloads/madgwick_internal_report.pdf",
+        "method": "GET",
+        "articles": [
+          "content/posts/robotics/control/robot-filters/index.md"
+        ]
+      }
+    ],
+    "fragment_checks": [
+      {
+        "url": "https://arxiv.org/html/2202.00512v2#S4",
+        "http_status": 200,
+        "fragment_found": true
+      },
+      {
+        "url": "https://arxiv.org/html/2402.03300v3#S4.SS1.SSS1",
+        "http_status": 200,
+        "fragment_found": true
+      },
+      {
+        "url": "https://spinningup.openai.com/en/latest/algorithms/ppo.html#pseudocode",
+        "http_status": 200,
+        "fragment_found": true
+      },
+      {
+        "url": "https://arxiv.org/html/2402.03300v3#S4.SS1",
+        "http_status": 200,
+        "fragment_found": true
+      },
+      {
+        "url": "https://arxiv.org/html/2305.18290v3#S4",
+        "http_status": 200,
+        "fragment_found": true
+      },
+      {
+        "url": "https://cmake.org/cmake/help/latest/module/ExternalProject.html#build-step-options",
+        "http_status": 200,
+        "fragment_found": true
+      },
+      {
+        "url": "https://www.open3d.org/docs/release/tutorial/pipelines/icp_registration.html#point-to-plane-icp",
+        "http_status": 200,
+        "fragment_found": false,
+        "corrected_url": "https://www.open3d.org/docs/release/tutorial/pipelines/icp_registration.html#Point-to-plane-ICP",
+        "corrected_fragment_found": true,
+        "verification": "GET HTML section id matched; upstream link 696 points to this section"
+      },
+      {
+        "url": "https://github.com/stack-of-tasks/pinocchio/blob/v4.1.0/include/pinocchio/src/multibody/fwd.hxx#L44-L59",
+        "status": "line range; source browsed separately"
+      }
+    ],
+    "site_fragment_checks": [
+      {
+        "url": "https://arxiv.org/html/2202.00512v2#S4",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/diffusion-models/index.md"
+        ]
+      },
+      {
+        "url": "https://docs.pytorch.org/docs/2.8/distributed.fsdp.fully_shard.html#torch.distributed.fsdp.fully_shard",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/distributed-training-memory/index.md"
+        ]
+      },
+      {
+        "url": "https://docs.pytorch.org/docs/2.8/notes/autograd.html#locally-disabling-gradient-computation",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/distributed-training-memory/index.md"
+        ]
+      },
+      {
+        "url": "https://docs.pytorch.org/docs/2.8/notes/autograd.html#setting-requires-grad",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/internvl-3-5/index.md"
+        ]
+      },
+      {
+        "url": "https://docs.pytorch.org/docs/2.8/generated/torch.nn.parallel.DistributedDataParallel.html#torch.nn.parallel.DistributedDataParallel.no_sync",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/distributed-training-memory/index.md"
+        ]
+      },
+      {
+        "url": "https://docs.pytorch.org/docs/2.8/data.html#torch.utils.data.distributed.DistributedSampler",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/distributed-training-memory/index.md"
+        ]
+      },
+      {
+        "url": "https://docs.pytorch.org/docs/2.8/distributed.html#torch.distributed.broadcast",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/distributed-training-memory/index.md"
+        ]
+      },
+      {
+        "url": "https://deepspeed.readthedocs.io/en/stable/zero3.html#deepspeed.runtime.zero.config.DeepSpeedZeroConfig",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/distributed-training-memory/index.md"
+        ]
+      },
+      {
+        "url": "https://docs.pytorch.org/docs/2.8/notes/cuda.html#memory-management",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/distributed-training-memory/index.md"
+        ]
+      },
+      {
+        "url": "https://web.casadi.org/docs/#nonlinear-programming",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/casadi/index.md"
+        ]
+      },
+      {
+        "url": "https://cmake.org/cmake/help/latest/module/ExternalProject.html#build-step-options",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/cmake/ExternalProject_Add/index.md"
+        ]
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc8085.html#section-3.2",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/network-protocol/c++_udp.md"
+        ]
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1982.html#section-3.2",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/network-protocol/c++_udp.md"
+        ]
+      },
+      {
+        "url": "https://www.open3d.org/docs/release/tutorial/pipelines/icp_registration.html#Point-to-plane-ICP",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/open3d/introduction/index.md"
+        ]
+      },
+      {
+        "url": "https://docs.python.org/3/library/string.html#formatspec",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/python/f_string/index.md"
+        ]
+      },
+      {
+        "url": "https://docs.python.org/3/library/importlib.html#importlib.util.find_spec",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/python/version/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2503.12533v1#S5",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/thesis/being_0/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2205.02961#S3",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/thesis/coacd/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2205.02961#S4",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/thesis/coacd/index.md"
+        ]
+      },
+      {
+        "url": "https://docs.python.org/3/library/codecs.html#incremental-encoding-and-decoding",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/unicode/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2602.14979v1#S2",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/rynnbrain/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2607.17977v2#S4",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/rynnbrain/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2607.17977v2#S4.SS2",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/rynnbrain/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2607.17977v2#S4.SS3",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/rynnbrain/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2607.17977v2#S4.SS4",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/rynnbrain/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2607.17977v2#S5.SS6",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/rynnbrain/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2508.18265v2#S2",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/internvl-3-5/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2508.18265v2#S2.SS2",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/internvl-3-5/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2508.18265v2#S3.SS15",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/internvl-3-5/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/OpenGVLab/InternVL3_5-8B#inference-with-transformers",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/internvl-3-5/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/OpenGVLab/InternVL3_5-8B#cascade-reinforcement-learning",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/internvl-3-5/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/OpenGVLab/InternVL3_5-8B#thinking-mode",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/internvl-3-5/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/OpenGVLab/InternVL3_5-8B#test-time-scaling",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/internvl-3-5/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2507.18071v2#S4.SS1",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/internvl-3-5/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/OpenGVLab/InternVL3_5-8B-Flash#decoupled-vision-language-deployment",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/internvl-3-5/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/OpenGVLab/InternVL3_5-8B-Flash#quick-start",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/internvl-3-5/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/OpenGVLab/InternVL3_5-8B-HF#finetune",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/internvl-3-5/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2402.03300v3#S4.SS1.SSS1",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/ppo-dpo-grpo/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2402.03300v3#S4.SS1",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/ppo-dpo-grpo/index.md"
+        ]
+      },
+      {
+        "url": "https://spinningup.openai.com/en/latest/algorithms/ppo.html#pseudocode",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/ppo-dpo-grpo/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2305.18290v3#S4",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/ppo-dpo-grpo/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2510.10274v1#S2",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/x-vla/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2510.10274v1#S4.SS2.SSS2",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/x-vla/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2510.10274v1#S4.SS2.SSS1",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/x-vla/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/docs/transformers/main_classes/optimizer_schedules#transformers.get_cosine_schedule_with_warmup",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/x-vla/index.md"
+        ]
+      },
+      {
+        "url": "https://docs.nvidia.com/nemo/megatron-bridge/latest/apidocs/bridge/bridge.training.config.html#bridge.training.config.SchedulerConfig.max_steps",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/x-vla/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2410.11758v2#S3",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/vla-world-model-data/index.md"
+        ]
+      },
+      {
+        "url": "https://huggingface.co/docs/lerobot/main/en/lerobot-dataset-v3#format-design",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/vla-world-model-data/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2307.15818v1#S3",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2307.15818v1#S3.SS2",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2307.15818v1#A2",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2307.15818v1#S3.SS3",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2410.24164v1#S4",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2410.24164v1#A1.SS2",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2410.24164v1#A1.SS4",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2410.24164v1#S5",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2410.24164v1#S5.SS1",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2410.24164v1#S6.SS1",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2410.24164v1#A1.SS3",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2410.24164v1#A1.SS5",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/vla-evolution/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2606.18558v1#A2.SS4",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2606.18558v1#A2.T3",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2606.18558v1#A4.SS3",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2606.18558v1#S4.T1",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2606.18558v1#A4.T6",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2606.18558v1#A6.SS1",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2606.18558v1#S4.SS2",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2606.18558v1#S4.SS3",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2606.18558v1#S4.T2",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2606.18558v1#A6.T8",
+        "http_status": 200,
+        "fragment_found": true,
+        "articles": [
+          "content/posts/ai/molmo-motion/index.md"
+        ]
+      }
+    ],
+    "site_fragment_corrections": [
+      {
+        "old_url": "https://huggingface.co/OpenGVLab/InternVL3_5-8B#post-training",
+        "new_url": "https://huggingface.co/OpenGVLab/InternVL3_5-8B#cascade-reinforcement-learning",
+        "reason": "Model card section is Cascade Reinforcement Learning; post-training ID is absent.",
+        "http_status": 200,
+        "new_fragment_found": true
+      }
+    ]
+  },
+  "final_editorial_check": {
+    "new_figures_bytes": 763417,
+    "source_hashes_match": true,
+    "site_fragment_targets_found": 70,
+    "site_fragment_pages": 36,
+    "final_article_count": 14,
+    "substantive_articles": 13,
+    "citation_only_articles": 1,
+    "point_shift_correction": {
+      "displacement_sensor_to_control_m": [
+        0,
+        0,
+        0.1
+      ],
+      "force_N": [
+        10,
+        0,
+        0
+      ],
+      "sensor_moment_Nm": [
+        0,
+        1,
+        0
+      ],
+      "control_moment_Nm": [
+        0,
+        0,
+        0
+      ],
+      "convention": "mu_control = mu_sensor - r cross f"
+    },
+    "own_preview_count_stopped": 8,
+    "preserved_preview_pids": [
+      77011,
+      2975093
+    ]
+  },
+  "image_provenance": [
+    {
+      "date": "2026-09-28",
+      "method": "built-in image_gen",
+      "prompt": "docs/image-generation/jacobian-reference-points-20260928-prompt.txt",
+      "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-e69dde0b-e6a3-44cb-a595-791e4906f303.png",
+      "asset": "content/posts/robotics/kinematics/jacobian/assets/reference-points.webp",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "sha256": "6007ba7ce985ecb376b292dfb982bb0e668c1e19943d4da3b1584c9df258a745",
+      "review": "Same pose in all three panels. LOCAL rotates the tool axes at P, LWA keeps P and world axes, WORLD uses O and world axes. The origin shift is a representation change, not physical motion.",
+      "conversion": "WebP quality 90, method 6; no diagram edits outside image_gen",
+      "prompt_kind": "Design specification; the submitted request used a condensed form of this specification."
+    },
+    {
+      "mode": "generate",
+      "tool": "image_gen.imagegen",
+      "prompt": "docs/image-generation/icp-observability-20260928-prompt.txt",
+      "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-b3c39106-1832-4f97-aba5-15ee081248d2.png",
+      "asset": "content/posts/open3d/introduction/assets/icp-observability.webp",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "conversion": "RGB WebP quality=90 method=6; original retained",
+      "sha256": "b301859ebe3d9b9d7eb1f5f5731d977b9f219d0623eff72f79a2b729b06444bb",
+      "review": "Verified three tangent freedoms on one plane, differently oriented normals at a corner; local residual geometry only."
+    },
+    {
+      "date": "2026-09-28",
+      "method": "built-in image_gen",
+      "mode": "generate, then edit",
+      "prompt": "docs/image-generation/contact-force-directions-20260928-prompt.txt",
+      "edit_prompt": "docs/image-generation/contact-force-directions-20260928-edit.txt",
+      "original_generation": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-9ffaf648-d62c-4041-b14c-4fff3200ccb6.png",
+      "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-af7e38fd-15be-46e2-b788-9d0f919e1b84.png",
+      "asset": "content/posts/robotics/control/impedance-control/assets/contact-force-directions.webp",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "sha256": "0341d404cc754ee40618cb1d9769e9ee24d62b0366d3f0723961656fd1e8401a",
+      "review": "Shared +z points right. Both contact vectors start at the contact line, blue robot-on-environment points right, orange environment-on-robot points left. F_cmd and F_env balance in the illustrated gravity-compensated static scalar example.",
+      "conversion": "WebP quality 90, method 6; original outputs retained; no diagram edits outside image_gen"
+    }
+  ],
+  "limits": [
+    "No real robot execution, no paper model training, no GPU performance benchmark.",
+    "Small synthetic examples check specific equations or APIs, not general accuracy or safety.",
+    "The held-position energy budget is not a complete passivity controller.",
+    "Cluster bootstrap example does not establish nominal coverage with twenty groups.",
+    "403, 429, 503 and TLS timeouts remain unverified rather than classified as deleted resources."
+  ],
+  "new_files": [
+    {
+      "path": "content/posts/ai/diffusion-models/assets/parameterization-results.json",
+      "bytes": 2631,
+      "sha256": "3893a8b27e619a918ef1716f19d8dd30c1cd474adcc2411d85dbb9c57b08f8fb"
+    },
+    {
+      "path": "content/posts/ai/diffusion-models/assets/prediction-sensitivity.png",
+      "bytes": 85515,
+      "sha256": "2b62d62b19fa0c569ba7f693238ca87e19a4b28173449dac0907da3cd48a4f28"
+    },
+    {
+      "path": "content/posts/ai/diffusion-models/parameterization_check.py",
+      "bytes": 6730,
+      "sha256": "e613b5855d556a438ebb3b9073f3cba415beed88a0385db28a16d508cbf07711"
+    },
+    {
+      "path": "content/posts/ai/llm-training-metrics/assets/cluster-evaluation.json",
+      "bytes": 1009,
+      "sha256": "321e37e83ce25fab3b35a84a0d99b236dd9e4900ac3c6722e5a645c579b35be2"
+    },
+    {
+      "path": "content/posts/ai/llm-training-metrics/assets/cluster-evaluation.png",
+      "bytes": 112859,
+      "sha256": "5a9fd34cd475f81e1f84f768c5981fbb628de83bd98fe9f4be3febbe6e961921"
+    },
+    {
+      "path": "content/posts/ai/llm-training-metrics/cluster_eval_demo.py",
+      "bytes": 5952,
+      "sha256": "151b4d9a56dfc0956836384259e47ea4676103cf7c3fcdcac0907b192f3f844e"
+    },
+    {
+      "path": "content/posts/ai/ppo-dpo-grpo/assets/kl-gradient-results.json",
+      "bytes": 1646,
+      "sha256": "6da7e2a29e2dccff01c9201f1dc5a394de9f005689b4f2d136c2ecc1865af734"
+    },
+    {
+      "path": "content/posts/ai/ppo-dpo-grpo/assets/kl-gradients.png",
+      "bytes": 51157,
+      "sha256": "49972dddc373e6b6c6c86fac4cd78587b35fa7491f4c18649e6c06cc8bef9575"
+    },
+    {
+      "path": "content/posts/ai/ppo-dpo-grpo/kl_gradient_check.py",
+      "bytes": 4901,
+      "sha256": "cef369fedf9aa8a65e9d6f785e9da8301e0e6c1e3e2f154fb0d3960f1afe2265"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/assets/cache-mask-alignment.png",
+      "bytes": 41051,
+      "sha256": "5388ebd875d44fc7aed42105100615166a7c75bbd4978c6d3b274a98d2cfb902"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/assets/cache-mask-results.json",
+      "bytes": 1084,
+      "sha256": "59d15834695cdb8b14e03d4e0b08e3c199d7618f056428fce454d02fb428f718"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/cache_mask_check.py",
+      "bytes": 7015,
+      "sha256": "c65045eeb035790ecb343389431c572e37eb45e761f30aeba73924054b5ca111"
+    },
+    {
+      "path": "content/posts/calibration/model/assets/handeye-results.json",
+      "bytes": 1557,
+      "sha256": "ccbb6d291347b13a87fbe35ef5174de2fc99a88eb8cde0a07710a2af6a4514cf"
+    },
+    {
+      "path": "content/posts/calibration/model/handeye_conventions.py",
+      "bytes": 5700,
+      "sha256": "36b6b45a1fd9b125ad265c07fbc8261be5122a9cc5fc51d539c90640b8007ea3"
+    },
+    {
+      "path": "content/posts/cpp/gcc/assets/dual-abi-results.json",
+      "bytes": 2632,
+      "sha256": "24ecc2d8e179bd505fabda8a6506e9e2a1ee7ea8e9ce6954714192788aa09c34"
+    },
+    {
+      "path": "content/posts/cpp/gcc/dual_abi_check.py",
+      "bytes": 4213,
+      "sha256": "334ecc108d1fa7407910c28cc30653d6a60e309a4f2d2c58c4041f7848cf3224"
+    },
+    {
+      "path": "content/posts/open3d/introduction/assets/icp-observability.json",
+      "bytes": 1574,
+      "sha256": "cddc00fb9fb10830f8099780eb67dd3a9b55139ef1bc4f00b7c7e064f874b2cc"
+    },
+    {
+      "path": "content/posts/open3d/introduction/assets/icp-observability.webp",
+      "bytes": 96872,
+      "sha256": "b301859ebe3d9b9d7eb1f5f5731d977b9f219d0623eff72f79a2b729b06444bb"
+    },
+    {
+      "path": "content/posts/open3d/introduction/icp_observability.py",
+      "bytes": 6687,
+      "sha256": "90f4876cdbd8d1bfe07491d34e05b980018840a75e8e266dc3fd78360b9bd5a8"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/assets/contact-force-directions.webp",
+      "bytes": 81054,
+      "sha256": "0341d404cc754ee40618cb1d9769e9ee24d62b0366d3f0723961656fd1e8401a"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/assets/external-wrench-results.json",
+      "bytes": 2467,
+      "sha256": "c4326289fa36e702f5c23db89becc1cd7e7e27f124750c6fba87c59b4764b7fa"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/assets/nullspace-projection.json",
+      "bytes": 3851,
+      "sha256": "00de335ac9fe074a5fe5c15c69ebf010b3b67a0cdd49d324f1003fb5259c905f"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/assets/nullspace-projection.png",
+      "bytes": 94745,
+      "sha256": "4050de8ea799d9492323049e9a9356ae67afc8e29be3c466441bae106c0d8bb8"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/assets/stiffness-energy.png",
+      "bytes": 108498,
+      "sha256": "7c060e3fa86f4333045176b5de0494c27c5507e0195f18e52568ef31c03c38b5"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/assets/stiffness-results.json",
+      "bytes": 2469,
+      "sha256": "5924e551c9de4d56c71611a7f470e75a150a7722e2d118b992e30391fa278f38"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/external_wrench_check.py",
+      "bytes": 3314,
+      "sha256": "068ec3511d0011424872fe48d8f5f362996e1745a1f036de78087501e8fe0aaa"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/nullspace_projection.py",
+      "bytes": 7210,
+      "sha256": "6eccffb94c18c37bfa86b71b34629ee9d095105ae248cb9b1d41ef36c27033d8"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/stiffness_checks.py",
+      "bytes": 6139,
+      "sha256": "cfc567a4a1baab95dd3f5ca675f95829e42c5c1f2eb743eb0516419d0c869540"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/jacobian/assets/frame-conventions.json",
+      "bytes": 2014,
+      "sha256": "f37b17faa37958ccd7f375888e0d63a053a01763e38021ece532ee22bb9c6652"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/jacobian/assets/reference-points.webp",
+      "bytes": 91666,
+      "sha256": "6007ba7ce985ecb376b292dfb982bb0e668c1e19943d4da3b1584c9df258a745"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/jacobian/frame_conventions.py",
+      "bytes": 6953,
+      "sha256": "f308f19ac0325ef396d020c7c2d8e5d820884f6218d4543cd25b0185fbc8d487"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pinocchio/assets/ik-validation.json",
+      "bytes": 1076,
+      "sha256": "c87d9454883056ea18c9a6bfe791220cecbd04f351ac94761bf450f0dfb203c5"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pinocchio/frame_ik.py",
+      "bytes": 5540,
+      "sha256": "6ae76c3d29ecca7a8aebc32c7c00f76c96d921398fa4e12e62b2f5000e60f31b"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pinocchio/ik_validation.py",
+      "bytes": 5644,
+      "sha256": "b9df01832e987ea7871c0cfeda88d50f753dd3c376c68c296c6eb1a01dc72c12"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pytorch/assets/gradient-results.json",
+      "bytes": 1649,
+      "sha256": "0ffe118d4f15b97bfecb86c699445f60f32aa637095dfcf0d25fa972b10d4a0a"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pytorch/check_ik.py",
+      "bytes": 2514,
+      "sha256": "be146ddaef15c69bdc7eb3e0800d17029982685fddc31dc6b40c87f8813716ce"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pytorch/gradient_check.py",
+      "bytes": 4950,
+      "sha256": "cb5c77f5e6819b41128098341f86e7ce004edf9d04c6b8a4eeff7cc76cc62de4"
+    },
+    {
+      "path": "docs/image-generation/contact-force-directions-20260928-edit.txt",
+      "bytes": 950,
+      "sha256": "82ecc0687c2223113c0608899affd06c3eeff82a0d7aba9062c8002448cbe2bc"
+    },
+    {
+      "path": "docs/image-generation/contact-force-directions-20260928-prompt.txt",
+      "bytes": 2254,
+      "sha256": "c4731b21ca4102e5001519b4c03a6cd2b2a5cd558b308cd227e3fda0f70fa625"
+    },
+    {
+      "path": "docs/image-generation/contact-force-directions-20260928.json",
+      "bytes": 1127,
+      "sha256": "2d3e29f263fd04a2d9e330c8a40bbdf5085eb05f93ed21f0cd6290fa988442f5"
+    },
+    {
+      "path": "docs/image-generation/icp-observability-20260928-prompt.txt",
+      "bytes": 2053,
+      "sha256": "fb9523d3a3ad432b678f5176f1fe7b24be1cf87834dd4a1414ce0dddbd0d8e00"
+    },
+    {
+      "path": "docs/image-generation/icp-observability-20260928.json",
+      "bytes": 666,
+      "sha256": "e377bafcd6ab2910b7d4b15fa919186106bab2eec5848a0466fda55ccd0d77fd"
+    },
+    {
+      "path": "docs/image-generation/jacobian-reference-points-20260928-prompt.txt",
+      "bytes": 2068,
+      "sha256": "1e0f5699756a197d130bfa897fdd26cb2588fa9eb45feb17a080a6a99b0fae2c"
+    },
+    {
+      "path": "docs/image-generation/jacobian-reference-points-20260928.json",
+      "bytes": 879,
+      "sha256": "dd9ba2f39741bb9bdb1deedc0aaf8e9513cd1474e7cfeb5a4a004032507b6b1f"
+    }
+  ],
+  "modified_files": [
+    {
+      "path": "content/posts/ai/diffusion-models/index.md",
+      "bytes": 38671,
+      "sha256": "358eb9d04c2069b39f0f159c2627711ed6f14994bc8c93e7fcdbac17316fea87"
+    },
+    {
+      "path": "content/posts/ai/internvl-3-5/index.md",
+      "bytes": 53546,
+      "sha256": "d1481b591872360c37d8f0dec9b36e73dfa3e58fac20bdb96b77bbc9a7a8ebed"
+    },
+    {
+      "path": "content/posts/ai/llm-training-metrics/index.md",
+      "bytes": 74527,
+      "sha256": "5a6938705cc5c6056d309e4fc0496fc83fac1463c3decf4589834d9a03582dcf"
+    },
+    {
+      "path": "content/posts/ai/llm-training-metrics/llm-metrics-lab.zip",
+      "bytes": 10583,
+      "sha256": "e0713009c71cbd1c684b5c22c3bd7a8407f03645c47fa4e0a3f90075d9c08053"
+    },
+    {
+      "path": "content/posts/ai/ppo-dpo-grpo/README.txt",
+      "bytes": 6097,
+      "sha256": "09cb84eab8e01faff4fcf659ba92b9576c304b41078b10ecece185d1996edeee"
+    },
+    {
+      "path": "content/posts/ai/ppo-dpo-grpo/index.md",
+      "bytes": 62671,
+      "sha256": "5546a90fe1579b9c015cce6564f23802700d177b29a0144f52e98d2da8ec23fa"
+    },
+    {
+      "path": "content/posts/ai/ppo-dpo-grpo/rl-lab.zip",
+      "bytes": 20708,
+      "sha256": "84f263dc66a3b00e8f902fbe63fa9ef242a3fe3a665a16fcb16a117b0d009e7e"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/index.md",
+      "bytes": 98530,
+      "sha256": "f6d7e6177d4cbce7c4567e578a6568651f8c0e43d14ca8cb04eb148f6df5f2e9"
+    },
+    {
+      "path": "content/posts/calibration/model/index.md",
+      "bytes": 12230,
+      "sha256": "abaff49af255afa5c7e0f91311f1cbeef377feb3e31d120f2bb5736ba60c9674"
+    },
+    {
+      "path": "content/posts/cmake/ExternalProject_Add/index.md",
+      "bytes": 7880,
+      "sha256": "ba54b77cd22fc78585cc5d68224e519eb698facc042f38ab2137aa9887150cae"
+    },
+    {
+      "path": "content/posts/cpp/gcc/index.md",
+      "bytes": 7140,
+      "sha256": "ef4396c73b297616cde5ecbaa7bd7dc0449df9ddea6b9e867b51a86c00799d29"
+    },
+    {
+      "path": "content/posts/dialout/udev/index.md",
+      "bytes": 9118,
+      "sha256": "be3564785b2ea33342f8066becf6726be443a7992f5354ffa21d5cda7f12d96d"
+    },
+    {
+      "path": "content/posts/open3d/introduction/index.md",
+      "bytes": 75444,
+      "sha256": "edc323cfe16f7a3bc5b6ee3098582be30ce414882812af2f28d19754d052a634"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/index.md",
+      "bytes": 111364,
+      "sha256": "fb4c684ee704d875d168ee0aeb9a3495584d7de63c4535d89cd94a60eea3409f"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/jacobian/index.md",
+      "bytes": 28936,
+      "sha256": "373176d5456b6b89eaf4f8508fa2e9da9922d1d60dcf480b7cc0c15fd4a0f982"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pinocchio/index.md",
+      "bytes": 11607,
+      "sha256": "26e3602c3c87d25e862b1290a42b484efd34dcbb8aa9377d6ad197034a89ab43"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pytorch/index.md",
+      "bytes": 9988,
+      "sha256": "86c2bf04533683297fdc6a427e8db1ae88c0de8c6867c6fceceeed83edc472ca"
+    },
+    {
+      "path": "docs/blog-editorial-review.json",
+      "bytes": 77605,
+      "sha256": "655c37da5d598163aa9ebc0418aea1d2fc32ca42fbc8b591f7c7534d724ba871"
+    },
+    {
+      "path": "scripts/package_llm_metrics_lab.py",
+      "bytes": 3335,
+      "sha256": "bfb1e02c6bd43eaff502903ecd5fd22a520b84f5317296d279854f17db1c9248"
+    },
+    {
+      "path": "scripts/package_rl_lab.py",
+      "bytes": 3299,
+      "sha256": "29a6f6a6316669d301c127ea0f1c913a4dd4086d6d917528cb8d2f6dfe93b341"
+    },
+    {
+      "path": "scripts/test_blog_examples.py",
+      "bytes": 13334,
+      "sha256": "d72384b1849837d8ebeeba3f8c9847e9d111b45db3279d35448fc3d96db61934"
+    }
+  ],
+  "audit_directory": "/tmp/chase-blog-audit-20260928-round3-dz0jvk38",
+  "owned_previews_stopped": [
+    {
+      "cmdline": [
+        "python",
+        "-m",
+        "http.server",
+        "1361",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/tmp/chase-blog-audit-20260928-round3-dz0jvk38/browser-drafts"
+      ],
+      "pid": 3265419
+    },
+    {
+      "cmdline": [
+        "python",
+        "-m",
+        "http.server",
+        "1362",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/tmp/chase-blog-audit-20260928-round3-dz0jvk38/release-drafts"
+      ],
+      "pid": 3290225
+    },
+    {
+      "pid": 3302701,
+      "cmdline": [
+        "python",
+        "-m",
+        "http.server",
+        "1363",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/tmp/chase-blog-audit-20260928-round3-dz0jvk38/final-drafts"
+      ]
+    },
+    {
+      "pid": 3311334,
+      "cmdline": [
+        "python",
+        "-m",
+        "http.server",
+        "1364",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/tmp/chase-blog-audit-20260928-round3-dz0jvk38/final-production"
+      ]
+    },
+    {
+      "pid": 3334370,
+      "cmdline": [
+        "python",
+        "-m",
+        "http.server",
+        "1365",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/tmp/chase-blog-audit-20260928-round3-dz0jvk38/verified-drafts"
+      ]
+    },
+    {
+      "pid": 3339524,
+      "cmdline": [
+        "python",
+        "-m",
+        "http.server",
+        "1366",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/tmp/chase-blog-audit-20260928-round3-dz0jvk38/verified-production"
+      ]
+    },
+    {
+      "pid": 3370287,
+      "cmdline": [
+        "python",
+        "-B",
+        "-m",
+        "http.server",
+        "1367",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/tmp/chase-blog-audit-20260928-round3-dz0jvk38/complete-drafts"
+      ]
+    },
+    {
+      "pid": 3383707,
+      "cmdline": [
+        "python",
+        "-B",
+        "-m",
+        "http.server",
+        "1368",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/tmp/chase-blog-audit-20260928-round3-dz0jvk38/signed-drafts"
+      ]
+    }
+  ]
+}

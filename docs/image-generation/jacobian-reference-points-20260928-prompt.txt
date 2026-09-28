@@ -1,0 +1,12 @@
+Use case: scientific-educational
+Asset type: wide robotics article diagram, readable raster figure
+Primary request: Explain three Pinocchio spatial-velocity conventions by separating reference point from expression axes.
+Style: clean technical diagram on a fully opaque pure white background, thin rounded outlines, restrained pastel blue/purple/green fills, dark navy sans-serif labels, generous spacing. Flat line drawing, no photorealism, no gradients or textures.
+Composition: Three equal side-by-side panels. In every panel repeat exactly the same simple gray two-link robot, fixed base at lower left and tool point P at upper right. Mark world origin O at the same lower-left position, and tool point P at the same upper-right position. Do not change robot pose between panels.
+Panel 1 title "LOCAL". Show colored coordinate axes at P rotated relative to page axes. Label "Point: P" and "Axes: tool".
+Panel 2 title "LOCAL_WORLD_ALIGNED" (wrap onto two lines if needed). Show colored coordinate axes at P aligned with the page: x right, y up. Label "Point: P" and "Axes: world".
+Panel 3 title "WORLD". Show colored coordinate axes at O aligned with the page: x right, y up. Label "Point: O" and "Axes: world". Draw a subtle vector from O to P labeled "p". This panel describes a spatial twist referenced at O; do not draw O physically moving or claim the fixed world frame is moving.
+Below panels show two short conceptual arrows between cards: first "Rotate axes", second "Shift reference point". These describe representation conversion only, not robot motion.
+Bottom separate note in a pale orange rounded box, verbatim: "WORLD linear part is not the tool position derivative."
+Heading, verbatim: "Same motion, different coordinates"
+Constraints: only these short English labels. No equations, extra symbols, extra labels, legends, logos, watermark, decorative background. Same O, P and robot in all panels; only highlighted coordinate triad location/orientation changes. Opaque white outside and inside the panels. High clarity when reduced to article width.

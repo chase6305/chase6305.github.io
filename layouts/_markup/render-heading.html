@@ -1,0 +1,14 @@
+{{- /* Reuse Markdown's rendered math in TOCs; never infer formulas from dollars
+  after Markdown has discarded escaping and code-span boundaries. */ -}}
+{{- if strings.Contains (string .Text) `class="katex"` -}}
+  {{- $title := .Text | replaceRE `</?a\b[^>]*>` "" | replaceRE `\s+id="[^"]*"` "" -}}
+  {{- .Page.Store.SetInMap "blogTocMathTitles" .Anchor $title -}}
+{{- end -}}
+<h{{ .Level }} data-hextra-search-id="{{ .Anchor | safeURL }}" {{- with .Attributes.class }} class="{{ . }}" {{- end }}>
+  {{- .Text | safeHTML -}}
+  {{- if gt .Level 1 -}}
+    <span class="hx:absolute hx:-mt-20" id="{{ .Anchor | safeURL }}"></span>
+    <a href="#{{ .Anchor | safeURL }}" class="subheading-anchor" aria-label="{{ (T "permalinkLabel") | default "Permalink for this section" }}"></a>
+  {{- end -}}
+</h{{ .Level }}>
+{{- /* Drop trailing newlines */ -}}

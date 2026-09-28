@@ -70,6 +70,7 @@ let ws;
   };
   await cdp("Page.enable");
   await cdp("Runtime.enable");
+  await cdp("Page.bringToFront");
   await viewport(1440, 1000);
   await navigate("/posts/");
   const articles = await evaluate("JSON.parse(document.getElementById('blog-filter-data').textContent)");
@@ -166,6 +167,7 @@ let ws;
   const collections = ["/tags/","/categories/","/archives/","/learning-paths/", "/", "/zh-cn/", "/projects/", "/zh-cn/projects/"];
   const tagURL = articles.flatMap(a=>a.tags)[0].url;
   collections.push(tagURL);
+  const tagLayouts = [];
   for (const route of collections) {
     await navigate(route);
     await viewport(390,844);
@@ -177,6 +179,23 @@ let ws;
     assert(await evaluate("document.querySelector('.hextra-hamburger-menu').getAttribute('aria-expanded')==='false'"), route);
     await viewport(1440,1000);
     assert(await evaluate("document.documentElement.scrollWidth<=innerWidth+1"), route);
+    if (route === "/tags/") {
+      const tagLinks = await evaluate("Array.from(document.querySelectorAll('.taxonomy-card')).map(a=>a.getAttribute('href'))");
+      assert.deepEqual([...tagLinks].sort(), [...new Set(articles.flatMap(a=>a.tags).map(t=>t.url))].sort());
+      assert(await evaluate("!document.querySelector('.tag-group--ungrouped') && Array.from(document.querySelectorAll('.tag-group-nav a')).every(a=>{const target=document.getElementById(a.hash.slice(1));return target && target.closest('.tag-group').querySelector('.taxonomy-card')})"));
+      for (const width of [320,390,1440]) {
+        await viewport(width, width<768 ? 844 : 1000);
+        for (const theme of ["light","dark","warm"]) {
+          await evaluate("document.querySelector('[data-item=" + theme + "]').click()");
+          assert(await evaluate("document.documentElement.scrollWidth<=innerWidth+1 && Array.from(document.querySelectorAll('.tag-group-nav a')).every(a=>a.getBoundingClientRect().height>=44)"));
+          tagLayouts.push({width,theme});
+          if (width===390 || width===1440) await screenshot("tags-"+width+"-"+theme);
+        }
+      }
+      await evaluate("document.querySelector('.tag-group-nav a:last-child').click()");
+      await sleep(250);
+      assert(await evaluate("location.hash===document.querySelector('.tag-group-nav a:last-child').hash && document.querySelector(location.hash).getBoundingClientRect().top>=0"));
+    }
   }
   if (draftCount) {
     await navigate(articles.find(a=>a.draft).url);
@@ -186,7 +205,7 @@ let ws;
   assert.equal(exceptions.length,0,JSON.stringify(exceptions));
   const report = {articles:articles.length,drafts:draftCount,crossPageSearch:true,
     shareableURL:true,queryStates:states.length,ime:true,history:true,literalQuery:true,
-    noJavaScript:true,malformedDataFallback:true,keyboardControls:true,collections,layouts,exceptions};
+    noJavaScript:true,malformedDataFallback:true,keyboardControls:true,collections,layouts,tagLayouts,exceptions};
   fs.writeFileSync(path.join(output,"results.json"),JSON.stringify(report,null,2));
   console.log(JSON.stringify(report,null,2));
   await cdp("Page.close");

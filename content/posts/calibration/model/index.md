@@ -1,7 +1,7 @@
 ---
 title: '关于手眼标定的数学模型及标定流程'
 date: 2025-02-26
-lastmod: 2026-09-05
+lastmod: 2026-09-28
 draft: false
 tags: ["Calibration", "Hand-Eye Calibration"]
 categories: ["机器人技术"]
@@ -87,6 +87,28 @@ $$
 
 常见手眼方法包括 Tsai–Lenz、Park–Martin、Horaud、Andreff 和 Daniilidis。选择方法后仍需验证采样的可观测性、噪声敏感性和留出集残差。
 
+### 导入成功，还要检查接口是否存在
+
+`import cv2` 成功只说明 Python 找到了一个可加载的模块。遇到 `AttributeError: module 'cv2' has no attribute 'calibrateHandEye'`，先记录实际解释器、模块位置与接口能力：
+
+```bash
+python -c "import sys, cv2; print(sys.executable); print(cv2.__version__, cv2.__file__); print('calibrateHandEye:', hasattr(cv2, 'calibrateHandEye'))"
+python -m pip show opencv-python opencv-python-headless opencv-contrib-python opencv-contrib-python-headless
+```
+
+这不一定是函数名拼错。OpenCV 上游曾记录 [5.0.0.93 Python 包缺少该绑定的问题](https://github.com/opencv/opencv/issues/29565)。排查时以当前包实际暴露的接口为准，不能据此推断所有 5.x 版本都不可用。四种 OpenCV wheel 都提供 `cv2` 命名空间，同一环境应选择其中一种；不要为了补一个函数而把它们叠装。
+
+下面的独立环境用于复现本文无界面的数值示例，不影响已有机器人项目。固定版本便于比较结果；需要 GUI 时应另外选择带 GUI 的包。
+
+```bash
+python3 -m venv .venv-handeye
+. .venv-handeye/bin/activate
+python -m pip install "numpy==2.2.6" "opencv-python-headless==4.13.0.92"
+python -m pip check
+```
+
+`pip check` 检查声明的依赖关系，不能代替下面的合成位姿测试。后者才检查函数能否调用、输入方向是否一致，以及输出是否满足闭合关系。
+
 
 ## 7. 用合成位姿验证接口与乘法顺序
 
@@ -95,6 +117,12 @@ $$
 ```python
 import cv2
 import numpy as np
+
+if not hasattr(cv2, "calibrateHandEye"):
+    raise RuntimeError(
+        f"OpenCV {cv2.__version__} at {cv2.__file__} lacks calibrateHandEye; "
+        "check the installed wheel before changing the calibration equations."
+    )
 
 
 def transform(rotvec, translation):
@@ -149,6 +177,48 @@ print("held-out rotation error [rad]:", max(rotation_errors))
 ```
 
 只有将真实的同步机器人位姿和视觉观测填入 `G`、`C` 后，才进入测量误差问题。真实数据通常达不到此处的无噪声容差，也不应为了让测试通过而反复剔除留出集。上例的虚拟姿态只保证代数成立，没有模拟标定板是否在视野内。
+
+### 7.1 Eye-to-Hand 的两条等价接口路径 {#eye-to-hand-api}
+
+对于第 3 节的 $G_iZ=XC_i$，其中 $X={}^{b}T_c$、$Z={}^{g}T_t$，先整理成 `calibrateHandEye` 所求的“左变换 × 未知量 × 右变换 = 常量”形式：
+
+| 目标 | 整理后的闭合式 | API 第一组位姿 | API 第二组位姿 | 返回量 |
+| --- | --- | --- | --- | --- |
+| 直接求相机在基座中的外参 | $G_i^{-1}XC_i=Z$ | $G_i^{-1}$ | $C_i$ | $X={}^{b}T_c$ |
+| 先求标定板的安装变换 | $G_iZC_i^{-1}=X$ | $G_i$ | $C_i^{-1}$ | $Z={}^{g}T_t$ |
+
+第二条路径再用 $X=G_iZC_i^{-1}$ 恢复相机外参。两种调用都在复用函数的数学形式，所以不能继续按参数名 `gripper2base`、返回名 `cam2gripper` 的字面含义解释所有输入输出；应以表中的坐标方向为准。也不能在两组输入上同时随意求逆。
+
+[handeye_conventions.py](handeye_conventions.py) 使用 24 个已知机器人位姿，其中 18 个拟合、6 个留出，独立验证 Eye-in-Hand 及上述两条 Eye-to-Hand 路径。在 OpenCV 4.13.0 的无噪声算例中，两条 Eye-to-Hand 路径的矩阵元素最大差约 $7.22\times10^{-16}$，留出闭合关系也达到浮点误差量级。它证明接口和乘法顺序一致，不能当作实机定位精度。[OpenCV 的手眼方程与接口说明](https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html)
+
+与前面的安装环境一致，执行 `python handeye_conventions.py` 可得到[结果记录](assets/handeye-results.json)。脚本不读取相机、不连接机器人，也未模拟标定板能否被实际看见。
+
+### 7.2 多拍几张，并不一定消除退化 {#handeye-translation-observability}
+
+从 $AX=XB$ 的平移部分得到：
+
+$$
+(R_A-I)t_X=R_Xt_B-t_A.
+$$
+
+即使暂时把 $R_X$ 当作已知，恢复 $t_X$ 仍需要将多组 $R_A-I$ 堆叠后的矩阵具有足够秩。上面的脚本比较三种无噪声采样：
+
+| 机器人姿态变化 | 平移子问题的秩 | 不能确定的量 |
+| --- | ---: | --- |
+| 只有平移，所有姿态旋转相同 | 0 | 三个平移分量 |
+| 只绕同一 z 轴改变姿态 | 2 | 沿共同旋转轴的平移 |
+| 绕多个不同轴充分改变姿态 | 3（本例） | 本例平移子问题没有严格零方向 |
+
+这里的秩只描述固定 $R_X$ 后的平移子问题，不是整个旋转与平移联合估计的自由度计数。实际数据还要看最小奇异值和噪声尺度，不能把“数值秩为 3”当作精度保证。
+
+更直观地，令 $D$ 是沿 z 轴平移 10 cm 的变换，同时把 Eye-in-Hand 候选解改成
+$X'=DX$、固定标定板位姿改成 $Y'=DY$。只要采样的 $G_i$ 与 $D$ 可交换，就有：
+
+$$G_iX'C_i=G_iDXC_i=DG_iXC_i=DY=Y'.$$
+
+因此，在纯平移或只绕共同 z 轴旋转的采样中，**外参错了 10 cm，所有训练闭合残差仍可接近零**。脚本得到的残差分别约 $3.19\times10^{-16}$ m 与 $2.50\times10^{-16}$ m；换成多轴旋转后，同一错误候选产生约 0.101 m 的最大闭合误差，才被区分出来。
+
+这也解释了留出集该怎样设计：如果留出的姿态仍沿同一个退化运动族，低残差不能揭示该自由度。需要增加新的旋转激励或独立外部几何约束，而不只是把同类样本数从几十增加到几百。这里假定标定板位姿 $Y$ 也未知；若它已被独立准确测定，约束问题本身就改变了。
 
 ## 阅读自测与验收
 

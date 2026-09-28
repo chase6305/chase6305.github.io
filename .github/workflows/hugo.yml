@@ -52,6 +52,15 @@ jobs:
           hugo \
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
+      - name: Validate built site and article inventory
+        run: |
+          python3 -B scripts/validate_blog.py \
+            --public public \
+            --python-snippets \
+            --structured-snippets \
+            --strict-math
+          node scripts/test_blog_filter.cjs public
+          python3 -B scripts/test_blog_toc.py
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -1,7 +1,7 @@
 ---
 title: '强化学习基础'
 date: 2025-12-08
-lastmod: 2026-09-10
+lastmod: 2026-09-28
 draft: false
 tags: ["Reinforcement Learning", "Artificial Intelligence"]
 categories: ["人工智能"]
@@ -527,6 +527,8 @@ $$
 
 #### 4.1 累计回报 $G_t$
 
+本节使用教材中常见的 $R_{t+1}$：它是执行 $A_t$ 后收到的奖励。后文实现与策略梯度部分把同一奖励记为 $r_t$，即 $r_t=R_{t+1}$；只是下标约定不同，并未多延迟一步。
+
 - 累计回报是从时刻 t 开始， 未来所有奖励的折扣累计和，公式为：
 $$
 G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots
@@ -591,17 +593,17 @@ $$
 - 执行当前动作后, 在进入下一个状态 $S_{t+1}$的同时,才能获得对应的奖励 $R_{t+1}$
 - 如何理解 $S_{t+1}$？
 - 当模型有关 model-base(环境转移可推算)时:通过 $P(S_{t+1} | S_t, A_t)$可知
-- 当模型无关 model-base(环境转移不可推算)时:通过下一步的真实情况采样获取 $\stackrel{-} S_{t+1}$
+- Model-free 方法不需要显式转移模型，而是从交互或已收集的数据中取得下一状态样本。
 
 ##### 4.6.2 Bellman期望方程:针对 $Q$ 值
 
 - 动作价值函数  $Q^{\pi}(s, a)$的Bellman方程为:
 $$
-Q^{\pi}(s, a) = \mathbb{E}_{s' \sim P} \left[ R_{t+1} + \gamma Q^{\pi}(S_{t+1}, A_{t+1}) \mid S_t = s, A_t = a \right]
+Q^{\pi}(s, a) = \mathbb{E}_{S_{t+1},R_{t+1},\,A_{t+1}\sim\pi(\cdot\mid S_{t+1})} \left[ R_{t+1} + \gamma Q^{\pi}(S_{t+1}, A_{t+1}) \mid S_t = s, A_t = a \right]
 $$
 
 - 含义:在策略 $\pi$下, 状态 s 的价值 = 『即时奖励 $R_{t+1}$的期望』+ 『折扣后, 转移概率 $P$给出下一步状态$S_{t+1}$通过采样选动作$A_{t+1}$的$Q$ 值的期望』
-- 与  $V$ 的联系: $V^{\pi}(s)  = \sum_a \pi(a|s) Q^{\pi}(S_{t+1}, A_{t+1})$, 可从 $Q$ 的Bellman方程推到得到  $V$ 的Bellman方程,体现了两者的递推一致性。
+- 与 $V$ 的联系是 $V^\pi(s)=\sum_a\pi(a\mid s)Q^\pi(s,a)$；求和中的状态和动作必须与左侧及求和变量一致。下一状态、随机奖励和下一动作都参与相应的期望。
 
 ##### 4.6.3 Bellman最优方程
 
@@ -628,13 +630,13 @@ V(s) \leftarrow \frac{1}{N(s)} \sum_{i=1}^{N(s)} G_t^{(i)}
 $$
 
 - 其中
-- $N(s)$ 是包含状态 $s$ 的轨迹总数,$G_t^{(i)}$ 是第 $i$ 条轨迹中状态 $s$ 对应的累积回报。
+- 若采用 first-visit MC，每回合只记录第一次访问 $s$ 的回报，$N(s)$ 是这些样本的数量。Every-visit MC 则记录每一次访问；同一回合的样本会相关，不能把访问次数混写成独立轨迹数。
 - 对于原公式
 $$
 V(s) = \mathbb{E}[G_t | S_t = s]
 $$
 
-- 我们发现这正是数学上蒙特卡洛算法,用暴力采样的方式,作为原复杂解的无偏估计。
+- 这与一般蒙特卡洛估计使用同一思路：把难以直接求的期望换成样本平均。是否无偏、如何估计误差，还要核对固定策略、访问规则、轨迹相关性和截断方式。
 - 案例
 - 求圆周率
 
@@ -680,7 +682,7 @@ for n in [1000, 10000, 100000]:
 - 求 $\pi$→ 随机点落在圆内的概率
 - 求积分 → 随机变量 $f(X)$的期望值,其中 $X$均匀分布
 - 用大量随机样本来估计这个期望值。
-- 估计的误差收敛速度是 $O(1 / \sqrt {N})$,与问题的维度无关(这是最大优点)。
+- 独立同分布且方差有限时，样本均值的标准误差是 $\sigma/\sqrt N$。指数不显含维度，但方差常数、采样成本和稀有事件概率仍可能随维度恶化；相关轨迹还会降低有效样本数。
 - 特点与适用场景
 - 优势:无偏差(仅用真实累积回报,不依赖估计值),逻辑直观,适合 “必须完成完整任务才能评估价值” 的场景(如棋类游戏、一次性决策任务)。
 - 劣势:需等待轨迹终止才能更新,学习效率低；对轨迹数量要求高(需大量完整轨迹才能让平均值收敛),不适合 “无终止状态” 的持续任务(如机器人持续导航)。
@@ -929,7 +931,7 @@ def double_q_update(q1, q2, state, action, reward, next_state,
 - 核心思想
 - 一旦S和A的组合增加,Q值表的计算和存储的开销都会很大。用深度学习网络近似Q函数,通过输入状态 s 直接预测所有动作 a 的 Q 值,解决传统Q-Learning在高维状态空间下的"维数灾难"问题。
 
-![DQN](DQN.png)
+![表格型 Q-learning 按状态动作查值，DQN 用网络输出各离散动作的 Q 值](DQN.png)
 
 - 输入维度:适应高维状态
 - 输出维度:等于离散动作空间的尺寸
@@ -989,311 +991,143 @@ y = r + γ * max Q(s', a'; θ^-)  # θ^-每N步同步一次θ → 目标稳定
 
 ## 7. 策略梯度算法(Policy Gradient, PG)
 
-- 价值学习: 先学习价值函数（Q-learning、DQN等），再根据价值选择动作。
-- 策略梯度: 直接学习一个参数化的策略函数 $\pi_{\theta}(a | s)$，输出动作的概率分布，通过梯度上升直接优化策略参数。
+价值方法先估计 $Q(s,a)$，再据此选择动作；策略梯度直接优化参数化策略 $\pi_\theta(a\mid s)$。两者都可以不学习环境模型，也都可以使用神经网络。
 
 ### 7.1 策略梯度的数学形式
 
-- 目标函数
-- 目标是最大化期望回报
+先固定本文这一节的约定：一回合执行 $T$ 次动作，$r_t$ 是执行 $a_t$ 后收到的奖励，最后到达 $s_T$。从回合起点计算的目标为
+
 $$
-      J(\theta) = \mathbb{E}_{\tau \sim {\pi}_{\theta}}(R(\tau))
+J(\theta)=\mathbb E_{\tau\sim p_\theta}\!\left[\sum_{t=0}^{T-1}\gamma^t r_t\right],
+\qquad G_t=\sum_{k=t}^{T-1}\gamma^{k-t}r_k.
 $$
 
-- 其中 $\tau$ 是轨迹 $(s_0, a_0, r_0, s_1, a_1,....)$， $R(\tau)$是轨迹的总回报。
-- 策略梯度定理
-- 梯度表达式为
+在环境转移与初始状态分布不依赖 $\theta$ 的条件下，利用因果性可得
+
 $$
-    \nabla_{\theta}J(\theta) = \mathbb{E}_{\tau \sim {\pi}_{\theta}}[\sum^T_{t=0} \nabla_{\theta}\log \pi_{\theta}(a_t | s_t) * G_t]
+\nabla_\theta J(\theta)=\mathbb E_\tau\!\left[
+\sum_{t=0}^{T-1}\gamma^t G_t\nabla_\theta\log\pi_\theta(a_t\mid s_t)
+\right].
 $$
 
-- 其中 $G_t = \sum^T_{k=t}\gamma^{k-t}r_k$是从时刻 $t$开始的累积回报。
+**这里的外层 $\gamma^t$ 不能在保持目标定义不变时直接删掉。** 如果设 $\gamma=1$，或者已把时间权重纳入状态采样分布，公式才可相应改写；许多实践还会优化另一种代理目标。对照论文或代码时，先核对目标、回报定义与采样权重这三件事。
 
 ### 7.2 强化学习梯度的反向传播
 
-- 策略梯度适用于可微的参数化策略，不要求策略一定是神经网络；反向传播是计算复杂组合函数梯度的工具。
-- 策略梯度和深度学习里面的梯度基本上是一样的，都是用来找更优解：以蒙特卡洛的思路，利用真实的样本采样来更新模型参数，计算回报对策略参数的梯度，通过梯度上升更新参数，让高回报动作出现概率增加。
+REINFORCE 用采样动作的 **log-probability** 建立梯度路径。它不需要对真实环境、电机或奖励传感器求导。一次采样得到的动作、奖励与回报，在这次策略更新中作为固定数据使用。
+
+令 $w_t=\gamma^t(G_t-b(s_t))$，梯度下降优化器可以最小化
+
+$$
+L_\pi(\theta)=-\sum_t \operatorname{stopgrad}(w_t)
+\log\pi_\theta(a_t\mid s_t).
+$$
+
+负号把“增加加权 log-probability”写成最小化问题。若基线由另一个网络估计，策略损失中的权重也应停止梯度；价值网络用自己的回归目标更新。相关 API 区别见 [PyTorch 的 score-function 与 pathwise derivative 说明](https://docs.pytorch.org/docs/stable/distributions.html)。
 
 ### 7.3 优化目标与学习信号的区别
 
-| 维度 | 监督学习优化 | 策略梯度优化 |
-|--------|--------| --------|
-|目标函数 |损失函数（可计算） | 期望回报（需估计）|
-|优化对象 | 对样本定义的预测损失 | 策略诱导的期望回报 |
-|学习信号 | 标签或监督目标，也可能带噪声 | 环境奖励，可能稀疏或延迟 |
-|数据关系 |拟合现有数据分布| 创造新的数据分布|
-|本质任务 |模式识别：发现数据中的模式 | 策略搜索：在动作空间中搜索最优路径|
+| 维度 | 监督学习 | 本节的回合式 REINFORCE |
+|---|---|---|
+| 数据 | 输入与监督目标 | 策略交互得到的状态、动作、奖励 |
+| 优化目标 | 例如预测误差的期望 | 策略诱导的期望回报 |
+| 梯度路径 | 预测损失 → 模型参数 | 加权 log-probability → 策略参数 |
+| 数据变化 | 取决于数据收集方式 | 改变策略会改变后续采集的数据 |
+| 是否需要可微环境 | 通常不涉及环境 | 不需要 |
 
-- 传统神经网络的反向传播
+<figure class="article-figure">
+{{< post-image src="assets/policy-gradient-training-flow.webp" alt="固定策略完成一回合采样，保存状态动作奖励，随后以回报加权 log-probability 更新策略参数；未结束时继续下一状态" >}}
+<figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">采样期间沿环境返回的下一状态继续；回合结束后，优化器更新策略参数，再开始下一回合。回报是权重，环境不在这条反向传播路径上。</span></figcaption>
+</figure>
 
-![PG_1](PG_1.png)
-
-- 监督学习：数据 -> 预测 -> 误差 -> 梯度下降
-- 监督学习梯度 = 误差 × 输入特征
-- 监督学习只看当前样本
-传统网络的梯度来源于误差，目标是减小误差，所以是梯度下降。
-
-- 策略神经网络的反向传播
-
-![PG_2](PG_2.png)
-
-- 强化学习：状态 -> 动作 -> 奖励 -> 回报 -> 梯度上升
-- 策略梯度 = 回报 × (增加当前动作概率的方向)
-- 强化学习必须考虑整个轨迹的长期回报
-- 策略网络的梯度来源于回报，目标是增大回报，所以是梯度上升。其梯度公式可以看作是用回报 $G_t$对提高动作概率的梯度进行加权。
-- 策略梯度不是简单地「把梯度下降变成梯度上升」，而是将优化范式从「误差最小化」转变为「期望最大化」，从而解决了传统方法无法处理的序列决策和环境交互问题。
+监督学习的梯度并不普遍等于“误差乘输入特征”；那只适用于特定模型和损失的组合。同样，策略梯度也不是仅仅把梯度下降改成梯度上升。关键是：如何从由策略产生的数据，构造对期望回报有效的梯度估计。
 
 ### 7.4 REINFORCE算法和策略梯度定理
 
 #### 7.4.1 REINFORCE的核心突破
 
-- 核心问题解决：如何直接优化策略
-- 在REINFORCE之前，强化学习主要基于价值函数（如Q-learning）。REINFORCE开创了直接策略优化的新范式：
-- 传统方法：价值函数 → 策略（间接）
-- REINFORCE：直接优化策略参数
+[Williams 的 REINFORCE 论文](https://link.springer.com/article/10.1007/BF00992696)给出了随机单元的奖励加权更新方法。下面用轨迹分布解释其基本思想，重点是梯度估计的条件，而不是把算法发展画成单一路线。
 
 #### 7.4.2 关键数学工具：对数导数技巧（Log-Derivative Trick）
 
-```text
-# 问题：无法直接对采样期望求导
-∇_θ E_{τ∼p_θ}[R(τ)] = ?
-# 解决方案：对数导数技巧
-∇_θ E_{τ∼p_θ}[R(τ)] = E_{τ∼p_θ}[R(τ) · ∇_θ log p_θ(τ)]
-# 然后分解轨迹概率
-∇_θ log p_θ(τ) = Σ_t ∇_θ log π_θ(a_t|s_t)
-```
+对密度为正、可微且满足交换积分与求导条件的分布，
+
+$$
+\nabla_\theta p_\theta(x)=p_\theta(x)\nabla_\theta\log p_\theta(x).
+$$
+
+这不是“概率分布无法求导”，而是把包含未知积分的梯度改写成可用样本估计的期望。分布支持集若随参数改变，需要另行处理边界项。
 
 #### 7.4.3 策略梯度定理的完整推导
 
-- 马尔可夫决策过程（MDP）定义
-- MDP五元组
+令 $\tau=(s_0,a_0,r_0,\ldots,s_{T-1},a_{T-1},r_{T-1},s_T)$。为简洁起见，把奖励视作给定轨迹上的固定函数；随机奖励也可并入与参数无关的环境核。
+
 $$
-    \mathcal{M} = (\mathcal{S}, \mathcal{A}, P, r, \gamma)
+p_\theta(\tau)=\rho_0(s_0)\prod_{t=0}^{T-1}
+\pi_\theta(a_t\mid s_t)P(s_{t+1}\mid s_t,a_t).
 $$
 
-- 各元素含义：
-- $\mathcal{S}$：状态空间（State Space）
-- $\mathcal{A}$：动作空间（Action Space）
-- $P(s'|s,a)$：状态转移概率
-- $r(s,a)$：奖励函数
-- $\gamma \in [0,1]$：折扣因子
-- 参数化策略
-$$
-    \pi_\theta(a|s)
-$$
-表示策略
-其中 $\theta$是策略参数，通常为神经网络权重。
+固定一条轨迹求导时，$\rho_0$ 与 $P$ 的参数梯度为零，因此
 
-- 轨迹定义
-- 一条完整轨迹：
 $$
-    \tau = (s_0, a_0, s_1, a_1, \dots, s_T, a_T)
+\nabla_\theta\log p_\theta(\tau)
+=\sum_{t=0}^{T-1}\nabla_\theta\log\pi_\theta(a_t\mid s_t),
 $$
 
-- 轨迹的概率分布：
 $$
-    p_\theta(\tau) = \rho(s_0) \prod_{t=0}^{T} \pi_\theta(a_t|s_t) P(s_{t+1}|s_t, a_t)
-$$
-
-- 各部分的含义：
-- $\rho(s_0)$：初始状态分布
-- $\pi_\theta(a_t|s_t)$：策略选择的动作概率
-- $P(s_{t+1}|s_t, a_t)$：环境状态转移概率
-- 目标函数
-- 折扣回报：
-$$
-      R(\tau) = \sum_{t=0}^{T} \gamma^t r(s_t, a_t)
+\nabla_\theta J=
+\mathbb E_\tau\left[R(\tau)\sum_t\nabla_\theta\log\pi_\theta(a_t\mid s_t)\right].
 $$
 
-- 期望回报（目标函数）：
-$$
-      J(\theta) = \mathbb{E}_{\tau \sim p_\theta}[R(\tau)] = \int p_\theta(\tau) R(\tau) \, d\tau
-$$
-
-- 梯度计算的核心问题
-- 梯度表达式
-$$
-    \nabla_\theta J(\theta) = \nabla_\theta \mathbb{E}_{\tau \sim p_\theta}[R(\tau)]
-$$
-
-- 直接计算的困境
-$$
-  \nabla_\theta J(\theta) = \nabla_\theta \int p_\theta(\tau) R(\tau) \, d\tau
-$$
-
-- 问题分析：
-- 梯度算子 $\nabla_\theta$ 同时作用于：
-- 分布 $p_\theta(\tau)$（与 $\theta$ 相关）
-- 回报 $R(\tau)$（通常与 $\theta$ 无关）
-- 无法直接对概率分布求导
-- 对数导数技巧（Log-Derivative Trick）
-- 为什么要取对数？
-- 乘法变加法：更容易处理
-- 避免数值下溢：概率相乘会变得极小
-- 求导方便：对数和求导更简单
-- 技巧定义
-- 对于任意可微的概率密度函数 $p_\theta(x)$：
-- 核心公式：
-$$
-    \nabla_\theta p_\theta(x) = p_\theta(x) \cdot \nabla_\theta \log p_\theta(x)
-$$
-
-- 证明过程
-$$
-\begin{aligned}
-&\text{已知：} \log p_\theta(x) = \ln p_\theta(x) \\
-&\text{两边对 } \theta \text{ 求导：} \\
-&\nabla_\theta \log p_\theta(x) = \frac{1}{p_\theta(x)} \nabla_\theta p_\theta(x) \\
-&\text{整理得：} \\
-&\nabla_\theta p_\theta(x) = p_\theta(x) \cdot \nabla_\theta \log p_\theta(x)
-\end{aligned}
-$$
-
-- 策略梯度定理推导
-- 应用对数导数技巧
-- 步骤1：交换积分与梯度
-$$
-      \nabla_\theta J(\theta) = \int \nabla_\theta p_\theta(\tau) R(\tau) \, d\tau
-$$
-
-- 步骤2：应用对数导数技巧
-$$
-      = \int \left[ p_\theta(\tau) \cdot \nabla_\theta \log p_\theta(\tau) \right] R(\tau) \, d\tau
-$$
-
-- 步骤3：整理为期望形式
-$$
-      = \int p_\theta(\tau) \left[ \nabla_\theta \log p_\theta(\tau) \cdot R(\tau) \right] \, d\tau
-$$
-$$
-      = \mathbb{E}_{\tau \sim p_\theta} \left[ \nabla_\theta \log p_\theta(\tau) \cdot R(\tau) \right]
-$$
-
-- 分解轨迹概率的对数
-- 展开 $\log p_\theta(\tau)$：（公式分解 按照log对数运算规则以及连乘转求和）
-$$
-\begin{aligned}
-\log p_\theta(\tau) &= \log \left[ \rho(s_0) \prod_{t=0}^{T} \pi_\theta(a_t|s_t) P(s_{t+1}|s_t, a_t) \right] \\
-&= \log \rho(s_0) + \sum_{t=0}^{T} \log \pi_\theta(a_t|s_t) + \sum_{t=0}^{T} \log P(s_{t+1}|s_t, a_t)
-\end{aligned}
-$$
-
-- 对 $\theta$ 求梯度：
-$$
-    \nabla_\theta \log p_\theta(\tau) = \nabla_\theta \left[ \log \rho(s_0) + \sum_{t=0}^{T} \log \pi_\theta(a_t|s_t) + \sum_{t=0}^{T} \log P(s_{t+1}|s_t, a_t) \right]
-$$
-
-- 分析各项：
-- $\nabla_\theta \log \rho(s_0) = 0$（初始状态分布与环境有关, 与 $\theta$ 无关）
-- $\nabla_\theta \log P(s_{t+1}|s_t, a_t) = 0$（环境转移概率是环境特性, 与  $\theta$ 无关）
-- $\nabla_\theta \log \pi_\theta(a_t|s_t) \neq 0$（这是策略部分, 由参数 $\theta$控制）
-- 简化结果：
-$$
-    \nabla_\theta \log p_\theta(\tau) = \sum_{t=0}^{T} \nabla_\theta \log \pi_\theta(a_t|s_t)
-$$
-
-- 得到最终定理
-代入梯度表达式：
-$$
-        \nabla_\theta J(\theta) = \nabla_\theta \mathbb{E}_{\tau \sim p_\theta}[R(\tau)]
-$$
-$$
-        \nabla_\theta J(\theta) = \mathbb{E}_{\tau \sim p_\theta} \left[ \left( \sum_{t=0}^{T} \nabla_\theta \log \pi_\theta(a_t|s_t) \right) \cdot R(\tau) \right]
-$$
-最终形式：
-$$
-        \boxed{\nabla_\theta J(\theta) = \mathbb{E}_{\tau \sim p_\theta} \left[ \sum_{t=0}^{T} \nabla_\theta \log \pi_\theta(a_t|s_t) \cdot R(\tau) \right]}
-$$
+动作 $a_t$ 不能改变已经发生的奖励；过去奖励与当前 score 相乘的条件期望为零。因此 $R(\tau)$ 在第 $t$ 项中可以替换成 $\sum_{k=t}^{T-1}\gamma^k r_k=\gamma^tG_t$，得到 7.1 节公式。
 
 #### 7.4.4 REINFORCE算法的理论价值矩阵
 
-| 层面 | 传统价值方法 | REINFORCE（策略梯度） |
-|--------|--------| --------|
-|优化对象 |价值函数  $Q(s, a)$ | 策略函数  $\pi(a|s)$）|
-|梯度来源 |时序差分误差（TD error） | 轨迹回报 $R(\tau)$ |
-|可导性 |需要对环境模型求导（model-based） | model-free：环境转移概率在梯度中消掉 |
-|探索方式 |ε-greedy等启发式方法| 策略的随机性自然提供探索|
-|适用动作空间 |离散、低维 | 连续、高维动作空间|
+| 问题 | Q-learning / DQN | REINFORCE |
+|---|---|---|
+| 直接学习什么 | 动作价值 | 策略参数 |
+| 学习信号 | 带 bootstrap 的 TD 目标 | 采样回报加权的 score |
+| 是否需要环境梯度 | 不需要 | 不需要 |
+| 动作类型 | 标准实现主要面向可枚举离散动作 | 可参数化离散或连续动作分布 |
+| 主要误差来源 | 价值近似、bootstrap、分布覆盖 | 采样方差、分布覆盖、优化误差 |
 
-#### 7.4.5 REINFORCE算法的理论价值矩阵
+#### 7.4.5 因果性、基线与优势估计 {#745-reinforce算法的理论价值矩阵}
 
-- 阶段1：基础REINFORCE（Williams, 1992）
-- 梯度公式
-$$
-    ∇_θJ(θ)=\mathbb{E}_{τ \sim \pi_θ}[R(τ)∑^T_{t=0}∇_θlog_{\pi_θ}(a_t∣s_t)]
-$$
+不依赖当前动作的状态基线满足
 
-- 问题：使用整个轨迹的回报更新每个动作，方差极大
-- 阶段2：因果性改进（引入时间因果性）
-- 关键洞察：动作 $a_t$ 只影响 $t$ 时刻之后的回报
-- 改进公式：
 $$
-    ∇_θJ(θ)=\mathbb{E}_{τ \sim \pi_θ}[∑^T_{t=0} G_t ∇_θlog_{\pi_θ}(a_t∣s_t)]
+\mathbb E_{a\sim\pi_\theta(\cdot\mid s)}
+[b(s)\nabla_\theta\log\pi_\theta(a\mid s)]=0.
 $$
 
-- 其中 $G_t = \sum_{k=t}^T \gamma^{k-t} r_k$
-- 效果：减少了不必要的噪声，但仍方差大
-- 阶段3：基线技巧（Baseline Trick）
-- 核心思想：减去一个基准值，保留相对优势
-- 公式：
-$$
-    ∇_θJ(θ)=\mathbb{E}_{τ\sim \pi_θ}[∑^T_{t=0} (G_t - b(s_t)) ∇_θlog_{\pi_θ}(a_t∣s_t)]
-$$
+因此以 $G_t-b(s_t)$ 替换 $G_t$ 不改变相应条件下的期望梯度。常用 $V^\pi(s)$ 作为基线，但它一般不是严格的最小方差基线，后者还与 score 的大小有关。有限数据拟合、同一批次的数据依赖和价值估计误差，也需要与这个理想恒等式区分。
 
-- 常见基线是 $b(s)=V^\pi(s)=\mathbb{E}[G_t\mid S_t=s]$。它并非一般情况下严格的最小方差基线；最优基线还与 score-function 梯度的大小有关。
-- Actor-Critic 方法
-- 特点：用优势估计表示动作相对当前策略平均水平的好坏；学到的 Critic 存在估计误差。
-$$
-    ∇_θJ(θ)=E_{τ \sim  \pi_θ}[∑^{T}_{t=0} A(s_t,a_t)∇_θlog\pi_θ(a_t∣s_t)]
-$$
-
-- 其中：$A(s_t, a_t) = Q(s_t, a_t) - V(s_t)$
-- PPO 方法 (Proximal Policy Optimization)
-- 特点：通过裁剪代理目标抑制过大的有利更新；不保证策略比率或 KL 满足硬边界。
-$$
-    J^{CLIP}(θ)= \mathbb{E}_t[\min(r_t(θ)A_t, clip(r_t(θ),1−ϵ,1+ϵ)A_t)]
-$$
-
-- 其中：
-- $r_t(\theta) = \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{\text{old}}}(a_t|s_t)}$（概率比）
-- $\epsilon$ 是裁剪参数（通常 0.1-0.3）
-- SAC（Soft Actor-Critic）
-- SAC的核心特点：最大熵框架
-$$
-    ∇_θJ_{SAC}(θ)=\mathbb{E} s_{t\sim D}[∇_{θ}α \log \pi_θ(a_t∣s_t)−∇_θ(\log \pi_θ(a_t∣s_t)−Q_ϕ(s_t,a_t))⋅Z(s_t)\exp(Q_ϕ(s_t,a_t))]
-$$
-
-- 实际简化形式（更常用的表示）：
-$$
-        ∇_θJ_{SAC}(θ)=∇_θ \mathbb{E}s_{t\sim D}[\mathbb{E}_{a_t \sim \pi_θ}[α \log \pi_θ(a_t∣s_t)−Q_ϕ(s_t,a_t)]]
-$$
+Actor-Critic 进一步用学到的价值函数构造优势估计。它可以减少方差，但引入的近似或 bootstrap 误差不会因为多了一个 Critic 就消失。
 
 #### 7.4.6 从REINFORCE到现代方法的演变
 
-![REINFORCE](REINFORCE.png)
+| 方法 | 要解决的更新问题 | 不能直接推出的结论 |
+|---|---|---|
+| Reward-to-go | 删除与当前动作无关的过去奖励 | 方差从此很小 |
+| 状态基线 | 减少回报中的公共波动 | 任意依赖动作的基线都无偏 |
+| Actor-Critic / GAE | 用价值估计调整偏差与方差 | Critic 总比真实回报准确 |
+| TRPO | 限制策略分布变化 | 有限样本实现每次回报都提高 |
+| PPO | 裁剪代理目标、限制更新激励 | 概率比或 KL 被硬性限制 |
+| SAC | 将熵奖励纳入异策略连续控制 | 最大熵目标等同原始奖励目标 |
 
-| 算法 | 核心思想 | 公式特点 |  主要改进|
-|--------|--------| --------| --------|
-|REINFORCE |基础策略梯度 | $R(\tau) \sum \nabla\log\pi$|  首次实现直接策略优化|
-|因果改进 |时间因果性 | $\sum G_t \nabla\log\pi$|  减少不相关噪声|
-|基线技巧 |降低方差 | $\sum (G_t-b_t) \nabla\log\pi$|  方差减少，训练更稳定|
-|Actor-Critic |价值评估 | $\sum A(s_t,a_t) \nabla\log\pi$|  更精确的动作评估|
-|PPO |约束更新 | $\min(r_t A_t, \text{clip}(r_t) A_t)$|  稳定的大步幅更新|
+PPO 的正负优势裁剪可以继续阅读 [PPO、DPO 与 GRPO](../ai/ppo-dpo-grpo/)。SAC 的重参数化与温度项见 10.5 节。
 
 #### 7.4.7 附录：符号说明表
 
-| 符号 | 含义 | 备注 |
-|--------|--------| --------|
-|$\mathcal{S}$|状态空间| 所有可能状态的集合|
-| $\mathcal{A}$ | 动作空间 | 所有可能动作的集合 |
-| $\pi_\theta(a|s)$ | 参数化策略 | 神经网络表示的概率分布 |
-| $P(s'|s,a)$ | 状态转移概率 | 环境动态特性 |
-| $r(s,a)$ | 奖励函数 | 即时奖励信号 |
-| $\gamma$ | 折扣因子 | 权衡近期与远期奖励 |
-| $\tau$ | 轨迹 | 状态-动作序列 |
-| $R(\tau)$ |轨迹回报  | 折扣奖励之和 |
-| $J(\theta)$ | 目标函数 | 期望回报 |
-| $\nabla_\theta$ | 梯度算子 | 对参数 $\theta$ 求导 |
+| 符号 | 含义 |
+|---|---|
+| $s_t,a_t,r_t$ | 动作前状态、动作、执行动作后获得的奖励 |
+| $\theta,\pi_\theta$ | 策略参数及条件动作分布 |
+| $T$ | 回合动作数；最后状态为 $s_T$ |
+| $\gamma$ | 从回合起点定义目标时的折扣因子 |
+| $G_t$ | 从当前时刻起、以当前时刻为零点的折扣回报 |
+| $R(\tau)$ | 从回合起点计算的折扣总回报 |
+| $b(s_t)$ | 与当前动作无关的基线 |
 
 ## 8. 连续动作空间：动作优化与策略参数化
 
@@ -1301,12 +1135,8 @@ $$
 
 #### 8.1.1 问题的本质：连续 vs 离散
 
-- 时间离散化的必然性
-关键认知：
-
-- 物理世界是连续的，但决策过程必须是离散的
-- 受限于计算速度（神经网络推理时间）和硬件响应时间（电机延迟）
-- 典型决策频率：10-100 Hz（每0.01-0.1秒决策一次）
+- 时间采样与动作离散化是两件事
+数字控制器通常按采样时刻更新动作；采样周期取决于控制层级、计算延迟与执行器动态，不能给所有机器人算法套用同一频率。连续时间控制与事件触发控制也有各自的建模方式。
 - 动作参数离散化的弊端
 问题分析：
 1. 精度损失：电机实际精度可达0.001°，离散化为0.1°档位造成浪费
@@ -1369,7 +1199,7 @@ assert action.shape == (4, 2) and log_prob.shape == (4,)
 
 | 参数 | 物理意义 | 在强化学习中的作用 |
 |--------|--------| --------|
-| 均值 μ | 分布中心，最可能采取的动作 | 利用：基于当前知识的最优动作 |
+| 均值 μ | 未压缩高斯的中心与众数 | 常用于确定性评估，但不保证是最优动作；tanh 变换后的密度众数也未必在 tanh(μ) |
 | 标准差 σ | 分布的宽度，探索程度 | 探索：尝试均值附近的其他动作 |
 
 ## 9. 强化学习三大方法：Actor-Critic架构的提出
@@ -1385,7 +1215,7 @@ $$
 $$
 
 - 思想：TD （Temporal Difference）
-- 优势：逻辑直观，价值函数的收敛性有理论保障；无需建模策略概率分布，计算成本较低。
+- 优势：可以直接从价值估计构造动作选择规则；表格算法在相应条件下有收敛结论，DQN 等函数逼近方法需另外分析。
 - 劣势：标准表格法和 DQN 面向离散动作；连续动作也能建模 Q(s,a)，但每次求 argmax 需要额外优化或结构假设。函数逼近和最大化目标还可能引入估计偏差。
 - 适用场景：离散动作、低维 / 高维状态的任务（如 Atari 游戏、网格世界导航）。
 
@@ -1405,8 +1235,8 @@ $$
 ### 9.3 Actor-Critic方法
 
 - 代表算法：A2C、A3C、SAC、DDPG、PPO
-- Actor-Critic将“策略梯度”和“价值函数”都考虑，并分成相互影响的两个串行板块：
-- Actor（策略模块）：建模可维的策略  $\pi_\theta(a|s)$，负责 “选动作”；
+- Actor-Critic 同时建模策略与价值，两个模块通过训练目标联系；计算结构不要求总是串行，也可以共享特征。
+- Actor（策略模块）：建模可微的策略 $\pi_\theta(a\mid s)$，负责选动作；
 - Critic（价值模块）：建模评价标准 $V_{\phi}(s)$或 $Q_{\phi}(s, a)$ 或使用优势函数 $A(s, a)$ ，负责 “评估 Actor 选的动作好不好”
 - 使用参数 $\phi$就是为了和Actor的参数 $\theta$做区分
 - 通过 Critic 的评估结果指导 Actor 的策略更新，新Actor又会给Critic提供新样本，实现 “边评估、边改进”。
@@ -1436,11 +1266,11 @@ $$
 
 ```text
 # REINFORCE使用的完整回报
-G_t = r_t + γr_{t+1} + γ²r_{t+2} + ... + γ^{T-t}r_T
+G_t = r_t + γr_{t+1} + ... + γ^{T-1-t}r_{T-1}
 # 问题：
-1. 高方差：需要等到轨迹结束才能计算#
-2. 延迟更新：无法实现单步学习#
-3. 样本效率低：需要完整轨迹
+1. 回报可能包含较多来自后续动作和环境的随机波动
+2. 完整回报需等到回合结束；bootstrap 方法可提前构造估计
+3. 样本效率还取决于任务、采样方式和估计器，不能仅由回合长度判断
 ```
 
 - 优势函数的本质任务
@@ -1452,15 +1282,11 @@ G_t = r_t + γr_{t+1} + γ²r_{t+2} + ... + γ^{T-t}r_T
 
 | 形式 | 公式 | 需要学习 | 更新时机 | 偏差 | 方差 | 适用场景 |
 |--------|--------|--------|--------|--------|--------|--------|
-| Q-V形式 | $A = Q(s, a) - V(s)$ | Q网 + V网 | 随时| 低 | 中 |  理论研究|
-| TD残差形式 | $A = r + \gamma V(s^{'}) - V(s)$ | 仅V网 | 单步后 | 中 | 中 | 实时控制 |
-| 蒙特卡洛形式 | $A = G_t - V(s)$ | 仅V网 | 轨迹结束 | 低 | 高 | 稀疏奖励 |
+| Q-V形式 | $A^\pi=Q^\pi-V^\pi$ | 实现可估计 Q、V，也可使用其他结构 | 取决于估计器 | 取决于价值误差 | 取决于估计器 | 先区分定义与估计 |
+| TD残差形式 | $\delta=r+\gamma V(s')-V(s)$ | 通常学习 V | 单步后 | 取决于 V 与边界处理 | 来自奖励与转移随机性 | 用于 bootstrap |
+| 蒙特卡洛形式 | $G_t-V(s)$ | 基线可以学习或固定 | 回合结束 | 取决于基线、回报与采样条件 | 完整回报可能高方差 | 不依赖中间 bootstrap |
 
 3. 核心替代方法: 从基础到高级
-
-- 路线图
-
-![Actor_Critic_1](Actor_Critic_1.png)
 
 - n步优势函数
 $$
@@ -1485,12 +1311,9 @@ def n_step_advantage(rewards, values, terminated, t, n, gamma):
     return total - values[t]
 ```
 
-- n 的选择策略：
-- n=1：TD残差，高偏差低方差（密集奖励）
-- n=5：常用折中（大多数任务）
-- n=10+：接近蒙特卡洛，低偏差高方差（稀疏奖励）
+- $n=1$ 使用一次 bootstrap；增加 $n$ 通常减少对近期价值估计的依赖，但会纳入更多随机奖励。只有走到真正终止并停止 bootstrap，才成为完整回报。$n=5$ 或 $n=10$ 不是跨任务通用的最佳值。
 
-#### 9.4.2 广义优势估计（GAE）：黄金标准
+#### 9.4.2 广义优势估计（GAE）：残差加权 {#942-广义优势估计gae黄金标准}
 
 - 核心思想: 从单步到多步的平滑过渡
 - GAE的核心公式
@@ -1499,19 +1322,60 @@ $$
 $$
 
 - 其中 $\delta _{t} = r_t + \gamma V(s_{t+1}) - V(s_t)$
+- 上式先省略了回合边界；真正终止时取消 bootstrap，截断或重置处停止跨步的优势递推。GAE 的推导见[原论文](https://arxiv.org/abs/1506.02438)。
 - 关键转换: 用TD残差替代完整回报
 - 核心突破:
 - 将不确定的 $G_t$替换为可预测的 $V(S_t)$ + TD残差
 - 利用Critic的可训练性来稳定估计
 - 通过 $\lambda$ 实现平滑的偏差-方差权衡
 
-![Actor_Critic_2](Actor_Critic_2.png)
-
 - $\lambda$ 的数学效应
 - GAE的递归形式
 $$
     A_t = \delta_t + \gamma \lambda A_{t+1}
 $$
+
+实际批次可能拼接多个回合，需要两个不同的掩码。令 $b_t=1-\mathrm{terminated}_t$，$c_t=1-(\mathrm{terminated}_t\lor\mathrm{truncated}_t)$：
+
+$$
+\delta_t=r_t+\gamma b_tV(s_{t+1}^{\mathrm{final}})-V(s_t),\qquad
+\hat A_t=\delta_t+\gamma\lambda c_t\hat A_{t+1}.
+$$
+
+`next_values[t]` 必须对应当前这次转移的真实下一观测，即使环境已经自动重置，也不能用新回合的初态价值代替。以下例子在下标 1 处截断，下标 2 属于新回合：
+
+```python
+def gae_advantages(rewards, values, next_values, terminated, truncated,
+                   gamma=0.99, lam=0.95):
+    """按时间顺序存储转移；next_values 对应每次转移的真实下一观测。"""
+    count = len(rewards)
+    if any(len(x) != count for x in
+           (values, next_values, terminated, truncated)):
+        raise ValueError("inconsistent transition lengths")
+    if not 0 <= gamma <= 1 or not 0 <= lam <= 1:
+        raise ValueError("gamma and lam must be in [0, 1]")
+    advantages = [0.0] * count
+    following = 0.0  # 本批次末尾没有更多 TD 残差，仍可由 next_values bootstrap。
+    for t in reversed(range(count)):
+        bootstrap = 0.0 if terminated[t] else next_values[t]
+        delta = rewards[t] + gamma * bootstrap - values[t]
+        continuation = not (terminated[t] or truncated[t])
+        following = delta + gamma * lam * continuation * following
+        advantages[t] = following
+    return advantages
+
+advantages = gae_advantages(
+    rewards=[1.0, 2.0, 100.0], values=[3.0, 4.0, 8.0],
+    next_values=[4.0, 20.0, 0.0],
+    terminated=[False, False, True], truncated=[False, True, False],
+    gamma=0.9, lam=0.8,
+)
+assert all(abs(a - b) < 1e-10
+           for a, b in zip(advantages, [13.12, 16.0, 92.0]))
+print(advantages)
+```
+
+截断步的残差是 $2+0.9\times20-4=16$，并保留了最后观测的价值；它没有加上新回合的 $92$。这与[Gymnasium 对终止和截断的区分](https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/)一致。有限时域本来就是任务定义的一部分时，应由环境给出相应的真正终止语义。
 
 - 展开后权重分布：
 
@@ -1521,21 +1385,28 @@ weights = {lag: (gamma * lam)**lag for lag in range(11)}
 print(weights[10])  # 约 0.5415
 ```
 
+<figure class="article-figure">
+{{< post-image src="assets/gae-residual-weights.png" alt="固定 gamma 为 0.99 时，lambda 取 0、0.5、0.95 和 1 的 GAE 残差权重随滞后步数的衰减曲线" >}}
+<figcaption><span class="article-figure__number">图 2</span><span class="article-figure__text">曲线只表示残差的数学权重，不表示训练得分、估计方差或推荐参数。λ 越大，较远处残差保留的权重越多。</span></figcaption>
+</figure>
+
+图中数值由 $(\gamma\lambda)^l$ 直接计算，可用 [gae_weights.py](gae_weights.py) 复现。
+
 - 具体数值示例 ( $\gamma = 0.99$)
 
-| λ值 | 10步后权重 | 物理意义 |
+| λ值 | 10步后权重 | 权重含义 |
 |--------|--------|--------|
 | 0.0 | 0% | 只看当前步 |
 | 0.5 | (0.99×0.5)^10 ≈ 0.088% | 快速衰减 |
 | 0.95 | (0.99×0.95)^10 ≈ 54.1% | 缓慢衰减 |
-| 1.0 | (0.99)^10 ≈ 90% | 几乎不衰减 |
+| 1.0 | (0.99)^10 ≈ 90% | 衰减仍由 γ 决定 |
 
 - 常见问题与解决
 
 | 问题现象 | 可能原因 | 解决方案 |
 |--------|--------|--------|
 | 训练波动大 | 可能来自价值误差、学习率或回报方差 | 同时检查 TD 残差、价值损失和多种子结果，不能仅凭现象调 λ |
-| 收敛缓慢 | λ太大（如0.99）→ 方差高更新慢 | 减小λ到0.9-0.95 |
+| 收敛缓慢 | 采样覆盖、优化步长、价值误差或方差都可能参与 | 固定评估预算对照不同 λ，并同时记录价值误差；不要由速度直接反推 λ |
 | 早期探索差 | 奖励稀疏、策略方差或 Critic 误差 | 分别检查探索和价值估计，不把先训练 Critic 当成通用规则 |
 | 优势值过小 | 奖励尺度问题 | 标准化优势，缩放奖励 |
 
@@ -1543,188 +1414,59 @@ print(weights[10])  # 约 0.5415
 
 ### 10.1 TRPO：Trust Region Policy Optimization
 
-- TRPO指出在 REINFORCE 或普通 Policy Gradient 中，我们直接按梯度方向更新参数：
+TRPO 仍然属于策略优化方法：用旧策略数据估计改进方向，同时限制新旧策略分布的差异。[原论文](https://proceedings.mlr.press/v37/schulman15.html)明确区分了理论改进界与实际算法中的近似。
+
+先定义无限时域折扣收益 $\eta(\pi)$，以及**未归一化**的状态访问频率
+
 $$
-\theta = \theta + \alpha \nabla_{\theta}J(\theta)
+\rho_\pi(s)=\sum_{t=0}^{\infty}\gamma^tP(s_t=s\mid\pi),
+\qquad d_\pi(s)=(1-\gamma)\rho_\pi(s),\quad 0\leq\gamma<1.
 $$
 
-- 但是
-- 步长 $\alpha$很难调，太大容易让策略突然偏离原策略，性能骤降；
-- 对真实光滑目标，在非零精确梯度方向上取足够小的正步长可获得局部改进；采样梯度不自动具备这一性质。
-- 策略变化太快会导致采样分布变化过大，旧数据估计的梯度不再准确（off-policy 失效）。
-训练中的采样误差、函数逼近和优化误差都可能破坏理想的改进条件，因此不能把“小步”直接当作实际回报不下降的保证。
+$d_\pi$ 才是归一化分布。把 $\rho_\pi$ 写成普通概率分布并直接取期望，会漏掉 $1/(1-\gamma)$ 这个尺度。
 
-- 这意味着：梯度上升没有安全步幅的保证。所以TRPO希望能找到一个有安全步幅的方法，通过信任域概念确保：
-- 策略性能单调改进（或至少不降低）
-- 更新步长自动适应
-- 有效利用样本数据
-- 推导过程
-- 策略性能度量为
+性能差恒等式使用**新策略**的状态访问频率：
+
 $$
-  \eta(\pi) = \mathbb{E}_{s_0,a_0,…}[∑^∞_{t=0}\gamma^tr(s_t)], where s_0 ∼ \rho_0(s_0), a_t  \sim  \pi(a_t|s_t)
+\eta(\tilde\pi)-\eta(\pi)
+=\sum_s\rho_{\tilde\pi}(s)\sum_a\tilde\pi(a\mid s)A_\pi(s,a).
 $$
 
-- 其中
-- $\gamma$ 为折扣因子
-- $r(s_t)$ 为状态 $s_t$下的即时奖励
-- 已知优势函数, 表示在状态 $s$采取动作 $a$相对于平均水平的优势
+这个差值可以为负。为了使用已有数据，代理目标把访问频率固定成旧策略的 $\rho_\pi$：
+
 $$
-      A_\pi(s,a)=Q_\pi(s,a)−V_\pi(s)
+L_\pi(\tilde\pi)=\eta(\pi)+
+\sum_s\rho_\pi(s)\sum_a\tilde\pi(a\mid s)A_\pi(s,a).
 $$
 
-- 状态访问分布, 折扣加权状态访问频率
+在新旧策略相同处，代理目标与真实目标的值及一阶导数一致；离开该点后，状态分布变化产生误差。论文用最大状态总变差距离控制这项误差：
+
 $$
-  \rho_\pi(s)=∑^{∞}_{t=0} \gamma^tP(s_t=s∣\pi) = P(s_0 = s) + \gamma P(s_1=s)+ \gamma^2 P(s_2=s) + ....
+\eta(\tilde\pi)\geq L_\pi(\tilde\pi)
+-\frac{4\epsilon_A\gamma}{(1-\gamma)^2}
+\left[D_{\mathrm{TV}}^{\max}(\pi,\tilde\pi)\right]^2,
+\quad \epsilon_A=\max_{s,a}|A_\pi(s,a)|.
 $$
 
-- 它表示在折扣权重下，一个策略访问每个状态的频率
-- $P$ 不是我们传统的简单的概率，而是转移概率分布，所以这里的加法不是求和，而是在每一个 $s$维度的相加
-- 策略性能的恒等变换
-- 任意两个策略 $\pi$和 $\tilde{\pi}$的性能满足：
+这里 $D_{\mathrm{TV}}^{\max}=\max_s\frac12\sum_a|\pi(a\mid s)-\tilde\pi(a\mid s)|$。再利用 TV 与 KL 的关系，可得到最大状态 KL 的保守惩罚界。**足够提高这个完整下界**才给出相应的改进条件；仅提高代理目标，或仅满足一个 KL 阈值，都不能单独推出回报增加。
+
+实际 TRPO 用采样平均 KL 代替最大状态 KL，优化近似问题：
+
 $$
-  \eta(\tilde{\pi})=\eta(\pi)+∑_s \rho_{\tilde{\pi}}(s)∑_a\tilde{\pi}(a∣s)A_\pi(s,a)
+\max_\theta\;
+\mathbb E_{s\sim d_{\mathrm{old}},\,a\sim\pi_{\mathrm{old}}}
+\left[\frac{\pi_\theta(a\mid s)}{\pi_{\mathrm{old}}(a\mid s)}
+\hat A(s,a)\right],
 $$
 
-- 物理意义：新策略的性能 = 旧策略性能 + 在旧策略优势函数下的期望提升
-- 对旧策略加上优势函数，来代表新策略
 $$
-  \eta(\tilde{\pi}) = \eta(\pi) + \mathbb{E}_{s_0,a_0,… ∼\tilde{\pi} }[∑^∞_{t=0}\gamma^t A_{\pi}(s_t, a_t)]
-$$
-$$
-  = \eta(\pi) + ∑_{s} \rho_{\tilde{\pi}}(s) ∑_{a} \tilde{\pi}(a|s)A_{\pi}(s_t, a_t)
-$$
-(将时间步 $t$消去， 化为 $s$和 $a$)
-
-- 这个式子在大部分情况是递增的
-- 因为新策略比旧策略更偏向那些 $A_{\pi}(s_t, a_t) > 0$的动作，则权重落在"好动作"上多一些， 那么加权平均自然也会 > 0.
-- 所以加号后应该是一个非负的分量，即 $∑_{a} \tilde{\pi}(a|s)A_{\pi}(s_t, a_t)$
-- 但是因为估计和近似的误差，难免避免存在 $∑_{a} \tilde{\pi}(a|s)A_{\pi}(s_t, a_t) < 0$ 的情况。
-- 出现一个方案：当更新步长很小时，选择忽略状态分布的变化，用旧策略分布代替：
-$$
-          \rho_{\tilde{\pi}}(s) \approx \rho_{\pi}(s)
+\text{subject to}\quad
+\mathbb E_{s\sim d_{\mathrm{old}}}
+\left[D_{\mathrm{KL}}(\pi_{\mathrm{old}}(\cdot\mid s)
+\parallel\pi_\theta(\cdot\mid s))\right]\leq\delta.
 $$
 
-- 引入代理目标函数（Surrogate Objective）, 同时用旧策略分布代替, 可以构造一个代理（surrogate）函数 $L$：
-$$
-      L_{\pi}(\tilde{\pi})=\eta(\pi)+∑_s \rho_\pi(s)∑_a \tilde{\pi} (a∣s) A_\pi(s,a)
-$$
-
-- 这个函数有一个好处，就是它消除了耦合的影响
-- 强化学习的耦合（Coupling）
-- 原式中$L_{\pi}(\tilde{\pi})=\eta(\pi)+∑_s \rho_{\tilde{\pi}}(s)∑_a \tilde{\pi} (a∣s) A_\pi(s,a)$的 $\rho_{\tilde{\pi}}(s)$和 $\tilde{\pi} (a∣s)$都取决于 $\tilde{\pi}$。
-- 例如 $y = x^2 + 2x$, $x$是一个变量，而 $\rho_{\tilde{\pi}}(s)$和 $\tilde{\pi} (a∣s)$是一个概率分布
-- 当修改 $x$值，$x$的二次项和一次项同步变化，而$\rho_{\tilde{\pi}}(s)$和 $\tilde{\pi} (a∣s)$，任意修改一个分量，另外一个都会变化，在数学上变得很难处理
-- 于是定义
-$$
-            L_{\pi}(\tilde{\pi})=\eta(\pi)+∑_s \rho_\pi(s)∑_a \tilde{\pi} (a∣s) A_\pi(s,a)
-$$
-
-- 这样一来
-- $\rho_{\pi}(s)$是固定的（不依赖 $\tilde{\pi}$）
-- 优化变量只剩下 $\tilde{\pi} (a∣s)$
-- 可方便用样本估计、求梯度
-- 仍能在小步长范围内保证与真实 $\eta$一阶等价 （当 $\tilde{\pi}$与 $\pi$接近时, $L_{\pi}(\tilde{\pi})$是$\eta(\tilde{\pi})$的一阶近似) 可微的$L_{\pi}(\tilde{\pi})$在当前点$\theta_0$的一阶展开与真实$\eta(\tilde{\pi})$相等
-$$
-                L_{\pi_{\theta_0}}(\pi_{\theta_0}) =\eta(\pi_{\theta_0}), L_{\pi_{\theta}}(\pi_{\theta}) |_{\theta=\theta_0} = \nabla_{\theta}\eta(\pi_{\theta})|_{\theta=\theta_0}
-$$
-
-- 混合策略更新
-$$
-                 \pi_{new}(a|s) = (1-\alpha)\pi_{old}(a|s) + \alpha\pi'(a|s)
-$$
-
-- 存在下界
-$$
-                  \eta(\pi_{new})≥L_{\pi_{old}}(\pi_{new})−\frac{2ϵ\gamma}{(1−\gamma)^2} α^2
-$$
-
-- 其中  $\epsilon = \max_s |\mathbb{E}_{a\sim\pi'} A_{\pi_{old}}(s, a)|$
-- 因而给出了单调改进的充分条件
-- 推广到任意策略
-- 将混合策略推广到任意策略对，用总变差距离（Total Variation Divergence）度量策略差异：
-$$
-                D^{\max}_{TV}(\pi, \tilde{\pi}) = \max_s D_{TV}(\pi || \tilde{\pi})
-$$
-
-- 得到新的下界
-$$
-                \eta(\tilde{\pi}) ≥ L_{\pi}(\tilde{\pi})−\frac{4ϵ\gamma}{(1−\gamma)^2} (D^{\max}_{TV}(\pi, \tilde{\pi}))^2
-$$
-
-- 再用 $LD^2_{TV} \leqslant D_{TV}$ 得到最终近似形式
-$$
-                \eta(\tilde{\pi}) \ge L_{\pi}(\tilde{\pi})
-                - C D^{\max}_{\mathrm{KL}}(\pi \parallel \tilde{\pi})
-$$
-其中 $C = \frac{4\epsilon\gamma}{(1 - \gamma)^2}$。
-
-- 这就是 TRPO 的理论核心不等式,  优化 $L_{\pi}(\tilde{\pi})$同时限制 KL 散度，可以保证策略单调改进。(拓展成任意两个随机策略（而非上面 $\alpha$的形式），最后找到了一个包含KL散度的下界)
-- 换元后
-$$
-                \eta(\theta) ≥ L_{\pi_{old}}(\theta)− C * D^{\max}_{KL}(\theta_{old}, \theta)
-$$
-
-- 其中
-- $L_{\pi_{old}}(\theta)$是在旧策略分布下定义的 surrogate 目标，
--  $D^{\max}_{KL}$限制新旧策略间的最大 KL 散度，
-
-- $C$是理论上推导出的常数。
-- 在保证上面不等式成立的情况下，只要让右边的值尽量大就好了
-- TRPO不是纯策略梯度算法了！因为它根本没有以梯度的损失函数为目标。
-- 惩罚项优化变成:
-$$
-\max_{\theta} L_{\theta_{old}}(\theta) - C * D^{\max}_{KL}(\theta_{old}, \theta)
-$$
-
-- TRPO 优化问题
-- 理论优化目标
-$$
-    maximize_θ ~~L_{θ_{old}}(θ)
-$$
-$$
-    subject~~to~~ \bar{D}_{KL}(θ_{old},θ) ≤ δ
-$$
-
-- 其中：
-- $\theta$为策略参数
-- $\bar{D}_{KL}$为平均KL散度:
-$$
-      \mathbb{E}_{s\sim\rho_{\theta_{old}}}[D_{KL}(\pi_{\theta_{old}}(\cdot|s) | \pi_\theta(\cdot|s))]
-$$
-
-- 但要找到最大的（max）的KL散度就得一个个去算，计算开销非常大，于是TRPO用期望代替了最大值
-$$
-      D^{\rho_{\theta_{old}}}_{KL}(\pi_{old}, \pi) := \mathbb{E}_{s\sim\rho_{\theta_{old}}}[D_{KL}(\pi_{\theta_{old}}(\cdot|s) | \pi_\theta(\cdot|s))]
-$$
-
-- 这就是所谓的"average KL"或"expected KL".
-- 于是约束变成
-$$
-    D^{\rho_{\theta_{old}}}_{KL}(\pi_{old}, \pi) ≤ δ
-$$
-
-- 那么就是不要求每个状态都满足 KL ≤ δ, 而是只要求在旧策略访问的状态分布下，平均KL足够小，在要求一定探索性的强化学习背景下是可以接受的。
-- 注意上面的期望不是对所有状态均匀平均，而是用旧策略的访问分布加权：
-$$
-s ∼ \rho_{\theta_{old}}(s)
-$$
-
-- 旧策略 $\eta_{old}$ 是我们手里已经采样过的策略；我们有这些状态的样本，能准确估计期望。
-- 对极少访问(或没访问过)的状态，即使 KL 大一点也无所谓，因为它们几乎不会影响到 $\eta (\pi)$ 的实际值。
-- 重要性采样形式
-- 使用分布变换技巧，计算新策略下的期望
-$$
-    \mathbb{E}_{a \sim \pi(\cdot|s)}[f(s,a)]
-$$
-
-- 但手里只有旧策略的数据  $a \sim \pi_{old}(\cdot|s)$
-- 因此采用用重要性采样恒等式
-$$
-    \mathbb{E}_{a \sim \pi(\cdot|s)}[f(s,a)] = \mathbb{E}_{a \sim \pi_{old}(\cdot|s)} [\frac{\pi(a|s)}{\pi_{old}(a|s)} f(s, a)]
-$$
-
-- 其中 $r(s, a) = \frac{\pi(a|s)}{\pi_{old}(a|s)}$ 称为重要性采样权重
-- 而  $L_{\pi_{old}}(\pi) = \mathbb{E}_{a \sim \pi_{old}(\cdot|s)} [\frac{\pi(a|s)}{\pi_{old}(a|s)} A_{\pi_{old}}(s, a)]$ 称为TRPO实际优化时使用的采样形式目标函数。
+重要性比率只变换同一状态下的动作分布，不会把旧策略的状态分布也自动变成新的。实现还包含优势估计、局部近似、共轭梯度与回溯线搜索；普通 rollout 的时间采样权重也要与实际优化目标核对。少访问状态上的大变化仍可能影响未来轨迹，因此平均 KL 通过不等于所有状态都满足约束，更不等于部署安全保证。
 
 ### 10.1.1 采样与优化：常见训练循环
 
@@ -1740,35 +1482,19 @@ $$
 
 | 类型 | 定义 | 举例 |
 |--------|--------|--------|
-| On-policy（在） | 用当前策略 πθ 产生的数据来更新自己。更新后旧数据丢弃。 | PPO、A2C、TRPO、SARSA |
+| On-policy（在） | 用与被评估/优化策略相符的数据；PPO 可在同一轮 rollout 上执行多次受限更新。 | PPO、A2C、TRPO、SARSA |
 | Off-policy（离） | 可以用旧策略或别的策略产生的数据来更新当前策略。 | DQN、DDPG、TD3、SAC |
 
 ### 10.2 PPO（Proximal Policy Optimization）
 
-https://arxiv.org/pdf/1707.06347
+[PPO 原论文](https://arxiv.org/abs/1707.06347)希望保留对策略变化的控制，同时使用常规的一阶优化器。对比上一节的 TRPO：在旧参数附近，一阶展开代理收益、二阶展开平均 KL，可写成
 
-- 从 TRPO 到 PPO：动机与思想简化
-- 在 TRPO 中，策略更新需要满足 KL 散度约束：
 $$
-       \max_{\theta} L_{\theta_{old}}(\theta)
-$$
-$$
-       subject~~to~~ \mathbb{E}_t [D_{KL}(\pi_{\theta_{old}}(\cdot|s) | \pi_\theta(\cdot|s))] < δ
+\max_{\Delta\theta}\;g^T\Delta\theta,
+\qquad \frac12\Delta\theta^TF\Delta\theta\leq\delta,
 $$
 
-- 其核心思想是控制新旧策略之间的信任域，避免策略更新过大导致性能崩溃。然而，TRPO 需要二阶优化（如共轭梯度法）去求解约束问题，这使得算法复杂，不利于部署在 GPU 集群上工业训练.
-- 为求解上面带约束的最值问题，需要使用数学技巧
-- 对KL散度做二阶（Hessian）近似
-- 然后用共轭梯度（Conjugate Gradient, CG）求解该近似下的约束优化问题
-$$
-  {maximize}_{\theta} [\nabla_{\theta} L_{\theta_{old}}(\theta)|_{\theta = \theta_{old}} * (\theta - \theta_{old})]
-$$
-$$
-  subject~~to~~ \frac{1}{2}(\theta_{old} - \theta)^{T} A(\theta_{old})(\theta_{old} - \theta) < δ
-$$
-$$
-  where A(\theta_{old})_{ij} = \frac{\delta}{\delta \theta_{i}} \frac{\delta}{\delta \theta_{j}} \mathbb{E}_{s\sim\rho_{\pi}}[D_{KL}(\pi(\cdot|s, \theta_{old})||\pi(\cdot|s, \theta))]|_{\theta = \theta_{old}}
-$$
+其中 $g$ 是代理目标在旧参数处的梯度，$F$ 是**平均 KL** 在该处的 Hessian。实现通常用 Hessian–vector product 与共轭梯度近似求解，再通过线搜索验收更新，而不是显式构造完整 Hessian。PPO 的裁剪或惩罚形式简化了这条优化路径；这不表示 TRPO 不能使用 GPU，也不表示 PPO 自动保证策略性能单调增加。
 
 - 避免处理二阶问题
 - 裁剪形式（Clipped Surrogate Objective)
@@ -1818,7 +1544,7 @@ $$
 
 - 直接用 SGD 或 Adam 等深度学习方法即可优化参数
 - 自适应KL散度惩罚项
-- 设散度KL的期望值为 $d = \hat{\mathbb{E}_t} [KL[\pi_{old}(\cdot|s_t), \pi_0(\cdot | s_t)]]$
+- 设当前批次估计的平均 KL 为 $d = \hat{\mathbb{E}}_t[D_{\mathrm{KL}}(\pi_{\mathrm{old}}(\cdot\mid s_t)\parallel\pi_\theta(\cdot\mid s_t))$。
 $$
   L^{KLPEN}(\theta) = \mathbb{E}_t[r_t(\theta)\hat{A_t} - \beta * D_{KL} (\pi_{\theta(old)}(\cdot|s_t)|| \pi_{\theta}(\cdot|s_t))]
 $$
@@ -1832,14 +1558,13 @@ $$
 $$
 
 - PPO的惩罚项形式用一个启发式规则自适应调  $\beta$以把平均 KL 推到目标附近( $d_{target}$)，而不是通过 KKT/对偶最优把它精确等价为一个硬约束问题，这样就避免了求复杂方程.
-- TRPO关于带惩罚项的无约束问题和带约束问题（拉格朗日/KKT）等价转换的。
+- KL 惩罚与 KL 约束是相关的优化形式；固定一个惩罚系数不保证等价于指定阈值的非凸约束问题，不能未经条件检查就用 KKT 声称两者等价。
 - 而PPO损失函数看起来像TRPO的减法形式。但KL散度前面的参数 $\beta$和TRPO的参数 $C$（一个用数学公式严谨计算出的式子）是不一样的。
 - Actor与Critic网络共享参数时的形式
-- 这个形式是有时代背景的，在强化学习早期，硬件很难面对大参数量的形式，常让两个网络共享参数以降低参数量。
-- 但是这样的操作有一个问题：其中一个网络被优化时，会干扰另一个。
+- 共享特征提取层可以减少重复计算，但策略损失和价值损失也会同时影响这部分参数。
 - 假设我们只优化策略的损失（例如 PPO 的  $L^{KLPEN}(\theta)$），那么反向传播时，梯度会更新共享的底层参数，使底层特征偏向于更适合策略输出。
-- 反之亦然，如果只最小化价值函数的误差  $(V_{\theta}(s) - V^{target})^2$，底层特征又会偏向拟合价值任务，导致策略分支学到的特征不再对动作分布有区分性。
-- 这就会让训练过程出现：
+- 如果只最小化价值函数的误差 $(V_{\theta}(s)-V^{\mathrm{target}})^2$，共享特征的变化也可能与策略需要的更新方向冲突。
+- 这可能使训练出现：
 - 不稳定（两个头互相干扰）
 - 收敛缓慢（梯度方向不一致）
 共享参数时，一种常见做法是联合优化策略、价值和熵项。先统一优化方向：下面的 $J$ 是要最大化的收益目标，而交给梯度下降优化器的是损失 $L=-J$。联合训练可以协调梯度来源，但并不保证两个任务的梯度没有冲突。
@@ -2011,299 +1736,103 @@ $$
 
 ### 10.4 TD3（Twin Delayed Deep Deterministic policy gradient）
 
-- TD3 可视为 DDPG 的 “增强版” 或 “修正版”，其通过三个关键改进大幅提升了性能。
-- DDPG 三个核心问题:
-- Q 值过估计：单 Critic 网络容易高估动作的真实价值（尤其是在高维空间），导致 Actor 学习到次优策略。
-- 策略更新频繁：Actor 与 Critic 同步更新，Critic 的估计误差会直接传递给 Actor，导致策略震荡
-- 在训练初期，Critic 输出的 Q 值可信度极低，同时在后期经验回放池也会召回优化效果差的样本（离线学习的固有问题），因此不好的优化参数被Critic在早期被过多的传递给了Actor去学习，会导致收敛慢。
-- 探索噪声设计粗糙：依赖手动添加的高斯噪声，在复杂环境中难以平衡探索与利用。
-- 基于解析的方法得出的噪声的探索性有限，不能满足真实场景的需求。
-- TD3对DDPG对应的三大改进
+TD3 在 DDPG 的基础上结合双 Critic 目标取小、延迟策略更新和目标策略平滑。阅读 [TD3 论文](https://proceedings.mlr.press/v80/fujimoto18a.html)与[作者实现](https://github.com/sfujim/TD3/blob/master/TD3.py)时，先区分以下三条更新路径。
 
-![TD3](TD3.png)
+<figure class="article-figure">
+{{< post-image src="assets/td3-update-paths.webp" alt="TD3 的目标值停止梯度；两个 Critic 用回放中的动作回归；Actor 用当前动作经过 Q1 更新，并延迟软更新目标网络" >}}
+<figcaption><span class="article-figure__number">图 3</span><span class="article-figure__text">Critic 回归使用回放中实际执行过的动作；Actor 更新才使用当前策略新算出的动作。构造目标值时整条路径停止梯度。</span></figcaption>
+</figure>
 
-- 双Q值裁剪 Critic 网络（Twin Critics）
-- TD3 借鉴了Double Q-Learning的思路，维护两个独立的 Critic 网络( $(Q_1, Q_2)$)。训练时取两者的最小值作为目标 Q 值（ $\min(Q_1, Q_2)$ ），通过 “保守估计” 抑制单网络的过估计偏差。这是对 DDPG 单 Critic 设计的直接修正。
-- 我们知道噪声是随机的，有大有小。易知两动作价值函数的噪声有以下四种情况，就是向下取（“裁剪”），刚好和过高估计形成了定性视角下一定程度的抵消。
-- (偏大、次偏大) -> 次偏大
-- (偏大、偏小) -> 偏小
-- (偏小、偏大) -> 偏小
-- (偏小、更偏小) -> 更偏小
-- 延迟策略更新（Delayed Policy Updates）
-- TD3 中，Actor 网络的更新频率低于 Critic（例如每更新 2 次 Critic 才更新 1 次 Actor），给 Critic 留出更多时间收敛到更准确的估计，减少了 Actor 因 Critic 误差导致的震荡。
-- $d$ : 更新固定倍率
-- $\tau$: 软更新系数
-- 目标网络软更新为 $\theta'\leftarrow\tau\theta+(1-\tau)\theta'$，左侧是目标参数；它与降低 Actor 更新频率是不同机制。
-- 冻结 Actor 时仍可以使用固定行为策略或随机探索采集新数据，Critic 也能继续从回放池学习。是否预热、以及策略/价值更新比例，应按算法与数据分布设计；不能断言“Actor 不更新就没有新样本”。
-- 目标策略平滑（Target Policy Smoothing）
-- 在计算网络预测的动作 $a$时，TD3 会给目标 Actor 的输出添加少量噪声$(\tilde{a} = \mu_{target}(s^{'}) + clip(N, -c, c))$，用来更新标签 $y$ , 避免目标 $Q$ 值因动作微小变化而剧烈波动，进一步稳定训练。
-- 与TD3不同的是 DDPG的噪声只是让输出有一点变化，给 $\mu$网络加上噪声，没用来更新标签 $y$.
-- 动作 $a$是希望策略网络 $\pi$预测的操作，标签 $y$是希望 $Q$预测出的评估动作好坏的值。
-- 他们正是Actor-Critic的输出好动作+评估好坏的两个方面.
-- 作用上的区别
-- 在使用确定型动作输出时，容易过拟合，输出卡在一个尖点走不出去了
-- 目标策略平滑在目标动作附近求稳健价值，与 SARSA 使用实际下一行为动作的更新规则不同。
+**第一条：构造 TD 目标。** 从回放池取 $(s,a,r,s',d)$，$d$ 表示真正终止。目标 Actor 先加截断噪声，再裁剪到动作上下界：
+
 $$
-    \epsilon \sim clip(N(0, \sigma), -c, c)
+\epsilon\sim\mathcal N(0,\sigma^2I),\qquad
+\tilde a=\operatorname{clip}\!\left(
+\mu_{\bar\theta}(s')+\operatorname{clip}(\epsilon,-c,c),
+a_{\min},a_{\max}\right),
 $$
-其中 $-c, c$代表输入量在输入N的时候按照下界$-c$，上界$c$进行截断
+
+$$
+y=\operatorname{stopgrad}\!\left[
+r+\gamma(1-d)\min_{i=1,2}Q_{\bar\phi_i}(s',\tilde a)
+\right].
+$$
+
+噪声截断与动作裁剪是两次不同操作。目标平滑噪声也不同于采集数据时的探索噪声：前者改变训练目标，后者改变实际执行的动作。
+
+**第二条：每次更新两个 Critic。** 两个网络分别最小化
+
+$$
+L_{Q_i}=\mathbb E_{\mathcal D}[(Q_{\phi_i}(s,a)-y)^2].
+$$
+
+此处 $a$ 是回放数据中的动作。取小可以抑制过估计，也可能带来低估；两个 Critic 的误差会相关，不能把四种“偏大/偏小”组合假设成等概率事件。
+
+**第三条：延迟更新 Actor 与目标网络。** 每隔 $d_{\mathrm{policy}}$ 次 Critic 更新，最小化
+
+$$
+L_\mu=-\mathbb E_{s\sim\mathcal D}[Q_{\phi_1}(s,\mu_\theta(s))].
+$$
+
+Actor 更新时不优化 Critic 权重，但要保留从 $Q_1$ 对动作再到 $\theta$ 的梯度，不能把整个 $Q_1$ 前向放进 `no_grad()`。之后对目标 Actor 和两个目标 Critic 软更新：$\bar w\leftarrow\tau w+(1-\tau)\bar w$。更新间隔按优化次数计数，不自动等于环境步数。[Spinning Up 的 TD3 说明](https://spinningup.openai.com/en/latest/algorithms/td3.html)也给出了这三个步骤。
+
+外部时间限制导致的截断不一定等于 $d=1$。需要根据任务是否真正终止决定 bootstrap，并取得截断前的最后观测，不能误用自动重置后的新回合观测。
 
 ### 10.5 SAC（Soft Actor-Critic）
 
-- https://arxiv.org/pdf/1801.01290
-- Soft Actor-Critic (SAC) 是一种在连续控制任务中表现出色的深度强化学习算法，它结合了演员-评论家框架和最大熵强化学习思想，在探索与利用间实现了卓越平衡。其核心在于，智能体追求的目标不仅是最大化长期累积奖励，还要最大化策略的熵（不确定性）。这使得策略在寻找高回报动作的同时，尽可能保持随机性，从而进行充分的探索。
-- 提出的背景: 主流DRL算法的局限
+SAC 用随机 Actor 和异策略价值学习优化最大熵目标。熵项鼓励策略保留随机性，但不保证充分探索，也不保证在每个任务上优于 PPO 或 TD3。以下先固定温度 $\alpha>0$，统一写出 soft 价值关系。
 
-| 传统 RL 问题 | 说明 |
-|--------|--------|
-| 样本效率低（sample inefficiency） | On-policy 算法（PPO、TRPO、A3C 等）每次更新都必须重新采样 → 非常昂贵 |
-| 训练不稳定（brittle training） | Off-policy 算法如 DDPG、NAF，虽然复用数据，但经常崩掉，参数敏感 |
-
-- 因此目标是找一个既稳定又高效的 deep RL 算法。
-- SAC 的核心诉求：能像 DDPG 那样复用旧数据（off-policy），但比DDPG 更稳定；并像 PPO 那样稳定，但比 PPO 更高效。
-- SAC 算法核心：最大熵强化学习（MERL）
-- 熵的定义：衡量随机变量的混乱度（无序性），熵越高，策略随机性越强
-- MERL 目标函数：相比标准 RL，额外加入熵项（ $\alpha$为温度系数，调节熵的权重）:
 $$
-      \pi^{*}_{MaxEnt} = \arg \max_{/pi} \sum_t \mathbb{E}_{(s_t,a_t)\sim \rho_{\pi}}[r(s_t,a_t) + \alpha H(\pi(\cdot | s_t))]
+V^\pi_{\mathrm{soft}}(s)=\mathbb E_{a\sim\pi}
+[Q^\pi_{\mathrm{soft}}(s,a)-\alpha\log\pi(a\mid s)],
 $$
 
-- 其中 $\rho_{\pi}$ 是状态-动作对的分布，$H(\pi(\cdot \mid s_t)) = -\mathbb{E}_{a \sim \pi}[\log \pi(a \mid s_t)]$ 表示策略在状态 $s_t$ 下的熵。
-- Soft 函数
-- SAC 基于最大熵框架推导出 Soft Q-Learning 方程
-- 定义 soft 状态价值函数:
 $$
-          V_{soft}(s_t) = \mathbb{E}_{a_t \sim \pi}[Q(s_t, a_t) - log \pi(a_t|s_t)]
+Q^\pi_{\mathrm{soft}}(s,a)=r(s,a)+\gamma\mathbb E_{s'}
+[V^\pi_{\mathrm{soft}}(s')].
 $$
 
-- soft 动作价值函数就是把 $V_{soft}(s_t)$代入进来:
+固定策略 $\pi$ 反复应用评估算子，在相应收敛条件下得到的是 **$Q^\pi_{\mathrm{soft}}$**，不是最优 $Q^*$。还要执行策略改进，才构成 soft policy iteration。[原始 SAC 论文](https://proceedings.mlr.press/v80/haarnoja18b.html)分别讨论了这两个步骤；函数近似与有限样本实现不能直接继承理想迭代的全部保证。
+
+如果能在整个动作分布空间内精确优化，固定 $Q$ 后的改进方向可写为 Boltzmann 分布
+
 $$
-          Q_{soft}(s_t, a_t) = r(s_t, a_t) + \gamma \mathbb{E}_{s_{t+1} \sim p}[V_{soft}(s_{t+1})]
+p_Q(a\mid s)=\frac{\exp(Q(s,a)/\alpha)}{Z(s)},
+\qquad Z(s)=\int\exp(Q(s,a)/\alpha)\,da.
 $$
 
-- 相比标准Bellman方程，它在下一个状态的值里加入了对动作熵 $log \pi(a_t|s_t)$的考虑，因此称为软Bellman方程.
-- Soft Policy Iteration（软策略迭代）
-- 策略评估（Soft Policy Evaluation）
-- 在评估值 $Q$迭代的过程中，论文使用了比较复杂的数学描述语言，实际上和我们之前的思路是一样的。算子是函数到函数的映射。
-- Soft Bellman方程是TD的思想，用下一步的 $Q^{'}$ 计算 $Q$ ，而这样就可以实现反复迭代了。
-- $Q_{soft}(s_t, a_t)$实际是一个计算值方程:
+离散动作把积分换成求和；连续情形还要求归一化积分存在。神经网络只表达其中一个策略族，常用的改进损失为
+
 $$
-            Q_{soft}(s_t, a_t) = r(s_t, a_t) + \gamma \mathbb{E}_{s_{t+1} \sim p}[V_{soft}(s_{t+1})]
+\alpha D_{\mathrm{KL}}(\pi_\phi(\cdot\mid s)\parallel p_Q(\cdot\mid s))
+=\mathbb E_{a\sim\pi_\phi}[\alpha\log\pi_\phi(a\mid s)-Q(s,a)]
++\alpha\log Z(s).
 $$
 
-- $s_t$ 是变量 $s$ 的一个值，类似地，$x_0$ 是变量 $x$ 在 $t=0$ 时的取值。
-- 当不想用 "值" -> "值"的描述语言，而是用"函数" -> "函数"的描述语言时，可以借助一个算子  $\tau^{\pi}$:
+固定 $Q$、$\alpha$ 更新策略时，最后一项与 $\phi$ 无关，因此不必计算配分函数。有限动作集上，较大的温度使分布更平坦；连续无界动作空间不能直接照搬“温度无穷大就是均匀分布”。
+
+**重参数化如何提供梯度？** 令
+
 $$
-          \tau^{\pi}(Q(s, a)) = r(s, a) + \gamma \mathbb{E_{s^{'}\sim p}}[V(s^{'})]
+u=\mu_\phi(s)+\sigma_\phi(s)\odot\epsilon,
+\qquad\epsilon\sim\mathcal N(0,I),
+\qquad a=c+b\odot\tanh(u).
 $$
 
-- 当反复作用 $T$ 后，它会收敛到唯一解 $Q^{*}$，也就是最优 $Q$函数：
-$$
-            Q_0 ---T --- Q_1 ---T---Q_2 --- T--- ->... --- Q
-$$
+固定本次抽到的 $\epsilon$，动作是参数的可微函数，梯度可以通过 $Q(s,a)$ 对动作再流向 Actor。普通 `sample()` 与可重参数化分布的 `rsample()` 暴露的计算图不同；不能据此断言所有随机变量都“不可求导”，也不是所有分布都支持这种路径梯度。
 
-- 策略改进（Soft Policy Improvement）
-- 能量函数（Energy Function）
-在物理中，系统趋向于能量最低的稳定状态（例如物体往低处掉、电荷趋向最低势能）
+| 环节 | 固定什么 | 更新什么 |
+|---|---|---|
+| 计算 TD 目标 | 下一步目标值停止梯度 | 此处不更新网络 |
+| Critic 回归 | 回放中的状态、动作与 TD 目标 | 两个在线 Q 网络 |
+| Actor 更新 | 回放状态、一次基础噪声样本与 Q 权重 | 策略参数；保留 Q 对动作的梯度 |
+| 目标网络更新 | 更新后的在线参数 | 通过软更新修改目标参数 |
 
-- 基于能量的概率分布
-- 能量函数的 "低 = 好" 特性，需要通过指数函数 $\exp(-E(x))$转化为 "可用于计算概率的权重"
-- 能量的约定是 "低能量 = 高概率"，但直接对  取指数会导致 "高能量->大指数值"，与我们的需求相反。加上负号后，关系完全反转：
-- 低能量 $E(x)$ -> 大的  $-E(x)$ ；
-- 高能量 $E(x)$ -> 小的  $-E(x)$  。
-- 指数函数 $\exp(t)$有两个关键性质，完美适配 "概率权重" 的需求:
-- 非负数: 无论 $t$(这里是$-E(x)$ ) 是正还是负， $\exp(t)$的结果永远大于0 —— 而概率的取值范围 $(0, 1)$，非负的权重是后续归一化的前提;
-- 单调性: $\exp(t)$是严格单调递增函数，即 "$(t_1 > t_2)$ -> $(\exp(t_1) > \exp(t_2))$"  ——  能量的 "概率排序" 能完整传递到权重上。
-- 但是此时值之和不等于一，需进行归一化。
-- 配分函数$Z$（Partition Function)
-- 配分函数 $Z$的定义非常简单：所有事件的 "概率权重" 之和（离散事件）或积分（连续事件），数学表达式为：
-- 离散事件: $Z = \sum_x \exp (- E(x))$
-- 连续事件:  $Z = \int \exp (- E(x))dx$
-- 最终的基于能量的概率分布公式
-- 结合前两步，每个事件 $x$的概率为:
-$$
-      p(x) = \frac{\exp(-E(x))}{Z}
-$$
-
-- 其中  $Z = \sum_x \exp (- E(x))$是配分函数
-- 玻尔兹曼分布（Boltzmann Distribution）与 Softmax：
-- 玻尔兹曼分布来自统计物理，用于描述一个系统在温度 $TTT$ 下出现在能量状态 $E(x)E(x)E(x)$ 的概率：
-$$
-      p(x) = \frac{\exp(-\frac{E(x)}{kT})}{Z}
-$$
-
-- 其中
-- $E(x)$: 该状态的能量
-- $T$: 温度
-- $k$: 玻尔兹曼常数
-- $Z$: 配分函数
-- 当把常数 $k$合并进温度，把 $\frac{1}{T}$视为一个可调超参数，就能够得到机器学习中常用形式:
-$$
-          p(x) = \frac{\exp(-E(x)/\tau)}{Z}
-$$
-其中 $\tau$ 表示温度参数。
-
-- $\tau$超参数用来控制 $E(x)$的重要性程度
-- $\tau$-> 0：系统几乎只选最低能量（最大概率）的状态 -> 接近 argmax
-- $\tau$-> ∞：所有状态差不多等概率 -> 完全随机
-- 能量函数 $E(x)$换成 价值函数 / $Q$值的相反数: $E(a|s) = - Q(s, a)$就得到:
-$$
-            p(a|s) = \frac{\exp(Q(s, a))}{Z(s)}
-$$
-
-- 这就是最大熵强化学习中的策略更新公式的关键思想:
-- $Q$值高 -> 该动作概率更大（利用探索性）
-- 策略与 $\exp(Q^{\pi}(s, \cdot)$成正比
-$$
-          \pi_{new} (\cdot | s) \propto \exp (Q^{\pi}(s, \cdot))
-$$
-
-- 这意味着策略倾向于在高 $Q$值的动作附近分配更高概率。
-- 通过最小化 KL 散度来实现策略迭代，并证明该迭代收敛到最优最大熵策略:
-$$
-              \pi_{new} = \arg \min_{\pi^{'}\in \prod}D_{KL}(\pi^{'}(\cdot|s) || \frac{\exp(Q^{\pi}(s, \cdot))}{Z^{\pi}(s)})
-$$
-
-- 要找一个新策略 $\pi_{new}$，让它尽量接近诱导出来形如玻尔兹曼分布 的"目标分布"。
-- 策略更新不是直接最大化 $Q$，而是变成 "让策略更像高 $Q$的分布"
-- 其中 $\prod$是新策略分布预先给定的族.
-- $\prod$是一组可被神经网络参数化的、可微、可采样的概率分布.
-- 在连续动作领域，$\prod$通常指高斯策略网络族:
-$$
-          \pi_{\phi}(a|s) = N(\mu_{\phi}(s), \sum_{\phi}(s))
-$$
-
-- "族" 是强调元素间有明确关联（如共同结构、来源）的特定汇集，
-- "集合" 是仅需元素满足某属性、不刻意突出关联性的通用汇集。
-- Ps: 为什么说是"给定":
-- 因为我们不可能优化无限复杂的策略，只能优化可参数化、可微、可更新的一类策略, 如高斯分布.
-- Soft Actor-Critic 实现结构:
-- 损失函数
-- value网络（辅助）
-- $V_{\psi}(s_t)$的作用是用来计算 $V_{\bar\psi}(s_{t+1})$，进而计算更新预测 $Q$值的函数 $\hat Q(s_t, a_t)$:
-- value网络的更新公式使用了均方差MSE如下:
-$$
-        J_V(\psi) = \mathbb{E}_{s_t \sim D}[\frac{1}{2}(V_{\psi}(s_t) - \mathbb{E}_{a_t \sim \pi_{\theta}}[ Q_{\theta}(s_t, a_t) - \log \pi_{\phi}(a_t | s_t))^2]
-$$
-
-- 其中  $\mathbb{E}_{a_t \sim \pi_{\theta}}[ Q_{\theta}(s_t, a_t) - \log \pi_{\phi}(a_t | s_t) = V_{soft}(s_t)$
-- $D$指的是经验回收池(Replay Buffer)
-- $D$ <- $D \cup (s_t,a_t,r(s_t,a_t), s_{t+1})$——表示每一步环境交互得到的四元组都会被加入$D$.
-
-| 好处 | 解释 |
-|--------|--------|
-| ⭐ 提升样本效率| 不需要像 PPO 一样每更新一次就丢掉数据 |
-| ⭐ 支持多次梯度更新 | 一条轨迹可用于多次训练 |
-| ⭐ 训练更稳定 | 数据分布不会随策略快速漂移 |
-
-- 目标value网络软更新
-$$
-              \bar{\psi} \leftarrow \tau\psi + (1 - \tau)\bar{\psi}
-$$
-
-- $V_{\bar\psi}(s_{t+1})$是目标网络
-
-| 网络 | 符号 | 作用 |
-|--------|--------|--------|
-| 训练中的 Value 网络 | $V_{\psi}$ | 参与优化，反向传播损失 $J_V(\psi)$ |
-| 目标 Value 网络 | $V_{\bar\psi}$ | 只用于计算 Q 的目标值，不反传梯度 |
-
-- $Q$网络
-$$
-        J_Q(\theta) = \mathbb{E}_{(s_t, a_t) \sim D}[\frac{1}{2}[ Q_{\theta}(s_t, a_t) - \hat Q(s_t, a_t) )^2]
-$$
-$$
-        with~~~ \hat Q(s_t, a_t) = r_t + \gamma V_{\bar{\psi}}(s_{t+1})
-$$
-
-- 策略网络
-$$
-        J_{\pi}(\phi) = \mathbb{E}_{s \sim D}D_{KL}(\pi_{\phi}(\cdot|s) || \frac{\exp(Q_{\theta}(s, \cdot))}{Z_{\theta}(s)})
-$$
-等价于
-$$
-        J_{\pi}(\phi) = \mathbb{E}_{s \sim D, \epsilon \sim N}[\log \pi_{\phi} (a_t | s_t) - Q_{\theta}(s_t, a_t)]
-$$
-其中 $a_t = f_{\phi}(\epsilon_t; s_t)$ 是重参数化。
-
-- 重参数化技巧 (它重写函数，把随机性从分布参数里剥离，重新参数化到了这个独立的  身上，实现可导)
-- 原本策略采样动作 $a$是产生于它的概率分布:
-$$
-                a \sim \pi_{\phi}(a|s)
-$$
-
-- 也就是说动作是直接从一个带参数的概率分布里抽样出来。
-- 动作采样过程本身不可微，梯度无法穿过它，所以只能用 REINFORCE似然比法（也就是REINFORCE方法）或其变式算法。
-- 设 $g(a)$是关于动作的损失函数，且是新环境的主要决定因素
-$$
-              \nabla_{\phi}\mathbb{E}_{\pi_\phi}[g(a)] = \mathbb{E}[\nabla_{\phi}\log\pi_{\phi}(a)R(\tau)]
-$$
-
-- 那么就算用上了优势函数降低方差:
-$$
-              \nabla_{\phi}\mathbb{E}_{\pi_\phi}[g(a)] = \mathbb{E}[\nabla_{\phi}\log\pi_{\phi}(a)A]
-$$
-
-- 奖励信号/优势函数依然是作为乘子，方差难以保持一个满意水平，因为它们都是来自随机采样。
-- SAC 采用重参数化法：
-- 将随机采样写为确定性（可导）函数加上噪声（可导）的形式：
-$$
-        a_t = \mu_{\phi}(s_t) + \sigma_{\phi}(s_t)  ⊙\epsilon, \epsilon \sim N(0, I)
-$$
-(⊙哈达玛积)
-
-- 从而可以直接对策略网络 $\phi$反向传播梯度
-- 原来的参数化方式: 随机变量 $a$直接由分布参数 $\theta = (\mu, \sigma)$决定:
-$$
-                  a \sim p_{\theta}(a)
-$$
-
-- 随机性隐含在 $p$里面
-- 新的参数化方式: 引入了一个辅助变量 $\epsilon$
-- 将 $a$表示为 $\epsilon$和 $\theta$的确定性变换
-$$
-                  a = g(\theta, \epsilon)
-$$
-
-- 将随机性从分布参数中剥离，重新参数化到这个独立的 $\epsilon$上
-- 假设没有这个技巧，生成 $a$为
-$$
-    a \sim N(\mu, \sigma)
-$$
-（在计算图中，这里有一个节点叫 采样）
-
-- 前向传播（Forward）：可以从正态分布中拿到一个数值 $a$，前向过程可以正常计算
-- 反向传播（Backward）：当我们想通过 $a$反向传播梯度到分布参数 $\mu$和 $\sigma$时，如果只看计算图的采样节点，它会说采样是随机过程，这次得到 $a$只是我根据分布概率随机抽取的一个结果，并不是从 $\mu$和 $\sigma$通过一个确定性可导函数算出的。因此，输出 $a$ 对参数 $\mu$和 $\sigma$的梯度在普通微积分意义下是不存在的 —— 因为稍微改变 $\mu$或 $\sigma$，采样结果并不会连续可导地变化，而是从另一个分布重新抽样，结果可能跳变。
-- 为了解决这个问题，既然采样不可导，那就把随机性抽取出来，将其变成一个输入常量
-- 将动作 $a$的定义，从"一个从分布里抽出来的随机变量"，重写为"一个确定性的函数":
-$$
-      a = g(\mu, \sigma, \epsilon) = \mu +\sigma * \epsilon, \epsilon \sim N(0, 1)
-$$
-
-- $\mu$决定了动作的基准
-- $\epsilon$提供了随机方向
-- $\sigma$决定了随机的幅度
-- 计算图变化
-- $\epsilon$不再是运算过程中的随机行为，而变成了计算图的一个外部输入节点。对于这一次运算来说， 就是一个固定的常数（比如 0.5）
-- $+$和 $\times$：采样变成了普通的加法和乘法
-- 再来求导
-$$
-          \frac{\partial a}{\partial \mu} = \frac{\partial (\mu+\sigma *\epsilon)}{\partial \mu}  = 1
-$$
-$$
-          \frac{\partial a}{\partial \sigma} = \frac{\partial (\mu+\sigma *\epsilon)}{\partial \sigma}  = \epsilon
-$$
-
-- 现在的 $a$对于 $\mu$和 $\sigma$来说，是一个完全连续、可导的函数。梯度可以顺畅地流过加法和乘法节点，一直流回神经网络的权重里.
-- 实际操作: 由 Tanh 限制范围
-- tanh 是有界动作的一种参数化，不是所有仿真环境的硬性要求。[-1,1] 常是归一化动作范围，并非电机物理单位；必须按环境上下界缩放。饱和区的 tanh 导数趋近于零，也不能声称它总能改善梯度：
-$$
-                a_{final} = \tanh(a_{raw})
-$$
+回放可以多次复用数据，但并不让数据分布永远不变。PPO 也可在同一轮 rollout 上执行多个 minibatch 更新；其限制是数据与策略变化的关系，而不是“每做一次梯度更新就必须丢弃全部数据”。
 
 ### 10.5.1 区分早期 SAC 与无独立 V 网络的版本
 
-上文的软价值函数推导不意味着每个 SAC 实现都必须训练一个独立 V 网络。早期变体使用 V 及目标 V；另一常见实现保留两个 Q 网络、两个目标 Q 网络及一个随机策略，直接构造软 TD 目标。参数计数时还要区分网络与可学习的温度 α。
+软价值函数可以作为数学定义存在，不要求总有一个独立 V 网络。早期 SAC 变体使用 V 及目标 V；另一常见实现保留两个 Q 网络、两个目标 Q 网络及一个随机策略，直接构造软 TD 目标。参数计数时还要区分网络与可学习的温度 α。
 
 令 d 表示真正终止，下一步动作 a′ 从当前策略新采样：
 
@@ -2377,6 +1906,21 @@ assert torch.isfinite(log_std.grad).all()
 至少同时记录 episode 回报、长度、终止/截断比例、价值损失、策略熵与实际动作范围。PPO 增加 KL 与 clip fraction，SAC 增加温度及双 Q 的统计量。日志只能帮助定位问题，不能由单个损失下降推断策略一定变好。
 
 固定评估策略、环境版本和评估预算，报告多个随机种子的分布。不要把探索期回报、关闭探索后的回报以及不同 episode 终止规则的结果直接比较。
+
+### 11.1 用四条轨迹核对梯度与更新路径
+
+下载 [rl_update_checks.py](rl_update_checks.py)，在安装了 PyTorch 的环境运行 `python -B rl_update_checks.py`。脚本仅在 CPU 上检查公式与计算图，不执行环境训练。
+
+第一个实验包含两个独立 Bernoulli 动作，$r_0=a_0$、$r_1=2a_1$，策略概率为 $p_t=\operatorname{sigmoid}(\theta_t)$。取 $\gamma=0.9$，目标可以直接求出：
+
+$$
+J=p_0+2\gamma p_1,\qquad
+\nabla_\theta J=[p_0(1-p_0),\;2\gamma p_1(1-p_1)].
+$$
+
+脚本穷举四条轨迹，将解析梯度、中心差分、带外层折扣的 score-function 梯度和加入状态基线后的梯度互相比较。取 $\theta=[0.4,-0.2]$ 时，正确结果约为 `[0.240261, 0.445530]`；漏掉外层折扣后，第二项变成 `0.495033`。这个差异来自公式的权重，和采样噪声无关。
+
+第二个实验检查 TD3 的三条路径：终止样本的目标等于即时奖励；Critic 回归不会更新 Actor 或目标网络；冻结 Critic 参数后，Actor 仍能通过动作获得非零梯度。这些检查能发现更新对象错误，但不能证明策略训练有效；最终仍需前述环境评估。
 
 
 ## 阅读自测与验收

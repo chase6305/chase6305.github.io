@@ -245,7 +245,7 @@
     },
     {
       "id": 30,
-      "path": "content/posts/network-protocol/c++_tcp.md",
+      "path": "content/posts/network-protocol/c++_tcp/index.md",
       "acceptance_checks": [
         "让客户端分多次发送头部与正文，确认服务端仍能解析一帧；一次 recv 返回的数据量不能代表应用消息边界。",
         "测试对端提前关闭和超长声明长度，确认不会无界分配或把不完整内容作为完整响应。"

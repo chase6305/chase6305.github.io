@@ -114,12 +114,24 @@ def test_cmake(directory):
     for _ in range(2):
         run(["cmake", "--build", str(build), "--parallel", "2"])
         assert run([str(build / "app")]) == "42"
-    return "clean and incremental builds passed"
+    library = build / "hello-build/libhello.a"
+    unchanged = {p: p.stat().st_mtime_ns for p in (library, build / "app")}
+    run(["cmake", "--build", str(build), "--parallel", "2"])
+    assert all(p.stat().st_mtime_ns == stamp for p, stamp in unchanged.items())
+    source = external / "hello.cpp"
+    assert "return 42;" in source.read_text()
+    source.write_text(source.read_text().replace("return 42;", "return 43;"))
+    run(["cmake", "--build", str(build), "--parallel", "2"])
+    assert run([str(build / "app")]) == "43", "Edited dependency was not rebuilt"
+    library.unlink()
+    run(["cmake", "--build", str(build), "--parallel", "2"])
+    assert run([str(build / "app")]) == "43", "Missing byproduct was not restored"
+    return "fresh/no-op/source-edit/deleted-library rebuilds passed"
 
 
 def test_python():
     result = {}
-    pid = namespace(blocks("pid/index.md", "python")[0])["PID"]
+    pid = namespace((ROOT / "content/posts/pid/pid_controller.py").read_text())["PID"]
     controller = pid(2.0, 1.0, 0.1, 3.0)
     for _ in range(1000):
         assert controller.update(100.0, 0.0, 0.01) == 3.0
@@ -257,7 +269,7 @@ def server(binary):
 def test_network(directory):
     tcp_port, udp_port = free_port(socket.SOCK_STREAM), free_port(socket.SOCK_DGRAM)
     tcp = compile_cpp(directory, "tcp",
-                      blocks("network-protocol/c++_tcp.md", "cpp")[0]
+                      blocks("network-protocol/c++_tcp/index.md", "cpp")[0]
                       .replace("htons(8888)", f"htons({tcp_port})"))
     udp = compile_cpp(directory, "udp",
                       blocks("network-protocol/c++_udp.md", "cpp")[0]
@@ -287,7 +299,10 @@ def test_network(directory):
     with server(udp) as child, socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as peer:
         peer.sendto(b"x" * 1600, ("127.0.0.1", udp_port))
         assert child.wait(timeout=5) == 1
-    return "TCP echo/fragmentation; UDP echo/empty/truncated datagrams passed"
+    deadline_source = (ROOT / "content/posts/network-protocol/c++_tcp/tcp_deadline.cpp").read_text()
+    deadline = compile_cpp(directory, "tcp_deadline", deadline_source)
+    assert "PASS:" in run([deadline])
+    return "TCP echo/fragmentation/frame deadlines; UDP echo/empty/truncated datagrams passed"
 
 
 def main():

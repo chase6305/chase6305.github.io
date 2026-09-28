@@ -1,0 +1,106 @@
+{
+  "versions": {
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "matplotlib": "3.10.9"
+  },
+  "sample_period_s": 0.005,
+  "mass_kg": 1.0,
+  "damping_Ns_m": 2.0,
+  "stiffness_N_m": 4.0,
+  "kp_N_m": 80.0,
+  "kd_Ns_m": 4.0,
+  "plant_discretization": "zero-order hold, current command applied over next interval",
+  "derivative": "backward difference of the current filtered measurement",
+  "initial_position_m": 0.001,
+  "initial_velocity_m_s": 0.0,
+  "initial_filter_position_m": 0.001,
+  "limitations": "linear model; no saturation, extra delay, noise or real robot",
+  "reference_filter_1hz_spectral_radius": 0.985325598840595,
+  "results": [
+    {
+      "measurement_filter_hz": null,
+      "alpha": 1.0,
+      "open_loop_white_noise_std_ratio": 1.0,
+      "closed_loop_poles": [
+        [
+          0.010231581239802792,
+          0.0
+        ],
+        [
+          0.9843777090798365,
+          0.043209508181765326
+        ],
+        [
+          0.9843777090798365,
+          -0.043209508181765326
+        ]
+      ],
+      "closed_loop_spectral_radius": 0.985325598840595,
+      "max_abs_position_m_in_4s": 0.001
+    },
+    {
+      "measurement_filter_hz": 10.0,
+      "alpha": 0.26959730895135436,
+      "open_loop_white_noise_std_ratio": 0.3947155041566254,
+      "closed_loop_poles": [
+        [
+          0.7438669368243596,
+          0.0
+        ],
+        [
+          0.986765200963488,
+          0.04499108877153158
+        ],
+        [
+          0.986765200963488,
+          -0.04499108877153158
+        ]
+      ],
+      "closed_loop_spectral_radius": 0.9877903420773867,
+      "max_abs_position_m_in_4s": 0.001
+    },
+    {
+      "measurement_filter_hz": 2.0,
+      "alpha": 0.06089863257570736,
+      "open_loop_white_noise_std_ratio": 0.1772162385024887,
+      "closed_loop_poles": [
+        [
+          0.9982567135092083,
+          0.04318231799880158
+        ],
+        [
+          0.9982567135092083,
+          -0.04318231799880158
+        ],
+        [
+          0.9318706213020936,
+          0.0
+        ]
+      ],
+      "closed_loop_spectral_radius": 0.9991902614887493,
+      "max_abs_position_m_in_4s": 0.001
+    },
+    {
+      "measurement_filter_hz": 1.0,
+      "alpha": 0.03092757369518936,
+      "open_loop_white_noise_std_ratio": 0.12532626008642173,
+      "closed_loop_poles": [
+        [
+          1.0027789056377467,
+          0.03702624200349081
+        ],
+        [
+          1.0027789056377467,
+          -0.03702624200349081
+        ],
+        [
+          0.9531258786398813,
+          0.0
+        ]
+      ],
+      "closed_loop_spectral_radius": 1.0034622445258905,
+      "max_abs_position_m_in_4s": 0.016996548009167202
+    }
+  ]
+}

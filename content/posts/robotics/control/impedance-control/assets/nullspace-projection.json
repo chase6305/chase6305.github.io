@@ -1,0 +1,153 @@
+{
+  "numpy": "2.2.6",
+  "q_rad": [
+    0.4,
+    -0.9,
+    0.6
+  ],
+  "joint_mass_matrix_kg_m2": [
+    [
+      2.7366502862026003,
+      0.8655119466625477,
+      0.15376840198113156
+    ],
+    [
+      0.8655119466625477,
+      0.4480402737891614,
+      0.07352013689458067
+    ],
+    [
+      0.15376840198113154,
+      0.07352013689458067,
+      0.023999999999999987
+    ]
+  ],
+  "task_jacobian_m": [
+    [
+      -0.06283009530800228,
+      0.20976274430805308,
+      -0.029950024994048433
+    ],
+    [
+      1.3820352263306135,
+      0.737292530528594,
+      0.2985012495834076
+    ]
+  ],
+  "raw_secondary_torque_Nm": [
+    10.0,
+    -20.0,
+    5.0
+  ],
+  "component_limit_Nm": 0.5,
+  "cases": {
+    "correct_dynamic_projection": {
+      "torque_Nm": [
+        -5.269471152474051,
+        -1.2622535829202097,
+        -0.10802107616634654
+      ],
+      "incremental_task_acceleration_m_s2": [
+        1.3131196930039965e-15,
+        5.3118838982420367e-14
+      ],
+      "incremental_task_acceleration_norm_m_s2": 5.313506693482616e-14
+    },
+    "velocity_projector_used_on_torque": {
+      "torque_Nm": [
+        -0.26756903845416896,
+        0.07151421478743297,
+        1.0621829579345967
+      ],
+      "incremental_task_acceleration_m_s2": [
+        -5.078503510845937,
+        16.03697037473449
+      ],
+      "incremental_task_acceleration_norm_m_s2": 16.82187910757256
+    },
+    "correct_projection_then_component_clipping": {
+      "torque_Nm": [
+        -0.5,
+        -0.5,
+        -0.10802107616634654
+      ],
+      "incremental_task_acceleration_m_s2": [
+        -0.2828649838597589,
+        -1.3103306073547358
+      ],
+      "incremental_task_acceleration_norm_m_s2": 1.3405144160599738
+    }
+  },
+  "damping_sweep": [
+    {
+      "damping_sqrt_inverse_kg": 0.0,
+      "torque_Nm": [
+        -5.269471152474051,
+        -1.2622535829202097,
+        -0.10802107616634654
+      ],
+      "incremental_task_acceleration_norm_m_s2": 5.313506693482616e-14,
+      "idempotence_error": 3.412526928654778e-15
+    },
+    {
+      "damping_sqrt_inverse_kg": 0.01,
+      "torque_Nm": [
+        -5.2718409590051944,
+        -1.2685598761191432,
+        -0.10819345442486816
+      ],
+      "incremental_task_acceleration_norm_m_s2": 0.011064825873860318,
+      "idempotence_error": 0.0003559464817564661
+    },
+    {
+      "damping_sqrt_inverse_kg": 0.03,
+      "torque_Nm": [
+        -5.290756940228726,
+        -1.318917885814608,
+        -0.10956799858871702
+      ],
+      "incremental_task_acceleration_norm_m_s2": 0.09943573453349812,
+      "idempotence_error": 0.003192334216616562
+    },
+    {
+      "damping_sqrt_inverse_kg": 0.1,
+      "torque_Nm": [
+        -5.500715616151186,
+        -1.8804069691286869,
+        -0.12465390258205472
+      ],
+      "incremental_task_acceleration_norm_m_s2": 1.08652787638951,
+      "idempotence_error": 0.034099900127431124
+    },
+    {
+      "damping_sqrt_inverse_kg": 0.3,
+      "torque_Nm": [
+        -6.9969684103174075,
+        -6.053335194025047,
+        -0.22061405265811218
+      ],
+      "incremental_task_acceleration_norm_m_s2": 8.544309686015836,
+      "idempotence_error": 0.22335214505115755
+    },
+    {
+      "damping_sqrt_inverse_kg": 1.0,
+      "torque_Nm": [
+        -9.716100120601219,
+        -20.94604802024009,
+        0.0971138906774428
+      ],
+      "incremental_task_acceleration_norm_m_s2": 41.276997593141694,
+      "idempotence_error": 0.7706522909960125
+    }
+  ],
+  "checks": [
+    "finite-difference geometry",
+    "independent kinetic energy",
+    "mass positive definite",
+    "full task row rank",
+    "velocity kernel",
+    "dynamic torque kernel",
+    "projector idempotence"
+  ],
+  "scope": "Planar 3R, 2D position task; frozen q and qdot. Values are incremental accelerations due only to added torque, not full accelerations including gravity or Jdot*qdot."
+}

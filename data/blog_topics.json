@@ -25,11 +25,11 @@
       "posts/trajectory/toppra/index.md",
       "posts/trajectory/ruckig/index.md",
       "posts/pid/index.md",
+      "posts/robotics/control/robot-filters/index.md",
       "posts/robotics/dynamics/parameter-identification/index.md",
       "posts/robotics/control/impedance-control/index.md",
       "posts/planner/to_mpc_wbc/index.md",
-      "posts/thesis/elmp/index.md",
-      "posts/robotics/control/robot-filters/index.md"
+      "posts/thesis/elmp/index.md"
     ]
   },
   {
@@ -47,7 +47,7 @@
   {
     "id": "ai",
     "title": "强化学习、生成与多模态模型",
-    "description": "先理解交互与训练目标，再选择 Transformer、扩散模型、分布式训练、多模态理解或具身策略。",
+    "description": "从交互和训练目标出发，理解策略优化、Transformer、扩散模型、多模态理解与训练资源。",
     "posts": [
       "posts/ai/algorithms/overview.md",
       "posts/ai/gymnasium/1/index.md",
@@ -58,17 +58,24 @@
       "posts/ai/llm-training-metrics/index.md",
       "posts/ai/internvl-3-5/index.md",
       "posts/ai/diffusion-models/index.md",
-      "posts/ai/distributed-training-memory/index.md",
-      "posts/thesis/being_0/index.md",
-      "posts/ai/rynnbrain/index.md",
-      "posts/ai/gen-1-5/index.md",
+      "posts/ai/distributed-training-memory/index.md"
+    ]
+  },
+  {
+    "id": "embodied-ai",
+    "title": "具身策略与机器人学习",
+    "description": "从示教数据与 ACT 进入 VLA，区分动作生成、实时执行、运动先验和分层任务协调。",
+    "posts": [
       "posts/ai/lerobot-act/index.md",
       "posts/ai/vla-evolution/index.md",
+      "posts/ai/vla-world-model-data/index.md",
       "posts/ai/x-vla/index.md",
       "posts/ai/real-time-chunking/index.md",
-      "posts/ai/light-loco-parkour/index.md",
-      "posts/ai/vla-world-model-data/index.md",
-      "posts/ai/molmo-motion/index.md"
+      "posts/ai/gen-1-5/index.md",
+      "posts/ai/molmo-motion/index.md",
+      "posts/ai/rynnbrain/index.md",
+      "posts/thesis/being_0/index.md",
+      "posts/ai/light-loco-parkour/index.md"
     ]
   },
   {
@@ -144,7 +151,7 @@
       "posts/dialout/udev/index.md",
       "posts/dialout/dh/index.md",
       "posts/network-protocol/tcp-udp-introduction.md",
-      "posts/network-protocol/c++_tcp.md",
+      "posts/network-protocol/c++_tcp/index.md",
       "posts/network-protocol/c++_udp.md",
       "posts/network-protocol/fixed_IP.md",
       "posts/unicode/index.md"

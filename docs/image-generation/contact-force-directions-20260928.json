@@ -1,0 +1,17 @@
+{
+  "date": "2026-09-28",
+  "method": "built-in image_gen",
+  "mode": "generate, then edit",
+  "prompt": "docs/image-generation/contact-force-directions-20260928-prompt.txt",
+  "edit_prompt": "docs/image-generation/contact-force-directions-20260928-edit.txt",
+  "original_generation": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-9ffaf648-d62c-4041-b14c-4fff3200ccb6.png",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-af7e38fd-15be-46e2-b788-9d0f919e1b84.png",
+  "asset": "content/posts/robotics/control/impedance-control/assets/contact-force-directions.webp",
+  "dimensions": [
+    1774,
+    887
+  ],
+  "sha256": "0341d404cc754ee40618cb1d9769e9ee24d62b0366d3f0723961656fd1e8401a",
+  "review": "Shared +z points right. Both contact vectors start at the contact line, blue robot-on-environment points right, orange environment-on-robot points left. F_cmd and F_env balance in the illustrated gravity-compensated static scalar example.",
+  "conversion": "WebP quality 90, method 6; original outputs retained; no diagram edits outside image_gen"
+}

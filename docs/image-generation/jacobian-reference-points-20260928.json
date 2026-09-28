@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-28",
+  "method": "built-in image_gen",
+  "prompt": "docs/image-generation/jacobian-reference-points-20260928-prompt.txt",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-e69dde0b-e6a3-44cb-a595-791e4906f303.png",
+  "asset": "content/posts/robotics/kinematics/jacobian/assets/reference-points.webp",
+  "dimensions": [
+    1774,
+    887
+  ],
+  "sha256": "6007ba7ce985ecb376b292dfb982bb0e668c1e19943d4da3b1584c9df258a745",
+  "review": "Same pose in all three panels. LOCAL rotates the tool axes at P, LWA keeps P and world axes, WORLD uses O and world axes. The origin shift is a representation change, not physical motion.",
+  "conversion": "WebP quality 90, method 6; no diagram edits outside image_gen",
+  "prompt_kind": "Design specification; the submitted request used a condensed form of this specification."
+}

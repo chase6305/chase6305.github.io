@@ -1,18 +1,24 @@
 - name: Robotics & Control
   nameZh: 机器人与控制
-  tags: [Robotics, Kinematics, Inverse Kinematics, D-H Parameters, Calibration, Kinematic Calibration, Hand-Eye Calibration, Robot Zeroing, CCTag, Circle Grid, Fiducial Markers, OpenCV, Motion Planning, Path Planning, A*, 3D Grid, MPC, Whole-Body Control, PID, Robot Control, Trajectory Generation, Trajectory Optimization, Ruckig, TOPP-RA, Pink, Pinocchio, Workspace Analysis, Monte Carlo, Robot Gripper, CasADi, Optimization, Automatic Differentiation]
+  tags: [Robotics, Kinematics, Inverse Kinematics, D-H Parameters, Calibration, Kinematic Calibration, Hand-Eye Calibration, Robot Zeroing, CCTag, Circle Grid, Fiducial Markers, OpenCV, Motion Planning, Path Planning, A*, 3D Grid, MPC, Whole-Body Control, PID, Robot Control, Trajectory Generation, Trajectory Optimization, Ruckig, TOPP-RA, Pink, Pinocchio, Workspace Analysis, Monte Carlo, Robot Gripper, CasADi, Optimization, Automatic Differentiation, 机器人, Control, Dynamics, Impedance Control, Jacobian, Parameter Identification, RLS, ELMP]
+- name: State Estimation & Filtering
+  nameZh: 状态估计与滤波
+  tags: [Signal Processing, Kalman Filter, EKF, Butterworth, One Euro Filter, Pose Filter, Mass Spring Damper, Weighted Moving Average]
+- name: Embodied AI & Robot Learning
+  nameZh: 具身智能与机器人学习
+  tags: [VLA, Humanoid Robots, Humanoid, Embodied AI, Robot Learning, Imitation Learning, LeRobot, ACT, Action Chunking, RT-2, OpenVLA, Physical Intelligence, RECAP, RTC, Generalist, GEN-1.5, RynnBrain, X-VLA, MolmoMotion, Motion Forecasting, World Model, World Action Model, Egocentric, Teleoperation, UMI, APG, Light-Loco-Parkour, Locomotion]
 - name: AI & Learning
   nameZh: 人工智能与学习
-  tags: [Artificial Intelligence, Machine Learning, Deep Learning, Reinforcement Learning, Transformer, Attention, Diffusion Models, Generative Models, Distributed Training, GPU Memory, Gymnasium, VLA, Humanoid Robots, Isaac Lab, USD, PyTorch, Paper Notes]
+  tags: [Artificial Intelligence, Machine Learning, Deep Learning, Reinforcement Learning, Transformer, Attention, Diffusion Models, Generative Models, Distributed Training, GPU Memory, Gymnasium, PyTorch, Paper Notes, LLM, VLM, Pretraining, Post-training, Evaluation, Ablation, DPO, PPO, RLHF, GRPO, GSPO, Distillation, MoE, In-Context Learning, Soft Prompt, Multimodal, Qwen, InternVL, Flow Matching]
 - name: 3D Vision & Simulation
   nameZh: 三维视觉与仿真
-  tags: [3D Vision, 3D Visualization, Open3D, Point Cloud, Mesh Processing, CoACD, Collision Geometry, MeshCat, OpenGL, NVIDIA Warp]
+  tags: [3D Vision, 3D Visualization, Open3D, Point Cloud, Mesh Processing, CoACD, Collision Geometry, MeshCat, OpenGL, NVIDIA Warp, Isaac Lab, USD, Simulation]
 - name: Programming & Build
   nameZh: 编程与构建
-  tags: [C++, Python, CUDA, GPU Programming, GCC, CMake, ExternalProject, Build Systems, Concurrency, Lock-Free Queue, F-String, Tqdm, Unicode]
+  tags: [C++, Python, CUDA, GPU Programming, GCC, CMake, ExternalProject, Build Systems, Concurrency, Lock-Free Queue, f-string, tqdm, Unicode]
 - name: Systems & Tools
   nameZh: 系统与工具
   tags: [Linux, Ubuntu, NVIDIA, VS Code, Debugging, Troubleshooting, Dependencies, Shared Libraries, Environment Management, Conda, Qt, PyQt5, PySide6, Matplotlib, Jetson, XCB, X11, EGL, GDM, CLI, Process Monitoring, Process Management]
 - name: Networking & Devices
   nameZh: 网络与设备
-  tags: [Network Protocols, Network Programming, Linux Networking, IP Configuration, TCP, UDP, Serial Communication, Udev]
+  tags: [Network Protocols, Network Programming, Linux Networking, IP Configuration, TCP, UDP, Serial Communication, udev]

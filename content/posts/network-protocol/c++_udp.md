@@ -1,17 +1,17 @@
 ---
-title: 'C++ 关于UDP通讯的示例'
+title: 'C++ UDP 通信：报文边界、MTU、序号与数据年龄'
 date: 2021-08-08
-lastmod: 2026-09-05
+lastmod: 2026-09-28
 draft: false
 tags: ["C++", "UDP", "Network Programming"]
 categories: ["系统与工具"]
 authors: ["chase"]
-summary: "实现带接收超时和截断检查的 Linux C++17 UDP 回环通信，说明报文边界、零长度消息与广播限制。"
+summary: "实现带超时与截断检查的 Linux C++17 UDP 通信，解释接收缓冲与路径 MTU 的区别，并设计机器人状态流的序号、会话与有效期。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
-description: "实现带接收超时和截断检查的 Linux C++17 UDP 回环通信，说明报文边界、零长度消息与广播限制。"
+description: "实现带超时与截断检查的 Linux C++17 UDP 通信，解释接收缓冲与路径 MTU 的区别，并设计机器人状态流的序号、会话与有效期。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "C++17 与 Linux socket"
 reading_focus: "先确认一次完整数据报，再按业务需求设计序列号、去重和重试预算。"
@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
                                   &peer_size);
         } while (received < 0 && errno == EINTR);
         if (received < 0 && (errno == EAGAIN || errno == EWOULDBLOCK))
-            throw std::runtime_error("receive timed out after 5 s");
+            throw std::runtime_error("receive wait timed out (SO_RCVTIMEO=5 s)");
         check(static_cast<int>(received), "recvfrom");
         // Linux MSG_TRUNC 返回原始数据报长度；截断的消息不得继续处理。
         if (static_cast<std::size_t>(received) > buffer.size())
@@ -133,9 +133,40 @@ int main(int argc, char** argv) {
 g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic udp_demo.cpp -o udp_demo
 ```
 
-两个终端依次执行 `./udp_demo server` 和 `./udp_demo client`，在 5 秒内启动客户端。预期客户端输出 `Hello, UDP!`。若超时，服务端退出后需要重新启动，不会永久等待。
+两个终端依次执行 `./udp_demo server` 和 `./udp_demo client`，在 5 秒内启动客户端。预期客户端输出 `Hello, UDP!`。若某次接收等待超时，服务端退出后需要重新启动。`SO_RCVTIMEO` 限制一次阻塞接收的等待；遇到 `EINTR` 后重新调用，以及系统调度，都可能延长整个请求的耗时。若要限制请求总预算，应使用单调时钟的绝对截止时间，参见 [TCP 整帧截止时间]({{< relref "/posts/network-protocol/c++_tcp" >}})。
 
 `recvfrom` 返回 0 表示收到零长度数据报，并不等于 TCP 的连接关闭。数组恰好收满时不能写 `buffer[buffer.size()]`；本例始终按长度处理数据，不补写终止符。
+
+## 1500 字节缓冲区为什么不是 1500 字节网络载荷
+
+接收缓冲区大小是应用愿意接受的最大数据报尺寸；路径 MTU 是网络允许的 IP 包尺寸，两者不在同一层。以路径 MTU 恰为 1500 字节、没有 IP 可选字段或扩展头为例：
+
+| 协议 | IP 头 | UDP 头 | 无 IP 分片时的 UDP 载荷预算 |
+| --- | ---: | ---: | ---: |
+| IPv4 | 20 B | 8 B | 1472 B |
+| IPv6 | 40 B | 8 B | 1452 B |
+
+载荷预算还包含应用自己的序号、时间戳、校验与封装字段。隧道、不同链路或扩展头会改变有效预算，不能把这两个数当作所有网络通用上限。回环接口允许的报文尺寸也不能代表真实网卡与路径。
+
+发送超过路径限制的报文，可能触发分片或返回错误，具体取决于协议、系统及路径 MTU 发现配置。即使接收端重组后能一次读到完整 UDP 报文，也不说明途中没有分片；任一分片丢失都可能使整个报文无法交付。UDP 应用应尽量避免依赖 IP 分片，并处理过长报文与拥塞问题。[IETF UDP 使用指南 §3.2](https://www.rfc-editor.org/rfc/rfc8085.html#section-3.2)
+
+## 机器人状态流：序号与时间戳分别解决什么
+
+假设一条消息包含协议版本、会话标识、序号、采集时间和关节状态。接收顺序不一定是采集顺序，应先验证消息长度与版本，再决定新旧关系和数据年龄。
+
+| 字段或检查 | 用途 | 单独不能证明什么 |
+| --- | --- | --- |
+| 会话标识 | 区分设备重启或新一轮流 | 不等于身份认证 |
+| 单调增长序号 | 识别重复、乱序和缺口 | 不能单独给出真实数据年龄 |
+| 采集时间戳 | 计算采集到消费的延迟 | 跨设备时仍需时钟对齐 |
+| 接收端单调时钟 | 计算本地排队和无消息时长 | 不包含消息到达前已经发生的延迟 |
+| 有效期与数据有效标记 | 拒绝过期或不可信输入 | 拒绝之后仍需定义无有效输入时的行为 |
+
+序号绕回不能只用普通 `incoming > previous`。对 32 位无符号序号，先按模 `2^32` 计算差值；在两次可比较记录相距不到半个序号空间的前提下，差值位于 `1…2^31−1` 表示更新，0 表示重复。恰好相差半个空间时关系不确定；其余值通常作为旧数据处理。这个比较规则的前提与边界见 [RFC 1982 序号算术](https://www.rfc-editor.org/rfc/rfc1982.html#section-3.2)。
+
+例如从 `4294967295` 到 `0` 的模差为 1，应接受为更新。设备重启却不能简单按绕回处理：新会话应重新建立序号状态，并确认时间基准与标定状态。序号连续但采集缓慢的数据仍可能过期；刚到达的数据也可能已经在发送端积压很久。
+
+对于关节状态，可能允许跳过旧报文并统计丢失；对于“执行抓取”等带副作用的命令，需要另外定义确认、幂等和重试范围。不要把状态流的“保留最新”直接套到顺序任务上。关于队列内进一步积压的影响，可继续读[队列与数据新鲜度]({{< relref "/posts/queue" >}})。
 
 ## 协议设计边界
 
@@ -144,7 +175,7 @@ g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic udp_demo.cpp -o udp_demo
 - 广播另需 `SO_BROADCAST` 和正确的子网广播地址；只在明确授权的局域网设备发现流程中使用，并限制发送频率。
 - 本例没有认证和加密，不能直接作为机器人运动指令通道。
 
-参考：[Linux udp(7)](https://man7.org/linux/man-pages/man7/udp.7.html)、[Linux recv(2)](https://man7.org/linux/man-pages/man2/recv.2.html)。
+参考：[Linux socket 超时选项](https://man7.org/linux/man-pages/man7/socket.7.html)、[Linux udp(7)](https://man7.org/linux/man-pages/man7/udp.7.html)、[Linux recv(2)](https://man7.org/linux/man-pages/man2/recv.2.html)。
 
 
 ## 阅读自测与验收

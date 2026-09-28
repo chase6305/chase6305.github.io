@@ -1,0 +1,19 @@
+Use case: infographic-diagram. Create a new wide two-lane workflow diagram for robot dynamics identification.
+Style: white background, thin rounded outlines, restrained pastel blue/purple/orange/green fills, navy sans-serif text, generous margins and arrow spacing. No gradients or 3D. Every label should be short and readable.
+Title: "Batch identification and online candidate tracking".
+Top lane label "OFFLINE". Exactly five boxes, connected left to right:
+1 "Design excitation" (small waveform icon without numeric axes)
+2 "Collect measurements" (q, dq, ddq, torque as small supplementary labels)
+3 "Preprocess + regressors" (small symbolic matrix icon)
+4 "Fit candidate parameters" (small parameter document icon)
+5 "Independent validation" (separate dataset icon with check mark).
+Bottom lane label "ONLINE". Exactly five boxes, connected left to right:
+1 "New measurements"
+2 "Timing + excitation checks"
+3 "Update selected parameters" with small sublabel "RLS / EKF"
+4 "Check candidate behavior"
+5 "Store candidate history".
+Between the lanes, a single thin downward arrow from the top lane's final validated model to the bottom lane's update box, labelled "Initialize estimate". Route this arrow so it cannot look like a reverse dataflow arrow.
+Below the ONLINE checks/update area, a small amber callout "Invalid data or poor excitation: hold estimate" connected by a dashed branch from box 2. This is a side condition, not part of the main left-to-right chain.
+Bottom footer: "Candidate estimation and controller activation are separate steps in this workflow."
+Accuracy constraints: excitation is designed BEFORE collecting the identification data; the validation dataset is independent; do not show a closed-form unconstrained least-squares equation under a constrained solver; do not label masses or individual inertias as base parameters; do not imply every online estimate automatically overwrites the controller. No numeric performance curves, covariances, universal thresholds, hardware performance claims, logos or watermarks. Landscape aspect ratio approximately 2:1.

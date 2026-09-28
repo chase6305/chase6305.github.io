@@ -1,0 +1,13 @@
+{
+  "date": "2026-09-28",
+  "method": "built-in image_gen",
+  "prompt": "docs/image-generation/calibration-validation-20260928-prompt.txt",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-7e87ba44-383c-4363-9505-cb643bb69a60.png",
+  "asset": "content/posts/calibration/kinematics/assets/calibration-validation.webp",
+  "dimensions": [
+    1659,
+    948
+  ],
+  "sha256": "911d18d482e298768e3695beed54c97435306fc6807c698d84c9ce9b25dd5858",
+  "review": "All six fitting steps are connected in order; held-out samples reach verification only; frozen model feeds independent verification; units m and rad are correct; no measured-performance claims."
+}

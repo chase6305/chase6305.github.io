@@ -12,7 +12,9 @@ This repository is a Hugo site currently using the Hextra theme, as configured i
 - `hugo --minify --baseURL "http://localhost/"` is useful for checking production-style output locally.
 - `./deploy.sh` builds and pushes `public/` to `gh-pages`; use it only when intentionally performing a manual deployment. Normal pushes to `main` trigger GitHub Actions.
 
-There is no unit-test suite. Treat a clean Hugo production build as the minimum validation for every change, and inspect changed pages in the local server.
+Treat a clean Hugo production build as the minimum validation for every change, and inspect changed pages in the local server. `scripts/validate_blog.py` checks site output and snippet syntax; `scripts/test_blog_filter.cjs` checks article filtering. Topic-specific example checks live in `scripts/test_blog_*.py` and article bundles. Run the checks relevant to changed code; optional robotics and ML dependencies should be installed in a separate environment. Browser checks use an existing loopback Chrome CDP endpoint and should run serially because keyboard focus is shared.
+
+For heading or table-of-contents changes, run `python3 -B scripts/test_blog_toc.py` (use `--hugo /path/to/hugo` if needed). It builds disposable fixtures covering formulas, escaped dollar signs, code spans, linked labels and Unicode anchors. TOC formulas must reuse Markdown's rendered headings rather than guessing from dollar signs in plain text.
 
 ## Coding Style & Naming Conventions
 
@@ -28,12 +30,15 @@ Use two-space indentation in YAML and preserve the existing front matter format.
 - Preserve meaningful scientific context: cite borrowed figures, identify measured versus illustrative values when relevant, and state assumptions, omitted branches, units, and simplifications. Removing production commentary must not turn an illustration into a claimed experimental result.
 - Keep generation prompts and asset provenance in `docs/image-generation/`, outside published page bundles. Do not insert them into article text or captions.
 - Store article images in the page bundle's `assets/` directory. Prefer the existing `post-image` shortcode and `article-figure` markup with numbered captions; use descriptive alt text, responsive image processing, and image zoom for dense diagrams. Do not edit shared CSS solely to style one figure when the existing components suffice.
+- Inside `article-figure`, wrap the caption number in `span.article-figure__number` and its explanation in `span.article-figure__text`. The caption uses a two-column grid; bare caption text can be clipped even when the page itself has no horizontal overflow. Inspect the full caption on a narrow viewport.
 - Before accepting a diagram, inspect every label and arrow against the explanation or source code. Check training/inference branches, tensor shapes, time alignment, units, numeric examples, legends, and figure references. Regenerate or edit misleading connections rather than explaining away an incorrect diagram.
 - Validate image loading, zoom, captions, formulas, navigation, and horizontal overflow on desktop and mobile in both light and dark themes. Run the production Hugo build after integration.
 
 ## Testing Guidelines
 
 When adding an article, update `data/blog_topics.json` and `docs/blog-editorial-review.json` so the learning path, neighboring-post links, filter inventory, and acceptance checks include it. Preserve existing records and follow the metadata format used by recent additions.
+
+When adding tags, assign each exact tag spelling to one field in `data/tag_groups.yaml`. Keep existing tag URLs stable; the public tag index should contain every active tag exactly once, with no unclassified group or empty sections.
 
 Before submitting, run `hugo --minify` and confirm there are no broken shortcode, front matter, or template errors. For layout or CSS changes, check desktop and narrow mobile widths, light and dark themes, navigation, code blocks, and image loading. Verify new drafts with `hugo server -D` before changing `draft` to `false`.
 

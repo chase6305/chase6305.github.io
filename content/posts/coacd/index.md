@@ -1,7 +1,7 @@
 ---
 title: "CoACD: 基于碰撞感知凹性与树搜索的近似凸分解"
 date: 2025-04-03
-lastmod: 2026-09-05
+lastmod: 2026-09-28
 draft: false
 tags: ["CoACD", "Mesh Processing", "Collision Geometry"]
 categories: ["三维视觉"]
@@ -29,11 +29,11 @@ CoACD 是面向碰撞几何的近似凸分解方法。输入是三角网格，�
 ## 安装与版本记录
 
 ```bash
-python -m pip install coacd trimesh open3d numpy
-python -m pip show coacd trimesh open3d
+python -m pip install coacd trimesh numpy
+python -m pip show coacd trimesh numpy
 ```
 
-在独立环境中运行，记录版本和输入模型。无桌面环境可完成分解与导出，但 Open3D 交互窗口还需要可用图形后端。
+在独立环境中运行，记录版本和输入模型。分解与导出不依赖 Open3D；可视化放在另一个进程中，需要时再安装 `open3d` 或相应平台的 `open3d-cpu`。两者使用同一导入名，不应混装。
 
 ## 一个可复用的分解脚本
 
@@ -41,19 +41,20 @@ python -m pip show coacd trimesh open3d
 
 ```python
 import argparse
+import hashlib
 import inspect
+import json
+from importlib.metadata import version
 from pathlib import Path
 from time import perf_counter
 
 import coacd
 import numpy as np
-import open3d as o3d
 import trimesh
 
 parser = argparse.ArgumentParser()
 parser.add_argument("mesh")
 parser.add_argument("output")
-parser.add_argument("--show", action="store_true")
 args = parser.parse_args()
 
 mesh = trimesh.load(args.mesh, force="mesh")
@@ -67,33 +68,73 @@ print("run_coacd:", inspect.signature(coacd.run_coacd))
 destination = Path(args.output)
 destination.mkdir(parents=True, exist_ok=False)
 start = perf_counter()
+parameters = {"threshold": 0.05, "seed": 42}
 parts = coacd.run_coacd(
     coacd.Mesh(mesh.vertices, mesh.faces),
-    threshold=0.05,
-    seed=42,
+    **parameters,
 )
 if not parts:
     raise RuntimeError("分解没有返回组件")
-print(f"parts={len(parts)}, seconds={perf_counter() - start:.3f}")
+seconds = perf_counter() - start
+print(f"parts={len(parts)}, seconds={seconds:.3f}")
 
-rng = np.random.default_rng(42)
-visuals = []
 for index, (vertices, faces) in enumerate(parts):
     part = trimesh.Trimesh(vertices=vertices, faces=faces, process=False)
     part.export(destination / f"part-{index:03d}.obj")
-    if args.show:
-        visual = o3d.geometry.TriangleMesh(
-            o3d.utility.Vector3dVector(vertices),
-            o3d.utility.Vector3iVector(faces),
-        )
-        visual.compute_vertex_normals()
-        visual.paint_uniform_color(rng.uniform(0.25, 0.9, 3))
-        visuals.append(visual)
-if args.show:
+
+manifest = {
+    "input": Path(args.mesh).name,
+    "sha256": hashlib.sha256(Path(args.mesh).read_bytes()).hexdigest(),
+    "versions": {name: version(name) for name in ("coacd", "trimesh", "numpy")},
+    "parameters": parameters,
+    "api_signature": str(inspect.signature(coacd.run_coacd)),
+    "input_bounds": mesh.bounds.tolist(),
+    "parts": len(parts),
+    "seconds": seconds,
+}
+(destination / "manifest.json").write_text(
+    json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
+)
+```
+
+每块单独导出，便于在物理引擎中配置为多个碰撞体。如果把所有块合成一个资产，而引擎又对整个资产取一次凸包，孔洞会再次消失。`manifest.json` 记录显式参数、该版本的默认参数签名及输入摘要；实际工程还应记录网格的物理单位。
+
+### 在单独进程中读取与显示
+
+保存为 `view_parts.py`。`python view_parts.py output-parts --check-only` 只检查读取与包围盒；有图形会话时去掉 `--check-only` 查看各组件。这个进程只导入 Open3D，不导入 CoACD。
+
+```python
+import argparse
+from pathlib import Path
+
+import numpy as np
+import open3d as o3d
+
+parser = argparse.ArgumentParser()
+parser.add_argument("directory", type=Path)
+parser.add_argument("--check-only", action="store_true")
+args = parser.parse_args()
+files = sorted(args.directory.glob("part-*.obj"))
+if not files:
+    raise ValueError("没有找到导出的组件")
+rng = np.random.default_rng(42)
+visuals = []
+for path in files:
+    part = o3d.io.read_triangle_mesh(str(path))
+    if not part.has_vertices() or not part.has_triangles():
+        raise ValueError(f"组件为空: {path.name}")
+    points = np.asarray(part.vertices)
+    if not np.isfinite(points).all():
+        raise ValueError(f"组件含非有限坐标: {path.name}")
+    print(path.name, "bounds:", part.get_min_bound(), part.get_max_bound())
+    part.compute_vertex_normals()
+    part.paint_uniform_color(rng.uniform(0.25, 0.9, 3))
+    visuals.append(part)
+if not args.check_only:
     o3d.visualization.draw_geometries(visuals, window_name="CoACD parts")
 ```
 
-每块单独导出，便于在物理引擎中配置为多个碰撞体。如果把所有块合成一个资产，而引擎又对整个资产取一次凸包，孔洞会再次消失。
+本文在 Linux / Python 3.10、CoACD 1.0.14 与 Open3D CPU 0.19.0 的组合中，复现过“先导入 CoACD，再导入 Open3D”时的原生库崩溃；崩溃发生在读取网格之前。拆分进程后，L 形网格的分解、导出和重新读取通过。这个记录仅对应所测组合，不代表所有版本都冲突；若遇到类似问题，可用 `python -X faulthandler` 定位阶段，不要把导入失败直接归因于网格拓扑。
 
 ![分解前的原始网格历史截图](ori_coacd.jpg)
 

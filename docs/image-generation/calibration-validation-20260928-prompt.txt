@@ -1,0 +1,20 @@
+Use case: infographic-diagram. Create a polished technical flowchart for a robotics calibration article, landscape 1792x1024. Pure white background, thin rounded dark-blue outlines, restrained pastel blue, purple, orange and green fills, generous whitespace, sharp legible English sans-serif labels. Match a clean robotics/Transformer blog diagram style.
+
+Title: "Calibration: fit parameters, verify geometry"
+Composition: two clean horizontal lanes, with simple meaningful icons (robot arm and camera, coordinate axes, matrix columns, parameters, target).
+
+Top main lane has six well-spaced cards left to right:
+1 "Synchronized samples" with robot joint angles + camera observations.
+2 "Check conventions" with labels "Frames / Units / Time".
+3 "Split by capture session" with two outgoing arrows: top right to the fit lane; bottom down to a held-out data card.
+4 "Check observability" with two visibly identical matrix columns crossed by a small caution icon and subtitle "Fix gauge freedoms".
+5 "Fit parameters" with subtitle "Training samples only".
+6 "Freeze model" with a closed-lock icon.
+
+Bottom lane: below card3 a green "Held-out sessions" card. Farther right below card6 a larger green "Independent verification" card with labels "Position error [m]" and "Rotation error [rad]" and an adjacent note "Compare with application limits".
+The held-out sessions card has a single horizontal arrow to Independent verification.
+Freeze model has a single downward arrow to Independent verification.
+Training flow is only cards1->2->3->4->5->6.
+The split branch from card3 to Held-out sessions is separate from the fitting arrows. No held-out data arrows to fitting. No return arrows from verification to fitting. No invented measured data, bar chart numbers, success percentages, or claims of performance.
+Footer note "Low fitting residual does not guarantee identifiable parameters."
+Keep all text exact, not too dense. Make paths unambiguous. No logos, watermark, tool names or production labels.

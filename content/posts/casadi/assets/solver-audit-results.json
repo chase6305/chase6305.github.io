@@ -1,0 +1,48 @@
+{
+  "casadi_version": "3.7.2",
+  "feasible": {
+    "variable_lower_bound": -2.0,
+    "x": 0.9999999999954545,
+    "objective": 1.000000000009091,
+    "solver_success": true,
+    "return_status": "Solve_Succeeded",
+    "objective_gradient": -2.000000000009091,
+    "lam_g": 1.0000000000083333,
+    "lam_x": 1.5151526419538881e-12,
+    "primal_violation": 0.0,
+    "stationarity_abs": 7.974205452550452e-17,
+    "complementarity_abs": 9.09095021491639e-12,
+    "accepted": true
+  },
+  "infeasible": {
+    "variable_lower_bound": 2.0,
+    "x": 2.000000000000002,
+    "objective": 4.930380657631324e-30,
+    "solver_success": false,
+    "return_status": "Infeasible_Problem_Detected",
+    "objective_gradient": 4.440892098500626e-15,
+    "lam_g": 999.9999999999969,
+    "lam_x": -3999.999999999992,
+    "primal_violation": 3.000000000000009,
+    "stationarity_abs": 4.547473508864641e-13,
+    "complementarity_abs": 2999.9999999999995,
+    "accepted": false
+  },
+  "nonconvex": [
+    {
+      "initial_x": -1.5,
+      "x": -1.0241203002143155,
+      "objective": -0.20244043434482245,
+      "return_status": "Solve_Succeeded",
+      "gap_to_enumerated_global_minimum": 0.0
+    },
+    {
+      "initial_x": 1.5,
+      "x": 0.9739943532304918,
+      "objective": 0.1974341528582765,
+      "return_status": "Solve_Succeeded",
+      "gap_to_enumerated_global_minimum": 0.399874587203099
+    }
+  ],
+  "scope": "dimensionless scalar examples, no robot or performance benchmark"
+}

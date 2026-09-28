@@ -1,7 +1,7 @@
 ---
 title: "Diffusion 扩散模型入门指南：从 DDPM 到 Latent Diffusion 与 DiT"
 date: 2026-08-27
-lastmod: 2026-09-05
+lastmod: 2026-09-28
 draft: false
 tags: ["Diffusion Models", "Generative Models", "PyTorch"]
 categories: ["人工智能"]
@@ -503,6 +503,73 @@ $$
 | Flow Matching | 给定概率路径上的速度场 | 对 ODE 积分 |
 
 它们在特定参数化下存在紧密联系，但不能仅替换采样循环就假设权重兼容。必须同时核对训练目标、时间参数化、噪声路径和求解器输入输出约定。
+
+### 9.6 把预测类型、损失权重与采样公式一起核对 {#prediction-type-contract}
+
+为避免与单步 $\alpha_t=1-\beta_t$ 混淆，这里把累计信号幅度写成 $a_t=\sqrt{\bar\alpha_t}$，噪声幅度写成 $\sigma_t=\sqrt{1-\bar\alpha_t}$。对于本文的 VP 路径：
+
+$$
+x_t=a_tx_0+\sigma_t\epsilon,\qquad
+v_t=a_t\epsilon-\sigma_tx_0.
+$$
+
+从同一个 $\hat v$ 预测可以恢复
+
+$$
+\hat x_0=a_tx_t-\sigma_t\hat v,\qquad
+\hat\epsilon=\sigma_tx_t+a_t\hat v.
+$$
+
+它们只使用乘加，利用了 $a_t^2+\sigma_t^2=1$。与之相比，$\epsilon$ 参数化的 $\hat x_0=(x_t-\sigma_t\hat\epsilon)/a_t$ 在 $a_t$ 很小时会放大预测误差，在 $a_t=0$ 时不能用该除法恢复 $x_0$。这不意味着模型已经知道干净样本，只是在比较不同输出参数化的代数条件。[Progressive Distillation 的参数化讨论与附录 D](https://arxiv.org/html/2202.00512v2#S4)
+
+固定 $x_t,t$、且各预测由同一个 $\hat v$ 线性换算时，有
+
+$$
+\|\hat\epsilon-\epsilon\|^2=a_t^2\|\hat v-v_t\|^2,
+\qquad
+\|\hat x_0-x_0\|^2=\sigma_t^2\|\hat v-v_t\|^2.
+$$
+
+所以三个输出可以换算，**三个未经加权的 MSE 训练目标却不相同**；时间步采样与损失权重共同决定各噪声区间如何参与训练。这里的等式还假定没有额外裁剪、阈值化或其他非线性修正。
+
+<figure class="article-figure" id="fig-prediction-sensitivity">
+  {{< post-image src="assets/prediction-sensitivity.png" alt="给 epsilon 或 v 输出施加相同0.01数值误差时，低信噪比下 epsilon 到干净样本的换算放大更明显" >}}
+  <figcaption><span class="article-figure__number">图 7</span><span class="article-figure__text">两条曲线分别把同样大小的输出误差传播到 x₀。固定误差不代表两种模型实际会犯同样的错误，因此这张图不是生成质量或训练优劣排名。</span></figcaption>
+</figure>
+
+图中 $\delta\hat\epsilon$ 与 $\delta\hat v$ 都设为 0.01；在 SNR 为 $10^{-4}$ 时，前者引起的 $x_0$ 误差为 1，后者约为 0.0100。这一对照解释了换算敏感性，不能用来直接推算 FID。
+
+“Velocity”还依赖路径和时间变量。若令 $a=\cos\phi$、$\sigma=\sin\phi$，则 $\partial x/\partial\phi=v$；对于一般时间 $t$，还有 $\dot x=\dot\phi(t)v$。线性插值 Flow Matching 的目标速度使用另一条路径，不能仅凭都叫 `v` 就交换输出头或采样器。
+
+### 9.7 跳过时间步时，应使用实际两个端点 {#ddim-skipped-step}
+
+从噪声较大的 $t$ 跳到更干净的 $s<t$，设 $0<\bar\alpha_t<\bar\alpha_s\le1$。DDIM 可以写成：
+
+$$
+\sigma_{t\to s}^2=
+\eta^2\frac{1-\bar\alpha_s}{1-\bar\alpha_t}
+\left(1-\frac{\bar\alpha_t}{\bar\alpha_s}\right),
+$$
+
+$$
+x_s=\sqrt{\bar\alpha_s}\,\hat x_0+
+\sqrt{1-\bar\alpha_s-\sigma_{t\to s}^2}\,\hat\epsilon+
+\sigma_{t\to s}z,\qquad z\sim\mathcal N(0,I).
+$$
+
+这里 $\eta=0$ 是确定性更新；$\eta=1$、取原始相邻时间步且使用对应后验方差时，回到本文 DDPM 更新的均值与方差。跳步时须重新使用选定的 $\bar\alpha_t,\bar\alpha_s$，不能只把原 DDPM 循环的步长改大，却继续套单步 $\beta_t$。[DDIM 论文](https://arxiv.org/abs/2010.02502)
+
+如果把最后目标定义为完全干净端点 $\bar\alpha_s=1$，上式噪声方差为零。实际 Scheduler 还可能采用不同的终点约定、预测类型转换与裁剪；接入已有模型时应读取配置和实现，例如 [Diffusers 0.35.1 的 DDIMScheduler](https://github.com/huggingface/diffusers/blob/v0.35.1/src/diffusers/schedulers/scheduling_ddim.py)，而不把本文的索引约定强加给所有库。
+
+下载 [parameterization_check.py](parameterization_check.py)，只依赖 NumPy：
+
+```bash
+python -B parameterization_check.py --output parameterization-results.json
+```
+
+脚本使用已知 $x_0,\epsilon$ 检查 7 个噪声水平的换算和 MSE 比例，包括两个端点；再把一次 $\bar\alpha_t=0.2\to\bar\alpha_s=0.7$ 的跳步与独立高斯条件分布计算对照，并核对 4 个原始相邻步的 DDPM 均值与方差。[结果记录](assets/parameterization-results.json)保留误差与版本。安装 Matplotlib 后追加 `--figure prediction-sensitivity.png` 可复绘。
+
+这是一组不训练网络的代数检查：脚本知道生成数据时使用的干净样本和噪声，真实推理无法直接取得这个 oracle。真实模型还需要检查训练目标、归一化、条件输入和采样步数对生成质量的共同影响。
 
 ## 10. 完整二维 DDPM 示例
 

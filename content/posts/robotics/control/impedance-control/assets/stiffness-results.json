@@ -1,0 +1,78 @@
+{
+  "numpy": "2.2.6",
+  "static_compliance": {
+    "lengths_m": [
+      0.5,
+      0.4
+    ],
+    "joint_stiffness_Nm_per_rad": [
+      100.0,
+      80.0
+    ],
+    "q1_rad": 0.0,
+    "results": [
+      {
+        "q2_degrees": 90.0,
+        "min_compliance_m_per_N": 0.000975753148730846,
+        "max_compliance_m_per_N": 0.005124246851269155,
+        "max_cartesian_stiffness_N_per_m": 1024.8493702538308
+      },
+      {
+        "q2_degrees": 30.0,
+        "min_compliance_m_per_N": 0.0001325336362735444,
+        "max_compliance_m_per_N": 0.009431567978864214,
+        "max_cartesian_stiffness_N_per_m": 7545.254383091383
+      },
+      {
+        "q2_degrees": 5.0,
+        "min_compliance_m_per_N": 3.767540430250312e-06,
+        "max_compliance_m_per_N": 0.010081011251936736,
+        "max_cartesian_stiffness_N_per_m": 265425.15429185744
+      },
+      {
+        "q2_degrees": 0.5,
+        "min_compliance_m_per_N": 3.769992795023503e-08,
+        "max_compliance_m_per_N": 0.010099809992328736,
+        "max_cartesian_stiffness_N_per_m": 26525249.632307738
+      },
+      {
+        "q2_degrees": 0.0,
+        "min_compliance_m_per_N": 1.136440556518866e-34,
+        "max_compliance_m_per_N": 0.010100000000000003,
+        "max_cartesian_stiffness_N_per_m": null
+      }
+    ],
+    "singular_stiffness": "inverse undefined, not zero stiffness"
+  },
+  "held_position": {
+    "displacement_m": 0.01,
+    "initial_stiffness_N_per_m": 100.0,
+    "requested_final_stiffness_N_per_m": 1000.0,
+    "initial_tank_J": 0.03,
+    "tank_floor_J": 0.005,
+    "granted_final_stiffness_N_per_m": 600.0000000000023,
+    "tank_final_J": 0.005,
+    "storage_conservation_max_error_J": 1.214306433183765e-16,
+    "ramps_without_tank": [
+      {
+        "duration_s": 0.1,
+        "gain_change_power_W": 0.45,
+        "potential_increase_J": 0.045000000000000005,
+        "mechanical_port_work_J": 0.0
+      },
+      {
+        "duration_s": 1.0,
+        "gain_change_power_W": 0.045000000000000005,
+        "potential_increase_J": 0.045000000000000005,
+        "mechanical_port_work_J": 0.0
+      },
+      {
+        "duration_s": 10.0,
+        "gain_change_power_W": 0.0045000000000000005,
+        "potential_increase_J": 0.045000000000000005,
+        "mechanical_port_work_J": 0.0
+      }
+    ]
+  },
+  "scope": "Rigid 2R links, joint springs, zero preload, first-order statics; separate scalar gain update at fixed position and zero velocity. No closed-loop passivity guarantee."
+}

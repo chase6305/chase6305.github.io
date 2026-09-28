@@ -1,0 +1,14 @@
+{
+  "mode": "generate",
+  "tool": "image_gen.imagegen",
+  "prompt": "docs/image-generation/icp-observability-20260928-prompt.txt",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-b3c39106-1832-4f97-aba5-15ee081248d2.png",
+  "asset": "content/posts/open3d/introduction/assets/icp-observability.webp",
+  "dimensions": [
+    1774,
+    887
+  ],
+  "conversion": "RGB WebP quality=90 method=6; original retained",
+  "sha256": "b301859ebe3d9b9d7eb1f5f5731d977b9f219d0623eff72f79a2b729b06444bb",
+  "review": "Verified three tangent freedoms on one plane, differently oriented normals at a corner; local residual geometry only."
+}

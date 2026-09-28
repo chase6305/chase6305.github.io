@@ -1,7 +1,7 @@
 ---
 title: "Transformer Attention 学习指南：从 Q/K/V 到现代大模型架构"
 date: 2026-08-27
-lastmod: 2026-09-05
+lastmod: 2026-09-28
 draft: false
 tags: ["Transformer", "Attention", "PyTorch"]
 categories: ["人工智能"]
@@ -1254,6 +1254,56 @@ out = nn.functional.scaled_dot_product_attention(
 ```
 
 使用 SDPA 时不应在 `is_causal=True` 的同时重复传入等价的 causal mask。是否采用特定优化内核属于运行时行为，不应仅根据函数名假定。
+
+#### 缓存解码：非方形 causal mask 应按全局位置对齐 {#cached-causal-alignment}
+
+上一段的 Q/K 长度相同。若已经缓存 3 个 token，这一轮一次追加 2 个 token，则 Q 对应全局位置 `[3,4]`，K/V 对应 `[0,1,2,3,4]`。允许访问的矩阵应该是：
+
+```text
+             Key: 0  1  2  3  4
+Query 3           1  1  1  1  0
+Query 4           1  1  1  1  1
+```
+
+PyTorch SDPA 的 `is_causal=True` 对非方形输入采用**左上对齐**，不会自动推断已有 cache 长度；上述场景若直接复用它，会得到 `[[1,0,0,0,0],[1,1,0,0,0]]`，错误地屏蔽大部分历史 token。[SDPA 的遮罩约定](https://docs.pytorch.org/docs/2.8/generated/torch.nn.functional.scaled_dot_product_attention.html)
+
+一种直接写法是显式使用位置，并关闭隐式 causal 分支：
+
+```python
+past, new_tokens = 3, 2
+q_pos = torch.arange(past, past + new_tokens, device=Q.device)
+k_pos = torch.arange(past + new_tokens, device=Q.device)
+allowed = k_pos[None, :] <= q_pos[:, None]
+# Q_chunk: [B,H,2,Dh]；K_cache、V_cache: [B,H,5,Dh]
+out = nn.functional.scaled_dot_product_attention(
+    Q_chunk, K_cache, V_cache,
+    attn_mask=allowed, is_causal=False, dropout_p=0.0,
+)
+```
+
+这段代码需要调用方提供对应 Q/K/V，不能直接接在上一段长度为 8 的张量后运行。连续后缀、无 padding 的情况下，也可以使用接口支持的[右下对齐 causal bias](https://docs.pytorch.org/docs/2.8/generated/torch.nn.attention.bias.causal_lower_right.html)；变长 batch 与缓存空槽仍需明确各样本的有效位置。
+
+<figure class="article-figure" id="fig-cache-mask-alignment">
+  {{< post-image src="assets/cache-mask-alignment.png" alt="两个查询位于全局位置3和4时，左上对齐遮罩遗漏历史键，按全局位置构造的遮罩分别允许前4个和前5个键" >}}
+  <figcaption><span class="article-figure__number">图 16a</span><span class="article-figure__text">两幅矩阵来自相同的 2×5 缓存场景。横纵轴使用全局 token 位置；allow 表示参与注意力，block 表示屏蔽。</span></figcaption>
+</figure>
+
+几个常见边界需要分别处理：
+
+- **单 token 追加、所有 K/V 都是有效历史及当前 token**：可用 `is_causal=False` 且不加 causal mask，因为没有未来键；存在 padding、预分配空槽或未来 token 时，这个前提不成立。
+- **变长 batch**：将“`key_position <= query_position`”与 key 有效标记相与，按 `[B,1,Lq,Lk]` 广播。有效查询还应至少有一个可用 key；全遮罩行和无效查询输出要另行定义，不能依靠偶然的内核行为。
+- **布尔语义**：SDPA 的 `True` 表示允许参与；不要未经转换复用其他 API 中“True 表示屏蔽”的 mask。
+- **评估模式**：函数是否丢弃 attention 权重由 `dropout_p` 决定，外层 `.eval()` 不会替你把一个硬编码的非零值改成零。
+
+下载 [cache_mask_check.py](cache_mask_check.py)，仅需 PyTorch：
+
+```bash
+python -B cache_mask_check.py --output cache-mask-results.json
+```
+
+固定种子、CPU FP64 下，三种分块方式与独立完整序列参考一致；2×5 场景正确遮罩的最大输出差约 $2.22\times10^{-16}$，错用左上对齐后的差约 **2.103**。脚本还覆盖单 token、左 padding、预分配空槽，以及修改被屏蔽的 K/V 后输出不变。[结果与版本](assets/cache-mask-results.json)保留了完整布尔矩阵；安装 Matplotlib 后追加 `--figure cache-mask-alignment.png` 可复绘。
+
+这个实验只验证 attention 算子的缓存索引。完整语言模型还要保证 RoPE/位置编码、各层缓存、输出投影与生成状态一致；算子对齐不等于已经验证完整模型的逐 token logits 或 GPU 性能。
 
 ## 11. 模型扩展与训练并行
 

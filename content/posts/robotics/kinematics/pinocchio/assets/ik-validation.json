@@ -1,0 +1,39 @@
+{
+  "pinocchio": "4.1.0",
+  "numpy": "2.2.6",
+  "seed": 20260928,
+  "reachable_near_seed_cases": 60,
+  "max_position_error_m": 9.375992372049503e-05,
+  "max_rotation_error_rad": 6.1006270633565876e-05,
+  "unit_conversion": {
+    "length_factor": 1000,
+    "position_scale_m": 0.1,
+    "position_scale_mm": 100.0,
+    "position_tol_m": 0.0001,
+    "position_tol_mm": 0.1,
+    "max_joint_difference_rad": 3.3306690738754696e-16,
+    "iterations_in_both_units": 3
+  },
+  "rejected_inputs": [
+    "max_iter=0",
+    "max_iter=2.5",
+    "max_iter=True",
+    "damping=nan",
+    "position_tol=nan",
+    "rotation_tol=inf",
+    "position_scale=0.0",
+    "rotation_scale=-1.0",
+    "missing frame",
+    "out-of-bounds seed",
+    "reflection instead of rotation",
+    "zero-width joint interval"
+  ],
+  "unreachable": {
+    "success": false,
+    "status": "stagnation",
+    "iterations": 3,
+    "position_error": 98.00004941905561,
+    "rotation_error": 0.0022080675634909485
+  },
+  "scope": "Synthetic FK targets near known seeds; no global IK, collision, hardware or dynamics test."
+}

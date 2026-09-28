@@ -1,7 +1,7 @@
 ---
 title: 'Gymnasium入门(一)'
 date: 2025-03-20
-lastmod: 2026-09-05
+lastmod: 2026-09-28
 draft: false
 tags: ["Reinforcement Learning", "Gymnasium", "Python"]
 categories: ["人工智能"]
@@ -90,7 +90,14 @@ $$
 
 ## 保存视频
 
-以下是独立示例；录像功能需要与所用 Gymnasium 版本匹配的视频依赖。
+以下是独立示例。`gymnasium[box2d]` 提供环境依赖，不等于已经安装录像编码依赖；本文的 Gymnasium 1.3.0 示例使用 MoviePy 2.2.1 验证，先在同一解释器环境安装并检查：
+
+```bash
+python -m pip install moviepy
+python -m pip show gymnasium moviepy
+```
+
+录制使用 `rgb_array` 返回图像，再由 `RecordVideo` 编码；它与 `human` 窗口显示是不同路径。
 
 ```python
 import gymnasium as gym
@@ -115,6 +122,8 @@ finally:
 ```
 
 ![LunarLander 环境运行效果的历史演示](LunarLander.gif)
+
+运行后检查 `videos/` 中的 MP4 文件是否非空、能解码，并包含当前回合的连续画面。`finally` 中的 `close()` 也负责完成录像收尾；只看到目录创建还不能证明视频写入成功。
 
 录像与随机 rollout 只证明环境可交互，不代表策略训练成功。进一步实现学习算法时，应单独记录奖励、回合长度、结束原因和评估种子。
 

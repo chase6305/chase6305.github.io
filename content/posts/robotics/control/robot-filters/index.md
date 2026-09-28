@@ -1,13 +1,13 @@
 ---
 title: "机器人滤波方法详解：从 Butterworth、One Euro 到位姿平滑与状态估计"
 date: 2026-09-25T03:14:26+08:00
-lastmod: 2026-09-25T06:03:17+08:00
+lastmod: 2026-09-28
 draft: false
 tags: ["Robotics", "Signal Processing", "Butterworth", "One Euro Filter", "Mass Spring Damper", "Weighted Moving Average", "Pose Filter", "Kalman Filter", "Teleoperation"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "系统比较机器人中的滑动平均、Butterworth、One Euro、弹簧阻尼、鲁棒滤波与状态估计，解释参数、延迟、位姿几何和工程接入，并提供可复现算例。"
-description: "系统比较机器人中的滑动平均、Butterworth、One Euro、弹簧阻尼、鲁棒滤波与状态估计，解释参数、延迟、位姿几何和工程接入，并提供可复现算例。"
+summary: "系统比较机器人中的滑动平均、Butterworth、One Euro、弹簧阻尼、鲁棒滤波与状态估计，用可复现算例解释参数、延迟、位姿几何，以及降噪与闭环稳定性的区别。"
+description: "系统比较机器人中的滑动平均、Butterworth、One Euro、弹簧阻尼、鲁棒滤波与状态估计，用可复现算例解释参数、延迟、位姿几何，以及降噪与闭环稳定性的区别。"
 contentLanguage: "zh-CN"
 math: true
 toc: true
@@ -41,6 +41,7 @@ related_posts:
 | 想让目标有弹簧阻尼手感 | [二阶目标滤波](#spring-damper) |
 | IMU、里程计和视觉需要融合 | [状态估计](#estimation) |
 | 需要检查参数、延迟与异常行为 | [接入清单](#integration)、[随文实验](#lab) |
+| 加了低通后反馈控制开始振荡 | [滤波位置与闭环极点](#feedback-stability) |
 
 ## 1. 先区分四类工作 {#map}
 
@@ -742,6 +743,8 @@ $$
 
 对近似线性的小信号情形，各级相位相加；对于限幅、自适应增益和异常门控，还要通过组合回放观察非线性行为。记录整条链的端到端延迟，比孤立记录某个函数耗时更有意义。
 
+滤波器自身的极点稳定，也不意味着加上它之后的反馈闭环稳定。[第 13.4 节](#feedback-stability)把同一个低通分别放在测量反馈和参考输入处，直接比较整个离散系统的极点。
+
 串联还会改变噪声的统计结构。独立白噪声经过 EMA 后，稳态相邻输出的相关系数为 $1-\alpha$；当 $\alpha=0.1$ 时，这个相关系数就是 0.9。若再把这些输出交给假定测量噪声时间独立的 Kalman Filter，仅减小 R 不能完整表达变化；应考虑原始测量、已有滤波动态与创新序列的相关性。更平滑的多个样本，不一定提供更多独立信息。
 
 ### 12.5 用任务指标验收
@@ -845,6 +848,53 @@ python -B robot_filters_lab.py --output-dir filter-lab-output
 这个场景中，One Euro 的自适应增益在运动时放开带宽，能在相近静止抖动下缩短跟随滞后；它并没有消除取舍。增加尖峰、改变运动速度或改变变化率估计，就可能得到不同结果。该表只比较本次有限网格，既不是连续参数空间的最优解，也不是跨任务的排名。
 
 **标准差小也不等于位置准确。** 这些选中输出在静止段仍有约 1.1 mm 的均值偏差，记录中另存了该量。一个完全不动、但位置错误的输出甚至可以有零标准差。因此，抖动预算应与静态偏差、运动误差、异常恢复和闭环任务结果一起验收；真实日志调参后还应在独立记录上复查。
+
+### 13.4 更强的低通，可能让原本稳定的反馈环失稳 {#feedback-stability}
+
+前面的抖动实验把信号作为已给定的输入。现在让滤波输出参与控制，从而反过来改变下一次测量。取质量–弹簧–阻尼对象
+
+$$
+m\ddot q+b\dot q+kq=u,
+\qquad m=1\ \mathrm{kg},\quad b=2\ \mathrm{N\,s/m},\quad k=4\ \mathrm{N/m}.
+$$
+
+采样周期 $h=5$ ms，每次采样立即计算控制量，并在下一个采样区间保持不变。对象用 [SciPy `cont2discrete` 的零阶保持方法](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.cont2discrete.html)精确离散化；没有另外加入一拍计算延迟。控制器采用 $K_p=80$ N/m、$K_d=4$ N·s/m，对**滤波后的测量**做后向差分：
+
+$$
+\begin{aligned}
+\bar q_k&=\bar q_{k-1}+\alpha(q_k-\bar q_{k-1}),
+&\alpha&=1-e^{-2\pi f_c h},\\
+u_k&=K_p(r_k-\bar q_k)-K_d\frac{\bar q_k-\bar q_{k-1}}{h}.
+\end{aligned}
+$$
+
+这里 $f_c$ 是指数离散化的频率参数，数字 −3 dB 点的区别见第 3 节；“无测量低通”对应 $\alpha=1$，仍保留后向差分。它与 [PID 文章]({{< relref "/posts/pid" >}})中只对导数单独滤波的结构不同，不能直接交换两套结果。
+
+令 $r=0$，增广状态取 $z_k=[q_k,\dot q_k,\bar q_{k-1}]^\top$，即可得到 $z_{k+1}=Fz_k$。在这个有限维线性离散模型中，全部极点严格位于单位圆内，即谱半径 $\rho(F)<1$，才有渐近稳定性。脚本既按“滤波→控制→对象”逐步计算，也按增广矩阵更新，核对两者一致。
+
+| 测量反馈低通 | 滤波器单独处理白噪声时的标准差比 | 闭环最大极点模 | 本模型的结果 |
+| --- | ---: | ---: | --- |
+| 无低通 | 1.0000 | 0.985326 | 稳定 |
+| 10 Hz | 0.3947 | 0.987790 | 稳定 |
+| 2 Hz | 0.1772 | 0.999190 | 稳定，但衰减很慢 |
+| 1 Hz | 0.1253 | 1.003462 | 不稳定 |
+
+第二列是独立白噪声经过该一阶递归滤波器后的稳态解析比值 $\sqrt{\alpha/(2-\alpha)}$，**不是闭环位置噪声的比值**。它说明滤波器自身确实更能压低白噪声，同时整个反馈系统却可能失稳。所有这些低通自身的极点 $1-\alpha$ 都位于单位圆内。
+
+<figure class="article-figure" id="fig-feedback-stability">
+  {{< post-image src="assets/feedback-filter-stability.png" alt="左侧显示一毫米初始偏差在不同测量低通下的自由响应，一赫兹反馈低通出现增长振荡；右侧比较滤波位于反馈或参考输入时的闭环最大极点模" >}}
+  <figcaption><span class="article-figure__number">图 9</span><span class="article-figure__text"><strong>滤波位置改变了系统的动态关系。</strong>左图没有测量噪声，初始速度为零，滤波状态与 1 mm 初始位置一致；振荡增长并非由启动微分冲击造成。右图虚线将低通移到参考输入，保留原来的位置反馈与差分。所有曲线来自下方脚本。</span></figcaption>
+</figure>
+
+如果只把低通放在外部参考 $r$ 上，反馈仍使用原始 $q$ 与其后向差分，增广系统在本例中呈分块三角结构：极点是原闭环极点与参考滤波器极点的并集。1 Hz 参考滤波时最大极点模仍为约 0.985326，稳定但改变了参考跟随；它也没有抑制测量噪声。这个结论依赖这里的线性、单向参考串联结构，不能直接推广到含饱和、模式切换或参考生成器读取反馈的系统。
+
+下载 [feedback_filter.py](feedback_filter.py)，沿用前面 NumPy、SciPy、Matplotlib 环境：
+
+```bash
+python -B feedback_filter.py --output-dir feedback-results
+```
+
+脚本输出图和 [feedback-filter-results.json](assets/feedback-filter-results.json)，记录离散化、初值、极点和版本。本例在 Python 3.10、NumPy 2.2.6、SciPy 1.15.3 下运行。它刻意去掉了限幅、噪声与额外通信延迟，以分离滤波位置的影响；没有模拟某台机器人的完整动力学。1 Hz 方案在 4 s 内由 1 mm 初始偏差产生约 17 mm 的最大位置幅值，是这个无约束线性模型的结果，不能推断实机振幅或把其他表内设置当作实机参数。
 
 ## 阅读自测与验收
 

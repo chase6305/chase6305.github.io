@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build or verify a deterministic, standard-library-only article lab archive."""
+"""Build or verify the deterministic article lab archive."""
 import argparse
 import io
 from pathlib import Path
@@ -7,10 +7,12 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 BUNDLE = ROOT / "content/posts/ai/llm-training-metrics"
-FILES = ("metrics_lab.py", "paired_eval.py", "qwen2.5-7b-budget.json")
+FILES = ("metrics_lab.py", "paired_eval.py", "qwen2.5-7b-budget.json", "cluster_eval_demo.py")
 README = """LLM metrics lab
 ================
-Python 3.8+; standard library only; no network access or model weights needed.
+Core metrics_lab.py / paired_eval.py: Python 3.8+, standard library only.
+Optional cluster_eval_demo.py: Python 3.10+ and NumPy; Matplotlib for plotting.
+No runtime network access or model weights needed.
 
 1. Reproduce arithmetic and the pinned Qwen configuration audit:
    python -B metrics_lab.py
@@ -18,6 +20,9 @@ Python 3.8+; standard library only; no network access or model weights needed.
    python -B paired_eval.py
 3. Compare already-scored real results:
    python -B paired_eval.py --baseline baseline.jsonl --candidate candidate.jsonl --ids ids.json
+4. Reproduce the separate synthetic group-resampling example (requires NumPy):
+   python -B cluster_eval_demo.py
+   python -B cluster_eval_demo.py --figure cluster-evaluation.png  # also needs Matplotlib
 
 Each JSONL row: {"id":"q001","correct":true,"status":"ok"}
 The ID manifest is the complete expected list, e.g. ["q001"].
@@ -26,8 +31,10 @@ in the denominator. Missing/extra/duplicate IDs are rejected.
 
 These tools do not score text, train a model, or measure model quality.
 Demo predictions are synthetic; Qwen values are a configuration/index audit.
-Paired bootstrap assumes independent questions and two fixed checkpoints;
+paired_eval.py assumes independent questions and two fixed checkpoints;
 it does not account for clustered questions or training-seed variability.
+cluster_eval_demo.py compares paired rows with paired equal-size groups using
+constructed repeated outcomes. It does not ingest or validate real grouped data.
 --seed and --repeats control statistical resampling only. They do not train
 checkpoints, generate new answers, or isolate decoding variability.
 

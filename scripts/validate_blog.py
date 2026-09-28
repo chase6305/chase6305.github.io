@@ -82,6 +82,8 @@ class Page(HTMLParser):
         self.filter_data = None
         self.has_draft_notice = False
         self.topic_links = []
+        self.taxonomy_cards = []
+        self.has_ungrouped_tags = False
         self._in_topic_nav = False
         self._schema_text = None
         self._filter_text = None
@@ -89,6 +91,11 @@ class Page(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        classes = attrs.get("class", "").split()
+        if "tag-group--ungrouped" in classes:
+            self.has_ungrouped_tags = True
+        if tag == "a" and "taxonomy-card" in classes:
+            self.taxonomy_cards.append(attrs.get("href", ""))
         if tag in ("pre", "code", "script", "style", "math"):
             self._math_literal_depth += 1
         if tag == "nav":
@@ -310,6 +317,18 @@ def main():
     checked = 0
     collection_pages = 0
     filter_indexes = 0
+    tag_count = 0
+    tag_index = html.get(public / "tags/index.html")
+    post_index = html.get(public / "posts/index.html")
+    if tag_index and post_index and isinstance(post_index.filter_data, list):
+        expected_tags = {tag["url"] for row in post_index.filter_data
+                         for tag in row.get("tags", [])}
+        actual_tags = Counter(tag_index.taxonomy_cards)
+        tag_count = len(actual_tags)
+        if set(actual_tags) != expected_tags or any(n != 1 for n in actual_tags.values()):
+            errors.append("Tag index must list every active tag exactly once")
+        if tag_index.has_ungrouped_tags:
+            errors.append("Assign new tags to a field in data/tag_groups.yaml")
     for path, page in html.items():
         if not (any(path.is_relative_to(public / section) for section in
                     ("posts", "tags", "categories", "series", "archives")) or
@@ -357,7 +376,7 @@ def main():
             if "alt" not in image:
                 errors.append(f"Missing image alt: {relative} -> {image.get('src')}")
     print(json.dumps({"reviewed_posts": len(expected), "learning_paths": len(topics), "acceptance_checks": sum(map(len, self_checks.values())),
-                      "blog_posting_schemas": schema_count, "code_blocks": block_count,
+                      "blog_posting_schemas": schema_count, "classified_tags": tag_count, "code_blocks": block_count,
                       "syntax_checked_by_language": dict(sorted(syntax_counts.items())),
                       "html_pages": len(html), "local_references_checked": checked,
                       "collection_pages_checked": collection_pages, "filter_indexes_checked": filter_indexes,

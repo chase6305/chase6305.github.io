@@ -1,17 +1,17 @@
 ---
-title: 'Toppra: 最优时间运动规划库'
+title: 'TOPP-RA 时间参数化：路径、曲率与连续约束验收'
 date: 2025-03-16
-lastmod: 2026-09-05
+lastmod: 2026-09-28
 draft: false
 tags: ["Trajectory Optimization", "TOPP-RA", "Motion Planning"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "使用 TOPP-RA 沿既定路径进行时间参数化，加入速度与加速度约束，检查失败返回、样条几何和采样误差。"
+summary: "沿给定路径做时间参数化，用直线解析解与弯曲多项式实验区分求解网格、连续峰值和输出轨迹，并验证统一减速的作用与边界。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
-description: "使用 TOPP-RA 沿既定路径进行时间参数化，加入速度与加速度约束，检查失败返回、样条几何和采样误差。"
+description: "沿给定路径做时间参数化，用直线解析解与弯曲多项式实验区分求解网格、连续峰值和输出轨迹，并验证统一减速的作用与边界。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "路径插值与运动学约束"
 reading_focus: "路径参数不是时间，时间优化不会自动修复原路径的碰撞和限位问题。"
@@ -40,7 +40,7 @@ TOPP-RA 沿给定几何路径 $q(s)$ 求时间规律 $s(t)$，输出 $q(s(t))$�
 ## 安装
 
 ```bash
-python -m pip install toppra numpy matplotlib
+python -m pip install "toppra==0.6.3" numpy matplotlib
 ```
 
 ## 可运行的七轴例子
@@ -129,6 +129,69 @@ plt.show()
 ![原七轴 TOPP-RA 示例的轨迹图](toppra.jpg)
 
 保留的图片来自原笔记；新代码会打印两种求解网格下的时长，并通过数值断言验收。
+
+## 弯曲路径：求解成功之后，再查网格之间
+
+直线例子的 $q''(s)=0$，无法检验曲率项是否处理正确。换成下面这条二关节路径，单位为 rad，$s\in[0,1]$：
+
+$$
+q(s)=\begin{bmatrix}s\\16s^2(1-s)^2\end{bmatrix},\qquad
+q'(s)=\begin{bmatrix}1\\32s-96s^2+64s^3\end{bmatrix},\qquad
+q''(s)=\begin{bmatrix}0\\32-192s+192s^2\end{bmatrix}.
+$$
+
+例如 $s=0.5$ 时，第二关节的 $q'_2(s)=0$，但 $q''_2(s)=-16$。即使路径加速度 $\ddot s=0$，只要 $\dot s\ne0$，第二关节仍有 $\ddot q_2=-16\dot s^2$；把关节加速度只写成 $q'(s)\ddot s$ 就会漏掉它。
+
+[toppra_continuous_check.py](toppra_continuous_check.py) 用 TOPPRA **0.6.3**、`seidel`、显式 `Interpolation` 加速度离散方式及 `ParametrizeConstAccel` 求解；两轴速度上限均为 `1 rad/s`，加速度上限均为 `2 rad/s²`，起止路径速度为零。用同一条路径只改变求解网格，得到：
+
+| 求解网格点数 | 原轨迹时长 / s | 连续速度峰值 / rad/s | 连续加速度峰值 / rad/s² |
+| --- | ---: | ---: | ---: |
+| 11 | 3.780848 | 1.048640 | 2.069299 |
+| 21 | 3.533150 | 1.014062 | 2.019210 |
+| 51 | 3.262509 | 1.002574 | 2.002499 |
+| 101 | 3.156561 | 1.000784 | 2.000853 |
+| 401 | 3.142157 | 1.000054 | 2.000109 |
+
+表中的峰值取两关节绝对值的最大值。11 点时，速度超限约 **4.864%**，加速度超限约 **3.465%**；加密明显减小了本例的违约，但 401 点也不能直接按严格上限判定为零误差。这说明“离散优化求解成功”与“输出轨迹处处满足指定连续上限”需要分别验收。网格与参数化器的职责见 [TOPP-RA 官方说明](https://hungpham2511.github.io/toppra/notes.html)。
+
+<figure class="article-figure">
+{{< post-image src="assets/toppra-grid-extrema.png" alt="同一二关节多项式路径，以及从十一到四百零一个网格点时连续速度和加速度峰值的相对超限" >}}
+<figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">左侧几何路径在所有求解中相同；右侧检查输出轨迹的区间极值。加密的是求解网格，图像采样变密本身不会修改已经得到的时间规律。</span></figcaption>
+</figure>
+
+### 为什么这里的检查比“画得足够密”更进一步
+
+在每个输出区间内，路径加速度 $u=\ddot s$ 为常数，令 $x_i=\dot s_i^2$，则：
+
+$$
+x(s)=x_i+2u(s-s_i),\qquad
+\dot q_j^2=q_j'(s)^2x(s),\qquad
+\ddot q_j=q_j''(s)x(s)+q_j'(s)u.
+$$
+
+本例的 $q$ 是多项式，所以后两式仍是多项式。脚本求导数的区间内实根，再连同两端点计算速度平方和加速度的极值；分段连接处检查两侧的值。它使用返回的路径速度重新计算 $u$，对应实际的输出参数化器，而不是直接相信离散求解器内部的加速度变量。
+
+另外，脚本在时间域采样 50,001 点，检查位置仍在原路径上、起止速度为零，以及采样峰值没有超过区间极值。这里的多项式求根使用浮点数，并非形式化精度证书；任意样条、动力学约束和复杂路径需要各自适用的验证方式，有限采样仍可能漏峰值。
+
+```bash
+python -B toppra_continuous_check.py --output-dir results
+```
+
+脚本生成图和 JSON；[本例完整结果](assets/toppra-grid-results.json)同时记录库版本、路径系数、离散方式、原始峰值和下述减速系数。
+
+### 统一减速可以修正什么
+
+若验证后发现轻微速度或加速度超限，可把已有轨迹的时间统一拉长 $\gamma$ 倍：$\tilde q(t)=q(t/\gamma)$。此时速度除以 $\gamma$，加速度除以 $\gamma^2$。对本例的固定上限，至少需要：
+
+$$
+\gamma\ge\max\!\left(1,
+\max_j\frac{\max_t|\dot q_j|}{v_{j,\max}},
+\sqrt{\max_j\frac{\max_t|\ddot q_j|}{a_{j,\max}}}\right).
+$$
+
+脚本在这个结果上乘 `1+1e-6` 作为数值余量。11 点轨迹的 $\gamma\approx1.048641$，时长从 `3.780848 s` 变为 `3.964753 s`；401 点轨迹约为 `3.142330 s`。这是一种针对已验证峰值的保守修正，不代表修正后的轨迹仍时间最优，也不代替实际系统的控制余量。
+
+本例的起止速度都是零，所以统一减速保持这些边界。若给定非零起止速度，减速会改变它们；如果约束包括随速度变化的动力学力矩、接触或动态障碍物，也不能直接套用上述速度/加速度缩放结论。原路径的碰撞、位置限位和加速度跳变仍然存在。
 
 ## 失败与边界
 

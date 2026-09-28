@@ -1,0 +1,13 @@
+{
+  "date": "2026-09-28",
+  "method": "built-in image_gen",
+  "prompt": "docs/image-generation/td3-update-paths-20260928-prompt.txt",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-81911f70-93aa-4588-ac1c-9da677b6c176.png",
+  "asset": "content/posts/rl/assets/td3-update-paths.webp",
+  "dimensions": [
+    1586,
+    992
+  ],
+  "sha256": "76df61195771ba07accb37b6ad854977a118823fe80313cf5b675452cfff94fa",
+  "review": "Three separate paths: stopped-gradient target with clipped noise and action bounds, replay-action critic regression, delayed actor and all-target updates; d and d_policy have distinct meanings."
+}

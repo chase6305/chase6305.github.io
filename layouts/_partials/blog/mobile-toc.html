@@ -3,7 +3,7 @@
     {{- if strings.Contains . "<li>" -}}
       <details class="blog-mobile-toc">
         <summary>本文目录 <span>展开章节导航</span></summary>
-        {{ . }}
+        {{ partial "blog/toc-math.html" (dict "page" $ "html" .) }}
       </details>
     {{- end -}}
   {{- end -}}

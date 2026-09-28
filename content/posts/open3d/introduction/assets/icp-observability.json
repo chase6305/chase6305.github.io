@@ -1,0 +1,60 @@
+{
+  "open3d": "0.19.0",
+  "numpy": "2.2.6",
+  "length_scale_m": 1.0,
+  "parameter_order": [
+    "tx/ell",
+    "ty/ell",
+    "tz/ell",
+    "rx",
+    "ry",
+    "rz"
+  ],
+  "plane": {
+    "source_points": 625,
+    "target_points": 1681,
+    "local_rank": 3,
+    "normalized_hessian_eigenvalues": [
+      0.0,
+      0.0,
+      0.0,
+      0.12999999999999995,
+      0.13000000000000003,
+      1.0
+    ],
+    "generic_information_helper_rank": 6,
+    "forward_fitness_at_1mm": 1.0,
+    "reverse_fitness_at_1mm": 0.37180249851279,
+    "solutions": [
+      {
+        "initial_x_m": 0.0,
+        "estimated_x_m": 0.0,
+        "fitness": 1.0,
+        "inlier_euclidean_rmse_m": 0.0,
+        "point_to_plane_rmse_m": 0.0
+      },
+      {
+        "initial_x_m": 0.1,
+        "estimated_x_m": 0.1,
+        "fitness": 1.0,
+        "inlier_euclidean_rmse_m": 3.935031988799249e-17,
+        "point_to_plane_rmse_m": 0.0
+      }
+    ]
+  },
+  "corner": {
+    "points": 600,
+    "local_rank": 6,
+    "normalized_hessian_eigenvalues": [
+      0.011829061787093193,
+      0.012736943454291966,
+      0.01922077945171212,
+      0.3333532056338585,
+      0.5265708691295995,
+      0.5476280189859399
+    ],
+    "recovered_transform_max_error": 2.220446049250313e-16
+  },
+  "residual_directional_derivative_max_error": 3.164135620181696e-15,
+  "scope": "Noiseless planar samples and exact target normals, local linearized residual geometry. Repeated-grid plane permits different perfect nearest-neighbor alignments. Full local rank does not establish global uniqueness or calibrated covariance."
+}

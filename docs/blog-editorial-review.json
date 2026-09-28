@@ -1,5 +1,5 @@
 {
-  "reviewed_on": "2026-09-05",
+  "reviewed_on": "2026-09-28",
   "scope": "滚动文章清单：保留既有 URL 与草稿状态，新增文章同步维护阅读元数据与验收检查",
   "posts": [
     {
@@ -76,7 +76,7 @@
     },
     {
       "id": 4,
-      "summary": "建立训练显存账本，解释 DDP、NCCL、ZeRO 与 FSDP 的数据所有权，并梳理混合精度、重计算和 OOM 排查。",
+      "summary": "建立训练显存账本，解释 DDP、NCCL、ZeRO 与 FSDP 的数据所有权，用双进程实验验证变长 token 的累积梯度，并梳理混合精度与 OOM 排查。",
       "prerequisites": "PyTorch 训练循环与 GPU 基础",
       "focus": "沿参数、梯度、优化器状态和激活的生命周期追踪显存，不只计算权重大小。",
       "related": [
@@ -130,7 +130,7 @@
     },
     {
       "id": 7,
-      "summary": "介绍 CCTag 同心圆编码与检测思路，区分标签识别、平面几何和完整位姿估计，并说明标定中的适用边界。",
+      "summary": "介绍 CCTag 的编码、可靠识别状态与几何求解，区分检测重复性和定位精度，给出标定链路的验收方法。",
       "prerequisites": "相机投影与图像特征",
       "focus": "重点区分识别 ID 和恢复六维位姿，结合运动可观测性选择标记。",
       "related": [
@@ -148,7 +148,7 @@
     },
     {
       "id": 8,
-      "summary": "以 TCP 位置观测建立运动学参数残差，讲清固定点实验、参数 Jacobian、可辨识性和迭代最小二乘验证。",
+      "summary": "以 TCP 位置观测建立参数残差，用二连杆实验解释参数不唯一、Jacobian 秩与尺度，并验证独立留出误差。",
       "prerequisites": "正运动学、Jacobian 与最小二乘",
       "focus": "先明确观测坐标系和待估参数，再检查秩、更新方向与独立验证误差。",
       "related": [
@@ -161,8 +161,8 @@
         "/posts/calibration/zero",
         "/posts/calibration/model"
       ],
-      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
-      "image": null
+      "image_decision": "增加能与正文逐项核对的流程或数值结果，保留数据、脚本和来源。",
+      "image": "content/posts/calibration/kinematics/assets/calibration-validation.webp"
     },
     {
       "id": 9,
@@ -184,7 +184,7 @@
     },
     {
       "id": 10,
-      "summary": "用 OpenCV 检测非对称圆点阵，构造有序物体点，并说明点阵方向、物理间距、斜视偏差和标定采样要求。",
+      "summary": "用 OpenCV 检测非对称圆点阵，配置 blob 参数，通过合成图验证点序和物理间距，并解释误差统计与尺度问题。",
       "prerequisites": "Python、OpenCV 与相机标定",
       "focus": "先查看检测点顺序并测量板尺寸，再将对应点用于内参或位姿求解。",
       "related": [
@@ -197,12 +197,12 @@
         "/posts/calibration/cctag",
         "/posts/calibration/model"
       ],
-      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
-      "image": null
+      "image_decision": "增加能与正文逐项核对的流程或数值结果，保留数据、脚本和来源。",
+      "image": "content/posts/calibration/opencv/assets/circle-grid-check.png"
     },
     {
       "id": 11,
-      "summary": "分别建立已知测量位置与未知固定点的关节零偏模型，使用 SVD 最小二乘求解，并检查可观测性与补偿方向。",
+      "summary": "区分已知测量位置与未知固定点的零偏模型，用 SVD 和三连杆反例解释不可观测自由度，避免把近零接触残差当作绝对位置精度。",
       "prerequisites": "FK、位置 Jacobian 与矩阵秩",
       "focus": "先选对观测模型，避免用采样数量替代可辨识性分析。",
       "related": [
@@ -220,7 +220,7 @@
     },
     {
       "id": 12,
-      "summary": "使用 CasADi 建立上下界和等式约束，区分变量边界与约束边界，并通过可手算例子验证求解状态和结果。",
+      "summary": "使用 CasADi 建立变量与约束边界，通过可手算实验核对 KKT 条件、不可行候选和局部最优，区分求解状态、目标值与可用结果。",
       "prerequisites": "Python、微分与约束优化",
       "focus": "先核对 x、g 及边界维度，再比较数值解和解析预期。",
       "related": [
@@ -233,12 +233,12 @@
         "/posts/pink",
         "/posts/planner/to_mpc_wbc"
       ],
-      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image_decision": "保留已有约束绘图，补充 KKT、不可行候选与两个局部最小值的可复算对照",
       "image": null
     },
     {
       "id": 13,
-      "summary": "讲解 ExternalProject 的构建期行为、依赖与产物声明，提供无需下载的 CMake 示例，并梳理 ABI 和安装路径问题。",
+      "summary": "讲解 ExternalProject 的构建期行为、依赖与产物声明，用离线示例验证首次构建、源码修改和增量链接，并梳理 ABI 与安装路径问题。",
       "prerequisites": "CMake target、编译与链接",
       "focus": "先完成全新目录构建，确认消费者依赖外部产物，再接入真实第三方库。",
       "related": [
@@ -274,7 +274,7 @@
     },
     {
       "id": 15,
-      "summary": "定位 GLIBCXX_3.4.30 缺失时实际加载的 libstdc++，按系统、Conda 与私有库来源选择修复并验证运行路径。",
+      "summary": "定位 GLIBCXX_3.4.30 缺失时实际加载的 libstdc++，区分符号版本与双 ABI 问题，用四组编译对照验证修复方向。",
       "prerequisites": "Linux 动态链接与环境管理",
       "focus": "先查被加载的库，不把安装新 GCC 当作运行库已经切换。",
       "related": [
@@ -310,7 +310,7 @@
     },
     {
       "id": 17,
-      "summary": "通过 RAII、unique_ptr、shared_ptr 和 weak_ptr 理解 C++ 资源所有权，说明复制、循环引用与线程安全边界。",
+      "summary": "通过 RAII、unique_ptr、shared_ptr 和 weak_ptr 理解资源所有权，再用 C++20 不可变状态快照说明原子发布、对象保活和实时性边界。",
       "prerequisites": "C++ 类、析构与值语义",
       "focus": "先决定谁拥有资源，再选择指针类型；引用计数安全不等于对象访问安全。",
       "related": [
@@ -323,7 +323,7 @@
         "/posts/cpp/std",
         "/posts/queue"
       ],
-      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image_decision": "增加不可变快照的发布、读者保活和最后强引用释放关系图",
       "image": null
     },
     {
@@ -400,7 +400,7 @@
     },
     {
       "id": 22,
-      "summary": "通过 udev 属性和设备序列号创建稳定串口别名，说明匹配层级、设备权限、规则重载与插拔验收。",
+      "summary": "通过 udev 属性创建稳定串口别名，区分适配器序列号、USB 接口与物理端口，说明匹配层级、权限和插拔验收。",
       "prerequisites": "Linux 设备节点与用户组",
       "focus": "先检查已有 by-id 路径，规则中的序列号必须来自自己的设备。",
       "related": [
@@ -544,25 +544,25 @@
     },
     {
       "id": 30,
-      "summary": "实现带长度前缀的 Linux C++17 TCP 请求响应，处理短读短写、截断消息、长度上限与 socket 生命周期。",
+      "summary": "实现带长度前缀的 Linux C++17 TCP 通信，区分空消息与截断连接，用整帧截止时间阻止慢速收包无限等待，并澄清机器人指令确认的含义。",
       "prerequisites": "C++17 与 Linux socket",
       "focus": "先在回环地址编译验证，完整消息边界和超时策略必须由应用定义。",
       "related": [
         31,
         46
       ],
-      "path": "content/posts/network-protocol/c++_tcp.md",
+      "path": "content/posts/network-protocol/c++_tcp/index.md",
       "draft": false,
       "related_posts": [
         "/posts/network-protocol/c++_udp",
         "/posts/queue"
       ],
-      "image_decision": "代码、命令或表格已能清楚表达；不额外生成图",
+      "image_decision": "补充长度前缀、跨帧接收块与整帧截止时间图；逐字节核对消息重组",
       "image": null
     },
     {
       "id": 31,
-      "summary": "实现带接收超时和截断检查的 Linux C++17 UDP 回环通信，说明报文边界、零长度消息与广播限制。",
+      "summary": "实现带超时与截断检查的 Linux C++17 UDP 通信，解释接收缓冲与路径 MTU 的区别，并设计机器人状态流的序号、会话与有效期。",
       "prerequisites": "C++17 与 Linux socket",
       "focus": "先确认一次完整数据报，再按业务需求设计序列号、去重和重试预算。",
       "related": [
@@ -634,7 +634,7 @@
     },
     {
       "id": 35,
-      "summary": "按 I/O、空间索引、滤波、配准和重建整理 Open3D 用法，修正八叉树与体素概念，并说明几何验证边界。",
+      "summary": "按 I/O、空间索引、滤波、配准和重建整理 Open3D 用法，用已知变换及退化平面验证 ICP，区分残差、覆盖与位姿可观测性。",
       "prerequisites": "NumPy、点云与三维坐标变换",
       "focus": "各示例按章节独立使用，核对 legacy/Tensor API、输入路径和真实几何尺度。",
       "related": [
@@ -670,7 +670,7 @@
     },
     {
       "id": 37,
-      "summary": "区分 PD 与 PID 的适用条件，给出带微分滤波、限幅和条件积分的离散示例，并讨论采样与稳态误差。",
+      "summary": "区分 PD 与 PID 的适用条件，用可运行的饱和实验核对稳态误差、微分冲击、积分累积和恢复时间，并明确离散状态与单位。",
       "prerequisites": "反馈控制、导数与离散时间",
       "focus": "先明确误差符号和采样周期，再检查饱和、积分累积与噪声。",
       "related": [
@@ -683,12 +683,13 @@
         "/posts/robotics/control/impedance-control",
         "/posts/planner/to_mpc_wbc"
       ],
-      "image_decision": "新增 imagegen 概念示意图",
-      "image": "content/posts/pid/assets/pid-feedback.webp"
+      "image_decision": "保留反馈回路图，新增精确零阶保持对象的饱和响应与积分状态图，并提供生成脚本。",
+      "image": "content/posts/pid/assets/pid-feedback.webp",
+      "description": "区分 PD 与 PID 的适用条件，用可运行的饱和实验核对稳态误差、微分冲击、积分累积和恢复时间，并明确离散状态与单位。"
     },
     {
       "id": 38,
-      "summary": "用一致的残差与 Jacobian 解释 Pink 微分 IK，区分任务权重和严格优先级，说明限位、积分与求解失败处理。",
+      "summary": "用一致的残差与 Jacobian 解释 Pink 微分 IK，运行二连杆位置跟踪，验证速度、关节限位和独立停止条件。",
       "prerequisites": "Jacobian、QP 与 Pinocchio",
       "focus": "把一个控制周期的局部解和全局 IK 分开，权重不能代替缺失的硬约束。",
       "related": [
@@ -832,7 +833,7 @@
     },
     {
       "id": 46,
-      "summary": "区分线程安全、无锁和无等待，给出 Python 有界队列及 C++17 SPSC 环形队列，并解释 acquire/release 发布关系。",
+      "summary": "区分线程安全、无锁与实时性，解释 SPSC 的 acquire/release 发布关系，再用离散事件实验比较积压、丢弃策略和机器人状态的数据年龄。",
       "prerequisites": "线程、原子操作与生产者消费者模型",
       "focus": "确认单生产者单消费者前提，先验证顺序与收尾，再分析内存序和吞吐。",
       "related": [
@@ -845,7 +846,7 @@
         "/posts/cpp/smart-pointer",
         "/posts/dialout/dh"
       ],
-      "image_decision": "新增 imagegen 概念示意图",
+      "image_decision": "保留 SPSC 发布关系图，补充队列策略的离散事件数据年龄比较图",
       "image": "content/posts/queue/assets/spsc-publication.webp"
     },
     {
@@ -863,8 +864,8 @@
         "/posts/ai/gymnasium/1",
         "/posts/planner/to_mpc_wbc"
       ],
-      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
-      "image": null
+      "image_decision": "替换策略梯度和 TD3 更新流程，明确状态推进、停止梯度与参数更新路径；用 GAE 残差权重曲线替换未经条件限定的参数推荐图。",
+      "image": "content/posts/rl/assets/policy-gradient-training-flow.webp"
     },
     {
       "id": 48,
@@ -886,7 +887,7 @@
     },
     {
       "id": 49,
-      "summary": "从同步采样和激励轨迹建立动力学回归，讨论物理一致性、在线估计、独立验证与候选参数安全部署。",
+      "summary": "从同步采样和激励轨迹建立动力学回归，结合相关噪声算例讲清参数不确定性、RLS 尺度、物理一致性与独立验证。",
       "prerequisites": "刚体动力学、回归与数据处理",
       "focus": "先完成可回滚的离线辨识闭环，训练残差小不代表参数可以直接上机。",
       "related": [
@@ -940,7 +941,7 @@
     },
     {
       "id": 52,
-      "summary": "使用 Pinocchio frame、SE(3) 误差和阻尼最小二乘求 IK，加入限位、回溯和明确失败状态，并用 FK 验证。",
+      "summary": "使用 Pinocchio frame、SE(3) 残差与阻尼最小二乘求 IK，解释单位尺度、限位和失败状态，并用独立 FK 验证。",
       "prerequisites": "Pinocchio、Jacobian 与李群基础",
       "focus": "本例限固定基标量关节，检查 frame 名称和误差坐标，不把失败候选当成功返回。",
       "related": [
@@ -958,7 +959,7 @@
     },
     {
       "id": 53,
-      "summary": "用 pytorch_kinematics 构建独立 FK–IK–FK 检查，明确批量维度、关节顺序、重试筛选、坐标转换和可微边界。",
+      "summary": "用 pytorch_kinematics 验证 FK–IK–FK、Jacobian 与自动微分，区分批量重试筛选、坐标转换、一阶梯度和高阶导数。",
       "prerequisites": "PyTorch 张量与机器人 FK",
       "focus": "先在 CPU 上验证已知可达目标，筛出收敛且合法的重试后再比较性能。",
       "related": [
@@ -994,7 +995,7 @@
     },
     {
       "id": 55,
-      "summary": "整理 Elfin05 历史 DH 模型和腕心分解，统一参数表与 MATLAB 示例，并解释 C++ 工程片段的依赖和验证边界。",
+      "summary": "整理 Elfin05 历史 DH 模型和腕心分解，用 NumPy 核对 FK、Jacobian 与腕心公式，并解释 MATLAB 模型和 C++ 片段的验证边界。",
       "prerequisites": "DH 参数、矩阵变换与 C++",
       "focus": "模型数值需按实机核对，先验证 FK，再讨论最多八类逆解候选。",
       "related": [
@@ -1025,8 +1026,8 @@
         "/posts/robotics/kinematics/jacobian",
         "/posts/robotics/kinematics/pinocchio"
       ],
-      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
-      "image": null
+      "image_decision": "增加能与正文逐项核对的流程或数值结果，保留数据、脚本和来源。",
+      "image": "content/posts/robotics/workspace/whole-workspace/assets/workspace-sampling.png"
     },
     {
       "id": 57,
@@ -1066,7 +1067,7 @@
     },
     {
       "id": 59,
-      "summary": "用 Ruckig 生成一轴和七轴 jerk 受限轨迹，补充返回状态、终点采样、预测状态传递与版本功能边界。",
+      "summary": "用可运行例子理解 Ruckig 的状态可行性、时间与相位同步、非零终点速度和离散采样，区分轨迹结束与机器人停止。",
       "prerequisites": "位置、速度、加速度与离散采样",
       "focus": "先验证本地状态到状态问题，中间路径点功能与碰撞规划需另行评估。",
       "related": [
@@ -1079,12 +1080,12 @@
         "/posts/trajectory/toppra",
         "/posts/planner/to_mpc_wbc"
       ],
-      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image_decision": "保留历史曲线，新增由本地脚本计算的 Time/Phase 关节路径与 TCP 路径对照。",
       "image": null
     },
     {
       "id": 60,
-      "summary": "使用 TOPP-RA 沿既定路径进行时间参数化，加入速度与加速度约束，检查失败返回、样条几何和采样误差。",
+      "summary": "沿给定路径做时间参数化，用直线解析解与弯曲多项式实验区分求解网格、连续峰值和输出轨迹，并验证统一减速的作用与边界。",
       "prerequisites": "路径插值与运动学约束",
       "focus": "路径参数不是时间，时间优化不会自动修复原路径的碰撞和限位问题。",
       "related": [
@@ -1097,7 +1098,7 @@
         "/posts/trajectory/ruckig",
         "/posts/casadi"
       ],
-      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
+      "image_decision": "保留路径与状态规划比较，补充多项式区间极值随求解网格变化的数值图",
       "image": null
     },
     {
@@ -1211,7 +1212,7 @@
       "acceptance_checks": [
         "能否明确区分 1.0 与 1.1、2B/9B 的 3D 能力范围，以及基础 VLM 的空间输出与 VLA 动作块？用官方配置和模型 ID 逐项核对。",
         "运行离线协议测试，解释归一化点、相机内参、角度编码和动作 mask 的作用；面对非法输出应拒绝执行，而不是自动裁剪成貌似可用的命令。",
-        "用一个已知三维姿态样本分别检查两种角度解释，记录不能确定的协议；不把生成图、Notebook 可视化或本文自拟算例当成真实机器人结果。",
+        "用一个已知三维姿态样本分别检查两种角度解释，记录不能确定的协议；区分 Notebook 可视化、本文算例与真实机器人结果。",
         "能否按明确的轴顺序构造八个角点并投影回图像，再用 CPU 预检查验证真实输入预算？区分几何一致、接口可用和模型判断正确这三种结论。",
         "能否写出 1.0 CoP 的一种带帧索引输出格式，并说明 Thinking 角色与 GRPO 组内采样的作用？",
         "能否解释 32 步动作块、30/200 Hz 双环与 RTC 引导权重的衔接，并说明过程得分与最终成功率的区别？"
@@ -1608,7 +1609,7 @@
     {
       "id": 80,
       "added_on": "2026-09-25",
-      "summary": "系统比较机器人中的滑动平均、Butterworth、One Euro、弹簧阻尼、鲁棒滤波与状态估计，解释参数、延迟、位姿几何和工程接入，并提供可复现算例。",
+      "summary": "系统比较机器人中的滑动平均、Butterworth、One Euro、弹簧阻尼、鲁棒滤波与状态估计，用可复现算例解释参数、延迟、位姿几何，以及降噪与闭环稳定性的区别。",
       "prerequisites": "离散采样、向量和基本反馈控制；位姿部分需要了解旋转矩阵或四元数",
       "focus": "按噪声类型、延迟预算和信号几何选择方法，区分测量滤波、状态估计、参考平滑与运动约束。",
       "related": [

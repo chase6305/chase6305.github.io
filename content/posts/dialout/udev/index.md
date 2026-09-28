@@ -1,17 +1,17 @@
 ---
 title: Linux固定串口设备别名方法
 date: 2025-03-07
-lastmod: 2026-09-05
+lastmod: 2026-09-28
 draft: false
 tags: ["Linux", "udev", "Serial Communication"]
 categories: ["系统与工具"]
 authors: ["chase"]
-summary: "通过 udev 属性和设备序列号创建稳定串口别名，说明匹配层级、设备权限、规则重载与插拔验收。"
+summary: "通过 udev 属性创建稳定串口别名，区分适配器序列号、USB 接口与物理端口，说明匹配层级、权限和插拔验收。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
-description: "通过 udev 属性和设备序列号创建稳定串口别名，说明匹配层级、设备权限、规则重载与插拔验收。"
+description: "通过 udev 属性创建稳定串口别名，区分适配器序列号、USB 接口与物理端口，说明匹配层级、权限和插拔验收。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "Linux 设备节点与用户组"
 reading_focus: "先检查已有 by-id 路径，规则中的序列号必须来自自己的设备。"
@@ -109,6 +109,38 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{seria
 
 这将创建符号链接 `/dev/ttyLeftGripper`和 `/dev/ttyRightGripper`，指向你的设备。
 
+### 7.1 一台多口适配器，可能共享同一个序列号 {#multi-interface-serial}
+
+设备序列号通常识别 USB 适配器，并不一定唯一识别它暴露的每个串口。例如一个双口适配器产生两个 `ttyUSB` 节点，两个接口可能拥有相同的 vendor、product 和 serial。如果规则只匹配这三项，两者就可能同时请求 `ttyLeftGripper`，造成链接归属随设备事件变化。
+
+先逐个查看 **tty 节点的属性**：
+
+```sh
+udevadm info --query=property --name=/dev/ttyUSB0
+udevadm info --query=property --name=/dev/ttyUSB1
+```
+
+重点对照 `ID_SERIAL_SHORT`、`ID_USB_INTERFACE_NUM`、`ID_PATH` 和 `DEVLINKS`。下表是字段关系示例，不是任何设备都会返回的固定值：
+
+| 属性 | 第一个接口 | 第二个接口 | 识别层级 |
+| --- | --- | --- | --- |
+| `ID_SERIAL_SHORT` | 同一个序列号 | 同一个序列号 | 整台 USB 适配器 |
+| `ID_USB_INTERFACE_NUM` | `00` | `01` | 适配器内部接口 |
+| `ID_PATH` | 对应接口的拓扑路径 | 另一接口的拓扑路径 | 主机端口与接口位置 |
+
+如果实际属性确认能这样区分，可使用下面的 `.rules` 内容。这里的 `0403/6010` 只是示例 VID/PID，序列号占位符必须替换，接口号也须按实测填写：
+
+```text
+SUBSYSTEM=="tty", ENV{ID_VENDOR_ID}=="0403", ENV{ID_MODEL_ID}=="6010", ENV{ID_SERIAL_SHORT}=="REPLACE_WITH_SERIAL", ENV{ID_USB_INTERFACE_NUM}=="00", SYMLINK+="ttyLeftGripper", GROUP="dialout", MODE="0660"
+SUBSYSTEM=="tty", ENV{ID_VENDOR_ID}=="0403", ENV{ID_MODEL_ID}=="6010", ENV{ID_SERIAL_SHORT}=="REPLACE_WITH_SERIAL", ENV{ID_USB_INTERFACE_NUM}=="01", SYMLINK+="ttyRightGripper", GROUP="dialout", MODE="0660"
+```
+
+这些 `ENV` 属性通常由前面的系统规则导入，因此自定义规则放在 `99-...rules`，并核对本机实际规则顺序。以 [systemd v249 的串口规则](https://github.com/systemd/systemd/blob/v249/rules.d/60-serial.rules)为例，默认 `by-id` 名称包含接口号，部分驱动还附带端口号；若一个接口内部仍有多个串口，仅添加接口号也可能不够。
+
+不要为凑出同样的效果，把 USB 设备层的 `ATTRS{serial}` 与另一父层的 `ATTRS{bInterfaceNumber}` 直接拼在同一条规则里。多个父设备匹配必须在同一父节点同时成立；`ENV` 匹配的是当前设备已导入的属性，两者的匹配机制不同。[udev 规则匹配说明](https://github.com/systemd/systemd/blob/v249/man/udev.xml)
+
+若属性不存在、设备序列号重复，或驱动布局不同，应回到 `by-id`／`by-path` 和 attribute-walk 的实际输出。`by-path` 绑定的是连接位置，换主机端口或 USB 拓扑可能改变它；`by-id` 也需要设备提供足够独特且稳定的身份信息。
+
 ## 8. 重载 udev 规则
 
 保存文件后，重载 udev 规则：
@@ -141,7 +173,22 @@ lrwxrwxrwx 1 root root         3月 11 16:41 /dev/ttyRightGripper -> ttyUSB0
 
 ![确认两个夹爪别名分别指向对应串口设备](ls_1.png)
 
-通过以上步骤，你可以为串口设备分配固定的别名，方便日常使用和管理。
+### 别名存在之后，还要核对它指向谁
+
+在两台设备都已连接时，分别检查最终节点与属性，而不只是看到符号链接名称：
+
+```sh
+readlink -e /dev/ttyLeftGripper
+readlink -e /dev/ttyRightGripper
+udevadm info --query=property --name=/dev/ttyLeftGripper
+udevadm info --query=property --name=/dev/ttyRightGripper
+```
+
+如果左右角色应对应不同串口，两个别名不应解析到同一个设备节点。按先左后右、先右后左、同时插入及交换主机端口几种顺序检查；记录预期 serial、接口号和实际结果。采用 `by-path` 绑定时，交换端口会改变角色，验收标准应与选择的身份规则一致。
+
+USB 串口别名最终识别的是适配器及端口，**不会自动证明线缆另一端仍连接原来的执行器**。应用建立连接后，还应通过设备协议能够提供的型号、固件或唯一身份进行核对，再进入正常控制。只靠“成功打开一个串口”无法发现接线角色交换；断连后也需要重新打开并重新确认，已有文件描述符不会因同名链接重新出现就自动连接到新设备。
+
+本文的规则用于说明匹配方法，具体设备仍需完成上述插拔和身份验收。
 
 
 ## 阅读自测与验收

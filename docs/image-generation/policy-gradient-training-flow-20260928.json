@@ -1,0 +1,13 @@
+{
+  "date": "2026-09-28",
+  "method": "built-in image_gen",
+  "prompt": "docs/image-generation/policy-gradient-training-flow-20260928-prompt.txt",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-77952aa3-42ea-4b3f-b45d-11188af77846.png",
+  "asset": "content/posts/rl/assets/policy-gradient-training-flow.webp",
+  "dimensions": [
+    1672,
+    941
+  ],
+  "sha256": "14ac57b6417a911fd176ef11c181f37d791e4f69446f9665fba5258e3501df82",
+  "review": "Collection continues from the next state; reset occurs only after episode end; the parameter update returns to policy, not state; no environment gradient."
+}

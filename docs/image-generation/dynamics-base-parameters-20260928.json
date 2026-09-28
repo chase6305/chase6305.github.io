@@ -1,0 +1,16 @@
+{
+  "date": "2026-09-28",
+  "method": "built-in image_gen: generate, then edit",
+  "prompt": "docs/image-generation/dynamics-base-parameters-20260928-prompt.txt",
+  "edit_prompt": "docs/image-generation/dynamics-base-parameters-20260928-edit.txt",
+  "initial_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-a06d6685-8947-4f85-b7fd-60f65b43542b.png",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-006fde78-1283-4646-9657-a60eeaa0ab52.png",
+  "asset": "content/posts/robotics/dynamics/parameter-identification/assets/base-parameter-spaces.webp",
+  "dimensions": [
+    1728,
+    910
+  ],
+  "sha256": "584477c025f08bc2c623fd687e5a79d1366640bd368e0dea111b17d5cf9dabd1",
+  "review": "Matrix times vector equals torque on both sides. Dimensions M x P, P x 1 and M x r, r x 1 both yield M x 1. Symbolic ellipses avoid contradictory cell counts; beta is a parameter combination.",
+  "conversion": "WebP quality 90, method 6; no diagram edits outside image_gen"
+}

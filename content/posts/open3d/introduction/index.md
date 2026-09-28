@@ -1,18 +1,18 @@
 ---
-title: "Open3D 教程学习指南 (持续整理)"
+title: "Open3D 点云与网格指南：空间索引、滤波、配准与重建"
 math: true
 date: 2025-03-04
-lastmod: 2026-09-05
+lastmod: 2026-09-28
 draft: false
 tags: ["Open3D", "Point Cloud", "3D Vision"]
 categories: ["三维视觉"]
 authors: ["chase"]
-summary: "按 I/O、空间索引、滤波、配准和重建整理 Open3D 用法，修正八叉树与体素概念，并说明几何验证边界。"
+summary: "按 I/O、空间索引、滤波、配准和重建整理 Open3D 用法，用已知变换及退化平面验证 ICP，区分残差、覆盖与位姿可观测性。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
-description: "按 I/O、空间索引、滤波、配准和重建整理 Open3D 用法，修正八叉树与体素概念，并说明几何验证边界。"
+description: "按 I/O、空间索引、滤波、配准和重建整理 Open3D 用法，用已知变换及退化平面验证 ICP，区分残差、覆盖与位姿可观测性。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "NumPy、点云与三维坐标变换"
 reading_focus: "各示例按章节独立使用，核对 legacy/Tensor API、输入路径和真实几何尺度。"
@@ -25,7 +25,7 @@ related_posts:
 
 本文按 I/O → 空间索引 → 滤波与变换 → 配准 → 重建组织，是 legacy `open3d.geometry` API 的学习笔记，不是一个从头连续执行的脚本。完整示例与依赖前文变量的接口片段分别使用；Tensor API `open3d.t.geometry` 的设备与数据类型不能直接混用。
 
-历史安装示例包含 0.18.0，八叉树接口复核参考 0.19.0 文档。先打印 `open3d.__version__`，将模型路径替换为自己的数据。点云非空、尺度一致、有足够重叠和正确法线，比调大迭代次数更重要。
+本文以 0.19.0 的 legacy API 为基线。先打印 `open3d.__version__`，将模型路径替换为自己的数据。点云非空、尺度一致、有足够重叠和正确法线，比调大迭代次数更重要。
 
 - [Open3D 官网](https://www.open3d.org/)
 - [Open3D GitHub 仓库](https://github.com/isl-org/Open3D)
@@ -52,75 +52,50 @@ Open3D 是一个开源库，旨在为 3D 数据处理提供高效且易用的工
 - 机器学习：
   - 提供与深度学习框架的集成，支持 3D 数据的机器学习任务。
 
-![open3d](open3d.webp)
+![Open3D 的计算核心、三维数据结构、算法、机器学习与可视化模块总览](open3d.webp)
 
 ## 2. 安装
 
-### 2.1 安装 Open3D
+### 2.1 在独立环境中选择一种安装包 {#21-安装-open3d}
 
-#### 方法一：通过 pip 安装
+<span id="方法一通过-pip-安装"></span>
+<span id="方法二手动安装"></span>
+<span id="方法三安装-cpu-版本"></span>
+<span id="方法四源码安装"></span>
 
-可以直接使用 pip 安装 Open3D：
-
-```bash
-pip install open3d
-```
-
-#### 方法二：手动安装
-
-你也可以从 [PyPI](https://pypi.org/project/open3d/0.18.0/#description) 下载对应版本的 `.whl` 文件，然后手动安装。例如，对于 Linux x86 系统和 Python 3.9 环境：
+下面以 Python 3.10 和 Open3D 0.19.0 为复现基线。先选择环境，再用同一个解释器安装；不需要 CUDA 的 Linux x86_64 环境可使用 CPU wheel：
 
 ```bash
-pip install open3d-0.18.0-cp39-cp39-manylinux_2_27_x86_64.whl
+python3.10 -m venv .venv-open3d
+source .venv-open3d/bin/activate
+python -m pip install "open3d-cpu==0.19.0"
+python -c "import sys, open3d as o3d; print(sys.executable); print(o3d.__version__, o3d.__file__)"
 ```
 
-#### 方法三：安装 CPU 版本
-
-如果不使用 NVIDIA 的 CUDA，可以考虑安装 CPU 版本：
+需要标准发行包时，在另一个干净环境安装 `open3d==0.19.0`。`open3d` 与 `open3d-cpu` 都提供同名导入模块，选择一种即可。wheel 是否可用还取决于 Python、操作系统、CPU 架构和系统库版本；没有匹配包时，先检查平台标签，不要只反复升级 pip。
 
 ```bash
-pip install open3d-cpu
+python -m pip debug --verbose
+python -m pip check
 ```
 
-#### 方法四：源码安装
+`cp310` 指 CPython 3.10，`x86_64` 也不能用于 ARM64。历史 `cp39` wheel 不适用于 Python 3.10。平台范围与安装方式可查 [0.19.0 安装文档](https://www.open3d.org/docs/0.19.0/getting_started.html)；需要自行编译时使用对应版本的[源码构建说明](https://www.open3d.org/docs/0.19.0/compilation.html)。CPU 数值计算与窗口渲染是不同能力：安装 CPU 包不会自动解决显示服务、OpenGL 或 EGL 问题。
 
-你也可以从源码安装 Open3D。具体步骤可以参考 [Open3D 的官方文档](http://www.open3d.org/docs/release/compilation.html)。
+### 2.2 使用 Open3D 与构建 Open3D 是两件事 {#22-第三方库管理}
 
-### 2.2 第三方库管理
+Python 用户安装 wheel 后直接导入；C++ 应用通常链接已经安装的 Open3D SDK：
 
-Open3D 使用 CMake 来管理第三方库。CMake 是一个跨平台的构建系统，它可以帮助自动化软件构建过程，包括查找和配置第三方库。Open3D 通过 CMake 的 `find_package` 和 `ExternalProject` 模块来管理第三方库。
+```cmake
+cmake_minimum_required(VERSION 3.18)
+project(point_cloud_app LANGUAGES CXX)
+find_package(Open3D CONFIG REQUIRED)
+add_executable(point_cloud_app main.cpp)
+target_link_libraries(point_cloud_app PRIVATE Open3D::Open3D)
+```
 
-- **第三方库管理步骤**
+该片段假定已有 `main.cpp` 与可被 CMake 找到的 SDK，单独安装 Python wheel 不等于安装了完整 C++ 开发环境。通过 `Open3D_DIR` 或 `CMAKE_PREFIX_PATH` 指向 SDK 配置文件位置，详见 [C++ 链接指南](https://www.open3d.org/docs/0.19.0/cpp_project.html)。
 
-1. **查找系统库**：
-   - Open3D 使用 `find_package` 命令查找系统中已经安装的库。例如，查找 Eigen 库：
-
-     ```cmake
-     find_package(Eigen3 REQUIRED)
-     include_directories(${EIGEN3_INCLUDE_DIR})
-     ```
-
-2. **下载和构建外部项目**：
-   - 对于一些没有预安装的库，Open3D 使用 `ExternalProject_Add` 命令从源代码下载并构建这些库。例如，下载并构建 GLFW：
-
-     ```cmake
-     include(ExternalProject)
-     ExternalProject_Add(glfw
-       GIT_REPOSITORY https://github.com/glfw/glfw.git
-       GIT_TAG 3.4  # 固定示例标签；实际工程可进一步锁定提交
-       CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/third_party_install
-     )
-     ```
-
-3. **使用 `third_party` 目录**：
-   - Open3D 在其源代码中包含了一些第三方库的副本，这些库存放在 `third_party` 目录下。CMakeLists.txt 文件会配置这些库的构建和链接。例如，配置和使用 Filament 库：
-
-     ```cmake
-     add_subdirectory(third_party/filament)
-     include_directories(third_party/filament/include)
-     ```
-
-Open3D 通过 CMake 的 `find_package` 和 `ExternalProject_Add` 命令来查找和管理第三方库，并使用 `third_party` 目录包含一些必要的库。这样可以确保在不同平台上都能顺利构建和运行 Open3D。
+只有从源码构建 Open3D 时，才需要关注它如何组织第三方依赖。0.19.0 的目录名是 `3rdparty/`；例如 [Filament 构建文件](https://github.com/isl-org/Open3D/blob/v0.19.0/3rdparty/filament/filament_build.cmake)通过 `ExternalProject_Add` 获取固定源码并构建，不能用一个假定存在的 `add_subdirectory(third_party/filament)` 替代。具体系统库选项、下载缓存与构建目标应按所选源码版本核对。
 
 ### 2.3 编译原理
 
@@ -256,11 +231,11 @@ load_pcd = o3d.io.read_point_cloud("generated_point_cloud.ply")
 o3d.visualization.draw_geometries([load_pcd])
 ```
 
-![cude_pc](cude_pc.png)
+![立方体八个顶点组成的点云，用红色和蓝色区分两组顶点](cude_pc.png)
 
 ## 4. TriangleMesh 读取、保存
 
-下面的代码节选自 Open3D 的 [TriangleMeshIO.cpp](https://github.com/isl-org/Open3D/blob/main/cpp/open3d/io/TriangleMeshIO.cpp)：
+下面的代码节选自 Open3D 0.19.0 的 [TriangleMeshIO.cpp](https://github.com/isl-org/Open3D/blob/v0.19.0/cpp/open3d/io/TriangleMeshIO.cpp)：
 
 ```cpp
 static const std::unordered_map<
@@ -300,7 +275,7 @@ static const std::unordered_map<
 }  // unnamed namespace
 ```
 
-在这段代码中，`open3d` 使用 `assimp` 来读取和写入多种三角网格文件格式。以下是支持的文件格式：
+这段分发表中，部分格式的读取交给 Assimp，另一些使用专用读取器；写入则按扩展名选择对应的写入函数，不能概括为全部读写都走 Assimp。以下是这一版本列出的格式：
 
 ### 4.1 支持的读取文件格式
 
@@ -369,8 +344,7 @@ except Exception as e:
 
 ![triangle_mesh_1](triangle_mesh_1.png)
 
-此时因为没有计算法线, 可视化出来的模型会涂成统一的灰色
-然后我们可以`compute_vertex_normals`来计算出法线信息
+若网格缺少顶点法线，可以调用 `compute_vertex_normals()` 计算法线，以便观察光照下的表面形状。法线与颜色是不同属性：下例另外调用 `paint_uniform_color()` 将网格设为红色。
 
 ```python
 import open3d as o3d
@@ -412,7 +386,7 @@ else:
 
 ```
 
-![triangle_mesh_2](triangle_mesh_2.png)
+![计算顶点法线并设置统一红色后，模型表面呈现明暗和几何细节](triangle_mesh_2.png)
 
 ```python
 import open3d as o3d
@@ -991,6 +965,10 @@ o3d.visualization.draw_geometries([downsampled_pcd_uniform], window_name="Unifor
 
 ## 8. 点云转换
 
+这些 legacy 几何方法会**原地修改对象**。`other = pcd` 只增加一个指向同一对象的引用；要保留原始数据，应先 `copy.deepcopy(pcd)`。连续调用变换会累积，乘单位矩阵不能撤销已经发生的变换。
+
+对于机器人刚体坐标变换，还应检查 $R^\top R=I$、$\det R=1$ 和齐次矩阵最后一行。用只保留三位小数的旋转矩阵进行精度验证，可能把舍入产生的缩放或非正交误差混进算法误差；优先从旋转参数构造合法矩阵。
+
 ### 8.1 **transform**：应用变换矩阵到点云
 
 `transform` 方法用于将一个 4x4 的变换矩阵应用到点云上。该矩阵可以包含平移、旋转和缩放。
@@ -1089,7 +1067,7 @@ import numpy as np
 
 # 生成点云数据
 def generate_point_cloud():
-    # 生成一个简单的平面点云
+    # 从球面采样点云
     mesh = o3d.geometry.TriangleMesh.create_sphere(radius=1.0)
     pcd = mesh.sample_points_poisson_disk(number_of_points=500)
     return pcd
@@ -1148,74 +1126,93 @@ Open3D 提供了多种点云配准方法，主要包括以下几种：
 
 下面是每种方法的说明和案例：
 
-### 10.1 ICP 配准
+### 10.1 ICP：已知刚体变换的最小验收 {#101-icp-配准}
 
-**说明**：通过迭代地最小化两组点云之间的距离来实现配准。
-
-**案例**：
+ICP 是局部配准方法。先在已知变换、足够重叠、没有球体旋转对称歧义的数据上验证接口，再用于真实扫描。下面生成同一批三维点的两个视图；位置单位为米，目标变换很小，单位矩阵提供了合理初值。该点集用于软件验收，没有模拟扫描噪声或遮挡。
 
 ```python
-import open3d as o3d
+import copy
 import numpy as np
+import open3d as o3d
 
-def create_colored_point_cloud(color):
-    """创建并上色的球体点云"""
-    pcd = o3d.geometry.TriangleMesh.create_sphere(radius=1.0).sample_points_uniformly(number_of_points=1000)
-    pcd.paint_uniform_color(color)
-    return pcd
+rng = np.random.default_rng(42)
+points = rng.uniform([-.6, -.3, -.1], [.8, .5, .3], (600, 3))
+points[:, 2] += .2 * points[:, 0] ** 2
+source = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(points))
+truth = np.eye(4)
+truth[:3, :3] = source.get_rotation_matrix_from_xyz((.04, -.03, .05))
+truth[:3, 3] = [.025, -.015, .02]
+target = copy.deepcopy(source).transform(truth)
 
-def visualize_point_clouds(pcd1, pcd2, window_name):
-    """可视化点云"""
-    o3d.visualization.draw_geometries([pcd1, pcd2], window_name=window_name)
-
-# 生成并上色两个相似的点云
-pcd1 = create_colored_point_cloud([1, 0, 0])  # 红色
-pcd2 = create_colored_point_cloud([0, 1, 0])  # 绿色
-
-# 对第二个点云进行初始变换
-initial_transformation = np.array([[0.862, 0.011, -0.507, 0.5],
-                                   [-0.139, 0.967, -0.215, 0.7],
-                                   [0.487, 0.255, 0.835, -1.4],
-                                   [0.0, 0.0, 0.0, 1.0]])
-pcd2.transform(initial_transformation)
-
-# 可视化初始点云
-visualize_point_clouds(pcd1, pcd2, "Initial Point Clouds")
-
-# 使用 ICP 进行配准
-threshold = 0.7  # 增加阈值
-trans_init = np.eye(4)
-reg_p2p = o3d.pipelines.registration.registration_icp(
-    pcd1, pcd2, threshold, trans_init,
-    o3d.pipelines.registration.TransformationEstimationPointToPoint()
+reg = o3d.pipelines.registration
+result = reg.registration_icp(
+    source, target, .12, np.eye(4),
+    reg.TransformationEstimationPointToPoint(),
+    reg.ICPConvergenceCriteria(max_iteration=80),
 )
-
-# 打印配准信息
-print("ICP converged:", reg_p2p.inlier_rmse < threshold)
-print("Fitness:", reg_p2p.fitness)
-print("Inlier RMSE:", reg_p2p.inlier_rmse)
-print("Transformation matrix:")
-print(reg_p2p.transformation)
-
-# 计算逆矩阵
-inverse_transformation = np.linalg.inv(reg_p2p.transformation)
-
-# 应用逆矩阵到第二个点云
-pcd2.transform(inverse_transformation)
-
-# 可视化配准后的点云
-visualize_point_clouds(pcd1, pcd2, "Aligned Point Clouds")
-
+print("fitness:", result.fitness, "inlier RMSE [m]:", result.inlier_rmse)
+assert len(result.correspondence_set) >= 3
+assert result.fitness >= .99 and result.inlier_rmse < 1e-8
+np.testing.assert_allclose(result.transformation, truth, atol=1e-8)
+aligned = copy.deepcopy(source).transform(result.transformation)
+np.testing.assert_allclose(np.asarray(aligned.points), np.asarray(target.points), atol=1e-8)
 ```
 
-|原始点云| 配准点云 |
-|--|--|
-| ![reg_p2p_1](reg_p2p_1.webp) | ![reg_p2p_2](reg_p2p_2.webp) |
+`registration_icp(source, target, ...)` 返回**源到目标**的变换。要把目标移回源坐标系才使用逆矩阵；不要在配准、显示和后续融合中交替使用两个方向。
 
+这里 `.12` 是建立对应点时允许的最大距离，不是误差验收阈值。仅判断 `inlier_rmse < .12` 几乎没有诊断价值：RMSE 只统计被接受的对应，而没有对应点时结果还可能是 `fitness=0, RMSE=0`。应一起检查有效对应数、覆盖、残差、变换合法性，以及已知真值或独立几何约束。
 
+[下载完整验收脚本](icp_verification.py)，执行 `python icp_verification.py`。除上述恢复测试外，它还把目标平移到远处，确认零对应结果被拒绝，并检查源点云没有被显示操作修改。无噪声合成实验的严格容差不适用于真实传感器精度。
 
+#### 高 fitness、低 RMSE，为什么还可能错位 {#icp-observability}
 
+先把返回指标与优化目标分开。在本文使用的 **Open3D 0.19.0 legacy 接口**中，`fitness` 是接受对应的数量除以**源点数量**；`inlier_rmse` 根据对应点的欧氏距离计算。即使选择 point-to-plane 优化器，返回的 `inlier_rmse` 也不能直接当作点到平面目标的 RMSE。实现可核对 [Registration.cpp 中的结果统计与信息矩阵函数](https://github.com/isl-org/Open3D/blob/v0.19.0/cpp/open3d/pipelines/registration/Registration.cpp)。
 
+因此交换 source 和 target，`fitness` 不必相同。下方实验用 625 个源点组成较小平面块，目标是覆盖它的 1681 个点；在 1 mm 对应距离阈值下，正向覆盖是 100%，反向只有 $625/1681\approx37.18\%$。它是具有方向和距离阈值的统计量，不是唯一的“几何重叠百分比”。
+
+更深一层的问题是目标函数对某些运动根本不敏感。对已变换源点 $y_i=Rp_i+t$、目标点 $q_i$ 和单位法线 $n_i$，点到平面残差为：
+
+$$
+r_i=n_i^T(y_i-q_i).
+$$
+
+采用目标坐标系中的左侧小扰动 $\delta\xi=[\delta t;\delta\theta]$，固定本次对应与法线，有：
+
+$$
+\delta y_i=\delta t+\delta\theta\times y_i,\qquad
+J_i=\begin{bmatrix}n_i^T&(y_i\times n_i)^T\end{bmatrix}.
+$$
+
+如果所有点都在 $z=0$ 平面，$n_i=[0,0,1]^T$，那么：
+
+$$
+J_i=\begin{bmatrix}0&0&1&y_i^{(y)}&-y_i^{(x)}&0\end{bmatrix}.
+$$
+
+沿平面的两个平移，以及绕法线的旋转，都处在这个局部残差的零空间中。只让平面更密，并不会补上这三个方向的信息。[Open3D 的点到平面目标说明](https://www.open3d.org/docs/release/tutorial/pipelines/icp_registration.html#Point-to-plane-ICP)
+
+<figure class="article-figure" id="fig-icp-observability">
+  {{< post-image src="assets/icp-observability.webp" alt="单平面的法线相互平行，平面内滑动及绕法线转动不改变理想点到平面距离；多个方向的表面提供更多独立几何约束" >}}
+  <figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">蓝色箭头表示表面法线，橙色箭头表示单平面无法约束的运动。右侧还需有足够的点分布与正确对应，不能仅凭法线方向不同就断言任意场景全局唯一。</span></figcaption>
+</figure>
+
+[icp_observability.py](icp_observability.py) 使用精确法线和无噪声合成数据，比较以下情况：
+
+| 数据与初值 | 优化后结果 | 点到平面线性化矩阵的秩 |
+| --- | --- | ---: |
+| 平面网格，初始平移 0 | 保持 0，fitness 为 1，RMSE 为 0 | 3 |
+| 同一平面网格，初始沿 x 偏移 0.1 m | 保持 0.1 m，fitness 仍为 1，欧氏 RMSE 约 $3.94\times10^{-17}$ m | 3 |
+| 三个相互垂直、充分展开的平面块，小位姿扰动 | 恢复单位变换，矩阵元素最大差约 $2.22\times10^{-16}$ | 6 |
+
+第二行使用重复网格，偏移两个网格间距后，小平面块仍能逐点匹配到大平面块的另一部分，所以**连欧氏最近邻 RMSE 都可以接近零**。对于一般非规则采样，欧氏 RMSE 未必为零；单平面的点到平面约束缺失则依然存在。平面边界、独特纹理、额外几何、运动先验等可能提供不同的信息，需明确它们是否真的进入了求解目标。
+
+脚本还独立对残差做中心差分，核对上面的扰动方向与 Jacobian。运行 `python icp_observability.py` 可得到[完整结果](assets/icp-observability.json)，无需显示窗口或下载数据。
+
+诊断局部退化时，应构造**实际残差对应**的 $J$，先约定平移／旋转尺度，再分析奇异值。本例取特征长度 $\ell=1\,\mathrm m$，参数写成 $[\delta t/\ell;\delta\theta]$，残差除以 $\ell$，比较 $H=J_s^TJ_s/N$。平面的特征值是 $[0,0,0,0.13,0.13,1]$，三个平面块的最小特征值约为 0.0118。换单位、特征长度、点分布或权重后，数值阈值也要随之解释。
+
+不要仅因为函数名含有 information matrix，就默认它是当前 point-to-plane 目标的 Hessian：这个版本的 `get_information_matrix_from_point_clouds` 不使用目标法线，脚本在同一个平面上得到它的秩为 6，而上述点到平面矩阵的秩为 3。两者描述不同的残差假设，不能互换。
+
+加入阻尼能让线性方程可解，但不会创造新观测。满秩只排除了本次线性化中的严格零方向，也不等于全局配准正确；若要把矩阵逆解释为位姿协方差，还要说明噪声、对应关系、权重及残差相关性的假设。
 
 ### 10.2 Colored ICP 配准
 
@@ -1250,10 +1247,9 @@ sphere1 = create_colored_sphere(1.0, [0, 1, 0], density=1000)
 sphere2 = create_colored_sphere(1.0, [0, 1, 0], density=1000)
 
 # 对第二个球体进行变换
-transformation = np.array([[0.862, 0.011, -0.507, 0.5],
-                           [-0.139, 0.967, -0.215, 0.7],
-                           [0.487, 0.255, 0.835, -1.4],
-                           [0.0, 0.0, 0.0, 1.0]])
+transformation = np.eye(4)
+transformation[:3, :3] = o3d.geometry.get_rotation_matrix_from_xyz((0.2, -0.5, -0.15))
+transformation[:3, 3] = [0.5, 0.7, -1.4]
 sphere2.transform(transformation)
 
 # 估算法线
@@ -1298,6 +1294,8 @@ o3d.visualization.draw_geometries([sphere1, sphere2], window_name="After Registr
 
 **说明**：用于初始配准，通常在没有初始对齐的情况下使用。
 
+0.19.0 的 `RANSACConvergenceCriteria` 第二个参数是概率 `confidence`，不再是旧接口中的最大验证次数。写成 `(4000000, 500)` 会误传参数；下面显式使用关键字。`confidence=1.0` 会关闭基于置信度的提前终止，通常不应把它当作默认加速设置。[RANSAC 停止条件](https://www.open3d.org/docs/0.19.0/python_api/open3d.pipelines.registration.RANSACConvergenceCriteria.html)
+
 下面是包含配准前后可视化的示例；随机几何上的匹配不保证成功，应检查 fitness、inlier_rmse 和已知变换误差：
 
 ```python
@@ -1316,10 +1314,9 @@ source = generate_point_cloud()
 target = generate_point_cloud()
 
 # 对目标点云进行随机变换
-transformation = np.array([[0.862, 0.011, -0.507, 0.5],
-                           [-0.139, 0.967, -0.215, 0.7],
-                           [0.487, 0.255, 0.835, -1.4],
-                           [0.0, 0.0, 0.0, 1.0]])
+transformation = np.eye(4)
+transformation[:3, :3] = o3d.geometry.get_rotation_matrix_from_xyz((0.2, -0.5, -0.15))
+transformation[:3, 3] = [0.5, 0.7, -1.4]
 target.transform(transformation)
 
 # 下采样点云
@@ -1348,16 +1345,17 @@ result_ransac = o3d.pipelines.registration.registration_ransac_based_on_feature_
     ransac_n=4,
     checkers=[o3d.pipelines.registration.CorrespondenceCheckerBasedOnEdgeLength(0.9),
               o3d.pipelines.registration.CorrespondenceCheckerBasedOnDistance(0.15)],
-    criteria=o3d.pipelines.registration.RANSACConvergenceCriteria(4000000, 500))
+    criteria=o3d.pipelines.registration.RANSACConvergenceCriteria(max_iteration=100000, confidence=0.999))
 
 print(result_ransac)
 
 # 可视化配准前的点云
-source_temp = source_down.transform(np.identity(4))  # 恢复原始位置
+import copy
+source_temp = copy.deepcopy(source_down)  # 保存未修改的源点云
 o3d.visualization.draw_geometries([source_temp, target_down], window_name="配准前")
 
 # 可视化配准后的点云
-source_temp = source_down.transform(result_ransac.transformation)
+source_temp = copy.deepcopy(source_down).transform(result_ransac.transformation)
 o3d.visualization.draw_geometries([source_temp, target_down], window_name="配准后")
 ```
 
@@ -1370,11 +1368,9 @@ o3d.visualization.draw_geometries([source_temp, target_down], window_name="配�
 6. **可视化配准前的点云**：在配准前显示源点云和目标点云。
 7. **可视化配准后的点云**：在配准后显示源点云和目标点云。
 
-|初始点云| 配准点云 |
-|--|--|
-
-| ![reg_p2p_5](reg_p2p_5.png) | ![reg_p2p_6](reg_p2p_6.png)
- |
+| 初始点云 | 配准点云 |
+| --- | --- |
+| ![全局配准前的两组点云](reg_p2p_5.png) | ![全局配准后的点云显示](reg_p2p_6.png) |
 
 
 
@@ -1415,7 +1411,7 @@ def pairwise_registration(source, target, voxel_size):
         4, [
             o3d.pipelines.registration.CorrespondenceCheckerBasedOnEdgeLength(0.9),
             o3d.pipelines.registration.CorrespondenceCheckerBasedOnDistance(distance_threshold)
-        ], o3d.pipelines.registration.RANSACConvergenceCriteria(4000000, 500))
+        ], o3d.pipelines.registration.RANSACConvergenceCriteria(max_iteration=100000, confidence=0.999))
     return result
 
 def full_registration(pcds, voxel_size):
@@ -1451,7 +1447,7 @@ def run_global_optimization(pose_graph):
 def merge_point_clouds(pcds, pose_graph):
     pcd_combined = o3d.geometry.PointCloud()
     for point_id in range(len(pcds)):
-        pcd_transformed = pcds[point_id].transform(pose_graph.nodes[point_id].pose)
+        pcd_transformed = copy.deepcopy(pcds[point_id]).transform(pose_graph.nodes[point_id].pose)
         pcd_combined += pcd_transformed
     return pcd_combined
 
@@ -1466,16 +1462,14 @@ sphere2.paint_uniform_color([0, 1, 0])
 sphere3.paint_uniform_color([0, 0, 1])
 
 # 对球体进行随机变换
-transformation1 = np.array([[0.862, 0.011, -0.507, 0.5],
-                            [-0.139, 0.967, -0.215, 0.7],
-                            [0.487, 0.255, 0.835, -1.4],
-                            [0.0, 0.0, 0.0, 1.0]])
+transformation1 = np.eye(4)
+transformation1[:3, :3] = o3d.geometry.get_rotation_matrix_from_xyz((0.2, -0.5, -0.15))
+transformation1[:3, 3] = [0.5, 0.7, -1.4]
 sphere2.transform(transformation1)
 
-transformation2 = np.array([[0.707, -0.707, 0.0, 1.0],
-                            [0.707, 0.707, 0.0, 0.5],
-                            [0.0, 0.0, 1.0, -0.5],
-                            [0.0, 0.0, 0.0, 1.0]])
+transformation2 = np.eye(4)
+transformation2[:3, :3] = o3d.geometry.get_rotation_matrix_from_xyz((0, 0, np.pi / 4))
+transformation2[:3, 3] = [1.0, 0.5, -0.5]
 sphere3.transform(transformation2)
 
 pcds = [sphere1, sphere2, sphere3]
@@ -1512,11 +1506,9 @@ o3d.visualization.draw_geometries([pcd_combined], window_name="After Registratio
 8. **可视化配准前的点云**：使用 Open3D 的可视化工具显示配准前的点云。
 9. **可视化配准后的点云**：使用 Open3D 的可视化工具显示配准后的点云。
 
-|原始点云| 配准点云 |
-|--|--|
-
-| ![reg_p2p_7](reg_p2p_7.png) | ![reg_p2p_8](reg_p2p_8.webp)
- |
+| 原始点云 | 配准点云 |
+| --- | --- |
+| ![多路配准前的点云显示](reg_p2p_7.png) | ![多路配准合并后的点云显示](reg_p2p_8.webp) |
 
 
 这些案例展示了 Open3D 中不同点云配准方法的基本用法。
@@ -1526,21 +1518,13 @@ o3d.visualization.draw_geometries([pcd_combined], window_name="After Registratio
 
 ### 11.1 Alpha形状重建
 
-Alpha形状重建是一种用于从点云数据生成三角网格的方法。它基于计算几何中的Alpha形状理论。Alpha形状是由Edelsbrunner等人在1983年提出的，它是Delaunay三角剖分的一个子集，用于描述点集的形状。
+Alpha 形状用一个几何尺度描述点集的边界。本文关注三维点云重建；[Open3D API](https://www.open3d.org/docs/0.19.0/python_api/open3d.geometry.TriangleMesh.html)参考的是 Edelsbrunner 与 Mücke 的三维 Alpha Shapes 方法。
 
-#### 11.1.1 原理
+#### 11.1.1 三维重建中的几何对象 {#1111-原理}
 
-1. **Delaunay三角剖分**：
-   - 首先，对点云进行Delaunay三角剖分。Delaunay三角剖分是一种将点集划分为一系列三角形的算法，具有最大化最小角的性质，避免了瘦长三角形。
+在三维点云中，应从 Delaunay **四面体剖分**理解这个过程，而不是直接套用二维三角形外接圆的筛选描述。Open3D 构造或复用 `TetraMesh`，根据 alpha 尺度选择四面体，并提取所选体积的边界三角面。共享的内部面不应成为最终表面。
 
-2. **Alpha球**：
-   - 对于给定的参数α，定义一个半径为α的球（称为Alpha球）。Alpha球用于筛选Delaunay三角剖分中的三角形。
-
-3. **筛选三角形**：
-   - 对于每个Delaunay三角剖分中的三角形，检查其外接圆的半径。如果外接圆的半径小于或等于α，则保留该三角形；否则，丢弃该三角形。
-
-4. **生成Alpha形状**：
-   - 保留的三角形构成了Alpha形状。通过调整α的值，可以控制生成的形状的细节程度。较小的α值会生成更细致的形状，而较大的α值会生成更平滑的形状。
+alpha 与点坐标使用相同长度尺度。缩小 alpha 可能保留凹陷，也可能断开薄结构或得到空网格；增大 alpha 会填入更多区域，大值趋近凸包，并不是对同一张曲面做普通平滑。若需要重复比较多个 alpha，可以预先计算四面体网格并复用，见 [Open3D 表面重建教程](https://www.open3d.org/docs/0.19.0/tutorial/geometry/surface_reconstruction.html)。
 
 #### 11.1.2 代码示例
 
@@ -1596,11 +1580,11 @@ for alpha in alphas:
     o3d.visualization.draw_geometries([mesh_alpha], window_name=title)
 ```
 
-![Alpha_1](Alpha_1.png)
+![alpha 为 0.01 时的模型表面，细小区域存在孔洞与碎片](Alpha_1.png)
 
-![Alpha_2](Alpha_2.png)
+![alpha 为 0.03 时更多区域被连接，部分凹陷被跨接](Alpha_2.png)
 
-![Alpha_3](Alpha_3.png)
+![alpha 为 0.05 时模型更接近外包络，细节进一步减少](Alpha_3.png)
 
 ### 11.2 泊松重建
 
@@ -1696,7 +1680,7 @@ obb.color = (0, 1, 0)   # 绿色
 o3d.visualization.draw_geometries([pcd, aabb, obb], window_name="Bounding Boxes")
 ```
 
-![aabb_obb](aabb_obb.webp)
+![点云外的红色轴对齐包围盒与绿色有向包围盒，两者方向和边长不同](aabb_obb.webp)
 
 - **说明**
 
@@ -1744,7 +1728,7 @@ hull.paint_uniform_color([1, 0, 0])  # 红色
 o3d.visualization.draw_geometries([pcd, hull], window_name="Convex Hull")
 ```
 
-![hull](hull.png)
+![红色凸包包住模型点云，并跨过原模型中的凹陷区域](hull.png)
 
 - **说明**
 

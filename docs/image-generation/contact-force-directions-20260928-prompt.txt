@@ -1,0 +1,13 @@
+Create a clean, precise technical vector-style illustration for a robotics article. Wide 2:1 landscape composition, white background, generous whitespace, thin rounded navy outlines, restrained pastel blue, orange and lavender. Crisp sans-serif English labels. No watermark, no branding, no decorative formulas beyond those requested.
+
+Title centered at top: "One contact, two force directions".
+
+The main scene is a simple horizontal one-dimensional contact: a gray robot tool entering from the LEFT, with its flat tip touching a vertical pale-lavender wall on the RIGHT. The wall is at the far right of the main scene. Clearly mark the common contact with a thin dashed vertical line. The tool must touch the wall without penetrating it. No full robot arm, no complicated mechanisms.
+
+ABOVE the contact scene, draw a BLUE horizontal arrow pointing RIGHT, starting at the contact line and ending inside the wall side. Label it "Robot on environment: +5 N". BELOW the contact scene, draw an ORANGE horizontal arrow pointing LEFT, starting at the same contact line and ending on the tool side. Label it "Environment on robot: -5 N". The two arrows have equal lengths, but are vertically separated for clarity. The blue arrow points right and the orange arrow points left. Do not interchange them.
+
+Above the gray tool, include a small neutral dark horizontal coordinate arrow pointing RIGHT labeled "+z". Add a small neutral annotation below the tool: "Static contact; gravity compensated".
+
+At the bottom, three independent, evenly spaced rounded cards summarize the force balance. Do not connect the cards with any operators or arrows. Blue first card: "F_cmd = +5 N". Orange second card: "F_env = -5 N". Neutral final card: "F_cmd + F_env = 0". Do not imply two distinct robots or two separate contacts. Caption-style footer: "Choose the force convention before forming the feedback error.".
+
+The point is action and reaction under one shared axis and static equilibrium: the controller pushes toward the wall, while the environment pushes back on the robot. All text legible; no long paragraphs. Use flat colors and subtle shadows only. Preserve white background and the understated rounded-panel style of a modern Transformer architecture explainer.

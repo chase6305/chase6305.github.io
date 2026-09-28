@@ -521,6 +521,42 @@ article main#content > .content {
   font-size: 1.2rem;
   font-weight: 690;
   letter-spacing: -0.015em;
+  scroll-margin-top: calc(var(--hextra-navbar-height) + 1.5rem);
+}
+
+.tag-group-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.5rem;
+}
+
+.tag-group-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--chase-border);
+  border-radius: 0.65rem;
+  color: var(--chase-text);
+  background: var(--chase-surface);
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+
+.tag-group-nav a:hover {
+  border-color: var(--chase-accent);
+}
+
+.tag-group-nav a:focus-visible {
+  outline: 2px solid var(--chase-accent);
+  outline-offset: 3px;
+}
+
+.tag-group-nav span {
+  color: var(--chase-muted);
+  font-variant-numeric: tabular-nums;
 }
 
 .tag-group .taxonomy-grid {

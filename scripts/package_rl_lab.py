@@ -14,7 +14,7 @@ import zipfile
 
 BUNDLE = Path(__file__).resolve().parents[1] / "content/posts/ai/ppo-dpo-grpo"
 FILES = ("README.txt", "requirements.txt", "rl_lab.py", "ppo_chain.py",
-         "token_objectives.py", "test_rl_lab.py", "plot_results.py")
+         "token_objectives.py", "test_rl_lab.py", "plot_results.py", "kl_gradient_check.py")
 
 
 def check_archive():
@@ -56,6 +56,7 @@ def main():
                  "--grpo-prompts", "32", "--steps", "3", "--output", "results-grpo-g4"],
                 ["ppo_chain.py", "--steps", "3", "--output", "results-chain"],
                 ["token_objectives.py", "--output", "results-tokens.json"],
+                ["kl_gradient_check.py", "--output", "kl-gradient-results.json"],
             )
             for command in commands:
                 print("Running extracted:", " ".join(command), flush=True)

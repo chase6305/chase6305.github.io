@@ -1,15 +1,15 @@
 ---
 title: "大模型分布式训练与显存优化指南：从 DDP、ZeRO 到 FSDP"
 date: 2026-08-27
-lastmod: 2026-09-08
+lastmod: 2026-09-28
 draft: false
 tags: ["Distributed Training", "GPU Memory", "PyTorch"]
 categories: ["人工智能"]
 authors: ["chase"]
-summary: "建立训练显存账本，解释 DDP、NCCL、ZeRO 与 FSDP 的数据所有权，并梳理混合精度、重计算和 OOM 排查。"
+summary: "建立训练显存账本，解释 DDP、NCCL、ZeRO 与 FSDP 的数据所有权，用双进程实验验证变长 token 的累积梯度，并梳理混合精度与 OOM 排查。"
 math: true
 toc: true
-description: "建立训练显存账本，解释 DDP、NCCL、ZeRO 与 FSDP 的数据所有权，并梳理混合精度、重计算和 OOM 排查。"
+description: "建立训练显存账本，解释 DDP、NCCL、ZeRO 与 FSDP 的数据所有权，用双进程实验验证变长 token 的累积梯度，并梳理混合精度与 OOM 排查。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "PyTorch 训练循环与 GPU 基础"
 reading_focus: "沿参数、梯度、优化器状态和激活的生命周期追踪显存，不只计算权重大小。"
@@ -414,6 +414,30 @@ $$
 在默认 DDP 按 $K$ 个数据并行 Rank 平均梯度的条件下，每次反向应使用 $K S_{rj}/N_{\mathrm{valid}}$，并在窗口末尾同步。分母必须提前从整个窗口的有效标签数汇总，排除 padding 与 `ignore_index`，且整个窗口的 $N_{\mathrm{valid}}>0$；此时不要再除以累积步数。这里由目标函数推导权重，使用自定义通信 hook 或其他 Loss 归约方式时需要重新推导。
 
 这与 [InternVL 的 Square averaging](/posts/ai/internvl-3-5/#52-square-averaging-如何改变样本权重)回答的是同一个问题：训练究竟希望每个 token 等权，还是每个样本按另一种规则加权？先确定目标，再决定分母。
+
+#### 用两个真实进程检查分母与更新
+
+[ddp_token_mean.py](ddp_token_mean.py) 提供一个可独立运行的 CPU / Gloo 例子：两进程各处理 3 个 micro-batch，按 `2、1` 分成两个累积窗口；分类头使用 FP64，去除 Dropout、AMP 等额外因素。参考实现把同一窗口的所有 token 一次拼接，在单进程中求平均损失。
+
+```bash
+python -B ddp_token_mean.py --output ddp-token-results.json
+```
+
+脚本会自行启动两进程，直接作为文件执行即可，无须再套 `torchrun`。需要 PyTorch 的 Gloo 后端；本次在 Linux、PyTorch `2.13.0+cu130` 下只用 CPU 验证。它逐窗口比较完整梯度和 SGD 更新后的参数，并覆盖三个情况：
+
+| 情况 | 第一个窗口的有效 token | 应采取的行为 |
+| --- | --- | --- |
+| 每个 Rank 的数量不同，且含全 mask micro-batch | Rank 0 为 3，Rank 1 为 2 | 分母为 5，每个 micro-batch 用 `2 × loss_sum / 5` |
+| 一个 Rank 整个窗口都没有有效标签 | Rank 0 为 3，Rank 1 为 0 | 两个 Rank 仍参与相同同步；空 Rank 提供与计算图相连的零梯度 |
+| 所有 Rank 都没有有效标签 | 全局为 0 | 先通过共同的计数得到相同分支，再一起跳过此次优化器更新 |
+
+第一种情况下，正确 DDP 梯度与单进程参考的最大绝对差约 `2.78e-17`；错误地平均两个 Rank 的局部均值，差异约 `0.0880`。这些数字是固定小模型的正确性检查，不是大模型训练收益或 GPU 性能数据。第二个不足两步的窗口也逐参数验证，避免遗漏最后一组更新。
+
+全 mask micro-batch 仍调用模型和反向，并使用 `cross_entropy(..., reduction="sum", ignore_index=-100)`；不要在某一个 Rank 上单独跳过最终同步，也不要对空集合使用没有定义的 token 平均。全局空窗口的“跳过更新”是本例明确选择的训练行为，学习率调度、EMA 和更新计数也应遵守同一约定。[PyTorch CrossEntropyLoss 归约规则](https://docs.pytorch.org/docs/2.8/generated/torch.nn.CrossEntropyLoss.html)
+
+用于 LLM 时，计数必须针对**移位后实际参与预测的标签**，排除 padding、提示区间和其他 `ignore_index`；如果使用类别权重、样本权重或额外辅助损失，分母与组合权重需要按新的目标重新推导。本例提前缓存一个小累积窗口以取得计数，大型训练可以先读取标签元数据，但不能在尚不知道总分母时随意平均各批均值。
+
+若还有梯度裁剪，应先完成累积、默认 DDP 同步和全局目标归一化，再裁剪；使用 AMP 时还要先去除梯度缩放。裁剪是非线性操作，分别裁剪各 Rank 的局部梯度后再平均，通常不等价于裁剪最终全局梯度。
 
 ### 4.5 验证集：补齐样本会改变指标分母
 

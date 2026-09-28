@@ -1,7 +1,7 @@
 ---
 title: "机器人雅可比矩阵：从关节速度到末端速度"
 date: 2026-09-03
-lastmod: 2026-09-10
+lastmod: 2026-09-28
 draft: false
 tags: ["Kinematics", "Jacobian", "Pinocchio", "Python"]
 categories: ["机器人技术"]
@@ -34,13 +34,15 @@ $$
 
 ### 图 1：速度映射的数据流
 
-![关节空间、正运动学、雅可比和任务空间之间的数据流](assets/jacobian-flow.webp)
+<figure class="article-figure">
+  {{< post-image src="assets/jacobian-flow.webp" alt="关节空间、正运动学、雅可比和任务空间之间的数据流" >}}
+  <figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">正向路径计算末端速度，逆向路径根据期望 twist 求关节速度。</span></figcaption>
+</figure>
 
-*图 1　正向路径计算末端速度，逆向路径根据期望 twist 求关节速度。*
-
-![二维机械臂中关节速度、雅可比与末端 twist 的映射示意图](assets/jacobian-mapping.png)
-
-*图 2　把雅可比看成“每个关节影响的集合”：矩阵的每一列对应一个关节。*
+<figure class="article-figure">
+  {{< post-image src="assets/jacobian-mapping.png" alt="二维机械臂中关节速度、雅可比与末端 twist 的映射示意图" >}}
+  <figcaption><span class="article-figure__number">图 2</span><span class="article-figure__text">把雅可比看成“每个关节影响的集合”：矩阵的每一列对应一个关节。</span></figcaption>
+</figure>
 
 这张图也说明了雅可比依赖当前姿态：机器人换了一个 $q$，同一个关节速度通常会产生不同的末端速度。
 
@@ -86,6 +88,8 @@ $$J_i=\begin{bmatrix}z_i\\0\end{bmatrix}.$$
 | `WORLD` | 在世界原点表达空间 twist，含旋转和平移的伴随变换 | 线速度部分不是末端原点的直接速度，不能拿它与末端位置差分直接比较 |
 | `LOCAL_WORLD_ALIGNED` | 速度投影到世界坐标轴，但原点仍在末端 | 初学和笛卡尔控制常用 |
 
+三种约定的变换公式、参考点配图与可运行检查见[第 11.1 节](#reference-point-duality)。
+
 在下文中使用 `LOCAL_WORLD_ALIGNED`，这样线速度和角速度都能直观地用世界坐标轴解释。其向量顺序为 `[vx, vy, vz, wx, wy, wz]`，不要与 `[角速度, 线速度]` 的其他库约定混用。
 
 ### 表 1：一个 6D twist 的分量和单位
@@ -122,9 +126,10 @@ $$
 
 因为 7 个关节要完成 6 个末端任务，系统通常有 1 个冗余自由度：满足同一末端速度的 $\dot q$ 不止一组，这正是零空间避限位、避奇异和优化姿态的来源。注意，“7-DoF”描述的是速度维度 `nv=7`；若模型包含浮动基座或四元数，配置维度 `nq` 可能不是 7。
 
-![7-DoF 机械臂的 6×7 雅可比矩阵维度与行列含义](assets/jacobian-7dof-dimensions.webp)
-
-*图 4　7 个关节对应 7 列，末端的 3 个线速度和 3 个角速度对应 6 行。*
+<figure class="article-figure">
+  {{< post-image src="assets/jacobian-7dof-dimensions.webp" alt="7-DoF 机械臂的 6×7 雅可比矩阵维度与行列含义" >}}
+  <figcaption><span class="article-figure__number">图 3</span><span class="article-figure__text">7 个关节对应 7 列，末端的 3 个线速度和 3 个角速度对应 6 行。</span></figcaption>
+</figure>
 
 #### 把一列数字读成物理量
 
@@ -224,7 +229,7 @@ print("最小奇异值:", singular_values[-1])
 
 对本来能完成六维任务的模型，最小奇异值接近 0 表示某些末端方向接近失去可控性。但 `svd` 只返回 `min(6, nv)` 个奇异值；一个 `6×2` Jacobian 即使两个奇异值都非零，也不能完成任意六维任务。应先选定任务行、比较当前秩与该任务的正常最大秩，再谈奇异性。阻尼抑制速度放大但带来跟踪误差，不等价于显式速度上限。
 
-### 图 3：奇异值与 DLS 的关系
+### 图 4：奇异值与 DLS 的关系 {#图-3奇异值与-dls-的关系}
 
 把 $J$ 做 SVD 后，每个奇异方向的伪逆增益为 $1/\sigma_i$，而 DLS 将其改为
 
@@ -237,9 +242,10 @@ $$
 σ_i 接近 0 ──>  伪逆增益爆炸；DLS 增益趋近 0，牺牲精度换稳定性
 ```
 
-![良好条件与奇异位形下的奇异值和 DLS 增益对比](assets/jacobian-singularity.webp)
-
-*图 3　奇异位形会让最小奇异值塌缩；DLS 用阻尼抑制伪逆增益。*
+<figure class="article-figure">
+  {{< post-image src="assets/jacobian-singularity.webp" alt="良好条件与奇异位形下的奇异值和 DLS 增益对比" >}}
+  <figcaption><span class="article-figure__number">图 4</span><span class="article-figure__text">奇异位形会让最小奇异值塌缩；DLS 用阻尼抑制伪逆增益。</span></figcaption>
+</figure>
 
 阻尼 $\lambda$ 不是越大越好：它越大，求解速度通常越受抑制，但末端跟踪误差也可能更明显；这不等于保证时间上的连续平滑。常见做法是根据最小奇异值或关节速度余量自适应调节阻尼。
 
@@ -403,6 +409,56 @@ J = pin.computeFrameJacobian(model, data, q, frame_id, pin.ReferenceFrame.LOCAL)
 这里的 `error` 在局部坐标系表达，因此应配合 `ReferenceFrame.LOCAL` 的雅可比。若采用 `LOCAL_WORLD_ALIGNED`，误差也必须转换到相同表达方式。**误差、twist 和雅可比的参考系必须一致**，这是位姿 IK 中最容易遗漏的条件之一。
 
 `gain * error` 是局部速度反馈示例，不是把 `log6` 残差的精确导数直接等同于几何 Jacobian。对该残差做 Gauss–Newton 等优化时，要进一步考虑 `Jlog6`；可对照 [Pinocchio 的 Jlog6 定义](https://docs.ros.org/en/ros2_packages/jazzy/api/pinocchio/generated/function_namespacepinocchio_1ab17df97cd3cbec6801112c074a8b5377.html)。
+
+### 11.1 只旋转坐标轴，与移动参考点是两种操作 {#reference-point-duality}
+
+设工具位姿为 $T=(R,p)$，$p$ 是世界原点 $O$ 指向工具原点 $P$ 的向量，$[p]_\times u=p\times u$。仍按 `[线速度; 角速度]` 排列：
+
+$$
+J_{LWA}=\begin{bmatrix}R&0\\0&R\end{bmatrix}J_L,
+\qquad
+J_W=\begin{bmatrix}R&[p]_\times R\\0&R\end{bmatrix}J_L.
+$$
+
+第一个式子只旋转表达坐标轴；第二个式子还移动了速度的参考点。因此
+
+$$v_W=v_P+p\times\omega,\qquad v_P=\dot p.$$
+
+这里 $v_W$ 是刚体速度场在世界原点处的空间速度分量，**不是固定世界坐标系自身在运动**。直接拿 `WORLD` 前三行与工具位置的差分比较，会把约定差异误判为算法错误。三种约定的参考点和基底可以对照 [Pinocchio 4.1.0 的定义](https://github.com/stack-of-tasks/pinocchio/blob/v4.1.0/include/pinocchio/src/multibody/fwd.hxx#L44-L59)。
+
+<figure class="article-figure" id="fig-reference-points">
+  {{< post-image src="assets/reference-points.webp" alt="相同机械臂姿态下，LOCAL 在工具点使用工具轴，LOCAL WORLD ALIGNED 在工具点使用世界轴，WORLD 在世界原点使用世界轴" >}}
+  <figcaption><span class="article-figure__number">图 5</span><span class="article-figure__text">左到中只换坐标轴；中到右还换参考点。箭头表示同一运动的表示变换，机械臂并没有因此换姿态。</span></figcaption>
+</figure>
+
+wrench 必须做与速度相配的对偶变换。令世界轴表达的工具点 wrench 为 $F_P=[f;\mu_P]$，那么世界原点处的力矩为
+
+$$\mu_O=\mu_P+p\times f,\qquad F_O=[f;\mu_O].$$
+
+只有配对正确，才有 $J_{LWA}^TF_P=J_W^TF_O$，以及 $F^T\xi=\tau^T\dot q$ 的功率一致性。纯力作用在工具点时，关于世界原点通常仍有力矩；把后三项一直填零会改变物理含义。
+
+#### 一个不依赖 URDF 的交叉检查
+
+下载 [frame_conventions.py](frame_conventions.py)，在装有 NumPy 与 `pin` 的环境执行：
+
+```bash
+python -B frame_conventions.py --output frame-conventions.json
+```
+
+脚本使用 Pinocchio 内置六轴模型，并额外添加有旋转和位移的固定工具 frame。固定输入及版本见[结果记录](assets/frame-conventions.json)。在 Pinocchio 4.1.0 下：
+
+| 检查 | 本例结果 |
+| --- | ---: |
+| LWA 六维 Jacobian 与独立 FK 中心差分的最大元素误差 | $1.61\times10^{-10}$ |
+| 错用 WORLD 线速度块与位置导数比较的最大元素差异 | 约 1.573 |
+| 三种正确配对表示下的功率 | 均约 0.635029 W |
+| WORLD Jacobian 配上未移矩的工具 wrench，关节力矩向量误差范数 | 约 15.468 N·m |
+| $-J_{log6}(E^{-1})J_L$ 与 SE(3) 残差差分的最大元素误差 | $1.89\times10^{-10}$ |
+| 用 $-J_L$ 直接代替该残差导数的最大元素差异 | 约 0.925 |
+
+Jacobian 的平移块与旋转块单位不同，表中的最大元素误差用于核对实现，不能作为跨模型的综合精度指标。最后两项使用有明显旋转误差的目标，且避开旋转角为 $\pi$ 的对数分支切口；靠近目标时二者可能很接近，不能因此省掉大误差优化中的 `Jlog6`。这也连接了[数值 IK 中的残差选择]({{< relref "/posts/robotics/kinematics/pinocchio" >}})。
+
+固定工具偏置也会改变 Jacobian 的线速度块：若世界轴下法兰到工具的向量为 $r$，则 $v_{tool}=v_{flange}+\omega\times r$。脚本同时验证这个关系、工具力矩向法兰移矩，以及只平移世界原点后关节力矩保持不变。以上均是合成模型的代数与差分检查，不代表实机几何或力传感器已校准。
 
 ## 12. 7-DoF 的零空间控制
 

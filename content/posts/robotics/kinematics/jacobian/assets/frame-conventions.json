@@ -1,0 +1,87 @@
+{
+  "pinocchio": "4.1.0",
+  "numpy": "2.2.6",
+  "nq": 6,
+  "nv": 6,
+  "q_rad": [
+    0.35,
+    -0.45,
+    0.6,
+    -0.7,
+    0.4,
+    0.25
+  ],
+  "qdot_rad_s": [
+    0.2,
+    -0.1,
+    0.15,
+    0.3,
+    -0.25,
+    0.12
+  ],
+  "tool_offset_m": [
+    0.12,
+    -0.05,
+    0.18
+  ],
+  "tool_position_world_m": [
+    -1.2403589834839617,
+    -0.933969829413755,
+    1.3330904767177678
+  ],
+  "twists_linear_then_angular": {
+    "LOCAL": [
+      -0.05052853587513795,
+      -0.08262990997344262,
+      0.1815972412411253,
+      -0.06318454315292191,
+      0.2287314213711821,
+      -0.12435954754263463
+    ],
+    "LOCAL_WORLD_ALIGNED": [
+      0.015315220827806276,
+      -0.20383293746570352,
+      0.023999387521141023,
+      -0.18393747473114563,
+      0.16114991754361235,
+      -0.10942283192345939
+    ],
+    "WORLD": [
+      -0.09731457590791365,
+      -0.5847618259158274,
+      -0.3476764122892233,
+      -0.18393747473114563,
+      0.16114991754361235,
+      -0.10942283192345939
+    ]
+  },
+  "aligned_jacobian_finite_difference_max_error": 1.605543475946547e-10,
+  "world_linear_block_vs_position_derivative_max_difference": 1.5725250241960254,
+  "tool_vs_flange_linear_jacobian_max_difference": 0.21464733875140274,
+  "joint_torque_Nm": [
+    2.331331771325795,
+    9.905300062358332,
+    3.1657138120601935,
+    3.037398519249065,
+    0.961487415471307,
+    0.11323343939785292
+  ],
+  "power_W_in_three_conventions": [
+    0.6350291344729896,
+    0.6350291344729895,
+    0.635029134472989
+  ],
+  "wrong_unshifted_wrench_torque_error_Nm": 15.467665624962555,
+  "log_residual_jacobian_max_error": 1.8904824927723496e-10,
+  "naive_negative_geometric_jacobian_max_error": 0.9250176260750953,
+  "checks": [
+    "rotation versus adjoint",
+    "FK finite differences",
+    "fixed tool offset",
+    "wrench moment shift",
+    "joint power",
+    "translated world origin",
+    "Jlog6 derivative"
+  ],
+  "scope": "Fixed synthetic configuration, no robot data; log derivative tested away from the pi branch cut."
+}

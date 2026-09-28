@@ -1,17 +1,17 @@
 ---
-title: pytorch 机械臂逆运动学迭代数值解
+title: "PyTorch 机械臂逆运动学：批量求解与可微 FK 验证"
 date: 2025-02-26
-lastmod: 2026-09-10
+lastmod: 2026-09-28
 draft: false
 tags: ["Kinematics", "PyTorch", "Inverse Kinematics"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "用 pytorch_kinematics 构建独立 FK–IK–FK 检查，明确批量维度、关节顺序、重试筛选、坐标转换和可微边界。"
+summary: "用 pytorch_kinematics 验证 FK–IK–FK、Jacobian 与自动微分，区分批量重试筛选、坐标转换、一阶梯度和高阶导数。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
-description: "用 pytorch_kinematics 构建独立 FK–IK–FK 检查，明确批量维度、关节顺序、重试筛选、坐标转换和可微边界。"
+description: "用 pytorch_kinematics 验证 FK–IK–FK、Jacobian 与自动微分，区分批量重试筛选、坐标转换、一阶梯度和高阶导数。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "PyTorch 张量与机器人 FK"
 reading_focus: "先在 CPU 上验证已知可达目标，筛出收敛且合法的重试后再比较性能。"
@@ -23,7 +23,7 @@ math: true
 
 ## 先用小接口验证模型，再封装求解器
 
-[pytorch_kinematics](https://github.com/UM-ARM-Lab/pytorch_kinematics) 提供基于 PyTorch 的 FK、Jacobian 与批量迭代 IK。原笔记中的大封装依赖未提供的基类和成员变量，不能直接运行；这里改成独立的 FK → IK → FK 检查脚本。
+[pytorch_kinematics](https://github.com/UM-ARM-Lab/pytorch_kinematics) 提供基于 PyTorch 的 FK、Jacobian 与批量迭代 IK。先用独立的 FK → IK → FK 检查脚本核对模型、关节顺序与返回维度，再接入项目中的求解器封装。
 
 适用范围是具有明确关节限位的串联链。自由浮动基座、mimic 关节、连续关节周期选择、碰撞以及工具偏置需要额外建模，不能自动等同于“任意 URDF 都能解”。
 
@@ -40,7 +40,7 @@ math: true
 
 ## 完整检查脚本
 
-在已安装匹配 PyTorch 和 `pytorch-kinematics` 的环境中保存为 `check_ik.py`，执行 `python check_ik.py robot.urdf end_link`。目标由同一模型的 FK 生成，只验证接口闭环，不证明真实机器人的标定精度。
+在已安装匹配 PyTorch 和 `pytorch-kinematics` 的环境中，下载 [check_ik.py](check_ik.py)（与下面代码一致），执行 `python check_ik.py robot.urdf end_link`。目标由同一模型的 FK 生成，只验证接口闭环，不证明真实机器人的标定精度。
 
 暂时没有机器人模型时，可下载本文的 [二连杆测试 URDF](planar2r.urdf)，与脚本放在同一目录后执行 `python check_ik.py planar2r.urdf tip`。模型包含两个有界旋转关节和一个固定工具变换，不依赖网格文件；关节名称应打印为 `shoulder`、`elbow`。这是运动学测试夹具，不是带惯量和碰撞模型的仿真机器人。
 
@@ -130,6 +130,53 @@ $$
 ## 可微与性能的边界
 
 FK 支持自动微分，不意味着任意带重试、早停、候选选择和裁剪的 IK 调用都是端到端可微映射。训练时需明确梯度经过哪些操作，避免 `detach`、转 NumPy 或重建 tensor 意外断开计算图。
+
+### 一阶梯度、高阶导数和求解器梯度分别检查 {#fk-gradient-contract}
+
+对末端位置 $p=f(q)$，位置 Jacobian 是 $J_p=\partial p/\partial q$。若损失为
+$L=\tfrac12\|p-p_*\|^2$，则：
+
+$$
+\nabla_qL=J_p^T(p-p_*),\qquad
+\nabla_q^2L=J_p^TJ_p+\sum_i(p_i-p_{*,i})\nabla_q^2p_i.
+$$
+
+一阶反向传播返回损失对关节的梯度，不会自动给出整个 Jacobian；高阶导数还包含 Jacobian 随关节变化的贡献。忽略后一项得到的是该最小二乘目标的 Gauss–Newton 近似，不是一般情况下的精确 Hessian。
+
+在本文核对的 **pytorch-kinematics 0.10.0** 中，张量 FK 接口默认使用解析 backward 计算关节一阶梯度。上游明确将高阶导数列为标准 autograd 路径的使用场景；应通过 `forward_kinematics_tensor(..., analytical_grad=False)` 显式选择，不能只在外层添加 `create_graph=True` 就假定所有自定义 backward 都支持二阶求导。[v0.10.0 的实现与接口说明](https://github.com/UM-ARM-Lab/pytorch_kinematics/blob/v0.10.0/src/pytorch_kinematics/chain.py)
+
+对本文没有额外分支关节的二连杆模型，下面可接在前面的 chain 初始化后。张量接口返回 `(frame 数, B, 4, 4)`，frame 维在最前面：
+
+```python
+tip_index = int(chain.get_frame_indices("tip").item())
+q = torch.tensor([0.4, -0.7], dtype=dtype, device=device, requires_grad=True)
+desired = torch.tensor([0.9, 0.3, 0.0], dtype=dtype, device=device)
+
+def position_loss(joints):
+    transforms = chain.forward_kinematics_tensor(
+        joints.unsqueeze(0), analytical_grad=False
+    )
+    position = transforms[tip_index, 0, :3, 3]
+    return 0.5 * ((position - desired) ** 2).sum()
+
+hessian = torch.autograd.functional.hessian(position_loss, q)
+print("loss Hessian:", hessian)
+```
+
+这里固定使用 `tip` 和两维关节向量，适用于随文 URDF；换为其他机器人时，需要同步修改 frame、关节维度与目标，不能直接追加到任意 `end_link` 的示例上。
+
+[gradient_check.py](gradient_check.py) 将接口结果与独立的二连杆解析公式、中心差分相比较，并运行一阶 `gradcheck`、标准路径的 `gradgradcheck`。把它与 [planar2r.urdf](planar2r.urdf) 放在一起，执行 `python gradient_check.py`。在 PyTorch 2.13.0、pytorch-kinematics 0.10.0、CPU FP64 的本次运行中：
+
+| 检查 | 结果 |
+| --- | --- |
+| 4 个构型的几何 Jacobian 与 FK 中心差分 | 最大差约 $1.48\times10^{-10}$ |
+| 默认解析 backward 与标准 autograd 的位置梯度 | 在 $10^{-12}$ 容差内一致 |
+| 标准路径的损失 Hessian 与解析公式 | 最大差约 $2.97\times10^{-8}$ |
+| 一阶与二阶数值梯度检查 | 均通过 |
+
+[结果文件](assets/gradient-results.json)包含构型、版本和误差。解析十进制连杆长度与库内模型之间约 $10^{-8}$ 的差异，来自这个版本的 URDF 变换先以 FP32 建立、再转换为 FP64 的舍入；`.to(dtype=torch.float64)` 不会恢复之前已丢失的位数。比较模型导数时，应区分**同一数值模型的微分误差**与**导入模型参数的表示误差**。
+
+这些检查只覆盖 FK 对关节变量的导数；它们没有验证 IK 的重试选择可微，也没有验证 URDF 标定参数的梯度。后者还需要确认待优化参数确实进入计算图，以及模型内部缓存是否随参数更新。
 
 GPU 优势取决于 batch 大小、迭代次数与数据传输。计时时区分首次初始化、预热和稳定执行；CUDA 异步执行还需同步后计时。失败目标、奇异附近目标和实际控制周期都应单独测试。
 

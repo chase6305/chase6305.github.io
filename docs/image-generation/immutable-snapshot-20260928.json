@@ -1,0 +1,13 @@
+{
+  "date": "2026-09-28",
+  "method": "built-in image_gen",
+  "prompt": "docs/image-generation/immutable-snapshot-20260928-prompt.txt",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-660cbb92-cb12-438c-b96f-a5de4cebafa8.png",
+  "asset": "content/posts/cpp/smart-pointer/assets/immutable-snapshot.webp",
+  "dimensions": [
+    1942,
+    809
+  ],
+  "sha256": "36935afd0af19abde0166746d3358e47811dbd7719539ff318714addf08cdcce",
+  "review": "All arrows inspected: panel 1 two handles own A; panel 2 atomic handle owns B while reader still owns A; panel 3 only B remains owned. A destruction follows final strong-owner release; no claim of lock-free or hard-real-time behavior."
+}

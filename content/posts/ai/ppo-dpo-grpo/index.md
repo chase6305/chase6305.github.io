@@ -1,7 +1,7 @@
 ---
 title: "PPO、DPO 与 GRPO 详解：从策略梯度原子模块到可运行 Python 实验"
 date: 2026-09-08
-lastmod: 2026-09-08
+lastmod: 2026-09-28
 draft: false
 tags: ["Reinforcement Learning", "PPO", "DPO", "GRPO", "RLHF", "PyTorch"]
 categories: ["人工智能"]
@@ -48,6 +48,7 @@ related_posts:
 | [rl_lab.py](rl_lab.py) | 原子函数与 PPO/DPO/GRPO 一步训练循环 |
 | [ppo_chain.py](ppo_chain.py) | 两步决策树 PPO：完整轨迹、GAE 与价值回归 |
 | [token_objectives.py](token_objectives.py) | 变长回答、EOS/PAD、DPO/GRPO 序列目标与一次更新 |
+| [kl_gradient_check.py](kl_gradient_check.py) | 枚举动作空间，核对 KL 数值、停止梯度与重要性权重 |
 | [test_rl_lab.py](test_rl_lab.py) | 梯度方向、GAE、mask、重现性与训练测试 |
 | [requirements.txt](requirements.txt) | 核心依赖：PyTorch 2.8.0 |
 | [plot_results.py](plot_results.py) | 从 CSV 绘图，单独依赖 Matplotlib |
@@ -272,6 +273,50 @@ k_3=\exp(\ell)-\ell-1\geq0.
 $$
 
 当 $a\sim\pi_\theta$ 且支持集满足要求时，其期望等于上述正向 KL。若样本来自固定的 $\pi_{\mathrm{old}}$，这个等式不能不加条件地沿用；离散采样的期望与对固定样本直接求导，也不是同一个操作。本文训练实验使用**精确分类 KL**，没有把该采样表达式冒充精确 KL 梯度。[DeepSeekMath 的 KL 项](https://arxiv.org/html/2402.03300v3#S4.SS1.SSS1)
+
+#### 同一个 KL 数值，梯度为什么不同 {#kl-value-gradient}
+
+把上下文固定，动作概率记为 $p_\theta(a)$，参考概率记为 $q(a)$。对于依赖参数的单样本函数 $f_\theta$：
+
+$$
+\nabla_\theta\mathbb E_{a\sim p_\theta}[f_\theta(a)]
+=\mathbb E_{a\sim p_\theta}\!\left[
+\nabla_\theta f_\theta(a)+f_\theta(a)\nabla_\theta\log p_\theta(a)
+\right].
+$$
+
+第二项来自采样分布自身的变化。普通离散采样不会把这个项自动传回参数；对固定动作直接反传 $k_3$，只计算了第一项。
+
+为了排除抽样噪声，取只有三个动作的分类分布，完整求和：
+
+$$p=[0.79,0.11,0.10],\qquad q=[0.50,0.10,0.40].$$
+
+令 $z$ 是 softmax 前的 logits。以下两种表达式在该参数点都给出约 **0.233220 nats**，但求导不同：
+
+| 计算图 | 对三个 logits 的梯度 |
+| --- | --- |
+| $\sum_a p_\theta(a)\log[p_\theta(a)/q(a)]$ | $[0.177122,-0.015170,-0.161951]$ |
+| $\sum_a\operatorname{stopgrad}(p_\theta(a))\,k_3(a)$ | $[0.29,0.01,-0.30]$ |
+
+第二个分量甚至符号相反；这里比较的是损失的导数，梯度下降的参数更新方向还要取负号。对这个枚举算例，后一种梯度恰好等于 $p-q$，即 $D_{KL}(q\Vert p_\theta)$ 对 logits 的梯度，但它的前向数值并不是反向 KL。**不能从打印出来的标量值，推断实际优化的是哪一条计算图。**
+
+<figure class="article-figure" id="fig-kl-gradients">
+  {{< post-image src="assets/kl-gradients.png" alt="三个动作的枚举算例中，精确正向 KL 与固定采样权重的 k3 有相同数值，但对第二个 logit 的导数符号相反" >}}
+  <figcaption><span class="article-figure__number">图 1a</span><span class="article-figure__text">固定上下文、三动作分布的精确计算。差异来自停止梯度的位置，图中没有 Monte Carlo 误差，也没有包含其他策略损失。</span></figcaption>
+</figure>
+
+若保留 $\sum_a p_\theta(a)k_3(a)$ 中权重的梯度，完整枚举会恢复精确正向 KL 梯度。样本来自固定 $p_{old}$ 时，在支持集覆盖所需动作的条件下，可写出值的恒等式：
+
+$$
+\mathbb E_{p_{old}}\!\left[\frac{p_\theta(a)}{p_{old}(a)}k_3(a)\right]
+=D_{KL}(p_\theta\Vert q).
+$$
+
+要沿这条恒等式得到完整梯度，重要性权重也必须参与求导。有限样本时仍存在方差，裁剪权重会进一步改变目标；这并不是建议给所有 PPO／GRPO 实现机械地添加一个比率。实际算法可能有意采用固定 rollout 的 surrogate，应分别写清目标、采样分布和停止梯度约定。
+
+[kl_gradient_check.py](kl_gradient_check.py) 枚举上述分布，检查解析梯度、中心差分、score-function 两项之和，以及可微重要性权重；它还展示直接改用 old 分布求平均时，连数值也会从 0.233220 变成约 0.826240。[完整结果](assets/kl-gradient-results.json)记录版本和每项梯度。运行 `python kl_gradient_check.py` 只需 PyTorch；绘图另需 Matplotlib，并加 `--figure kl-gradients.png`。
+
+该实验固定上下文，没有处理语言模型前缀／状态分布随策略变化的问题，也没有复现完整 GRPO 训练。它补充验证的是第 3.6 节的值与梯度区别，原有训练实验仍使用可完整求和的分类 KL。
 
 ## 4. PPO：用 critic 与受限 surrogate 迭代改进 {#ppo}
 

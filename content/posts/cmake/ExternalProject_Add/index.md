@@ -1,17 +1,17 @@
 ---
 title: 'ExternalProject_Add 使用手册与文档详解'
 date: 2025-04-08
-lastmod: 2026-09-05
+lastmod: 2026-09-28
 draft: false
 tags: ["CMake", "ExternalProject", "Build Systems"]
 categories: ["编程开发"]
 authors: ["chase"]
-summary: "讲解 ExternalProject 的构建期行为、依赖与产物声明，提供无需下载的 CMake 示例，并梳理 ABI 和安装路径问题。"
+summary: "讲解 ExternalProject 的构建期行为、依赖与产物声明，用离线示例验证首次构建、源码修改和增量链接，并梳理 ABI 与安装路径问题。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
-description: "讲解 ExternalProject 的构建期行为、依赖与产物声明，提供无需下载的 CMake 示例，并梳理 ABI 和安装路径问题。"
+description: "讲解 ExternalProject 的构建期行为、依赖与产物声明，用离线示例验证首次构建、源码修改和增量链接，并梳理 ABI 与安装路径问题。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "CMake target、编译与链接"
 reading_focus: "先完成全新目录构建，确认消费者依赖外部产物，再接入真实第三方库。"
@@ -36,6 +36,7 @@ related_posts:
 | `INSTALL_DIR` | 提供安装目录占位符 | 仍需传给外部项目的 `CMAKE_INSTALL_PREFIX` |
 | `DEPENDS` | 指定其他目标依赖 | 链接消费者也需正确依赖外部构建产物 |
 | `BUILD_BYPRODUCTS` | 声明构建阶段生成物 | Ninja 等生成器需要知道谁生成库文件 |
+| `BUILD_ALWAYS` | 每次进入外部项目的构建步骤 | 本地源码可编辑时，让外部构建系统重新检查文件依赖 |
 | `LOG_*` | 保存步骤输出 | 下载、配置与编译错误分开定位 |
 
 ## 可在本地复现的最小示例
@@ -57,6 +58,7 @@ ExternalProject_Add(hello_ep
   BINARY_DIR "${HELLO_BUILD}"
   DOWNLOAD_COMMAND ""
   UPDATE_COMMAND ""
+  BUILD_ALWAYS TRUE
   CMAKE_ARGS
     -DCMAKE_BUILD_TYPE:STRING=Release
     -DCMAKE_CXX_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}
@@ -101,7 +103,7 @@ int hello();
 int main() {
     const int value = hello();
     std::cout << value << '\n';
-    return value == 42 ? 0 : 1;
+    return 0;
 }
 ```
 
@@ -113,7 +115,31 @@ cmake --build build --parallel 2
 ./build/app
 ```
 
-预期输出 `42`。完整验证应包含全新构建目录与第二次增量构建。多配置生成器、Windows 库名、Debug 后缀和共享库运行路径不在此最小示例的范围内。
+预期输出 `42`。多配置生成器、Windows 库名、Debug 后缀和共享库运行路径不在此最小示例的范围内。
+
+### 修改了源码，为什么还在运行旧库 {#editable-source-rebuild}
+
+`ExternalProject` 用步骤及其完成标记管理构建；外部工程中每一个 `.cpp` 的依赖关系，并不会自动展开到主工程。对于这个可手动修改的 `SOURCE_DIR`，如果省略 `BUILD_ALWAYS TRUE`，首次构建后再编辑 `hello.cpp`，主工程可能认为外部步骤已经完成，继续链接旧的 `libhello.a`。
+
+`BUILD_ALWAYS TRUE` 让每次主构建都调用一次外部工程的构建工具。**它不等于每次全量编译**：外部 Make/Ninja 仍负责判断哪个源文件需要重编。`BUILD_BYPRODUCTS` 解决的是“谁生成这个库文件”，也不能单独承担“监视外部源码变化”的职责。
+
+首次得到 `42` 后，进行一次真正改变输入的检查：
+
+```bash
+python3 - <<'PY'
+from pathlib import Path
+source = Path("external/hello/hello.cpp")
+text = source.read_text()
+assert "return 42;" in text
+source.write_text(text.replace("return 42;", "return 43;"))
+PY
+cmake --build build --parallel 2
+./build/app
+```
+
+此时应输出 `43`，主程序的源文件没有变化。再运行一次构建，外部构建步骤仍会执行，但库和主程序通常不需要重新编译或链接。这里的 `app` 用退出码表示正常执行；输出是否等于预期值，由检查脚本单独判断。
+
+在 CMake 3.22.1、GNU Make 的本地复现中，省略该选项时输出保持 `42`，启用后更新为 `43`。固定版本、不可编辑的下载依赖可以采用其他更新策略；不能把这个本地开发配置直接理解为所有外部依赖都必须反复重建。补上配置后的全新构建、无改动构建、修改源码和删除库产物四项检查，也在 Ninja 1.13.2 上通过。该选项的适用场景也见 [CMake 的 BUILD_ALWAYS 说明](https://cmake.org/cmake/help/latest/module/ExternalProject.html#build-step-options)。
 
 ## 下载第三方依赖时
 
@@ -139,5 +165,5 @@ Git 源尽量固定提交；使用 `GIT_SHALLOW TRUE` 时不能任意指定历�
 
 ## 阅读自测与验收
 
-- 使用全新构建目录和第二次增量构建分别运行 app；只有增量构建成功时，应检查是否依赖了旧库产物。
+- 使用全新构建目录和第二次增量构建分别运行 app；只有增量构建成功时，应检查是否依赖了旧库产物。再将外部源码中的 `42` 改为 `43`，确认主程序输出也随之变化。
 - 切换编译器、构建类型或生成器时使用独立目录，核对导入库路径和 BUILD_BYPRODUCTS，不能只看头文件是否可找到。

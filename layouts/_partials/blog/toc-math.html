@@ -1,0 +1,13 @@
+{{- /* The heading render hook has parsed escaping, code and math already.
+  Replace only native TOC labels whose headings contain rendered KaTeX. */ -}}
+{{- $html := string .html -}}
+{{- $titles := .page.Store.Get "blogTocMathTitles" | default dict -}}
+{{- range findRESubmatch `<a href="([^"]+)">([\s\S]*?)</a>` $html -}}
+  {{- $original := index . 0 -}}
+  {{- $href := index . 1 -}}
+  {{- $id := (urls.Parse ($href | htmlUnescape)).Fragment -}}
+  {{- with index $titles $id -}}
+    {{- $html = replace $html $original (printf `<a href="%s">%s</a>` $href .) -}}
+  {{- end -}}
+{{- end -}}
+{{- return ($html | safeHTML) -}}

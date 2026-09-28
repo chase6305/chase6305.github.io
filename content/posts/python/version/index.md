@@ -1,7 +1,7 @@
 ---
-title: 'Ubuntu切换默认python版本'
+title: 'Ubuntu 为项目选择 Python 版本：venv、Conda 与解释器排查'
 date: 2025-03-13
-lastmod: 2026-09-05
+lastmod: 2026-09-28
 draft: false
 tags: ["Python", "Ubuntu", "Environment Management"]
 categories: ["编程开发"]
@@ -73,6 +73,28 @@ python -m pip check
 ```
 
 `venv` 使用 `deactivate` 退出，Conda 使用 `conda deactivate` 退出。检查实际解释器和依赖是否一致，比仅观察命令提示符更可靠。
+
+## 6. 已安装却导入失败：沿四个入口排查
+
+同样显示 Python 3.10，不代表两个进程共享同一套包。把解释器、包安装目标、模块来源和实际接口分开检查，通常比反复重装更快。
+
+```bash
+python -c "import sys; print('executable:', sys.executable); print('prefix:', sys.prefix); print('base_prefix:', sys.base_prefix)"
+python -m pip --version
+python -c "import importlib.util; s=importlib.util.find_spec('numpy'); print(None if s is None else s.origin)"
+python -c "import numpy; print(numpy.__version__); print(numpy.__file__)"
+```
+
+这里用 NumPy 作例子；更换为正在排查的顶层模块名即可。第三条定位导入目标，第四条才真正加载模块，因而还能暴露共享库或二进制兼容问题。[`find_spec` 文档](https://docs.python.org/3/library/importlib.html#importlib.util.find_spec)也说明：查询带点的子模块名时可能先导入父包，因此不要把它当作适用于所有名称的“绝不执行代码”检查。
+
+| 现象 | 优先看什么 | 典型处理 |
+| --- | --- | --- |
+| `ModuleNotFoundError` | 当前解释器与 `python -m pip` 的路径 | 在实际运行环境安装，而不是另一个同版本环境 |
+| 模块来源指向项目里的 `numpy.py` 或 `cv2.py` | 文件名遮蔽 | 重命名自己的冲突模块，再重启 Python 进程 |
+| `ImportError` / 缺少 `.so` / 未定义符号 | 实际模块文件、包版本与动态库依赖 | 在独立环境复现，定位二进制依赖，不先改系统软链接 |
+| 导入成功但缺少某个函数 | `__version__`、`__file__`、`hasattr` | 核对该发行包的接口，版本号本身不能证明功能存在 |
+
+`sys.prefix != sys.base_prefix` 可用于识别普通 `venv`，但不能据此否定一个 Conda 环境；两者的管理机制不同。`pip check` 也只检查声明的包依赖，无法保证所有动态库都能加载或每个 API 都存在。手眼标定中的 [OpenCV 接口检查]({{< relref "/posts/calibration/model" >}})给出了后一种情况的具体例子。
 
 
 ## 阅读自测与验收

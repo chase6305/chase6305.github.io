@@ -1,0 +1,11 @@
+Use case: infographic-diagram.
+Asset type: C++ ownership diagram for a robotics programming blog.
+Create a polished wide 3-panel diagram on white background, thin rounded outlines, pastel blue/purple/green/orange fills, generous whitespace, navy sans-serif text. Minimal flat vector-like technical illustration, readable labels, no decorative characters or logos.
+Title: "Publish a new snapshot; keep the reader's copy alive".
+Three clearly separated panels from left to right, numbered 1, 2, 3 with short headings.
+Panel 1 heading "Reader holds A". Two small boxes at top: "Atomic handle" on left, "Reader handle" on right. One immutable document below labeled "Snapshot A". Solid ownership arrows from BOTH handles down to Snapshot A. Small footer "Two strong owners".
+Panel 2 heading "Publish B". Top boxes exactly "Atomic handle" and "Reader handle". At bottom, two separate immutable document objects: blue "Snapshot B" under Atomic handle and purple "Snapshot A" under Reader handle. Solid arrow ONLY from Atomic handle to B, solid arrow ONLY from Reader handle to A. No cross arrows. Footer "A remains readable".
+Panel 3 heading "Reader releases A". Top boxes "Atomic handle" and "Reader handle: empty". Bottom blue document "Snapshot B" with ownership arrow from Atomic handle, and a faded grey dashed outline labeled "A destroyed". No arrow to A from any handle. Footer "Last strong owner released".
+Place modest rightward transition arrows BETWEEN panels outside their borders, with labels "store(B)" then "release A".
+Global bottom note: "Objects are immutable. Atomic shared_ptr does not promise lock-free or real-time execution."
+Accuracy constraints: ownership arrows represent strong ownership; the old snapshot A must persist in panel 2; only its final owner release destroys A in panel 3. No reference to memory being reused while a reader holds A. Keep panel 3's atomic handle pointing to B, never to A. All exact labels in English.

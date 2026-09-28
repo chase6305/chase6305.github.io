@@ -9,6 +9,7 @@ const base = process.argv[2] || "http://127.0.0.1:13139";
 const port = process.argv[3] || "9229";
 const output = process.argv[4] || "/tmp/chase-blog-browser";
 const root = path.resolve(__dirname, "..");
+const topics = JSON.parse(fs.readFileSync(path.join(root, "data/blog_topics.json")));
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 let browserSocket;
 
@@ -71,6 +72,7 @@ let browserSocket;
     fs.writeFileSync(path.join(output, name + ".png"), Buffer.from(data, "base64"));
   };
   await cdp("Page.enable");
+  await cdp("Page.bringToFront");
   await cdp("Page.navigate", {url: "about:blank"});
   await sleep(200);
   await cdp("Runtime.enable");
@@ -90,15 +92,23 @@ let browserSocket;
         const node = walker.currentNode;
         if (!node.parentElement.closest('pre, code, .katex') && node.textContent.includes('$$')) rawMath.push(node.textContent.slice(0, 100));
       }
+      const tocMathErrors = [];
+      for (const link of document.querySelectorAll('.hextra-toc a[href^="#"], .blog-mobile-toc a[href^="#"]')) {
+        const target = document.getElementById(decodeURIComponent(link.getAttribute('href').slice(1)));
+        const heading = target?.closest('h1,h2,h3,h4,h5,h6');
+        if (heading && heading.querySelectorAll('.katex').length !== link.querySelectorAll('.katex').length) {
+          tocMathErrors.push(link.getAttribute('href'));
+        }
+      }
       const mathAccessibilityErrors = [...content.querySelectorAll('.katex-display')].filter(formula => {
         if (!formula.clientWidth) return false;
         const overflow = formula.scrollWidth > formula.clientWidth + 1;
         const description = document.getElementById(formula.getAttribute('aria-describedby'));
         return overflow ? formula.tabIndex !== 0 || !description || description.hidden : formula.hasAttribute('tabindex');
       }).map(formula => formula.textContent.slice(0, 100));
-      return {rawMath, mathAccessibilityErrors};
+      return {rawMath, tocMathErrors, mathAccessibilityErrors};
     })()`);
-    const editorial = await evaluate("(() => { const toc=document.querySelector('.blog-mobile-toc'); const node=document.querySelector('script[type=\"application/ld+json\"]'); const schema=node ? JSON.parse(node.textContent) : null; return {mobileToc: !!toc && getComputedStyle(toc).display !== 'none', selfCheck: Array.from(document.querySelectorAll('.content h2')).some(h => h.textContent.trim().startsWith('阅读自测与验收')), schemaValid: schema?.['@type'] === 'BlogPosting' && schema.inLanguage === 'zh-CN' && !!schema.author?.length && !!schema.dateModified}; })()");
+    const editorial = await evaluate("(() => { const toc=document.querySelector('.blog-mobile-toc'); const node=document.querySelector('script[type=\"application/ld+json\"]'); const schema=node ? JSON.parse(node.textContent) : null; return {mobileToc: !!toc && getComputedStyle(toc).display !== 'none', selfCheck: Array.from(document.querySelectorAll('.content h2')).some(h => h.textContent.trim().startsWith('阅读自测与验收')), schemaValid: schema?.['@type'] === 'BlogPosting' && schema.inLanguage === 'zh-CN' && !!schema.author?.length && !!schema.dateModified, captionOverflow: Array.from(document.querySelectorAll('.article-figure > figcaption')).filter(e => e.scrollWidth > e.clientWidth + 1).map(e => e.textContent.trim().slice(0,80))}; })()");
     const topic = await evaluate("(() => {const nav=document.querySelector('.blog-topic-nav'); return {topicNavigation:!!nav, topicLinks:nav ? Array.from(nav.querySelectorAll('a')).map(a=>a.getAttribute('href')) : []};})()");
     await viewport(1440, 1000);
     await sleep(30);
@@ -175,9 +185,9 @@ let browserSocket;
   await evaluate("document.querySelector('.hextra-hamburger-menu').click()");
   await navigate("/learning-paths/");
   const learningPaths = await evaluate("({groups:document.querySelectorAll('.blog-topic-index section').length, articles:document.querySelectorAll('.blog-topic-index section ol a').length, jumpLinks:document.querySelectorAll('.blog-topic-index__jump a').length, overflow:document.documentElement.scrollWidth > innerWidth + 1})");
-  assert.equal(learningPaths.groups, 10);
+  assert.equal(learningPaths.groups, topics.length);
   assert.equal(learningPaths.articles, review.posts.length);
-  assert.equal(learningPaths.jumpLinks, 10);
+  assert.equal(learningPaths.jumpLinks, topics.length);
   assert(!learningPaths.overflow);
   await screenshot("mobile-learning-paths");
   await viewport(1440, 1000);
@@ -258,8 +268,8 @@ let browserSocket;
   fs.writeFileSync(path.join(output, "results.json"), JSON.stringify(report, null, 2));
   console.log(JSON.stringify({checked:results.length, zoom, mobileMenu:menu,
     exceptions, newArticleLayouts: newArticleLayouts.length, failures:results.filter(r=>r.overflow || r.brokenImages.length ||
-      r.mathErrors.length || r.rawMath.length || r.mathAccessibilityErrors.length || !r.guide || r.lang !== "zh-CN" || !r.mobileToc || !r.selfCheck || !r.schemaValid || !r.topicNavigation || r.desktopOverflow || !r.desktopTocHidden), screenshots:output}, null, 2));
-  assert(results.every(r => !r.overflow && !r.brokenImages.length && !r.mathErrors.length && !r.rawMath.length && !r.mathAccessibilityErrors.length && r.guide && r.lang === 'zh-CN' && r.mobileToc && r.selfCheck && r.schemaValid && r.topicNavigation && !r.desktopOverflow && r.desktopTocHidden));
+      r.mathErrors.length || r.rawMath.length || r.tocMathErrors.length || r.mathAccessibilityErrors.length || r.captionOverflow.length || !r.guide || r.lang !== "zh-CN" || !r.mobileToc || !r.selfCheck || !r.schemaValid || !r.topicNavigation || r.desktopOverflow || !r.desktopTocHidden), screenshots:output}, null, 2));
+  assert(results.every(r => !r.overflow && !r.brokenImages.length && !r.mathErrors.length && !r.rawMath.length && !r.tocMathErrors.length && !r.mathAccessibilityErrors.length && !r.captionOverflow.length && r.guide && r.lang === 'zh-CN' && r.mobileToc && r.selfCheck && r.schemaValid && r.topicNavigation && !r.desktopOverflow && r.desktopTocHidden));
   assert(zoom && menu === 'true');
   assert.equal(exceptions.length, 0, 'Unexpected browser JavaScript exceptions');
   await cdp("Page.close");

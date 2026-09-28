@@ -1,0 +1,1759 @@
+{
+  "schema_version": 1,
+  "title": "2026-09-28 第二轮全站优化验证记录",
+  "status": "complete",
+  "started_at_utc": "2026-09-28T05:31:18Z",
+  "target_end_at_utc": "2026-09-28T07:31:18Z",
+  "last_verified_at_utc": "2026-09-28T07:31:51Z",
+  "completed_at_utc": "2026-09-28T07:31:51Z",
+  "elapsed_seconds": 7233,
+  "timezone": "Asia/Shanghai",
+  "baseline_commit": "dcd6f01d1e293de52a017ee65d3348b184acd1fc",
+  "deployment": {
+    "committed": false,
+    "pushed": false,
+    "deployed": false,
+    "mode": "local-only"
+  },
+  "prior_round_report": "docs/blog-2026-09-28-review.json",
+  "scope": {
+    "site_articles": 81,
+    "public_articles": 78,
+    "draft_articles": 3,
+    "articles_changed_this_round": 14,
+    "new_downloadable_programs": 12,
+    "python_programs": 10,
+    "cpp_programs": 2,
+    "new_or_replacement_figures": 11,
+    "conceptual_figures": 4,
+    "numerical_figures": 7,
+    "numerical_result_files": 7,
+    "download_resources": 30
+  },
+  "changed_articles": [
+    "content/posts/ai/distributed-training-memory/index.md",
+    "content/posts/ai/lerobot-act/index.md",
+    "content/posts/ai/real-time-chunking/index.md",
+    "content/posts/calibration/zero/index.md",
+    "content/posts/casadi/index.md",
+    "content/posts/cpp/smart-pointer/index.md",
+    "content/posts/network-protocol/c++_tcp/index.md",
+    "content/posts/network-protocol/c++_udp.md",
+    "content/posts/pid/index.md",
+    "content/posts/queue/index.md",
+    "content/posts/robotics/control/robot-filters/index.md",
+    "content/posts/robotics/dynamics/parameter-identification/index.md",
+    "content/posts/trajectory/ruckig/index.md",
+    "content/posts/trajectory/toppra/index.md"
+  ],
+  "programs": [
+    "content/posts/trajectory/toppra/toppra_continuous_check.py",
+    "content/posts/trajectory/ruckig/ruckig_boundary_checks.py",
+    "content/posts/robotics/control/robot-filters/feedback_filter.py",
+    "content/posts/robotics/dynamics/parameter-identification/correlated_uncertainty.py",
+    "content/posts/calibration/zero/unknown_pivot.py",
+    "content/posts/queue/queue_freshness.py",
+    "content/posts/ai/distributed-training-memory/ddp_token_mean.py",
+    "content/posts/cpp/smart-pointer/immutable_snapshot.cpp",
+    "content/posts/casadi/solver_audit.py",
+    "content/posts/network-protocol/c++_tcp/tcp_deadline.cpp",
+    "content/posts/pid/pid_experiments.py",
+    "content/posts/pid/pid_controller.py"
+  ],
+  "figures": [
+    "content/posts/trajectory/toppra/assets/toppra-grid-extrema.png",
+    "content/posts/trajectory/ruckig/assets/ruckig-synchronization.png",
+    "content/posts/robotics/control/robot-filters/assets/feedback-filter-stability.png",
+    "content/posts/robotics/dynamics/parameter-identification/assets/offline-online-workflow.webp",
+    "content/posts/robotics/dynamics/parameter-identification/assets/correlated-uncertainty.png",
+    "content/posts/robotics/dynamics/parameter-identification/assets/base-parameter-spaces.webp",
+    "content/posts/queue/assets/queue-freshness.png",
+    "content/posts/cpp/smart-pointer/assets/immutable-snapshot.webp",
+    "content/posts/casadi/assets/solver-candidates.png",
+    "content/posts/network-protocol/c++_tcp/assets/tcp-framing.webp",
+    "content/posts/pid/assets/pid-saturation-study.png"
+  ],
+  "figure_inventory": [
+    {
+      "path": "content/posts/trajectory/toppra/assets/toppra-grid-extrema.png",
+      "dimensions": [
+        1840,
+        704
+      ],
+      "mode": "RGBA",
+      "bytes": 127039
+    },
+    {
+      "path": "content/posts/trajectory/ruckig/assets/ruckig-synchronization.png",
+      "dimensions": [
+        1760,
+        736
+      ],
+      "mode": "RGBA",
+      "bytes": 118924
+    },
+    {
+      "path": "content/posts/robotics/control/robot-filters/assets/feedback-filter-stability.png",
+      "dimensions": [
+        1888,
+        736
+      ],
+      "mode": "RGBA",
+      "bytes": 161807
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/assets/offline-online-workflow.webp",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGB",
+      "bytes": 130800
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/assets/correlated-uncertainty.png",
+      "dimensions": [
+        1856,
+        720
+      ],
+      "mode": "RGBA",
+      "bytes": 121820
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/assets/base-parameter-spaces.webp",
+      "dimensions": [
+        1728,
+        910
+      ],
+      "mode": "RGB",
+      "bytes": 99134
+    },
+    {
+      "path": "content/posts/queue/assets/queue-freshness.png",
+      "dimensions": [
+        1760,
+        1088
+      ],
+      "mode": "RGBA",
+      "bytes": 101434
+    },
+    {
+      "path": "content/posts/cpp/smart-pointer/assets/immutable-snapshot.webp",
+      "dimensions": [
+        1942,
+        809
+      ],
+      "mode": "RGB",
+      "bytes": 126148
+    },
+    {
+      "path": "content/posts/casadi/assets/solver-candidates.png",
+      "dimensions": [
+        1920,
+        672
+      ],
+      "mode": "RGBA",
+      "bytes": 113778
+    },
+    {
+      "path": "content/posts/network-protocol/c++_tcp/assets/tcp-framing.webp",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 140138
+    },
+    {
+      "path": "content/posts/pid/assets/pid-saturation-study.png",
+      "dimensions": [
+        1950,
+        1350
+      ],
+      "mode": "RGBA",
+      "bytes": 174067
+    }
+  ],
+  "source_delta": {
+    "created": [
+      "content/posts/ai/distributed-training-memory/ddp_token_mean.py",
+      "content/posts/calibration/zero/unknown_pivot.py",
+      "content/posts/casadi/assets/solver-audit-results.json",
+      "content/posts/casadi/assets/solver-candidates.png",
+      "content/posts/casadi/solver_audit.py",
+      "content/posts/cpp/smart-pointer/assets/immutable-snapshot.webp",
+      "content/posts/cpp/smart-pointer/immutable_snapshot.cpp",
+      "content/posts/network-protocol/c++_tcp/assets/tcp-framing.webp",
+      "content/posts/network-protocol/c++_tcp/index.md",
+      "content/posts/network-protocol/c++_tcp/tcp_deadline.cpp",
+      "content/posts/pid/assets/pid-saturation-results.json",
+      "content/posts/pid/assets/pid-saturation-study.png",
+      "content/posts/pid/pid_controller.py",
+      "content/posts/pid/pid_experiments.py",
+      "content/posts/queue/assets/queue-freshness-results.json",
+      "content/posts/queue/assets/queue-freshness.png",
+      "content/posts/queue/queue_freshness.py",
+      "content/posts/robotics/control/robot-filters/assets/feedback-filter-results.json",
+      "content/posts/robotics/control/robot-filters/assets/feedback-filter-stability.png",
+      "content/posts/robotics/control/robot-filters/feedback_filter.py",
+      "content/posts/robotics/dynamics/parameter-identification/assets/base-parameter-spaces.webp",
+      "content/posts/robotics/dynamics/parameter-identification/assets/correlated-uncertainty.json",
+      "content/posts/robotics/dynamics/parameter-identification/assets/correlated-uncertainty.png",
+      "content/posts/robotics/dynamics/parameter-identification/assets/offline-online-workflow.webp",
+      "content/posts/robotics/dynamics/parameter-identification/correlated_uncertainty.py",
+      "content/posts/trajectory/ruckig/assets/ruckig-boundary-results.json",
+      "content/posts/trajectory/ruckig/assets/ruckig-synchronization.png",
+      "content/posts/trajectory/ruckig/ruckig_boundary_checks.py",
+      "content/posts/trajectory/toppra/assets/toppra-grid-extrema.png",
+      "content/posts/trajectory/toppra/assets/toppra-grid-results.json",
+      "content/posts/trajectory/toppra/toppra_continuous_check.py",
+      "docs/blog-2026-09-28-round2-review.json",
+      "docs/blog-2026-09-28-round2-review.md",
+      "docs/image-generation/dynamics-base-parameters-20260928-edit.txt",
+      "docs/image-generation/dynamics-base-parameters-20260928-prompt.txt",
+      "docs/image-generation/dynamics-base-parameters-20260928.json",
+      "docs/image-generation/dynamics-offline-online-20260928-edit.txt",
+      "docs/image-generation/dynamics-offline-online-20260928-prompt.txt",
+      "docs/image-generation/dynamics-offline-online-20260928.json",
+      "docs/image-generation/immutable-snapshot-20260928-prompt.txt",
+      "docs/image-generation/immutable-snapshot-20260928.json",
+      "docs/image-generation/tcp-framing-20260928-prompt.txt",
+      "docs/image-generation/tcp-framing-20260928.json",
+      "layouts/_markup/render-heading.html",
+      "scripts/test_blog_toc.py"
+    ],
+    "modified": [
+      ".github/workflows/hugo.yml",
+      "AGENTS.md",
+      "content/posts/ai/distributed-training-memory/index.md",
+      "content/posts/ai/lerobot-act/index.md",
+      "content/posts/ai/real-time-chunking/index.md",
+      "content/posts/calibration/zero/index.md",
+      "content/posts/casadi/index.md",
+      "content/posts/cpp/smart-pointer/index.md",
+      "content/posts/network-protocol/c++_udp.md",
+      "content/posts/pid/index.md",
+      "content/posts/queue/index.md",
+      "content/posts/robotics/control/robot-filters/index.md",
+      "content/posts/robotics/dynamics/parameter-identification/index.md",
+      "content/posts/trajectory/ruckig/index.md",
+      "content/posts/trajectory/toppra/index.md",
+      "data/blog_topics.json",
+      "docs/blog-editorial-review.json",
+      "docs/blog-second-pass.json",
+      "layouts/_partials/blog/mobile-toc.html",
+      "layouts/_partials/blog/toc-math.html",
+      "layouts/_partials/blog/topic-data.html",
+      "layouts/_partials/toc.html",
+      "scripts/check_blog_browser.cjs",
+      "scripts/test_blog_examples.py"
+    ],
+    "removed": [
+      "content/posts/network-protocol/c++_tcp.md"
+    ],
+    "method": "Initial source snapshot plus tracked paths and initial untracked inventory."
+  },
+  "source_manifest_excluding_this_report_pair": [
+    {
+      "path": "content/posts/ai/distributed-training-memory/ddp_token_mean.py",
+      "bytes": 7062,
+      "sha256": "3c5d0e44c220655fc1ea1456c94601d9bfcf46f76521c5b935e8bc4fd9d5a5ca"
+    },
+    {
+      "path": "content/posts/calibration/zero/unknown_pivot.py",
+      "bytes": 5400,
+      "sha256": "22e00b878626b37445e9d82601aee1112ba134ff71ebc1b6bdbfb1bc47f8dc14"
+    },
+    {
+      "path": "content/posts/casadi/assets/solver-audit-results.json",
+      "bytes": 1468,
+      "sha256": "557f21576e9749678d3609ecf9672cc40bd75c99870c5843c741edae425d34b4"
+    },
+    {
+      "path": "content/posts/casadi/assets/solver-candidates.png",
+      "bytes": 113778,
+      "sha256": "5e93a8e18216e0382371f020e7a778f38668f2e25ee491d6f3abe746d14c3fe5"
+    },
+    {
+      "path": "content/posts/casadi/solver_audit.py",
+      "bytes": 5922,
+      "sha256": "62528a70d9014778cc40c208f576a6646d03a498f0f54e4aebb83fc0668f62b8"
+    },
+    {
+      "path": "content/posts/cpp/smart-pointer/assets/immutable-snapshot.webp",
+      "bytes": 126148,
+      "sha256": "36935afd0af19abde0166746d3358e47811dbd7719539ff318714addf08cdcce"
+    },
+    {
+      "path": "content/posts/cpp/smart-pointer/immutable_snapshot.cpp",
+      "bytes": 3027,
+      "sha256": "ae6574e15f6d897c4c28a1f093f257497ca0b91cacca844aa6b67a69f5c4ab92"
+    },
+    {
+      "path": "content/posts/network-protocol/c++_tcp/assets/tcp-framing.webp",
+      "bytes": 140138,
+      "sha256": "ab337dd0582e4cca8225a56e8231680d0f22c4e99dc6dc6c4fefa2055d00e188"
+    },
+    {
+      "path": "content/posts/network-protocol/c++_tcp/index.md",
+      "bytes": 11171,
+      "sha256": "f257e6cc983cfec168956c4beee9ee3788b4cfdcea3dcb08c3e12d00ee8b30db"
+    },
+    {
+      "path": "content/posts/network-protocol/c++_tcp/tcp_deadline.cpp",
+      "bytes": 7994,
+      "sha256": "d20bd36c7ea70bcafed27fec9893caf359cb7ae998a7cca88fe39a1f11fa4906"
+    },
+    {
+      "path": "content/posts/pid/assets/pid-saturation-results.json",
+      "bytes": 1727,
+      "sha256": "f8ee3809789966519d0ccbd0756673abc62aa82257e1d7cdcddc57a222fbe266"
+    },
+    {
+      "path": "content/posts/pid/assets/pid-saturation-study.png",
+      "bytes": 174067,
+      "sha256": "5cd02a557358a6e16b017bff44a4f9f8f85eeaaddef6bd579f8f6053db561675"
+    },
+    {
+      "path": "content/posts/pid/pid_controller.py",
+      "bytes": 3572,
+      "sha256": "14d5529b549b999c7b203c6689436005e87660b40b2df9249a95f17a9b4308ab"
+    },
+    {
+      "path": "content/posts/pid/pid_experiments.py",
+      "bytes": 6897,
+      "sha256": "226eb11d2c49f7bb2e315701a627478ca3b14abc9aeb19a78b1b82a6f428c80c"
+    },
+    {
+      "path": "content/posts/queue/assets/queue-freshness-results.json",
+      "bytes": 37948,
+      "sha256": "239a1ad78bca6b94a79f2396a6d8338b3aa0409c30681486033aee2dce500ec2"
+    },
+    {
+      "path": "content/posts/queue/assets/queue-freshness.png",
+      "bytes": 101434,
+      "sha256": "3fba8c3ca9567d333509f99aa5a8ace7b61a89187cca0586488eea4aec782ed1"
+    },
+    {
+      "path": "content/posts/queue/queue_freshness.py",
+      "bytes": 5707,
+      "sha256": "76435a61558198118b8408dd58d57a049f7e8eb46b2b8a60909e7efb65e11b5c"
+    },
+    {
+      "path": "content/posts/robotics/control/robot-filters/assets/feedback-filter-results.json",
+      "bytes": 2671,
+      "sha256": "6a59cbe9d27ed4ad31f1ea8e49a17141021b243466c19db1cc591f4667bc6973"
+    },
+    {
+      "path": "content/posts/robotics/control/robot-filters/assets/feedback-filter-stability.png",
+      "bytes": 161807,
+      "sha256": "3637a9dd2705a6f26409d49f7601524de836d6193e1ec5fbc3b14cb0877ce50f"
+    },
+    {
+      "path": "content/posts/robotics/control/robot-filters/feedback_filter.py",
+      "bytes": 6663,
+      "sha256": "da98c3c024afc613a24f1d2c85d3ea84ba1bb23738cb5bfdcbc921d4fde1f44a"
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/assets/base-parameter-spaces.webp",
+      "bytes": 99134,
+      "sha256": "584477c025f08bc2c623fd687e5a79d1366640bd368e0dea111b17d5cf9dabd1"
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/assets/correlated-uncertainty.json",
+      "bytes": 1590,
+      "sha256": "06267734065adb1be490dc985eb6a16fd03436d463e048105708ae648c3fa0eb"
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/assets/correlated-uncertainty.png",
+      "bytes": 121820,
+      "sha256": "59ad143166ad650958f4426d95dd7b0fb11d94c2566f5f3b9e3e1a4a6feaf628"
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/assets/offline-online-workflow.webp",
+      "bytes": 130800,
+      "sha256": "d1ad2e3ca059c8ad04e58dffa3d7620b8bd255d3788773171612781d5a13ea6e"
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/correlated_uncertainty.py",
+      "bytes": 5715,
+      "sha256": "5e9ba0dfaefb48d9a1ddf0b205345cd9a358c16c67153e913e6f91fd5e7d761b"
+    },
+    {
+      "path": "content/posts/trajectory/ruckig/assets/ruckig-boundary-results.json",
+      "bytes": 1513,
+      "sha256": "7f11991b9ea73a78cb9cb1e86bb10be4dba19767366ceec8fbb6841599a03a60"
+    },
+    {
+      "path": "content/posts/trajectory/ruckig/assets/ruckig-synchronization.png",
+      "bytes": 118924,
+      "sha256": "d78130de8fdfb5d54611ed4d1a91120e0fe067ddf479f82a56318d567b357fe3"
+    },
+    {
+      "path": "content/posts/trajectory/ruckig/ruckig_boundary_checks.py",
+      "bytes": 6373,
+      "sha256": "36c4b200f69e8cbf58546ba9aa095708d5caff122abe0e2d7eb66738045d8c67"
+    },
+    {
+      "path": "content/posts/trajectory/toppra/assets/toppra-grid-extrema.png",
+      "bytes": 127039,
+      "sha256": "c6f1c1bbc3fe9674750fed0f6ce5fa4ed993bfee400a95c424fad3b4f7df4d34"
+    },
+    {
+      "path": "content/posts/trajectory/toppra/assets/toppra-grid-results.json",
+      "bytes": 3524,
+      "sha256": "2150a9e94a31319739dc1cfc4c78ea8a00aeced9465f81f0c24efdc116a0567a"
+    },
+    {
+      "path": "content/posts/trajectory/toppra/toppra_continuous_check.py",
+      "bytes": 6416,
+      "sha256": "a64cba7791f98bfd2d7df505cbcf667c0c90cbf9af04cae27e1d254ac119ac64"
+    },
+    {
+      "path": "docs/image-generation/dynamics-base-parameters-20260928-edit.txt",
+      "bytes": 757,
+      "sha256": "581f9e2e18f98fcb5afc2fd5d9cd4f9a3e6cf902aeb6f1c1f3da5648bafe7ae3"
+    },
+    {
+      "path": "docs/image-generation/dynamics-base-parameters-20260928-prompt.txt",
+      "bytes": 1960,
+      "sha256": "c7f3be64de7c63b4eff2703bda776660ef8b3c9f81688a98acebd63b0dd3397d"
+    },
+    {
+      "path": "docs/image-generation/dynamics-base-parameters-20260928.json",
+      "bytes": 1041,
+      "sha256": "19653ebf79dde3fad9c92471291972b86c1eee78175ac3eaab2fdbd6bc675b3d"
+    },
+    {
+      "path": "docs/image-generation/dynamics-offline-online-20260928-edit.txt",
+      "bytes": 840,
+      "sha256": "a7aca8335f34f54e35460397a2beee153993e379d8eda0ea8361960d76e87f6e"
+    },
+    {
+      "path": "docs/image-generation/dynamics-offline-online-20260928-prompt.txt",
+      "bytes": 2087,
+      "sha256": "d1e467794f670691e53c0c952c11ab50fe297f651613c87c3de7db2bc74f2a70"
+    },
+    {
+      "path": "docs/image-generation/dynamics-offline-online-20260928.json",
+      "bytes": 1103,
+      "sha256": "bcf86a4931830d7a0ce397b964a2e046b345b1e66b1e44c154cab8c6b74dcc97"
+    },
+    {
+      "path": "docs/image-generation/immutable-snapshot-20260928-prompt.txt",
+      "bytes": 1951,
+      "sha256": "edca528d14e9e3c5f0f61292bb917ba948e73fb8453e3711e872409176658b9d"
+    },
+    {
+      "path": "docs/image-generation/immutable-snapshot-20260928.json",
+      "bytes": 720,
+      "sha256": "fb3f29a5358f58419fe1ac294cac6b4470536c649ae2846afe4468c698540b26"
+    },
+    {
+      "path": "docs/image-generation/tcp-framing-20260928-prompt.txt",
+      "bytes": 2204,
+      "sha256": "6c60436dc626ba4a0ad83a346ddf54e4965ef0d007812fd58b3aea556cbb4a03"
+    },
+    {
+      "path": "docs/image-generation/tcp-framing-20260928.json",
+      "bytes": 682,
+      "sha256": "cdbca3978916adc129e93d2f3754cb525f313e55e29aa8eb9a776c7cb3a4d0cb"
+    },
+    {
+      "path": "layouts/_markup/render-heading.html",
+      "bytes": 845,
+      "sha256": "2902a0145535727252b961016f4a8b9215efd327923586869444cd68fd68eb26"
+    },
+    {
+      "path": "scripts/test_blog_toc.py",
+      "bytes": 4616,
+      "sha256": "5980fa931e77c630cbaafaf491d8000ed685140a564f84c0880ccad0a1159f7a"
+    },
+    {
+      "path": ".github/workflows/hugo.yml",
+      "bytes": 2280,
+      "sha256": "ca4fce3c9acdb493536457505aa9283eb2e5d82cdbb8234e9d43b6b9fd1036bc"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 7560,
+      "sha256": "f3d705133f15d88fe58ca5f04b5594df2b564373ad10f58922387b49fb6e11e1"
+    },
+    {
+      "path": "content/posts/ai/distributed-training-memory/index.md",
+      "bytes": 58323,
+      "sha256": "d5ebed5b79830e8275aab3ac3e1e3c965ca6ff88fc35e14a0d6f2627b27d1e41"
+    },
+    {
+      "path": "content/posts/ai/lerobot-act/index.md",
+      "bytes": 76563,
+      "sha256": "5c148c80e87ff043be0d40edb60c596ec79a9b4b6661c102cf2c48307d1544b4"
+    },
+    {
+      "path": "content/posts/ai/real-time-chunking/index.md",
+      "bytes": 76479,
+      "sha256": "274aaf8668187778510aac5da947e238d2f8010df1b876940fbcf1dae357b3ff"
+    },
+    {
+      "path": "content/posts/calibration/zero/index.md",
+      "bytes": 9095,
+      "sha256": "b300cc433158b4508ef0a4348c65a915657cc71b14abc2150cd39cb2846e04dc"
+    },
+    {
+      "path": "content/posts/casadi/index.md",
+      "bytes": 10272,
+      "sha256": "7f76dfa753bcfd31d21a4d15c93f9fb85a69834c926b548ac22cb4aa538a99a0"
+    },
+    {
+      "path": "content/posts/cpp/smart-pointer/index.md",
+      "bytes": 10276,
+      "sha256": "bc95aee7569d2666ab9b3e993562435a0bde536a29169d0c332fa7d1c33e0ca4"
+    },
+    {
+      "path": "content/posts/network-protocol/c++_udp.md",
+      "bytes": 10255,
+      "sha256": "5f46d50665372c8b2e5f276b024f308ac93e4da72dc7673181386b2933f93748"
+    },
+    {
+      "path": "content/posts/pid/index.md",
+      "bytes": 9895,
+      "sha256": "15f21c6e3fa23467778f5216e75e8195ea8bdd1432df2e4a039c531f6d7bc3a5"
+    },
+    {
+      "path": "content/posts/queue/index.md",
+      "bytes": 12842,
+      "sha256": "2f40190073d6883c072820135492049acd1eb097fe0f91cda0348bc510967ff0"
+    },
+    {
+      "path": "content/posts/robotics/control/robot-filters/index.md",
+      "bytes": 74284,
+      "sha256": "dfe6b21307c17f56f258bebd3c278dd1920e5cc7efb700a452a7dae13c41173f"
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+      "bytes": 64951,
+      "sha256": "3c56197f847a55bfe233785c7aece2b4479c7b059c4e2412ce5facf79a7c57bc"
+    },
+    {
+      "path": "content/posts/trajectory/ruckig/index.md",
+      "bytes": 12359,
+      "sha256": "0ad9d48356d6c9f84609fa50cc0fe9ff3752efd4dc0798d7ae03c90d1df1e209"
+    },
+    {
+      "path": "content/posts/trajectory/toppra/index.md",
+      "bytes": 11351,
+      "sha256": "29941e4038ade6437c7810ba3c499ee048a0669da631b529ee621fc26a9e92d4"
+    },
+    {
+      "path": "data/blog_topics.json",
+      "bytes": 5760,
+      "sha256": "f5cd53c5c97fc439933c579aed0ba9d6887b201a01cfd898dfe3740472f46eab"
+    },
+    {
+      "path": "docs/blog-editorial-review.json",
+      "bytes": 77538,
+      "sha256": "637c79435d77d5cd1289adab8ff0f89451cf61c7b1ba8930139dc07f9b2c8b61"
+    },
+    {
+      "path": "docs/blog-second-pass.json",
+      "bytes": 28255,
+      "sha256": "3a664f42cec47fa0bb15923bd7c965db6bff5364ee380a68b698c52fb818e8e3"
+    },
+    {
+      "path": "layouts/_partials/blog/mobile-toc.html",
+      "bytes": 357,
+      "sha256": "8dcda930e8db2dbef01d17649fcd309e38827b00180e816d3226d5854b0aeb31"
+    },
+    {
+      "path": "layouts/_partials/blog/toc-math.html",
+      "bytes": 624,
+      "sha256": "a2711db050575f293f92b8e0f678256e88fae8f25fe841996b4b426688bdb064"
+    },
+    {
+      "path": "layouts/_partials/blog/topic-data.html",
+      "bytes": 894,
+      "sha256": "30798689fbb36bf61ed41856ccfde9998b047fedef1895663b1c609789197581"
+    },
+    {
+      "path": "layouts/_partials/toc.html",
+      "bytes": 5814,
+      "sha256": "a3009512b028b241841c6c8ff1118d617e104e4315fb39fbe7802fa7a33e73a8"
+    },
+    {
+      "path": "scripts/check_blog_browser.cjs",
+      "bytes": 20570,
+      "sha256": "9c90d891c6b4b13b7f4a4121c2a34672918dafd316ffb61b5fba6f217d39cf8f"
+    },
+    {
+      "path": "scripts/test_blog_examples.py",
+      "bytes": 12582,
+      "sha256": "80452ad38d978402b5dd0dc5b72e46573a239ebe841fe04103dd3b59c2814c56"
+    }
+  ],
+  "environments": {
+    "hugo": "0.165.0 extended",
+    "scientific_python": "3.10.12",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "matplotlib": "3.10.9",
+    "ruckig": "0.19.4",
+    "toppra": "0.6.3",
+    "casadi": "3.7.2",
+    "pytorch": "2.13.0+cu130 (CPU Gloo used)",
+    "gcc_for_cpp20": "12.3.0",
+    "environment_mutation": "Reused the prior isolated scientific environment; no extra dependencies installed this round."
+  },
+  "validation": {
+    "production": {
+      "reviewed_posts": 81,
+      "learning_paths": 11,
+      "acceptance_checks": 230,
+      "blog_posting_schemas": 78,
+      "classified_tags": 160,
+      "code_blocks": 507,
+      "syntax_checked_by_language": {
+        "bash": 185,
+        "json": 6,
+        "jsonc": 6,
+        "python": 193,
+        "sh": 8,
+        "xml": 1
+      },
+      "html_pages": 268,
+      "local_references_checked": 19983,
+      "collection_pages_checked": 258,
+      "filter_indexes_checked": 8,
+      "errors": [],
+      "python_fragment_warnings": [],
+      "unrendered_math_warnings": []
+    },
+    "drafts": {
+      "reviewed_posts": 81,
+      "learning_paths": 11,
+      "acceptance_checks": 230,
+      "blog_posting_schemas": 81,
+      "classified_tags": 164,
+      "code_blocks": 507,
+      "syntax_checked_by_language": {
+        "bash": 185,
+        "json": 6,
+        "jsonc": 6,
+        "python": 193,
+        "sh": 8,
+        "xml": 1
+      },
+      "html_pages": 279,
+      "local_references_checked": 20954,
+      "collection_pages_checked": 269,
+      "filter_indexes_checked": 9,
+      "errors": [],
+      "python_fragment_warnings": [],
+      "unrendered_math_warnings": []
+    },
+    "production_filter": {
+      "articles": 78,
+      "drafts": 0,
+      "topics": 11,
+      "metadata_bytes": 45756,
+      "tests": "normalization, literal/AND matching, sorting, immutability, URL state, exact coverage passed"
+    },
+    "drafts_filter": {
+      "articles": 81,
+      "drafts": 3,
+      "topics": 11,
+      "metadata_bytes": 47378,
+      "tests": "normalization, literal/AND matching, sorting, immutability, URL state, exact coverage passed"
+    },
+    "browser_full_site": {
+      "articles": 81,
+      "exceptions": [],
+      "checkpoint": "browser-drafts, after shared TOC repair and initial article edits; later changed content covered below",
+      "learning_paths": {
+        "groups": 11,
+        "articles": 81,
+        "jumpLinks": 11,
+        "overflow": false
+      },
+      "zoom": true,
+      "mobile_menu": true,
+      "code": {
+        "scrollable": true,
+        "keyboard": true
+      },
+      "search_queries": [
+        "逆运动学",
+        "PPO",
+        "CasADi",
+        "SPSC",
+        "RynnBrain",
+        "InternVL",
+        "zzzxxyy987654321notfound"
+      ],
+      "copy_fallback_cases": 3
+    },
+    "browser_changed_articles": {
+      "posts": 14,
+      "layouts": 126,
+      "zooms": 22,
+      "exceptions": [],
+      "checkpoint": "release-drafts, all 14 articles and 11 figures",
+      "widths_px": [
+        320,
+        390,
+        1440
+      ],
+      "themes": [
+        "light",
+        "dark",
+        "warm"
+      ],
+      "checks": [
+        "image loading",
+        "KaTeX",
+        "page overflow",
+        "caption overflow",
+        "zoom open and close"
+      ]
+    },
+    "browser_final_pid_wording": {
+      "posts": 1,
+      "layouts": 9,
+      "zooms": 2,
+      "exceptions": [],
+      "checkpoint": "final-drafts, after correcting the 16 s total / 13 s post-switch observation window"
+    },
+    "browser_final_dynamics_wording": {
+      "posts": 1,
+      "layouts": 9,
+      "zooms": 6,
+      "exceptions": [],
+      "checkpoint": "final-drafts, after using information-matrix terminology consistently in the RLS comparison"
+    },
+    "browser_discovery": {
+      "articles": 81,
+      "drafts": 3,
+      "crossPageSearch": true,
+      "shareableURL": true,
+      "queryStates": 15,
+      "ime": true,
+      "history": true,
+      "literalQuery": true,
+      "noJavaScript": true,
+      "malformedDataFallback": true,
+      "keyboardControls": true,
+      "collections": [
+        "/tags/",
+        "/categories/",
+        "/archives/",
+        "/learning-paths/",
+        "/",
+        "/zh-cn/",
+        "/projects/",
+        "/zh-cn/projects/",
+        "/tags/robotics/"
+      ],
+      "exceptions": [],
+      "filter_layouts": 12,
+      "tag_layouts": 9,
+      "checkpoint": "verified-drafts; filter and navigation code unchanged afterwards"
+    },
+    "toc_fixture": {
+      "toc_variants": 2,
+      "headings_per_variant": 7,
+      "literal_dollars": "preserved",
+      "both_math_delimiters": "passed",
+      "nested_links": "absent",
+      "automatic_section": "passed"
+    },
+    "toc_live_edit": [
+      {
+        "revision": "first",
+        "toc_math_counts": {
+          "desktop": 1,
+          "mobile": 1
+        }
+      },
+      {
+        "revision": "second",
+        "toc_math_counts": {
+          "desktop": 0,
+          "mobile": 0
+        }
+      },
+      {
+        "revision": "third",
+        "toc_math_counts": {
+          "desktop": 1,
+          "mobile": 1
+        }
+      }
+    ],
+    "integrity": {
+      "compatibility": {
+        "articles": 81,
+        "all_old_ids_preserved": 2367,
+        "all_old_heading_anchors_preserved": 1727,
+        "changed_articles_old_ids_preserved": 454,
+        "changed_articles_old_headings_preserved": 334,
+        "date_draft_url_slug": "unchanged"
+      },
+      "downloaded_resources": 30,
+      "privacy": {
+        "private_markdown_files_outside_content": 3,
+        "ignored": true,
+        "tracked": false,
+        "searched_outputs": 1010,
+        "exposed_markers": []
+      },
+      "previous_round_reports": "unchanged"
+    },
+    "new_external_links": [
+      {
+        "url": "https://docs.pytorch.org/docs/2.8/generated/torch.nn.CrossEntropyLoss.html",
+        "status": 200,
+        "final_url": "https://docs.pytorch.org/docs/2.8/generated/torch.nn.CrossEntropyLoss.html",
+        "seconds": 1.19
+      },
+      {
+        "url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.cont2discrete.html",
+        "status": 200,
+        "final_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.cont2discrete.html",
+        "seconds": 1.04
+      },
+      {
+        "url": "https://eel.is/c++draft/util.smartptr.atomic.shared",
+        "status": 200,
+        "final_url": "https://eel.is/c++draft/util.smartptr.atomic.shared",
+        "seconds": 2.32
+      },
+      {
+        "url": "https://gcc.gnu.org/pipermail/libstdc%2B%2B-cvs/2022q1/037419.html",
+        "status": 200,
+        "final_url": "https://gcc.gnu.org/pipermail/libstdc%2B%2B-cvs/2022q1/037419.html",
+        "seconds": 1.57
+      },
+      {
+        "url": "https://github.com/pantor/ruckig#input-parameter",
+        "status": 200,
+        "final_url": "https://github.com/pantor/ruckig#input-parameter",
+        "seconds": 1.54
+      },
+      {
+        "url": "https://github.com/pantor/ruckig#input-validation",
+        "status": 200,
+        "final_url": "https://github.com/pantor/ruckig#input-validation",
+        "seconds": 2.1
+      },
+      {
+        "url": "https://github.com/ros2/ros2_documentation/blob/rolling/source/ROS-Framework/interfaces/topics/About-Quality-of-Service-Settings.rst",
+        "status": 200,
+        "final_url": "https://github.com/ros2/ros2_documentation/blob/rolling/source/ROS-Framework/interfaces/topics/About-Quality-of-Service-Settings.rst",
+        "seconds": 1.33
+      },
+      {
+        "url": "https://man7.org/linux/man-pages/man2/poll.2.html",
+        "status": 200,
+        "final_url": "https://man7.org/linux/man-pages/man2/poll.2.html",
+        "seconds": 1.31
+      },
+      {
+        "url": "https://man7.org/linux/man-pages/man7/socket.7.html",
+        "status": 200,
+        "final_url": "https://man7.org/linux/man-pages/man7/socket.7.html",
+        "seconds": 1.44
+      },
+      {
+        "url": "https://web.casadi.org/docs/#nonlinear-programming",
+        "status": 200,
+        "final_url": "https://web.casadi.org/docs/#nonlinear-programming",
+        "seconds": 1.13
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc1982.html#section-3.2",
+        "status": 200,
+        "final_url": "https://www.rfc-editor.org/rfc/rfc1982.html#section-3.2",
+        "seconds": 0.97
+      },
+      {
+        "url": "https://www.rfc-editor.org/rfc/rfc8085.html#section-3.2",
+        "status": 200,
+        "final_url": "https://www.rfc-editor.org/rfc/rfc8085.html#section-3.2",
+        "seconds": 0.89
+      },
+      {
+        "url": "https://fbswiki.org/wiki/index.php/PID_Control",
+        "status": 200,
+        "final_url": "https://fbswiki.org/wiki/index.php/PID_Control"
+      },
+      {
+        "url": "https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.GLS.html",
+        "status": 200,
+        "final_url": "https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.GLS.html"
+      }
+    ],
+    "external_link_scope": "Only the 14 newly introduced URLs in this round. HTTP availability is not proof of every claim. Historical blocked URLs remain distinct from confirmed missing pages.",
+    "git_diff_check": "passed",
+    "avatar_config_theme": "unchanged"
+  },
+  "download_integrity": [
+    {
+      "path": "content/posts/trajectory/toppra/toppra_continuous_check.py",
+      "bytes": 6416,
+      "sha256": "a64cba7791f98bfd2d7df505cbcf667c0c90cbf9af04cae27e1d254ac119ac64",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/trajectory/toppra/assets/toppra-grid-results.json",
+      "bytes": 3524,
+      "sha256": "2150a9e94a31319739dc1cfc4c78ea8a00aeced9465f81f0c24efdc116a0567a",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/trajectory/toppra/assets/toppra-grid-extrema.png",
+      "bytes": 127039,
+      "sha256": "c6f1c1bbc3fe9674750fed0f6ce5fa4ed993bfee400a95c424fad3b4f7df4d34",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/trajectory/ruckig/ruckig_boundary_checks.py",
+      "bytes": 6373,
+      "sha256": "36c4b200f69e8cbf58546ba9aa095708d5caff122abe0e2d7eb66738045d8c67",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/trajectory/ruckig/assets/ruckig-synchronization.png",
+      "bytes": 118924,
+      "sha256": "d78130de8fdfb5d54611ed4d1a91120e0fe067ddf479f82a56318d567b357fe3",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/trajectory/ruckig/assets/ruckig-boundary-results.json",
+      "bytes": 1513,
+      "sha256": "7f11991b9ea73a78cb9cb1e86bb10be4dba19767366ceec8fbb6841599a03a60",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/robotics/control/robot-filters/feedback_filter.py",
+      "bytes": 6663,
+      "sha256": "da98c3c024afc613a24f1d2c85d3ea84ba1bb23738cb5bfdcbc921d4fde1f44a",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/robotics/control/robot-filters/assets/feedback-filter-results.json",
+      "bytes": 2671,
+      "sha256": "6a59cbe9d27ed4ad31f1ea8e49a17141021b243466c19db1cc591f4667bc6973",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/robotics/control/robot-filters/assets/feedback-filter-stability.png",
+      "bytes": 161807,
+      "sha256": "3637a9dd2705a6f26409d49f7601524de836d6193e1ec5fbc3b14cb0877ce50f",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/correlated_uncertainty.py",
+      "bytes": 5715,
+      "sha256": "5e9ba0dfaefb48d9a1ddf0b205345cd9a358c16c67153e913e6f91fd5e7d761b",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/assets/correlated-uncertainty.json",
+      "bytes": 1590,
+      "sha256": "06267734065adb1be490dc985eb6a16fd03436d463e048105708ae648c3fa0eb",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/assets/offline-online-workflow.webp",
+      "bytes": 130800,
+      "sha256": "d1ad2e3ca059c8ad04e58dffa3d7620b8bd255d3788773171612781d5a13ea6e",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/assets/correlated-uncertainty.png",
+      "bytes": 121820,
+      "sha256": "59ad143166ad650958f4426d95dd7b0fb11d94c2566f5f3b9e3e1a4a6feaf628",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/assets/base-parameter-spaces.webp",
+      "bytes": 99134,
+      "sha256": "584477c025f08bc2c623fd687e5a79d1366640bd368e0dea111b17d5cf9dabd1",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/calibration/zero/unknown_pivot.py",
+      "bytes": 5400,
+      "sha256": "22e00b878626b37445e9d82601aee1112ba134ff71ebc1b6bdbfb1bc47f8dc14",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/queue/queue_freshness.py",
+      "bytes": 5707,
+      "sha256": "76435a61558198118b8408dd58d57a049f7e8eb46b2b8a60909e7efb65e11b5c",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/queue/assets/queue-freshness-results.json",
+      "bytes": 37948,
+      "sha256": "239a1ad78bca6b94a79f2396a6d8338b3aa0409c30681486033aee2dce500ec2",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/queue/assets/queue-freshness.png",
+      "bytes": 101434,
+      "sha256": "3fba8c3ca9567d333509f99aa5a8ace7b61a89187cca0586488eea4aec782ed1",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/ai/distributed-training-memory/ddp_token_mean.py",
+      "bytes": 7062,
+      "sha256": "3c5d0e44c220655fc1ea1456c94601d9bfcf46f76521c5b935e8bc4fd9d5a5ca",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/cpp/smart-pointer/immutable_snapshot.cpp",
+      "bytes": 3027,
+      "sha256": "ae6574e15f6d897c4c28a1f093f257497ca0b91cacca844aa6b67a69f5c4ab92",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/cpp/smart-pointer/assets/immutable-snapshot.webp",
+      "bytes": 126148,
+      "sha256": "36935afd0af19abde0166746d3358e47811dbd7719539ff318714addf08cdcce",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/casadi/solver_audit.py",
+      "bytes": 5922,
+      "sha256": "62528a70d9014778cc40c208f576a6646d03a498f0f54e4aebb83fc0668f62b8",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/casadi/assets/solver-candidates.png",
+      "bytes": 113778,
+      "sha256": "5e93a8e18216e0382371f020e7a778f38668f2e25ee491d6f3abe746d14c3fe5",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/casadi/assets/solver-audit-results.json",
+      "bytes": 1468,
+      "sha256": "557f21576e9749678d3609ecf9672cc40bd75c99870c5843c741edae425d34b4",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/network-protocol/c++_tcp/tcp_deadline.cpp",
+      "bytes": 7994,
+      "sha256": "d20bd36c7ea70bcafed27fec9893caf359cb7ae998a7cca88fe39a1f11fa4906",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/network-protocol/c++_tcp/assets/tcp-framing.webp",
+      "bytes": 140138,
+      "sha256": "ab337dd0582e4cca8225a56e8231680d0f22c4e99dc6dc6c4fefa2055d00e188",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/pid/pid_experiments.py",
+      "bytes": 6897,
+      "sha256": "226eb11d2c49f7bb2e315701a627478ca3b14abc9aeb19a78b1b82a6f428c80c",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/pid/pid_controller.py",
+      "bytes": 3572,
+      "sha256": "14d5529b549b999c7b203c6689436005e87660b40b2df9249a95f17a9b4308ab",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/pid/assets/pid-saturation-study.png",
+      "bytes": 174067,
+      "sha256": "5cd02a557358a6e16b017bff44a4f9f8f85eeaaddef6bd579f8f6053db561675",
+      "built_and_http_match": true
+    },
+    {
+      "path": "content/posts/pid/assets/pid-saturation-results.json",
+      "bytes": 1727,
+      "sha256": "f8ee3809789966519d0ccbd0756673abc62aa82257e1d7cdcddc57a222fbe266",
+      "built_and_http_match": true
+    }
+  ],
+  "experiments": {
+    "pid": {
+      "resource": "content/posts/pid/assets/pid-saturation-results.json",
+      "result": {
+        "plant": {
+          "mass_kg": 1.0,
+          "damping_Ns_per_m": 2.0,
+          "spring_N_per_m": 4.0,
+          "disturbance_N": -1.0,
+          "force_limit_N": 8.0
+        },
+        "controller": {
+          "kp_N_per_m": 16.0,
+          "ki_N_per_m_s": 8.0,
+          "kd_Ns_per_m": 6.0,
+          "derivative_tau_s": 0.02
+        },
+        "sample_interval_s": 0.002,
+        "maximum_position_difference_after_halving_dt_m": 0.0007814576145483976,
+        "checks": {
+          "held_saturation": "passed",
+          "invalid_sample_state_rollback": "passed",
+          "reference_derivative_kick": "absent",
+          "reset": "passed"
+        },
+        "metrics": {
+          "constant": {
+            "PD": {
+              "final_position_m": 0.7499999999999962,
+              "final_error_m": 0.2500000000000038,
+              "max_abs_integral_N": 0.0,
+              "fraction_saturated_samples": 0.0098990100989901
+            },
+            "PID": {
+              "final_position_m": 0.9999897076020451,
+              "final_error_m": 1.0292397954914101e-05,
+              "max_abs_integral_N": 4.999832444338684,
+              "fraction_saturated_samples": 0.0098990100989901
+            }
+          },
+          "saturation": {
+            "PID without anti-windup": {
+              "final_position_m": 0.5041894016006423,
+              "final_error_m": -0.004189401600642295,
+              "max_abs_integral_N": 36.6738127585933,
+              "fraction_saturated_samples": 0.2458442694663167,
+              "recorded_2cm_settling_after_switch_s": 9.818
+            },
+            "PID": {
+              "final_position_m": 0.49911368555973096,
+              "final_error_m": 0.0008863144402690426,
+              "max_abs_integral_N": 2.9855711950851305,
+              "fraction_saturated_samples": 0.1954755655543057,
+              "recorded_2cm_settling_after_switch_s": 6.656000000000001
+            }
+          }
+        },
+        "scope": "Synthetic exact-ZOH plant; no sensor noise, hardware or latency model."
+      }
+    },
+    "ruckig": {
+      "resource": "content/posts/trajectory/ruckig/assets/ruckig-boundary-results.json",
+      "result": {
+        "ruckig": "0.19.4",
+        "viability": {
+          "unavoidable_peak_velocity_rad_s": 1.115,
+          "approaching_limit_rejected": "[ruckig] DoF 0 will inevitably reach a velocity 1.115000 from the current kinematic state that will exceed its maximum velocity limit 1.000000.",
+          "opposite_acceleration_valid": true
+        },
+        "moving_terminal_continuous": {
+          "duration_s": 2.695913258384432,
+          "first_finished_tick": 270,
+          "first_finished_time_s": 2.6999999999999864,
+          "position_at_first_finished_rad": 1.0012260224846663,
+          "velocity_at_first_finished_rad_s": 0.30000000000000004,
+          "exact_terminal_state": [
+            1.0,
+            0.30000000000000004,
+            0.0
+          ]
+        },
+        "moving_terminal_discrete": {
+          "duration_s": 2.7,
+          "first_finished_tick": 271,
+          "first_finished_time_s": 2.709999999999986,
+          "position_at_first_finished_rad": 1.0029999999999961,
+          "velocity_at_first_finished_rad_s": 0.30000000000000004,
+          "exact_terminal_state": [
+            1.0000000000000002,
+            0.30000000000000004,
+            0.0
+          ]
+        },
+        "time_synchronization": {
+          "duration_s": 3.1748021039363987,
+          "max_joint_line_error_rad": 0.034838510888881506,
+          "max_tcp_distance_from_endpoint_line_m": 0.2621662390941874
+        },
+        "phase_synchronization": {
+          "duration_s": 3.1748021039363987,
+          "max_joint_line_error_rad": 1.1102230246251565e-16,
+          "max_tcp_distance_from_endpoint_line_m": 0.2621635424420171
+        },
+        "scope": "Two planar revolute joints; links 1 and 0.6 m; no collision, torque or hardware test."
+      }
+    },
+    "toppra": {
+      "resource": "content/posts/trajectory/toppra/assets/toppra-grid-results.json",
+      "result": {
+        "toppra_version": "0.6.3",
+        "path_polynomial_coefficients": [
+          [
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            16,
+            -32,
+            16
+          ]
+        ],
+        "path_interval": [
+          0,
+          1
+        ],
+        "joint_velocity_limits_rad_s": [
+          1,
+          1
+        ],
+        "joint_acceleration_limits_rad_s2": [
+          2,
+          2
+        ],
+        "endpoint_path_speeds": [
+          0,
+          0
+        ],
+        "constraint_discretization": "Interpolation",
+        "parametrizer": "ParametrizeConstAccel",
+        "verification": "polynomial stationary points and one-sided segment endpoints, float64",
+        "results": [
+          {
+            "grid_points": 11,
+            "duration_s": 3.780848460228163,
+            "continuous_max_velocity_rad_s": [
+              0.3720237988994193,
+              1.0486399985863821
+            ],
+            "continuous_max_acceleration_rad_s2": [
+              0.38109751097560984,
+              2.069298939764665
+            ],
+            "dense_max_velocity_rad_s": [
+              0.3720233239178643,
+              1.0486399976697447
+            ],
+            "dense_max_acceleration_rad_s2": [
+              0.38109751097560984,
+              2.0692989387699403
+            ],
+            "uniform_time_scale": 1.0486410472263805,
+            "scaled_duration_s": 3.964752888737909
+          },
+          {
+            "grid_points": 21,
+            "duration_s": 3.5331500298446112,
+            "continuous_max_velocity_rad_s": [
+              0.3758821884419425,
+              1.0140622689527297
+            ],
+            "continuous_max_acceleration_rad_s2": [
+              0.5470458518599569,
+              2.019210062824378
+            ],
+            "dense_max_velocity_rad_s": [
+              0.37588154474278507,
+              1.014062266537621
+            ],
+            "dense_max_acceleration_rad_s2": [
+              0.5470458518599569,
+              2.0192100585709643
+            ],
+            "uniform_time_scale": 1.0140632830149985,
+            "scaled_duration_s": 3.5828377186487663
+          },
+          {
+            "grid_points": 51,
+            "duration_s": 3.26250853360653,
+            "continuous_max_velocity_rad_s": [
+              0.3905005830146796,
+              1.0025743131972715
+            ],
+            "continuous_max_acceleration_rad_s2": [
+              1.1550115773211118,
+              2.0024992033817908
+            ],
+            "dense_max_velocity_rad_s": [
+              0.39049811499851433,
+              1.0025743102310791
+            ],
+            "dense_max_acceleration_rad_s2": [
+              1.1550115773211118,
+              2.002499203239876
+            ],
+            "uniform_time_scale": 1.0025753157715847,
+            "scaled_duration_s": 3.2709105232880566
+          },
+          {
+            "grid_points": 101,
+            "duration_s": 3.156560720166986,
+            "continuous_max_velocity_rad_s": [
+              0.3916502544106648,
+              1.0007839992205563
+            ],
+            "continuous_max_acceleration_rad_s2": [
+              1.9999995,
+              2.0008529461334543
+            ],
+            "dense_max_velocity_rad_s": [
+              0.39164780687417056,
+              1.0007839992205017
+            ],
+            "dense_max_acceleration_rad_s2": [
+              1.9999995,
+              2.0008529458502666
+            ],
+            "uniform_time_scale": 1.0007850000045555,
+            "scaled_duration_s": 3.1590386203466965
+          },
+          {
+            "grid_points": 401,
+            "duration_s": 3.142156691336394,
+            "continuous_max_velocity_rad_s": [
+              0.39377397917157836,
+              1.0000540901769024
+            ],
+            "continuous_max_acceleration_rad_s2": [
+              2.000000000000001,
+              2.0001085309352753
+            ],
+            "dense_max_velocity_rad_s": [
+              0.3937720786575172,
+              1.000054090131266
+            ],
+            "dense_max_acceleration_rad_s2": [
+              2.000000000000001,
+              2.0001085308191624
+            ],
+            "uniform_time_scale": 1.0000550902309926,
+            "scaled_duration_s": 3.1423297934743344
+          }
+        ]
+      }
+    },
+    "solver": {
+      "resource": "content/posts/casadi/assets/solver-audit-results.json",
+      "result": {
+        "casadi_version": "3.7.2",
+        "feasible": {
+          "variable_lower_bound": -2.0,
+          "x": 0.9999999999954545,
+          "objective": 1.000000000009091,
+          "solver_success": true,
+          "return_status": "Solve_Succeeded",
+          "objective_gradient": -2.000000000009091,
+          "lam_g": 1.0000000000083333,
+          "lam_x": 1.5151526419538881e-12,
+          "primal_violation": 0.0,
+          "stationarity_abs": 7.974205452550452e-17,
+          "complementarity_abs": 9.09095021491639e-12,
+          "accepted": true
+        },
+        "infeasible": {
+          "variable_lower_bound": 2.0,
+          "x": 2.000000000000002,
+          "objective": 4.930380657631324e-30,
+          "solver_success": false,
+          "return_status": "Infeasible_Problem_Detected",
+          "objective_gradient": 4.440892098500626e-15,
+          "lam_g": 999.9999999999969,
+          "lam_x": -3999.999999999992,
+          "primal_violation": 3.000000000000009,
+          "stationarity_abs": 4.547473508864641e-13,
+          "complementarity_abs": 2999.9999999999995,
+          "accepted": false
+        },
+        "nonconvex": [
+          {
+            "initial_x": -1.5,
+            "x": -1.0241203002143155,
+            "objective": -0.20244043434482245,
+            "return_status": "Solve_Succeeded",
+            "gap_to_enumerated_global_minimum": 0.0
+          },
+          {
+            "initial_x": 1.5,
+            "x": 0.9739943532304918,
+            "objective": 0.1974341528582765,
+            "return_status": "Solve_Succeeded",
+            "gap_to_enumerated_global_minimum": 0.399874587203099
+          }
+        ],
+        "scope": "dimensionless scalar examples, no robot or performance benchmark"
+      }
+    },
+    "feedback_filter": {
+      "resource": "content/posts/robotics/control/robot-filters/assets/feedback-filter-results.json",
+      "result": {
+        "versions": {
+          "numpy": "2.2.6",
+          "scipy": "1.15.3",
+          "matplotlib": "3.10.9"
+        },
+        "sample_period_s": 0.005,
+        "mass_kg": 1.0,
+        "damping_Ns_m": 2.0,
+        "stiffness_N_m": 4.0,
+        "kp_N_m": 80.0,
+        "kd_Ns_m": 4.0,
+        "plant_discretization": "zero-order hold, current command applied over next interval",
+        "derivative": "backward difference of the current filtered measurement",
+        "initial_position_m": 0.001,
+        "initial_velocity_m_s": 0.0,
+        "initial_filter_position_m": 0.001,
+        "limitations": "linear model; no saturation, extra delay, noise or real robot",
+        "reference_filter_1hz_spectral_radius": 0.985325598840595,
+        "results": [
+          {
+            "measurement_filter_hz": null,
+            "alpha": 1.0,
+            "open_loop_white_noise_std_ratio": 1.0,
+            "closed_loop_poles": [
+              [
+                0.010231581239802792,
+                0.0
+              ],
+              [
+                0.9843777090798365,
+                0.043209508181765326
+              ],
+              [
+                0.9843777090798365,
+                -0.043209508181765326
+              ]
+            ],
+            "closed_loop_spectral_radius": 0.985325598840595,
+            "max_abs_position_m_in_4s": 0.001
+          },
+          {
+            "measurement_filter_hz": 10.0,
+            "alpha": 0.26959730895135436,
+            "open_loop_white_noise_std_ratio": 0.3947155041566254,
+            "closed_loop_poles": [
+              [
+                0.7438669368243596,
+                0.0
+              ],
+              [
+                0.986765200963488,
+                0.04499108877153158
+              ],
+              [
+                0.986765200963488,
+                -0.04499108877153158
+              ]
+            ],
+            "closed_loop_spectral_radius": 0.9877903420773867,
+            "max_abs_position_m_in_4s": 0.001
+          },
+          {
+            "measurement_filter_hz": 2.0,
+            "alpha": 0.06089863257570736,
+            "open_loop_white_noise_std_ratio": 0.1772162385024887,
+            "closed_loop_poles": [
+              [
+                0.9982567135092083,
+                0.04318231799880158
+              ],
+              [
+                0.9982567135092083,
+                -0.04318231799880158
+              ],
+              [
+                0.9318706213020936,
+                0.0
+              ]
+            ],
+            "closed_loop_spectral_radius": 0.9991902614887493,
+            "max_abs_position_m_in_4s": 0.001
+          },
+          {
+            "measurement_filter_hz": 1.0,
+            "alpha": 0.03092757369518936,
+            "open_loop_white_noise_std_ratio": 0.12532626008642173,
+            "closed_loop_poles": [
+              [
+                1.0027789056377467,
+                0.03702624200349081
+              ],
+              [
+                1.0027789056377467,
+                -0.03702624200349081
+              ],
+              [
+                0.9531258786398813,
+                0.0
+              ]
+            ],
+            "closed_loop_spectral_radius": 1.0034622445258905,
+            "max_abs_position_m_in_4s": 0.016996548009167202
+          }
+        ]
+      }
+    },
+    "correlated_uncertainty": {
+      "resource": "content/posts/robotics/dynamics/parameter-identification/assets/correlated-uncertainty.json",
+      "result": {
+        "numpy": "2.2.6",
+        "seed": 20260928,
+        "trials": 2500,
+        "samples_per_trial": 200,
+        "sample_period_s": 0.01,
+        "position_amplitude_m": 0.03,
+        "motion_frequency_hz": 0.7,
+        "force_noise_marginal_std_N": 0.05,
+        "noise_ar1_coefficient": 0.9,
+        "noise_innovation_std_N": 0.021794494717703367,
+        "regressor_rank": 2,
+        "true_OLS_covariance": [
+          [
+            0.001137559146207352,
+            7.83579453135123e-05
+          ],
+          [
+            7.835794531351224e-05,
+            0.022871340843070534
+          ]
+        ],
+        "independent_noise_covariance": [
+          [
+            7.066477293185383e-05,
+            1.3652097795814558e-05
+          ],
+          [
+            1.3652097795814557e-05,
+            0.0015178352267467081
+          ]
+        ],
+        "scope": "fixed exact regressors; known Gaussian noise covariance; no ridge or constraints",
+        "results": [
+          {
+            "parameter": "mass",
+            "unit": "kg",
+            "truth": 2.0,
+            "mean_estimate": 1.9999811230532796,
+            "std_if_noise_independent": 0.008406234170652982,
+            "std_with_temporal_covariance": 0.033727720738397846,
+            "monte_carlo_std": 0.033566987054664155,
+            "nominal_95pct_coverage_if_independent": 0.3784,
+            "nominal_95pct_coverage_with_known_covariance": 0.952
+          },
+          {
+            "parameter": "damping",
+            "unit": "N*s/m",
+            "truth": 0.4,
+            "mean_estimate": 0.4001960377854408,
+            "std_if_noise_independent": 0.03895940485616674,
+            "std_with_temporal_covariance": 0.1512327373390779,
+            "monte_carlo_std": 0.14916767560410277,
+            "nominal_95pct_coverage_if_independent": 0.3964,
+            "nominal_95pct_coverage_with_known_covariance": 0.9512
+          }
+        ]
+      }
+    },
+    "queue": {
+      "resource": "content/posts/queue/assets/queue-freshness-results.json",
+      "summary": {
+        "Reject new + FIFO": {
+          "counts": {
+            "offered": 201,
+            "overflow_drops": 153,
+            "consumer_discards": 0,
+            "expired_drops": 0,
+            "delivered": 41,
+            "pending": 7
+          },
+          "max_delivered_age_ms": 355,
+          "p95_delivered_age_ms": 355.0
+        },
+        "Replace oldest + FIFO": {
+          "counts": {
+            "offered": 201,
+            "overflow_drops": 153,
+            "consumer_discards": 0,
+            "expired_drops": 0,
+            "delivered": 41,
+            "pending": 7
+          },
+          "max_delivered_age_ms": 35,
+          "p95_delivered_age_ms": 35.0
+        },
+        "Reject new + drain + TTL": {
+          "counts": {
+            "offered": 201,
+            "overflow_drops": 36,
+            "consumer_discards": 124,
+            "expired_drops": 1,
+            "delivered": 40,
+            "pending": 0
+          },
+          "max_delivered_age_ms": 0,
+          "p95_delivered_age_ms": 0.0
+        }
+      },
+      "scope": "Deterministic event simulation; not a concurrency benchmark."
+    },
+    "unknown_pivot": {
+      "training_poses": 40,
+      "held_out_poses": 11,
+      "units": "m, rad",
+      "known_point_rank": 3,
+      "unknown_point_joint_rank": 4,
+      "unknown_point_difference_rank": 2,
+      "joint_singular_values_unscaled": [
+        10.94663445390486,
+        6.709742652477894,
+        1.584952441421314,
+        0.8463473702876424,
+        4.0075115209211286e-16
+      ],
+      "true_offsets_rad": [
+        0.02,
+        -0.03,
+        0.025
+      ],
+      "known_point_fit_rad": [
+        0.02000000000000001,
+        -0.030000000000000002,
+        0.024999999999999856
+      ],
+      "fixed_gauge_fit_rad": [
+        0.0,
+        -0.030000000000000037,
+        0.025000000000000005
+      ],
+      "fitted_unknown_point_m": [
+        1.2567495416758887,
+        0.3249316689666358
+      ],
+      "held_out_contact_residual_m": 2.2887833992611187e-16,
+      "held_out_error_to_external_point_m": 0.025961077281825094,
+      "finite_rotation_equivalence": "passed",
+      "null_direction": [
+        1.0,
+        0.0,
+        0.0,
+        -0.35,
+        1.25
+      ],
+      "note": "No noise; mixed parameter units; singular values only diagnose exact rank here."
+    },
+    "ddp": {
+      "torch": "2.13.0+cu130",
+      "backend": "gloo",
+      "world_size": 2,
+      "dtype": "float64",
+      "seed_per_rank": [
+        100,
+        101
+      ],
+      "results": {
+        "uneven_tokens": [
+          {
+            "start_micro_batch": 0,
+            "micro_batches": 2,
+            "valid_tokens": 5,
+            "gradient_max_abs_error": 2.7755575615628914e-17,
+            "incorrect_rank_mean_gradient_error": 0.08799539007763191
+          },
+          {
+            "start_micro_batch": 2,
+            "micro_batches": 1,
+            "valid_tokens": 3,
+            "gradient_max_abs_error": 0.0,
+            "incorrect_rank_mean_gradient_error": 0.20004747141446327
+          }
+        ],
+        "empty_rank": [
+          {
+            "start_micro_batch": 0,
+            "micro_batches": 2,
+            "valid_tokens": 3,
+            "gradient_max_abs_error": 0.0,
+            "incorrect_rank_mean_gradient_error": null
+          },
+          {
+            "start_micro_batch": 2,
+            "micro_batches": 1,
+            "valid_tokens": 2,
+            "gradient_max_abs_error": 0.0,
+            "incorrect_rank_mean_gradient_error": null
+          }
+        ],
+        "empty_window": [
+          {
+            "start_micro_batch": 0,
+            "valid_tokens": 0,
+            "action": "skip optimizer update on all ranks"
+          },
+          {
+            "start_micro_batch": 2,
+            "valid_tokens": 0,
+            "action": "skip optimizer update on all ranks"
+          }
+        ]
+      }
+    },
+    "network": {
+      "result": "TCP echo/fragmentation/frame deadlines; UDP echo/empty/truncated datagrams passed",
+      "sanitizers": "PASS: binary/empty/coalesced/fragmented frames, clean/truncated EOF, length limit, slow-drip/shared/expired deadlines",
+      "scope": "Linux local sockets; no remote server or robot."
+    },
+    "immutable_snapshot": {
+      "result": "PASS: coherent immutable snapshots and retained ownership; published=100000, distinct observed=17427, atomic shared_ptr lock-free=false",
+      "sanitizers": "PASS: coherent immutable snapshots and retained ownership; published=100000, distinct observed=73297, atomic shared_ptr lock-free=false",
+      "compiler": "GCC 12.3.0, C++20",
+      "limitation": "Observed publication count varies with scheduling; not a real-time guarantee. GCC 11 library lacked the required atomic shared_ptr specialization."
+    },
+    "identification_project": {
+      "head": "3f27a1cb4dda0f107f0ff7ff16553f42ad8a7813",
+      "tracked_worktree_dirty": false,
+      "generic_example_source_sha256": "62e98defdc2fcd1c3dd9b499309c8ab6773754dcdd0f7becec2a7d95ff255637",
+      "build_type": "Debug",
+      "build_destination": "/tmp/chase-blog-audit-20260928-round2-rd03rcpx/identification-build",
+      "tests": {
+        "passed": 8,
+        "failed": 0
+      },
+      "ctest_log": "Internal ctest changing into directory: /tmp/chase-blog-audit-20260928-round2-rd03rcpx/identification-build\nTest project /tmp/chase-blog-audit-20260928-round2-rd03rcpx/identification-build\n    Start 1: robot_identification_test\n1/8 Test #1: robot_identification_test .................   Passed    0.02 sec\n    Start 2: robot_identification_preprocessing_test\n2/8 Test #2: robot_identification_preprocessing_test ...   Passed    0.10 sec\n    Start 3: robot_identification_csv_test\n3/8 Test #3: robot_identification_csv_test .............   Passed    0.04 sec\n    Start 4: robot_identification_csv_interop\n4/8 Test #4: robot_identification_csv_interop ..........   Passed    0.16 sec\n    Start 5: robot_identification_install\n5/8 Test #5: robot_identification_install ..............   Passed    0.03 sec\n    Start 6: robot_identification_consumer_configure\n6/8 Test #6: robot_identification_consumer_configure ...   Passed    0.08 sec\n    Start 7: robot_identification_consumer_build\n7/8 Test #7: robot_identification_consumer_build .......   Passed    0.77 sec\n    Start 8: generic_regressor_example_runs\n8/8 Test #8: generic_regressor_example_runs ............   Passed    0.00 sec\n\n100% tests passed, 0 tests failed out of 8\n\nLabel Time Summary:\nexample    =   0.00 sec*proc (1 test)\n\nTotal Test time (real) =   1.20 sec\n",
+      "example_output": "parameters= 2.000000  0.350000  1.400000 -0.200000 rmse=0.000000 rank=4 condition=2.049849\n",
+      "scope": "Existing generic synthetic example, built outside source; no robot I/O."
+    }
+  },
+  "limitations": [
+    "No real robot control, full paper-model retraining, GPU benchmark or deployment was performed.",
+    "Syntax validation of article code blocks does not mean every C++ fragment was compiled.",
+    "Numerical experiments validate their stated finite models and assumptions, not arbitrary trajectories or controllers.",
+    "Source hashes exclude the self-referential report pair; prior-round reports were verified byte-for-byte unchanged.",
+    "Full browser inventory and final changed-page checks were performed at separate documented checkpoints."
+  ],
+  "temporary_artifacts": "/tmp/chase-blog-audit-20260928-round2-rd03rcpx",
+  "preview_cleanup": {
+    "stopped_temporary_previews": [
+      {
+        "pid": 3143557,
+        "port": 1356
+      },
+      {
+        "pid": 3164049,
+        "port": 1357
+      },
+      {
+        "pid": 3189387,
+        "port": 1358
+      },
+      {
+        "pid": 3199723,
+        "port": 1359
+      }
+    ],
+    "user_hugo_13139": "untouched",
+    "final_preview_1360": "stopped after final HTTP integrity check"
+  }
+}
