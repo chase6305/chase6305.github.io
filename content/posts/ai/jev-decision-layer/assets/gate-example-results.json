@@ -1,0 +1,35 @@
+{
+  "scope": "Offline protocol fixtures and arithmetic on reported values; no Jev or robot calls.",
+  "freshness_example_seconds": {
+    "fresh": {
+      "observation_age": 0.25,
+      "request_age": 0.125,
+      "route": "execute:approach"
+    },
+    "old_observation_fast_response": {
+      "observation_age": 1.25,
+      "request_age": 0.125,
+      "route": "observe"
+    }
+  },
+  "synthetic_metrics": {
+    "accept_rate": 0.6666666666666666,
+    "selective_error": 0.5
+  },
+  "synthetic_costs": {
+    "success_conditioned_mean": 0.15000000000000002,
+    "all_attempts_per_success": 0.45
+  },
+  "jev_mobile_recomputed": {
+    "time_reduction": 0.32726535165559567,
+    "cost_reduction": 0.7342141223410086,
+    "source": "https://arxiv.org/html/2609.30186v1#S6"
+  },
+  "community_drawer_recomputed": {
+    "scope": "One reported successful development run; not a new measurement.",
+    "requests": 75,
+    "reported_model_cost_usd": 0.39400294199999997,
+    "jev_fraction_of_model_cost": 0.0157180095370963,
+    "source": "https://github.com/FBddcz/embodied-jev/blob/f08de2e4e20d6cd69fea9c57ac1062c3ef510f1e/docs/results/libero-vision/COSTS.json"
+  }
+}

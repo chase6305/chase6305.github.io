@@ -1,0 +1,66 @@
+{
+  "date": "2026-09-29",
+  "mode": "built-in image_gen tool",
+  "style_reference": [
+    "content/posts/ai/transformer-attention/assets/transformer-block-overview.webp",
+    "content/posts/ai/internvl-3-5/assets/visual-token-pipeline.webp"
+  ],
+  "assets": [
+    {
+      "article": "internvl-3-5",
+      "review": [
+        "Opaque white background and readable text.",
+        "Answer labels enter loss only; gradient line originates at loss.",
+        "Causal attention distinguished from labels before one-position shift.",
+        "No model measurements claimed."
+      ],
+      "source_path": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-6f3218c9-d87d-4f8d-98a2-e45fb8c1c9de.png",
+      "saved_path": "content/posts/ai/internvl-3-5/assets/supervision-path.webp",
+      "final_prompt_path": "docs/image-generation/internvl-supervision-path-20260929-v3-prompt.txt",
+      "initial_prompt_path": "docs/image-generation/internvl-supervision-path-20260929-prompt.txt",
+      "sha256": "dab22195a3b54126e3a81535573ceb6520c54af5c09000089ae4d0771759407e",
+      "conversion": "PNG to WebP quality=92, method=6; no pixel edits or resizing; original retained."
+    },
+    {
+      "article": "gen-1-5",
+      "review": [
+        "Physical demonstrations shown as recorded filmstrips, not text commands.",
+        "Validation selection precedes fixed held-out test conditions.",
+        "All rollout panels show matched starting states, no success results.",
+        "Experiment proposal is explicit in the caption."
+      ],
+      "source_path": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-201d6b77-8992-4553-838a-831f367e3063.png",
+      "saved_path": "content/posts/ai/gen-1-5/assets/physical-prompt-heldout-evaluation.webp",
+      "final_prompt_path": "docs/image-generation/physical-prompt-heldout-evaluation-20260929-v2-prompt.txt",
+      "initial_prompt_path": "docs/image-generation/physical-prompt-heldout-evaluation-20260929-prompt.txt",
+      "sha256": "881100b15acaa4595da02aa2d7d9c40f47e664073a5de500fbbc1911753487ef",
+      "conversion": "PNG to WebP quality=92, method=6; no pixel edits or resizing; original retained."
+    },
+    {
+      "article": "vla-evolution",
+      "review": [
+        "Training pair uses Xs=(1-s)A+sE and U=E-A.",
+        "U enters loss only; model receives Xs,s,c.",
+        "Sampling has no true future action; negative step follows s=1 to 0.",
+        "Each update applies to the entire action block; execution consumes a prefix."
+      ],
+      "source_path": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-cf172085-02d5-4345-b37c-fbc94cf8d388.png",
+      "saved_path": "content/posts/ai/vla-evolution/assets/flow-training-inference.webp",
+      "final_prompt_path": "docs/image-generation/flow-matching-training-inference-20260929-v4-prompt.txt",
+      "initial_prompt_path": "docs/image-generation/flow-matching-training-inference-20260929-prompt.txt",
+      "sha256": "4d7d8d7b9abb93827d4197ea725fe6282eaf5a131efc7b1074c71da9ed5181a7",
+      "conversion": "PNG to WebP quality=92, method=6; no pixel edits or resizing; original retained."
+    }
+  ],
+  "discarded_iterations": {
+    "flow-v1-v3": "Replaced because of background or ambiguous/dangling training arrows.",
+    "internvl-v1-v2": "Replaced to remove transparency and detach gradients from integer labels.",
+    "gen-v1": "Replaced written commands with physical demonstration records."
+  },
+  "quantitative_figure": {
+    "saved_path": "content/posts/ai/vla-evolution/assets/flow-learning-results.png",
+    "generator": "content/posts/ai/vla-evolution/flow_matching_lab.py",
+    "data": "content/posts/ai/vla-evolution/assets/flow-learning-results.json",
+    "method": "Deterministic Matplotlib plot of actual CPU training and numerical integration; not image generation."
+  }
+}

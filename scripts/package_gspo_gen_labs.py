@@ -12,7 +12,8 @@ BUNDLES = {
     'gspo': ['README.txt', 'requirements.txt', 'gspo_lab.py', 'gspo_update.py',
              'gspo_online.py', 'test_gspo_lab.py', 'plot_results.py', 'plot_online.py',
              'assets/results.json', 'assets/update-results.json', 'assets/online-results.json'],
-    'gen-1-5': ['README.txt', 'prompt_eval.py', 'test_prompt_eval.py', 'assets/example-results.json'],
+    'gen-1-5': ['README.txt', 'prompt_eval.py', 'test_prompt_eval.py', 'assets/example-results.json',
+                'prompt_information.py', 'assets/prompt-information-results.json'],
 }
 
 
@@ -43,6 +44,10 @@ def main():
                     bundle.extractall(temp)  # member list matched the fixed safe allowlist above
                     subprocess.run([sys.executable, '-B', '-m', 'unittest', 'discover',
                                     '-p', 'test_*.py', '-v'], cwd=Path(temp) / (slug + '-lab'), check=True)
+                    if slug == 'gen-1-5':
+                        subprocess.run([sys.executable, '-B', 'prompt_information.py'],
+                                       cwd=Path(temp) / (slug + '-lab'), check=True,
+                                       stdout=subprocess.DEVNULL)
         print(f'{archive.name}: {len(files)} members match source', flush=True)
 
 

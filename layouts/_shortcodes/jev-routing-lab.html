@@ -1,0 +1,39 @@
+{{- $id := printf "jev-routing-lab-%d" .Ordinal -}}
+{{- $css := resources.Get "css/jev-routing-lab.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/jev-routing-lab.js" | minify | fingerprint -}}
+{{- $records := .Page.Resources.Get "assets/routing-fixtures.json" | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section class="jev-routing-lab" data-jev-routing-lab data-records="{{ $records.RelPermalink }}" aria-label="置信度路由算例">
+  <p class="jev-routing-lab__title"><strong>动手调：多少判断交给上层？</strong></p>
+  <p>使用 200 条固定合成记录，分数与标签由程序构造，均非 Jev 实测。每次先支付 1 单位选择器费用，被拒绝的判断再支付上层费用。</p>
+  <noscript><p>交互需要 JavaScript；文中的表格、下方曲线和可下载脚本提供相同的静态算例。</p></noscript>
+  <p data-routing-status role="status" hidden>正在读取合成记录…</p>
+  <div data-routing-interactive hidden>
+    <form class="jev-routing-lab__form">
+      <label for="{{ $id }}-group">记录分组
+        <select id="{{ $id }}-group" name="group">
+          <option value="heldout">合成留出组（80 条）</option>
+          <option value="validation">合成验证组（40 条）</option>
+          <option value="shifted">合成分布变化组（80 条）</option>
+        </select>
+      </label>
+      <label for="{{ $id }}-threshold">接受阈值 <output data-routing-control="threshold">0.80</output>
+        <input id="{{ $id }}-threshold" name="threshold" type="range" min="0" max="1" step="0.01" value="0.8">
+      </label>
+      <label for="{{ $id }}-cost">每次上层调用费用 <output data-routing-control="cost">20 单位</output>
+        <input id="{{ $id }}-cost" name="cost" type="range" min="1" max="40" step="1" value="20">
+      </label>
+    </form>
+    <button type="button" data-routing-reset>恢复验证组选出的阈值 0.80</button>
+    <div class="jev-routing-lab__metrics" aria-live="polite" aria-atomic="true">
+      <div>接受的判断<output data-routing-metric="acceptance">—</output></div>
+      <div>接受部分的错误率<output data-routing-metric="error">—</output></div>
+      <div>上层调用次数<output data-routing-metric="fallback">—</output></div>
+      <div>平均调用费用<output data-routing-metric="cost">—</output></div>
+    </div>
+    <p data-routing-note></p>
+    <p class="jev-routing-lab__comparison" data-routing-comparison></p>
+  </div>
+  <p class="jev-routing-lab__limits">单位只是算例尺度，不是美元报价。这里没有上层判断的结果、执行和重试费用，因此不估计最终任务成功率。切换分组不会重新选择阈值。</p>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

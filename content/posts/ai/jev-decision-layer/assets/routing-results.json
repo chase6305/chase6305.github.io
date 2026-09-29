@@ -1,0 +1,312 @@
+{
+  "scope": "Constructed offline records, not Jev measurements or sampled robot trials.",
+  "cost_unit": "arbitrary call-cost unit; excludes execution, retries and fallback outcomes",
+  "threshold_selection": {
+    "group": "validation",
+    "grid": [
+      0.0,
+      0.6,
+      0.8,
+      0.9,
+      1.0
+    ],
+    "max_empirical_error": 0.05,
+    "min_accepted": 10,
+    "selected": {
+      "threshold": 0.8,
+      "records": 40,
+      "accepted": 20,
+      "rejected": 20,
+      "accepted_errors": 1,
+      "accept_rate": 0.5,
+      "selective_error": 0.05,
+      "total_call_cost": 440.0,
+      "mean_call_cost": 11.0,
+      "always_fallback_mean_cost": 20.0
+    }
+  },
+  "groups": {
+    "validation": {
+      "label": "合成验证组",
+      "description": "仅用来选阈值，40 条构造记录。",
+      "curve": [
+        {
+          "threshold": 0.0,
+          "records": 40,
+          "accepted": 40,
+          "rejected": 0,
+          "accepted_errors": 9,
+          "accept_rate": 1.0,
+          "selective_error": 0.225,
+          "total_call_cost": 40.0,
+          "mean_call_cost": 1.0,
+          "always_fallback_mean_cost": 20.0
+        },
+        {
+          "threshold": 0.6,
+          "records": 40,
+          "accepted": 30,
+          "rejected": 10,
+          "accepted_errors": 4,
+          "accept_rate": 0.75,
+          "selective_error": 0.13333333333333333,
+          "total_call_cost": 240.0,
+          "mean_call_cost": 6.0,
+          "always_fallback_mean_cost": 20.0
+        },
+        {
+          "threshold": 0.8,
+          "records": 40,
+          "accepted": 20,
+          "rejected": 20,
+          "accepted_errors": 1,
+          "accept_rate": 0.5,
+          "selective_error": 0.05,
+          "total_call_cost": 440.0,
+          "mean_call_cost": 11.0,
+          "always_fallback_mean_cost": 20.0
+        },
+        {
+          "threshold": 0.9,
+          "records": 40,
+          "accepted": 10,
+          "rejected": 30,
+          "accepted_errors": 0,
+          "accept_rate": 0.25,
+          "selective_error": 0.0,
+          "total_call_cost": 640.0,
+          "mean_call_cost": 16.0,
+          "always_fallback_mean_cost": 20.0
+        },
+        {
+          "threshold": 1.0,
+          "records": 40,
+          "accepted": 0,
+          "rejected": 40,
+          "accepted_errors": 0,
+          "accept_rate": 0.0,
+          "selective_error": null,
+          "total_call_cost": 840.0,
+          "mean_call_cost": 21.0,
+          "always_fallback_mean_cost": 20.0
+        }
+      ],
+      "selected_threshold": {
+        "threshold": 0.8,
+        "records": 40,
+        "accepted": 20,
+        "rejected": 20,
+        "accepted_errors": 1,
+        "accept_rate": 0.5,
+        "selective_error": 0.05,
+        "total_call_cost": 440.0,
+        "mean_call_cost": 11.0,
+        "always_fallback_mean_cost": 20.0
+      }
+    },
+    "heldout": {
+      "label": "合成留出组",
+      "description": "记录 ID 与验证组不重叠，80 条构造记录。",
+      "curve": [
+        {
+          "threshold": 0.0,
+          "records": 80,
+          "accepted": 80,
+          "rejected": 0,
+          "accepted_errors": 20,
+          "accept_rate": 1.0,
+          "selective_error": 0.25,
+          "total_call_cost": 80.0,
+          "mean_call_cost": 1.0,
+          "always_fallback_mean_cost": 20.0
+        },
+        {
+          "threshold": 0.6,
+          "records": 80,
+          "accepted": 60,
+          "rejected": 20,
+          "accepted_errors": 10,
+          "accept_rate": 0.75,
+          "selective_error": 0.16666666666666666,
+          "total_call_cost": 480.0,
+          "mean_call_cost": 6.0,
+          "always_fallback_mean_cost": 20.0
+        },
+        {
+          "threshold": 0.8,
+          "records": 80,
+          "accepted": 40,
+          "rejected": 40,
+          "accepted_errors": 4,
+          "accept_rate": 0.5,
+          "selective_error": 0.1,
+          "total_call_cost": 880.0,
+          "mean_call_cost": 11.0,
+          "always_fallback_mean_cost": 20.0
+        },
+        {
+          "threshold": 0.9,
+          "records": 80,
+          "accepted": 20,
+          "rejected": 60,
+          "accepted_errors": 1,
+          "accept_rate": 0.25,
+          "selective_error": 0.05,
+          "total_call_cost": 1280.0,
+          "mean_call_cost": 16.0,
+          "always_fallback_mean_cost": 20.0
+        },
+        {
+          "threshold": 1.0,
+          "records": 80,
+          "accepted": 0,
+          "rejected": 80,
+          "accepted_errors": 0,
+          "accept_rate": 0.0,
+          "selective_error": null,
+          "total_call_cost": 1680.0,
+          "mean_call_cost": 21.0,
+          "always_fallback_mean_cost": 20.0
+        }
+      ],
+      "selected_threshold": {
+        "threshold": 0.8,
+        "records": 80,
+        "accepted": 40,
+        "rejected": 40,
+        "accepted_errors": 4,
+        "accept_rate": 0.5,
+        "selective_error": 0.1,
+        "total_call_cost": 880.0,
+        "mean_call_cost": 11.0,
+        "always_fallback_mean_cost": 20.0
+      }
+    },
+    "shifted": {
+      "label": "合成分布变化组",
+      "description": "高分段加入更多错误，80 条构造记录。",
+      "curve": [
+        {
+          "threshold": 0.0,
+          "records": 80,
+          "accepted": 80,
+          "rejected": 0,
+          "accepted_errors": 25,
+          "accept_rate": 1.0,
+          "selective_error": 0.3125,
+          "total_call_cost": 80.0,
+          "mean_call_cost": 1.0,
+          "always_fallback_mean_cost": 20.0
+        },
+        {
+          "threshold": 0.6,
+          "records": 80,
+          "accepted": 60,
+          "rejected": 20,
+          "accepted_errors": 15,
+          "accept_rate": 0.75,
+          "selective_error": 0.25,
+          "total_call_cost": 480.0,
+          "mean_call_cost": 6.0,
+          "always_fallback_mean_cost": 20.0
+        },
+        {
+          "threshold": 0.8,
+          "records": 80,
+          "accepted": 40,
+          "rejected": 40,
+          "accepted_errors": 10,
+          "accept_rate": 0.5,
+          "selective_error": 0.25,
+          "total_call_cost": 880.0,
+          "mean_call_cost": 11.0,
+          "always_fallback_mean_cost": 20.0
+        },
+        {
+          "threshold": 0.9,
+          "records": 80,
+          "accepted": 20,
+          "rejected": 60,
+          "accepted_errors": 8,
+          "accept_rate": 0.25,
+          "selective_error": 0.4,
+          "total_call_cost": 1280.0,
+          "mean_call_cost": 16.0,
+          "always_fallback_mean_cost": 20.0
+        },
+        {
+          "threshold": 1.0,
+          "records": 80,
+          "accepted": 0,
+          "rejected": 80,
+          "accepted_errors": 0,
+          "accept_rate": 0.0,
+          "selective_error": null,
+          "total_call_cost": 1680.0,
+          "mean_call_cost": 21.0,
+          "always_fallback_mean_cost": 20.0
+        }
+      ],
+      "selected_threshold": {
+        "threshold": 0.8,
+        "records": 80,
+        "accepted": 40,
+        "rejected": 40,
+        "accepted_errors": 10,
+        "accept_rate": 0.5,
+        "selective_error": 0.25,
+        "total_call_cost": 880.0,
+        "mean_call_cost": 11.0,
+        "always_fallback_mean_cost": 20.0
+      }
+    }
+  },
+  "calibration_counterexample": {
+    "scope": "Separate binary probability fixture; not a transformation of routing scores.",
+    "aggregate": {
+      "brier": 0.09,
+      "ece": 0.0,
+      "bins": [
+        {
+          "bin": 9,
+          "count": 20,
+          "mean_probability": 0.9,
+          "event_frequency": 0.9
+        }
+      ]
+    },
+    "group_a": {
+      "brier": 0.009999999999999995,
+      "ece": 0.09999999999999998,
+      "bins": [
+        {
+          "bin": 9,
+          "count": 10,
+          "mean_probability": 0.9,
+          "event_frequency": 1.0
+        }
+      ]
+    },
+    "group_b": {
+      "brier": 0.17,
+      "ece": 0.09999999999999998,
+      "bins": [
+        {
+          "bin": 9,
+          "count": 10,
+          "mean_probability": 0.9,
+          "event_frequency": 0.8
+        }
+      ]
+    }
+  },
+  "wilson_arithmetic_example": {
+    "assumption": "Hypothetical independent Bernoulli trials, not an interval claim for these constructed records.",
+    "errors": 1,
+    "trials": 20,
+    "interval_95": [
+      0.008881448800795375,
+      0.236131193446742
+    ]
+  }
+}

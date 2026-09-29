@@ -1,0 +1,63 @@
+{
+  "date": "2026-09-29",
+  "mode": "built-in image_gen",
+  "assets": [
+    {
+      "asset": "content/posts/ai/jev-decision-layer/assets/jev-decision-loop.webp",
+      "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-bdefbc49-e4cd-4595-b72e-c598e2910e8d.png",
+      "prompt": "docs/image-generation/jev-decision-loop-20260929-prompt.txt",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "a55e3bb6b8fac0bf00739d66e6b4dfe127d3e62ab39f2add6be70e0019e1bb4d",
+      "review": "Labels and directed connections inspected against article; accepted."
+    },
+    {
+      "asset": "content/posts/ai/jev-decision-layer/assets/jev-failure-modes.webp",
+      "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-579f01a6-3560-4d5c-80db-b0fe1b513d6b.png",
+      "prompt": "docs/image-generation/jev-failure-modes-20260929-prompt.txt",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "8326536fcf7bf73d3ffccebe7b4836d7876ef46f1761dec91bf87ba9754abcf6",
+      "review": "Labels and directed connections inspected against article; accepted."
+    },
+    {
+      "asset": "content/posts/ai/jev-decision-layer/assets/jev-state-bottleneck.webp",
+      "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-fd90d0ef-af33-4c80-a29a-e8f0cebc7b2f.png",
+      "prompt": "docs/image-generation/jev-state-bottleneck-20260929-prompt.txt",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "790617e408b71af169fd5ad31204c853833d4eebba008abb09827a32b74c7dbb",
+      "review": "Cup colors and left/right positions, scene labels, shared-state arrows and goal input checked against the balanced ambiguity example."
+    },
+    {
+      "asset": "content/posts/ai/jev-decision-layer/assets/jev-execution-contract.webp",
+      "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-09db1a45-333e-45f9-a642-cc897315baae.png",
+      "prompt": "docs/image-generation/jev-execution-contract-20260929-prompt.txt",
+      "edit_prompt": "docs/image-generation/jev-execution-contract-20260929-edit-prompt.txt",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "187524452ae77296b3494a9642cf8b2e6599e8be3b604bfde087c2ee1fe9bcb8",
+      "review": "Verified observation/request binding, validation before submission, explicit stale rejection and unknown-outcome inspection branch. Edited Execute once to Submit action to avoid implying exactly-once physical execution."
+    },
+    {
+      "asset": "content/posts/ai/jev-decision-layer/assets/jev-decision-loop-v2.webp",
+      "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-7e3943a5-3626-423a-9746-c08b420c23f6.png",
+      "prompt": "docs/image-generation/jev-decision-loop-20260929-edit-prompt.txt",
+      "input": "content/posts/ai/jev-decision-layer/assets/jev-decision-loop.webp",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "sha256": "fb4e403be2643b660187d79198be179f77c39887c369a81de4bcb8a8d7e087aa",
+      "review": "Accepted after comparing every arrow and label with the original; Jev-to-gate edge now includes confidence. Original preserved."
+    }
+  ]
+}

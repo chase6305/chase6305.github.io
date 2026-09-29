@@ -1,0 +1,41 @@
+.jev-routing-lab {
+  --routing-border: #cbd9e8;
+  --routing-bg: #f5f9ff;
+  --routing-text: #25374d;
+  margin: 1.8rem 0;
+  padding: 1.25rem;
+  border: 1px solid var(--routing-border);
+  border-radius: 12px;
+  background: var(--routing-bg);
+  color: var(--routing-text);
+  font-size: .92rem;
+}
+.dark .jev-routing-lab {
+  --routing-border: #405069;
+  --routing-bg: #162131;
+  --routing-text: #e0e8f3;
+}
+.jev-routing-lab [hidden] { display: none !important; }
+.jev-routing-lab p { margin: .65rem 0; }
+.jev-routing-lab .jev-routing-lab__title { margin-top: 0; font-size: 1.05rem; }
+.jev-routing-lab__form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1rem 0; }
+.jev-routing-lab__form label { min-width: 0; font-weight: 600; }
+.jev-routing-lab__form label:first-child { grid-column: 1 / -1; }
+.jev-routing-lab__form output { float: right; font-weight: 400; font-variant-numeric: tabular-nums; }
+.jev-routing-lab__form input, .jev-routing-lab__form select { display: block; width: 100%; margin-top: .5rem; accent-color: #397bbc; }
+.jev-routing-lab__form input[type="range"] { min-height: 32px; cursor: pointer; }
+.jev-routing-lab__form select, .jev-routing-lab button { padding: .45rem .6rem; border: 1px solid var(--routing-border); border-radius: 6px; color: var(--routing-text); background: var(--routing-bg); font: inherit; }
+.jev-routing-lab__form select, .jev-routing-lab button { min-height: 44px; }
+.jev-routing-lab button { cursor: pointer; text-align: left; }
+.jev-routing-lab :focus-visible { outline: 2px solid #4388c9; outline-offset: 3px; }
+.jev-routing-lab__metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; margin: 1rem 0; }
+.jev-routing-lab__metrics > div { padding: .7rem; border: 1px solid var(--routing-border); border-radius: 8px; font-size: .82rem; }
+.jev-routing-lab__metrics output { display: block; margin-top: .3rem; font-weight: 650; font-size: 1rem; font-variant-numeric: tabular-nums; }
+.jev-routing-lab__comparison { font-weight: 600; }
+.jev-routing-lab__limits { font-size: .82rem; }
+@media (max-width: 540px) {
+  .jev-routing-lab { padding: .8rem; }
+  .jev-routing-lab__form, .jev-routing-lab__metrics { grid-template-columns: minmax(0, 1fr); }
+  .jev-routing-lab__metrics > div { display: flex; justify-content: space-between; gap: .5rem; align-items: baseline; }
+  .jev-routing-lab__metrics output { margin: 0; font-size: .92rem; }
+}

@@ -1,7 +1,7 @@
 ---
 title: '强化学习基础'
 date: 2025-12-08
-lastmod: 2026-09-28
+lastmod: 2026-09-29
 draft: false
 tags: ["Reinforcement Learning", "Artificial Intelligence"]
 categories: ["人工智能"]
@@ -1836,27 +1836,27 @@ $$
 
 令 d 表示真正终止，下一步动作 a′ 从当前策略新采样：
 
-$
+$$
 y=r+\gamma(1-d)\left[
 \min_{j=1,2}Q_{\bar\theta_j}(s',a')
 -\alpha\log\pi_\phi(a'\mid s')
 \right].
-$
+$$
 
 两个 Q 网络分别回归该停止梯度的目标：
 
-$
+$$
 L_{Q_i}=\mathbb E\left[(Q_{\theta_i}(s,a)-y)^2\right].
-$
+$$
 
 策略通过重参数化动作最小化：
 
-$
+$$
 L_\pi=\mathbb E_{s,\epsilon}\left[
 \alpha\log\pi_\phi(a_\phi(s,\epsilon)\mid s)
 -\min_i Q_{\theta_i}(s,a_\phi(s,\epsilon))
 \right].
-$
+$$
 
 不要把“固定 α=1 的早期推导”“自适应温度”和“移除独立 V 网络”的公式拼成一个含义不明的实现。参见 [SAC 算法说明](https://spinningup.openai.com/en/latest/algorithms/sac.html)。
 
@@ -1864,12 +1864,12 @@ $
 
 设 u 为高斯样本，a=c+b⊙tanh(u)，其中 b=(high−low)/2 为正尺度，c=(high+low)/2 为中心。其 log-probability 为：
 
-$
+$$
 \log\pi(a\mid s)=\sum_i\left[
 \log\mathcal N(u_i;\mu_i,\sigma_i^2)
 -\log b_i-\log(1-\tanh^2u_i)
 \right].
-$
+$$
 
 下面仅测试采样、密度变换和梯度，不是完整 SAC 训练。softplus 写法避免直接计算接近零的 1−tanh²(u)。
 

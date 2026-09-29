@@ -1,0 +1,42 @@
+{
+  "scope": "Constructed hypotheses and assumed likelihoods; not GEN-1.5 probabilities or a trained task recognizer.",
+  "hypotheses": [
+    "left container",
+    "blue container",
+    "old absolute position"
+  ],
+  "prior": [
+    0.3333333333333333,
+    0.3333333333333333,
+    0.3333333333333333
+  ],
+  "ambiguous_posterior": [
+    0.3333333333333333,
+    0.3333333333333333,
+    0.3333333333333333
+  ],
+  "new_evidence_posterior": [
+    0.04761904761904762,
+    0.9047619047619048,
+    0.04761904761904762
+  ],
+  "prior_entropy_bits": 1.584962500721156,
+  "new_evidence_entropy_bits": 0.5489544344250401,
+  "repeat_counted_as_independent_posterior": [
+    0.002754820936639119,
+    0.9944903581267218,
+    0.002754820936639119
+  ],
+  "expected_information_bits": {
+    "redundant_setup": 2.220446049250313e-16,
+    "distinguishing_setup": 0.6476710982595348
+  },
+  "checks": [
+    "uninformative evidence",
+    "Bayes normalization",
+    "entropy bounds",
+    "permutation invariance",
+    "perfect identification",
+    "invalid input rejection"
+  ]
+}

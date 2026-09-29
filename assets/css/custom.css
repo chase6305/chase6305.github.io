@@ -113,6 +113,8 @@ body {
 }
 
 .content table {
+  /* Keep positioned math inside the table's horizontal scroll container. */
+  position: relative;
   display: block;
   width: max-content;
   max-width: 100%;

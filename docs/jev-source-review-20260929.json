@@ -1,0 +1,133 @@
+{
+  "checked_on": "2026-09-29",
+  "community_revision": "f08de2e4e20d6cd69fea9c57ac1062c3ef510f1e",
+  "claims": [
+    {
+      "topic": "SayCan comparison",
+      "claim": "SayCan combines a language-model skill score with a skill-affordance/value-function score when selecting an executable skill.",
+      "source": "https://say-can.github.io/",
+      "scope": "Historical architecture comparison. Jev integration is an independent proposed experiment, not a measured SayCan replacement or automatic physical-success guarantee.",
+      "snapshot_sha256": "efa67e52e79f4792d8e673ae04fffed3155037e8bb094d7ce3d3da7161993a90"
+    },
+    {
+      "topic": "Navigation metrics",
+      "claim": "SR averages episode success; SPL averages success weighted by shortest-path versus actual-path efficiency, including failures in the denominator.",
+      "source": "https://arxiv.org/pdf/1807.06757",
+      "scope": "Original navigation evaluation definition, section 4. The two-episode 50 percent SR / 37.5 percent SPL example is constructed independently and does not validate the supplied NavJev result.",
+      "snapshot_sha256": "340604b15502d321510d74c2e506963eca31520afbc6d46ff2c00c63702dad79"
+    },
+    {
+      "topic": "Model input and version",
+      "claim": "Jev 1.13.0 accepts text/structured textual state, not images; aliases can move.",
+      "source": "https://docs.typesafe.ai/models",
+      "scope": "Provider contract; parameter count and full training recipe not established. The current service describes request-level customization rather than customer fine-tuning or LoRA.",
+      "snapshot_sha256": "2f808305a59eff809cdb74f13344b6583579a200af38495ae3017335eb584e9f"
+    },
+    {
+      "topic": "Choice, Score, Noul",
+      "claim": "Choice returns a selected ID and probabilities; Score is the expected rubric index; Noul has no separate confidence.",
+      "source": "https://api.typesafe.ai/openapi.json",
+      "scope": "Public API schema; structure does not establish task correctness.",
+      "snapshot_sha256": "a191f8a7df6bd6fedced8120dd0fd106f88575d1d1c8360d08900a6c7c0360d5"
+    },
+    {
+      "topic": "Confidence demo",
+      "claim": "The documentation demo approximates three-option confidence with (3 * maximum probability - 1) / 2.",
+      "source": "https://docs.typesafe.ai/confidence",
+      "scope": "Explicitly an approximation in the demo, not a guaranteed backend formula for all primitives.",
+      "snapshot_sha256": "97dafe98b77979906a2ad456013dd85a70dcecd109d0644b096817d910997ea5"
+    },
+    {
+      "topic": "RLCD",
+      "claim": "Provider names Reinforcement Learning for Calibrated Decisions as its training direction.",
+      "source": "https://docs.typesafe.ai/introduction/machine-learning-primer",
+      "scope": "No reconstructed PPO/GRPO recipe, parameter count or claim that Brier is the disclosed Jev loss.",
+      "snapshot_sha256": "45e6a22bc175f2ce1c404271dd26559179a6f6a83bde2dfcdbd963dbc1649551"
+    },
+    {
+      "topic": "Jev-Mobile protocol",
+      "claim": "VLM delegates goals, Jev selects fresh-tree candidates, DONE/BLOCKED return control, history contains submitted actions.",
+      "source": "https://arxiv.org/html/2609.30186v1#S3",
+      "scope": "Mobile GUI; no new training, learned router or visual-coordinate fallback in this version.",
+      "snapshot_sha256": "ddc55d413582d0a17eec43bb37ffaeb348c4228b434694cc653853de2b32d33a"
+    },
+    {
+      "topic": "Jev-Mobile metrics",
+      "claim": "Success 84/78/79 percent; mean successful-trajectory time 197.21/162.63/132.67 s; mean all-model successful-trajectory cost 0.273694/0.193207/0.072744 USD.",
+      "source": "https://arxiv.org/html/2609.30186v1#S6",
+      "scope": "Time and cost conditioned on success; success cohorts may differ; 5 percentage-point success reduction versus step-wise VLM.",
+      "snapshot_sha256": "ddc55d413582d0a17eec43bb37ffaeb348c4228b434694cc653853de2b32d33a"
+    },
+    {
+      "topic": "Executor cost denominator",
+      "claim": "0.013091 USD is the Jev executor cost summed over successful trajectories.",
+      "source": "https://arxiv.org/html/2609.30186v1#S5.SS2",
+      "scope": "Neither per-task nor all-model cost.",
+      "snapshot_sha256": "ddc55d413582d0a17eec43bb37ffaeb348c4228b434694cc653853de2b32d33a"
+    },
+    {
+      "topic": "Community physical claim",
+      "claim": "Published drawer and microwave comparisons are simulation development runs, not full LIBERO or physical-robot validation.",
+      "source": "https://github.com/FBddcz/embodied-jev/blob/f08de2e4e20d6cd69fea9c57ac1062c3ef510f1e/docs/results/libero-vision/RESULTS.md",
+      "scope": "Four development records; microwave hybrid failure retained; known failure cost is a lower bound.",
+      "snapshot_sha256": "5479ea9ab96d67cbae706094cab77a6373f27df38c2405f7c59e8e093c56d6ff"
+    },
+    {
+      "topic": "Community protocol revision",
+      "claim": "A newer candidate supervisor exists in the pinned code, while quoted development results use the earlier protocol.",
+      "source": "https://github.com/FBddcz/embodied-jev/blob/f08de2e4e20d6cd69fea9c57ac1062c3ef510f1e/src/embodied_jev/libero_supervisor.py",
+      "scope": "Code availability is separate from validated paired outcomes.",
+      "snapshot_sha256": "9e1ffc6c7fcf2742c72926dc9f920c71b48cb865b338a15b0859d86d5bfde49a"
+    },
+    {
+      "topic": "Choice inconsistency",
+      "claim": "Community diagnostics captured a selected choice below the largest reported probability.",
+      "source": "https://github.com/FBddcz/embodied-jev/blob/f08de2e4e20d6cd69fea9c57ac1062c3ef510f1e/docs/JEV_EVALUATION.md",
+      "scope": "Community observation, not a universal model property. Article strict rejection is its own policy, not silent argmax replacement.",
+      "snapshot_sha256": "54316ed548743280c1e6fc7049e533517d637a5bd7dede87aae9f348b2c9c450"
+    },
+    {
+      "topic": "NavJev",
+      "claim": "No primary source was located for the supplied NavJev name and 27.0/22.4/0.65 numbers.",
+      "source": null,
+      "scope": "Unverified, not asserted nonexistent. Repeated exact-name searches included unrelated Jev-generated paper annotations, which were not treated as navigation evidence."
+    },
+    {
+      "topic": "Asynchronous behavior trees",
+      "claim": "A running asynchronous node checks existing work on subsequent ticks and handles halt/cancel.",
+      "source": "https://behaviortree.dev/docs/guides/asynchronous_nodes/",
+      "scope": "Jev timing table is an independent integration example."
+    },
+    {
+      "topic": "Calibration",
+      "claim": "Probability calibration, bin-based ECE and subgroup checks are distinct from distribution concentration.",
+      "source": "https://proceedings.mlr.press/v70/guo17a.html",
+      "scope": "Brier derivation and subgroup counts are independently constructed examples, not Jev measurements."
+    },
+    {
+      "topic": "Wilson arithmetic",
+      "claim": "A hypothetical fixed-rule 1/20 error count yields roughly 0.9 to 23.6 percent at 95 percent Wilson confidence.",
+      "source": "https://www.itl.nist.gov/div898/handbook/prc/section2/prc241.htm",
+      "scope": "Independent identically distributed Bernoulli illustration; not an interval claim for hand-constructed records or selected thresholds."
+    },
+    {
+      "topic": "Routing lab",
+      "claim": "200 constructed records, validation-only threshold 0.8, accepted error 5/10/25 percent across groups; shifted threshold 0.9 gives 40 percent.",
+      "source": "content/posts/ai/jev-decision-layer/routing_lab.py",
+      "scope": "No model calls, sampled robot trials or final-task-success estimate. 909 browser/Python combinations checked."
+    },
+    {
+      "topic": "Timing",
+      "claim": "Observation age, request age and response round-trip latency have separate definitions.",
+      "source": "content/posts/ai/jev-decision-layer/decision_gate.py",
+      "scope": "Same monotonic clock; request/observation metadata belongs to caller. Toy timing and gate settings are not deployment parameters."
+    },
+    {
+      "topic": "Community layer accounting",
+      "claim": "The displayed successful hybrid drawer run has 12 planner and 63 Jev requests; costs sum to 0.394002942 USD, of which Jev is about 1.57 percent. Jev request p50/p95 are about 1.07/10.60 seconds.",
+      "source": "https://github.com/FBddcz/embodied-jev/blob/f08de2e4e20d6cd69fea9c57ac1062c3ef510f1e/docs/results/libero-vision/COSTS.json",
+      "snapshot_sha256": "80116bc13508e74661422ffca9e49f261bf03e41e13728a7240b0c0d137d47a1",
+      "scope": "Project frozen-price estimates and network timings from one development run, not a controlled replication of provider latency claims or current price guidance."
+    }
+  ]
+}

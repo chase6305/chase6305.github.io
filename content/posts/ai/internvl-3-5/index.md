@@ -1,18 +1,19 @@
 ---
 title: "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
 date: 2026-09-05
-lastmod: 2026-09-28
+lastmod: 2026-09-29
 draft: false
 tags: ["InternVL", "VLM", "Multimodal", "Reinforcement Learning", "Paper Notes"]
 categories: ["人工智能"]
 authors: ["chase"]
-summary: "从 InternVL 3.5 官方模型集合出发，详解视觉 token、MPO/GSPO、ViCO 路由、检查点选择、显存预算与可验证推理流程。"
-description: "从 InternVL 3.5 官方模型集合出发，详解视觉 token、MPO/GSPO、ViCO 路由、检查点选择、显存预算与可验证推理流程。"
+summary: "从视觉 token 到答案监督与梯度路径，详解 InternVL 3.5 的 CPT、SFT、MPO/GSPO、ViCO 与部署预算，并以固定版本和可运行算例核对机制。"
+description: "从视觉 token 到答案监督与梯度路径，详解 InternVL 3.5 的 CPT、SFT、MPO/GSPO、ViCO 与部署预算，并以固定版本和可运行算例核对机制。"
 contentLanguage: "zh-CN"
 math: true
 toc: true
+imageZoom: true
 reading_prerequisites: "Transformer、视觉编码器与强化学习基础"
-reading_focus: "沿像素到 token、预训练到 RL、单次推理到在线服务三条链阅读，区分模型规模、训练阶段和权重格式。"
+reading_focus: "沿像素、标签错位、梯度与后训练目标逐步追踪计算，再用参数与上下文账本解释部署成本。"
 related_posts:
   - "/posts/ai/distributed-training-memory"
   - "/posts/ai/transformer-attention"
@@ -46,7 +47,10 @@ InternVL 3.5 可以沿三个问题理解：**图像怎样变成语言模型能�
 
 这些设计并不是一个统一的“加速开关”。更强的后训练主要改变模型分布；视觉压缩主要改变送入 LLM 的序列长度；服务解耦改变资源调度。它们可以组合，但生效条件不同。[作者发布说明](https://internvl.github.io/blog/2025-08-26-InternVL-3.5/)
 
-![InternVL 3.5 将图像分块编码，再通过像素重排和投影进入语言模型，Flash 版额外选择视觉 token 压缩分支](assets/visual-token-pipeline.webp "图 1：图中的小方格仅示意特征布局；标准版每个 tile 的视觉表示与 Flash 的 256/64-token 路由分开绘制。")
+<figure class="article-figure" id="fig-visual-token-pipeline">
+  {{< post-image src="assets/visual-token-pipeline.webp" alt="InternVL 3.5 将图像分块编码，再通过像素重排和投影进入语言模型，Flash 版额外选择视觉 token 压缩分支" >}}
+  <figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text"><strong>从像素到视觉 token。</strong>小方格表示特征布局；标准版每个 tile 的视觉表示与 Flash 的 256/64-token 路由分开绘制。 <a href="assets/visual-token-pipeline.webp">查看原图</a></span></figcaption>
+</figure>
 
 ## 2. 模型集合怎么选：规模、阶段、格式是三个维度
 
@@ -65,7 +69,10 @@ InternVL 3.5 可以沿三个问题理解：**图像怎样变成语言模型能�
 
 注意“无后缀”的意思是没有 `-Pretrained/-Instruct/-MPO` 这类**阶段后缀**，而不是说 `-HF` 权重质量更低。正式选择时要同时确认模型卡中的训练路径、架构和格式。[阶段对照来源](https://internvl.github.io/blog/2025-08-26-InternVL-3.5/)
 
-![InternVL 3.5 的 CPT、SFT、MPO、GSPO 与 Flash 训练分支及检查点名称之间的对应关系](assets/cascade-rl-training.webp "图 2：Cascade RL 包括 MPO 与 GSPO；ViCO 的一致性训练及路由器训练形成 Flash 变体，-HF 只描述格式。")
+<figure class="article-figure" id="fig-cascade-rl-training">
+  {{< post-image src="assets/cascade-rl-training.webp" alt="InternVL 3.5 的 CPT、SFT、MPO、GSPO 与 Flash 训练分支及检查点名称之间的对应关系" >}}
+  <figcaption><span class="article-figure__number">图 2</span><span class="article-figure__text"><strong>训练阶段与发布格式。</strong>Cascade RL 包括 MPO 与 GSPO；ViCO 的一致性训练及路由器训练形成 Flash 变体，-HF 只描述格式。 <a href="assets/cascade-rl-training.webp">查看原图</a></span></figcaption>
+</figure>
 
 ### 2.2 参数规模与骨干对应
 
@@ -246,6 +253,100 @@ $$
 用链式法则理解：答案 loss 依赖语言模型，语言模型依赖视觉投影，因此图像占位本身不计 loss，并不阻止梯度回到投影层或视觉编码器。能否更新这些模块，取决于参数是否可训练、计算图是否连通，以及训练器是否保留了这条路径。[PyTorch Autograd 规则](https://docs.pytorch.org/docs/2.8/notes/autograd.html#setting-requires-grad)
 
 SFT 在选定的答案位置学习示范；后续 MPO 和 GSPO 则进一步引入偏好或奖励信号。排查训练效果前，应先核对监督位置和梯度路径。
+
+### 5.4 一条看图问答样本，怎样变成监督位置 {#supervision-alignment}
+
+用一个极短的自拟例子，把视觉、问题、答案和 padding 放在同一个序列里。真实图像通常占很多位置，这里缩成两个视觉位置；真实中文分词也不一定一字一个 token，下表中的字只代表抽象 token。
+
+| 序列位置 | 输入内容 | 尚未错位的 `labels` | 这个位置的 logits 应预测什么 |
+| --- | --- | --- | --- |
+| 0、1 | 两个视觉向量 | `-100` | 该算例不监督对应的下一个前缀 token |
+| 2 | 问题 token | `-100` | 下一个问题 token，忽略其 loss |
+| 3 | 最后一个问题／回答起始标记 | `-100` | 第一个答案 token“蓝” |
+| 4 | 答案“蓝” | “蓝”的 ID | 下一个答案 token“色” |
+| 5 | 答案“色” | “色”的 ID | 结束符 EOS |
+| 6 | EOS | EOS 的 ID | padding，忽略其 loss |
+| 7 | padding | `-100` | 不使用 |
+{.table-readable}
+
+为什么位置 3 的标签是 `-100`，它的 logits 却参与答案 loss？因为这里的 `labels` 按输入位置存放，因果语言模型训练时还要进行一次错位：**位置 $i$ 的 logits 与位置 $i+1$ 的标签比较**。忽略的是“把问题本身作为待预测目标”，不是“问题末尾的隐藏状态永远不计算输出损失”。
+
+在这种显式错位的写法下，代码核心是：
+
+```python
+# logits: [B, L, V]; labels: [B, L]
+prediction = logits[:, :-1, :].contiguous()
+next_label = labels[:, 1:].contiguous()
+loss = torch.nn.functional.cross_entropy(
+    prediction.reshape(-1, prediction.shape[-1]),
+    next_label.reshape(-1),
+    ignore_index=-100,
+)
+```
+
+如果调用的模型已经在内部完成 label shift，就直接传原始 labels，**不能在外面再错位一次**。是否由模型还是训练器负责，应查看所用版本的 loss 实现与数据整理器；图像占位展开后，还要同步核对长度。
+
+训练时，前面已经出现的正确答案 token 可以作为后续 token 的输入，这叫 teacher forcing。因果掩码阻止位置 3 读取位置 4 的“蓝”，所以它预测第一个答案时不能偷看该答案；位置 4 预测“色”时则可以读取已经给出的“蓝”。推理时没有完整正确答案前缀，要把模型自己刚生成的 token 接回序列。这是训练序列和逐步解码之间的接口差异。
+
+<figure class="article-figure" id="fig-supervision-path">
+  {{< post-image src="assets/supervision-path.webp" alt="视觉编码和问题作为因果语言模型上下文，错位后的答案标签进入交叉熵，答案损失通过可微计算回传到语言、投影和视觉模块" >}}
+  <figcaption><span class="article-figure__number">图 3</span><span class="article-figure__text"><strong>可读取的上下文与受监督的目标。</strong>标签行展示错位前的排列；损失使用下一个位置的标签。虚线表示答案损失对模块的梯度依赖，具体哪些参数更新由训练阶段决定；整数标签不参与反向求导。 <a href="assets/supervision-path.webp">查看原图</a></span></figcaption>
+</figure>
+
+### 5.5 冻结 LLM 与把 LLM 放进 `no_grad` 有何不同 {#supervision-gradient-check}
+
+假设只想训练视觉投影，语言模型参数保持不变。把计算简写为
+
+$$
+z=P_\phi(V_\psi(I)),\qquad
+L=\ell(F_\theta(z,Q),Y).
+$$
+
+即使 $\theta$ 不更新，训练投影仍然需要：
+
+$$
+\frac{\partial L}{\partial\phi}
+=\frac{\partial L}{\partial F}
+\frac{\partial F}{\partial z}
+\frac{\partial z}{\partial\phi}.
+$$
+
+冻结语言模型参数只是省去其参数梯度，不会自动删除 $\partial F/\partial z$；把整个语言模型前向放进 `torch.no_grad()`，则可能切断这条连接。类似地，若视觉编码器完全冻结、其输入也无需梯度，将视觉编码放在 `no_grad` 中与将仍须传递输入梯度的语言模型放进去，后果不同。[PyTorch 的梯度模式与冻结规则](https://docs.pytorch.org/docs/2.8/notes/autograd.html#locally-disabling-gradient-computation)
+
+随文 [supervision_check.py](supervision_check.py) 用一个极小的因果注意力模型实际验证这个区别，不加载 InternVL 权重。在 CPU 上运行：
+
+```bash
+python3 -m venv .venv-supervision
+.venv-supervision/bin/pip install torch
+.venv-supervision/bin/python supervision_check.py \
+  --output supervision-results.json
+```
+
+脚本固定相同参数与样本，只改变冻结、可见性或计算图设置，得到以下 [实际输出](assets/supervision-results.json)：
+
+| 设置 | 投影层梯度范数 | 语言模块参数梯度 | 说明 |
+| --- | --- | --- | --- |
+| 所有模块可训练，视觉标签忽略 | 约 0.05695 | 非零 | 没有视觉预测目标，仍可通过答案 loss 学习 |
+| 冻结语言模块 | 约 0.05695 | 不分配 | 输入梯度仍穿过语言计算 |
+| 语言前向处于 `no_grad` | 0 | 不分配 | 该例唯一的 loss 路径已被切断 |
+| 答案无法注意到视觉前缀 | 0 | 非零 | 模型仍能学文字，但此处已无图像依赖 |
+
+它还独立索引位置 3、4、5 的答案预测，核对一次 label shift；增加九个 masked padding 后，loss 仍约为 2.9159205。这里的绝对数值由随机小网络决定，没有模型质量含义，关键是设置改变前后的不变量。脚本将“模块是否收到梯度”和“梯度是否正确归约”分开检查，避免看到一个非零 loss 就认为训练链正常。
+
+### 5.6 同一视觉问题，在四个训练阶段提供什么信号
+
+以下仍使用自拟的“杯子是什么颜色”问题，帮助串起训练流程，未声称官方语料包含这条记录：
+
+| 阶段 | 一条记录需要什么 | 模型得到的直接信号 | 不能由此保证什么 |
+| --- | --- | --- | --- |
+| CPT | 图文或文本序列及其目标位置 | 延续已有知识并建立跨模态联系 | 数据混合本身不保证细粒度识别正确 |
+| SFT | 用户问题与规范回答，如“蓝色” | 在约定答案位置提高目标 token 概率 | 复现格式不等于视觉依据充分 |
+| 离线 MPO | 同问题的偏好回答与相关质量信号 | 学习相对偏好，并结合质量与生成目标 | 较优候选也可能含错误 |
+| 在线 GSPO | 当前策略的一组回答及奖励 | 相对当前模型的组内表现调整策略 | 奖励若错，优化方向也可能错 |
+
+因此，要排查“格式正确却总认错颜色”，先检查图像是否正确送入、目标是否对齐与视觉梯度是否连通，再检查语料、偏好和奖励。单纯增加后训练步数，不会自动修复被屏蔽的视觉输入。
+
+前面的 square averaging 也不只是打印 loss 的方式。脚本令两个样本的平均损失分别为 $2\theta$ 与 $\theta$，长度仍为 100 与 400：全局归约的梯度是 $4/3$；若两个 Rank 各归约一个样本再平均，梯度是 $1.5$。这是标量自动微分算例，没有启动 DDP，但明确展示了**错误的归一化范围会改变更新量**。
 
 ## 6. Cascade RL：为什么先 MPO，再 GSPO
 
@@ -754,10 +855,12 @@ python3 token_budget.py
 - 能否解释 tile、ViT patch、视觉 token 的区别，并独立算出 12 个 tile 加一个缩略图的标准视觉 token 数？同时说明它还没包含哪些上下文开销。
 - 能否区分 Pretrained、Instruct、MPO、无阶段后缀、HF 与 Flash，并说明 Flash 模型与 FlashAttention 为什么不是同一件事？
 - 运行离线预算脚本，验证半数 tile 使用 64-token 分支时节省 37.5%；解释为什么这个比例不能直接变成实际吞吐提升。
-- 对照一次评测的分辨率、解码预算、硬件和数据 split，分别描述质量与效率；不把生成示意图、CPU 算例或权重内存下限当成模型实测结果。
+- 对照一次评测的分辨率、解码预算、硬件和数据 split，分别描述质量与效率；不把概念图、CPU 算例或权重内存下限当成模型实测结果。
 - 能否追踪 8B-HF 的张量形状，核对视觉占位数，并分别计算正负优势下的 clipped surrogate？用 prepare-only 模式检查输入，不把它当成完整模型推理。
 - 能否说明 DvD 中视觉服务与语言服务各自承担什么、视觉特征如何传输，并解释 4.05× 吞吐比需要哪些条件？
 - 能否说明 Thinking 模式官方推荐的解码设置与 TTS 的适用范围，并区分单次 Thinking 与 Best-of-N 的开销？
+- 能否手算一次 label shift，并解释为什么最后一个问题位置可以预测第一个答案 token？
+- 运行梯度检查，说明冻结语言模型参数与用 `no_grad` 包住其前向为什么不能互换。
 
 <details>
 <summary>展开核对：token、Loss 与显存算例</summary>
@@ -766,6 +869,8 @@ python3 token_budget.py
 - 12 个 tile 中一半走 64-token 分支：`6×256+6×64=1920`，相比 3072 减少 37.5%。
 - 长度 100、400 的两个样本，在 square averaging 下总权重为 `1/3、2/3`；若各自平均 loss 为 2、1，归约后为 `4/3`。
 - 第 10.4 节的 8192-token 缓存占 1.125 GiB；约 17.01 GiB 的权重加 KV 小计仍未包含激活与运行时开销。
+- 未错位标签的第 4 个位置是首个答案，因而由第 3 个位置的 logits 预测；损失只错位一次。
+- 冻结语言模型保留输入梯度；小模型中投影梯度仍约为 0.05695，`no_grad` 则切断这条路径。
 
 </details>
 
