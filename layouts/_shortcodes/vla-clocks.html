@@ -1,0 +1,53 @@
+{{- $id := printf "vla-clocks-%d" .Ordinal -}}
+{{- $css := resources.Get "css/vla-clocks.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/vla-clocks.js" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section class="vla-clocks" data-vla-clocks aria-label="动作块与采样时钟计算器">
+  <p class="vla-clocks__title"><strong>动手改：50 步、10 次、50 Hz 各管什么？</strong></p>
+  <p>先只把采样次数从 10 改成 5，观察四个时间结果；再改变执行长度或控制频率。</p>
+  <p data-clocks-fallback>默认例子：50 行动作，执行前 25 行，控制频率 50 Hz。每行间隔 20 ms，预测覆盖 1 秒，执行前缀用 0.5 秒；忽略开销时约每秒重新规划 2 次。内部采样 10 次不改变这些时间。</p>
+  <div data-clocks-interactive hidden>
+    <div class="vla-clocks__presets" aria-label="载入时钟算例">
+      <button type="button" data-clocks-preset="default">50 Hz，执行 25 步</button>
+      <button type="button" data-clocks-preset="slower">20 Hz，执行 16 步</button>
+      <button type="button" data-clocks-preset="short">50 Hz，执行 5 步</button>
+    </div>
+    <form novalidate>
+      <div class="vla-clocks__fields">
+        <label for="{{ $id }}-horizon">预测长度 H（步）
+          <input id="{{ $id }}-horizon" name="horizon" type="number" min="1" max="100" step="1" value="50" inputmode="numeric" required>
+          <span>动作表一共有多少行</span>
+        </label>
+        <label for="{{ $id }}-execute">执行长度 E（步）
+          <input id="{{ $id }}-execute" name="execute" type="number" min="1" max="100" step="1" value="25" inputmode="numeric" required>
+          <span>这轮先执行前多少行，不能超过 H</span>
+        </label>
+        <label for="{{ $id }}-frequency">控制频率（Hz）
+          <input id="{{ $id }}-frequency" name="frequency" type="number" min="1" max="200" step="any" value="50" inputmode="decimal" required>
+          <span>执行接口每秒消费多少行动作</span>
+        </label>
+        <label for="{{ $id }}-sampling">内部采样 N（次）
+          <input id="{{ $id }}-sampling" name="sampling" type="number" min="1" max="100" step="1" value="10" inputmode="numeric" required>
+          <span>生成一个块时，整张表更新多少次</span>
+        </label>
+      </div>
+    </form>
+    <p class="vla-clocks__error" data-clocks-error role="alert" hidden></p>
+    <div class="vla-clocks__results" aria-live="polite" aria-atomic="true">
+      <div><span>每行动作的间隔</span><output data-clocks-value="period"></output></div>
+      <div><span>预测覆盖时长 H / f</span><output data-clocks-value="coverage"></output></div>
+      <div><span>前缀执行时长 E / f</span><output data-clocks-value="prefix"></output></div>
+      <div><span>忽略开销的重规划频率</span><output data-clocks-value="replans"></output></div>
+    </div>
+    <div class="vla-clocks__diagrams" data-clocks-diagrams>
+      <p><strong>模型内部：每个格子是一次整表更新</strong></p>
+      <div class="vla-clocks__strip vla-clocks__strip--sampling" data-clocks-strip="sampling" aria-hidden="true"></div>
+      <p class="vla-clocks__detail" data-clocks-generation></p>
+      <p><strong>执行接口：每个格子是一行动作</strong></p>
+      <div class="vla-clocks__strip vla-clocks__strip--actions" data-clocks-strip="actions" aria-hidden="true"></div>
+      <p class="vla-clocks__detail" data-clocks-execution></p>
+    </div>
+  </div>
+  <p class="vla-clocks__limits">按完整控制周期计算，未计推理、通信、排队与调度耗时。实际模型延迟须测量；修改 N 会改变计算工作量，不能由此直接算出真实闭环频率或任务成功率。</p>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

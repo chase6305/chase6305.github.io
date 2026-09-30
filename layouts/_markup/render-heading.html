@@ -4,10 +4,15 @@
   {{- $title := .Text | replaceRE `</?a\b[^>]*>` "" | replaceRE `\s+id="[^"]*"` "" -}}
   {{- .Page.Store.SetInMap "blogTocMathTitles" .Anchor $title -}}
 {{- end -}}
-<h{{ .Level }} data-hextra-search-id="{{ .Anchor | safeURL }}" {{- with .Attributes.class }} class="{{ . }}" {{- end }}>
+{{- /* A multiline title needs its anchor at the heading start, not after its text.
+  Opt in per page; existing pages retain their current anchor markup. */ -}}
+{{- $anchorAtStart := and (gt .Level 1) (.Page.Params.headingAnchorAtStart | default false) -}}
+<h{{ .Level }} data-hextra-search-id="{{ .Anchor | safeURL }}" {{- with .Attributes.class }} class="{{ . }}" {{- end }}{{ if $anchorAtStart }} id="{{ .Anchor | safeURL }}" style="scroll-margin-top: 6rem"{{ end }}>
   {{- .Text | safeHTML -}}
   {{- if gt .Level 1 -}}
-    <span class="hx:absolute hx:-mt-20" id="{{ .Anchor | safeURL }}"></span>
+    {{- if not $anchorAtStart -}}
+      <span class="hx:absolute hx:-mt-20" id="{{ .Anchor | safeURL }}"></span>
+    {{ end -}}
     <a href="#{{ .Anchor | safeURL }}" class="subheading-anchor" aria-label="{{ (T "permalinkLabel") | default "Permalink for this section" }}"></a>
   {{- end -}}
 </h{{ .Level }}>

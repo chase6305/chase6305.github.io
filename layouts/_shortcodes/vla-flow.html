@@ -1,0 +1,53 @@
+{{- $id := printf "vla-flow-%d" .Ordinal -}}
+{{- $css := resources.Get "css/vla-flow.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/vla-flow.js" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section class="vla-flow" data-vla-flow aria-label="解析双峰流场交互算例">
+  <p><strong>动手改：同一个流场，换个初始噪声会怎样？</strong></p>
+  <p>固定同一观测，目标动作是等概率的 −1 与 +1。先切换两个初值，再拖动查看进度，观察同一个速度场怎样给出不同结果。</p>
+  <p data-flow-fallback>固定 1,000 次 Euler 更新，从 s = 1 走到 0.02。初值 −0.2 与 +0.2 分别到达约 −0.960 与 +0.960；初值恰好为 0 时保持在对称中心。下方脚本可以复算这些结果。</p>
+  <div data-flow-interactive hidden>
+    <div class="vla-flow__presets">
+      <button type="button" data-flow-preset="-0.2">从 −0.2 开始</button>
+      <button type="button" data-flow-preset="0.2">从 +0.2 开始</button>
+      <button type="button" data-flow-preset="0">对称中心 0</button>
+    </div>
+    <div class="vla-flow__controls">
+      <div>
+        <label for="{{ $id }}-noise">初始噪声 <output data-flow-noise-label></output></label>
+        <input id="{{ $id }}-noise" name="flow-noise" type="range" min="-2" max="2" step="0.05" value="0.2">
+      </div>
+      <div>
+        <label for="{{ $id }}-progress">查看生成进度 <output data-flow-progress-label></output></label>
+        <input id="{{ $id }}-progress" name="flow-progress" type="range" min="0" max="100" step="1" value="50">
+      </div>
+    </div>
+    <svg viewBox="0 0 400 244" role="img" aria-labelledby="{{ $id }}-chart-title {{ $id }}-chart-description">
+      <title id="{{ $id }}-chart-title">同一解析流场的生成路径</title>
+      <desc id="{{ $id }}-chart-description" data-flow-chart-description></desc>
+      <path d="M46 22V190H378" class="vla-flow__axis" fill="none"/>
+      <path d="M46 67.818H378M46 144.182H378" class="vla-flow__mode" fill="none"/>
+      <text x="8" y="17">数值</text>
+      <text x="14" y="73">+1</text><text x="14" y="150">−1</text>
+      <text x="46" y="211" text-anchor="middle">1</text>
+      <text x="215.388" y="211" text-anchor="middle">0.5</text>
+      <text x="378" y="211" text-anchor="middle">0.02</text>
+      <text x="210" y="235" text-anchor="middle">流时间 s：噪声端 → 数据附近</text>
+      <path data-flow-path="full" class="vla-flow__full"/>
+      <path data-flow-path="visited" class="vla-flow__visited"/>
+      <rect width="8" height="8" data-flow-start class="vla-flow__point"/>
+      <circle r="5" data-flow-current class="vla-flow__point"/>
+    </svg>
+    <p class="vla-flow__detail">方块：起点；圆点：正在查看的位置；实线：已查看路径；虚线：后续路径。两条水平点线表示 −1、+1 两种目标模式。</p>
+    <div class="vla-flow__values" aria-live="polite" aria-atomic="true">
+      <div><span>当前流时间 s</span><output data-flow-value="s"></output></div>
+      <div><span>当前位置 x</span><output data-flow-value="x"></output></div>
+      <div><span>精确速度 v*</span><output data-flow-value="velocity"></output></div>
+      <div><span>在 s = 0.02 的结果</span><output data-flow-value="end"></output></div>
+    </div>
+    <p class="vla-flow__detail" data-flow-step></p>
+    <p class="vla-flow__detail" data-flow-note></p>
+  </div>
+  <p class="vla-flow__limits">使用本节的解析速度场，未训练网络。进度滑块只改变查看位置，计算始终使用 1,000 个小步；流时间与数值均不是机器人运动的秒或米。此积分预算用于算例，不是 π0 的推理设置。</p>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

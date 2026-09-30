@@ -1,0 +1,46 @@
+.vla-flow {
+  border: 1px solid var(--chase-border);
+  border-radius: 1rem;
+  background: var(--chase-surface);
+  color: var(--chase-text);
+  margin-block: 1.75rem;
+  padding: 1.25rem;
+  scroll-margin-top: 5rem;
+}
+.vla-flow [hidden] { display: none !important; }
+.content .vla-flow p { margin-block: .65rem; }
+.vla-flow__presets { display: flex; flex-wrap: wrap; gap: .5rem; margin-block: 1rem; }
+.vla-flow button {
+  min-height: 44px;
+  padding: .4rem .65rem;
+  border: 1px solid var(--chase-border);
+  border-radius: .5rem;
+  background: var(--chase-surface-strong);
+  color: var(--chase-accent);
+  font: inherit;
+  font-size: .85rem;
+  cursor: pointer;
+}
+.vla-flow__controls { display: grid; gap: .8rem; }
+.vla-flow label { display: flex; justify-content: space-between; gap: .5rem; font-size: .88rem; }
+.vla-flow input[type="range"] { width: 100%; min-height: 44px; accent-color: var(--chase-accent); }
+.vla-flow :is(button,input):focus-visible { outline: 2px solid var(--chase-accent); outline-offset: 3px; }
+.vla-flow svg { display: block; width: 100%; height: auto; margin-block: .75rem; }
+.vla-flow svg text { fill: var(--chase-text); font: 15px sans-serif; }
+.vla-flow__axis { stroke: var(--chase-muted); stroke-width: 1; }
+.vla-flow__mode { stroke: var(--chase-muted); stroke-width: 1; stroke-dasharray: 3 4; }
+.vla-flow__full { fill: none; stroke: var(--chase-muted); stroke-width: 2; stroke-dasharray: 5 4; }
+.vla-flow__visited { fill: none; stroke: var(--chase-accent); stroke-width: 3; }
+.vla-flow__point { fill: var(--chase-accent); stroke: var(--chase-surface); stroke-width: 1.5; }
+.vla-flow__values { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .6rem; }
+.vla-flow__values > div { border: 1px solid var(--chase-border); border-radius: .5rem; padding: .6rem; min-width: 0; }
+.vla-flow__values span { display: block; color: var(--chase-muted); font-size: .8rem; }
+.vla-flow__values output { display: block; font-weight: 650; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.vla-flow__detail { font-size: .82rem; overflow-wrap: anywhere; }
+.vla-flow__limits { border-top: 1px solid var(--chase-border); padding-top: .65rem; font-size: .82rem; }
+@media (max-width: 420px) {
+  .vla-flow { padding: .85rem; }
+  .vla-flow__values { grid-template-columns: minmax(0,1fr); }
+  .vla-flow__values > div { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+  .vla-flow__values output { font-size: .9rem; }
+}

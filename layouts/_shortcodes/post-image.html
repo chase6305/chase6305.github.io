@@ -1,1 +1,1 @@
-{{- partial "blog/image.html" (dict "Page" .Page "PageInner" .Page "PlainText" (.Get "alt") "Destination" (.Get "src") "Title" "" "Attributes" dict) -}}
+{{- partial "blog/image.html" (dict "Page" .Page "PageInner" .Page "PlainText" (.Get "alt") "Destination" (.Get "src") "Title" "" "Attributes" (dict "width" (.Get "width") "height" (.Get "height"))) -}}

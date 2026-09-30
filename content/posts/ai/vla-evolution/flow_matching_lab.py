@@ -1,6 +1,6 @@
 """Learn a conditional 1D flow on a known two-mode distribution.
 
-Python 3.10+, PyTorch; Matplotlib is optional for --figure. CPU only.
+Python 3.10+, PyTorch; Matplotlib for --figure or --figure-dir. CPU only.
 This is a small neural-network experiment, not a VLA, action controller, or
 reproduction of pi0. Training uses uniform flow times and synthetic samples.
 """
@@ -106,12 +106,88 @@ def numerical_checks():
             'whole-chunk oracle direction']
 
 
+def readable_figures(model, rows, initial, seeds, destination):
+    """One question per figure, retaining the exact experiment and all seeds."""
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    with plt.rc_context({'font.family': 'DejaVu Sans', 'font.size': 15,
+                         'axes.titlesize': 18, 'axes.labelsize': 15,
+                         'legend.fontsize': 12, 'text.color': '#1b2a40',
+                         'axes.labelcolor': '#1b2a40', 'axes.edgecolor': '#69778b',
+                         'xtick.color': '#42536b', 'ytick.color': '#42536b'}):
+        destination.mkdir(parents=True, exist_ok=True)
+
+        def finish(fig, ax, name):
+            ax.spines[['top', 'right']].set_visible(False)
+            ax.grid(alpha=.18)
+            ax.set_axisbelow(True)
+            fig.savefig(destination / name, dpi=160, facecolor='white')
+            plt.close(fig)
+
+        condition = torch.full_like(initial, .5)
+        generated = integrate(model, initial.float(), condition.float(), 64).reshape(-1)
+        grid = torch.linspace(-2.5, 3., 800, dtype=torch.float64)
+        density = sum(torch.exp(-.5*((grid-(.5+sign))/DATA_STD)**2)
+                      for sign in (-1, 1))/(2*DATA_STD*math.sqrt(2*math.pi))
+        fig, ax = plt.subplots(figsize=(7.5, 5.5), constrained_layout=True)
+        ax.hist(generated.tolist(), bins=60, density=True, alpha=.55, color='#a6c7e7',
+                edgecolor='#5d86ae', linewidth=.5, label='Learned flow: Euler 64')
+        ax.plot(grid.tolist(), density.tolist(), color='#2e7962', lw=2.4,
+                label='Known target density')
+        ax.axvline(.5, color='#ad691d', ls='--', lw=2, label='Direct L2 output: 0.5')
+        ax.set(title=f'Two modes survive generation\nCondition c = 0.5; seed {seeds[0]}',
+               xlabel='Synthetic action value', ylabel='Probability density')
+        # Reserve headroom so the legend never hides the learned density peaks.
+        ax.set_ylim(0, ax.get_ylim()[1] * 1.45)
+        ax.legend(loc='upper center')
+        finish(fig, ax, 'flow-learned-distribution.png')
+
+        fig, ax = plt.subplots(figsize=(7.5, 5.5), constrained_layout=True)
+        styles = [('o', '-', '#3e78ad'), ('s', '--', '#8d67a9'), ('^', '-.', '#b67a36')]
+        for index, seed in enumerate(seeds):
+            group = [r for r in rows if r['seed'] == seed and r['condition'] == .5 and r['method'] == 'euler']
+            marker, linestyle, color = styles[index % len(styles)]
+            ax.plot([r['nfe'] for r in group], [r['learned_quantile_W1'] for r in group],
+                    marker=marker, ls=linestyle, color=color, lw=2, markersize=7,
+                    label=f'Learned field: seed {seed}')
+        group = [r for r in rows if r['seed'] == seeds[0] and r['condition'] == .5 and r['method'] == 'euler']
+        ax.plot([r['nfe'] for r in group], [r['exact_field_quantile_W1'] for r in group],
+                'D:', color='#56606e', lw=2, markersize=6, label='Exact field: solver error remains')
+        ax.set(xscale='log', yscale='log', xlabel='Velocity evaluations (NFE)',
+               ylabel='Quantile-grid W1 (lower is better)',
+               title='More Euler steps reduce solver error\nThey do not remove learned-field error')
+        ax.set_xticks([1, 4, 16, 64], labels=['1', '4', '16', '64'])
+        ax.legend(loc='lower left')
+        finish(fig, ax, 'flow-solver-comparison.png')
+
+        start = torch.tensor([[-1.6], [-.9], [-.4], [.4], [.9], [1.6]])
+        _, paths = integrate(model, start, torch.full_like(start, .5), 64, return_path=True)
+        fig, ax = plt.subplots(figsize=(7.5, 5.5), constrained_layout=True)
+        for index in range(len(start)):
+            ax.plot([1-i/64 for i in range(65)], [float(x[index, 0]) for x in paths],
+                    color='#8865a6' if index < 3 else '#3f7aaa',
+                    ls='--' if index < 3 else '-', lw=2,
+                    label=('Negative initial noise' if index == 0 else
+                           'Positive initial noise' if index == 3 else None))
+        for index, center in enumerate([-.5, 1.5]):
+            ax.axhline(center, color='#5b8b72', ls=':', lw=1.4,
+                       label='Target mode centers' if index == 0 else None)
+        ax.set(xlim=(1, 0), xticks=[1, .75, .5, .25, 0],
+               xlabel='Flow time s: noise (1) to data (0)', ylabel='Synthetic action value',
+               title=f'Same network, different initial noise\nCondition c = 0.5; seed {seeds[0]}')
+        ax.legend(loc='lower right')
+        finish(fig, ax, 'flow-sample-paths.png')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--steps', type=int, default=6000)
     parser.add_argument('--seeds', type=int, nargs='+', default=[17, 29, 43])
     parser.add_argument('--output', type=Path, default=Path('flow-learning-results.json'))
     parser.add_argument('--figure', type=Path)
+    parser.add_argument('--figure-dir', type=Path,
+                        help='Save three separate, readable figures in this directory')
     args = parser.parse_args()
     if args.steps < 1:
         parser.error('--steps must be positive')
@@ -174,6 +250,8 @@ def main():
               'scope': 'Synthetic scalar conditional density, online independent training samples. No robot, no pretrained VLM, no pi0 reproduction. Quantile-grid W1 is a finite-grid approximation; solver error and learned field error both contribute.'}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2)+'\n')
+    if args.figure_dir:
+        readable_figures(selected, rows, initial64, args.seeds, args.figure_dir)
     if args.figure:
         import matplotlib
         matplotlib.use('Agg')

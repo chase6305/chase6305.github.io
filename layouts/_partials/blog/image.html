@@ -44,9 +44,13 @@
 {{- end -}}
 
 {{- $dimensions := "" -}}
+{{- $width := 0 -}}
+{{- $height := 0 -}}
 {{- $srcset := slice -}}
 {{- if and $resource (eq $resource.ResourceType "image") -}}
   {{- if in (slice "jpeg" "png" "webp" "gif") $resource.MediaType.SubType -}}
+    {{- $width = $resource.Width -}}
+    {{- $height = $resource.Height -}}
     {{- $dimensions = printf "width=%q height=%q" (string $resource.Width) (string $resource.Height) -}}
     {{- if in (slice "jpeg" "png" "webp") $resource.MediaType.SubType -}}
       {{- range slice 480 960 1440 -}}
@@ -58,6 +62,19 @@
       {{- $srcset = $srcset | append (printf "%s %dw" $dest $resource.Width) -}}
     {{- end -}}
   {{- end -}}
+{{- end -}}
+{{- /* SVG dimensions may be supplied by the shortcode; raster metadata wins. */ -}}
+{{- if and (eq $width 0) .Attributes.width .Attributes.height -}}
+  {{- $width = int .Attributes.width -}}
+  {{- $height = int .Attributes.height -}}
+  {{- if and (gt $width 0) (gt $height 0) -}}
+    {{- $dimensions = printf "width=%q height=%q" (string $width) (string $height) -}}
+  {{- end -}}
+{{- end -}}
+{{- /* With CSS width:auto, lazy images can collapse before their first decode.
+  Opt in to a known width and ratio so deep links retain their initial position. */ -}}
+{{- if and (.Page.Params.reserveFigureSpace | default false) (gt $width 0) (gt $height 0) -}}
+  {{- $dimensions = printf "%s style=%q" $dimensions (printf "width: 100%%; aspect-ratio: %d / %d" $width $height) -}}
 {{- end -}}
 {{- $attributes := "" -}}
 {{- range $key, $value := .Attributes -}}

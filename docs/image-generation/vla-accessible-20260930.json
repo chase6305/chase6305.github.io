@@ -1,0 +1,61 @@
+{
+  "date": "2026-09-30",
+  "assets": [
+    {
+      "file": "content/posts/ai/vla-evolution/assets/one-decision-loop.webp",
+      "tool": "built-in image_gen",
+      "intent": "generate, followed by targeted edit",
+      "prompt": "docs/image-generation/vla-one-decision-20260930-prompt.txt",
+      "edit_prompt": "docs/image-generation/vla-one-decision-20260930-edit.txt",
+      "initial_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-b8982c81-f7f7-444f-ac8c-ec31ee417871.png",
+      "selected_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-f0c279fb-9e98-49f6-aaba-5bcf35abbdd7.png",
+      "format": "WebP, quality 92, 1536x1024",
+      "sha256": "f7fd6085c49f7b12571fe8fb7a71ce0953bc9a5ec4e09caad4c01b5adc770153",
+      "review": "Cup stays on table, tray empty, partial reach; observation feeds the next model call, no weight update.",
+      "style_references": [
+        "content/posts/ai/transformer-attention/assets/training-lifecycle.webp",
+        "content/posts/ai/transformer-attention/assets/transformer-block-overview.webp"
+      ]
+    },
+    {
+      "file": "content/posts/ai/vla-evolution/assets/action-table-generation.webp",
+      "tool": "built-in image_gen",
+      "intent": "generate, followed by targeted edit",
+      "prompt": "docs/image-generation/vla-action-table-20260930-prompt.txt",
+      "edit_prompt": "docs/image-generation/vla-action-table-20260930-edit.txt",
+      "initial_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-b9926229-6029-46c6-a312-914b212d8b26.png",
+      "selected_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-acf7f51d-7232-418d-9ace-9430ee29a4cb.png",
+      "format": "WebP, quality 92, 1536x1024",
+      "sha256": "02cf6abbf4ec84367918166899709de2fca69ded0e4daeb279fd3702360658fc",
+      "review": "Three 4x3 grids and fixed context preserved. One uninterrupted connector from final table to Row 0, exactly one arrowhead at Row 0, lower heading moved out of its path. Rows denote physical execution order; sampling time omitted explicitly in caption.",
+      "style_references": [
+        "content/posts/ai/transformer-attention/assets/training-lifecycle.webp",
+        "content/posts/ai/transformer-attention/assets/transformer-block-overview.webp"
+      ],
+      "previous_selected_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-e05e9182-3904-4a87-bfaf-707f1ee9dd8b.png",
+      "label_edit_prompt": "docs/image-generation/vla-action-table-20260930-label-edit.txt"
+    },
+    {
+      "file": "content/posts/ai/vla-evolution/assets/visual-subgoal-cup.webp",
+      "tool": "built-in image_gen",
+      "intent": "derive a new composition from the selected robot-loop figure, followed by local edit",
+      "prompt": "docs/image-generation/vla-visual-goal-20260930-prompt.txt",
+      "edit_prompt": "docs/image-generation/vla-visual-goal-20260930-edit.txt",
+      "input_reference": "content/posts/ai/vla-evolution/assets/one-decision-loop.webp",
+      "initial_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-a621d289-6749-4a5f-b609-49b847942613.png",
+      "selected_source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-8e7ec7cd-34a2-4316-abe4-066f242af839.png",
+      "format": "WebP, quality 92, 1536x1024",
+      "sha256": "c0b71901fe8f560decf66547cffc105da01c21322159504de0b439a763e63962",
+      "review": "Cup outside versus inside tray; both current and desired images condition the action policy; output is an action chunk. Caption identifies omitted conditioning inputs and goal generator; no physical path or prediction of observed future is claimed."
+    }
+  ],
+  "quantitative_figures": {
+    "generator": "content/posts/ai/vla-evolution/flow_matching_lab.py --figure-dir",
+    "files": [
+      "content/posts/ai/vla-evolution/assets/flow-learned-distribution.png",
+      "content/posts/ai/vla-evolution/assets/flow-solver-comparison.png",
+      "content/posts/ai/vla-evolution/assets/flow-sample-paths.png"
+    ],
+    "method": "Matplotlib; same three-seed CPU experiment and unchanged 30 metric records; separate panels for readability, distinct line and marker styles."
+  }
+}
