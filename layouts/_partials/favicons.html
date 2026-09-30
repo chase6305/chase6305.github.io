@@ -1,8 +1,14 @@
 {{- /* Version URLs so existing visitors receive the new icon. SVG comes last
      for browsers that support it; PNG and ICO remain available as fallbacks. */ -}}
-<link rel="icon" href="{{ "favicon.ico?v=orca-1" | relURL }}" sizes="16x16 32x32 48x48" />
-<link rel="icon" href="{{ "favicon-16x16.png?v=orca-1" | relURL }}" type="image/png" sizes="16x16" />
-<link rel="icon" href="{{ "favicon-32x32.png?v=orca-1" | relURL }}" type="image/png" sizes="32x32" />
-<link rel="icon" href="{{ "favicon.svg?v=orca-1" | relURL }}" type="image/svg+xml" sizes="any" id="favicon-svg" />
+{{- range slice
+  (dict "file" "favicon" "ext" "ico" "type" "image/x-icon" "sizes" "16x16 32x32 48x48")
+  (dict "file" "favicon-16x16" "ext" "png" "type" "image/png" "sizes" "16x16")
+  (dict "file" "favicon-32x32" "ext" "png" "type" "image/png" "sizes" "32x32")
+  (dict "file" "favicon" "ext" "svg" "type" "image/svg+xml" "sizes" "any")
+-}}
+  {{- $light := printf "%s.%s?v=orca-2" .file .ext | relURL -}}
+  {{- $dark := printf "%s-dark.%s?v=orca-2" .file .ext | relURL -}}
+  <link rel="icon" href="{{ $light }}" data-favicon-light="{{ $light }}" data-favicon-dark="{{ $dark }}" type="{{ .type }}" sizes="{{ .sizes }}"{{ if eq .ext "svg" }} id="favicon-svg"{{ end }} />
+{{- end -}}
 <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png?v=orca-1" | relURL }}" sizes="180x180" />
 <link fetchpriority="low" href="{{ "site.webmanifest?v=orca-1" | relURL }}" rel="manifest" />

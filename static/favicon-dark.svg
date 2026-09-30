@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="64 72 376 376" width="376" height="376">
+  <title>Chase — orca (dark)</title>
+  <rect x="64" y="72" width="376" height="376" rx="80" fill="#1f2937"/>
+  <g stroke="#aab9c8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path fill="#566575" d="M346 271 C342 291 346 314 367 323 C387 306 392 282 380 256 Z"/>
+    <path fill="#566575" d="M153 307 C171 291 212 251 239 221 C220 208 196 198 192 187 C185 174 231 177 273 185 C311 147 338 127 391 133 C407 132 410 154 410 172 C413 225 382 268 339 292 C292 318 229 323 166 323 C176 345 170 371 154 386 C155 367 134 359 137 336 C116 343 104 326 89 333 C94 314 119 300 153 307 Z"/>
+  </g>
+  <path fill="#fff" d="M399 144 C377 141 363 160 350 186 C334 219 325 247 298 269 C283 283 266 291 248 293 C223 298 209 275 197 288 C191 299 211 300 221 296 C235 292 235 303 220 310 C206 316 188 319 168 321 C231 321 292 315 338 289 C380 266 409 222 407 173 C407 161 405 150 399 144 Z"/>
+  <path fill="#fff" d="M325 159 C313 161 294 179 296 190 C301 203 326 180 329 168 C331 162 329 159 325 159 Z"/>
+  <circle cx="336" cy="185" r="5.8" fill="#252729"/>
+  <path fill="#566575" stroke="#aab9c8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" d="M305 239 C323 265 317 299 280 321 C266 311 263 294 270 281 C278 267 291 261 286 248"/>
+  <path fill="none" stroke="#aab9c8" stroke-width="5" stroke-linecap="round" d="M273 185 L260 200"/>
+</svg>
