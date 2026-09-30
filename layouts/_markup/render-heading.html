@@ -4,9 +4,13 @@
   {{- $title := .Text | replaceRE `</?a\b[^>]*>` "" | replaceRE `\s+id="[^"]*"` "" -}}
   {{- .Page.Store.SetInMap "blogTocMathTitles" .Anchor $title -}}
 {{- end -}}
-{{- /* A multiline title needs its anchor at the heading start, not after its text.
-  Opt in per page; existing pages retain their current anchor markup. */ -}}
-{{- $anchorAtStart := and (gt .Level 1) (.Page.Params.headingAnchorAtStart | default false) -}}
+{{- /* Keep article fragments above multiline titles. An explicit false preserves
+  the legacy placement; other sections retain their existing default. */ -}}
+{{- $headingAnchorAtStart := eq .Page.Section "posts" -}}
+{{- if ne .Page.Params.headingAnchorAtStart nil -}}
+  {{- $headingAnchorAtStart = .Page.Params.headingAnchorAtStart -}}
+{{- end -}}
+{{- $anchorAtStart := and (gt .Level 1) $headingAnchorAtStart -}}
 <h{{ .Level }} data-hextra-search-id="{{ .Anchor | safeURL }}" {{- with .Attributes.class }} class="{{ . }}" {{- end }}{{ if $anchorAtStart }} id="{{ .Anchor | safeURL }}" style="scroll-margin-top: 6rem"{{ end }}>
   {{- .Text | safeHTML -}}
   {{- if gt .Level 1 -}}

@@ -1,7 +1,7 @@
 ---
 title: "Diffusion 扩散模型入门指南：从 DDPM 到 Latent Diffusion 与 DiT"
 date: 2026-08-27
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["Diffusion Models", "Generative Models", "PyTorch"]
 categories: ["人工智能"]
@@ -501,6 +501,7 @@ $$
 | DDPM | 离散噪声等级下的 `ε`、`x₀` 或 `v` | 随机反向马尔可夫链 |
 | Score SDE | 各连续时刻带噪分布的 Score | Reverse-time SDE 或 Probability Flow ODE |
 | Flow Matching | 给定概率路径上的速度场 | 对 ODE 积分 |
+{.table-readable}
 
 它们在特定参数化下存在紧密联系，但不能仅替换采样循环就假设权重兼容。必须同时核对训练目标、时间参数化、噪声路径和求解器输入输出约定。
 

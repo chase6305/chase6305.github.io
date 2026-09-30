@@ -99,9 +99,10 @@ def main():
         shutil.copy2(ROOT / "content/posts/_index.md", content / "posts/_index.md")
         command = [args.hugo, "--minify", "-D", "--source", str(ROOT),
                    "--contentDir", str(content), "--destination", str(work / "public")]
-        for anchor_at_start in (False, True):
-            fixture = FIXTURE.replace("math: true", "math: true\nheadingAnchorAtStart: " +
-                                      str(anchor_at_start).lower())
+        for anchor_at_start in (None, False, True):
+            fixture = FIXTURE if anchor_at_start is None else FIXTURE.replace(
+                "math: true", "math: true\nheadingAnchorAtStart: " +
+                str(anchor_at_start).lower())
             article.write_text(fixture)
             subprocess.run(command, check=True, capture_output=True, text=True)
             page = TocPage((work / "public/posts/toc-fixture/index.html").read_text())
@@ -110,13 +111,13 @@ def main():
                 for key, count in expected.items():
                     assert links[key]["math"] == count, (group, key, links[key])
                     assert key in page.ids
-                    assert page.id_tags[key] == ("h2" if anchor_at_start else "span")
+                    assert page.id_tags[key] == ("span" if anchor_at_start is False else "h2")
                 assert links["literal-prices"]["text"] == "Literal prices $5 and $10"
                 assert links["literal-code"]["text"] == "Code $HOME and $PATH"
         # Auto-generated sections have no source File. Topic navigation must be optional.
         (content / "posts/_index.md").unlink()
         subprocess.run(command, check=True, capture_output=True, text=True)
-    print(json.dumps({"toc_variants": 2, "anchor_modes": 2, "headings_per_variant": len(expected),
+    print(json.dumps({"toc_variants": 2, "anchor_modes": 3, "headings_per_variant": len(expected),
                       "literal_dollars": "preserved", "both_math_delimiters": "passed",
                       "nested_links": "absent", "automatic_section": "passed"}, indent=2))
 

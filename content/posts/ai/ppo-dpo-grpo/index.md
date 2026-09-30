@@ -1,7 +1,7 @@
 ---
 title: "PPO、DPO 与 GRPO 详解：从策略梯度原子模块到可运行 Python 实验"
 date: 2026-09-08
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["Reinforcement Learning", "PPO", "DPO", "GRPO", "RLHF", "PyTorch"]
 categories: ["人工智能"]
@@ -100,6 +100,7 @@ python -B rl_lab.py --algorithm grpo --seed 19 --group-size 4 --output results-s
 | $r$ / $R$ | 单步奖励 / 回答级评分 | 由环境、规则或奖励模型给出 |
 | $V_\phi(s)$ | 状态的预期回报，critic | PPO 中回归更新 |
 | $\hat A$ | 相对 baseline 的优势估计 | 由当前批次计算后固定 |
+{.table-readable}
 
 **old 与 ref 解决的是两个问题。** old 回答“这些样本由谁产生”，ref 回答“希望保留哪个策略的行为”。把二者都每个梯度步刷新，会同时破坏概率比和参考约束。
 
@@ -252,6 +253,7 @@ $$
 | PPO ratio clipping | surrogate 中的概率比 | 限制继续朝有利方向变化的激励 |
 | Gradient clipping | 参数梯度范数 | `clip_grad_norm_(parameters, 1.0)` |
 | Reward clipping | 奖励数值 | 改变奖励尺度，可能改变目标 |
+{.table-readable}
 
 PPO-Clip 并不会执行“更新完后把每个概率比强制拉回区间”。共享参数、其他样本梯度、价值损失与优化器动量，都可能使比率越界；因此仍需监测 KL 和 clip fraction。
 

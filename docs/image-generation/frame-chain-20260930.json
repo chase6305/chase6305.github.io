@@ -1,0 +1,15 @@
+{
+  "mode": "builtin",
+  "intent": "new conceptual diagram; white-background correction",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-28139c4d-9622-4612-9f19-852d8ca1c79c.png",
+  "size": [
+    1586,
+    992
+  ],
+  "prompt": "docs/image-generation/frame-chain-20260930-prompt.txt",
+  "sha256": "ff1098c2952095612022e395fc608353d0805a09facaaa69d1e3bd7f931cefcd",
+  "review": "World/Base/Flange/TCP labels and relationships checked; illustrative robot is not the Elfin05 DH model.",
+  "date": "2026-09-30",
+  "output": "content/posts/robotics/kinematics/six-dof-kinematics/assets/frame-chain.webp",
+  "edit": "docs/image-generation/frame-chain-20260930-edit.txt"
+}

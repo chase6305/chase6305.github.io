@@ -1,7 +1,7 @@
 ---
-title: VS Code Python 调试完全指南：从入门到精通
+title: "VS Code Python 调试：解释器、断点与附加调试"
 date: 2026-01-27
-lastmod: 2026-09-05
+lastmod: 2026-09-30
 draft: false
 tags: ["VS Code", "Python", "Debugging"]
 categories: ["系统与工具"]
@@ -14,7 +14,7 @@ comments: false
 description: "从最小 debugpy 配置讲解 VS Code 断点、模块入口、参数与附加调试，补充解释器核对及调试端口保护。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "Python 执行入口与 VS Code"
-reading_focus: "先复现终端运行环境，再添加远程和多进程配置，暂停会改变程序时序。"
+reading_focus: "先跟随最小循环观察断点前后的变量，再连接解释器、模块入口与附加调试。"
 related_posts:
   - "/posts/vscode/two-env"
   - "/posts/process/pid"
@@ -61,6 +61,25 @@ related_posts:
 | 切换断点 | F9 |
 | 停止 | Shift+F5 |
 | 重启 | Ctrl+Shift+F5 |
+
+### 第一次单步，应该观察到什么
+
+把下面的独立例子保存为 `debug_demo.py`，在 `updated = ...` 行设置断点，然后使用上面的“当前文件”配置启动：
+
+```python
+def apply_offset(raw, offset):
+    updated = raw + offset
+    return updated
+
+
+samples = [10, 20, 30]
+corrected = [apply_offset(value, 2) for value in samples]
+print(corrected)  # [12, 22, 32]
+```
+
+第一次停下时，`raw=10`、`offset=2`；断点所在行尚未执行，所以当前调用里还没有 `updated`。按 F10 执行这一行后，应看到 `updated=12`。调用栈能说明这是从列表推导式进入的函数；继续运行会在后两次调用停下，最后输出三个结果。
+
+如果想只观察第二个样本，可把这个断点的条件设为 `raw == 20`。这个实验分别验证了入口、断点、局部变量、单步和条件表达式；它比一开始就在多进程训练入口排查空心断点更容易定位配置问题。调试控制台里修改 `raw` 会影响后续计算，观察值与修改值应有意识地区分。
 
 ## 2. 模块、参数与环境变量
 

@@ -1,7 +1,7 @@
 ---
 title: "RynnBrain 深度解析：从时空 Grounding、Chain-of-Point 到 1.1 跨本体 VLA"
 date: 2026-09-05
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["RynnBrain", "VLM", "VLA", "Embodied AI", "Paper Notes"]
 categories: ["人工智能"]
@@ -74,6 +74,7 @@ related_posts:
 | RynnScale | VLM 训练、数据处理、评测框架 | README 的占位路径能够直接执行 |
 | 1.0 的 `reasoning/navigation/planning` | 历史任务配方 | 换成 1.1 权重后所有脚本无需适配 |
 | RynnBrain-Bench | 数据格式、任务分类与评估输入 | 数据下载分片名称就是训练/验证隔离策略 |
+{.table-readable}
 
 核对的 RynnScale 项目 README 中，`RynnBrain-VLA` 小节仍是 `TBD...`。因此本文不会给出一个虚构的“训练全部 1.1 VLA 并部署所有机器人”的一键命令。[固定版本源码](https://github.com/alibaba-damo-academy/RynnScale/blob/aaedf103bff9ff2ede3c6c900537b15a49801dd9/projects/rynn_brain/README.md)
 
@@ -136,6 +137,7 @@ $$
 | Affordance localization | 应该从哪里拿起杯子？ | 与操作意图相关的点 |
 | Trajectory localization | 手刚才怎样移动？ | 对应时序与图像参考系的路径点 |
 | Contact prediction | 接触哪里、平面内朝向如何？ | 接触点及角度协议 |
+{.table-readable}
 
 “检测杯子”与“找到杯柄”不是同一个标注问题。前者可由整物体框表达；后者与部件、物体姿态和指令有关。训练数据如果只覆盖前者，不能期待模型自动获得可靠的操作接口。
 

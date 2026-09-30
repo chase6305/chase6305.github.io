@@ -1,7 +1,7 @@
 ---
 title: "大模型分布式训练与显存优化指南：从 DDP、ZeRO 到 FSDP"
 date: 2026-08-27
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["Distributed Training", "GPU Memory", "PyTorch"]
 categories: ["人工智能"]
@@ -144,6 +144,7 @@ $$
 |---|---|---|
 | `m` / `exp_avg` | 梯度的一阶矩指数滑动平均 | 平滑梯度方向，形成类似 Momentum 的惯性 |
 | `v` / `exp_avg_sq` | 梯度平方的二阶原始矩指数滑动平均 | 估计每个参数的梯度尺度，自适应调节步长 |
+{.table-readable}
 
 `v` 经常被简称为“方差”，但严格说它是 **未中心化二阶矩**，因为没有减去梯度均值。两个状态从 0 初始化，早期会偏小，所以 Adam 使用 Bias Correction：
 
@@ -430,6 +431,7 @@ python -B ddp_token_mean.py --output ddp-token-results.json
 | 每个 Rank 的数量不同，且含全 mask micro-batch | Rank 0 为 3，Rank 1 为 2 | 分母为 5，每个 micro-batch 用 `2 × loss_sum / 5` |
 | 一个 Rank 整个窗口都没有有效标签 | Rank 0 为 3，Rank 1 为 0 | 两个 Rank 仍参与相同同步；空 Rank 提供与计算图相连的零梯度 |
 | 所有 Rank 都没有有效标签 | 全局为 0 | 先通过共同的计数得到相同分支，再一起跳过此次优化器更新 |
+{.table-readable}
 
 第一种情况下，正确 DDP 梯度与单进程参考的最大绝对差约 `2.78e-17`；错误地平均两个 Rank 的局部均值，差异约 `0.0880`。这些数字是固定小模型的正确性检查，不是大模型训练收益或 GPU 性能数据。第二个不足两步的窗口也逐参数验证，避免遗漏最后一组更新。
 
@@ -493,6 +495,7 @@ $$
 | Reduce-Scatter | 完整张量 | 不同的归约分片 | ZeRO/FSDP 梯度归约并分片 |
 | All-Gather | 不同分片 | 相同的完整拼接张量 | FSDP 计算前还原参数 |
 | All-to-All | 发往各 Rank 的不同分块 | 来自各 Rank 的不同分块 | MoE Token 路由 |
+{.table-readable}
 
 #### Broadcast：一份数据复制给所有 Rank
 
@@ -646,6 +649,7 @@ ZeRO 的核心是消除数据并行 Rank 之间重复保存的模型状态：
 | ZeRO-1 | 完整 | 完整 | `1/K` | 更新后同步参数分片 |
 | ZeRO-2 | 完整 | `1/K` | `1/K` | 梯度 Reduce-Scatter |
 | ZeRO-3 | `1/K` 常驻 | `1/K` | `1/K` | 计算前 All-Gather 参数，之后重新分片 |
+{.table-readable}
 
 ### 6.1 Stage 3 的常见叫法
 
@@ -946,6 +950,7 @@ reserved 显著大于 allocated 只说明保留池里有未被活跃 Tensor 使�
 | 节点内快、节点间慢 | Hybrid Shard | 节点内分片、节点间复制以控制跨机通信 |
 | 激活远大于模型状态 | Checkpointing、FlashAttention、序列并行 | 仅分片 P/G/O 不解决主要矛盾 |
 | 单层参数本身过大 | Tensor Parallel + DP/FSDP | FSDP 临时完整层也可能 OOM |
+{.table-readable}
 
 ### 12.1 一份可比较的实验记录
 

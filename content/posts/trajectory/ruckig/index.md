@@ -1,7 +1,7 @@
 ---
 title: 'Ruckig 轨迹生成：jerk 约束、同步与终点状态'
 date: 2025-03-15
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["Trajectory Generation", "Ruckig", "Motion Planning"]
 categories: ["机器人技术"]
@@ -14,7 +14,7 @@ comments: false
 description: "用可运行例子理解 Ruckig 的状态可行性、时间与相位同步、非零终点速度和离散采样，区分轨迹结束与机器人停止。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "位置、速度、加速度与离散采样"
-reading_focus: "先验证本地状态到状态问题，中间路径点功能与碰撞规划需另行评估。"
+reading_focus: "先用时间与单位理解 jerk，再验证状态到状态轨迹、同步方式和实际停止条件。"
 related_posts:
   - "/posts/trajectory/toppra"
   - "/posts/planner/to_mpc_wbc"
@@ -41,6 +41,14 @@ python -m pip install "ruckig==0.19.4" numpy matplotlib
 | max_velocity、max_acceleration、max_jerk | 各轴运动学上限，不包含力矩、碰撞和位置限位 |
 | delta_time | `update` 的离散周期，不等于求出的总时长 |
 | synchronization | 轴间时间/相位同步策略，不能据此推断末端路径形状 |
+
+### jerk 限制的是加速度改变有多快
+
+速度是位置的变化率，加速度是速度的变化率，jerk 则是加速度的变化率。以转动关节为例，若一个 10 ms 周期内加速度从 0 变为 1 rad/s²，该区间平均 jerk 为 $1/0.01=100$ rad/s³；加速度本身不大，并不代表加速度变化温和。
+
+若 jerk 上限仅为 10 rad/s³，从 0 提升到 1 rad/s² 至少要 0.1 s。假定这段始终使用正的最大 jerk、初速度为零，则加速度线性上升，速度增加 0.05 rad/s，位置增加约 0.001667 rad。这只是一个加速阶段，还不是满足指定终点的完整轨迹；完整轨迹要继续安排加速、巡航、减速等适用阶段。
+
+因此 `max_jerk` 不是让曲线“看起来圆滑”的绘图选项，而是约束可执行状态随时间变化的方式。单位中的三次方也不能省略：把控制周期从秒误当成毫秒，差分估计会出现数量级错误。
 
 ## 一个函数验证一轴与七轴
 
@@ -196,6 +204,7 @@ $$
 | --- | ---: | ---: | ---: |
 | Continuous | 2.695913 s | 2.700 s | 1.001226 rad |
 | Discrete | 2.700000 s | 2.710 s | 1.003000 rad |
+{.table-readable}
 
 `trajectory.at_time(T)` 在两种情况下都返回目标状态 $[1,0.3,0]$。离散循环到达 $T+\varepsilon$ 后，零目标加速度下的位置继续按 $1+0.3\varepsilon$ 推进。`Discrete` 约束规划时长为周期的整数倍，但这个版本的累计浮点时间可能在数学上相等的 tick 略小于 $T$，于是下一 tick 才报告 `Finished`；表中的具体 tick 不应当被写成跨版本保证。
 

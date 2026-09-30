@@ -1,37 +1,51 @@
 ---
 title: '强化学习基础'
 date: 2025-12-08
-lastmod: 2026-09-29
+lastmod: 2026-09-30
 draft: false
 tags: ["Reinforcement Learning", "Artificial Intelligence"]
 categories: ["人工智能"]
 authors: ["chase"]
-summary: "从 MDP、回报和价值函数理解强化学习，串联策略评估与更新，并区分随机策略、环境随机性和训练验证。"
+summary: "从状态与观测、完整转移表和手算回报理解强化学习，用多种子悬崖实验区分训练与评估，并解释最大化偏差、策略梯度和连续控制。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
 math: true
-description: "从 MDP、回报和价值函数理解强化学习，串联策略评估与更新，并区分随机策略、环境随机性和训练验证。"
+description: "从状态与观测、完整转移表和手算回报理解强化学习，用多种子悬崖实验区分训练与评估，并解释最大化偏差、策略梯度和连续控制。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "概率、期望与基础优化"
-reading_focus: "先统一状态、动作、奖励和终止条件，再对照各算法的估计目标。"
+reading_focus: "先手算状态转移和 TD 目标，再比较训练与冻结策略评估；检查终止、探索率、步数上限和误差棒含义。"
 related_posts:
   - "/posts/ai/gymnasium/1"
   - "/posts/planner/to_mpc_wbc"
 ---
 
+强化学习要解决的是：**一次动作会改变后续局面，怎样根据整段交互的结果改进决策？** 例如机械臂现在绕开障碍会多走一点路，却可能提高最终抓取成功率。学习对象是选择动作的策略，评价依据是明确任务和终止规则下的长期回报。
+
+第一次阅读，先沿第 1、2.1、2.3、3、4 节理解交互、状态、策略与价值，再用第 5、6 节区分 MC、TD 和 Q-Learning。第 2.2 节的高阶链与状态扩展可以稍后回看；第 7–10 节再把表格方法扩展到策略梯度与神经网络。
+
+| 当前问题 | 阅读入口 | 要分清的两个量 |
+| --- | --- | --- |
+| 相机观测就是状态吗 | 第 1–2 节 | 可观测信息与马尔可夫状态 |
+| 一步奖励不错，为何整回合仍失败 | 第 4 节 | 即时奖励与长期回报 |
+| 下一步尚未发生，价值目标从哪里来 | 第 5–6 节 | 真实回报与 bootstrap 估计 |
+| Actor、Critic 分别在学什么 | 第 7–10 节 | 动作分布与价值估计 |
+| loss 下降是否代表策略更好 | 第 11 节 | 训练诊断与独立任务评估 |
+
 ## 1. 基本概念
 
 - **Agent（智能体）**：在环境中执行动作并学习如何最大化累积奖励的实体。
 - **Environment（环境）**：智能体与之交互的外部系统，定义了状态空间、动作空间和奖励机制。
-- **Observation（观察）**：智能体从环境中获取的当前状态信息。
+- **Observation（观测）**：智能体实际获得的信息，例如相机图像和关节读数；它可能只反映环境状态的一部分。
 - **Action（动作）**：智能体在某个状态下可以执行的操作，影响环境的状态。
 - **Reward（奖励）**：智能体执行某个动作后环境反馈的即时信号，用于指导智能体的学习。
 
 ![强化学习交互示意](rl_interaction.png)
 
-强化学习就是智能体和环境之间持续交互，通过与环境交互并观察环境的状态，学习如何采取进一步的行动，以最大化累积奖励，在不断试错的过程中学习如何在不同状态下做出最佳决策的过程。
+一次交互可以读作“获得观测 → 按策略选择动作 → 环境推进 → 收到新观测和奖励”。训练再利用这些记录更新策略或价值估计。奖励由任务设计者定义，因此最大化某个奖励，并不自动等于实现设计者真正想要的行为。
+
+例如，单张机械臂照片可能看不出末端正在朝哪个方向运动。同一张近似图像之后的结果会受速度影响；如果只把图像叫作“完整状态”，模型就会遗漏预测所需的信息。加入速度、历史观测或记忆结构可以改善状态表示，但是否足够仍取决于任务。
 
 ## 2. 马尔可夫过程
 
@@ -59,14 +73,13 @@ $$
 
 #### 2.1.3 **直观理解**
 
-- 一个失忆的人：
-  - 只记得：我现在在哪里
-  - 不记得：我是怎么到这里来的
-  - 决策下一步行动时，只基于当前位置
+“只依赖现在”指的是**当前状态已经包含预测下一步所需的信息**，不是说机器人只要知道位置就够了。一个运动物体位于同一位置，但速度分别向左和向右，在相同作用力下下一时刻的位置通常不同；把位置和速度一起作为状态，才可能得到合适的一阶动力学模型。
+
+下面“空闲、移动、充电”的三状态表是人为设定的概率模型，用于演示转移矩阵。真实机器人的电量、速度、任务与故障状态若没有包含在表示中，这三个标签不一定满足马尔可夫性质。
 
 > 假设机器人有三种状态：静止(S)、移动(M)、充电(C)
 >
-> 传统模型（有记忆性）：
+> 一般过程（可能依赖历史）：
 >
 > ```python
 > # 下一状态可能依赖于整个历史：
@@ -80,11 +93,11 @@ $$
 > # P(下一状态 | 当前状态 = M) = ?
 > ```
 
-#### 2.2 马尔科夫链
+### 2.2 马尔科夫链
 
-##### 2.2.1 一阶马尔科夫链 （简单 强大）
+#### 2.2.1 一阶马尔科夫链 （简单 强大）
 
-###### 基本思路
+##### 基本思路
 
 ```python
 from enum import Enum
@@ -135,7 +148,7 @@ class MarkovChain:
         return random.choices(states, weights=weights)[0]
 ```
 
-###### 优点
+##### 优点
 
 - 计算简单
     - 只需维护当前状态的转移概率，不存储历史状态
@@ -143,7 +156,7 @@ class MarkovChain:
     - 估计的参数数量少
 - 完整理论体系支持
 
-###### 状态转移矩阵
+##### 状态转移矩阵
 
 主要是将转移考虑表示为矩阵的形式，便于运算
 
@@ -162,317 +175,140 @@ P = np.array([
 print("行和验证:", np.sum(P, axis=1))  # [1., 1., 1.]
 ```
 
-    2. 高阶马尔科夫链 （捕捉时间依赖）
-      1. 一阶假设有时候过于简化，预测可能不准
+#### 2.2.2 高阶马尔科夫链：把历史放进状态
+
+如果当前表示不足以预测下一步，可以考虑把最近若干时刻一起作为输入。以下天气概率完全是构造示例，用于表示条件变量改变后的表格形式；它不证明真实天气规律，也不意味着高阶模型一定更准确。模型阶数需要独立数据验证。
 
 ```python
 # 一阶模型：P(下雨|今天=晴) = 0.2
 # 问题：连续10天晴天后，下雨概率还是0.2吗？
 
-# 三阶模型更准确：
+# 三阶条件表的写法，数值仅作示例：
 weather_probs = {
     # (前前天, 前天, 今天) → 明天天气概率
-    ('晴', '晴', '晴'): {'雨': 0.6, '晴': 0.4},  # 长期晴天后更可能下雨
+    ('晴', '晴', '晴'): {'雨': 0.6, '晴': 0.4},  # 示例条件下的设定值
     ('雨', '晴', '晴'): {'雨': 0.3, '晴': 0.7},
     ('晴', '雨', '晴'): {'雨': 0.4, '晴': 0.6},
 }
 
 ```
 
-###### 通用高阶实现
+##### 按历史抽样，再更新历史 {#通用高阶实现}
+
+“根据概率抽一个状态”与“选概率最大的状态”不同。前者保留转移的随机性；后者每次可能得到同一结果。下面用一个完整的二阶、两状态表演示抽样，固定种子方便复现。更新历史时丢掉最旧状态、补入新状态，因此记忆长度始终为 2。
 
 ```python
-class HigherOrderMarkovChain:
-    """τ阶马尔科夫链通用实现"""
+import math
+import random
 
-    def __init__(self, order: int):
-        self.order = order  # 记忆长度
-        self.memory = []    # 存储最近order个状态
+# 所有 2 × 2 种历史均有定义；数值为构造示例。
+weather_table = {
+    ("晴", "晴"): {"晴": 0.8, "雨": 0.2},
+    ("晴", "雨"): {"晴": 0.4, "雨": 0.6},
+    ("雨", "晴"): {"晴": 0.6, "雨": 0.4},
+    ("雨", "雨"): {"晴": 0.3, "雨": 0.7},
+}
 
-        # 转移概率表：P(X_t | X_{t-τ}, ..., X_{t-1})
-        self.transitions = {}
+def sample_next(history, table, rng):
+    history = tuple(history)
+    if not history or history not in table:
+        raise ValueError("Missing transition row for this history")
+    row = table[history]
+    probabilities = list(row.values())
+    if (not probabilities
+            or any(not math.isfinite(p) or p < 0 for p in probabilities)
+            or not math.isclose(sum(probabilities), 1.0, rel_tol=0, abs_tol=1e-12)):
+        raise ValueError("Transition probabilities must be finite, nonnegative and sum to 1")
+    return rng.choices(list(row), weights=probabilities, k=1)[0]
 
-    def add_transition(self, history: tuple, next_state: str, prob: float):
-        """添加转移概率"""
-        if history not in self.transitions:
-            self.transitions[history] = {}
-        self.transitions[history][next_state] = prob
-
-    def predict(self) -> str:
-        """基于历史预测下一个状态"""
-        if len(self.memory) < self.order:
-            return None
-
-        # 获取最近的order个状态作为历史
-        recent_history = tuple(self.memory[-self.order:])
-
-        if recent_history in self.transitions:
-            # 根据概率随机选择
-            probs = self.transitions[recent_history]
-            import random
-            return random.choices(list(probs.keys()),
-                                 weights=probs.values())[0]
-        return None
+rng = random.Random(42)
+history = ("晴", "晴")
+for _ in range(5):
+    next_state = sample_next(history, weather_table, rng)
+    print(history, "→", next_state)
+    history = history[1:] + (next_state,)
 ```
 
-###### 高阶到一阶的转换技巧
+表里缺少当前历史时，示例明确报错；不能悄悄返回一个状态或把缺失行当成全零概率。实际建模还要规定初始历史、未见过的历史如何处理，以及状态集合是否闭合。上面的三阶表只展示条件概率的写法，不是一张可直接长期模拟的完整表。
+
+##### 高阶到一阶的转换技巧
 
 - 复合状态方法
 高阶马尔科夫链可以通过状态扩展转换为一阶链:
 
 ```python
-def convert_to_first_order(states: list, high_order_probs: dict, order: int):
-    """
-    将高阶马尔科夫链转换为等价的一阶链
+from itertools import product
+import numpy as np
 
-    思想：将长度为order的历史序列视为一个"复合状态"
-    例如：二阶链的(S,M)视为一个新状态
-    """
 
-    # 1. 创建所有可能的复合状态
-    composite_states = []
-    from itertools import product
+def convert_to_first_order(states, high_order_probs, order):
+    """完整条件表 → 按历史元组索引的一阶转移矩阵。"""
+    if not isinstance(order, int) or order < 1:
+        raise ValueError("order must be a positive integer")
+    if not states or len(set(states)) != len(states):
+        raise ValueError("states must be nonempty and unique")
+    histories = list(product(states, repeat=order))
+    if set(high_order_probs) != set(histories):
+        raise ValueError("Every history needs an explicit transition row")
+    index = {history: i for i, history in enumerate(histories)}
+    matrix = np.zeros((len(histories), len(histories)))
+    for history, next_probs in high_order_probs.items():
+        if not set(next_probs).issubset(states):
+            raise ValueError("Unknown next state")
+        probabilities = np.array(list(next_probs.values()), dtype=float)
+        if (not np.isfinite(probabilities).all()
+                or (probabilities < 0).any()
+                or not np.isclose(probabilities.sum(), 1, atol=1e-12, rtol=0)):
+            raise ValueError("Each row must be a probability distribution")
+        for next_state, probability in next_probs.items():
+            successor = history[1:] + (next_state,)
+            matrix[index[history], index[successor]] = probability
+    return histories, matrix
 
-    # 生成所有长度为order的状态序列
-    for combo in product(states, repeat=order):
-        composite_states.append(combo)
 
-    # 2. 构建一阶转移矩阵
-    n_composite = len(composite_states)
-    P_first_order = np.zeros((n_composite, n_composite))
-
-    # 3. 填充转移概率
-    composite_index = {cs: i for i, cs in enumerate(composite_states)}
-
-    for history_tuple, next_probs in high_order_probs.items():
-        i = composite_index[history_tuple]
-
-        for next_state, prob in next_probs.items():
-            # 新历史：(移出最旧状态，加入新状态)
-            # 例如：(S,M) + M → (M,M)
-            new_history = history_tuple[1:] + (next_state,)
-            j = composite_index[new_history]
-            P_first_order[i, j] = prob
-
-    return composite_states, P_first_order
-
-# 示例：二阶链转换
-states = ['S', 'M', 'C']
+states = ["S", "M", "C"]
+# 为全部 9 个历史提供一行，避免省略行变成概率总和为 0。
 second_order_probs = {
-    ('S', 'S'): {'S': 0.6, 'M': 0.3, 'C': 0.1},
-    ('S', 'M'): {'S': 0.2, 'M': 0.6, 'C': 0.2},
-    ('M', 'S'): {'S': 0.4, 'M': 0.5, 'C': 0.1},
-    # ... 其他组合
+    history: {"S": 0.5, "M": 0.3, "C": 0.2}
+    for history in product(states, repeat=2)
 }
-
-composite_states, P_1st = convert_to_first_order(states, second_order_probs, order=2)
-print(f"原始状态数: {len(states)}")
-print(f"复合状态数: {len(composite_states)}")  # 3² = 9
+second_order_probs[("S", "S")] = {"S": 0.6, "M": 0.3, "C": 0.1}
+second_order_probs[("M", "S")] = {"S": 0.4, "M": 0.5, "C": 0.1}
+histories, transition = convert_to_first_order(states, second_order_probs, 2)
+np.testing.assert_allclose(transition.sum(axis=1), 1)
+assert transition.shape == (9, 9)
+assert transition[histories.index(("S", "S")), histories.index(("S", "C"))] == 0.1
+print("composite states:", len(histories), "row sums:", transition.sum(axis=1))
 ```
 
-例子:
+复合状态必须按时间重叠连接。例如 `(S, M)` 后面收到 `C`，下一复合状态是 `(M, C)`；不可能直接变成 `(S, C)`。上面明确填满条件表，并检查每行概率和，防止用省略号留下全零转移行。
 
-```python
-import matplotlib.pyplot as plt
-import networkx as nx
-from matplotlib.patches import FancyBboxPatch
+下面把二阶历史写成一个复合状态：原来需要查询最近两次状态，改写后只查询当前的“状态对”。这没有丢掉记忆，而是把记忆放进状态定义。图中 `S → M → C` 只表示一段可能的实现轨迹，并不表示这些转移是确定的。
 
-def visualize_markov_chains():
-    """改进的可视化：二阶马尔科夫链转换为一阶链"""
+<figure class="article-figure">
+{{< post-image src="assets/markov-history.webp" alt="二阶过程把 S、M 组成当前状态对，收到 C 后移除 S 并得到 M、C，两个相邻状态对共享 M" >}}
+<figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">从 <code>(S, M)</code> 更新到 <code>(M, C)</code>，保留的是历史窗口的重叠部分。有限阶过程可这样改写成一阶过程，但状态数会随历史长度增长；任意固定窗口也不保证足以描述真实环境。</span></figcaption>
+</figure>
 
-    # 创建图形
-    fig, axes = plt.subplots(1, 2, figsize=(16, 8))
-    fig.suptitle('Transforming Second-Order Markov Chain to First-Order',
-                fontsize=16, fontweight='bold', y=0.95)
-
-    # ========== 左图：二阶马尔科夫链 ==========
-    ax1 = axes[0]
-    ax1.set_title('Second-Order Markov Chain\n(Needs memory of past 2 days)',
-                 fontsize=14, fontweight='bold', pad=20)
-    ax1.set_xlim(-1, 11)
-    ax1.set_ylim(-1, 11)
-    ax1.axis('off')
-
-    # 时间线标签
-    time_labels = ['Day -2', 'Day -1', 'Today']
-    times = [2, 5, 8]
-
-    # 绘制时间线
-    ax1.plot([1.5, 8.5], [8, 8], 'k-', linewidth=2, alpha=0.7)
-
-    for i, (time, label) in enumerate(zip(times, time_labels)):
-        ax1.text(time, 8.3, label, ha='center', fontsize=11,
-                fontweight='bold', color='darkblue')
-        # 时间点标记
-        ax1.plot(time, 8, 'ko', markersize=10)
-
-    # 天气示例：Sunny, Sunny, Cloudy
-    weather_sequence = ['Sunny', 'Sunny', 'Cloudy']
-    weather_icons = {'Sunny': '☀️', 'Cloudy': '☁️', 'Rainy': '🌧️'}
-
-    for i, (time, weather) in enumerate(zip(times, weather_sequence)):
-        ax1.text(time, 7.5, weather_icons[weather], fontsize=40, ha='center')
-        ax1.text(time, 7.0, weather, ha='center', fontsize=12,
-                fontweight='bold', color='darkblue')
-
-    # 依赖箭头
-    ax1.arrow(times[0], 6.8, times[1]-times[0]-0.3, -0.7,
-              head_width=0.15, head_length=0.2, fc='red', ec='red', alpha=0.7)
-    ax1.arrow(times[1], 6.8, times[2]-times[1]-0.3, -0.7,
-              head_width=0.15, head_length=0.2, fc='red', ec='red', alpha=0.7)
-
-    # 状态空间说明
-    state_space_box = FancyBboxPatch((1, 3), 8, 2,
-                                    boxstyle="round,pad=0.3",
-                                    facecolor="lightcoral", alpha=0.2,
-                                    edgecolor="red", linewidth=1.5)
-    ax1.add_patch(state_space_box)
-
-    ax1.text(5, 4.5, 'State Space Size Problem',
-            ha='center', fontsize=12, fontweight='bold', color='darkred')
-    ax1.text(5, 3.8, '3 weather types → 3² = 9 possible history pairs',
-            ha='center', fontsize=10, color='darkred')
-    ax1.text(5, 3.3, 'P(Today | Yesterday, Day-before-yesterday)',
-            ha='center', fontsize=10, color='darkred', style='italic')
-
-    # 内存需求
-    memory_box = FancyBboxPatch((1, 0.5), 8, 1.5,
-                               boxstyle="round,pad=0.3",
-                               facecolor="lightblue", alpha=0.2,
-                               edgecolor="blue", linewidth=1.5)
-    ax1.add_patch(memory_box)
-
-    ax1.text(5, 1.7, 'Memory Requirement',
-            ha='center', fontsize=12, fontweight='bold', color='darkblue')
-    ax1.text(5, 1.0, 'Need to remember last 2 states',
-            ha='center', fontsize=10, color='darkblue')
-
-    # ========== 右图：转换为一阶链 ==========
-    ax2 = axes[1]
-    ax2.set_title('Equivalent First-Order Markov Chain\n(Composite states)',
-                 fontsize=14, fontweight='bold', pad=20)
-    ax2.set_xlim(-1, 11)
-    ax2.set_ylim(-1, 11)
-    ax2.axis('off')
-
-    # 复合状态的概念
-    composite_box = FancyBboxPatch((1, 8), 8, 2,
-                                  boxstyle="round,pad=0.3",
-                                  facecolor="lightgreen", alpha=0.2,
-                                  edgecolor="green", linewidth=2)
-    ax2.add_patch(composite_box)
-
-    ax2.text(5, 9.5, 'Composite State = Memory Encoded in State Name',
-            ha='center', fontsize=12, fontweight='bold', color='darkgreen')
-
-    ax2.text(5, 8.8, 'Instead of: P(Weather_today | Weather_yesterday, Weather_day-before)',
-            ha='center', fontsize=9, color='darkgreen')
-    ax2.text(5, 8.2, 'We use: P(Composite_today | Composite_yesterday)',
-            ha='center', fontsize=9, color='darkgreen')
-
-    # 复合状态示例
-    ax2.text(3, 7.0, 'Composite State Example:', ha='left', fontsize=11, fontweight='bold')
-
-    # 状态分解图示
-    # 复合状态
-    comp_state = FancyBboxPatch((3, 5.5), 4, 1,
-                               boxstyle="round,pad=0.3",
-                               facecolor="lightblue", alpha=0.3)
-    ax2.add_patch(comp_state)
-    ax2.text(5, 6.0, '"Sunny-Sunny"', ha='center', fontsize=12,
-            fontweight='bold', color='darkblue')
-    ax2.text(5, 5.5, 'represents: Sunny yesterday + Sunny day-before',
-            ha='center', fontsize=9, color='blue')
-
-    # 箭头到天气
-    ax2.arrow(5, 5.2, 0, -1, head_width=0.2, head_length=0.15,
-              fc='purple', ec='purple', alpha=0.7, linestyle='--')
-
-    # 对应天气
-    weather_box = FancyBboxPatch((3, 3.5), 4, 1,
-                                boxstyle="round,pad=0.3",
-                                facecolor="yellow", alpha=0.2)
-    ax2.add_patch(weather_box)
-    ax2.text(5, 4.0, 'Actual Weather Today', ha='center', fontsize=10, fontweight='bold')
-    ax2.text(5, 3.5, 'Sunny', ha='center', fontsize=14, fontweight='bold', color='darkorange')
-    ax2.text(5, 3.5, '☀️', fontsize=30, ha='center')
-
-    # 状态转移示例
-    ax2.text(3, 2.5, 'State Transition Example:', ha='left', fontsize=11, fontweight='bold')
-
-    # 转移箭头
-    ax2.plot([2, 8], [2, 2], 'k-', linewidth=1, alpha=0.5)
-
-    # 从状态 (Sunny, Sunny)
-    state1_box = FancyBboxPatch((1.5, 1.2), 2, 1,
-                               boxstyle="round,pad=0.3",
-                               facecolor="lightblue", alpha=0.4)
-    ax2.add_patch(state1_box)
-    ax2.text(2.5, 1.7, 'State: (S,S)', ha='center', fontsize=10, fontweight='bold')
-
-    # 转移箭头
-    ax2.arrow(3.5, 1.7, 2, 0, head_width=0.15, head_length=0.2,
-              fc='red', ec='red', alpha=0.7)
-
-    # 到状态 (Sunny, Cloudy)
-    state2_box = FancyBboxPatch((5.5, 1.2), 2, 1,
-                               boxstyle="round,pad=0.3",
-                               facecolor="lightblue", alpha=0.4)
-    ax2.add_patch(state2_box)
-    ax2.text(6.5, 1.7, 'State: (S,C)', ha='center', fontsize=10, fontweight='bold')
-
-    # 转移概率说明
-    prob_text = 'Transition Probability:\nP((S,C) | (S,S)) = 0.4'
-    ax2.text(6.5, 0.5, prob_text, ha='center', fontsize=9,
-            bbox=dict(boxstyle="round,pad=0.2", facecolor="yellow", alpha=0.3))
-
-    # 关键优势
-    advantage_box = FancyBboxPatch((1, -0.5), 8, 1.5,
-                                  boxstyle="round,pad=0.3",
-                                  facecolor="gold", alpha=0.2,
-                                  edgecolor="orange", linewidth=1.5)
-    ax2.add_patch(advantage_box)
-
-    ax2.text(5, 0.0, 'Key Advantage: Standard Markov techniques apply',
-            ha='center', fontsize=11, fontweight='bold', color='darkorange')
-    ax2.text(5, -0.5, 'State space: 9 composite states instead of complex memory',
-            ha='center', fontsize=9, color='darkorange')
-
-    plt.tight_layout()
-    plt.show()
-
-visualize_markov_chains()
-```
-
-![markov_chains](visualize_markov_chains.png)
-
-#### 2.3 马尔科夫决策过程 (Markov Decision Process， MDP)
+### 2.3 马尔科夫决策过程 (Markov Decision Process， MDP)
 
 马尔可夫链在强化学习领域的具体应用，包括一组状态、一组动作、状态转移概率、奖励函数和折扣因子。
   - 在MDP中，智能体可以选择动作，然后在环境下根据状态转移考虑确定下一个状态，并返回一个即时奖励。
   - MDP的目标是找到一个最优策略，以最大化期望累计回报（或价值函数）
 
-![Markov Decision Process](Markov_Decision_Process.png)
+![MDP 中状态、动作和下一状态之间的转移与奖励关系](Markov_Decision_Process.png)
 
 
-### 3. 策略函数 （Policy Function）
+## 3. 策略函数 （Policy Function）
 
-- 在某个state下可以选择一个具体动作action，这依赖策略函数
-  - 确定性策略（Deterministic Policy）
-    - 给定一个状态，策略函数输出一个动作
-$$
-\pi(s) = a
-$$
-  - 随机性策略（Stochastic Policy） (实际主要是这种情况)
-    - 对于给定的状态，策略输出的是一个动作的概率分布
-    $\pi(a \mid s)$ 表示在状态 $s$ 下选择动作 $a$ 的概率。
-        - 注意：在深度学习中，这个策略函数由神经网络表示
-        - 所有的可能为树形结构
+策略回答“给定当前信息，下一步怎样选择动作”。确定性策略可写作 $a=\mu(s)$；随机策略给出条件分布 $\pi(a\mid s)$，再从中抽样。对于离散动作，后者是概率；对于连续动作，通常是概率密度，不能把单点密度值当作一个动作发生的概率。
 
-![Stochastic_Policy](Stochastic_Policy.png)
+策略可以是一张表、手写规则或神经网络。“随机”描述动作选择方式，“神经网络”描述函数的表示方式，两者不是同一个分类维度。
+
+![随机策略给出动作分布，环境转移再决定下一状态](Stochastic_Policy.png)
 
 
-#### 3.1 策略序列/轨迹 $\tau$ (trajectory)
+### 3.1 策略序列/轨迹 $\tau$ (trajectory)
 
 - 状态、动作、奖励的序列
 $$
@@ -481,51 +317,45 @@ $$
 
   奖励穿插在状态和动作之间。
 
-#### 3.2 轨迹对应的概率 $P$：
+### 3.2 轨迹对应的概率 $P$：
 
-  - 描述了在策略 $\theta$下，智能体agent在环境中采取一系列动作，从初始状态开始并最终达到某个终止状态的可能性有多大。这个概率分布通常用于强化学习算法中的策略优化，目标是找到使得期望回报最大化的最佳策略参数$\theta$ .
-
-![trajectory](trajectory.png)
+先忽略奖励，把长度为 T 次交互的状态–动作轨迹记为
 
 $$
-(Trajectory-\tau =(s_1, a_1, s_2, a_2, ..., s_{T}, a_{T}))
-$$
-  （核心是 状态-动作交替）
-
-  - 环境动态: $p(s_{t+1}|s_{t}, a_{t})$，这是环境决定的（与策略无关）
-  - 策略
-    - 于是，一条给定轨迹的概率（假设初始状态分布为 $p(s_1)$）为：
-$$
-p_\theta(\tau) = p(s_1) \prod_{t=1}^T\pi_\theta(a_t|s_t)p(s_{t+1}|s_t, a_t)
-$$
-        - 具体展开
-$$
-p_\theta(\tau) = p(s_1)p_{\theta}(a_1 | s_1)p(s_2|s_1, a_1)p_{\theta}(a_2 | s_2)p(s_3|s_2, a_2)......
+\tau=(s_0,a_0,s_1,a_1,\ldots,s_{T-1},a_{T-1},s_T).
 $$
 
-#### 3.3 确定性策略 vs 随机策略 的轨迹分布区别
+注意最后保留了 $s_T$：T 个动作会产生 T 次状态转移。给定初始分布 $p_0$、策略 $\pi_\theta$ 和环境转移 $P$，离散情形的轨迹概率是
 
-  - 确定性策略只固定“给定状态时的动作”，环境转移或初始状态随机时仍存在轨迹分布；随机策略还引入动作采样的随机性
-    - 确定性策略 （仅依赖环境随机）
-      - 在每个状态 s 下固定输出一个特定动作，即
 $$
-a = f(s)
+p_\theta(\tau)=p_0(s_0)\prod_{t=0}^{T-1}
+\pi_\theta(a_t\mid s_t)P(s_{t+1}\mid s_t,a_t).
 $$
-          (函数映射)
-        - 在完全确定性环境 + 确定性策略时：只要初始状态固定，整条轨迹完全固定。（只有一条轨迹概率为1，其他为0）
-        - 如果环境动态随机而策略确定：初始状态固定时，第一次动作固定；后续状态随机，动作随到达的状态变化，因此动作序列也未必固定。（不同轨迹的概率来自于环境随机，而不是策略随机）
-    - 随机性策略（可依赖环境随机和轨迹随机）
-      - 在每个状态 s 下输出动作的概率分布，例如高斯或分类分布等
-          - 即使环境动态确定:$p(s_{t+1}|s_{t}, a_{t})$是确定性的，因为策略选择动作是随机的，所以从同一个初始状态出发也可以获得多条不同轨迹。
-          - 如果环境也是随机的，那么此时随机性来自两者的叠加。
 
-确定性策略本身不会因为策略的选择而随机生成多条轨迹（动作固定），随机策略会在选择动作时引入随机性，从而即使环境确定也可能有多条轨迹。因此 $p_\theta(\tau)$是一个具备更宽的概率分布，表示由于策略的随机选择导致可能有很多条轨迹，每条有不同概率。
+每一步都乘上“在当前状态选到这个动作”的概率与“执行后到达这个下一状态”的概率。若把随机奖励也显式写进轨迹，就把转移项换成联合分布 $P(s_{t+1},r_{t+1}\mid s_t,a_t)$；连续变量则按相应密度理解。本文假设环境动态不随策略参数 θ 改变，但策略会改变访问哪些状态。
 
-### 4. 强化学习衡量 Reward 的重要指标
+![轨迹交替记录状态和动作，相邻状态由一次环境交互连接](trajectory.png)
+
+例如初始状态固定，第一步动作概率为 0.6、所选转移概率为 0.8，第二步动作概率为 0.5、转移概率为 0.9，则这条具体两步状态–动作轨迹的概率是 `0.6 × 0.8 × 0.5 × 0.9 = 0.216`。这不是最终任务的总成功率；总成功率还要把所有成功轨迹的概率加起来。
+
+### 3.3 确定性策略 vs 随机策略 的轨迹分布区别
+
+| 初始状态 | 策略 | 环境转移 | 可能产生多条轨迹吗 |
+| --- | --- | --- | --- |
+| 固定 | 确定性 | 确定性 | 在相同条件下只有一条 |
+| 随机 | 确定性 | 确定性 | 可能，起点不同 |
+| 固定 | 确定性 | 随机 | 可能，后续到达的状态不同 |
+| 固定 | 随机 | 确定性或随机 | 可能，动作抽样也带来变化 |
+
+确定性策略只保证**同一个输入对应同一个动作**，不保证整段动作序列永远相同：环境把机器人带到不同状态后，确定性策略也会给出不同动作。
+
+反过来，随机策略也不自动意味着“轨迹分布更宽”、探索更有效或任务更稳健。它可能几乎总选同一动作，也可能把概率浪费在无效动作上。比较分布差异时，需要说明初始分布、环境和所用指标。
+
+## 4. 强化学习衡量 Reward 的重要指标
 
 智能体通过与环境交互后的Reward来学习最优策略， 而累计回报、状态价值、动作价值是理解这一过程的核心逻辑链条。他们从单条路径的收益到状态的平均价值，再到动作的具体价值，层层递进刻画智能体的决策依据。
 
-#### 4.1 累计回报 $G_t$
+### 4.1 累计回报 $G_t$
 
 本节使用教材中常见的 $R_{t+1}$：它是执行 $A_t$ 后收到的奖励。后文实现与策略梯度部分把同一奖励记为 $r_t$，即 $r_t=R_{t+1}$；只是下标约定不同，并未多延迟一步。
 
@@ -538,7 +368,11 @@ $$
     - $\gamma \in [0, 1]$ 是折扣因子，用于体现未来奖励的当前价值衰减；无限时域通常取 $\gamma<1$ 并要求回报可积， $\gamma$越接近0，越重视即时奖励；越接近1，越重视长期奖励
     - $R_{t+k+1}$ 是时刻 $t+k+1$的即时奖励。
 
-#### 4.2 状态价值 $V^{\pi}(s)$
+一条已经结束的三步轨迹，奖励依次为 $[-1,-1,10]$，取 $\gamma=0.9$，则 $G_0=-1-0.9+0.9^2\times10=6.2$，$G_1=-1+0.9\times10=8$，$G_2=10$。递推 $G_t=R_{t+1}+\gamma G_{t+1}$ 得到完全相同的结果。
+
+这里的 6.2 是**这条已实现轨迹的回报**。如果相同起点与策略可能成功，也可能失败，状态价值要对这些可能结果求期望。例如另一条轨迹的回报为 −1.9，两条轨迹各以 0.5 概率出现，则该起点价值为 $0.5\times6.2+0.5\times(-1.9)=2.15$，并不等于任何一次回合都能取得 2.15。接下来 $V$ 与 $Q$ 的差别在于：求期望时是否额外固定第一步动作。
+
+### 4.2 状态价值 $V^{\pi}(s)$
 
 - 状态价值函数是策略 $\pi$下，从状态 s 出发的累积回报的期望，公式为
 
@@ -546,7 +380,7 @@ $$
 V^{\pi}(s) = \mathbb{E}_{\pi}\left[G_t \mid S_t = s\right]
 $$
 
-#### 4.3 动作价值 $Q^{\pi}(s, a)$
+### 4.3 动作价值 $Q^{\pi}(s, a)$
 
 - 动作价值函数是在策略 $\pi$下， 从状态 s 执行动作 a 后， 累积回报的期望， 公式为
 $$
@@ -554,7 +388,7 @@ Q^{\pi}(s, a) = \mathbb{E}_{\pi}\left[G_t \mid S_t = s, A_t = a\right]
 $$
 它比状态价值更具体， 直接评估在状态 s 选动作 a ， 再按策略$\pi$行为的长期价值
 
-#### 4.4 $G$、$V$、$Q$ 的关系
+### 4.4 $G$、$V$、$Q$ 的关系
 
 $$
 V^{\pi}(s) = \sum_a \pi(a \mid s) Q^{\pi}(s, a)
@@ -563,39 +397,35 @@ $$
 - 状态 s 的价值， 等于在这个状态下所有可能动作的 $Q$ 值，按照你选动作的策略 $\pi$ 的概率加权平均
 - 累积回报是 $Q$值和 $V$值的计算基础： $Q$值和 $V$值都是对未来累积回报的期望，因为强化学习中存在随机性（比如环境随机反馈、动作随机选择），所以要用期望来描述长期规律。
 
-#### 4.5 将 $G$、$V$、$Q$ 化成递推式：Bellman 方式
+### 4.5 将 $G$、$V$、$Q$ 化成递推式：Bellman 方式
 
-- 累计回报 $G_t$、状态价值 $V^{\pi}(s)$、动作价值 $Q^{\pi}(s, a)$ 都是长期价值，很难直接计算，需要遍历从当前时刻到任务结束的所有未来步骤，这在现实场景中几乎不可行。
-    - 任务无终止时（如持续运行的机器人控制），未来步骤是无限的，$(G_t  = \sum_{k=0}^\infty \gamma^k*R_{t+k+1})$无法直接求和。
-    - 任务有终止但步骤极多（如复杂游戏通关），遍历所有未来路径的计算量会呈指数级增长，远超算力承载能力。而递推Bellman方程将无限/极多步骤的长期价值转化为当前步的奖励+下一步价值的折扣期望，只需关注当前与下一步的关联，大幅降低了计算复杂度。
-    - 同时，递推式让价值学习具备迭代优化的可能。例如 Q-Learning 使用下面的更新式，让 $Q$ 值在每次交互后逐步向最优值收敛：
+已经执行完的一条有限轨迹，可以直接从后往前算出 $G_t$。困难在于：**动作尚未执行时，价值函数要考虑所有可能的后续结果**。长时域中的分支很多，不能只选一条看起来不错的路径当作期望。
 
-$$
-Q(s, a) \leftarrow Q(s, a) + \alpha
-\left[R + \gamma \max_{a'} Q(s', a') - Q(s, a)\right]
-$$
+Bellman 分解使用 $G_t=R_{t+1}+\gamma G_{t+1}$，把长期问题写成“一步奖励 + 下一状态的长期价值”。它没有删除未来，也不会让所有大规模问题立即变得容易；它提供了可迭代计算和从样本学习的关系。
 
-#### 4.6 价值递推核心：Bellman 方程
+如果环境模型已知，可以对下一状态求期望；如果只有经验数据，可以使用实际采到的下一状态构造更新目标。Q-learning 再把下一动作的期望替换为最大动作价值，具体更新见第 6 节。要区分这三件事：回报的代数递推、真实价值满足的方程，以及有限数据上的学习算法。
+
+### 4.6 价值递推核心：Bellman 方程
 
 - 强化学习中，某状态（某状态-动作对）的价值，可分解为即时奖励和后续状态的价值的折扣期望。
 - Bellman方程就是用递推公式来刻画这种现在与未来的价值关联：用选择策略的回报和可达的下一状态的值描述当前状态的值。
 
-##### 4.6.1 Bellman期望方程：针对 $V$ 值
+#### 4.6.1 Bellman期望方程：针对 $V$ 值
 
 - 状态价值函数 $V^{\pi}(s)$的Bellman方程为
 
 $$V^{\pi}(s) = \mathbb{E}_{a \sim \pi,\, s' \sim P} \left[ R_{t+1} + \gamma V^{\pi}(S_{t+1}) \mid S_t = s \right]
 $$
 
-- 含义:在策略 $\pi$下, 状态 s 的价值 = 『即时奖励 $R_{t+1}$的期望』+ 『折扣后, 下一步状态 $S_{t_1}$的价值 $V^{\pi}(S_{t+1})$的期望』
+- 含义:在策略 $\pi$下, 状态 s 的价值 = 『即时奖励 $R_{t+1}$的期望』+ 『折扣后, 下一步状态 $S_{t+1}$的价值 $V^{\pi}(S_{t+1})$的期望』
 - 与 $G$ 的联系:$G_t = R_{t+1} + \gamma G_{t+1}$(累积回报的递推式),而 $V^{\pi}(s) = \mathbb{E}[G_t \mid S_t = s]$,因此 Bellman 方程是对累积回报期望的递推分解。
 - 为什么 $R$ 是 $t + 1$？
 - 执行当前动作后, 在进入下一个状态 $S_{t+1}$的同时,才能获得对应的奖励 $R_{t+1}$
 - 如何理解 $S_{t+1}$？
-- 当模型有关 model-base(环境转移可推算)时:通过 $P(S_{t+1} | S_t, A_t)$可知
+- Model-based 方法使用给定或学到的环境模型，依据 $P(S_{t+1} | S_t, A_t)$ 对下一状态求分布，而不是默认下一状态唯一确定。
 - Model-free 方法不需要显式转移模型，而是从交互或已收集的数据中取得下一状态样本。
 
-##### 4.6.2 Bellman期望方程:针对 $Q$ 值
+#### 4.6.2 Bellman期望方程:针对 $Q$ 值
 
 - 动作价值函数  $Q^{\pi}(s, a)$的Bellman方程为:
 $$
@@ -605,7 +435,7 @@ $$
 - 含义:在策略 $\pi$下, 状态 s 的价值 = 『即时奖励 $R_{t+1}$的期望』+ 『折扣后, 转移概率 $P$给出下一步状态$S_{t+1}$通过采样选动作$A_{t+1}$的$Q$ 值的期望』
 - 与 $V$ 的联系是 $V^\pi(s)=\sum_a\pi(a\mid s)Q^\pi(s,a)$；求和中的状态和动作必须与左侧及求和变量一致。下一状态、随机奖励和下一动作都参与相应的期望。
 
-##### 4.6.3 Bellman最优方程
+#### 4.6.3 Bellman最优方程
 
 $$
 Q^*(s, a) = \mathbb{E}_{s' \sim P}\left[
@@ -616,11 +446,11 @@ $$
 
 - 这是表格价值迭代与 Q-Learning 分析的基础。收敛还依赖任务条件、充分访问状态动作对以及学习率条件；神经网络函数逼近不自动继承表格算法的收敛结论。
 
-### 5. 无模型的学习方法:MC 与 TD
+## 5. 无模型的学习方法:MC 与 TD
 
 在无模型(Model-Free)场景下,我们无法依赖环境转移概率计算价值,只能通过与环境交互的经验学习。蒙特卡洛(MC)和时序差分(TD)是两种核心的无模型价值学习方法,前者依赖 “完整轨迹”,后者侧重 “单步 / 多步交互”,适用于不同场景需求。
 
-#### 5.1 MC 蒙特卡洛(Monte Carlo)
+### 5.1 MC 蒙特卡洛(Monte Carlo)
 
 - 在强化学习中MC方法的本质是通过完整轨迹的累积回报,平均估计状态/动作的价值。它要求智能体完成一整个交互序列(从初始状态到终止状态),获得完整的累积回报  $G_t$ 后,再用这个真实回报更新价值:不依赖任何估计值,只基于实际交互结果。
 - 关键公式
@@ -684,56 +514,32 @@ for n in [1000, 10000, 100000]:
 - 用大量随机样本来估计这个期望值。
 - 独立同分布且方差有限时，样本均值的标准误差是 $\sigma/\sqrt N$。指数不显含维度，但方差常数、采样成本和稀有事件概率仍可能随维度恶化；相关轨迹还会降低有效样本数。
 - 特点与适用场景
-- 优势:无偏差(仅用真实累积回报,不依赖估计值),逻辑直观,适合 “必须完成完整任务才能评估价值” 的场景(如棋类游戏、一次性决策任务)。
-- 劣势:需等待轨迹终止才能更新,学习效率低；对轨迹数量要求高(需大量完整轨迹才能让平均值收敛),不适合 “无终止状态” 的持续任务(如机器人持续导航)。
+- 优势：目标使用已观测的完整回报，不引入下一状态价值估计的 bootstrap 误差；仍需核对采样策略、访问规则和终止处理，不能概括成所有 MC 估计永远无偏。
+- 局限：这里的完整回合式 MC 要等待终止；长轨迹的回报可能具有较大方差。持续任务需要另定义截断、折扣估计或其他学习方法，不能原样套用“等整回合结束”。
 
 ### 5.2 TD 时序差分 (Temporal Difference)
 
-- TD 方法结合了 MC 的 “经验采样” 和动态规划(DP)的自举(Bootstrapping)思想: 无需等待完整轨迹,每执行一步交互(获得 $S_t,A_t,R_{t+1},S_{t+1}$)后,立即用即时奖励 + 下一个状态的估计价值更新当前状态价值,是无模型场景下应用最广泛的方法。
+TD 在收到一次转移后，就用**实际奖励与下一状态的当前价值估计**构造目标。它不必先等待整条轨迹结束，但目标中的下一状态价值会带有估计误差。
 
-| 方法 | 思想 | 局限性 |
-|--------|--------|--------|
-| MC(蒙特卡洛)  | 等完整一条轨迹跑完,再用累计回报更新前面所有状态  | 只能用于 episodic 场景,收敛慢  |
-| DP(动态规划)  | 用「当前奖励 + 下一状态的估计值」进行自举(用估计的未来状态价值,来辅助计算当前状态价值)  | 必须知道环境模型(转移概率)  |
+| 方法 | 固定策略下的典型更新目标 | 是否需要环境模型 | 是否依赖价值估计 |
+| --- | --- | --- | --- |
+| 回合式 MC | 实际完整回报 $G_t$ | 不需要 | 目标不 bootstrap |
+| 一步 TD | $R_{t+1}+\gamma V(S_{t+1})$ | 不需要，用转移样本 | 需要 |
+| 典型 DP 策略评估 | 对模型中的奖励与下一状态价值求期望 | 需要 | 需要 |
 
-- 比喻:学车时的“实时教练”
-假设你在学开车,目标是掌握在不同路况(状态)下如何平稳驾驶(获得高回报)。
+表中的下一状态若真正终止，后续价值设为零；时间限制截断另行处理。DP 用模型算期望，TD 用经验样本近似一步关系，MC 用完整回报作目标。三者比较的是信息来源与更新方式，不能只排成固定的快慢顺序。
 
-- 动态规划(DP)方法:像一个“理论派教练”。
-- 他不开车,只坐在书房里研究地图和交通规则。
-- 他会告诉你:“在十字路口(状态 $S$),如果你直行,根据规则,你可能会到达下一个街区(状态  $S^{'}$),而那个街区的驾驶难度评分是 X 分。所以,这个路口直行的价值是…”。
-- 特点:需要世界模型(地图和规则表),完全依赖推理(自举),没有真实经验。
-- 蒙特卡洛(MC)方法:像一个“事后复盘教练”。
-- 他会让你开完全程(完成一个Episode),比如从家开到公司。
-- 停好车后,他根据你这一趟的整体表现(是顺利到达还是磕磕碰碰)来给你一路上经过的每个路口打分。
-- 特点:必须等待结局,学习是基于完整经验的,但更新延迟严重。
-- 时序差分(TD)方法:像一个 “坐在副驾的实时教练”。
-- 你每开过一个路口,他马上就会点评。
-- 比如,刚才你平稳通过了这个拥堵路口(状态 $S_t$),得到了即时的良好感觉(即时奖励 $R_{t+1}$),并进入了下一个路口(状态 $S_{t+1}$)。教练马上说:“刚才这个路口你处理得不错！而且看,下一个路口车流也很顺畅( $S_{t+1}$ 的价值估计很高),所以我判断你刚才的选择总体价值很高。”
-- 他没有等到终点,就结合了:
-- 你的即时感受(奖励)
-- 他对下一个路口的预判(价值估计)
-- 立刻更新了你对刚才那个路口的认知。
-- 特点:边走边学,实时更新,结合了真实体验片段和原有认知预测。
-- 因此在每一步交互后:
-$S_t,A_t,R_{t+1},S_{t+1}$
-我们就立即用「即时奖励 + 下一状态的估计值」作为新的目标来更新当前状态的估计值。
-这个思想其实是在逼近「期望回报」的定义式:
-$$
-V^{\pi}(S_t) = \mathbb{E}_{\pi}\left[
-R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots \mid S_t
-\right]
-$$
-$$
-V^{\pi}(S_{t+1}) = \mathbb{E}_{\pi}\left[
-R_{t+2} + \gamma R_{t+3} + \gamma^2 R_{t+4} + \cdots \mid S_{t+1}
-\right]
-$$
-但我们没法一次算出所有未来奖励,于是参考上面的公式用一步近似:
-$$
-V(S_t) \approx R_{t+1} + \gamma V(S_{t+1})
-$$
-这就是所谓的「自举(bootstrapping)」: 用当前估计值的一部分去更新自己。
+继续用奖励 $[-1,-1,10]$、折扣 0.9 的轨迹。假设更新前起点估计 $V(S_0)=2$、下一状态估计 $V(S_1)=5$，学习率为 0.1：
+
+| 更新方式 | 何时能得到目标 | 本次目标 | 更新后的 $V(S_0)$ |
+| --- | --- | ---: | ---: |
+| MC | 三步执行完毕后 | 已实现回报 6.2 | $2+0.1(6.2-2)=2.42$ |
+| 一步 TD | 第一步收到奖励 −1 后 | $-1+0.9\times5=3.5$ | $2+0.1(3.5-2)=2.15$ |
+{.table-readable}
+
+两个更新都只移动一小步。MC 这次看到了最终奖励，TD 暂时借助估计的 5；后续经验会继续改变这些估计。**单个 TD 目标不必等于真实状态价值**，Bellman 方程是在相应条件分布下取期望的关系。
+
+所谓自举（bootstrapping），就是目标中使用了已有的价值估计。奖励仍来自环境；“使用估计”不是凭空生成奖励，也不是把一个网络的输出直接当作准确标签。
 
 #### 5.2.1 核心(默认)公式
 
@@ -767,40 +573,39 @@ $$
   y_t = R_{t+1} + \gamma Q(S_{t+1}, A_{t+1})
 $$
 
-- TD目标,它代表了当前状态-动作的理想预测值
+- TD 目标是本次更新的估计标签，不保证等于该状态–动作的真实价值
 - SARSA是一种 On-policy 学习算法:每次更新都基于智能体在当前策略下实际执行的下一步动作 $A_{t+1}$
 
-### 6. 价值函数算法
+## 6. 价值函数算法
 
-#### 6.1 Q-Learning
+### 6.1 Q-Learning
 
 - Q-Learning 是一种典型的异策略（Off-Policy）时序差分(TD)强化学习算法。其核心目标是学习一个最优的动作价值函数 $Q^{*}(s, a)$,该函数表示在状态s下采取动作a后,遵循最优策略所能获得的期望累计折扣回报
 
 #### 6.1.1 算法流程
 
-- 初始化
-- 创建一个表格,存储所有 $(s, a)$组合的 $Q$值,为所有状态-动作对赋予初始值
-- 交互与更新
-- 在每个时间步 $t$,智能体在状态 $S_t$下根据某种策略(贪心算法等)选择动作 $A_t$
-- 执行动作
-- 执行动作 $A_t$,环境返回奖励 $R_{t+1}$和下一个状态 $S_{t+1}$
-- 更新$Q$值,也可以用收敛快的启发式算法得出
+先为每个状态–动作对保存一个估计 $Q(s,a)$。每次交互时，行为策略选择要执行的动作；例如 ε-greedy 以大部分概率选择当前最大 Q 的动作，以小部分概率随机探索。环境返回奖励和下一状态，再构造更新目标：
+
 $$
-Q^*(s, a) = \mathbb{E}\left[
-R_{t+1} + \gamma \max_{a'} Q^*(S_{t+1}, a')
-\mid S_t = s, A_t = a
-\right]
+y=r+\gamma(1-d)\max_{a'}Q(s',a'),\qquad
+Q(s,a)\leftarrow Q(s,a)+\alpha\bigl(y-Q(s,a)\bigr).
 $$
 
-- 重复
-- 令 $S_t \leftarrow S_{t+1}$,重复2-4步骤,直至 $Q$表收敛
-这样就可以反复迭代更新每个情况s下每一种动作a的动作价值 $Q$
+这里 $d=1$ 表示真正终止，此时目标只有奖励；未终止时才加上下一状态的估计。**行为策略可以随机探索，而目标仍使用最大的下一动作价值**，这就是本例中“异策略”的具体含义。SARSA 则使用行为策略实际抽到的下一动作。
+
+理想的最优动作价值满足 Bellman 最优方程：
+
+$$
+Q^*(s,a)=\mathbb E\!\left[R_{t+1}+\gamma\max_{a'}Q^*(S_{t+1},a')\mid S_t=s,A_t=a\right],
+$$
+
+其中终止状态的后续价值定义为零。这个方程描述目标函数应满足的关系；前面的样本更新才是程序每一步执行的运算。表格 Q-learning 的收敛还需要适当的状态动作访问、学习率和任务条件，不能因为写了循环就保证得到 $Q^*$。下面固定学习率、有限回合的代码是演示，不是收敛证明。
 
 #### 6.1.2 (查表)决策
 
 最终优化好了 $Q$ 值表后,选择当前状态下 $Q$ 值最大的动作,通过查训练好的$Q$值表快速到达终点。
 
-#### 6.2 SARSA 和 Q-Learning 的对比测试
+### 6.2 SARSA 和 Q-Learning 的对比测试
 
 - Code :
 
@@ -855,11 +660,38 @@ if __name__ == "__main__":
         print(method, "last-100 mean return:", returns[-100:].mean())
 ```
 
-![SARSAvsQLearnning](SARSAvsQLearnning.png)
+先手算一次更新：下一状态尚未终止，奖励为 −1，折扣为 0.9；下一状态两个动作的 Q 值分别是 2、5，行为策略这次抽到了 Q=2 的动作。SARSA 的目标为 `−1 + 0.9 × 2 = 0.8`，Q-learning 的目标为 `−1 + 0.9 × 5 = 3.5`。如果当前 Q=1、学习率为 0.5，更新后分别得到 0.9 和 2.25。
 
-![SARSAvsQ](SARSAvsQ.png)
+<figure class="article-figure">
+{{< post-image src="assets/sarsa-q-targets.webp" alt="同一非终止转移下，SARSA 使用已抽到的下一动作价值 2，Q-learning 使用最大下一动作价值 5，得到目标 0.8 和 3.5；终止时两者只取奖励" >}}
+<figcaption><span class="article-figure__number">图 2</span><span class="article-figure__text">差别在于更新目标如何使用下一动作。SARSA 下一轮必须继续执行这次抽到的动作；Q-learning 的最大值只用于目标计算，行为策略仍可探索。</span></figcaption>
+</figure>
 
-上方两张图保留历史实验的路径与回报对比，不是当前精简代码的固定输出。运行代码会打印所选种子的末 100 回合平均回报；多种子实验才适合比较稳定性。
+上面的单种子代码适合检查流程。比较算法时，还要把训练中的探索损失与部署时的策略表现分开。[完整对照脚本](cliff_comparison.py)复用同样的环境和训练函数，运行 `python cliff_comparison.py --output-dir cliff-results`：
+
+- 训练种子取 0–19，每种算法每个种子训练 500 回合；学习率 0.5、折扣 1、探索率 0.1，Q 表从零开始。使用相同种子编号不意味着两种算法会经历同样的轨迹。
+- 每张训练后的 Q 表冻结，分别用 ε=0 和 ε=0.1 各评估 100 回合；评估随机流与训练分开，不再更新 Q。相同最大 Q 的动作仍随机打破平局。
+- 每个评估回合最多执行 200 步；超时保留已累计的回报，计为未成功，而不是删除该回合。训练另设 10,000 步保护上限，触发时直接报错。
+
+NumPy 2.2.6 下的运行结果如下；回报越接近零越好，因为每步奖励为 −1，掉崖额外造成较大的负奖励。
+
+| 指标 | SARSA | Q-learning |
+| --- | ---: | ---: |
+| 训练末 100 回合平均回报，种子均值 ± 样本标准差 | −26.54 ± 6.13 | −50.47 ± 7.65 |
+| 冻结后 ε=0 的评估回报，种子均值 ± 样本标准差 | −35.50 ± 56.26 | −13.00 ± 0.00 |
+| 冻结后 ε=0 的成功率，跨种子平均 | 90.0% | 100.0% |
+| 冻结后 ε=0.1 的评估回报，种子均值 ± 样本标准差 | −25.85 ± 10.38 | −47.72 ± 7.33 |
+| 冻结后 ε=0.1 的成功率，跨种子平均 | 99.95% | 100.0% |
+| 冻结后 ε=0.1 的每回合平均掉崖次数 | 0.0325 | 0.3100 |
+
+<figure class="article-figure">
+{{< post-image src="assets/cliff-comparison.png" alt="20 个训练种子的悬崖行走结果：SARSA 在保持探索时回报较高，停止探索后部分策略循环失败；Q-learning 的贪心评估回报为负十三" >}}
+<figcaption><span class="article-figure__number">图 3</span><span class="article-figure__text">左侧先对各种子作仅使用过去 25 回合的滑动平均，再画跨种子均值与正负一个标准差；右侧评估均值包含达到 200 步上限的失败回合。误差棒是种子间离散程度，不是置信区间，也不是回报的可能范围。</span></figcaption>
+</figure>
+
+这组结果能解释两个容易混淆的结论。第一，Q-learning 学到的贪心路线可以很短，但继续探索时仍可能掉崖；因此它的训练回报与贪心评估回报相差很大。第二，SARSA 在这组固定预算下有 2 个种子的纯贪心策略未到终点，导致评估方差很大；不能只凭训练均值较好就称其“收敛更快”或“部署更安全”。参数、训练预算和测试策略改变后，应重新实验，而不是把表格当作算法排行榜。
+
+逐种子的回报、成功率和掉崖次数见[实验数据](assets/cliff-results.json)。这些是在离散悬崖环境中的结果，不是机器人安全性的验证。
 
 ### 6.3 $Q$ 值过估计(Overrstimation Bias)
 
@@ -881,15 +713,21 @@ $$
 Q^{d}(s^{'}, a^{'}) = Q^{*}(s^{'}, a^{'}) + \epsilon_{a^{'}}
 $$
 
-- 其中 $\epsilon_{a^{'}}$是估计误差,可能正或可能负,由于$\max$操作倾向于选择误差最大的那个动作,很可能存在某个样本导致:
+这里的 $\epsilon_{a'}$ 是估计误差，可能为正，也可能为负。`max` 选的是“真实价值 + 误差”最大的动作，**不一定是误差最大的动作**；只有真实价值相同等特定情形，两者才等价。
+
+为了单独看清选择偏差，先假设每个动作的估计无偏，即 $\mathbb E[Q^d(s',a')]=Q^*(s',a')$，并固定当前的下一状态 $s'$。最大值函数是凸函数，因此
+
 $$
-\mathbb{E} [\max_{a^{'}}  Q^{d}(s^{'}, a^{'})] > \max_{a^{'}}  Q^{*}(s^{'}, a^{'})
+\mathbb E\!\left[\max_{a'}Q^d(s',a')\right]
+\geq \max_{a'}\mathbb E\!\left[Q^d(s',a')\right]
+=\max_{a'}Q^*(s',a').
 $$
 
-- 因此,纯价值函数方法(如Q-Learning、DQN)天然容易出现过估计
-- Actor-Critic 将动作生成与价值评估分开，但 Actor 仍依赖 Critic 的估计，因此结构本身不能消除过估计。TD3 的双 Critic 取小目标和延迟更新才是针对性机制，见 [TD3 官方说明](https://spinningup.openai.com/en/latest/algorithms/td3.html)。
+这是**对重复估计取平均后的不等式**，不是说每一次最大估计都过高；不等号也不一定严格成立。例如，所有动作共享同一个零均值噪声时，最大值的期望可以恰好无偏。实际训练的估计还可能带有函数逼近误差或系统性低估，不能把上面的无偏假设当作总是成立。
 
-![overrstimation_error1](overrstimation_error.png)
+最容易手算的例子是：两个动作的真实价值都为 0，每个估计独立地以一半概率取 $-1$、一半概率取 $+1$。四种等概率结果的最大值依次为 $-1,+1,+1,+1$，平均为 $0.5$。**每个动作单独看都无偏，取最大值后却产生了正偏差。**
+
+Actor-Critic 将动作生成与价值评估分开，但 Actor 仍依赖 Critic 的估计，因此结构本身不能消除过估计。TD3 的双 Critic 取小目标和延迟更新属于针对性机制，见 [TD3 官方说明](https://spinningup.openai.com/en/latest/algorithms/td3.html)。
 
 ### 6.4 从最大化偏差到 Double Q-Learning
 
@@ -920,11 +758,14 @@ def double_q_update(q1, q2, state, action, reward, next_state,
 
 训练时可用 `q1 + q2` 形成 ε-greedy 行为策略。两个表由同一条经验流学习，并不严格统计独立；Double Q 将动作选择与评估解耦，缓解最大化偏差，但仍可能低估，不能保证偏差永远为零。
 
-![两组带噪声估计中动作选择与价值评估的对比](Q_Learning_vs_Double_Q_Learning_1.png)
+[下载统计实验脚本](maximization_bias.py)，运行 `python maximization_bias.py --output-dir bias-results` 可生成下图和逐项 JSON 统计。NumPy 2.2.6、种子 42 下，固定一个动作的均值接近 0；在 10 个动作中用同一估计器选择并评估，均值约为 1.54；换成独立估计器评估所选动作，均值重新接近 0。
 
-![历史环境中 Q-Learning 和 Double Q-Learning 的训练曲线](Q_Learning_vs_Double_Q_Learning_2.png)
+<figure class="article-figure">
+{{< post-image src="assets/maximization-bias.png" alt="十个动作真实价值均为零时，同一估计器选择并评估的分布向正方向偏移，独立估计器评估的平均值接近零" >}}
+<figcaption><span class="article-figure__number">图 4</span><span class="article-figure__text">100,000 次独立高斯误差试验；右侧误差棒是均值的 1.96 倍 Monte Carlo 标准误，不是训练种子间的标准差。实验隔离了选择偏差，没有模拟完整的强化学习训练。</span></figcaption>
+</figure>
 
-以上保留的两张图来自历史实验，并非上方精简示例的本次运行结果。曲线差异受到环境、随机种子、训练预算和估计器相关性的影响，不据单次试验宣称固定提升比例。
+[Double Q-learning 原论文](https://papers.nips.cc/paper_files/paper/2010/hash/091d584fced301b442654dd8c23b3fc9-Abstract.html)讨论了双估计器以及可能出现的低估。这里独立生成两组随机误差，是为了清楚展示机制；真实训练中两张 Q 表共享经验，不能直接套用“均值必定回到零”的结论。
 
 ### 6.5 DQN (Deep Q-Network 使用神经网络的Q-Learning)
 
@@ -1037,7 +878,7 @@ $$
 
 <figure class="article-figure">
 {{< post-image src="assets/policy-gradient-training-flow.webp" alt="固定策略完成一回合采样，保存状态动作奖励，随后以回报加权 log-probability 更新策略参数；未结束时继续下一状态" >}}
-<figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">采样期间沿环境返回的下一状态继续；回合结束后，优化器更新策略参数，再开始下一回合。回报是权重，环境不在这条反向传播路径上。</span></figcaption>
+<figcaption><span class="article-figure__number">图 5</span><span class="article-figure__text">采样期间沿环境返回的下一状态继续；回合结束后，优化器更新策略参数，再开始下一回合。回报是权重，环境不在这条反向传播路径上。</span></figcaption>
 </figure>
 
 监督学习的梯度并不普遍等于“误差乘输入特征”；那只适用于特定模型和损失的组合。同样，策略梯度也不是仅仅把梯度下降改成梯度上升。关键是：如何从由策略产生的数据，构造对期望回报有效的梯度估计。
@@ -1245,7 +1086,7 @@ $$
 |--------|--------|
 | PG 方差大 | Critic 使用降低方差的方法（如优势函数） |
 | 连续动作的 argmax 难求 | Actor 学习动作映射，减少在线动作搜索开销。 |
-| 学习效率低 | Critic 提供更快的学习信号（TD 误差），比整段回报 R 快得多。 |
+| 需要等待完整回报 | Critic 可用一步转移构造 TD 信号，无需等到回合结束；训练速度仍取决于估计误差和采样成本。 |
 | 高方差策略更新 | Critic 提供可学习的估计，但也可能引入偏差，不能保证收敛。 |
 
 ### 9.4 Actor-Critic 思路
@@ -1285,6 +1126,7 @@ G_t = r_t + γr_{t+1} + ... + γ^{T-1-t}r_{T-1}
 | Q-V形式 | $A^\pi=Q^\pi-V^\pi$ | 实现可估计 Q、V，也可使用其他结构 | 取决于估计器 | 取决于价值误差 | 取决于估计器 | 先区分定义与估计 |
 | TD残差形式 | $\delta=r+\gamma V(s')-V(s)$ | 通常学习 V | 单步后 | 取决于 V 与边界处理 | 来自奖励与转移随机性 | 用于 bootstrap |
 | 蒙特卡洛形式 | $G_t-V(s)$ | 基线可以学习或固定 | 回合结束 | 取决于基线、回报与采样条件 | 完整回报可能高方差 | 不依赖中间 bootstrap |
+{.table-readable}
 
 3. 核心替代方法: 从基础到高级
 
@@ -1387,7 +1229,7 @@ print(weights[10])  # 约 0.5415
 
 <figure class="article-figure">
 {{< post-image src="assets/gae-residual-weights.png" alt="固定 gamma 为 0.99 时，lambda 取 0、0.5、0.95 和 1 的 GAE 残差权重随滞后步数的衰减曲线" >}}
-<figcaption><span class="article-figure__number">图 2</span><span class="article-figure__text">曲线只表示残差的数学权重，不表示训练得分、估计方差或推荐参数。λ 越大，较远处残差保留的权重越多。</span></figcaption>
+<figcaption><span class="article-figure__number">图 6</span><span class="article-figure__text">曲线只表示残差的数学权重，不表示训练得分、估计方差或推荐参数。λ 越大，较远处残差保留的权重越多。</span></figcaption>
 </figure>
 
 图中数值由 $(\gamma\lambda)^l$ 直接计算，可用 [gae_weights.py](gae_weights.py) 复现。
@@ -1468,7 +1310,7 @@ $$
 
 重要性比率只变换同一状态下的动作分布，不会把旧策略的状态分布也自动变成新的。实现还包含优势估计、局部近似、共轭梯度与回溯线搜索；普通 rollout 的时间采样权重也要与实际优化目标核对。少访问状态上的大变化仍可能影响未来轨迹，因此平均 KL 通过不等于所有状态都满足约束，更不等于部署安全保证。
 
-### 10.1.1 采样与优化：常见训练循环
+#### 10.1.1 采样与优化：常见训练循环
 
 - PPO、DDPG、SAC、TRPO 等在线训练通常包含采样和优化两个环节；可以交替、流水线或异步执行。离线 RL 则可能只使用固定数据集。
 - 采样阶段（data collection） 　→ 用当前策略与环境交互，得到一批数据 (s, a, r, s′)。
@@ -1484,6 +1326,7 @@ $$
 |--------|--------|--------|
 | On-policy（在） | 用与被评估/优化策略相符的数据；PPO 可在同一轮 rollout 上执行多次受限更新。 | PPO、A2C、TRPO、SARSA |
 | Off-policy（离） | 可以用旧策略或别的策略产生的数据来更新当前策略。 | DQN、DDPG、TD3、SAC |
+{.table-readable}
 
 ### 10.2 PPO（Proximal Policy Optimization）
 
@@ -1512,7 +1355,7 @@ $$
 - 策略分布比值为 $r_t(\theta)$能反应新旧分布的相似性程度
 - 裁剪发生在代理目标内部，不是把新策略的实际比率强制限制在区间内。共享参数、多轮 minibatch 更新仍可能使其他样本的比率或 KL 显著变化。推导与实现应对照 [PPO 原论文](https://arxiv.org/abs/1707.06347)。
 
-![PPO_CLIP](PPO_CLIP.png)
+![PPO clipping 对正优势的过大概率比与负优势的过小概率比截平目标](PPO_CLIP.png)
 
 用四个标量样本检查裁剪方向，避免负优势分支写反：
 
@@ -1543,30 +1386,29 @@ $$
 $$
 
 - 直接用 SGD 或 Adam 等深度学习方法即可优化参数
-- 自适应KL散度惩罚项
-- 设当前批次估计的平均 KL 为 $d = \hat{\mathbb{E}}_t[D_{\mathrm{KL}}(\pi_{\mathrm{old}}(\cdot\mid s_t)\parallel\pi_\theta(\cdot\mid s_t))$。
+**另一个版本：自适应 KL 惩罚。** PPO 论文也讨论了给代理目标增加平均 KL 惩罚的形式。这里先与常见的裁剪版本分开，不把两套公式同时当成同一个必需步骤：
+
 $$
-  L^{KLPEN}(\theta) = \mathbb{E}_t[r_t(\theta)\hat{A_t} - \beta * D_{KL} (\pi_{\theta(old)}(\cdot|s_t)|| \pi_{\theta}(\cdot|s_t))]
+L^{\mathrm{KLPEN}}(\theta)=\hat{\mathbb E}_t\!\left[
+r_t(\theta)\hat A_t-\beta\,
+D_{\mathrm{KL}}\bigl(\pi_{\mathrm{old}}(\cdot\mid s_t)
+\parallel\pi_\theta(\cdot\mid s_t)\bigr)
+\right].
 $$
 
-- 其中  $\beta$是惩罚系数，并会根据目标 KL 值 $d_{targ}$动态调整：
+令当前批次估计的平均 KL 为 $d$，希望接近的参考值为 $d_{\mathrm{target}}$。论文中的一种自适应规则是：
+
 $$
-    if D_{KL} < \frac{d_{target}}{1.5} \implies \beta <- \frac{\beta}{2},
-$$
-$$
-    if D_{KL} > 1.5 * d_{target} \implies \beta <- 2 * \beta
+\begin{aligned}
+d<d_{\mathrm{target}}/1.5&\quad\Rightarrow\quad\beta\leftarrow\beta/2,\\
+d>1.5d_{\mathrm{target}}&\quad\Rightarrow\quad\beta\leftarrow2\beta.
+\end{aligned}
 $$
 
-- PPO的惩罚项形式用一个启发式规则自适应调  $\beta$以把平均 KL 推到目标附近( $d_{target}$)，而不是通过 KKT/对偶最优把它精确等价为一个硬约束问题，这样就避免了求复杂方程.
-- KL 惩罚与 KL 约束是相关的优化形式；固定一个惩罚系数不保证等价于指定阈值的非凸约束问题，不能未经条件检查就用 KKT 声称两者等价。
-- 而PPO损失函数看起来像TRPO的减法形式。但KL散度前面的参数 $\beta$和TRPO的参数 $C$（一个用数学公式严谨计算出的式子）是不一样的。
-- Actor与Critic网络共享参数时的形式
-- 共享特征提取层可以减少重复计算，但策略损失和价值损失也会同时影响这部分参数。
-- 假设我们只优化策略的损失（例如 PPO 的  $L^{KLPEN}(\theta)$），那么反向传播时，梯度会更新共享的底层参数，使底层特征偏向于更适合策略输出。
-- 如果只最小化价值函数的误差 $(V_{\theta}(s)-V^{\mathrm{target}})^2$，共享特征的变化也可能与策略需要的更新方向冲突。
-- 这可能使训练出现：
-- 不稳定（两个头互相干扰）
-- 收敛缓慢（梯度方向不一致）
+KL 太小时减弱惩罚，太大时增强惩罚，中间区间保持不变。这是控制平均 KL 的启发式反馈，不是精确求解一个硬约束问题；固定某个 $\beta$ 也不保证等价于指定 KL 阈值的非凸约束优化。
+
+**Actor 与 Critic 共享参数时如何组合损失。** 如果两个头共用特征提取层，策略梯度与价值回归梯度都会修改共享参数，两者可能指向不同方向。
+
 共享参数时，一种常见做法是联合优化策略、价值和熵项。先统一优化方向：下面的 $J$ 是要最大化的收益目标，而交给梯度下降优化器的是损失 $L=-J$。联合训练可以协调梯度来源，但并不保证两个任务的梯度没有冲突。
 
 $$
@@ -1585,154 +1427,77 @@ $$
 
 #### PPO是On-Policy学习
 
-- PPO 收集数据 → 使用这些数据更新策略几次 → 丢弃旧数据 → 重新采样新轨迹
-1️⃣ 采样阶段（第一阶段）：
+标准 PPO 的数据使用方式可以分成三步：
 
-- 由当前策略  $\pi_{\theta_{old}}$采样 T 步。
-- 所有数据都与 $\pi_{\theta_{old}}$ 直接对应。
-2️⃣ 优化阶段 （第二阶段）：
+1. **固定本轮行为策略并采样。** 用 $\pi_{\mathrm{old}}$ 与环境交互，保存状态、实际动作、奖励、回合边界及当时的动作 log-probability，再计算本轮使用的优势与价值目标。
+2. **复用这一批数据做有限轮更新。** 当前参数 $\theta$ 会随 mini-batch 改变，但分母中的旧动作概率保持为采样时的值：$r_t(\theta)=\pi_\theta(a_t\mid s_t)/\pi_{\mathrm{old}}(a_t\mid s_t)$。若每次用新策略重算“旧概率”，比率就会错误地退回 1，失去记录策略变化的意义。
+3. **结束本轮优化，再用更新后的策略采样。** 标准做法不把许多轮以前的轨迹放进一个长期回放池中持续重用；这与 DDPG、TD3、SAC 的经验回放方式不同。
 
-- 在这批数据上做 K 轮 mini-batch 更新。
-- 这时使用的比率  $r_t = \pi_{\theta}(a_t | s_t)/ (\pi_{\theta_{old}} a_t | s_t)$。
-- 因为数据来自 $\pi_{\theta_{old}}$ ，更新时是严格基于自己刚刚的表现进行学习。
-3️⃣ 更新后丢弃旧数据：
-
-- 当 $\theta$ 更新完后（ $\theta_{old}$<$\theta$ ），旧数据对应的分布已不再一致，
-- 所以下一轮必须重新采样新轨迹。
-这正是 on-policy 的关键约束。
-
-- PPO 每一轮的优化都只依赖于当前策略 $\pi_{\theta_{old}}$ 采集的数据，
-- 旧数据不会被放进经验池反复使用（那是 off-policy 的做法，如 DDPG、SAC）。
+因此，“on-policy”不意味着每条样本只允许一次梯度更新。PPO 允许本轮有限复用，用裁剪、KL 监测等控制变化；它也不是对任意旧数据都能无条件使用的校正器。前面的概率比只处理给定状态下的动作分布，不能自动修正任意久远策略造成的状态访问分布差异。
 
 ### 10.3 DDPG（Deep Deterministic Policy Gradient）
 
-- DDPG 是 神经网络版的 DPG（Deterministic Policy Gradient），是 连续版的DQN
-- DDPG 是首个将深度神经网络与确定性策略结合的算法（适用于连续动作空间）
-- 核心特征
-- 确定性策略：输出确定性的动作值，而非动作概率分布
-- 连续动作空间：专门设计用于连续控制问题（如机器人控制、自动驾驶）
-- Actor-Critic架构：结合策略网络（Actor）和价值网络（Critic）
-- 离线学习：使用经验回放机制，支持从历史经验中学习
-- 关键技术组件
-- 双网络架构（Actor-Critic）
-- Actor网络（策略网络）：输入状态，输出确定性动作
-- 参数： $\mu(s|\theta^{\mu})$
-- 目标：最大化价值函数
-- Critic网络（价值网络）：评估状态-动作对的价值
-- 参数： $Q(s, a | \theta^{Q})$
-- 目标：准确估计 $Q$值
-- 目标网络（Target Networks）
-- 独立的Actor和Critic目标网络
-- 参数更新采用软更新（缓慢跟踪）：
-$$
-        \theta^{'} <- ~~~\tau \theta + (1 - \tau) \theta^{'}
-$$
-(通常 $\tau =0.001$）
+连续动作给 DQN 带来一个直接问题：`max_a Q(s,a)` 不能靠枚举无限多个动作完成。DDPG 用 Actor 网络 $\mu_\theta(s)$ 直接提出动作，再用 Critic $Q_\phi(s,a)$ 评价它，并把 Critic 对动作的梯度传回 Actor。它结合确定性策略梯度、经验回放与目标网络，属于 **off-policy 的连续控制方法**；使用历史经验不等于训练过程一定离线。[DDPG 原论文](https://arxiv.org/abs/1509.02971)
 
-- 减少价值估计的波动，提高训练稳定性
-- 经验回放（Experience Replay）
-- 存储转移元组 $(s,a,r,s^{'},done)$
-- 随机采样打破数据相关性
-- 提高数据效率和训练稳定性
-- 探索策略
-- 在确定性动作上添加噪声：
-- $a_t = \mu (s_t | \theta^{\mu}) + N$
-- 常用噪声类型：OU过程噪声、高斯噪声
-- 推导过程
-- Actor-Critic主网络：
-- Actor 输出动作  $a = \mu(s|\theta^{\mu})$
-- Critic 评估动作   $Q(s, a | \theta^{Q})$
-- $\mu$是一个神经网络，直接预测 $a$的最佳值。换字母$\mu$以和 $\pi$（预测动作的概率分布）区分.
-- 但 $\pi$不一定不是输出确定值的，也就是说也可以用 $\pi$表示确定值输出。
-- DDPG用的 Ornstein-Uhlenbeck 噪声做探索，确保预测确定值具备探索性
-- $\theta$有上标 $Q$
-- 数学上，尤其是强化学习领域，上标表示标记属于某个特定网络，下标通常用来标记索引、时间步或样本
-- Actor 和 Critic 的参数是分开的，两套参数来自完全独立的神经网络，不共享.
-- DDPG 用目标 Actor 产生下一步动作，再用目标 Critic 构造 TD 目标；它是带估计误差的监督信号，不是真实价值标签。
+先把四个网络的职责分清：$\theta,\phi$ 是当前需要优化的参数，$\bar\theta,\bar\phi$ 是缓慢跟踪它们的目标参数。
+
+| 网络 | 输入与输出 | 参数如何更新 |
+| --- | --- | --- |
+| 当前 Actor $\mu_\theta$ | 状态 → 连续动作 | 沿 Critic 给出的动作价值梯度更新 |
+| 当前 Critic $Q_\phi$ | 状态、动作 → 标量价值 | 回归停止梯度的 TD 目标 |
+| 目标 Actor $\mu_{\bar\theta}$ | 下一状态 → 用于目标计算的动作 | 从当前 Actor 软更新 |
+| 目标 Critic $Q_{\bar\phi}$ | 下一状态、目标动作 → 目标价值估计 | 从当前 Critic 软更新 |
+{.table-readable}
+
+**采集数据：确定性 Actor 仍需要探索。** 训练时常给输出增加噪声，再满足环境的动作边界：
+
 $$
-  y_i = r_i + \gamma(1-d_i)Q'(s_{i+1},\mu'(s_{i+1};\theta^{\mu'});\theta^{Q'})
+a_t=\operatorname{clip}\bigl(\mu_\theta(s_t)+\epsilon_t,\;a_{\min},a_{\max}\bigr).
 $$
 
-- 而之前非确定网络的输出还需要使用贪心策略挑选:
+原论文使用 Ornstein–Uhlenbeck 噪声，实际实现也可使用高斯噪声。噪声让行为策略有机会访问其他动作，但不能保证探索充分。回放池保存实际执行的 $(s_t,a_t,r_t,s_{t+1},d_t)$；$d_t$ 表示真正终止，时间限制等截断应另外保留。终止与截断的区别沿用前面的 GAE 说明，下一状态必须来自这次转移，不能误拿重置后的新状态。
+
+**更新 Critic：使用回放中已经执行过的动作。** 从回放池抽取 N 条转移，先构造目标：
+
 $$
-        y_i = r_i + \gamma(1-d_i)\max_{a'\in A}Q'(s_{i+1},a')
+y_i=\operatorname{stopgrad}\!\left[
+r_i+\gamma(1-d_i)
+Q_{\bar\phi}\bigl(s_i',\mu_{\bar\theta}(s_i')\bigr)
+\right],\qquad
+L_Q(\phi)=\frac1N\sum_i\bigl(Q_\phi(s_i,a_i)-y_i\bigr)^2.
 $$
 
-- Critic 的损失函数:
+例如 `r=1、γ=0.9、d=0`，目标网络对下一状态给出价值 2，则 `y=2.8`；若当前 Critic 对回放动作的估计为 0.7，该样本平方误差是 `4.41`。如果是真正终止，目标就变为 `y=1`。这些是带价值估计误差的学习目标，不是测得的真实长期回报。
+
+**更新 Actor：把动作换成当前网络重新算出的值。** 保持 Critic 参数不变，最小化：
+
 $$
-        L = \frac{1}{N} \sum_i(y_i - Q(s_i, a_i | \theta^{Q}))^2
+L_\mu(\theta)=-\frac1N\sum_iQ_\phi\bigl(s_i,\mu_\theta(s_i)\bigr).
 $$
 
-- Actor 策略梯度的损失函数
+负号表示希望动作的预测价值增大。链式法则给出这个损失的梯度：
+
 $$
-        \nabla_{\theta^{\mu}}J \approx \frac{1}{N}\sum_i \nabla_a Q(s, a|\theta^{Q})|_{s=s_i, a=\mu(s_i)} \nabla_{\theta^{\mu}}\mu(s|\theta^{\mu})|s_i
+\nabla_\theta L_\mu
+=-\frac1N\sum_i
+\left(\frac{\partial\mu_\theta(s_i)}{\partial\theta}\right)^T
+\left.\nabla_aQ_\phi(s_i,a)\right|_{a=\mu_\theta(s_i)}.
 $$
 
-- 这里使用复合函数求导的链式法则，不是条件概率公式。
-- 目标网络: 解决损失函数难收敛问题
-- 用均方误差构造损失函数, 会通过梯度下降更新 $\theta^{Q}$, 以更新Q网络 $Q(s, a| \theta^{Q})$
+用一维算例看方向：固定状态 `s=0.5`，Actor 为 `a=θs`，当前 `θ=0.4`，所以动作是 `0.2`。假设此时固定的 Critic 为 `Q=2−(a−0.7)²`，则 `∂Q/∂a=1`、`∂a/∂θ=0.5`，Actor 损失梯度为 `−0.5`。用学习率 `0.1` 做一次梯度下降后，`θ=0.45`，动作变为 `0.225`，该 Critic 的预测价值从 `1.75` 升至 `1.774375`。这解释了“评价网络指导动作”的计算路径，但预测价值上升不保证真实环境回报提高。
+
+实现时需要**冻结 Critic 参数，同时保留从 Q 到动作的梯度**。把整个 `Q(s, actor(s))` 放进 `no_grad()`，或对 Actor 的动作调用 `detach()`，都会切断这条更新路径；停止梯度应出现在上面的 TD 目标中，不能不加区分地用于 Actor 损失。
+
+**最后更新目标网络：让学习目标变化得慢一些。** 对两套参数分别做：
+
 $$
-        L(\theta^{Q}) = \mathbb{E} [(Q(s_t, a_t | \theta^{Q}) - y_t)^2]
+\bar\phi\leftarrow\tau\phi+(1-\tau)\bar\phi,\qquad
+\bar\theta\leftarrow\tau\theta+(1-\tau)\bar\theta.
 $$
 
-- 实际上这里有更新循环依赖的问题: 目标值 $y_t$也来自于待更新的 $Q$网络 $Q(s, a| \theta^{Q})$
-- 当 $\theta^{Q}$每次更新时, 下一次的 $y_t$计算基准也跟着改变
-- 如果网络预测产生一点噪声或过估计噪声，它会在下一轮目标计算中被放大
-- 这种连锁方法效应导致TD目标不稳定，表现为训练震荡甚至 $Q$值发散
-- 直接用同一个网络计算目标值往往会使损失函数难以收敛。
-- 一种让 $y_t$变化不要那么剧烈的方法:
-- 直接复制一份原有网络 $Q$网络，记为 $Q^{'}(s, a| \theta^{Q^{'}})$
-- 原有 $Q$网络依然按照梯度下降更新
-$$
-          \theta^{Q'} \leftarrow \tau \theta^Q + (1 - \tau)\theta^{Q'}
-$$
-其中 $\tau \ll 1$，论文中取 $0.001$。
+这里 $\tau$ 是当前参数的混合权重。若当前某个参数为 2、目标参数为 1，取 `τ=0.001`，一次软更新后目标参数为 `1.001`。一些代码改用 `polyak=1−τ` 表示旧目标的保留比例，读配置时必须确认公式，不能仅比较变量名。
 
-- 这是“软更新”的方法，与DQN第二篇论文里面“硬更新”的方法不同
-- 同理， Actor网络也运用相同的思路:
-$$
-          \theta^{\mu'} \leftarrow \tau \theta^\mu + (1 - \tau)\theta^{\mu'}
-$$
-
-- 于是DDPG 中不但有两套神经网络，而且每套又有对应的目标网络，- 共四个网络
-
-| 网络类型 | 参数 | 功能 |
-|--------|--------|--------|
-| Actor 主网络 | $\theta^{\mu}$ | 输出确定动作 |
-| Critic 主网络 | $\theta^{Q}$ | 评估动作价值 |
-| Actor 目标网络 | $\theta^{\mu^{'}}$ | 提供稳定的策略估计 |
-| Critic 目标网络 |  $\theta^{Q^{'}}$ | 提供稳定的 $Q$值估计 |
-
-- Actor-Critic目标网络：
-- Actor 输出动作  $a^{'} = \mu^{'}(s|\theta^{\mu^{'}})$
-- Critic 评估动作  $Q^{'}(s, a | \theta^{Q^{'}})$
-- 两套主网络与相应目标网络分担训练和目标估计，能缓解目标快速变化，但不保证训练稳定或收敛。
-- 经验回放（Replay Buffers）
-- 当智能体在环境里探索时，存储过去交互经验，把每一步经验都存入回放池 $D$
-$$
-      D= {(s_t, a_t, r_t, s_{s+1})}
-$$
-
-- 每条经验包含:
-- $s_t$: 当前状态
-- $a_t$: 执行动作
-- $r_t$: 奖励
-- $s_{t+1}$: 下一个状态
-- 为何需要经验回收？
-- 打破时间相关性
-- 强化学习数据是时序相关的，但是如果直接用顺序数据训练神经网络：
-- 网络容易记住最近状态的模式
-- 梯度更新方差大，训练不稳定
-- 经验回放通过随机抽样 minibatch，打破时间依赖：
-$$
-    {(s_t, a_t, r_t, s_{s+1})} \sim Uniform(D)
-$$
-
-- 同时这个“池子”是有容量的，当它满了，最老的样本就要被抛弃
-因为V或Q用时序差分计算时，都需要知道下一状态 $s_{t+1}$
-
-- 提高样本利用率
-- 一条经验可以被使用多次（在不同 minibatch 中），加快训练收敛
+经验回放允许同一转移被多次使用，随机抽样也降低了一个批次中连续相邻样本的相关影响；它不会使整份数据自动独立，也不保证更快收敛。目标网络能缓解目标快速变化，仍不能消除分布外动作、Critic 误差和过估计问题。下一节 TD3 就沿着这些具体问题继续改进。
 
 ### 10.4 TD3（Twin Delayed Deep Deterministic policy gradient）
 
@@ -1740,7 +1505,7 @@ TD3 在 DDPG 的基础上结合双 Critic 目标取小、延迟策略更新和�
 
 <figure class="article-figure">
 {{< post-image src="assets/td3-update-paths.webp" alt="TD3 的目标值停止梯度；两个 Critic 用回放中的动作回归；Actor 用当前动作经过 Q1 更新，并延迟软更新目标网络" >}}
-<figcaption><span class="article-figure__number">图 3</span><span class="article-figure__text">Critic 回归使用回放中实际执行过的动作；Actor 更新才使用当前策略新算出的动作。构造目标值时整条路径停止梯度。</span></figcaption>
+<figcaption><span class="article-figure__number">图 7</span><span class="article-figure__text">Critic 回归使用回放中实际执行过的动作；Actor 更新才使用当前策略新算出的动作。构造目标值时整条路径停止梯度。</span></figcaption>
 </figure>
 
 **第一条：构造 TD 目标。** 从回放池取 $(s,a,r,s',d)$，$d$ 表示真正终止。目标 Actor 先加截断噪声，再裁剪到动作上下界：
@@ -1830,7 +1595,7 @@ $$
 
 回放可以多次复用数据，但并不让数据分布永远不变。PPO 也可在同一轮 rollout 上执行多个 minibatch 更新；其限制是数据与策略变化的关系，而不是“每做一次梯度更新就必须丢弃全部数据”。
 
-### 10.5.1 区分早期 SAC 与无独立 V 网络的版本
+#### 10.5.1 区分早期 SAC 与无独立 V 网络的版本
 
 软价值函数可以作为数学定义存在，不要求总有一个独立 V 网络。早期 SAC 变体使用 V 及目标 V；另一常见实现保留两个 Q 网络、两个目标 Q 网络及一个随机策略，直接构造软 TD 目标。参数计数时还要区分网络与可学习的温度 α。
 
@@ -1860,7 +1625,7 @@ $$
 
 不要把“固定 α=1 的早期推导”“自适应温度”和“移除独立 V 网络”的公式拼成一个含义不明的实现。参见 [SAC 算法说明](https://spinningup.openai.com/en/latest/algorithms/sac.html)。
 
-### 10.5.2 tanh 改变动作，也改变概率密度
+#### 10.5.2 tanh 改变动作，也改变概率密度
 
 设 u 为高斯样本，a=c+b⊙tanh(u)，其中 b=(high−low)/2 为正尺度，c=(high+low)/2 为中心。其 log-probability 为：
 

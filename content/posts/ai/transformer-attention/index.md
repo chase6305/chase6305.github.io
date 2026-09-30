@@ -1,7 +1,7 @@
 ---
 title: "Transformer Attention 学习指南：从 Q/K/V 到现代大模型架构"
 date: 2026-08-27
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["Transformer", "Attention", "PyTorch"]
 categories: ["人工智能"]
@@ -167,6 +167,7 @@ Attention 公式中还会使用以下字母：
 | Single-Head Attention | 用一张注意力图完成一次查找与汇总；也是理解公式的最小实现 | 结构直观、易调试 | 只能在一组表示空间中建立关系 |
 | Multi-Head Attention | 让多个 head 并行学习不同表示子空间和依赖模式 | 表达能力更强；可同时建模多类关系 | 计算和缓存更大；head 不一定具有清晰可解释语义 |
 | GQA/MQA | 保留多个 Query heads，同时共享部分或全部 K/V heads | 降低 KV Cache 和解码带宽 | K/V 表达自由度低于标准 MHA |
+{.table-readable}
 
 Window、Causal、Sparse 描述的则是**可见范围**：一个 Query 被允许查看哪些 Key。它们可以与单头或多头任意组合。例如“Multi-Head Causal Sliding-Window Attention”表示多个 head 都只查看一定长度的过去窗口。
 
@@ -188,6 +189,7 @@ Window、Causal、Sparse 描述的则是**可见范围**：一个 Query 被允�
 | Block-Sparse Attention | 预先设计的局部块和少量远程连接 | 取决于稀疏模式 | 长上下文与结构化稀疏计算 |
 | Local + Global Tokens | 局部窗口加少数全局位置 | 约 `O(TW + TG)` | 需要局部高效计算和全局信息汇聚 |
 | Cross-Attention | 另一个 Context 序列 | `O(Tq × Tk)` | 编码器—解码器、多模态条件输入 |
+{.table-readable}
 
 #### Sliding-Window Attention
 
@@ -938,6 +940,7 @@ class SinusoidalPositionEncoding(nn.Module):
 |---|---|---|---|
 | Causal mask | 未来 token | `[T,T]` | 自回归生成 |
 | Padding mask | 补齐 token | `[B,T]` | 不同长度序列组成 batch |
+{.table-readable}
 
 将 `[B,T]` 的有效位置标记扩展为 `[B,1,1,T]` 后，可以广播到所有 head 和 Query：
 
@@ -1654,6 +1657,7 @@ Transformer 不是只有一种结构。三类架构的核心差异是 Attention 
 | Encoder-Only | 双向 Self-Attention | 每个输入 token 的上下文表示 | 分类、抽取、检索表示 |
 | Decoder-Only | Causal Self-Attention | 下一个 token 分布 | 文本生成、续写、对话 |
 | Encoder-Decoder | Encoder 双向；Decoder 因果 + Cross-Attention | 条件生成序列 | 翻译、摘要、结构转换 |
+{.table-readable}
 
 Encoder-Only 能同时看到左右上下文，但不能直接作为严格的自回归生成器。Decoder-Only 只能看当前位置及过去。Encoder-Decoder 的 Decoder 先读取已生成前缀，再用 Query 查询 Encoder Context 的 K/V。
 
@@ -1729,6 +1733,7 @@ logits, loss = model(
 |---|---|---|---|
 | 右侧 Padding | `[A, B, C, PAD, PAD]` | `[D, E, F, G, H]` | 短 Prompt 取到 PAD 位置 |
 | 左侧 Padding | `[PAD, PAD, A, B, C]` | `[D, E, F, G, H]` | 两者都取到最后有效位置 |
+{.table-readable}
 
 许多简单生成循环固定使用最后一个位置：
 
@@ -1895,6 +1900,7 @@ scheduler.step()
 | 头部共享 | 各 Query Head 是否共享 K/V？ | MHA、GQA、MQA |
 | 计算方式 | 是否构造完整的 `T × T` 矩阵？ | Dense、Low-rank、Kernel/Linear、FlashAttention |
 | 信息来源 | Q 与 K/V 来自哪里？ | Self、Cross、Co-Attention、Memory/Retrieval |
+{.table-readable}
 
 <figure class="article-figure">
   {{< post-image src="assets/attention-family-map.webp" alt="Attention 方法家族图" >}}
@@ -2020,6 +2026,7 @@ def add_alibi(scores, slopes):
 | 图文或编码器—解码器交互 | Cross-Attention | 明确区分查询来源和信息来源 |
 | 大量输入、较少任务状态 | Latent Bottleneck | 先把输入压缩到固定数量的 Latent |
 | 解码显存成为瓶颈 | GQA 或 MQA | 多个 Query Head 共享较少的 K/V Head |
+{.table-readable}
 
 选择时先确定“谁能看谁”和“Q、K、V 来自哪里”，再决定位置机制与 Head 共享；只有在序列成本确实成为瓶颈时，才需要引入稀疏或近似结构。
 

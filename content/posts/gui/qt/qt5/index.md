@@ -1,7 +1,7 @@
 ---
 title: 'symbol version Qt_5_PRIVATE_API not defined in libQt5Gui.so.5 解决方法'
 date: 2025-02-28
-lastmod: 2026-09-05
+lastmod: 2026-09-30
 draft: false
 tags: ["Qt", "Shared Libraries", "Troubleshooting"]
 categories: ["编程开发"]
@@ -48,6 +48,14 @@ printenv QT_PLUGIN_PATH QT_QPA_PLATFORM_PLUGIN_PATH LD_LIBRARY_PATH
 ```
 
 如果系统 Qt、pip 自带 Qt、Conda Qt 或 OpenCV 的插件目录混在一起，优先在独立环境复现并统一来源。Qt 对插件版本有兼容性检查，私有 API 更不能按公共 API 的兼容假设处理。[Qt 插件部署文档](https://doc.qt.io/qt-6/deployment-plugins.html)
+
+### 怎样阅读一组“路径不一致”的证据
+
+假设 `sys.executable` 指向 `/opt/project/.venv/bin/python`，插件日志却选择了另一套 Conda 环境中的 `libqxcb.so`，而加载器又从 `/usr/lib/` 取得 QtGui。这个组合提示需要核对来源，但路径分散本身还不是不兼容的证明：有些发行方式本来就会使用系统依赖，关键是这些二进制是否属于支持的组合。
+
+可把解释器、QtCore、QtGui 和平台插件的实际路径放在同一份记录中，再检查是谁设置了插件路径或库路径。只比较 `pip show` 中的 Python 包版本，会漏掉进程最终加载的动态库；只删除一个环境变量，也可能漏掉应用代码对搜索路径的修改。
+
+隔离实验一次只改变一个来源：先用原环境中的最小窗口测试，再在独立环境安装同一套绑定及其相容依赖。如果后者成功，继续比较库路径；不要把“独立环境成功”直接写成已经找到了原环境中哪个包有错。
 
 ## 3. 用最小窗口验收
 

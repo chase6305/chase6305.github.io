@@ -74,6 +74,10 @@ class Page(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.ids = set()
         self.duplicate_ids = set()
+        self.figure_labels = set()
+        self.duplicate_figure_labels = set()
+        self._figure_label_depth = 0
+        self._figure_label_text = ""
         self.links = []
         self.images = []
         self.schemas = []
@@ -92,6 +96,12 @@ class Page(HTMLParser):
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         classes = attrs.get("class", "").split()
+        if tag == "span":
+            if self._figure_label_depth:
+                self._figure_label_depth += 1
+            elif "article-figure__number" in classes and not self._math_literal_depth:
+                self._figure_label_depth = 1
+                self._figure_label_text = ""
         if "tag-group--ungrouped" in classes:
             self.has_ungrouped_tags = True
         if tag == "a" and "taxonomy-card" in classes:
@@ -123,6 +133,8 @@ class Page(HTMLParser):
                     self.links.append(candidate.strip().split()[0])
 
     def handle_data(self, data):
+        if self._figure_label_depth:
+            self._figure_label_text += data
         # Goldmark attributes may consume a TeX line beginning with {} while
         # leaving the display delimiters as prose, without any KaTeX error.
         if not self._math_literal_depth and re.search(r"(?m)^\s*\$\$\s*$", data):
@@ -133,6 +145,14 @@ class Page(HTMLParser):
             self._filter_text += data
 
     def handle_endtag(self, tag):
+        if tag == "span" and self._figure_label_depth:
+            self._figure_label_depth -= 1
+            if not self._figure_label_depth:
+                label = re.sub(r"\s+", "", self._figure_label_text)
+                if label in self.figure_labels:
+                    self.duplicate_figure_labels.add(label)
+                if label:
+                    self.figure_labels.add(label)
         if tag in ("pre", "code", "script", "style", "math"):
             self._math_literal_depth = max(0, self._math_literal_depth - 1)
         if tag == "nav":
@@ -353,6 +373,8 @@ def main():
                     page.links.extend(tag["url"] for tag in row.get("tags", []))
         if page.duplicate_ids:
             errors.append(f"Duplicate HTML ids: {relative}: {sorted(page.duplicate_ids)}")
+        if page.duplicate_figure_labels:
+            errors.append(f"Duplicate figure labels: {relative}: {sorted(page.duplicate_figure_labels)}")
         if page.unrendered_math:
             warning = f"Unrendered display math: {relative}: {page.unrendered_math}"
             math_warnings.append(warning)

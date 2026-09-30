@@ -1,20 +1,20 @@
 ---
 title: 六自由度机器人正逆运动学
 date: 2021-12-07
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["Kinematics", "Inverse Kinematics", "C++"]
 categories: ["机器人技术"]
 authors: ["chase"]
-summary: "整理 Elfin05 历史 DH 模型和腕心分解，用 NumPy 核对 FK、Jacobian 与腕心公式，并解释 MATLAB 模型和 C++ 片段的验证边界。"
+summary: "从 World、Base、Flange、TCP 坐标链建立六轴 FK，串联 Elfin05 历史 DH 模型、腕心分解与数值验证，说明解析解的适用边界。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
-description: "整理 Elfin05 历史 DH 模型和腕心分解，用 NumPy 核对 FK、Jacobian 与腕心公式，并解释 MATLAB 模型和 C++ 片段的验证边界。"
+description: "从 World、Base、Flange、TCP 坐标链建立六轴 FK，串联 Elfin05 历史 DH 模型、腕心分解与数值验证，说明解析解的适用边界。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "DH 参数、矩阵变换与 C++"
-reading_focus: "模型数值需按实机核对，先验证 FK，再讨论最多八类逆解候选。"
+reading_focus: "先用点变换和工具偏置验证坐标方向，再讨论 DH 连乘及最多八类逆解候选。"
 related_posts:
   - "/posts/robotics/kinematics/seven-dof-kinematics"
   - "/posts/robotics/kinematics/jacobian"
@@ -29,9 +29,41 @@ C++ 部分依赖原工程的 `Kinematics`、`Pose`、矩阵类型及辅助函数
 
 ## 机器人正运动学
 
-机器人正运动学推导过程
+先把问题分成两个方向：**正运动学（FK）**给定关节角，计算工具在哪里；**逆运动学（IK）**给定工具目标，寻找可以实现它的关节角。同一个关节向量只有一个确定的 FK 结果，但同一目标可能没有逆解，也可能对应多个构型。
 
-![Elfin05_DH](Elfin05_DH.png "Elfin05_DH")
+### 先读懂变换矩阵的两个坐标系
+
+本文用 $ {}^AT_B$ 表示“B 坐标系在 A 中的位姿”，同时把 B 中的点坐标换算到 A 中。它包含旋转 $ {}^AR_B$ 和 B 原点在 A 中的位置 $ {}^Ap_B$：
+
+$$
+\begin{bmatrix}{}^Ap\\1\end{bmatrix}
+=\underbrace{\begin{bmatrix}{}^AR_B&{}^Ap_B\\0&1\end{bmatrix}}_{{}^AT_B}
+\begin{bmatrix}{}^Bp\\1\end{bmatrix}.
+$$
+
+例如 B 相对 A 绕 z 轴转过 90°，且 B 原点位于 A 的 $(1,0,0)$ m。B 中的点 $(0.2,0,0)$ m，换到 A 中是 $(1,0.2,0)$ m：先按坐标轴朝向旋转，再加原点平移。直接给三个坐标各加一个偏移会漏掉旋转。
+
+变换链按相邻坐标系连接：$ {}^0T_2={}^0T_1{}^1T_2$。中间的 1 对应同一个坐标系，所以可以接起来；乘法顺序倒过来通常表示另一个变换。逆矩阵为
+
+$$
+({}^AT_B)^{-1}={}^BT_A=
+\begin{bmatrix}R^T&-R^Tp\\0&1\end{bmatrix},
+$$
+
+其中 $R={}^AR_B$、$p={}^Ap_B$。平移部分是 $-R^Tp$，不是只把 $p$ 改成负号。可以用[这个可运行的坐标变换例子](frame_chain_check.py)核对点变换、逆变换以及后文的基座—法兰—工具换算；[Modern Robotics 的齐次变换说明](https://modernrobotics.northwestern.edu/nu-gm-book-resource/3-3-1-homogeneous-transformation-matrices/)给出了同一乘法规则。
+
+<figure class="article-figure">
+{{< post-image src="assets/frame-chain.webp" alt="机械臂上世界、基座、法兰与工具中心点四个坐标系的位置，以及基座外参、正运动学和工具外参组成的关系链" >}}
+<figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">World 是外部参考系，Base 是机器人基座，Flange 是法兰，TCP 是工具中心点。下方连线表示坐标系关系；工具外参固定时，法兰转动也会改变 TCP 的位置。图中机械臂只说明这些位置关系，不对应下文的具体 DH 尺寸。</span></figcaption>
+</figure>
+
+### DH 表如何变成一次 FK
+
+每一行 DH 参数定义相邻两节坐标系之间的变换 $ {}^{i-1}T_i(q_i)$，六个矩阵依次相乘得到 $ {}^0T_6$。如果还装了夹爪，需要再乘固定的工具变换 $ {}^6T_{\mathrm{tcp}}$。因此“第六轴法兰到达目标”与“夹爪指尖到达目标”通常不是同一个要求。
+
+阅读下面的图、表和代码时，按“关节轴方向 → 相邻变换 → 连乘 → 工具外参”的顺序核对。DH 只是一种建模约定；得到相同物理运动的其他坐标系定义，参数表可以看起来很不一样。
+
+![六轴机械臂尺寸与各关节坐标轴的对应示例](Elfin05_DH.png "Elfin05_DH")
 
 各关节坐标系确定的通用方法：
 
@@ -121,11 +153,12 @@ $$
 | 5 | $R_{36}=R_{03}^{T}R_{06}$ | 提取腕部相对旋转 | 这是旋转矩阵关系，不是完整位姿逆变换 |
 | 6 | 按后三轴的 DH 旋转关系求解 | 腕部分支 | 处理腕部奇异，不能直接套任意欧拉角反解 |
 | 7 | 周期展开、限位筛选、FK 回代 | 验证与选解 | 最后才按连续性、碰撞或其他任务目标选择 |
+{.table-readable}
 
 **注意事项：**
 
-- 步骤3可得4组解
-- 步骤6可得2组解
+- 步骤 3 在常见非退化构型下枚举最多 4 类前三轴候选
+- 步骤 6 对每个有效候选枚举最多 2 类腕部候选
 - 非奇异且几何可达时最多枚举 8 类候选；奇异、限位或分支重合会改变有效解数量
 - 最后步骤选取关节角范围内的最近解
 

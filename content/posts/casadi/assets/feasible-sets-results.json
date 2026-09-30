@@ -1,0 +1,23 @@
+{
+  "casadi_version": "3.7.2",
+  "problems": [
+    {
+      "equal_xy": false,
+      "solution": [
+        6.657769462197896e-06,
+        0.9999933422305378
+      ],
+      "objective": 2.0000000000886518,
+      "status": "Solve_Succeeded"
+    },
+    {
+      "equal_xy": true,
+      "solution": [
+        0.5,
+        0.5
+      ],
+      "objective": 2.5,
+      "status": "Solve_Succeeded"
+    }
+  ]
+}

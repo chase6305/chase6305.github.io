@@ -1,7 +1,7 @@
 ---
 title: "MolmoMotion 详解：从三维点轨迹预测到机器人运动先验"
 date: 2026-09-25T03:14:26+08:00
-lastmod: 2026-09-25T06:03:17+08:00
+lastmod: 2026-09-30
 draft: false
 tags: ["MolmoMotion", "Motion Forecasting", "World Model", "Robotics", "Flow Matching", "Paper Notes"]
 categories: ["人工智能"]
@@ -289,6 +289,7 @@ $\tilde p$ 是原始三维点，$w$ 是可信度，$\Delta$ 取 1、3、5 帧。
 | 短轨迹预训练 | Molmo2-4B-Pretrain | 8 | H3／F8 | 40,000 |
 | 长轨迹训练 | 上一阶段 checkpoint | 8 | H3／F30 或 H1／F32 | 10,000 |
 | 机器人适配 | 运动预训练后的权重 | 依任务而定 | 轨迹或机器人动作 | 依实验而定 |
+{.table-readable}
 
 第二阶段继续使用相同的五来源 human 混合，只改变预测窗口和相应配置。它不是直接从原始视觉语言模型重新开始，也不等于已经完成面向某台机械臂的后训练。
 
@@ -337,6 +338,7 @@ README 的示例启动八个进程，发布配方表另写过两节点共 16 张
 | 长序列 | 附录讨论 4,096 上下文限制 | README 的第二阶段命令设置 6,144 |
 | best-of-5 | 正文使用 best-of-5，README 提到参数 | 当前评估入口不接受 `--n_samples=5` |
 | 查询点局部特征 | 论文有该分支及消融 | 数据名需启用 `_2d`；已核对的发布 YAML 未设置该开关，类默认值为 false |
+{.table-readable}
 
 `--n_samples=5` 这一项已在本地实际调用命令行解析器确认，返回 `unrecognized arguments`，没有下载权重或启动模型。它说明的是**该提交的接口缺口**，不意味着论文结果因此无效；但不能声称直接执行当前 README 就已严格复现论文协议。
 
@@ -647,6 +649,7 @@ ADE 使用五个有效点帧，得到 `(15+25+35+45+85)/5 = 41 mm`。如果 FDE 
 | [ObjectForesight](https://objectforesight.github.io/) | 参考帧几何、物体掩码与过去位姿 | 预测刚体未来六自由度位姿，强调对象几何与多种可能运动 |
 | MolmoMotion | 历史观测、查询点三维历史与动作语言 | 预测指定物体点的未来三维位置，可迁移主干或提供运动条件 |
 | [PointWorld](https://point-world.github.io/) | RGB-D 观测与候选机器人动作，动作也表示成三维点流 | 预测动作条件下的场景三维点流，供 MPC 比较候选动作 |
+{.table-readable}
 
 PointWorld 尤其适合帮助理解“运动先验”与“动作条件动力学”的接口差别。给定“把杯子推过去”，与给定一段具体的机械臂运动、询问场景将怎样响应，提供的信息并不相同；即使输出都包含三维点，也不是同一个预测问题。
 

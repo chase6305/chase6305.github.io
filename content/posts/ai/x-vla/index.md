@@ -1,7 +1,7 @@
 ---
 title: "X-VLA 详解：软提示如何连接跨本体学习、动作生成与机器人控制"
 date: 2026-09-11
-lastmod: 2026-09-15
+lastmod: 2026-09-30
 draft: false
 tags: ["X-VLA", "VLA", "Embodied AI", "Flow Matching", "Soft Prompt", "Paper Notes"]
 categories: ["人工智能"]
@@ -675,6 +675,7 @@ $$
 | `LiberoHandler` | 30 Hz | 1 秒 | 约 33.3 ms |
 | `DroidHandler` | 15 Hz | 4 秒 | 约 133.3 ms |
 | 本文构造的 LIBERO 尾部样本，仅余 0.4 秒 | 30 Hz | 0.4 秒 | 约 13.3 ms |
+{.table-readable}
 
 前两行来自固定版本的 [LIBERO](https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/datasets/domain_handler/simulations.py#L97) 与 [DROID](https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/datasets/domain_handler/droid.py) 处理器；第三行用于演示同一公式在轨迹尾部的结果。这里列的是标签构造的参考频率与目标间隔，不是对真实机器人驱动频率的测量。
 
@@ -756,6 +757,7 @@ $$
 | 1000 | 都为 0 | 都为 0 | 联合阶段 warmup 起点 |
 | 2000 | 都为 `5e-6` | 都为 `5e-5` | warmup 进行一半 |
 | 3000 | 都为 `1e-5` | 都为 `1e-4` | 达到各组基础学习率 |
+{.table-readable}
 
 因此，提示和动作头的学习率在阶段切换处也会先降到零，再升高。监控日志时应查看每组学习率曲线，而不只确认“主干已解冻”。
 
@@ -1068,6 +1070,7 @@ HTTP `/act` 在这个版本没有读取 `seed` 或外部噪声字段；仅给请
 | 只在进程启动时设一次种子 | 固定随机数序列的起点 | 后续调用仍消费新噪声，请求顺序会影响对应关系 |
 | 每组配对实验前恢复相同随机状态 | 在相同调用路径下重放随机数 | batch 形状、额外随机操作与运行环境也要一致 |
 | 保存并注入同一份初始噪声 | 直接保证两组动作生成的噪声输入相同 | 仍不保证所有设备与算子逐位确定性 |
+{.table-readable}
 
 前面的三步标量算例也能展示这种差异：同一预测器使用噪声 $-1$ 得到 $89/36$，改用噪声 $1$ 得到 $37/12$，输出相差 $11/18$。这是教学函数的精确结果，不是 X-VLA 的随机波动测量。正式评测应在配对控制之外覆盖多个噪声样本，并报告任务结果的变化，避免由单个噪声样本得出方法优劣结论。
 

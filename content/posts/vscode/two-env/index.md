@@ -1,7 +1,7 @@
 ---
 title: VScode终端出现显示两个环境名问题的解决方案
 date: 2025-02-07
-lastmod: 2026-09-05
+lastmod: 2026-09-30
 draft: false
 tags: ["VS Code", "Conda", "Environment Management"]
 categories: ["系统与工具"]
@@ -32,6 +32,17 @@ printf 'CONDA_PREFIX=%s\nCONDA_SHLVL=%s\nVIRTUAL_ENV=%s\n' "$CONDA_PREFIX" "$CON
 ```
 
 对比 VS Code 状态栏所选解释器与终端中的 `sys.executable`。编辑器分析、调试器和 shell 可以各自使用不同的环境，需要分别确认。
+
+### 三个入口逐项对照
+
+| 入口 | 在哪里核对 | 可能和谁不同 |
+| --- | --- | --- |
+| 编辑器的语言分析 | 当前工作区选择的解释器 | 终端里手动激活的环境 |
+| 集成终端中输入 `python` | 该终端执行 `sys.executable` | 修改设置前已经打开的旧终端 |
+| F5 调试进程 | 断点处在调试控制台查看 `sys.executable` | `launch.json` 显式指定的解释器 |
+{.table-readable}
+
+例如，状态栏选中了项目 `.venv`，已有终端仍在 Conda base 中，并不矛盾：设置变了，不代表旧 shell 的环境已经重建。先开新终端再比较。若调试路径正确、终端路径错误，就只排查终端激活；若三者都指向同一个解释器，重复的括号更可能只是提示符显示问题。
 
 ## 避免多个入口重复激活
 

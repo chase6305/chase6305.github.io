@@ -1,7 +1,7 @@
 ---
 title: 'C++ 运行库排查：GLIBCXX 符号版本与双 ABI'
 date: 2025-02-08
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["C++", "GCC"]
 categories: ["编程开发"]
@@ -78,6 +78,7 @@ conda install --dry-run -c conda-forge libstdcxx-ng
 | `version GLIBCXX_3.4.30 not found` | 已找到的运行库不提供所需符号版本 | 加载路径、版本需求与导出版本 |
 | `undefined reference to label[abi:cxx11]()` | 链接输入没有提供该符号 | 库是否参与链接、链接顺序、符号与双 ABI 设置 |
 | 运行时 `undefined symbol` | 动态加载时无法解析某个符号 | 实际加载文件、符号依赖与构建选项 |
+{.table-readable}
 
 `undefined reference` 不一定都是双 ABI 问题，但带有上述标记时值得检查。libstdc++ 用不同符号同时保留部分新旧类型实现；`_GLIBCXX_USE_CXX11_ABI` 决定当前编译单元使用哪套声明。**`-std=c++17` 不等于自动选择新 ABI，`-std=c++11` 也不等于旧 ABI。** 同一套 GCC 的默认选择不随语言标准选项改变。[GCC 双 ABI 说明](https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_dual_abi.html)
 

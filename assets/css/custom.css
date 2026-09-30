@@ -429,6 +429,9 @@ body {
 }
 
 article main#content > div:nth-of-type(2) h1 {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
   color: var(--chase-text);
   font-family: var(--chase-font);
   font-size: clamp(2.25rem, 5vw, 3.35rem);

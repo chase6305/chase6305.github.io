@@ -1,7 +1,7 @@
 ---
 title: "Light-Loco-Parkour 深度解析：从地形配对参考、多技能蒸馏到自主衔接与深度视觉控制"
 date: 2026-09-12
-lastmod: 2026-09-12
+lastmod: 2026-09-30
 draft: false
 tags: ["Light-Loco-Parkour", "Humanoid", "Locomotion", "Reinforcement Learning", "Distillation", "Paper Notes"]
 categories: ["人工智能"]
@@ -49,6 +49,7 @@ related_posts:
 | 多专家蒸馏 | 行走与各技能专家提供动作标签 | 一个网络容纳多个行为 | 行为之间的可靠衔接 |
 | 衔接微调 | 混合地形、任务奖励、阶段条件动作先验 | 接近、越障、返回行走的连续行为 | 深度相机的部分可观测问题 |
 | 深度蒸馏与微调 | 深度图、本体信息、速度命令；动作监督与扫描重建 | 可部署的带记忆策略 | 任意机器人上的直接复用 |
+{.table-readable}
 
 论文先把“能做什么”学扎实，再让策略学会“什么时候做”，最后处理“在板载传感器条件下怎样做”。这些阶段用到的训练资源很多，但不意味着部署时仍运行同样多的网络。[论文 Figure 2、Sections III–VI](https://arxiv.org/pdf/2608.02653v1)
 
@@ -357,6 +358,7 @@ GRU 可以利用历史改善控制，但不会让图像自动变成当前时刻�
 | `RewardShapingWrapper` | 奖励项及其权重的组合 | 从模拟器构造正确的物理状态 |
 | `MotionPrior` / `PhaseConditionalMotionPrior` | 判别器奖励、损失与阶段权重 | 参考转移数据、真实位置与策略奖励接线 |
 | `LightLocoParkour` | 当前仅保存传入的 `agent` | 没有完整训练方法或 `forward` |
+{.table-readable}
 
 源码中的 `Agent` 可以给 actor 与 critic 选择不同字段。例如学生读取 `('proprio', 'depth')`，critic 读取 `('proprio', 'scan')`。字段路由提供了实现不对称观测的能力，但具体选择和维数仍由调用方指定。[核心实现](https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/light_loco_parkour/light_loco_parkour.py)
 
@@ -688,6 +690,7 @@ python validate_pendulum.py \
 | 同一个模型怎样适应不同训练域 | X-VLA 的软提示、域相关参数与动作表示 | 不同机器人的坐标和控制接口自动等价 |
 | 较慢的动作生成怎样接上正在执行的计划 | RTC 的前缀条件、时间对齐与队列安装 | 旧任务结果自动失效，或观测一定新鲜 |
 | 全身技能怎样从参考学到板载闭环 | Light-Loco-Parkour 的蒸馏、衔接训练与循环记忆 | 组件包直接具备论文的仿真和部署系统 |
+{.table-readable}
 
 三者共同要求保留动作的语义、时间与状态来源，但本文没有把它们合成为一个已经训练或验证的统一策略。阅读顺序可按问题选择：先核对动作表示，再理解异步时序，最后研究循环状态与技能学习。
 

@@ -6,6 +6,7 @@ loopback, using ephemeral ports substituted into the extracted demonstrations.
 All compiled output lives in a TemporaryDirectory, never in the repository.
 """
 import argparse
+import ast
 import contextlib
 import io
 import json
@@ -129,6 +130,49 @@ def test_cmake(directory):
     return "fresh/no-op/source-edit/deleted-library rebuilds passed"
 
 
+def test_markov():
+    """Compare history-table propagation with its matrix representation."""
+    rl = blocks("rl/index.md", "python")
+    ns = namespace(next(code for code in rl if "def convert_to_first_order" in code))
+    histories, matrix, table = ns["histories"], ns["transition"], ns["second_order_probs"]
+    rng = np.random.default_rng(31)
+    distribution = rng.random(len(histories))
+    distribution /= distribution.sum()
+    # An independent dictionary path checks state ordering and history overlap.
+    propagated = dict.fromkeys(histories, 0.)
+    for history, mass in zip(histories, distribution):
+        for next_state, probability in table[history].items():
+            propagated[(history[-1], next_state)] += mass*probability
+    np.testing.assert_allclose(distribution @ matrix,
+                               [propagated[h] for h in histories], atol=1e-14)
+    bad_tables = [dict(list(table.items())[1:])]
+    for row in ({"S": .2}, {"S": 1.1, "M": -.1},
+                {"S": float("nan")}, {"unknown": 1.}):
+        bad_tables.append(dict(table) | {histories[0]: row})
+    for bad in bad_tables:
+        try:
+            ns["convert_to_first_order"](ns["states"], bad, 2)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("Invalid transition table accepted")
+
+    sampled = namespace(next(code for code in rl if "def sample_next" in code))
+    sample = sampled["sample_next"]
+    row = {("only",): {"next": 1.}}
+    assert sample(("only",), row, sampled["random"].Random(0)) == "next"
+    for history, candidate in [((), row), (("missing",), row),
+                               (("only",), {("only",): {"next": .3}})]:
+        try:
+            sample(history, candidate, sampled["random"].Random(0))
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("Missing history or invalid probabilities accepted")
+    return {"composite_states": len(histories), "propagation": "matches explicit history sum",
+            "invalid_tables_rejected": len(bad_tables), "sampler_cases": 4}
+
+
 def test_python():
     result = {}
     pid = namespace((ROOT / "content/posts/pid/pid_controller.py").read_text())["PID"]
@@ -144,6 +188,7 @@ def test_python():
         else:
             raise AssertionError("Invalid PID dt accepted")
     result["pid"] = "saturation, anti-windup, invalid dt passed"
+    result["markov"] = test_markov()
 
     rl = blocks("rl/index.md", "python")
     cliff = namespace(next(code for code in rl if "def train(method" in code))
@@ -153,6 +198,25 @@ def test_python():
         method: float(cliff["train"](method)[1][-100:].mean())
         for method in ("sarsa", "q_learning")
     }
+    comparison_source = (ROOT / "content/posts/rl/cliff_comparison.py").read_text()
+    comparison = namespace(comparison_source)
+    # Keep the downloadable experiment and inline training example in sync.
+    article_source = next(code for code in rl if "def train(method" in code)
+    def functions(source):
+        return {node.name: ast.dump(node) for node in ast.parse(source).body
+                if isinstance(node, ast.FunctionDef)}
+    for name, definition in functions(article_source).items():
+        assert functions(comparison_source)[name] == definition
+    # An always-left policy never leaves the start; preserve its capped return.
+    stuck = np.zeros((48, 4)); stuck[:, 3] = 1
+    assert comparison["evaluate"](stuck, 0., 4, episodes=2, max_steps=20) == (-20., 0., 0.)
+    # Independent hand-built path: up, eleven right moves, then down = 13 steps.
+    shortest = np.zeros((48, 4)); shortest[36, 0] = 1
+    shortest[24:35, 1] = 1; shortest[35, 2] = 1
+    before = shortest.copy()
+    assert comparison["evaluate"](shortest, 0., 4, episodes=2) == (-13., 0., 1.)
+    np.testing.assert_array_equal(shortest, before)
+    result["cliff_evaluation"] = "source parity, capped failures, 13-step path, frozen Q passed"
     advantage = namespace(next(code for code in rl
                                if "def n_step_advantage" in code))["n_step_advantage"]
     assert abs(advantage([1, 2], [0, 0, 3], [False, False], 0, 5, .9)

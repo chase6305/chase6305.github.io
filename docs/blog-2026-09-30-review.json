@@ -1,0 +1,3592 @@
+{
+  "scope": "Whole-site audit; selected content revisions and shared reading fixes. No publication.",
+  "started_utc": "2026-09-30T03:39:51Z",
+  "finished_utc": "2026-09-30T05:40:07Z",
+  "elapsed_seconds": 7216.0,
+  "baseline_head": "0dd7abb0859a0b673db16a57206f463ca99c98a8",
+  "inventory": {
+    "articles": 82,
+    "public": 79,
+    "drafts": 3,
+    "article_files_changed": 50,
+    "content_changes_beyond_table_widths": 25,
+    "old_public_anchor_ids": "all retained",
+    "original_dates_and_draft_states": "all unchanged",
+    "private_content": "not tracked; absent from production/draft paths and search indexes",
+    "rows": [
+      {
+        "id": 0,
+        "path": "content/posts/ai/algorithms/Astar/Astar-cpp/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 1,
+        "path": "content/posts/ai/algorithms/Astar/Astar-introduction/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 2,
+        "path": "content/posts/ai/algorithms/overview.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": true
+      },
+      {
+        "id": 3,
+        "path": "content/posts/ai/diffusion-models/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 4,
+        "path": "content/posts/ai/distributed-training-memory/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 5,
+        "path": "content/posts/ai/gymnasium/1/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 6,
+        "path": "content/posts/ai/transformer-attention/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 7,
+        "path": "content/posts/calibration/cctag/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 8,
+        "path": "content/posts/calibration/kinematics/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 9,
+        "path": "content/posts/calibration/model/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 10,
+        "path": "content/posts/calibration/opencv/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 11,
+        "path": "content/posts/calibration/zero/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 12,
+        "path": "content/posts/casadi/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 13,
+        "path": "content/posts/cmake/ExternalProject_Add/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 14,
+        "path": "content/posts/coacd/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 15,
+        "path": "content/posts/cpp/gcc/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 16,
+        "path": "content/posts/cpp/gccs/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 17,
+        "path": "content/posts/cpp/smart-pointer/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 18,
+        "path": "content/posts/cpp/std/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 19,
+        "path": "content/posts/cuda/gcc/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 20,
+        "path": "content/posts/cuda/warp/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 21,
+        "path": "content/posts/dialout/dh/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 22,
+        "path": "content/posts/dialout/udev/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 23,
+        "path": "content/posts/egl/x11_warnning/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 24,
+        "path": "content/posts/gui/qt/jetson/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 25,
+        "path": "content/posts/gui/qt/pyside6/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 26,
+        "path": "content/posts/gui/qt/qt5/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 27,
+        "path": "content/posts/isaaclab/UsdContext/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 28,
+        "path": "content/posts/linux/watch/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 29,
+        "path": "content/posts/meshcat/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 30,
+        "path": "content/posts/network-protocol/c++_tcp/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 31,
+        "path": "content/posts/network-protocol/c++_udp.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 32,
+        "path": "content/posts/network-protocol/fixed_IP.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 33,
+        "path": "content/posts/network-protocol/tcp-udp-introduction.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": true
+      },
+      {
+        "id": 34,
+        "path": "content/posts/nvidia/no_devices/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 35,
+        "path": "content/posts/open3d/introduction/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 36,
+        "path": "content/posts/opengl/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 37,
+        "path": "content/posts/pid/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 38,
+        "path": "content/posts/pink/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 39,
+        "path": "content/posts/planner/to_mpc_wbc/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 40,
+        "path": "content/posts/process/pid/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 41,
+        "path": "content/posts/python/f_string/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 42,
+        "path": "content/posts/python/py39/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 43,
+        "path": "content/posts/python/tqdm/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 44,
+        "path": "content/posts/python/version/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 45,
+        "path": "content/posts/qt/pyside6_matplotlib/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 46,
+        "path": "content/posts/queue/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 47,
+        "path": "content/posts/rl/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 48,
+        "path": "content/posts/robotics/control/impedance-control/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 49,
+        "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 50,
+        "path": "content/posts/robotics/kinematics/jacobian/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 51,
+        "path": "content/posts/robotics/kinematics/kinematics-introduction.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": true
+      },
+      {
+        "id": 52,
+        "path": "content/posts/robotics/kinematics/pinocchio/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 53,
+        "path": "content/posts/robotics/kinematics/pytorch/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 54,
+        "path": "content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 55,
+        "path": "content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 56,
+        "path": "content/posts/robotics/workspace/whole-workspace/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 57,
+        "path": "content/posts/thesis/being_0/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 58,
+        "path": "content/posts/thesis/coacd/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 59,
+        "path": "content/posts/trajectory/ruckig/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 60,
+        "path": "content/posts/trajectory/toppra/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 61,
+        "path": "content/posts/unicode/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 62,
+        "path": "content/posts/vscode/debug/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 63,
+        "path": "content/posts/vscode/gdm/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 64,
+        "path": "content/posts/vscode/two-env/index.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 65,
+        "path": "content/posts/xcb/post_2.md",
+        "changed": true,
+        "content_changed": true,
+        "draft": false
+      },
+      {
+        "id": 66,
+        "path": "content/posts/ai/rynnbrain/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 67,
+        "path": "content/posts/ai/internvl-3-5/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 68,
+        "path": "content/posts/ai/ppo-dpo-grpo/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 69,
+        "path": "content/posts/ai/gspo/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 70,
+        "path": "content/posts/ai/gen-1-5/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 71,
+        "path": "content/posts/thesis/elmp/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 72,
+        "path": "content/posts/ai/x-vla/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 73,
+        "path": "content/posts/ai/real-time-chunking/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 74,
+        "path": "content/posts/ai/light-loco-parkour/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 75,
+        "path": "content/posts/ai/vla-world-model-data/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 76,
+        "path": "content/posts/ai/lerobot-act/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 77,
+        "path": "content/posts/ai/llm-training-metrics/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 78,
+        "path": "content/posts/ai/vla-evolution/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 79,
+        "path": "content/posts/ai/molmo-motion/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 80,
+        "path": "content/posts/robotics/control/robot-filters/index.md",
+        "changed": true,
+        "content_changed": false,
+        "draft": false
+      },
+      {
+        "id": 81,
+        "path": "content/posts/ai/jev-decision-layer/index.md",
+        "changed": false,
+        "content_changed": false,
+        "draft": false
+      }
+    ]
+  },
+  "table_changes": {
+    "tables": 95,
+    "articles": 33,
+    "changes": [
+      {
+        "id": 3,
+        "path": "content/posts/ai/diffusion-models/index.md",
+        "table_index": 7,
+        "header": "| 视角 | 模型学习什么 | 采样方式 |",
+        "previous_min_cell_width": 74.84375
+      },
+      {
+        "id": 4,
+        "path": "content/posts/ai/distributed-training-memory/index.md",
+        "table_index": 5,
+        "header": "| 状态 | 数学意义 | 直觉作用 |",
+        "previous_min_cell_width": 53.328125
+      },
+      {
+        "id": 4,
+        "path": "content/posts/ai/distributed-training-memory/index.md",
+        "table_index": 7,
+        "header": "| 情况 | 第一个窗口的有效 token | 应采取的行为 |",
+        "previous_min_cell_width": 67.859375
+      },
+      {
+        "id": 4,
+        "path": "content/posts/ai/distributed-training-memory/index.md",
+        "table_index": 8,
+        "header": "| 原语 | 每个 Rank 输入 | 每个 Rank 输出 | 典型用途 |",
+        "previous_min_cell_width": 69.828125
+      },
+      {
+        "id": 4,
+        "path": "content/posts/ai/distributed-training-memory/index.md",
+        "table_index": 10,
+        "header": "| 策略 | 参数 P | 梯度 G | 优化器 O | 主要新增通信/管理 |",
+        "previous_min_cell_width": 69.859375
+      },
+      {
+        "id": 4,
+        "path": "content/posts/ai/distributed-training-memory/index.md",
+        "table_index": 15,
+        "header": "| 情况 | 首选起点 | 原因 |",
+        "previous_min_cell_width": 62.953125
+      },
+      {
+        "id": 5,
+        "path": "content/posts/ai/gymnasium/1/index.md",
+        "table_index": 0,
+        "header": "| 调用 | 返回 | 含义 |",
+        "previous_min_cell_width": 44.5
+      },
+      {
+        "id": 6,
+        "path": "content/posts/ai/transformer-attention/index.md",
+        "table_index": 4,
+        "header": "| 方式 | 主要目标 | 优点 | 局限 |",
+        "previous_min_cell_width": 53.640625
+      },
+      {
+        "id": 6,
+        "path": "content/posts/ai/transformer-attention/index.md",
+        "table_index": 5,
+        "header": "| 可见性模式 | 每个 Query 可以看什么 | 复杂度（忽略 head/特征维） | 适用场景 |",
+        "previous_min_cell_width": 52.265625
+      },
+      {
+        "id": 6,
+        "path": "content/posts/ai/transformer-attention/index.md",
+        "table_index": 11,
+        "header": "| Mask | 屏蔽对象 | 常见形状 | 典型用途 |",
+        "previous_min_cell_width": 71.015625
+      },
+      {
+        "id": 6,
+        "path": "content/posts/ai/transformer-attention/index.md",
+        "table_index": 16,
+        "header": "| 架构 | Attention | 输出形式 | 典型任务 |",
+        "previous_min_cell_width": 57.65625
+      },
+      {
+        "id": 6,
+        "path": "content/posts/ai/transformer-attention/index.md",
+        "table_index": 18,
+        "header": "| 方式 | 短 Prompt | 长 Prompt | `logits[:, -1, :]` |",
+        "previous_min_cell_width": 68.125
+      },
+      {
+        "id": 6,
+        "path": "content/posts/ai/transformer-attention/index.md",
+        "table_index": 22,
+        "header": "| 维度 | 核心问题 | 常见选择 |",
+        "previous_min_cell_width": 74
+      },
+      {
+        "id": 6,
+        "path": "content/posts/ai/transformer-attention/index.md",
+        "table_index": 24,
+        "header": "| 需求 | 优先考虑 | 原因 |",
+        "previous_min_cell_width": 67.96875
+      },
+      {
+        "id": 8,
+        "path": "content/posts/calibration/kinematics/index.md",
+        "table_index": 0,
+        "header": "| 检查 | 结果 | 含义 |",
+        "previous_min_cell_width": 44.5
+      },
+      {
+        "id": 13,
+        "path": "content/posts/cmake/ExternalProject_Add/index.md",
+        "table_index": 0,
+        "header": "| 选项 | 作用 | 易错点 |",
+        "previous_min_cell_width": 30.765625
+      },
+      {
+        "id": 15,
+        "path": "content/posts/cpp/gcc/index.md",
+        "table_index": 1,
+        "header": "| 现象 | 本次失败直接说明什么 | 优先核对 |",
+        "previous_min_cell_width": 47.640625
+      },
+      {
+        "id": 17,
+        "path": "content/posts/cpp/smart-pointer/index.md",
+        "table_index": 0,
+        "header": "| 需求 | 表达方式 | 生命周期含义 |",
+        "previous_min_cell_width": 63.453125
+      },
+      {
+        "id": 30,
+        "path": "content/posts/network-protocol/c++_tcp/index.md",
+        "table_index": 0,
+        "header": "| 接收结果 | 返回或处理 | 应用含义 |",
+        "previous_min_cell_width": 72.171875
+      },
+      {
+        "id": 35,
+        "path": "content/posts/open3d/introduction/index.md",
+        "table_index": 2,
+        "header": "| 步骤 | 做什么 | 本例 Open3D 0.19.0 的结果 | 这个结果说明什么 |",
+        "previous_min_cell_width": 54.15625
+      },
+      {
+        "id": 35,
+        "path": "content/posts/open3d/introduction/index.md",
+        "table_index": 8,
+        "header": "| 操作 | 每个有点的格子保留什么 | 输出类型 |",
+        "previous_min_cell_width": 44.5
+      },
+      {
+        "id": 35,
+        "path": "content/posts/open3d/introduction/index.md",
+        "table_index": 9,
+        "header": "| 网格索引 | 输入点数 | 样本重心 XYZ，m | 体素中心 XYZ，m |",
+        "previous_min_cell_width": 73.359375
+      },
+      {
+        "id": 38,
+        "path": "content/posts/pink/index.md",
+        "table_index": 0,
+        "header": "| 任务 | 用途 | 边界 |",
+        "previous_min_cell_width": 73.65625
+      },
+      {
+        "id": 39,
+        "path": "content/posts/planner/to_mpc_wbc/index.md",
+        "table_index": 1,
+        "header": "| 模块 | 典型输入 | 典型输出 | 主要问题 |",
+        "previous_min_cell_width": 64.5
+      },
+      {
+        "id": 39,
+        "path": "content/posts/planner/to_mpc_wbc/index.md",
+        "table_index": 3,
+        "header": "| 预测模型 | 常见决策量或输出 | 需要继续核对 |",
+        "previous_min_cell_width": 71.59375
+      },
+      {
+        "id": 39,
+        "path": "content/posts/planner/to_mpc_wbc/index.md",
+        "table_index": 4,
+        "header": "| 源文件与接口 | 实际职责 | 输出/限制 |",
+        "previous_min_cell_width": 44.5
+      },
+      {
+        "id": 44,
+        "path": "content/posts/python/version/index.md",
+        "table_index": 0,
+        "header": "| 现象 | 优先看什么 | 典型处理 |",
+        "previous_min_cell_width": 63.109375
+      },
+      {
+        "id": 46,
+        "path": "content/posts/queue/index.md",
+        "table_index": 0,
+        "header": "| 方案 | 并发契约 | 适合的用途 |",
+        "previous_min_cell_width": 74.59375
+      },
+      {
+        "id": 46,
+        "path": "content/posts/queue/index.md",
+        "table_index": 1,
+        "header": "| 策略 | 适用语义 | 主要代价或条件 |",
+        "previous_min_cell_width": 66.484375
+      },
+      {
+        "id": 46,
+        "path": "content/posts/queue/index.md",
+        "table_index": 2,
+        "header": "| 策略 | 交付条数 | 已交付样本最大年龄 | 溢出丢弃 | 消费者主动跳过 | 过期拒绝 | 结束时仍待处理 |",
+        "previous_min_cell_width": 49.25
+      },
+      {
+        "id": 47,
+        "path": "content/posts/rl/index.md",
+        "table_index": 3,
+        "header": "| 更新方式 | 何时能得到目标 | 本次目标 | 更新后的 $V(S_0)$ |",
+        "previous_min_cell_width": 73.65625
+      },
+      {
+        "id": 47,
+        "path": "content/posts/rl/index.md",
+        "table_index": 12,
+        "header": "| 形式 | 公式 | 需要学习 | 更新时机 | 偏差 | 方差 | 适用场景 |",
+        "previous_min_cell_width": 40.953125
+      },
+      {
+        "id": 47,
+        "path": "content/posts/rl/index.md",
+        "table_index": 15,
+        "header": "| 类型 | 定义 | 举例 |",
+        "previous_min_cell_width": 66.34375
+      },
+      {
+        "id": 48,
+        "path": "content/posts/robotics/control/impedance-control/index.md",
+        "table_index": 4,
+        "header": "| 实现形式 | 典型输出 | 适用场景 | 主要代价或限制 |",
+        "previous_min_cell_width": 45.515625
+      },
+      {
+        "id": 48,
+        "path": "content/posts/robotics/control/impedance-control/index.md",
+        "table_index": 5,
+        "header": "| 量 | 必须冻结的定义 | 一个可行选择 |",
+        "previous_min_cell_width": 68.265625
+      },
+      {
+        "id": 48,
+        "path": "content/posts/robotics/control/impedance-control/index.md",
+        "table_index": 11,
+        "header": "| 状态 | 进入动作 | 允许的输出 | 退出条件 |",
+        "previous_min_cell_width": 56.515625
+      },
+      {
+        "id": 48,
+        "path": "content/posts/robotics/control/impedance-control/index.md",
+        "table_index": 12,
+        "header": "| 分组 | 代表字段 | 单位/语义 |",
+        "previous_min_cell_width": 67.1875
+      },
+      {
+        "id": 48,
+        "path": "content/posts/robotics/control/impedance-control/index.md",
+        "table_index": 14,
+        "header": "| 阶段 | 测试内容 | 主要观察量 | 通过后才能做什么 |",
+        "previous_min_cell_width": 71.234375
+      },
+      {
+        "id": 48,
+        "path": "content/posts/robotics/control/impedance-control/index.md",
+        "table_index": 17,
+        "header": "| 控制行为 | 等效刚度/积分 | 理想稳态位置偏移 | 稳态控制力 |",
+        "previous_min_cell_width": 63.671875
+      },
+      {
+        "id": 48,
+        "path": "content/posts/robotics/control/impedance-control/index.md",
+        "table_index": 20,
+        "header": "| 补偿项 | 主要解决的问题 | 是否总要显式加入 |",
+        "previous_min_cell_width": 74.453125
+      },
+      {
+        "id": 49,
+        "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+        "table_index": 0,
+        "header": "| 子问题 | 主要参数 | 最低数据需求 | 常用方法 |",
+        "previous_min_cell_width": 72.359375
+      },
+      {
+        "id": 49,
+        "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+        "table_index": 1,
+        "header": "| 量 | 推荐单位 | 说明 |",
+        "previous_min_cell_width": 50.34375
+      },
+      {
+        "id": 49,
+        "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+        "table_index": 2,
+        "header": "| 辨识结果 | 通常写入 | 实际作用 | 使用前检查 |",
+        "previous_min_cell_width": 44.5
+      },
+      {
+        "id": 49,
+        "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+        "table_index": 3,
+        "header": "| 阶段 | 要做的事 | 输入 | 必须留下的结果 | 不通过时 |",
+        "previous_min_cell_width": 68.9375
+      },
+      {
+        "id": 49,
+        "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+        "table_index": 5,
+        "header": "| 参数 | 忽略时间相关性的标准差 | 使用完整 $\\Sigma$ 的标准差 | 2,500 次估计的经验标准差 |",
+        "previous_min_cell_width": 67.96875
+      },
+      {
+        "id": 49,
+        "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+        "table_index": 6,
+        "header": "| 方法 | 主要解决的问题 | 使用建议 |",
+        "previous_min_cell_width": 61.390625
+      },
+      {
+        "id": 49,
+        "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+        "table_index": 7,
+        "header": "| 方法 | 适合场景 | 主要风险 |",
+        "previous_min_cell_width": 74.703125
+      },
+      {
+        "id": 49,
+        "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+        "table_index": 8,
+        "header": "| 方法 | 优势 | 更适合 | 主要风险 |",
+        "previous_min_cell_width": 69.21875
+      },
+      {
+        "id": 49,
+        "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+        "table_index": 11,
+        "header": "| 实验 | 轨迹特征 | 主要信号 | 目标参数 | 关键验收 |",
+        "previous_min_cell_width": 44.5
+      },
+      {
+        "id": 49,
+        "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+        "table_index": 12,
+        "header": "| 辨识结果 | 推荐落点 | 实际用途 | 导入前必须检查 |",
+        "previous_min_cell_width": 44.5
+      },
+      {
+        "id": 50,
+        "path": "content/posts/robotics/kinematics/jacobian/index.md",
+        "table_index": 0,
+        "header": "| 选项 | 含义 | 使用建议 |",
+        "previous_min_cell_width": 44.5
+      },
+      {
+        "id": 50,
+        "path": "content/posts/robotics/kinematics/jacobian/index.md",
+        "table_index": 1,
+        "header": "| 分量 | 含义 | 常用单位 | 雅可比对应行 |",
+        "previous_min_cell_width": 68.734375
+      },
+      {
+        "id": 55,
+        "path": "content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+        "table_index": 1,
+        "header": "| 步骤 | 输入/输出 | 操作 | 说明 |",
+        "previous_min_cell_width": 67.8125
+      },
+      {
+        "id": 56,
+        "path": "content/posts/robotics/workspace/whole-workspace/index.md",
+        "table_index": 0,
+        "header": "| 想回答的问题 | 本文的位置采样能提供什么 | 还需要什么 |",
+        "previous_min_cell_width": 67.234375
+      },
+      {
+        "id": 59,
+        "path": "content/posts/trajectory/ruckig/index.md",
+        "table_index": 1,
+        "header": "| 时长设置 | 规划时长 $T$ | 首次返回 Finished 的记录时间 | 此时的位置 |",
+        "previous_min_cell_width": 74.671875
+      },
+      {
+        "id": 64,
+        "path": "content/posts/vscode/two-env/index.md",
+        "table_index": 0,
+        "header": "| 入口 | 在哪里核对 | 可能和谁不同 |",
+        "previous_min_cell_width": 69.75
+      },
+      {
+        "id": 66,
+        "path": "content/posts/ai/rynnbrain/index.md",
+        "table_index": 2,
+        "header": "| 入口 | 适合检查什么 | 不应据此假定什么 |",
+        "previous_min_cell_width": 70.921875
+      },
+      {
+        "id": 66,
+        "path": "content/posts/ai/rynnbrain/index.md",
+        "table_index": 4,
+        "header": "| 任务 | 自拟问题 | 需要验证的输出 |",
+        "previous_min_cell_width": 74.859375
+      },
+      {
+        "id": 67,
+        "path": "content/posts/ai/internvl-3-5/index.md",
+        "table_index": 2,
+        "header": "| 检查点后缀 | 已完成阶段 | 更适合的用途 |",
+        "previous_min_cell_width": 71.078125
+      },
+      {
+        "id": 67,
+        "path": "content/posts/ai/internvl-3-5/index.md",
+        "table_index": 3,
+        "header": "| 型号 | 视觉编码器 | 语言骨干 | 近似总参数 |",
+        "previous_min_cell_width": 70.515625
+      },
+      {
+        "id": 67,
+        "path": "content/posts/ai/internvl-3-5/index.md",
+        "table_index": 4,
+        "header": "| 阶段 | 张量形状 | 此时发生什么 |",
+        "previous_min_cell_width": 57.96875
+      },
+      {
+        "id": 67,
+        "path": "content/posts/ai/internvl-3-5/index.md",
+        "table_index": 6,
+        "header": "| 设置 | 它控制什么 | 对图像输入的影响 |",
+        "previous_min_cell_width": 40.9375
+      },
+      {
+        "id": 67,
+        "path": "content/posts/ai/internvl-3-5/index.md",
+        "table_index": 8,
+        "header": "| 设置 | 投影层梯度范数 | 语言模块参数梯度 | 说明 |",
+        "previous_min_cell_width": 67.65625
+      },
+      {
+        "id": 67,
+        "path": "content/posts/ai/internvl-3-5/index.md",
+        "table_index": 9,
+        "header": "| 阶段 | 一条记录需要什么 | 模型得到的直接信号 | 不能由此保证什么 |",
+        "previous_min_cell_width": 66.21875
+      },
+      {
+        "id": 67,
+        "path": "content/posts/ai/internvl-3-5/index.md",
+        "table_index": 14,
+        "header": "| 缓存布局假设 | 需要存储的位置数 | BF16 KV 理论值 |",
+        "previous_min_cell_width": 61.359375
+      },
+      {
+        "id": 68,
+        "path": "content/posts/ai/ppo-dpo-grpo/index.md",
+        "table_index": 2,
+        "header": "| 符号 | 含义 | 何时变化 |",
+        "previous_min_cell_width": 55.234375
+      },
+      {
+        "id": 68,
+        "path": "content/posts/ai/ppo-dpo-grpo/index.md",
+        "table_index": 5,
+        "header": "| 操作 | 作用对象 | 示例 |",
+        "previous_min_cell_width": 72.6875
+      },
+      {
+        "id": 69,
+        "path": "content/posts/ai/gspo/index.md",
+        "table_index": 5,
+        "header": "| 脚本 | 输入与变化 | 可以验证什么 | 不能据此判断什么 |",
+        "previous_min_cell_width": 44.609375
+      },
+      {
+        "id": 69,
+        "path": "content/posts/ai/gspo/index.md",
+        "table_index": 9,
+        "header": "| 现象 | 优先检查 | 为什么 |",
+        "previous_min_cell_width": 71.609375
+      },
+      {
+        "id": 72,
+        "path": "content/posts/ai/x-vla/index.md",
+        "table_index": 14,
+        "header": "| 数据处理路径 | 原始序列参考频率 | 未来窗口 $Q$ | 相邻目标锚点间隔 $Q/H$ |",
+        "previous_min_cell_width": 60.25
+      },
+      {
+        "id": 72,
+        "path": "content/posts/ai/x-vla/index.md",
+        "table_index": 18,
+        "header": "| step | VLM／软提示学习率 | 主干／动作头学习率 | 所处阶段 |",
+        "previous_min_cell_width": 66.828125
+      },
+      {
+        "id": 72,
+        "path": "content/posts/ai/x-vla/index.md",
+        "table_index": 27,
+        "header": "| 比较方式 | 能控制什么 | 仍需留意什么 |",
+        "previous_min_cell_width": 74.515625
+      },
+      {
+        "id": 73,
+        "path": "content/posts/ai/real-time-chunking/index.md",
+        "table_index": 0,
+        "header": "| 材料 | 本文使用的版本 | 主要回答的问题 |",
+        "previous_min_cell_width": 55.765625
+      },
+      {
+        "id": 73,
+        "path": "content/posts/ai/real-time-chunking/index.md",
+        "table_index": 5,
+        "header": "| 调整项 | 直接改变什么 | 需要一起测量什么 |",
+        "previous_min_cell_width": 74
+      },
+      {
+        "id": 73,
+        "path": "content/posts/ai/real-time-chunking/index.md",
+        "table_index": 12,
+        "header": "| 论文标签 | 生成时 | 结果返回后 | 训练要求 |",
+        "previous_min_cell_width": 67.890625
+      },
+      {
+        "id": 73,
+        "path": "content/posts/ai/real-time-chunking/index.md",
+        "table_index": 14,
+        "header": "| 文件或入口 | 作用 | 首先核对什么 |",
+        "previous_min_cell_width": 65.234375
+      },
+      {
+        "id": 74,
+        "path": "content/posts/ai/light-loco-parkour/index.md",
+        "table_index": 1,
+        "header": "| 阶段 | 主要输入与监督 | 学到什么 | 本阶段仍不能替代什么 |",
+        "previous_min_cell_width": 68.8125
+      },
+      {
+        "id": 74,
+        "path": "content/posts/ai/light-loco-parkour/index.md",
+        "table_index": 4,
+        "header": "| 组件 | 实际职责 | 没有自动完成的部分 |",
+        "previous_min_cell_width": 62.328125
+      },
+      {
+        "id": 74,
+        "path": "content/posts/ai/light-loco-parkour/index.md",
+        "table_index": 9,
+        "header": "| 问题 | 对应文章的主要切入点 | 不能从这一层自动得到什么 |",
+        "previous_min_cell_width": 73.28125
+      },
+      {
+        "id": 76,
+        "path": "content/posts/ai/lerobot-act/index.md",
+        "table_index": 1,
+        "header": "| 名称 | 定位 | 在实验中负责什么 |",
+        "previous_min_cell_width": 68.125
+      },
+      {
+        "id": 76,
+        "path": "content/posts/ai/lerobot-act/index.md",
+        "table_index": 2,
+        "header": "| 硬件配置 | 机械臂关节 `.pos` | 夹爪 `.pos` |",
+        "previous_min_cell_width": 60.609375
+      },
+      {
+        "id": 76,
+        "path": "content/posts/ai/lerobot-act/index.md",
+        "table_index": 4,
+        "header": "| 字段示例 | 单帧含义 | ACT 训练批次中的典型形状 |",
+        "previous_min_cell_width": 44.5
+      },
+      {
+        "id": 76,
+        "path": "content/posts/ai/lerobot-act/index.md",
+        "table_index": 9,
+        "header": "| episode 长度 `L` | 每个窗口平均有效动作数 | 有效位置占比 | 第 100 个位置的有效标签数 |",
+        "previous_min_cell_width": 64.1875
+      },
+      {
+        "id": 76,
+        "path": "content/posts/ai/lerobot-act/index.md",
+        "table_index": 15,
+        "header": "| 参数变化 | 对已训练模型的影响 | 应怎样操作 |",
+        "previous_min_cell_width": 49.875
+      },
+      {
+        "id": 76,
+        "path": "content/posts/ai/lerobot-act/index.md",
+        "table_index": 21,
+        "header": "| 现象 | 优先检查 | 下一步实验 |",
+        "previous_min_cell_width": 67.828125
+      },
+      {
+        "id": 77,
+        "path": "content/posts/ai/llm-training-metrics/index.md",
+        "table_index": 4,
+        "header": "| 阶段 | 起点与数据 | 主要优化目标 | 优先检查的结果 |",
+        "previous_min_cell_width": 54.109375
+      },
+      {
+        "id": 77,
+        "path": "content/posts/ai/llm-training-metrics/index.md",
+        "table_index": 8,
+        "header": "| 指标 | 定义或分母 | 正常用途 | 常见误读 |",
+        "previous_min_cell_width": 65.4375
+      },
+      {
+        "id": 77,
+        "path": "content/posts/ai/llm-training-metrics/index.md",
+        "table_index": 21,
+        "header": "| 重采样单位 | 95% 百分位区间 | 对本例的含义 |",
+        "previous_min_cell_width": 72.46875
+      },
+      {
+        "id": 79,
+        "path": "content/posts/ai/molmo-motion/index.md",
+        "table_index": 4,
+        "header": "| 阶段 | 初始化 | 每例查询点 | 历史／未来 | 优化步数 |",
+        "previous_min_cell_width": 46.515625
+      },
+      {
+        "id": 79,
+        "path": "content/posts/ai/molmo-motion/index.md",
+        "table_index": 5,
+        "header": "| 项目 | 论文／说明中的表述 | 固定提交中的公开实现 |",
+        "previous_min_cell_width": 73.703125
+      },
+      {
+        "id": 79,
+        "path": "content/posts/ai/molmo-motion/index.md",
+        "table_index": 12,
+        "header": "| 工作 | 关键条件 | 输出与用途 |",
+        "previous_min_cell_width": 74.28125
+      },
+      {
+        "id": 80,
+        "path": "content/posts/robotics/control/robot-filters/index.md",
+        "table_index": 1,
+        "header": "| 家族 | 典型方法 | 主要用途 | 主要代价或假设 |",
+        "previous_min_cell_width": 54.46875
+      },
+      {
+        "id": 80,
+        "path": "content/posts/robotics/control/robot-filters/index.md",
+        "table_index": 2,
+        "header": "| 方法 | 每次更新依赖什么 | 主要参数 | 适合先问的问题 |",
+        "previous_min_cell_width": 55.703125
+      },
+      {
+        "id": 80,
+        "path": "content/posts/robotics/control/robot-filters/index.md",
+        "table_index": 7,
+        "header": "| 方法 | 做什么 | 常见误用 |",
+        "previous_min_cell_width": 73.84375
+      },
+      {
+        "id": 80,
+        "path": "content/posts/robotics/control/robot-filters/index.md",
+        "table_index": 9,
+        "header": "| 场景 | 先检查什么 | 可以比较的处理 | 验收重点 |",
+        "previous_min_cell_width": 64.484375
+      }
+    ]
+  },
+  "concept_images": [
+    {
+      "mode": "builtin",
+      "intent": "new conceptual diagram; white-background correction",
+      "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-28139c4d-9622-4612-9f19-852d8ca1c79c.png",
+      "size": [
+        1586,
+        992
+      ],
+      "prompt": "docs/image-generation/frame-chain-20260930-prompt.txt",
+      "sha256": "ff1098c2952095612022e395fc608353d0805a09facaaa69d1e3bd7f931cefcd",
+      "review": "World/Base/Flange/TCP labels and relationships checked; illustrative robot is not the Elfin05 DH model.",
+      "date": "2026-09-30",
+      "output": "content/posts/robotics/kinematics/six-dof-kinematics/assets/frame-chain.webp",
+      "edit": "docs/image-generation/frame-chain-20260930-edit.txt"
+    },
+    {
+      "date": "2026-09-30",
+      "mode": "builtin",
+      "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-6fbcfca4-d097-4024-8f77-2c1e26e4d5c5.png",
+      "output": "content/posts/open3d/introduction/assets/point-cloud-pipeline.webp",
+      "prompt": "docs/image-generation/open3d-pipeline-20260930-prompt.txt",
+      "sha256": "db786df16db7615605aa59f9b02c7524f1f5e49c654e5b2a603cd185c3e3010b",
+      "size": [
+        2062,
+        763
+      ],
+      "review": "Five labels and forward arrows verified. Downsampling retains isolated points; filtering removes them. Normals denote local directions and transform retains the surface shape. Conceptual sketches are not measured point counts."
+    },
+    {
+      "date": "2026-09-30",
+      "mode": "builtin",
+      "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-e9b04996-113a-44da-8ea4-3fd2aa9f5b64.png",
+      "output": "content/posts/rl/assets/markov-history.webp",
+      "prompt": "docs/image-generation/markov-history-20260930-prompt.txt",
+      "edit": "docs/image-generation/markov-history-20260930-edit.txt",
+      "size": [
+        1672,
+        941
+      ],
+      "sha256": "a2ea551a0d389bf8cfefc3dfe66fa1f852ca4da38e559e7208f31a7c2c6254dc",
+      "review": "Verified overlapping brackets S,M then M,C; shared M preserved; remove S and append C. Bottom sentence avoids confusing state symbols with partial observations."
+    },
+    {
+      "date": "2026-09-30",
+      "mode": "builtin",
+      "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-e872b551-2e79-409f-b336-10de4bfac776.png",
+      "output": "content/posts/rl/assets/sarsa-q-targets.webp",
+      "prompt": "docs/image-generation/sarsa-targets-20260930-prompt.txt",
+      "edit": "docs/image-generation/sarsa-targets-20260930-edit.txt",
+      "size": [
+        1627,
+        967
+      ],
+      "sha256": "a8d520330969343acebd6aa8e3470c590ad066f6569042cb60a3eeb10af96c27",
+      "review": "Blue arrow corrected to originate at Left Q=2, purple arrow from Right Q=5. Arithmetic 0.8/3.5 and terminal reward-only targets checked; behavior and bootstrap choices distinguished."
+    },
+    {
+      "date": "2026-09-30",
+      "mode": "builtin",
+      "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-7add6378-f2d3-4351-9438-26d38f238756.png",
+      "output": "content/posts/coacd/assets/convex-parts-opening.webp",
+      "prompt": "docs/image-generation/convex-parts-20260930-prompt.txt",
+      "edit": "docs/image-generation/convex-parts-20260930-edit.txt",
+      "size": [
+        1721,
+        914
+      ],
+      "sha256": "90ae2c40f8fdba2a58c478c3cb7b96405dce22b6a17516c71c2682851d72c6bb",
+      "review": "U opening is white/open upward in original and three-piece union; middle convex hull fills it. Removed sequential arrows so no inverse reconstruction from filled hull is implied. Three ideal rectangles, not algorithm output."
+    }
+  ],
+  "quantitative_plots": [
+    {
+      "path": "content/posts/open3d/introduction/assets/colored-icp-comparison.png",
+      "sha256": "6c008c48e1c170b6349737b5715c96d35750aa2df1d262d8c20b2db385ea2d1e"
+    },
+    {
+      "path": "content/posts/open3d/introduction/assets/voxel-centroid-comparison.png",
+      "sha256": "9815b75a34ac93a7026563a6d58b0a38146c1476eae59d6b94ecf952d05ee799"
+    },
+    {
+      "path": "content/posts/rl/assets/cliff-comparison.png",
+      "sha256": "940c912cca879f0a472d119b6af50f08162f06ca3a3b59a07c7d43c79e892640"
+    },
+    {
+      "path": "content/posts/rl/assets/maximization-bias.png",
+      "sha256": "78a9836983ddf5f9ffbb89232a5f477c4b871da9a2f7df2e4dd2ec9a33e0675f"
+    },
+    {
+      "path": "content/posts/casadi/assets/feasible-sets.png",
+      "sha256": "3db5179a6aec31d037e3a1bbd51bb13df1c12045dfc1e9d438091ea8585aafff"
+    }
+  ],
+  "checks": {
+    "validation-final-public.json": {
+      "reviewed_posts": 82,
+      "learning_paths": 11,
+      "acceptance_checks": 254,
+      "blog_posting_schemas": 79,
+      "classified_tags": 161,
+      "code_blocks": 541,
+      "syntax_checked_by_language": {
+        "bash": 203,
+        "json": 8,
+        "jsonc": 6,
+        "python": 197,
+        "sh": 10,
+        "xml": 1
+      },
+      "html_pages": 270,
+      "local_references_checked": 20758,
+      "collection_pages_checked": 260,
+      "filter_indexes_checked": 8,
+      "errors": [],
+      "python_fragment_warnings": [],
+      "unrendered_math_warnings": []
+    },
+    "validation-final-drafts.json": {
+      "reviewed_posts": 82,
+      "learning_paths": 11,
+      "acceptance_checks": 254,
+      "blog_posting_schemas": 82,
+      "classified_tags": 165,
+      "code_blocks": 541,
+      "syntax_checked_by_language": {
+        "bash": 203,
+        "json": 8,
+        "jsonc": 6,
+        "python": 197,
+        "sh": 10,
+        "xml": 1
+      },
+      "html_pages": 281,
+      "local_references_checked": 21736,
+      "collection_pages_checked": 271,
+      "filter_indexes_checked": 9,
+      "errors": [],
+      "python_fragment_warnings": [],
+      "unrendered_math_warnings": []
+    },
+    "core-examples-final.json": {
+      "cpp": {
+        "astar": "A* checks passed; path length = 6.97469",
+        "astar_random_cases": 400,
+        "spsc": "Consumed 100000 values; sum = 4999950000",
+        "ownership": "ownership checks passed",
+        "std_programs": 2
+      },
+      "cmake": "fresh/no-op/source-edit/deleted-library rebuilds passed",
+      "python": {
+        "pid": "saturation, anti-windup, invalid dt passed",
+        "markov": {
+          "composite_states": 9,
+          "propagation": "matches explicit history sum",
+          "invalid_tables_rejected": 5,
+          "sampler_cases": 4
+        },
+        "cliff_last_100_mean": {
+          "sarsa": -21.64,
+          "q_learning": -39.08
+        },
+        "cliff_evaluation": "source parity, capped failures, 13-step path, frozen Q passed",
+        "n_step_advantage": "termination and truncation passed",
+        "srs": {
+          "cases": 800,
+          "max_transform_error": 8.992806499463768e-15
+        },
+        "pinocchio": {
+          "reachable_cases": 30,
+          "unreachable_reported": true,
+          "max_residual": 8.82040200707649e-05,
+          "version": "4.1.0"
+        }
+      },
+      "modbus": "CRC, byte-wise reads, write echo, concurrency, faults and timeout passed"
+    },
+    "trajectory-checks.json": {
+      "trajectory": {
+        "ruckig": "0.19.4",
+        "toppra": "0.6.3",
+        "toppra_durations": [
+          2.5002043185820098,
+          2.5000003724002413,
+          2.5000006638722465
+        ],
+        "ruckig_targets": 4
+      }
+    },
+    "calibration-checks.json": {
+      "calibration": {
+        "opencv": "4.13.0",
+        "handeye_holdout": 6,
+        "zero_holdout": 10,
+        "parameter_jacobian": "central difference passed",
+        "degenerate_pose": "rank deficiency detected"
+      }
+    },
+    "transformer-checks.json": {
+      "torch": {
+        "torch": "2.13.0+cu130",
+        "attention": "SDPA output/gradient, padding, causal and LM tests passed",
+        "diffusion_smoke_steps": 20,
+        "diffusion_final_alpha_bar": 2.4285407107527135e-07,
+        "memory_estimator": "numbers and invalid inputs passed"
+      }
+    },
+    "poisson-check.json": {
+      "open3d": "0.19.0",
+      "fixture": "3000 Fibonacci sphere points, radius 1m",
+      "depth": 9,
+      "vertices": 3990,
+      "triangles": 7976,
+      "radial_error_mean_m": 0.0003179454268525571,
+      "radial_error_max_m": 0.0010623407256316053,
+      "density_length_matches_vertices": true,
+      "normal_sign_consistent": true,
+      "scope": "Geometric smoke check only, not real-scan accuracy or topology guarantee."
+    },
+    "open3d-pipeline.json": {
+      "open3d": "0.19.0",
+      "units": "m",
+      "points": {
+        "raw": 656,
+        "finite": 654,
+        "voxel": 191,
+        "clean": 188
+      },
+      "voxel_size_m": 0.04,
+      "outlier_radius_m": 0.065,
+      "isolated_outliers_removed": 3,
+      "source_unchanged": true,
+      "transform_round_trip": true,
+      "scope": "Known synthetic surface; counts do not measure real-sensor accuracy."
+    },
+    "voxel-centroid.json": {
+      "open3d": "0.19.0",
+      "input_points": 5,
+      "voxel_size_m": 1.0,
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "occupied_cells": [
+        {
+          "grid_index": [
+            0,
+            0,
+            0
+          ],
+          "center_m": [
+            0.5,
+            0.5,
+            0.5
+          ],
+          "sample_centroid_m": [
+            0.13333333333333333,
+            0.16666666666666666,
+            0.13333333333333333
+          ]
+        },
+        {
+          "grid_index": [
+            1,
+            0,
+            0
+          ],
+          "center_m": [
+            1.5,
+            0.5,
+            0.5
+          ],
+          "sample_centroid_m": [
+            1.4500000000000002,
+            0.44999999999999996,
+            0.15000000000000002
+          ]
+        }
+      ],
+      "scope": "Point occupancy only; unobserved cells are not certified free space."
+    },
+    "casadi-ddpg-checks.json": {
+      "casadi_article_download_function": "AST identical",
+      "ddpg_actor_loss_gradient": -0.49999999999999994,
+      "ddpg_central_difference": -0.500000000069889,
+      "Q_before": 1.75,
+      "Q_after": 1.774375
+    },
+    "coacd-check/checks.json": {
+      "source_volume": 1.2000000000000002,
+      "parts": 2,
+      "convex_watertight_parts": true,
+      "opening_probe": [
+        1.5,
+        1.5,
+        0.2
+      ],
+      "opening_probe_occupied": false,
+      "three_interior_probes_occupied": true,
+      "separate_process_open3d_reload": "passed",
+      "scope": "one constructed L mesh; point-in-convex tests, not physics-engine collision validation"
+    },
+    "jev-gate.json": {
+      "scope": "Offline protocol fixtures and arithmetic on reported values; no Jev or robot calls.",
+      "freshness_example_seconds": {
+        "fresh": {
+          "observation_age": 0.25,
+          "request_age": 0.125,
+          "route": "execute:approach"
+        },
+        "old_observation_fast_response": {
+          "observation_age": 1.25,
+          "request_age": 0.125,
+          "route": "observe"
+        }
+      },
+      "synthetic_metrics": {
+        "accept_rate": 0.6666666666666666,
+        "selective_error": 0.5
+      },
+      "synthetic_costs": {
+        "success_conditioned_mean": 0.15000000000000002,
+        "all_attempts_per_success": 0.45
+      },
+      "jev_mobile_recomputed": {
+        "time_reduction": 0.32726535165559567,
+        "cost_reduction": 0.7342141223410086,
+        "source": "https://arxiv.org/html/2609.30186v1#S6"
+      },
+      "community_drawer_recomputed": {
+        "scope": "One reported successful development run; not a new measurement.",
+        "requests": 75,
+        "reported_model_cost_usd": 0.39400294199999997,
+        "jev_fraction_of_model_cost": 0.0157180095370963,
+        "source": "https://github.com/FBddcz/embodied-jev/blob/f08de2e4e20d6cd69fea9c57ac1062c3ef510f1e/docs/results/libero-vision/COSTS.json"
+      }
+    },
+    "jev-routing.json": {
+      "scope": "Constructed offline records, not Jev measurements or sampled robot trials.",
+      "cost_unit": "arbitrary call-cost unit; excludes execution, retries and fallback outcomes",
+      "threshold_selection": {
+        "group": "validation",
+        "grid": [
+          0.0,
+          0.6,
+          0.8,
+          0.9,
+          1.0
+        ],
+        "max_empirical_error": 0.05,
+        "min_accepted": 10,
+        "selected": {
+          "threshold": 0.8,
+          "records": 40,
+          "accepted": 20,
+          "rejected": 20,
+          "accepted_errors": 1,
+          "accept_rate": 0.5,
+          "selective_error": 0.05,
+          "total_call_cost": 440.0,
+          "mean_call_cost": 11.0,
+          "always_fallback_mean_cost": 20.0
+        }
+      },
+      "groups": {
+        "validation": {
+          "label": "合成验证组",
+          "description": "仅用来选阈值，40 条构造记录。",
+          "curve": [
+            {
+              "threshold": 0.0,
+              "records": 40,
+              "accepted": 40,
+              "rejected": 0,
+              "accepted_errors": 9,
+              "accept_rate": 1.0,
+              "selective_error": 0.225,
+              "total_call_cost": 40.0,
+              "mean_call_cost": 1.0,
+              "always_fallback_mean_cost": 20.0
+            },
+            {
+              "threshold": 0.6,
+              "records": 40,
+              "accepted": 30,
+              "rejected": 10,
+              "accepted_errors": 4,
+              "accept_rate": 0.75,
+              "selective_error": 0.13333333333333333,
+              "total_call_cost": 240.0,
+              "mean_call_cost": 6.0,
+              "always_fallback_mean_cost": 20.0
+            },
+            {
+              "threshold": 0.8,
+              "records": 40,
+              "accepted": 20,
+              "rejected": 20,
+              "accepted_errors": 1,
+              "accept_rate": 0.5,
+              "selective_error": 0.05,
+              "total_call_cost": 440.0,
+              "mean_call_cost": 11.0,
+              "always_fallback_mean_cost": 20.0
+            },
+            {
+              "threshold": 0.9,
+              "records": 40,
+              "accepted": 10,
+              "rejected": 30,
+              "accepted_errors": 0,
+              "accept_rate": 0.25,
+              "selective_error": 0.0,
+              "total_call_cost": 640.0,
+              "mean_call_cost": 16.0,
+              "always_fallback_mean_cost": 20.0
+            },
+            {
+              "threshold": 1.0,
+              "records": 40,
+              "accepted": 0,
+              "rejected": 40,
+              "accepted_errors": 0,
+              "accept_rate": 0.0,
+              "selective_error": null,
+              "total_call_cost": 840.0,
+              "mean_call_cost": 21.0,
+              "always_fallback_mean_cost": 20.0
+            }
+          ],
+          "selected_threshold": {
+            "threshold": 0.8,
+            "records": 40,
+            "accepted": 20,
+            "rejected": 20,
+            "accepted_errors": 1,
+            "accept_rate": 0.5,
+            "selective_error": 0.05,
+            "total_call_cost": 440.0,
+            "mean_call_cost": 11.0,
+            "always_fallback_mean_cost": 20.0
+          }
+        },
+        "heldout": {
+          "label": "合成留出组",
+          "description": "记录 ID 与验证组不重叠，80 条构造记录。",
+          "curve": [
+            {
+              "threshold": 0.0,
+              "records": 80,
+              "accepted": 80,
+              "rejected": 0,
+              "accepted_errors": 20,
+              "accept_rate": 1.0,
+              "selective_error": 0.25,
+              "total_call_cost": 80.0,
+              "mean_call_cost": 1.0,
+              "always_fallback_mean_cost": 20.0
+            },
+            {
+              "threshold": 0.6,
+              "records": 80,
+              "accepted": 60,
+              "rejected": 20,
+              "accepted_errors": 10,
+              "accept_rate": 0.75,
+              "selective_error": 0.16666666666666666,
+              "total_call_cost": 480.0,
+              "mean_call_cost": 6.0,
+              "always_fallback_mean_cost": 20.0
+            },
+            {
+              "threshold": 0.8,
+              "records": 80,
+              "accepted": 40,
+              "rejected": 40,
+              "accepted_errors": 4,
+              "accept_rate": 0.5,
+              "selective_error": 0.1,
+              "total_call_cost": 880.0,
+              "mean_call_cost": 11.0,
+              "always_fallback_mean_cost": 20.0
+            },
+            {
+              "threshold": 0.9,
+              "records": 80,
+              "accepted": 20,
+              "rejected": 60,
+              "accepted_errors": 1,
+              "accept_rate": 0.25,
+              "selective_error": 0.05,
+              "total_call_cost": 1280.0,
+              "mean_call_cost": 16.0,
+              "always_fallback_mean_cost": 20.0
+            },
+            {
+              "threshold": 1.0,
+              "records": 80,
+              "accepted": 0,
+              "rejected": 80,
+              "accepted_errors": 0,
+              "accept_rate": 0.0,
+              "selective_error": null,
+              "total_call_cost": 1680.0,
+              "mean_call_cost": 21.0,
+              "always_fallback_mean_cost": 20.0
+            }
+          ],
+          "selected_threshold": {
+            "threshold": 0.8,
+            "records": 80,
+            "accepted": 40,
+            "rejected": 40,
+            "accepted_errors": 4,
+            "accept_rate": 0.5,
+            "selective_error": 0.1,
+            "total_call_cost": 880.0,
+            "mean_call_cost": 11.0,
+            "always_fallback_mean_cost": 20.0
+          }
+        },
+        "shifted": {
+          "label": "合成分布变化组",
+          "description": "高分段加入更多错误，80 条构造记录。",
+          "curve": [
+            {
+              "threshold": 0.0,
+              "records": 80,
+              "accepted": 80,
+              "rejected": 0,
+              "accepted_errors": 25,
+              "accept_rate": 1.0,
+              "selective_error": 0.3125,
+              "total_call_cost": 80.0,
+              "mean_call_cost": 1.0,
+              "always_fallback_mean_cost": 20.0
+            },
+            {
+              "threshold": 0.6,
+              "records": 80,
+              "accepted": 60,
+              "rejected": 20,
+              "accepted_errors": 15,
+              "accept_rate": 0.75,
+              "selective_error": 0.25,
+              "total_call_cost": 480.0,
+              "mean_call_cost": 6.0,
+              "always_fallback_mean_cost": 20.0
+            },
+            {
+              "threshold": 0.8,
+              "records": 80,
+              "accepted": 40,
+              "rejected": 40,
+              "accepted_errors": 10,
+              "accept_rate": 0.5,
+              "selective_error": 0.25,
+              "total_call_cost": 880.0,
+              "mean_call_cost": 11.0,
+              "always_fallback_mean_cost": 20.0
+            },
+            {
+              "threshold": 0.9,
+              "records": 80,
+              "accepted": 20,
+              "rejected": 60,
+              "accepted_errors": 8,
+              "accept_rate": 0.25,
+              "selective_error": 0.4,
+              "total_call_cost": 1280.0,
+              "mean_call_cost": 16.0,
+              "always_fallback_mean_cost": 20.0
+            },
+            {
+              "threshold": 1.0,
+              "records": 80,
+              "accepted": 0,
+              "rejected": 80,
+              "accepted_errors": 0,
+              "accept_rate": 0.0,
+              "selective_error": null,
+              "total_call_cost": 1680.0,
+              "mean_call_cost": 21.0,
+              "always_fallback_mean_cost": 20.0
+            }
+          ],
+          "selected_threshold": {
+            "threshold": 0.8,
+            "records": 80,
+            "accepted": 40,
+            "rejected": 40,
+            "accepted_errors": 10,
+            "accept_rate": 0.5,
+            "selective_error": 0.25,
+            "total_call_cost": 880.0,
+            "mean_call_cost": 11.0,
+            "always_fallback_mean_cost": 20.0
+          }
+        }
+      },
+      "calibration_counterexample": {
+        "scope": "Separate binary probability fixture; not a transformation of routing scores.",
+        "aggregate": {
+          "brier": 0.09,
+          "ece": 0.0,
+          "bins": [
+            {
+              "bin": 9,
+              "count": 20,
+              "mean_probability": 0.9,
+              "event_frequency": 0.9
+            }
+          ]
+        },
+        "group_a": {
+          "brier": 0.009999999999999995,
+          "ece": 0.09999999999999998,
+          "bins": [
+            {
+              "bin": 9,
+              "count": 10,
+              "mean_probability": 0.9,
+              "event_frequency": 1.0
+            }
+          ]
+        },
+        "group_b": {
+          "brier": 0.17,
+          "ece": 0.09999999999999998,
+          "bins": [
+            {
+              "bin": 9,
+              "count": 10,
+              "mean_probability": 0.9,
+              "event_frequency": 0.8
+            }
+          ]
+        }
+      },
+      "wilson_arithmetic_example": {
+        "assumption": "Hypothetical independent Bernoulli trials, not an interval claim for these constructed records.",
+        "errors": 1,
+        "trials": 20,
+        "interval_95": [
+          0.008881448800795375,
+          0.236131193446742
+        ]
+      }
+    },
+    "impedance-log-checks.json": {
+      "valid_samples": 251,
+      "estimated_stiffness_n_m": 1000.0000337362026,
+      "invalid_api_cases": 20,
+      "invalid_csv_cases": 10,
+      "nonfinite_metric_cases": 18,
+      "cli_valid_and_invalid": "passed",
+      "hardware": "not used"
+    },
+    "ddim.json": {
+      "numpy": "2.2.6",
+      "seed": 20260928,
+      "conversion_cases": [
+        {
+          "alpha_bar": 1.0,
+          "x0_roundtrip_max_error": 0.0,
+          "epsilon_roundtrip_max_error": 0.0,
+          "v_mse": 8.818230956804449e-05,
+          "converted_epsilon_mse": 8.818230956804442e-05,
+          "converted_x0_mse": 0.0
+        },
+        {
+          "alpha_bar": 0.999,
+          "x0_roundtrip_max_error": 8.881784197001252e-16,
+          "epsilon_roundtrip_max_error": 4.440892098500626e-16,
+          "v_mse": 0.00010160482283783174,
+          "converted_epsilon_mse": 0.00010150321801499367,
+          "converted_x0_mse": 1.0160482283784119e-07
+        },
+        {
+          "alpha_bar": 0.8,
+          "x0_roundtrip_max_error": 4.440892098500626e-16,
+          "epsilon_roundtrip_max_error": 8.881784197001252e-16,
+          "v_mse": 9.710525428647343e-05,
+          "converted_epsilon_mse": 7.768420342917857e-05,
+          "converted_x0_mse": 1.9421050857294632e-05
+        },
+        {
+          "alpha_bar": 0.1,
+          "x0_roundtrip_max_error": 4.440892098500626e-16,
+          "epsilon_roundtrip_max_error": 4.440892098500626e-16,
+          "v_mse": 9.02054622870348e-05,
+          "converted_epsilon_mse": 9.020546228703475e-06,
+          "converted_x0_mse": 8.118491605833134e-05
+        },
+        {
+          "alpha_bar": 0.0001,
+          "x0_roundtrip_max_error": 4.440892098500626e-16,
+          "epsilon_roundtrip_max_error": 4.440892098500626e-16,
+          "v_mse": 0.00010408846205876355,
+          "converted_epsilon_mse": 1.0408846205875096e-08,
+          "converted_x0_mse": 0.0001040780532125576
+        },
+        {
+          "alpha_bar": 1e-08,
+          "x0_roundtrip_max_error": 8.881784197001252e-16,
+          "epsilon_roundtrip_max_error": 8.881784197001252e-16,
+          "v_mse": 9.134207999716053e-05,
+          "converted_epsilon_mse": 9.134207999899428e-13,
+          "converted_x0_mse": 9.13420790837397e-05
+        },
+        {
+          "alpha_bar": 0.0,
+          "x0_roundtrip_max_error": 0.0,
+          "epsilon_roundtrip_max_error": 0.0,
+          "v_mse": 9.540415518319886e-05,
+          "converted_epsilon_mse": 0.0,
+          "converted_x0_mse": 9.540415518319883e-05
+        }
+      ],
+      "skipped_step": {
+        "alpha_bar_t": 0.2,
+        "alpha_bar_s": 0.7,
+        "deterministic_max_error": 4.440892098500626e-16,
+        "eta_one_conditional_mean_max_error": 7.771561172376096e-16,
+        "eta_one_conditional_variance": 0.26785714285714285
+      },
+      "adjacent_ddpm_max_mean_error": 3.6637359812630166e-15,
+      "clean_endpoint_variance": 0.0,
+      "sensitivity": {
+        "output_error": 0.01,
+        "snr": 0.0001,
+        "x0_error_from_epsilon": 1.0000000000000002,
+        "x0_error_from_v": 0.009999500037496875
+      },
+      "scope": "Oracle algebra and error propagation only; no trained denoiser, FID or model-quality comparison."
+    },
+    "cache-mask.json": {
+      "torch": "2.13.0+cu130",
+      "device": "cpu",
+      "dtype": "float64",
+      "seed": 20260928,
+      "qkv_shape": [
+        2,
+        2,
+        8,
+        4
+      ],
+      "past_tokens": 3,
+      "query_chunk": 2,
+      "correct_mask": [
+        [
+          1,
+          1,
+          1,
+          1,
+          0
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      ],
+      "incorrect_upper_left_mask": [
+        [
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          0,
+          0
+        ]
+      ],
+      "correct_chunk_max_abs_error": 2.220446049250313e-16,
+      "incorrect_chunk_max_abs_error": 2.1030654717359547,
+      "incorrect_single_token_max_abs_error": 1.4548944363182605,
+      "padding_and_unused_slots_max_abs_error": 2.220446049250313e-16,
+      "checks": [
+        "full reference",
+        "three chunk partitions",
+        "single appended token",
+        "batched key padding",
+        "unfilled cache slots",
+        "forbidden-entry invariance",
+        "future valid-key invariance for the first query"
+      ],
+      "scope": "Attention operator only; no positional embedding, transformer layers, generation benchmark or fused GPU-kernel claim."
+    },
+    "stiffness.json": {
+      "numpy": "2.2.6",
+      "static_compliance": {
+        "lengths_m": [
+          0.5,
+          0.4
+        ],
+        "joint_stiffness_Nm_per_rad": [
+          100.0,
+          80.0
+        ],
+        "q1_rad": 0.0,
+        "results": [
+          {
+            "q2_degrees": 90.0,
+            "min_compliance_m_per_N": 0.000975753148730846,
+            "max_compliance_m_per_N": 0.005124246851269155,
+            "max_cartesian_stiffness_N_per_m": 1024.8493702538308
+          },
+          {
+            "q2_degrees": 30.0,
+            "min_compliance_m_per_N": 0.0001325336362735444,
+            "max_compliance_m_per_N": 0.009431567978864214,
+            "max_cartesian_stiffness_N_per_m": 7545.254383091383
+          },
+          {
+            "q2_degrees": 5.0,
+            "min_compliance_m_per_N": 3.767540430250312e-06,
+            "max_compliance_m_per_N": 0.010081011251936736,
+            "max_cartesian_stiffness_N_per_m": 265425.15429185744
+          },
+          {
+            "q2_degrees": 0.5,
+            "min_compliance_m_per_N": 3.769992795023503e-08,
+            "max_compliance_m_per_N": 0.010099809992328736,
+            "max_cartesian_stiffness_N_per_m": 26525249.632307738
+          },
+          {
+            "q2_degrees": 0.0,
+            "min_compliance_m_per_N": 1.136440556518866e-34,
+            "max_compliance_m_per_N": 0.010100000000000003,
+            "max_cartesian_stiffness_N_per_m": null
+          }
+        ],
+        "singular_stiffness": "inverse undefined, not zero stiffness"
+      },
+      "held_position": {
+        "displacement_m": 0.01,
+        "initial_stiffness_N_per_m": 100.0,
+        "requested_final_stiffness_N_per_m": 1000.0,
+        "initial_tank_J": 0.03,
+        "tank_floor_J": 0.005,
+        "granted_final_stiffness_N_per_m": 600.0000000000023,
+        "tank_final_J": 0.005,
+        "storage_conservation_max_error_J": 1.214306433183765e-16,
+        "ramps_without_tank": [
+          {
+            "duration_s": 0.1,
+            "gain_change_power_W": 0.45,
+            "potential_increase_J": 0.045000000000000005,
+            "mechanical_port_work_J": 0.0
+          },
+          {
+            "duration_s": 1.0,
+            "gain_change_power_W": 0.045000000000000005,
+            "potential_increase_J": 0.045000000000000005,
+            "mechanical_port_work_J": 0.0
+          },
+          {
+            "duration_s": 10.0,
+            "gain_change_power_W": 0.0045000000000000005,
+            "potential_increase_J": 0.045000000000000005,
+            "mechanical_port_work_J": 0.0
+          }
+        ]
+      },
+      "scope": "Rigid 2R links, joint springs, zero preload, first-order statics; separate scalar gain update at fixed position and zero velocity. No closed-loop passivity guarantee."
+    },
+    "external-wrench.json": {
+      "pinocchio": "4.1.0",
+      "numpy": "2.2.6",
+      "tool_wrench_n_nm": [
+        3.0,
+        -2.0,
+        5.0,
+        0.4,
+        -0.3,
+        0.2
+      ],
+      "cases": [
+        {
+          "case": "static",
+          "no_contact_inverse_dynamics_nm": [
+            -19.336914024548104,
+            24.510058827840577,
+            0.35470807625848266,
+            18.7181881785299,
+            -0.7933264766313085,
+            4.2031330613254445
+          ],
+          "actuator_torque_with_external_wrench_nm": [
+            -20.421791515214494,
+            16.275794140751294,
+            -2.1487854732999576,
+            14.684329155468959,
+            -1.385368000999165,
+            4.439175747478665
+          ],
+          "model_minus_actuator_nm": [
+            1.0848774906663898,
+            8.234264687089283,
+            2.5034935495584403,
+            4.033859023060941,
+            0.5920415243678564,
+            -0.23604268615322077
+          ],
+          "jacobian_transpose_wrench_nm": [
+            1.0848774906663907,
+            8.234264687089283,
+            2.50349354955844,
+            4.033859023060941,
+            0.5920415243678564,
+            -0.23604268615322083
+          ],
+          "torque_identity_max_error_nm": 8.881784197001252e-16,
+          "forward_dynamics_max_error_rad_s2": 1.3322676295501878e-15
+        },
+        {
+          "case": "moving",
+          "no_contact_inverse_dynamics_nm": [
+            -18.720165136941592,
+            26.240026484496198,
+            0.3292144676636544,
+            19.18851191221129,
+            -0.4550421841196796,
+            4.168834187079343
+          ],
+          "actuator_torque_with_external_wrench_nm": [
+            -19.80504262760799,
+            18.005761797406926,
+            -2.1742790818947864,
+            15.15465288915035,
+            -1.0470837084875362,
+            4.404876873232563
+          ],
+          "model_minus_actuator_nm": [
+            1.084877490666397,
+            8.234264687089272,
+            2.5034935495584407,
+            4.0338590230609395,
+            0.5920415243678565,
+            -0.23604268615322077
+          ],
+          "jacobian_transpose_wrench_nm": [
+            1.0848774906663907,
+            8.234264687089283,
+            2.50349354955844,
+            4.033859023060941,
+            0.5920415243678564,
+            -0.23604268615322083
+          ],
+          "torque_identity_max_error_nm": 1.0658141036401503e-14,
+          "forward_dynamics_max_error_rad_s2": 5.509481759702339e-15
+        }
+      ],
+      "equation": "M*qdd + h = actuator_torque + J.T*environment_on_robot_wrench",
+      "scope": "Exact model consistency, including a rotated and offset tool frame. No sensor, actuator tracking, friction, acceleration estimation or observer validation."
+    },
+    "kinematics-gradient.json": {
+      "torch": "2.13.0+cu130",
+      "pytorch_kinematics": "0.10.0",
+      "device": "cpu",
+      "dtype": "float64",
+      "cases": [
+        {
+          "q_rad": [
+            0.4,
+            -0.7
+          ],
+          "jacobian_finite_difference_max_error": 1.4770426548516014e-10,
+          "position_decimal_geometry_max_error_m": 3.375689949791649e-08,
+          "jacobian_closed_form_max_error": 3.375689949791649e-08
+        },
+        {
+          "q_rad": [
+            -0.8,
+            1.1
+          ],
+          "jacobian_finite_difference_max_error": 7.663170098481942e-11,
+          "position_decimal_geometry_max_error_m": 3.108238799676144e-08,
+          "jacobian_closed_form_max_error": 3.108238799676144e-08
+        },
+        {
+          "q_rad": [
+            0.0,
+            0.0
+          ],
+          "jacobian_finite_difference_max_error": 2.333688797762079e-13,
+          "position_decimal_geometry_max_error_m": 3.576278695405222e-08,
+          "jacobian_closed_form_max_error": 3.576278695405222e-08
+        },
+        {
+          "q_rad": [
+            1.2,
+            -2.0
+          ],
+          "jacobian_finite_difference_max_error": 3.214406518736723e-11,
+          "position_decimal_geometry_max_error_m": 2.0930423283438415e-08,
+          "jacobian_closed_form_max_error": 2.0930423283438415e-08
+        }
+      ],
+      "gradcheck_default": true,
+      "gradgradcheck_standard_autograd": true,
+      "loss_hessian": [
+        [
+          1.2193124144250924,
+          0.4626880853143581
+        ],
+        [
+          0.462688085314358,
+          0.09556381535901864
+        ]
+      ],
+      "closed_form_hessian_max_error": 2.9660152778276938e-08,
+      "scope": "Two bounded revolute joints and one fixed tool; position FK derivatives and yaw geometric Jacobian. Does not differentiate through IK or calibrate URDF parameters."
+    },
+    "dual-abi.json": {
+      "compiler": "g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "library_defined_symbols": {
+        "0": "label()",
+        "1": "label[abi:cxx11]()"
+      },
+      "cases": [
+        {
+          "library_abi": 0,
+          "caller_abi": 0,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": true,
+          "program_output": "robot"
+        },
+        {
+          "library_abi": 1,
+          "caller_abi": 1,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": true,
+          "program_output": "robot"
+        },
+        {
+          "library_abi": 0,
+          "caller_abi": 1,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": false,
+          "missing_symbol": "label[abi:cxx11]()"
+        },
+        {
+          "library_abi": 1,
+          "caller_abi": 0,
+          "library_standard": "c++11",
+          "caller_standard": "c++17",
+          "link_success": false,
+          "missing_symbol": "label()"
+        }
+      ],
+      "scope": "One std::string-returning function across two translation units. No shared-library replacement, GLIBCXX version failure, cross-compiler compatibility claim or application ABI audit."
+    },
+    "qt-checks.log": {
+      "qt_essential_modules": {
+        "pyside6": "6.8.3",
+        "matplotlib": "3.10.9",
+        "ui_regeneration_and_signals": "passed",
+        "plot_windows": 3,
+        "manual_updates_per_window": 50,
+        "timer_events_and_close": "passed",
+        "display_mode": "offscreen; not a native desktop display test"
+      }
+    },
+    "meshcat-checks-final.log": {
+      "meshcat": {
+        "meshcat": "0.3.2",
+        "serialized_commands": 11,
+        "cylinder_z_endpoints": [
+          0.0,
+          0.6
+        ],
+        "transport": "recording sink; no HTTP, WebSocket or ZeroMQ server started"
+      }
+    },
+    "rl-update-checks.log": {
+      "torch": "2.13.0+cu130",
+      "reinforce": {
+        "exact_gradient": [
+          0.24026074574152914,
+          0.4455298308813479
+        ],
+        "missing_outer_discount": [
+          0.2402607457415291,
+          0.4950331454237198
+        ],
+        "baseline_and_finite_difference": "passed"
+      },
+      "td3": {
+        "target_detached": true,
+        "terminal_target_equals_reward": true,
+        "critic_update_uses_replay_action": true,
+        "actor_gradient_norm_with_frozen_critic": 0.09420838219085702
+      }
+    },
+    "filter-final.log": {
+      "articles": 79,
+      "drafts": 0,
+      "topics": 11,
+      "metadata_bytes": 46695,
+      "tests": "normalization, literal/AND matching, sorting, immutability, URL state, exact coverage passed"
+    },
+    "image-fixtures-final.log": {
+      "page_modes": 4,
+      "images_per_mode": 6,
+      "svg_points_fractional_scientific_multiline_viewbox": "passed",
+      "small_image_cap_and_opt_out": "passed"
+    },
+    "toc-fixtures.log": {
+      "toc_variants": 2,
+      "anchor_modes": 3,
+      "headings_per_variant": 7,
+      "literal_dollars": "preserved",
+      "both_math_delimiters": "passed",
+      "nested_links": "absent",
+      "automatic_section": "passed"
+    },
+    "browser_reading": {
+      "cases": 328,
+      "exceptions": 0
+    },
+    "browser_tables": {
+      "cases": 190,
+      "exceptions": 0
+    },
+    "browser_figures": {
+      "cases": 40,
+      "exceptions": 0
+    },
+    "browser_discovery": {
+      "articles": 79,
+      "drafts": 0,
+      "crossPageSearch": true,
+      "shareableURL": true,
+      "queryStates": 15,
+      "ime": true,
+      "history": true,
+      "literalQuery": true,
+      "noJavaScript": true,
+      "malformedDataFallback": true,
+      "keyboardControls": true,
+      "collections": [
+        "/tags/",
+        "/categories/",
+        "/archives/",
+        "/learning-paths/",
+        "/",
+        "/zh-cn/",
+        "/projects/",
+        "/zh-cn/projects/",
+        "/tags/jev/"
+      ],
+      "layouts": [
+        {
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "controls": [
+            {
+              "width": 254,
+              "height": 45.1875
+            },
+            {
+              "width": 254,
+              "height": 47.1875
+            },
+            {
+              "width": 254,
+              "height": 47.1875
+            },
+            {
+              "width": 88.390625,
+              "height": 45.1875
+            }
+          ],
+          "firstCardTop": 872.421875
+        },
+        {
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "controls": [
+            {
+              "width": 254,
+              "height": 45.1875
+            },
+            {
+              "width": 254,
+              "height": 47.1875
+            },
+            {
+              "width": 254,
+              "height": 47.1875
+            },
+            {
+              "width": 88.390625,
+              "height": 45.1875
+            }
+          ],
+          "firstCardTop": 872.421875
+        },
+        {
+          "width": 320,
+          "theme": "warm",
+          "overflow": false,
+          "controls": [
+            {
+              "width": 254,
+              "height": 45.1875
+            },
+            {
+              "width": 254,
+              "height": 47.1875
+            },
+            {
+              "width": 254,
+              "height": 47.1875
+            },
+            {
+              "width": 88.390625,
+              "height": 45.1875
+            }
+          ],
+          "firstCardTop": 872.421875
+        },
+        {
+          "width": 390,
+          "theme": "light",
+          "overflow": false,
+          "controls": [
+            {
+              "width": 324,
+              "height": 45.1875
+            },
+            {
+              "width": 155.203125,
+              "height": 47.1875
+            },
+            {
+              "width": 155.203125,
+              "height": 47.1875
+            },
+            {
+              "width": 88.390625,
+              "height": 45.1875
+            }
+          ],
+          "firstCardTop": 762.15625
+        },
+        {
+          "width": 390,
+          "theme": "dark",
+          "overflow": false,
+          "controls": [
+            {
+              "width": 324,
+              "height": 45.1875
+            },
+            {
+              "width": 155.203125,
+              "height": 47.1875
+            },
+            {
+              "width": 155.203125,
+              "height": 47.1875
+            },
+            {
+              "width": 88.390625,
+              "height": 45.1875
+            }
+          ],
+          "firstCardTop": 762.15625
+        },
+        {
+          "width": 390,
+          "theme": "warm",
+          "overflow": false,
+          "controls": [
+            {
+              "width": 324,
+              "height": 45.1875
+            },
+            {
+              "width": 155.203125,
+              "height": 47.1875
+            },
+            {
+              "width": 155.203125,
+              "height": 47.1875
+            },
+            {
+              "width": 88.390625,
+              "height": 45.1875
+            }
+          ],
+          "firstCardTop": 762.15625
+        },
+        {
+          "width": 768,
+          "theme": "light",
+          "overflow": false,
+          "controls": [
+            {
+              "width": 702,
+              "height": 45.1875
+            },
+            {
+              "width": 344.203125,
+              "height": 47.1875
+            },
+            {
+              "width": 344.203125,
+              "height": 47.1875
+            },
+            {
+              "width": 88.390625,
+              "height": 45.1875
+            }
+          ],
+          "firstCardTop": 716.875
+        },
+        {
+          "width": 768,
+          "theme": "dark",
+          "overflow": false,
+          "controls": [
+            {
+              "width": 702,
+              "height": 45.1875
+            },
+            {
+              "width": 344.203125,
+              "height": 47.1875
+            },
+            {
+              "width": 344.203125,
+              "height": 47.1875
+            },
+            {
+              "width": 88.390625,
+              "height": 45.1875
+            }
+          ],
+          "firstCardTop": 716.875
+        },
+        {
+          "width": 768,
+          "theme": "warm",
+          "overflow": false,
+          "controls": [
+            {
+              "width": 702,
+              "height": 45.1875
+            },
+            {
+              "width": 344.203125,
+              "height": 47.1875
+            },
+            {
+              "width": 344.203125,
+              "height": 47.1875
+            },
+            {
+              "width": 88.390625,
+              "height": 45.1875
+            }
+          ],
+          "firstCardTop": 716.875
+        },
+        {
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "controls": [
+            {
+              "width": 378.515625,
+              "height": 45.1875
+            },
+            {
+              "width": 252.359375,
+              "height": 47.1875
+            },
+            {
+              "width": 252.359375,
+              "height": 47.1875
+            },
+            {
+              "width": 88.390625,
+              "height": 45.1875
+            }
+          ],
+          "firstCardTop": 691.3125
+        },
+        {
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "controls": [
+            {
+              "width": 378.515625,
+              "height": 45.1875
+            },
+            {
+              "width": 252.359375,
+              "height": 47.1875
+            },
+            {
+              "width": 252.359375,
+              "height": 47.1875
+            },
+            {
+              "width": 88.390625,
+              "height": 45.1875
+            }
+          ],
+          "firstCardTop": 691.3125
+        },
+        {
+          "width": 1440,
+          "theme": "warm",
+          "overflow": false,
+          "controls": [
+            {
+              "width": 378.515625,
+              "height": 45.1875
+            },
+            {
+              "width": 252.359375,
+              "height": 47.1875
+            },
+            {
+              "width": 252.359375,
+              "height": 47.1875
+            },
+            {
+              "width": 88.390625,
+              "height": 45.1875
+            }
+          ],
+          "firstCardTop": 691.3125
+        }
+      ],
+      "tagLayouts": [
+        {
+          "width": 320,
+          "theme": "light"
+        },
+        {
+          "width": 320,
+          "theme": "dark"
+        },
+        {
+          "width": 320,
+          "theme": "warm"
+        },
+        {
+          "width": 390,
+          "theme": "light"
+        },
+        {
+          "width": 390,
+          "theme": "dark"
+        },
+        {
+          "width": 390,
+          "theme": "warm"
+        },
+        {
+          "width": 1440,
+          "theme": "light"
+        },
+        {
+          "width": 1440,
+          "theme": "dark"
+        },
+        {
+          "width": 1440,
+          "theme": "warm"
+        }
+      ],
+      "exceptions": []
+    },
+    "browser_final": {
+      "pages_checked": 82,
+      "math_expressions": 3635,
+      "zoom": true,
+      "mobile_menu": true,
+      "representative_layouts": 24,
+      "clipboard_fallback_cases": 3,
+      "exceptions": []
+    },
+    "downloads": [
+      {
+        "script": "package_control_lab",
+        "returncode": 0,
+        "last_lines": [
+          "Verified replay.csv: 100 rows, dynamics, bounds and report endpoint.",
+          "Verified feedback.csv: 100 rows, dynamics, bounds and report endpoint.",
+          "Passed extracted feedback_demo.py: assertions, output and published report consistency."
+        ]
+      },
+      {
+        "script": "package_gspo_gen_labs",
+        "returncode": 0,
+        "last_lines": [
+          "gspo-lab.zip: 11 members match source",
+          "gen-1-5-lab.zip: 6 members match source"
+        ]
+      },
+      {
+        "script": "package_jev_lab",
+        "returncode": 0,
+        "last_lines": [
+          "jev-decision-lab.zip: 8 members match source"
+        ]
+      },
+      {
+        "script": "package_llm_metrics_lab",
+        "returncode": 0,
+        "last_lines": [
+          "Archive matches the current article lab sources"
+        ]
+      },
+      {
+        "script": "package_rl_lab",
+        "returncode": 0,
+        "last_lines": [
+          "  \"finite_difference_max_error\": 7.040648619671686e-11,",
+          "  \"scope\": \"Exact categorical sum at one fixed context; no state/prefix distribution derivative, clipping, finite-sample variance or full GRPO implementation.\"",
+          "}"
+        ]
+      },
+      {
+        "script": "package_robot_data_lab",
+        "returncode": 0,
+        "last_lines": [
+          "  \"lab_checks_passed\": 30,",
+          "  \"sha256\": \"be746f0c13afc40300793e8bffb6b4e516184b133b755de264c66acf3cf1fead\"",
+          "}"
+        ]
+      },
+      {
+        "script": "package_vla_labs",
+        "returncode": 0,
+        "last_lines": [
+          "vla-labs.zip: 8 members match source"
+        ]
+      },
+      {
+        "script": "package_xvla_rtc_labs",
+        "returncode": 0,
+        "last_lines": [
+          "Physical-space VJP: finite differences verify the inverse-normalization chain factor",
+          "All RTC teaching checks passed. No learned policy or robot was evaluated.",
+          "real-time-chunking-lab.zip: 3 files match source"
+        ]
+      }
+    ],
+    "final_caption_followup": {
+      "casadi_labels": [
+        "图1",
+        "图2"
+      ],
+      "layout_cases": 4,
+      "mobile_zoom_cases": 1,
+      "scope": "After the broad browser suites, renumbered the existing CasADi caption and checked the final page in four viewport/theme combinations."
+    },
+    "validator-regression-final.log": {
+      "core": {
+        "f_string_blocks": 5,
+        "unicode_blocks": 3,
+        "unicode_cpp": [
+          "c++17",
+          "c++20"
+        ],
+        "exception_propagation": "passed",
+        "validator_regression": "fences, JSONC, shell non-execution, XML, duplicate ids, unrendered math passed"
+      }
+    },
+    "solver-audit/solver-audit-results.json": {
+      "casadi_version": "3.7.2",
+      "feasible": {
+        "variable_lower_bound": -2.0,
+        "x": 0.9999999999954545,
+        "objective": 1.000000000009091,
+        "solver_success": true,
+        "return_status": "Solve_Succeeded",
+        "objective_gradient": -2.000000000009091,
+        "lam_g": 1.0000000000083333,
+        "lam_x": 1.5151526419538881e-12,
+        "primal_violation": 0.0,
+        "stationarity_abs": 7.974205452550452e-17,
+        "complementarity_abs": 9.09095021491639e-12,
+        "accepted": true
+      },
+      "infeasible": {
+        "variable_lower_bound": 2.0,
+        "x": 2.000000000000002,
+        "objective": 4.930380657631324e-30,
+        "solver_success": false,
+        "return_status": "Infeasible_Problem_Detected",
+        "objective_gradient": 4.440892098500626e-15,
+        "lam_g": 999.9999999999969,
+        "lam_x": -3999.999999999992,
+        "primal_violation": 3.000000000000009,
+        "stationarity_abs": 4.547473508864641e-13,
+        "complementarity_abs": 2999.9999999999995,
+        "accepted": false
+      },
+      "nonconvex": [
+        {
+          "initial_x": -1.5,
+          "x": -1.0241203002143155,
+          "objective": -0.20244043434482245,
+          "return_status": "Solve_Succeeded",
+          "gap_to_enumerated_global_minimum": 0.0
+        },
+        {
+          "initial_x": 1.5,
+          "x": 0.9739943532304918,
+          "objective": 0.1974341528582765,
+          "return_status": "Solve_Succeeded",
+          "gap_to_enumerated_global_minimum": 0.399874587203099
+        }
+      ],
+      "scope": "dimensionless scalar examples, no robot or performance benchmark"
+    },
+    "unknown-pivot-checks.log": {
+      "training_poses": 40,
+      "held_out_poses": 11,
+      "units": "m, rad",
+      "known_point_rank": 3,
+      "unknown_point_joint_rank": 4,
+      "unknown_point_difference_rank": 2,
+      "joint_singular_values_unscaled": [
+        10.94663445390486,
+        6.709742652477894,
+        1.584952441421314,
+        0.8463473702876424,
+        4.0075115209211286e-16
+      ],
+      "true_offsets_rad": [
+        0.02,
+        -0.03,
+        0.025
+      ],
+      "known_point_fit_rad": [
+        0.02000000000000001,
+        -0.030000000000000002,
+        0.024999999999999856
+      ],
+      "fixed_gauge_fit_rad": [
+        0.0,
+        -0.030000000000000037,
+        0.025000000000000005
+      ],
+      "fitted_unknown_point_m": [
+        1.2567495416758887,
+        0.3249316689666358
+      ],
+      "held_out_contact_residual_m": 2.2887833992611187e-16,
+      "held_out_error_to_external_point_m": 0.025961077281825094,
+      "finite_rotation_equivalence": "passed",
+      "null_direction": [
+        1.0,
+        0.0,
+        0.0,
+        -0.35,
+        1.25
+      ],
+      "note": "No noise; mixed parameter units; singular values only diagnose exact rank here."
+    },
+    "calibration-identifiability-checks.log": {
+      "seed": 42,
+      "train_samples": 30,
+      "held_out_samples": 12,
+      "full_jacobian_rank": 2,
+      "full_singular_values": [
+        9.935386291091952,
+        2.522137902549153,
+        1.7588232239968806e-15
+      ],
+      "fixed_gauge_singular_values": [
+        7.203157787992596,
+        2.45988984664518
+      ],
+      "truth_beta_offset1_offset2_rad": [
+        0.07,
+        -0.02,
+        0.04
+      ],
+      "fitted_beta_offset1_offset2_rad": [
+        0.0,
+        0.05000000000000004,
+        0.040000000000000084
+      ],
+      "held_out_max_position_error_m": 1.1102230246251565e-16,
+      "finite_difference": "passed",
+      "gauge_equivalence": "passed"
+    }
+  },
+  "external_links": {
+    "sample": "658 distinct URLs extracted at the start; new primary citations checked separately",
+    "checked": 658,
+    "http_200": 636,
+    "batch_unconfirmed": [
+      {
+        "url": "https://doi.org/10.1115/1.3140702",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden"
+      },
+      {
+        "url": "https://docs.ruckig.com/tutorial.html",
+        "status": "000",
+        "error": "curl: (35) error:0A000126:SSL routines::unexpected eof while reading"
+      },
+      {
+        "url": "https://www.pi.website/blog/pistar06",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/research/human_to_robot",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/blog/pi0",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/research/fast",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/blog/pi05",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/research/knowledge_insulation",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/research/memory",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/blog/pi07",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/blog/openpi",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://github.com/openvla/openvla/tree/c8f03f48af692657d3060c19588038c7220e9af9",
+        "status": "000",
+        "error": "curl: (35) error:0A000126:SSL routines::unexpected eof while reading"
+      },
+      {
+        "url": "https://www.pi.website/download/pi05.pdf",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/download/pi05_KI.pdf",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/download/pistar06.pdf",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/download/pi07.pdf",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.mathworks.com/help/dsp/ref/dsp.lmsfilter-system-object.html",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden"
+      },
+      {
+        "url": "https://www.mathworks.com/help/dsp/ref/dsp.rlsfilter-system-object.html",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden"
+      },
+      {
+        "url": "https://www.mathworks.com/help/signal/ref/hampel.html",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden"
+      },
+      {
+        "url": "https://x-io.co.uk/downloads/madgwick_internal_report.pdf",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden"
+      },
+      {
+        "url": "https://www.diag.uniroma1.it/~labrob/pub/papers/TRO_Collision_Dec2017.pdf",
+        "status": "000",
+        "error": "curl: (28) Operation timed out after 20000 milliseconds with 0 bytes received"
+      },
+      {
+        "url": "https://docs.ruckig.com/",
+        "status": "000",
+        "error": "curl: (35) error:0A000126:SSL routines::unexpected eof while reading"
+      }
+    ],
+    "browser_followup": {
+      "date": "2026-09-30",
+      "method": "web browser tool returned the document contents; separate from the batch HTTP status audit",
+      "verified_urls": [
+        "https://docs.ruckig.com/",
+        "https://docs.ruckig.com/tutorial.html",
+        "https://www.mathworks.com/help/dsp/ref/dsp.lmsfilter-system-object.html",
+        "https://www.mathworks.com/help/dsp/ref/dsp.rlsfilter-system-object.html",
+        "https://www.mathworks.com/help/signal/ref/hampel.html",
+        "https://x-io.co.uk/downloads/madgwick_internal_report.pdf"
+      ]
+    },
+    "unverified": [
+      {
+        "url": "https://doi.org/10.1115/1.3140702",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden"
+      },
+      {
+        "url": "https://www.pi.website/blog/pistar06",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/research/human_to_robot",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/blog/pi0",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/research/fast",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/blog/pi05",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/research/knowledge_insulation",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/research/memory",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/blog/pi07",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/blog/openpi",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://github.com/openvla/openvla/tree/c8f03f48af692657d3060c19588038c7220e9af9",
+        "status": "000",
+        "error": "curl: (35) error:0A000126:SSL routines::unexpected eof while reading"
+      },
+      {
+        "url": "https://www.pi.website/download/pi05.pdf",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/download/pi05_KI.pdf",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/download/pistar06.pdf",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.pi.website/download/pi07.pdf",
+        "status": 429,
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      {
+        "url": "https://www.diag.uniroma1.it/~labrob/pub/papers/TRO_Collision_Dec2017.pdf",
+        "status": "000",
+        "error": "curl: (28) Operation timed out after 20000 milliseconds with 0 bytes received"
+      }
+    ],
+    "confirmed_404_or_410": 0
+  },
+  "limitations": [
+    "No model-weight inference, published paper benchmark reproduction, robot hardware or hard-real-time certification.",
+    "Qt uses essential modules in offscreen mode; MeshCat uses a recording sink without a browser/server.",
+    "CoACD checks one constructed mesh and convex membership, not physics-engine collision handling.",
+    "HTTP 403/429 and TLS/timeout failures remain unverified; they are not classified as dead links."
+  ],
+  "publication": {
+    "committed": false,
+    "pushed": false,
+    "deployed": false,
+    "private_draft_excluded": true
+  },
+  "temporary_evidence": "/tmp/chase-all-posts-20260930-oyc9ty4p",
+  "final_build_directories": {
+    "production": "/tmp/chase-all-posts-20260930-oyc9ty4p/release-public",
+    "drafts": "/tmp/chase-all-posts-20260930-oyc9ty4p/release-drafts"
+  },
+  "source_files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "10f52f0956b45aa3490fbf16c23783bdd0363cc553e60a73fdac86d7c893af44"
+    },
+    {
+      "path": "assets/css/custom.css",
+      "sha256": "c610bac7e9d2e4aec668f9136751f352c13e5874785d84e8cec4dec6a2370428"
+    },
+    {
+      "path": "content/posts/ai/algorithms/Astar/Astar-introduction/index.md",
+      "sha256": "e0de564a12cf91b807dd0f1dd8abdaf1794eca3d73e9b84e182a30ff5a4cc18a"
+    },
+    {
+      "path": "content/posts/ai/diffusion-models/index.md",
+      "sha256": "a8216b74a518cf4ca900c9867c82ae1181129992897da92b3eb60f6014a7e377"
+    },
+    {
+      "path": "content/posts/ai/distributed-training-memory/index.md",
+      "sha256": "69f2a990fda296fa7d59d72304dafafd4f18fb9b4c68317e00b2da872a709882"
+    },
+    {
+      "path": "content/posts/ai/gspo/index.md",
+      "sha256": "d7ffea1078fea58932d309f06a33e74563891babd963b111d427fb335dd4b66a"
+    },
+    {
+      "path": "content/posts/ai/gymnasium/1/index.md",
+      "sha256": "7466f7372698dfffc786bccc31476b39e176a686951f7130736c5105791b27fc"
+    },
+    {
+      "path": "content/posts/ai/internvl-3-5/index.md",
+      "sha256": "73e9342067ab3f7032c2e368d4daf847faffe230b143016be658937aaccca7e4"
+    },
+    {
+      "path": "content/posts/ai/lerobot-act/index.md",
+      "sha256": "eeaaf2eb5f514b4bb1190e3ed83d2d5b7ca5e993e071c16d350dc53407c732af"
+    },
+    {
+      "path": "content/posts/ai/light-loco-parkour/index.md",
+      "sha256": "1cdf73521dc156d4e445749a2a23e1fe68fb2f6d449f8cfbcbf15df64937ef13"
+    },
+    {
+      "path": "content/posts/ai/llm-training-metrics/index.md",
+      "sha256": "d654e1e513daabb8b9b5579bcec5fdba7e691443d9cd740b56f142da0a0e2ef7"
+    },
+    {
+      "path": "content/posts/ai/molmo-motion/index.md",
+      "sha256": "43a0a703ce770d71636ffbbefe2a1ee69170f92b5123d995f1ca1ccbb15949ef"
+    },
+    {
+      "path": "content/posts/ai/ppo-dpo-grpo/index.md",
+      "sha256": "b3c17dc6ba6fe9c475b036a5590972016aab280223f1bb1b4dc78bb03b7bfc7c"
+    },
+    {
+      "path": "content/posts/ai/real-time-chunking/index.md",
+      "sha256": "e2bf2a63078fb5f0fbeaf0980a3b0ba9e4c2f9efaed8c981a9f7b29ea5bd49ce"
+    },
+    {
+      "path": "content/posts/ai/rynnbrain/index.md",
+      "sha256": "4a7842347450f93e476c9dcda45ff19150e6d8d176320e93d978621dca3a0e27"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/index.md",
+      "sha256": "a57600fde75eb53325b8288318e1f28d4e489dd5ce22d20593636ba6b33a15be"
+    },
+    {
+      "path": "content/posts/ai/x-vla/index.md",
+      "sha256": "ebf2bbb22a633560cb23caf612c041a4c96db81115ee2080a89e7f5a91fd46f9"
+    },
+    {
+      "path": "content/posts/calibration/cctag/index.md",
+      "sha256": "b31a1e59da744bb061d210afb532d89848fe88ca5664a3b32db67bc3731fdb01"
+    },
+    {
+      "path": "content/posts/calibration/kinematics/index.md",
+      "sha256": "3e961b33196f2a86b723cf200e3f7b432fe9e31aa5a746182c62a19584f36b99"
+    },
+    {
+      "path": "content/posts/calibration/zero/index.md",
+      "sha256": "d65de4148b206c5ed1252648427c543aed1c9cecff7f303cb0e63324b4292282"
+    },
+    {
+      "path": "content/posts/casadi/assets/feasible-sets-results.json",
+      "sha256": "eba2192b921ec1c563ec8c7b19d877cbb302961b1a024a2ee58e4479eeb47615"
+    },
+    {
+      "path": "content/posts/casadi/assets/feasible-sets.png",
+      "sha256": "3db5179a6aec31d037e3a1bbd51bb13df1c12045dfc1e9d438091ea8585aafff"
+    },
+    {
+      "path": "content/posts/casadi/index.md",
+      "sha256": "ebfbef5ed6c4577f1e3a9ef146761bc427607181b3781360e794fc853e7ac6a4"
+    },
+    {
+      "path": "content/posts/casadi/plot_feasible_sets.py",
+      "sha256": "8d17371b527ccb1c6f704b85c7755cdf3a6d4c1b86adf481382c9e52ec20e632"
+    },
+    {
+      "path": "content/posts/cmake/ExternalProject_Add/index.md",
+      "sha256": "1e62b25a97d84658ba2e8d656b3a94503a3d2547e4410cdea9f8485c42acce02"
+    },
+    {
+      "path": "content/posts/coacd/assets/convex-parts-opening.webp",
+      "sha256": "90ae2c40f8fdba2a58c478c3cb7b96405dce22b6a17516c71c2682851d72c6bb"
+    },
+    {
+      "path": "content/posts/coacd/index.md",
+      "sha256": "21a3c027470ab4ddb4520e0f2c1fe2e489ef82eb733647be2a921876ea363055"
+    },
+    {
+      "path": "content/posts/cpp/gcc/index.md",
+      "sha256": "fd8e86f2b7339fb5d7f712ee455f5e174a1538a3a05b7aa680fe622db6419af3"
+    },
+    {
+      "path": "content/posts/cpp/gccs/index.md",
+      "sha256": "85504d1e91d02b6c1f0a0b123da76c04f853d7103847378b3ebf5bd5d7bd8446"
+    },
+    {
+      "path": "content/posts/cpp/smart-pointer/index.md",
+      "sha256": "6b22d1998cb135b75a5b494acd81baf28036c6540567add7f907942d5ec69383"
+    },
+    {
+      "path": "content/posts/cuda/warp/index.md",
+      "sha256": "3775898c26b5f2b652951de7e323d67b36783e34a5b6861148d5f39d7c723b56"
+    },
+    {
+      "path": "content/posts/egl/x11_warnning/index.md",
+      "sha256": "8f1e8e7d744f571df5fbf9ef4375d186396cd3737211c3a89f6ecb758ac7b8ba"
+    },
+    {
+      "path": "content/posts/gui/qt/qt5/index.md",
+      "sha256": "e25ce5b1863e46f25f769b57ffbd97148eda2777a275351602cfa16bc27340ec"
+    },
+    {
+      "path": "content/posts/network-protocol/c++_tcp/index.md",
+      "sha256": "44114d5d0242c5bccdbcf23ee550945f0b0cfe13c86923dd9e76b5c5cb4b1b37"
+    },
+    {
+      "path": "content/posts/open3d/introduction/assets/colored-icp-comparison.png",
+      "sha256": "6c008c48e1c170b6349737b5715c96d35750aa2df1d262d8c20b2db385ea2d1e"
+    },
+    {
+      "path": "content/posts/open3d/introduction/assets/colored-icp-results.json",
+      "sha256": "0ab0bd900c2f822bc256a348b523231a54ba9f9356d33db4d43f4f7fa5aa5299"
+    },
+    {
+      "path": "content/posts/open3d/introduction/assets/point-cloud-pipeline.webp",
+      "sha256": "db786df16db7615605aa59f9b02c7524f1f5e49c654e5b2a603cd185c3e3010b"
+    },
+    {
+      "path": "content/posts/open3d/introduction/assets/voxel-centroid-comparison.png",
+      "sha256": "9815b75a34ac93a7026563a6d58b0a38146c1476eae59d6b94ecf952d05ee799"
+    },
+    {
+      "path": "content/posts/open3d/introduction/colored_icp_check.py",
+      "sha256": "976844c1867bc0f6fdbbd2bd4fa76ef832e26914fbef7893c144394afefb64e8"
+    },
+    {
+      "path": "content/posts/open3d/introduction/index.md",
+      "sha256": "885a4efddf5cb687105616c4f5dc2b99ad1bb8a7200be313ffc91ffca298e879"
+    },
+    {
+      "path": "content/posts/open3d/introduction/point_cloud_pipeline.py",
+      "sha256": "0317b594c3fe1203242e0a7cb91caaaf7c6c0bfb74a37bdb79c703f466c345ec"
+    },
+    {
+      "path": "content/posts/open3d/introduction/voxel_centroid_check.py",
+      "sha256": "cb3f97db2185aabd1be55a4a10958132084a69e2005e85a28fe16504bd922b62"
+    },
+    {
+      "path": "content/posts/opengl/index.md",
+      "sha256": "df2e56468936ed9b812552f8c2cc6f576dfa7204123a4ffa679f74ea327a1594"
+    },
+    {
+      "path": "content/posts/pid/index.md",
+      "sha256": "da1d7271e4886add15801795b6523a89d68202fc5b8c1c9c95b77a302837c853"
+    },
+    {
+      "path": "content/posts/pink/index.md",
+      "sha256": "7f3f4dc962ad0b5ba66dcf62608df086a93a37bfa030680361a7702705c50c78"
+    },
+    {
+      "path": "content/posts/planner/to_mpc_wbc/index.md",
+      "sha256": "71fe40b3e4d9332c82d5deae608062c582bcb0dfa624bf2a34ae1b3dbdc8bd7b"
+    },
+    {
+      "path": "content/posts/process/pid/index.md",
+      "sha256": "625f486690bf71533eabe5409c599598998193000ae80d4100831ef4ca353eca"
+    },
+    {
+      "path": "content/posts/python/py39/index.md",
+      "sha256": "f8a7d8915b2afeaedb94f9f72423d218217c5d7b41ee6bb4dd2bcbbaaddfbae7"
+    },
+    {
+      "path": "content/posts/python/version/index.md",
+      "sha256": "9dab04939749ac10f99c307077ca10c52dfa00505c7f25da8087473f2417b0dd"
+    },
+    {
+      "path": "content/posts/queue/index.md",
+      "sha256": "ef654390e3c661d9983cf2885e68f6cc11263d97ac8a0ad76d55b0b2c8cc62ec"
+    },
+    {
+      "path": "content/posts/rl/assets/cliff-comparison.png",
+      "sha256": "940c912cca879f0a472d119b6af50f08162f06ca3a3b59a07c7d43c79e892640"
+    },
+    {
+      "path": "content/posts/rl/assets/cliff-results.json",
+      "sha256": "a7272bd8d794796141c1ed0020214472ac653c763797340a45830bcab474bf63"
+    },
+    {
+      "path": "content/posts/rl/assets/markov-history.webp",
+      "sha256": "a2ea551a0d389bf8cfefc3dfe66fa1f852ca4da38e559e7208f31a7c2c6254dc"
+    },
+    {
+      "path": "content/posts/rl/assets/maximization-bias-results.json",
+      "sha256": "02cdfeda1a7885004e35757db768627cfbd2280fc4149d3fa4133bf2bd7a37ad"
+    },
+    {
+      "path": "content/posts/rl/assets/maximization-bias.png",
+      "sha256": "78a9836983ddf5f9ffbb89232a5f477c4b871da9a2f7df2e4dd2ec9a33e0675f"
+    },
+    {
+      "path": "content/posts/rl/assets/sarsa-q-targets.webp",
+      "sha256": "a8d520330969343acebd6aa8e3470c590ad066f6569042cb60a3eeb10af96c27"
+    },
+    {
+      "path": "content/posts/rl/cliff_comparison.py",
+      "sha256": "7cafe2cd17b46a09705bc8571f14cd08fb944eb36ecb34b300e99941d0062a37"
+    },
+    {
+      "path": "content/posts/rl/index.md",
+      "sha256": "cd14f223ec478d51d674c134173c8d425ac39c1f1b8ecbca3fbcb274af397b5b"
+    },
+    {
+      "path": "content/posts/rl/maximization_bias.py",
+      "sha256": "b8b51c55d85939c9e69e0b593cd0ee9de788ac65bf1430a069eea0db5e697850"
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/index.md",
+      "sha256": "269398a735f9cd2d002deaff17c838027f1837d3c42a5e9cd19c99273b9c8cd8"
+    },
+    {
+      "path": "content/posts/robotics/control/robot-filters/index.md",
+      "sha256": "fb465cafdfb0cb81343e553977443cbe37933b09ed319b7873470fd21f834bf4"
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+      "sha256": "d0d2dc190472f4cbfe00f749fcba7164025e0cad59c63199f9f60a47b6e4d822"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/jacobian/index.md",
+      "sha256": "95ea4c64c101846641f6b5313ae3a3fcc3802127c6b12ab475efc488b16136f4"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+      "sha256": "b53d919d4f79fa24a7e564ae9cc9450870cc124e772b6727dda6344e8220342d"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/six-dof-kinematics/assets/frame-chain.webp",
+      "sha256": "ff1098c2952095612022e395fc608353d0805a09facaaa69d1e3bd7f931cefcd"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/six-dof-kinematics/frame_chain_check.py",
+      "sha256": "6fcc917411cdab60a658766ed897f6280788190ce992b35e8d289e1b9668e1ed"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+      "sha256": "716c5f5c9fc4e7f16e6a2ac126babb9e8d16f4c0d8c1b726aea8acb51d6c1724"
+    },
+    {
+      "path": "content/posts/robotics/workspace/whole-workspace/index.md",
+      "sha256": "89fd1749e7e0fba6e10abe825eaeae3cf87ac3c95af340d1d664b07c842da6fd"
+    },
+    {
+      "path": "content/posts/trajectory/ruckig/index.md",
+      "sha256": "6387c45fa65d3dc634f59c757fcc6054ca4c5ca5935aab00cbe8833e007c6508"
+    },
+    {
+      "path": "content/posts/trajectory/toppra/index.md",
+      "sha256": "c0dc251b86e6c74ce8e36fcd451994d5f6d762f9b947232a2d2231035f0dafe5"
+    },
+    {
+      "path": "content/posts/vscode/debug/index.md",
+      "sha256": "dea50818d1204071cc5dff39a48c16557d865e9417d16513a4a6acca7b5266d1"
+    },
+    {
+      "path": "content/posts/vscode/two-env/index.md",
+      "sha256": "7bcef0886b9533cac91ee402f041001af6b9d6635b111ad07270d2e5592b5d51"
+    },
+    {
+      "path": "content/posts/xcb/post_2.md",
+      "sha256": "7fdd8286a0e0c72899293bcaf41b1c1b66bf6fcb2db6c87822f8f5952603cfba"
+    },
+    {
+      "path": "docs/blog-editorial-review.json",
+      "sha256": "c56eed314171aa524b8b58add1f8ad6c25bb7bbe41f0a66a4931075dc452db53"
+    },
+    {
+      "path": "docs/image-generation/convex-parts-20260930-edit.txt",
+      "sha256": "11cdeda07525fb1718fd51faa8c95e75367d66038f45d754b5d75e5f46e0717e"
+    },
+    {
+      "path": "docs/image-generation/convex-parts-20260930-prompt.txt",
+      "sha256": "01e2119e422da94cc7f69d906057f50228c21bbdecfdac73b15cb90534a553c6"
+    },
+    {
+      "path": "docs/image-generation/convex-parts-20260930.json",
+      "sha256": "3b21d7fad3518e2c10cdff931c532662cb984cea93dd52672acae4457c8e7297"
+    },
+    {
+      "path": "docs/image-generation/frame-chain-20260930-edit.txt",
+      "sha256": "ebdadd83e42a8de639daa66de37d06dbaca183b229b958700c36723b05094a3b"
+    },
+    {
+      "path": "docs/image-generation/frame-chain-20260930-prompt.txt",
+      "sha256": "fd3395d5f060c175328db245ffe7cbd787adce037a63c1e4991048e692473485"
+    },
+    {
+      "path": "docs/image-generation/frame-chain-20260930.json",
+      "sha256": "df2d8b9a0d0091b4e492dc7cdcb264612ad1cc8e571352adb5361e113ffabf77"
+    },
+    {
+      "path": "docs/image-generation/markov-history-20260930-edit.txt",
+      "sha256": "16b0d4ee49a461975a083118a9fd1bdfc46801d14d50fe9d084e261954c481df"
+    },
+    {
+      "path": "docs/image-generation/markov-history-20260930-prompt.txt",
+      "sha256": "50ee32ccc6c8fe7b6f8e551ca89521e9d8a612ccfce74c0902b3691f7cbd65a1"
+    },
+    {
+      "path": "docs/image-generation/markov-history-20260930.json",
+      "sha256": "5d88232f592314f55706fe7b7078ac04e0a9c9c8b4f23c384f4cad786390a5d9"
+    },
+    {
+      "path": "docs/image-generation/open3d-pipeline-20260930-prompt.txt",
+      "sha256": "25dd0e6094fc9ddc5a9851c57a16b1ea7a65b913c953fb16690b296e0a1bb8b3"
+    },
+    {
+      "path": "docs/image-generation/open3d-pipeline-20260930.json",
+      "sha256": "4c26d9a0bd3fee31920e94678e657ceba7332a02652ed875cf4d907bbdda4369"
+    },
+    {
+      "path": "docs/image-generation/sarsa-targets-20260930-edit.txt",
+      "sha256": "7bec0ad814c907996fc3efb9f8b90726b07bad9644b38c164ec7e67d4ddcc4ac"
+    },
+    {
+      "path": "docs/image-generation/sarsa-targets-20260930-prompt.txt",
+      "sha256": "c27eb06210ff27375ec385d4b053e0633545e7e232b74ad6544d83f7a67c1891"
+    },
+    {
+      "path": "docs/image-generation/sarsa-targets-20260930.json",
+      "sha256": "7afa5c5c1236b88fa4a40fd85e2a6286831a0b92f1b5786fbad455d3167e9574"
+    },
+    {
+      "path": "layouts/_markup/render-heading.html",
+      "sha256": "bdf0f22780bfb7d3df8825d01daacde870b7f63f9b84f56dec4f1131c16b68c5"
+    },
+    {
+      "path": "layouts/_partials/blog/image.html",
+      "sha256": "f3bd49b750e41b7fd27d0b03484aa008d1cc14d4cacaf925c2b91cd59bd06e56"
+    },
+    {
+      "path": "scripts/check_blog_reading.cjs",
+      "sha256": "8cf3c8a97dd3e6779833b4b002c794a668b49e6b067b0d90309f73370df2fb1c"
+    },
+    {
+      "path": "scripts/test_blog_examples.py",
+      "sha256": "53f5d453680a907c5c18aa537f180399f29783954c1eb170c697ffb6edab26aa"
+    },
+    {
+      "path": "scripts/test_blog_images.py",
+      "sha256": "d1bcce61a5082e01c52df1b48694ab1c87fb5da1d05dfb2cb483559eaa01c9cf"
+    },
+    {
+      "path": "scripts/test_blog_round4.py",
+      "sha256": "348ad19518db0e19669a6f205f26eb63de9595167ef25a3fe7944b822c1d5599"
+    },
+    {
+      "path": "scripts/test_blog_toc.py",
+      "sha256": "bd6a0fe9f00c6825b61ac01f8f6607761eb4cf3e8ed438ac80474b4af666a96f"
+    },
+    {
+      "path": "scripts/validate_blog.py",
+      "sha256": "40409d7bad2459655f671dedb749a79d419109d873ccde85b0936acac12b5f5f"
+    }
+  ]
+}

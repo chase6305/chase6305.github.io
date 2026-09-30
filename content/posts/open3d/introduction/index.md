@@ -2,20 +2,20 @@
 title: "Open3D 点云与网格指南：空间索引、滤波、配准与重建"
 math: true
 date: 2025-03-04
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["Open3D", "Point Cloud", "3D Vision"]
 categories: ["三维视觉"]
 authors: ["chase"]
-summary: "按 I/O、空间索引、滤波、配准和重建整理 Open3D 用法，用已知变换及退化平面验证 ICP，区分残差、覆盖与位姿可观测性。"
+summary: "串联点云 I/O、滤波、坐标变换、配准与重建，用完整预处理流程、退化平面和纹理对照实验解释几何信息与验证方法。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
-description: "按 I/O、空间索引、滤波、配准和重建整理 Open3D 用法，用已知变换及退化平面验证 ICP，区分残差、覆盖与位姿可观测性。"
+description: "串联点云 I/O、滤波、坐标变换、配准与重建，用完整预处理流程、退化平面和纹理对照实验解释几何信息与验证方法。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "NumPy、点云与三维坐标变换"
-reading_focus: "各示例按章节独立使用，核对 legacy/Tensor API、输入路径和真实几何尺度。"
+reading_focus: "先跑通无窗口的完整流程，再分章核对 legacy/Tensor API、长度单位和配准的可观测性。"
 related_posts:
   - "/posts/coacd"
   - "/posts/meshcat"
@@ -24,6 +24,16 @@ related_posts:
 
 
 本文按 I/O → 空间索引 → 滤波与变换 → 配准 → 重建组织，是 legacy `open3d.geometry` API 的学习笔记，不是一个从头连续执行的脚本。完整示例与依赖前文变量的接口片段分别使用；Tensor API `open3d.t.geometry` 的设备与数据类型不能直接混用。
+
+第一次使用时，可以按下面的问题选择入口；不必先记住所有函数参数。
+
+| 当前问题 | 推荐先读 | 最小验收 |
+| --- | --- | --- |
+| 点云是否读对了？ | 第 3 节 I/O、第 7 节完整预处理流程 | 非空、有限值、单位和包围范围正确 |
+| 点太多或有孤立噪声？ | 第 7 节过滤 | 同时记录点数、几何范围和被删除区域 |
+| 两次扫描如何放到同一坐标系？ | 第 8 节变换、第 10 节配准 | 变换方向正确，误差与覆盖一起检查 |
+| 如何把点变成表面？ | 第 9 节法线、第 11 节重建 | 法线及尺度合适，空洞和外推区域可解释 |
+| 只想得到边界或快速占用表示？ | 第 12–14 节 | 区分包围盒、凸包、占用体素与真实表面 |
 
 本文以 0.19.0 的 legacy API 为基线。先打印 `open3d.__version__`，将模型路径替换为自己的数据。点云非空、尺度一致、有足够重叠和正确法线，比调大迭代次数更重要。
 
@@ -45,12 +55,14 @@ Open3D 是一个开源库，旨在为 3D 数据处理提供高效且易用的工
   - 提供多视图 3D 重建算法。
 - 几何处理：
   - 支持对三角网格、体素网格和曲面的处理。
-  - 提供几何变换、简化和布尔运算等功能。
+  - 提供几何变换与简化；网格布尔运算使用 Tensor `open3d.t.geometry.TriangleMesh` 接口，不能直接在 legacy 网格上调用。
 - 可视化：
   - 提供交互式的 3D 可视化工具。
   - 支持点云、网格和体素的渲染。
 - 机器学习：
   - 提供与深度学习框架的集成，支持 3D 数据的机器学习任务。
+
+例如 0.19.0 的 [`boolean_union`](https://www.open3d.org/docs/0.19.0/python_api/open3d.t.geometry.TriangleMesh.html#open3d.t.geometry.TriangleMesh.boolean_union) 要求合适的流形网格，并在 CPU 上执行；把数据放到 Tensor API 中，不代表每个操作都会使用 GPU。
 
 ![Open3D 的计算核心、三维数据结构、算法、机器学习与可视化模块总览](open3d.webp)
 
@@ -318,7 +330,7 @@ print_progress: bool = False
 `print_progress`：是否在控制台显示进度条，类型为 bool，默认值为 False。
 
 
-![triangle_mesh](triangle_mesh.jpeg)
+![带材质颜色的原始玩偶网格](triangle_mesh.jpeg)
 
 
 ```python
@@ -342,7 +354,7 @@ except Exception as e:
     print(f"An error occurred: {e}")
 ```
 
-![triangle_mesh_1](triangle_mesh_1.png)
+![Open3D 中没有明暗细节的灰色模型轮廓](triangle_mesh_1.png)
 
 若网格缺少顶点法线，可以调用 `compute_vertex_normals()` 计算法线，以便观察光照下的表面形状。法线与颜色是不同属性：下例另外调用 `paint_uniform_color()` 将网格设为红色。
 
@@ -427,7 +439,7 @@ else:
     )
 ```
 
-![triangle_mesh_3](triangle_mesh_3.png)
+![调整材质和光照后的灰色网格，表面可见镜面高光](triangle_mesh_3.png)
 
 
 ### 4.4 从mesh上提取点云
@@ -475,7 +487,7 @@ else:
     )
 ```
 
-![triangle_mesh_4](triangle_mesh_4.png)
+![从网格采样的离散点覆盖模型表面](triangle_mesh_4.png)
 
 
 ## 5. KD-Tree
@@ -733,7 +745,7 @@ vis.run()
 vis.destroy_window()
 ```
 
-![sphere_1](sphere_1.webp)
+![随机点云中的选定点以较大的绿色球标出](sphere_1.webp)
 
 - **创建点云**：生成一个包含 1000 个随机点的点云。
 - **构建 k-d 树**：使用 o3d.geometry.KDTreeFlann 构建 k-d 树。
@@ -943,24 +955,59 @@ o3d.visualization.draw_geometries([downsampled_pcd_voxel], window_name="体素�
 o3d.visualization.draw_geometries([downsampled_pcd_uniform], window_name="Uniform下采样后的点云")
 ```
 
-![outlier_1](outlier_1.webp)
+<details>
+<summary>查看原始点云与四种处理结果的历史截图</summary>
 
-![outlier_2](outlier_2.webp)
+这些截图用于对照显示方式，未绑定上面代码的随机种子，不能据此计算降噪精度；颜色也不是统一的误差刻度。可复现的点数与坐标检查见下一节。
 
-![outlier_3](outlier_3.webp)
+![处理前的原始点云，显示密集中心与外围散点](outlier_1.webp)
 
-![outlier_4](outlier_4.webp)
+![统计离群点移除后的点云，窗口标题标明统计滤波](outlier_2.webp)
 
-![outlier_5](outlier_5.png)
+![半径离群点移除后的点云，窗口标题标明半径滤波](outlier_3.webp)
 
+![体素降采样后的点云，保留整体分布并减少点数](outlier_4.webp)
+
+![按输入索引间隔采样后的点云，点数明显减少](outlier_5.png)
+
+</details>
 
 -  **代码说明**：
-1. **统计滤波**：使用 `remove_statistical_outlier` 方法去除离群点。该方法通过计算每个点的邻居点的平均距离，并将距离超过标准差乘数的点视为离群点。参数 `nb_neighbors` 指定用于计算平均距离的邻居点数，`std_ratio` 指定距离的标准差乘数。
+1. **统计滤波**：使用 `remove_statistical_outlier` 方法去除离群点。该方法先计算各点的局部平均邻距，再以这些平均距离的全局均值与标准差确定阈值；超过“均值 + `std_ratio` × 标准差”的点被剔除。参数 `nb_neighbors` 指定用于计算平均距离的邻居点数，`std_ratio` 指定距离的标准差乘数。
 2. **半径滤波**：使用 `remove_radius_outlier` 方法去除孤立点。该方法通过检查每个点在指定半径内的邻居点数，并将邻居点数少于指定值的点视为孤立点。参数 `nb_points` 指定在指定半径内的最小点数，`radius` 指定搜索半径。
 3. **体素下采样**：使用 `voxel_down_sample` 方法通过体素网格下采样点云。该方法将点云划分为体素网格，并用每个体素内的点的重心来代表该体素。参数 `voxel_size` 指定体素的大小。
 4. **Uniform 下采样**：使用 `uniform_down_sample` 方法均匀下采样点云。该方法通过按固定间隔选择点来下采样点云。参数 `every_k_points` 指定每隔多少个点采样一个点。
 
-这些方法可以帮助你在不同的场景下对点云进行预处理和优化，以提高点云处理的效率和效果。
+四种方法的目标并不相同：前两种按邻域稀疏程度去除点，后两种减少采样数量。`uniform_down_sample` 中的“均匀”指按**输入索引**等间隔选取，不能保证三维空间均匀。如果输入按扫描行排序，它可能保留周期性条纹。体素降采样也不自动判定哪个点是噪声，孤立离群点通常仍会占据自己的体素。[官方离群点移除说明](https://www.open3d.org/docs/0.19.0/tutorial/geometry/pointcloud_outlier_removal.html)
+
+### 7.1 跑通一条有检查点的预处理流程
+
+<figure class="article-figure">
+  {{< post-image src="assets/point-cloud-pipeline.webp" alt="点云依次经过数值与单位检查、降采样、离群点移除、法线估计和坐标变换；降采样阶段仍保留孤立点" >}}
+  <figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">一条点云预处理路线。降采样减少密度，邻域过滤判断稀疏点，法线描述局部表面方向；刚体变换改变坐标表示。处理顺序与阈值应按数据调整，始终保留原始点云。</span></figcaption>
+</figure>
+
+[下载完整脚本](point_cloud_pipeline.py)。脚本构造一小块曲面、3 个已知孤立点和 2 个含 NaN/Inf 的无效点，无需相机、外部模型或图形窗口。在本节环境中执行：
+
+```bash
+python point_cloud_pipeline.py
+```
+
+| 步骤 | 做什么 | 本例 Open3D 0.19.0 的结果 | 这个结果说明什么 |
+| --- | --- | --- | --- |
+| 检查坐标 | 删除任一坐标非有限的点 | 656 → 654 点 | 清理数值输入，还没处理几何噪声 |
+| 文件往返 | 写入临时 PLY，再读回并比较坐标 | 654 点，坐标一致 | 验证 I/O，点的单位仍由应用约定 |
+| 体素降采样 | 每格边长 0.04 m | 654 → 191 点 | 合并密集区域，3 个孤立点仍在 |
+| 半径过滤 | 半径 0.065 m，`nb_points=3` | 191 → 188 点 | 在这个已知构造中删掉了 3 个孤立点 |
+| 法线估计 | 搜索半径 0.12 m，最多 30 个近邻 | 有限、单位长度的法线 | 长度正确不等于方向已一致 |
+| 刚体变换 | 在副本上变换，再应用逆变换 | 坐标往返一致，原数据不变 | 验证变换方向与原地修改行为 |
+{.table-readable}
+
+这里所有长度参数都按米解释。例如 `voxel_size=0.04` 是 4 cm；如果输入坐标其实是毫米，应先统一单位或同步换算全部距离参数。将毫米数据直接配上米制阈值，会让同一段代码表现得完全不同。
+
+本例先降采样，是为了减少后续邻域查询规模；实际数据不一定适合固定这个顺序。稀疏的物体边缘也可能被半径过滤删除，细小结构也可能被大体素合并。应保留原始数据、比较删除位置，并根据传感器间距和任务精度调整参数；点数变少不是精度提高的证明。
+
+还要区分两种索引：`clean, indices = down.remove_radius_outlier(...)` 返回的是 **`down` 中的索引**。不能把它直接拿去切原始点云的颜色、标签或时间戳。若后续需要原始点到降采样点的对应关系，应显式维护映射或使用带追踪信息的降采样接口。
 
 
 ## 8. 点云转换
@@ -1104,7 +1151,7 @@ o3d.visualization.draw_geometries([pcd], point_show_normal=True, window_name="Po
 
 |法向生成|法向统一  |
 |--|--|
-| ![normal_1](normal_1.png) | ![normal_2](normal_2.png) |
+| ![球面采样点及估计的局部法线，正负方向尚未统一](normal_1.png) | ![完成方向传播后的球面法线](normal_2.png) |
 
 
 
@@ -1193,7 +1240,7 @@ $$
 
 <figure class="article-figure" id="fig-icp-observability">
   {{< post-image src="assets/icp-observability.webp" alt="单平面的法线相互平行，平面内滑动及绕法线转动不改变理想点到平面距离；多个方向的表面提供更多独立几何约束" >}}
-  <figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">蓝色箭头表示表面法线，橙色箭头表示单平面无法约束的运动。右侧还需有足够的点分布与正确对应，不能仅凭法线方向不同就断言任意场景全局唯一。</span></figcaption>
+  <figcaption><span class="article-figure__number">图 2</span><span class="article-figure__text">蓝色箭头表示表面法线，橙色箭头表示单平面无法约束的运动。右侧还需有足够的点分布与正确对应，不能仅凭法线方向不同就断言任意场景全局唯一。</span></figcaption>
 </figure>
 
 [icp_observability.py](icp_observability.py) 使用精确法线和无噪声合成数据，比较以下情况：
@@ -1216,79 +1263,44 @@ $$
 
 ### 10.2 Colored ICP 配准
 
-**说明**：Colored ICP 结合几何与颜色信息。下例保留球体作为 API 演示，但均匀颜色没有提供额外颜色梯度，球体几何又有旋转对称性，因此不能用它验证完整姿态恢复或 Colored ICP 的精度优势。实际测试应换为有纹理、非对称、尺度一致且重叠充分的数据，并与已知变换比较。
+一张平整桌面提供了法线方向约束，但沿桌面滑动一点，点到平面的距离仍可能为零。如果桌面有稳定纹理，移动后颜色图案就会错位；Colored ICP 利用这类颜色变化，补充几何残差难以提供的局部约束。
 
-```python
-import open3d as o3d
-import numpy as np
+其目标结合几何项和颜色项：
 
-def create_colored_sphere(radius, color, density=1000):
-    mesh = o3d.geometry.TriangleMesh.create_sphere(radius=radius)
-    pcd = mesh.sample_points_poisson_disk(number_of_points=density)
-    pcd.paint_uniform_color(color)
-    return pcd
+$$
+E(T)=\lambda E_G(T)+(1-\lambda)E_C(T).
+$$
 
-def estimate_normals(pcd, radius=0.1, max_nn=30):
-    pcd.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=radius, max_nn=max_nn))
+几何项衡量点到目标局部平面的偏差；颜色项在目标点的切平面上近似颜色变化，并比较变换后的源点颜色。它不是简单给 XYZ 后面拼上 RGB，再对六维向量运行普通 ICP。$\lambda$ 调整两项权重，颜色的尺度与预处理也会影响其意义。[Open3D 彩色配准说明](https://www.open3d.org/docs/0.19.0/tutorial/pipelines/colored_pointcloud_registration.html)
 
-def execute_colored_icp(source, target, max_correspondence_distance, initial_transformation):
-    criteria = o3d.pipelines.registration.ICPConvergenceCriteria(
-        relative_fitness=1e-3,
-        relative_rmse=1e-3,
-        max_iteration=500)
-    result = o3d.pipelines.registration.registration_colored_icp(
-        source, target, max_correspondence_distance, initial_transformation,
-        o3d.pipelines.registration.TransformationEstimationForColoredICP(),
-        criteria)
-    return result
+#### 同一平面，为什么纯色与纹理得到不同结果
 
-# 创建两个绿色的球体
-sphere1 = create_colored_sphere(1.0, [0, 1, 0], density=1000)
-sphere2 = create_colored_sphere(1.0, [0, 1, 0], density=1000)
+[下载完整对照脚本](colored_icp_check.py)，安装 NumPy 与 Open3D 后执行。只生成数值结果时不需要 Matplotlib：
 
-# 对第二个球体进行变换
-transformation = np.eye(4)
-transformation[:3, :3] = o3d.geometry.get_rotation_matrix_from_xyz((0.2, -0.5, -0.15))
-transformation[:3, 3] = [0.5, 0.7, -1.4]
-sphere2.transform(transformation)
-
-# 估算法线
-estimate_normals(sphere1)
-estimate_normals(sphere2)
-
-# 可视化配准前的点云
-print("配准前的点云：")
-o3d.visualization.draw_geometries([sphere1, sphere2], window_name="Before Registration")
-
-# 使用彩色ICP进行配准
-max_correspondence_distance = 5.0  # 增大最大对应点距离
-initial_transformation = np.identity(4)
-result_colored_icp = execute_colored_icp(sphere1, sphere2, max_correspondence_distance, initial_transformation)
-
-# 应用变换到第一个球体点云
-sphere1.transform(result_colored_icp.transformation)
-
-# 可视化配准后的点云
-print("配准后的点云：")
-o3d.visualization.draw_geometries([sphere1, sphere2], window_name="After Registration")
+```bash
+python colored_icp_check.py --output colored-icp-results.json
+# 需要重画下图时再安装 Matplotlib，并增加 --plot。
+python colored_icp_check.py --output colored-icp-results.json --plot colored-icp-comparison.png
 ```
 
-- **代码说明**：
-1. **创建彩色球体**：使用 `create_colored_sphere` 函数创建两个绿色的球体。
-2. **对第二个球体进行变换**：对第二个球体进行随机变换。
-3. **估算法线**：计算球体点云的法线。
-4. **可视化配准前的点云**：在配准前显示两个球体点云。
-5. **使用彩色ICP进行配准**：使用彩色ICP算法进行配准。
-6. **应用变换到第一个球体点云**：将配准结果应用到第一个球体点云。
-7. **可视化配准后的点云**：在配准后显示两个球体点云。
+脚本建立 2989 个无噪声平面点，并给出解析法线。目标是源点云的一个已知刚体变换副本：绕 Z 轴旋转 0.08 rad，平移 $(0.05,-0.03,0)$ m，颜色随点保留。三个实验都从单位变换开始：
 
+| 实验 | 可用信息 | 本例的平移误差 | 本例的旋转角误差 |
+| --- | --- | ---: | ---: |
+| 点到平面 ICP | 同一平面的几何 | 58.31 mm | 4.58° |
+| Colored ICP，全部点改为同一种颜色 | 几何，颜色没有空间变化 | 58.31 mm | 4.58° |
+| Colored ICP，保留二维变化纹理 | 几何与颜色变化 | 小于 0.00001 mm | 小于 0.00001° |
 
-|原始点云| 配准点云 |
-|--|--|
-| ![reg_p2p_3](reg_p2p_3.webp) | ![reg_p2p_4](reg_p2p_4.webp) |
+<figure class="article-figure">
+  {{< post-image src="assets/colored-icp-comparison.png" alt="同一合成平面下，点到平面和纯色配准均保留约 58.31 毫米与 4.58 度误差，有纹理的彩色配准恢复已知变换" >}}
+  <figcaption><span class="article-figure__number">图 3</span><span class="article-figure__text">Open3D 0.19.0、无噪声点和精确法线的受控算例。纹理方案的极小误差只说明这组构造中的数值恢复，不能解释为真实相机具有相同定位精度；脚本同时保存完整配置与误差。</span></figcaption>
+</figure>
 
+前两个结果不是“迭代次数不够”：平面内平移和绕法线旋转没有改变点到平面残差，纯色也没有补充颜色梯度。最后一种数据同时具有两个平面方向上的纹理变化，才为这一局部对齐问题补上信息。只有沿一个方向变化的条纹，仍可能留下沿条纹方向的歧义。
 
+代码采用 0.04、0.02、0.01 m 三层体素，从粗到细把上层估计传给下一层；`lambda_geometric=0.968` 与迭代条件均显式记录。每一层运行的是同一个局部算法，多尺度不把它变成全局最优求解器。真实使用还需要足够重叠、合理初值、颜色与几何对齐，并评估曝光变化、反光、重复纹理和运动物体。
 
+均匀颜色球体可以展示调用形式，却不适合作为完整姿态恢复的验收数据：球体有旋转对称性，均匀颜色又没有纹理约束。应先明确几何和纹理分别提供了哪些信息，再选择具有可检查真值的实验。
 
 ### 10.3 全局配准
 
@@ -1593,33 +1605,28 @@ for alpha in alphas:
 
 #### 11.2.1 原理
 
-1. **法线估计**：
-   - 首先，从点云数据中估计每个点的法线方向。这一步通常使用邻域搜索算法，如KD树搜索。
-
-2. **泊松方程**：
-泊松重建的核心是求解泊松方程。泊松方程是一种偏微分方程，形式为：
+重建的未知量是空间中的**标量隐式函数** $\chi(x)$，而不是“点云的散度”。把点的位置和一致法线扩展成向量场 $\mathbf V(x)$，希望标量函数的梯度尽可能接近它：
 
 $$
-\nabla \cdot \mathbf{V} = \rho
+\min_\chi\int_\Omega\|\nabla\chi(x)-\mathbf V(x)\|^2\,dx.
 $$
 
-其中，$\mathbf{V}$ 是一个向量场，$\rho$ 是一个标量场。在泊松重建中，$\mathbf{V}$ 是由点云的法线生成的向量场，$\rho$ 是点云的散度。
+对这个能量取变分，并配合相应边界条件，得到基本的 Poisson 方程：
 
-3. **构建八叉树**：
-   - 为了高效地求解泊松方程，使用八叉树（Octree）对点云进行分层表示。八叉树将空间递归地划分为八个子空间，直到达到指定的深度。
+$$
+\Delta\chi=\nabla\!\cdot\mathbf V,
+\qquad \Delta=\nabla\!\cdot\nabla.
+$$
 
-4. **求解泊松方程**：
-   - 在八叉树的每个节点上，求解泊松方程。通过最小二乘法或其他数值方法，计算出每个节点的标量场值。
+左边是**待求函数的 Laplacian**，右边是**已构造向量场的散度**。仅写 $\nabla\cdot\mathbf V=\rho$ 没有说明要求解哪个未知函数，也就无法解释表面从何而来。求出 $\chi$ 后，再提取合适的等值面形成三角网格。[Poisson Surface Reconstruction 原论文](https://hhoppe.com/poissonrecon.pdf)
 
-5. **提取等值面**：
-   - 使用Marching Cubes算法从标量场中提取等值面，生成三角网格。等值面是标量场中具有相同值的点的集合。
+直观上，法线告诉算法“表面朝哪里”，隐式函数把这些局部方向整合成一个整体表面。法线局部翻转会让这些约束互相冲突；没有扫描到的区域则缺少直接证据，重建仍可能在那里补出表面。
 
-6. **平滑和优化**：
-   - 对生成的三角网格进行平滑和优化，以去除噪声和不规则性，生成最终的平滑表面。
+实现通常使用自适应八叉树，在需要的位置分配更细的空间表示，并求解耦合的稀疏系统；不是每个节点各自独立重建一小块。Open3D 的接口采用 Screened Poisson 实现，还包含点约束；上面的基本方程用于理解其核心思想，不是完整复刻库内目标函数。[Open3D 表面重建说明](https://www.open3d.org/docs/0.19.0/tutorial/geometry/surface_reconstruction.html)
 
 #### 11.2.2 代码示例
 
-以下是使用Open3D库进行泊松重建的代码示例：
+下面假定输入是已去除离群点、具有足够局部邻居的物体表面。半径 0.1 使用点云本身的长度单位，不能对米制和毫米制数据原样复用。局部方向传播也不能替代对多层薄面、断开组件和扫描视点的检查。
 
 ```python
 import open3d as o3d
@@ -1630,6 +1637,9 @@ pcd = o3d.io.read_point_cloud("doll_1.ply")
 # 估计法线
 pcd.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=0.1, max_nn=30))
 
+# 传播相邻法线的方向；并非保证每个复杂场景的全局朝向都正确
+pcd.orient_normals_consistent_tangent_plane(k=30)
+
 # 泊松重建
 depth = 9  # 调整深度参数
 mesh_poisson, densities = o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(pcd, depth=depth)
@@ -1639,18 +1649,27 @@ mesh_poisson.compute_vertex_normals()
 o3d.visualization.draw_geometries([mesh_poisson], window_name=f"Poisson Reconstruction with depth={depth}")
 ```
 
-![mesh_poisson_1](mesh_poisson_1.png)
+<details>
+<summary>历史模型显示结果</summary>
+
+![depth 为 9 的历史泊松重建截图，暗色表面不足以判断重建误差](mesh_poisson_1.png)
+
+截图主要呈现模型轮廓；颜色和明暗不是误差指标。应进一步检查采样点到重建面的距离、薄结构、观测边界与低密度区域。
+
+</details>
 
 #### 11.2.3 调整深度参数
 
 通过调整深度参数，可以控制生成的网格的细节程度：
 
-- **较小的深度值**：生成的网格较粗糙，计算速度较快。
-- **较大的深度值**：生成的网格较细致，计算速度较慢。
+- **较小的深度上限**：限制可表示的空间细节，通常减少计算与内存开销。
+- **较大的深度上限**：允许更细的自适应划分，也可能增加开销或拟合噪声；不保证实际精度提高。
+
+`depth` 是八叉树深度上限，不是输出网格的固定边长。还要结合物体尺度、点间距、法线质量和重建参数判断结果。
 
 #### 11.2.4 总结
 
-泊松重建是一种从点云数据生成平滑三角网格的有效方法。它通过求解泊松方程，能够处理噪声和不完整的点云数据，生成高质量的表面。通过调整深度参数，可以控制生成网格的细节程度。
+泊松重建把带方向的点整合成隐式表面。返回的 `densities` 与输出网格顶点对应，可辅助识别观测支持较弱的区域，但它不是几何误差或成功概率。裁剪低密度顶点是后处理选择，应保留阈值和裁剪前后统计，避免误删真实的稀疏结构。
 
 
 ## 12.  最小包围盒
@@ -1751,50 +1770,60 @@ o3d.visualization.draw_geometries([pcd, hull], window_name="Convex Hull")
 
 ## 14. 体素化
 
-下面使用 `VoxelGrid.create_from_point_cloud` 建立占用体素。它与返回平均点位置的 `voxel_down_sample` 不同，不应把占用体素中心和原始点的重心混为一谈。
-以下是一个示例代码，展示如何对点云进行体素化处理并进行可视化。
+体素可以理解为空间中的立方格子，但下面两个操作的输出不同：
 
-- **示例代码**
+| 操作 | 每个有点的格子保留什么 | 输出类型 |
+| --- | --- | --- |
+| `voxel_down_sample` | 格内原始点的平均位置，以及相应属性聚合 | 更少的点 |
+| `VoxelGrid.create_from_point_cloud` | 哪些格子被输入点占据，可附带颜色 | 占用体素集合 |
+{.table-readable}
+
+**平均位置由格内样本决定，格子中心由网格原点与边长决定。** 一个格子里的点都挤在左下角时，重心仍在左下角，体素中心却不会移动。将这两种输出混用，会平白改变几何位置。[Open3D 体素化说明](https://www.open3d.org/docs/0.19.0/tutorial/geometry/voxelization.html)
+
+### 14.1 用五个点手算区别
+
+设长度单位为米，网格原点为 $(0,0,0)$，边长为 1。输入五个点：
 
 ```python
+import numpy as np
 import open3d as o3d
 
-# 读取点云
-pcd = o3d.io.read_point_cloud("doll_1.ply")
-
-# 设置体素大小
-voxel_size = 0.05
-
-# 进行体素化
-voxel_grid = o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size=voxel_size)
-
-# 可视化原始点云和体素化后的点云
-o3d.visualization.draw_geometries([pcd], window_name="Original Point Cloud")
-o3d.visualization.draw_geometries([voxel_grid], window_name="Voxelized Point Cloud")
+points = np.array([[.1, .1, .1], [.2, .1, .1], [.1, .3, .2],
+                   [1.1, .2, .1], [1.8, .7, .2]])
+pcd = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(points))
+lower, upper = np.zeros(3), np.array([3., 2., 1.])
+grid = o3d.geometry.VoxelGrid.create_from_point_cloud_within_bounds(
+    pcd, voxel_size=1., min_bound=lower, max_bound=upper)
+down, _, original_indexes = pcd.voxel_down_sample_and_trace(1., lower, upper)
+print("occupied cells:", len(grid.get_voxels()))  # 2
+print("downsampled points:", len(down.points))  # 2
 ```
 
-![voxel_grid_1](voxel_grid_1.webp)
+这里显式固定两种操作的网格边界，方便一一比较；仅给出相同的 `voxel_size`，不能假设所有接口采用相同的原点或输出顺序。`original_indexes` 可追溯每个降采样点来自哪些输入点，不要靠数组位置猜测对应关系。
 
-![voxel_grid_2](voxel_grid_2.png)
+| 网格索引 | 输入点数 | 样本重心 XYZ，m | 体素中心 XYZ，m |
+| --- | ---: | --- | --- |
+| `(0, 0, 0)` | 3 | `(0.1333, 0.1667, 0.1333)` | `(0.5, 0.5, 0.5)` |
+| `(1, 0, 0)` | 2 | `(1.45, 0.45, 0.15)` | `(1.5, 0.5, 0.5)` |
+{.table-readable}
 
+对于原点 $o$、边长 $v$ 和整数索引 $k$，体素中心是 $o+v(k+\tfrac12)$；样本重心则是 $\frac1N\sum_i p_i$。两者分别回答“这个格子在哪里”和“这些测量点平均在哪里”。
 
-- **说明**
+<figure class="article-figure">
+{{< post-image src="assets/voxel-centroid-comparison.png" alt="五个点落在两个体素中，橙色样本重心与紫色格子中心的位置不同；右侧无观测的格子不能据此认定为自由空间" >}}
+<figcaption><span class="article-figure__number">图 4</span><span class="article-figure__text">同一固定网格上的实际坐标投影；所有点都在 Z∈[0,1) 这一层。颜色区分格子和点的类型，星号与叉号也能独立辨认两种代表位置。</span></figcaption>
+</figure>
 
-1. **读取点云**：
-   - 使用 `o3d.io.read_point_cloud` 函数读取点云数据。
+[完整验证与绘图脚本](voxel_centroid_check.py)检查每个格子的原始索引、重心和中心公式。安装 Open3D、NumPy、Matplotlib 后运行 `python voxel_centroid_check.py --plot voxel-centroids.png`；不需要模型文件或显示窗口。
 
-2. **设置体素大小**：
-   - 定义体素的大小（例如 `voxel_size = 0.05`），该值决定了每个体素的边长。
+### 14.2 接到机器人地图之前还要分清什么
 
-3. **进行体素化**：
-   - 使用 `o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size=voxel_size)` 方法对点云进行体素化处理。该方法返回一个 `VoxelGrid` 对象，表示体素化后的点云。
+- **没有点不等于没有障碍。** 点云可能只采到物体表面，背面和遮挡区仍然未知；`VoxelGrid` 不会仅凭点集合自动给出可靠的自由空间。
+- **占用格子不等于填满物体内部。** 从点建立的体素集合主要反映采样位置；实体填充、射线清空、TSDF 和距离场是另外的处理。
+- **体素尺寸有物理单位。** 数据是米制时 `0.05` 表示 5 cm；毫米制数据中同一个数则小了 1,000 倍。应先检查包围盒尺度，再设置参数。
+- **更粗并非总能保留结构。** 细杆、孔洞和相邻表面可能在粗网格里合并；用于碰撞或抓取时，要检查最小关键结构相对体素边长的比例。
 
-4. **可视化原始点云和体素化后的点云**：
-   - 使用 `o3d.visualization.draw_geometries` 函数分别可视化原始点云和体素化后的点云。
-
-- **总结**
-
-	- 通过上述代码，可以使用Open3D对点云进行体素化处理，并进行可视化。体素化处理可以有效地减少点云数据的数量，同时保留点云的整体结构，对于点云数据的分析和处理非常有用。
+这样看，降采样主要控制测量点数量，体素化建立空间离散表示；它们都需要按后续任务验收，而不是只看显示窗口是否出现一个模型。
 
 
 ## 阅读自测与验收

@@ -46,6 +46,7 @@
 {{- $dimensions := "" -}}
 {{- $width := 0 -}}
 {{- $height := 0 -}}
+{{- $intrinsicWidth := 0 -}}
 {{- $srcset := slice -}}
 {{- if and $resource (eq $resource.ResourceType "image") -}}
   {{- if in (slice "jpeg" "png" "webp" "gif") $resource.MediaType.SubType -}}
@@ -63,7 +64,30 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
-{{- /* SVG dimensions may be supplied by the shortcode; raster metadata wins. */ -}}
+{{- /* SVGs have no Hugo raster metadata. Read their intrinsic viewBox ratio;
+  explicit shortcode dimensions below remain available for other resources. */ -}}
+{{- if and $resource (eq $resource.MediaType.Type "image/svg+xml") -}}
+  {{- $number := `[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?` -}}
+  {{- $viewBoxPattern := printf `<svg\b[^>]*\bviewBox\s*=\s*["']\s*%s[\s,]+%s[\s,]+(%s)[\s,]+(%s)\s*["']` $number $number $number $number -}}
+  {{- $viewBoxes := findRESubmatch $viewBoxPattern $resource.Content 1 -}}
+  {{- with $viewBoxes -}}
+    {{- $width = float (index (index . 0) 1) -}}
+    {{- $height = float (index (index . 0) 2) -}}
+    {{- if and (gt $width 0) (gt $height 0) -}}
+      {{- $dimensions = printf "width=%q height=%q" (string (int (math.Ceil $width))) (string (int (math.Ceil $height))) -}}
+      {{- /* Matplotlib SVGs often use points: 1 pt = 96/72 CSS pixels.
+        The viewBox determines the ratio, not necessarily the display width. */ -}}
+      {{- $lengths := findRESubmatch `<svg\b[^>]*\bwidth\s*=\s*["']([0-9]+(?:\.[0-9]+)?)(px|pt)?["']` $resource.Content 1 -}}
+      {{- with $lengths -}}
+        {{- $intrinsicWidth = float (index (index . 0) 1) -}}
+        {{- if eq (index (index . 0) 2) "pt" -}}
+          {{- $intrinsicWidth = mul $intrinsicWidth (div 96.0 72.0) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- /* Explicit dimensions are useful for images without local metadata. */ -}}
 {{- if and (eq $width 0) .Attributes.width .Attributes.height -}}
   {{- $width = int .Attributes.width -}}
   {{- $height = int .Attributes.height -}}
@@ -71,14 +95,24 @@
     {{- $dimensions = printf "width=%q height=%q" (string $width) (string $height) -}}
   {{- end -}}
 {{- end -}}
-{{- /* With CSS width:auto, lazy images can collapse before their first decode.
-  Opt in to a known width and ratio so deep links retain their initial position. */ -}}
-{{- if and (.Page.Params.reserveFigureSpace | default false) (gt $width 0) (gt $height 0) -}}
-  {{- $dimensions = printf "%s style=%q" $dimensions (printf "width: 100%%; aspect-ratio: %d / %d" $width $height) -}}
+{{- /* Reserve the decoded size before loading, without enlarging small images.
+  Keep an explicit per-page opt-out and leave non-article defaults unchanged. */ -}}
+{{- $reserveSpace := eq .Page.Section "posts" -}}
+{{- if ne .Page.Params.reserveFigureSpace nil -}}
+  {{- $reserveSpace = .Page.Params.reserveFigureSpace -}}
+{{- end -}}
+{{- $style := .Attributes.style | default "" -}}
+{{- if and $reserveSpace (gt $width 0) (gt $height 0) -}}
+  {{- $displayWidth := $width -}}
+  {{- if gt $intrinsicWidth 0 -}}{{- $displayWidth = $intrinsicWidth -}}{{- end -}}
+  {{- $style = printf "width: min(100%%, %vpx); aspect-ratio: %v / %v; %s" $displayWidth $width $height $style -}}
+{{- end -}}
+{{- with $style -}}
+  {{- $dimensions = printf "%s style=%q" $dimensions (. | transform.HTMLEscape) -}}
 {{- end -}}
 {{- $attributes := "" -}}
 {{- range $key, $value := .Attributes -}}
-  {{- if and $value (not (in (slice "width" "height" "src" "srcset" "alt" "loading" "decoding") $key)) -}}
+  {{- if and $value (not (in (slice "width" "height" "style" "src" "srcset" "alt" "loading" "decoding") $key)) -}}
     {{- $pair := printf "%s=%q" $key ($value | transform.HTMLEscape) -}}
     {{- $attributes = printf "%s %s" $attributes $pair -}}
   {{- end -}}

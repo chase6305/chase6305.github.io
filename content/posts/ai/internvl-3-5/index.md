@@ -1,7 +1,7 @@
 ---
 title: "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
 date: 2026-09-05
-lastmod: 2026-09-29
+lastmod: 2026-09-30
 draft: false
 tags: ["InternVL", "VLM", "Multimodal", "Reinforcement Learning", "Paper Notes"]
 categories: ["人工智能"]
@@ -66,6 +66,7 @@ InternVL 3.5 可以沿三个问题理解：**图像怎样变成语言模型能�
 | 无训练阶段后缀 | CPT + SFT + Cascade RL | 常规使用的完整后训练版本 |
 | `-HF` | Hugging Face 原生格式 | 与 Transformers 标准类集成；不是一个额外训练阶段 |
 | `-Flash` | 增加视觉压缩与路由训练的高效变体 | 研究视觉 token 成本与质量的权衡 |
+{.table-readable}
 
 注意“无后缀”的意思是没有 `-Pretrained/-Instruct/-MPO` 这类**阶段后缀**，而不是说 `-HF` 权重质量更低。正式选择时要同时确认模型卡中的训练路径、架构和格式。[阶段对照来源](https://internvl.github.io/blog/2025-08-26-InternVL-3.5/)
 
@@ -88,6 +89,7 @@ InternVL 3.5 可以沿三个问题理解：**图像怎样变成语言模型能�
 | 38B | InternViT-6B | Qwen3-32B | 38.4B |
 | 30B-A3B | InternViT-300M | Qwen3-30B-A3B | 30.8B |
 | 241B-A28B | InternViT-6B | Qwen3-235B-A22B | 240.7B |
+{.table-readable}
 
 来源为[原始报告表 1](https://arxiv.org/html/2508.18265v2#S2)。集合中还包含 GPT-OSS 路线的 Preview 检查点，应按其单独模型卡处理，不能仅修改上面某个 Qwen 版本的名称就假定加载流程完全相同。
 
@@ -152,6 +154,7 @@ $$
 | 恢复空间网格 | `[n,32,32,1024]` | 第二维的序列重新解释为空间布局 |
 | Pixel shuffle | `[n,16,16,4096]` | 空间长宽减半，通道维变为四倍 |
 | 展平与投影 | `[n,256,4096]` | 接入该 8B 语言骨干的隐藏维度 |
+{.table-readable}
 
 对应入口是 `InternVLModel.get_image_features`、`pixel_shuffle` 与 `InternVLMultiModalProjector`；投影包含 LayerNorm、两层 Linear 与非线性。这些是按固定配置推导的形状，不是本地执行完整 ViT/LLM 得到的性能记录。[Transformers 4.55.0 源码](https://github.com/huggingface/transformers/blob/v4.55.0/src/transformers/models/internvl/modeling_internvl.py)
 
@@ -249,6 +252,7 @@ $$
 | Loss mask / `labels=-100` | 哪些目标位置直接计入交叉熵 | 图像位置可以不作为预测目标，仍参与答案生成 |
 | Attention mask | 哪些位置可以参与注意力计算 | 错误屏蔽视觉位置会阻止答案利用图像信息 |
 | `requires_grad=False` | 哪些参数不累积自身梯度 | 冻结模块仍可能需要传递输入梯度 |
+{.table-readable}
 
 用链式法则理解：答案 loss 依赖语言模型，语言模型依赖视觉投影，因此图像占位本身不计 loss，并不阻止梯度回到投影层或视觉编码器。能否更新这些模块，取决于参数是否可训练、计算图是否连通，以及训练器是否保留了这条路径。[PyTorch Autograd 规则](https://docs.pytorch.org/docs/2.8/notes/autograd.html#setting-requires-grad)
 
@@ -330,6 +334,7 @@ python3 -m venv .venv-supervision
 | 冻结语言模块 | 约 0.05695 | 不分配 | 输入梯度仍穿过语言计算 |
 | 语言前向处于 `no_grad` | 0 | 不分配 | 该例唯一的 loss 路径已被切断 |
 | 答案无法注意到视觉前缀 | 0 | 非零 | 模型仍能学文字，但此处已无图像依赖 |
+{.table-readable}
 
 它还独立索引位置 3、4、5 的答案预测，核对一次 label shift；增加九个 masked padding 后，loss 仍约为 2.9159205。这里的绝对数值由随机小网络决定，没有模型质量含义，关键是设置改变前后的不变量。脚本将“模块是否收到梯度”和“梯度是否正确归约”分开检查，避免看到一个非零 loss 就认为训练链正常。
 
@@ -343,6 +348,7 @@ python3 -m venv .venv-supervision
 | SFT | 用户问题与规范回答，如“蓝色” | 在约定答案位置提高目标 token 概率 | 复现格式不等于视觉依据充分 |
 | 离线 MPO | 同问题的偏好回答与相关质量信号 | 学习相对偏好，并结合质量与生成目标 | 较优候选也可能含错误 |
 | 在线 GSPO | 当前策略的一组回答及奖励 | 相对当前模型的组内表现调整策略 | 奖励若错，优化方向也可能错 |
+{.table-readable}
 
 因此，要排查“格式正确却总认错颜色”，先检查图像是否正确送入、目标是否对齐与视觉梯度是否连通，再检查语料、偏好和奖励。单纯增加后训练步数，不会自动修复被屏蔽的视觉输入。
 
@@ -598,6 +604,7 @@ $$
 | --- | ---: | ---: |
 | 矩形缓存，两行都分配到 8192 | `2×8192=16384` | 2.25 GiB |
 | 理想按请求长度分别分配 | `2048+8192=10240` | 1.40625 GiB |
+{.table-readable}
 
 第二行忽略分页块取整与元数据，不能当作框架实测值。可用 [token_budget.py](token_budget.py) 复算：
 

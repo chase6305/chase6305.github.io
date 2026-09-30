@@ -1,7 +1,7 @@
 ---
 title: "RTC 详解：动作块如何实时执行，从推理时引导到训练时条件与世界动作模型"
 date: 2026-09-11
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["RTC", "Action Chunking", "Flow Matching", "VLA", "World Action Model", "Paper Notes"]
 categories: ["人工智能"]
@@ -29,6 +29,7 @@ related_posts:
 | [Real-Time Execution of Action Chunking Flow Policies](https://arxiv.org/abs/2506.07339v2)，Black、Galliker、Levine | v2，2025-12-05 | 不重新训练，如何在推理时让新动作块延续旧计划？ |
 | [Training-Time Action Conditioning for Efficient Real-Time Chunking](https://arxiv.org/abs/2512.05964v2)，Black、Ren、Equi、Levine | v2，2025-12-09 | 能否把前缀条件加入训练，省去推理时引导开销？ |
 | [World Action Models in Real Time: An Empirical Study of Smooth Execution via Asynchronous Deployment](https://arxiv.org/abs/2608.01880v2)，Motubrain Team | v2，2026-08-11 | 在视频与动作联合生成、延迟更高的系统中，各种衔接方法表现如何？ |
+{.table-readable}
 
 下文分别简称为 **原始 RTC、训练时 RTC、WAM 实证研究**。论文结果均为作者报告；文中的 CPU 算例用于核对动作时间、前缀条件和调度边界。Kinetix 仓库对应前两篇论文的模拟实验，不包含第三篇论文的完整 WAM 部署系统。
 
@@ -313,6 +314,7 @@ x = x + dtau * (v + guidance_weight * correction)
 | soft-mask 衰减 | 剩余重叠区域保留多少旧计划 | 接触精度、运动模式切换、突发事件响应 |
 | denoising 步数 $N$ | 积分精细程度和计算次数 | 完整端到端延迟及动作质量 |
 | 执行间隔 $s$ | 新观测使用频率及重叠长度 | 服务吞吐、队列覆盖、相邻块分歧 |
+{.table-readable}
 
 这些是基于公式的实验设计建议，不是论文给出的通用最优配置。尤其是 $N$ 增大后，不能继续沿用较小 $N$ 测得的延迟来构造前缀。
 
@@ -614,6 +616,7 @@ else:
 | `simple` | 每个去噪步骤对重叠动作做加权混合 | 执行生成结果 | 无额外条件训练 |
 | `infer` | 对生成速度施加 RTC 引导 | 执行生成结果 | 无额外条件训练 |
 | `train` | 使用前缀条件生成后续动作 | 执行生成结果 | 需要前缀条件训练 |
+{.table-readable}
 
 `async+blend` 与 `simple` 的区别在于混合的位置：前者在生成之后处理最终输出；后者介入每步去噪。`simple` 与 `infer` 的区别在于修改动作值还是修改生成速度。它们不能统一叫作“把旧轨迹平滑一下”。
 
@@ -666,6 +669,7 @@ else:
 | `src/model.py` / `FlowPolicy` | MLP-Mixer、普通采样、RTC、BID、损失 | 时间条件、掩码、VJP、训练分支 |
 | `src/eval_flow.py` / `eval` | 在模拟环境中执行延迟策略 | 旧块前缀、新块后缀、缓存平移 |
 | `src/eval_flow.py` / `main` | 加载模型并扫描配置 | 扫描范围、方法默认值、输出 CSV |
+{.table-readable}
 
 源码使用符号观测的 Kinetix 环境与较小的动作策略。这有利于大量受控模拟，并不意味着仓库已经实现摄像头接入、VLA 视觉编码或真实机械臂通信。[固定版本源码目录](https://github.com/Physical-Intelligence/real-time-chunking-kinetix/tree/9296f31d62d5bfeb5779dcb2f9bcf71ca37f448b/src)
 

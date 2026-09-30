@@ -1,5 +1,5 @@
 {
-  "reviewed_on": "2026-09-29",
+  "reviewed_on": "2026-09-30",
   "scope": "滚动文章清单：保留既有 URL 与草稿状态，新增文章同步维护阅读元数据与验收检查",
   "posts": [
     {
@@ -22,7 +22,7 @@
     },
     {
       "id": 1,
-      "summary": "区分标准 A* 与视线裁剪，说明目标弹出、三维线段碰撞、路径简化以及最优性成立的条件。",
+      "summary": "用可手算搜索过程区分发现目标与目标弹出，说明标准 A*、视线裁剪、三维碰撞检查和最优性条件。",
       "prerequisites": "图搜索与基础几何",
       "focus": "重点比较搜索后简化和搜索中直连，避免把可行路径误称为最短路径。",
       "related": [
@@ -94,7 +94,7 @@
     },
     {
       "id": 5,
-      "summary": "使用 Gymnasium 运行 LunarLander 随机交互与录像，讲清 reset、step、随机种子以及终止和截断的差别。",
+      "summary": "使用 Gymnasium 运行随机交互与录像，讲清 reset、step 和随机种子，并用 TD 算例解释终止与截断的差别。",
       "prerequisites": "Python 循环与强化学习基本概念",
       "focus": "先无窗口验证环境接口；随机动作示例不是训练算法。",
       "related": [
@@ -130,9 +130,9 @@
     },
     {
       "id": 7,
-      "summary": "介绍 CCTag 的编码、可靠识别状态与几何求解，区分检测重复性和定位精度，给出标定链路的验收方法。",
+      "summary": "介绍 CCTag 编码与几何求解，用像素算例区分重复性、系统偏差和绝对精度，并给出标定链路的验收方法。",
       "prerequisites": "相机投影与图像特征",
-      "focus": "重点区分识别 ID 和恢复六维位姿，结合运动可观测性选择标记。",
+      "focus": "先区分可靠识别、圆心定位与六维位姿，再检查独立参考和像素到物理单位的换算条件。",
       "related": [
         10,
         9
@@ -233,8 +233,8 @@
         "/posts/pink",
         "/posts/planner/to_mpc_wbc"
       ],
-      "image_decision": "保留已有约束绘图，补充 KKT、不可行候选与两个局部最小值的可复算对照",
-      "image": null
+      "image_decision": "用同一求解函数重画两个可行域，区分变量边界、等式交集、不可行无约束极小点和数值解；原有资源保留。",
+      "image": "assets/feasible-sets.png"
     },
     {
       "id": 13,
@@ -256,9 +256,9 @@
     },
     {
       "id": 14,
-      "summary": "演示 CoACD 网格检查、凸分解、逐块导出与 Open3D 可视化，说明阈值单位、预处理和物理引擎加载边界。",
+      "summary": "用 U 形开口解释凸分解，演示 CoACD 网格检查、逐块导出与可视化，并说明阈值单位和物理引擎加载边界。",
       "prerequisites": "Python、三角网格与碰撞几何",
-      "focus": "保存原始模型和每次参数，检查功能孔洞在最终引擎中是否仍然存在。",
+      "focus": "先理解凸组件的并集如何保留凹结构，再验证关键开口在最终引擎中是否仍能通过。",
       "related": [
         58,
         35
@@ -269,8 +269,8 @@
         "/posts/thesis/coacd",
         "/posts/open3d/introduction"
       ],
-      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
-      "image": null
+      "image_decision": "增加原始 U 形、单个凸包与凸组件并集的比较，说明碰撞开口为何会消失。",
+      "image": "content/posts/coacd/assets/convex-parts-opening.webp"
     },
     {
       "id": 15,
@@ -366,7 +366,7 @@
       "id": 20,
       "summary": "区分 CUDA 硬件 warp 与 NVIDIA Warp 库，说明 SIMT、分支、shuffle、核函数和自动微分的正确使用边界。",
       "prerequisites": "GPU 线程模型与 Python",
-      "focus": "先分清两个 Warp 的层级；检查参与线程、数组边界和可微输出。",
+      "focus": "先分清硬件 warp 与 Warp 库；用线程线性索引理解分组，再检查参与线程、数组边界和计时。",
       "related": [
         4,
         19
@@ -634,9 +634,9 @@
     },
     {
       "id": 35,
-      "summary": "按 I/O、空间索引、滤波、配准和重建整理 Open3D 用法，用已知变换及退化平面验证 ICP，区分残差、覆盖与位姿可观测性。",
+      "summary": "串联点云 I/O、滤波、坐标变换、配准与重建，用完整预处理流程、退化平面和纹理对照实验解释几何信息与验证方法。",
       "prerequisites": "NumPy、点云与三维坐标变换",
-      "focus": "各示例按章节独立使用，核对 legacy/Tensor API、输入路径和真实几何尺度。",
+      "focus": "先跑通无窗口的完整流程，再分章核对 legacy/Tensor API、长度单位和配准的可观测性。",
       "related": [
         14,
         29
@@ -647,12 +647,12 @@
         "/posts/coacd",
         "/posts/meshcat"
       ],
-      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
-      "image": null
+      "image_decision": "补充五阶段预处理流程图；彩色配准比较使用随文脚本生成的量化结果图。",
+      "image": "content/posts/open3d/introduction/assets/point-cloud-pipeline.webp"
     },
     {
       "id": 36,
-      "summary": "保留 Ubuntu 18.04 GLUT 茶壶实验，修正 VS Code 构建调试配置，并说明固定功能管线和图形上下文的限制。",
+      "summary": "用 GLUT 茶壶实验区分编译、链接、上下文和绘制，补全颜色材质、窗口缩放与 VS Code 构建调试配置。",
       "prerequisites": "C++、链接选项与 OpenGL 基础",
       "focus": "这是历史兼容模式示例，先在终端编译，再将同样参数接入调试器。",
       "related": [
@@ -691,7 +691,7 @@
       "id": 38,
       "summary": "用一致的残差与 Jacobian 解释 Pink 微分 IK，运行二连杆位置跟踪，验证速度、关节限位和独立停止条件。",
       "prerequisites": "Jacobian、QP 与 Pinocchio",
-      "focus": "把一个控制周期的局部解和全局 IK 分开，权重不能代替缺失的硬约束。",
+      "focus": "用单关节算例换算局部位移、控制周期与速度限制，再验证多任务求解和停止条件。",
       "related": [
         50,
         52
@@ -851,9 +851,9 @@
     },
     {
       "id": 47,
-      "summary": "从 MDP、回报和价值函数理解强化学习，串联策略评估与更新，并区分随机策略、环境随机性和训练验证。",
+      "summary": "从状态与观测、完整转移表和手算回报理解强化学习，用多种子悬崖实验区分训练与评估，并解释最大化偏差、策略梯度和连续控制。",
       "prerequisites": "概率、期望与基础优化",
-      "focus": "先统一状态、动作、奖励和终止条件，再对照各算法的估计目标。",
+      "focus": "先手算状态转移和 TD 目标，再比较训练与冻结策略评估；检查终止、探索率、步数上限和误差棒含义。",
       "related": [
         5,
         39
@@ -864,8 +864,8 @@
         "/posts/ai/gymnasium/1",
         "/posts/planner/to_mpc_wbc"
       ],
-      "image_decision": "替换策略梯度和 TD3 更新流程，明确状态推进、停止梯度与参数更新路径；用 GAE 残差权重曲线替换未经条件限定的参数推荐图。",
-      "image": "content/posts/rl/assets/policy-gradient-training-flow.webp"
+      "image_decision": "新增状态历史与更新目标图；用可复现实验替换无依据的历史比较图。",
+      "image": "content/posts/rl/assets/sarsa-q-targets.webp"
     },
     {
       "id": 48,
@@ -977,9 +977,9 @@
     },
     {
       "id": 54,
-      "summary": "以理想 SRS 七自由度结构说明臂角冗余参数，给出解析逆解示例，并补充可达性、分支与 FK 残差检查。",
+      "summary": "从七轴局部冗余与双球交圆推导臂角，再用理想 SRS 解析逆解验证可达性、解分支和 FK 残差。",
       "prerequisites": "DH 变换、三角几何与旋转矩阵",
-      "focus": "先确认肩肘腕结构假设；这不是任意七轴机械臂的通用解析解。",
+      "focus": "先理解臂角的几何含义与退化情况，再核对 SRS 结构、关节限制和解的连续性。",
       "related": [
         55,
         52
@@ -995,9 +995,9 @@
     },
     {
       "id": 55,
-      "summary": "整理 Elfin05 历史 DH 模型和腕心分解，用 NumPy 核对 FK、Jacobian 与腕心公式，并解释 MATLAB 模型和 C++ 片段的验证边界。",
+      "summary": "从 World、Base、Flange、TCP 坐标链建立六轴 FK，串联 Elfin05 历史 DH 模型、腕心分解与数值验证，说明解析解的适用边界。",
       "prerequisites": "DH 参数、矩阵变换与 C++",
-      "focus": "模型数值需按实机核对，先验证 FK，再讨论最多八类逆解候选。",
+      "focus": "先用点变换和工具偏置验证坐标方向，再讨论 DH 连乘及最多八类逆解候选。",
       "related": [
         54,
         50
@@ -1008,14 +1008,14 @@
         "/posts/robotics/kinematics/seven-dof-kinematics",
         "/posts/robotics/kinematics/jacobian"
       ],
-      "image_decision": "保留已有原理图、照片或实验结果；不重复增加装饰图",
-      "image": null
+      "image_decision": "补充世界、基座、法兰与工具坐标链，配合可运行的点变换与工具偏置校验。",
+      "image": "content/posts/robotics/kinematics/six-dof-kinematics/assets/frame-chain.webp"
     },
     {
       "id": 56,
       "summary": "通过关节随机采样与 FK 估计机器人位置工作空间，给出可复现二连杆示例，并区分覆盖、密度和可达性。",
       "prerequisites": "FK、NumPy 与随机采样",
-      "focus": "点云是有限采样估计，不包含所有姿态能力或碰撞后的可行集合。",
+      "focus": "先区分位置覆盖、指定姿态、可行路径和控制能力，再运行采样与密度对照。",
       "related": [
         50,
         52
@@ -1069,7 +1069,7 @@
       "id": 59,
       "summary": "用可运行例子理解 Ruckig 的状态可行性、时间与相位同步、非零终点速度和离散采样，区分轨迹结束与机器人停止。",
       "prerequisites": "位置、速度、加速度与离散采样",
-      "focus": "先验证本地状态到状态问题，中间路径点功能与碰撞规划需另行评估。",
+      "focus": "先用时间与单位理解 jerk，再验证状态到状态轨迹、同步方式和实际停止条件。",
       "related": [
         60,
         39
@@ -1087,7 +1087,7 @@
       "id": 60,
       "summary": "沿给定路径做时间参数化，用直线解析解与弯曲多项式实验区分求解网格、连续峰值和输出轨迹，并验证统一减速的作用与边界。",
       "prerequisites": "路径插值与运动学约束",
-      "focus": "路径参数不是时间，时间优化不会自动修复原路径的碰撞和限位问题。",
+      "focus": "先手算路径导数如何转成关节速度，再检查连续峰值；时间参数化不修复原路径。",
       "related": [
         59,
         12
@@ -1123,7 +1123,7 @@
       "id": 62,
       "summary": "从最小 debugpy 配置讲解 VS Code 断点、模块入口、参数与附加调试，补充解释器核对及调试端口保护。",
       "prerequisites": "Python 执行入口与 VS Code",
-      "focus": "先复现终端运行环境，再添加远程和多进程配置，暂停会改变程序时序。",
+      "focus": "先跟随最小循环观察断点前后的变量，再连接解释器、模块入口与附加调试。",
       "related": [
         64,
         40

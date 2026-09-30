@@ -1,0 +1,14 @@
+{
+  "date": "2026-09-30",
+  "mode": "builtin",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-e9b04996-113a-44da-8ea4-3fd2aa9f5b64.png",
+  "output": "content/posts/rl/assets/markov-history.webp",
+  "prompt": "docs/image-generation/markov-history-20260930-prompt.txt",
+  "edit": "docs/image-generation/markov-history-20260930-edit.txt",
+  "size": [
+    1672,
+    941
+  ],
+  "sha256": "a2ea551a0d389bf8cfefc3dfe66fa1f852ca4da38e559e7208f31a7c2c6254dc",
+  "review": "Verified overlapping brackets S,M then M,C; shared M preserved; remove S and append C. Bottom sentence avoids confusing state symbols with partial observations."
+}

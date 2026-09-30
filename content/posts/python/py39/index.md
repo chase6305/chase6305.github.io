@@ -1,7 +1,7 @@
 ---
 title: 'libpython3.9.so.1.0: cannot open shared object file: No such file or directory 解决方法'
 date: 2025-02-28
-lastmod: 2026-09-05
+lastmod: 2026-09-30
 draft: false
 tags: ["Python", "Shared Libraries", "Troubleshooting"]
 categories: ["编程开发"]
@@ -42,6 +42,12 @@ readelf -d ./your_application
 ```
 
 将示例路径替换成真正报错的程序。`ldd` 不应用于不可信的二进制文件。关注 `NEEDED`、`RPATH/RUNPATH` 和 `not found`，不要把所有共享库问题都归因于 Python 包版本。
+
+### 为什么换了终端里的 Python，原程序仍然报同一个错
+
+假设你运行的是 C++ 可执行文件 `your_application`。它在构建时记录了对 `libpython3.9.so.1.0` 的依赖；启动时由动态加载器寻找这个名字。即便当前终端的 `python` 已经变成 3.11，这个 ELF 文件记录的依赖也没有因此改变。
+
+因此检查对象有两条线：`sys.executable` 回答 Python 进程实际用了哪个解释器；`readelf -d ./your_application` 回答这个原生程序声明了哪些共享库依赖。如果缺失库由另一个依赖间接引入，还要沿报错链继续定位。修复应针对实际依赖者选择匹配运行时或重新构建，不是反复切换命令行中的 `python` 名称。
 
 ## 2. 区分“库不存在”和“库找不到”
 

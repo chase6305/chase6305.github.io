@@ -1,7 +1,7 @@
 ---
 title: "机器人雅可比矩阵：从关节速度到末端速度"
 date: 2026-09-03
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["Kinematics", "Jacobian", "Pinocchio", "Python"]
 categories: ["机器人技术"]
@@ -87,6 +87,7 @@ $$J_i=\begin{bmatrix}z_i\\0\end{bmatrix}.$$
 | `LOCAL` | 在末端自身坐标系表达 | 适合局部控制律 |
 | `WORLD` | 在世界原点表达空间 twist，含旋转和平移的伴随变换 | 线速度部分不是末端原点的直接速度，不能拿它与末端位置差分直接比较 |
 | `LOCAL_WORLD_ALIGNED` | 速度投影到世界坐标轴，但原点仍在末端 | 初学和笛卡尔控制常用 |
+{.table-readable}
 
 三种约定的变换公式、参考点配图与可运行检查见[第 11.1 节](#reference-point-duality)。
 
@@ -98,6 +99,7 @@ $$J_i=\begin{bmatrix}z_i\\0\end{bmatrix}.$$
 | --- | --- | --- | --- |
 | $v_x,v_y,v_z$ | 末端原点沿世界 $x,y,z$ 的线速度 | m/s | `J[:3]` |
 | $\omega_x,\omega_y,\omega_z$ | 绕世界 $x,y,z$ 轴的角速度 | rad/s | `J[3:]` |
+{.table-readable}
 
 线速度和角速度量纲不同，因此做控制器增益、范数或奇异值比较时，应明确是否使用了任务权重。
 

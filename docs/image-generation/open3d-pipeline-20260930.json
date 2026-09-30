@@ -1,0 +1,13 @@
+{
+  "date": "2026-09-30",
+  "mode": "builtin",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-6fbcfca4-d097-4024-8f77-2c1e26e4d5c5.png",
+  "output": "content/posts/open3d/introduction/assets/point-cloud-pipeline.webp",
+  "prompt": "docs/image-generation/open3d-pipeline-20260930-prompt.txt",
+  "sha256": "db786df16db7615605aa59f9b02c7524f1f5e49c654e5b2a603cd185c3e3010b",
+  "size": [
+    2062,
+    763
+  ],
+  "review": "Five labels and forward arrows verified. Downsampling retains isolated points; filtering removes them. Normals denote local directions and transform retains the surface shape. Conceptual sketches are not measured point counts."
+}

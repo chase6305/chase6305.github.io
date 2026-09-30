@@ -1,7 +1,7 @@
 ---
 title: 'Ubuntu 为项目选择 Python 版本：venv、Conda 与解释器排查'
 date: 2025-03-13
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["Python", "Ubuntu", "Environment Management"]
 categories: ["编程开发"]
@@ -93,6 +93,7 @@ python -c "import numpy; print(numpy.__version__); print(numpy.__file__)"
 | 模块来源指向项目里的 `numpy.py` 或 `cv2.py` | 文件名遮蔽 | 重命名自己的冲突模块，再重启 Python 进程 |
 | `ImportError` / 缺少 `.so` / 未定义符号 | 实际模块文件、包版本与动态库依赖 | 在独立环境复现，定位二进制依赖，不先改系统软链接 |
 | 导入成功但缺少某个函数 | `__version__`、`__file__`、`hasattr` | 核对该发行包的接口，版本号本身不能证明功能存在 |
+{.table-readable}
 
 `sys.prefix != sys.base_prefix` 可用于识别普通 `venv`，但不能据此否定一个 Conda 环境；两者的管理机制不同。`pip check` 也只检查声明的包依赖，无法保证所有动态库都能加载或每个 API 都存在。手眼标定中的 [OpenCV 接口检查]({{< relref "/posts/calibration/model" >}})给出了后一种情况的具体例子。
 

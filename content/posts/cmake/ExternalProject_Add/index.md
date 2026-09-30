@@ -1,7 +1,7 @@
 ---
 title: 'ExternalProject_Add 使用手册与文档详解'
 date: 2025-04-08
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["CMake", "ExternalProject", "Build Systems"]
 categories: ["编程开发"]
@@ -38,6 +38,7 @@ related_posts:
 | `BUILD_BYPRODUCTS` | 声明构建阶段生成物 | Ninja 等生成器需要知道谁生成库文件 |
 | `BUILD_ALWAYS` | 每次进入外部项目的构建步骤 | 本地源码可编辑时，让外部构建系统重新检查文件依赖 |
 | `LOG_*` | 保存步骤输出 | 下载、配置与编译错误分开定位 |
+{.table-readable}
 
 ## 可在本地复现的最小示例
 

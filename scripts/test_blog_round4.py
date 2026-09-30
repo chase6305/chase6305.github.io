@@ -93,6 +93,12 @@ def core():
     expect_error(ValueError, list, code_blocks("```python\nx=1"))
     assert list(code_blocks("  ~~~python\n  x = 1\n  ~~~")) == [("python", "x = 1\n", 1)]
     assert Page('<a id="same"></a><h2 id="same"></h2>').duplicate_ids == {"same"}
+    figure_labels = ('<span class="article-figure__number">图 1</span>'
+                     '<span class="article-figure__number">图<span>1</span></span>')
+    assert Page(figure_labels).duplicate_figure_labels == {"图1"}
+    assert not Page('<code>&lt;span class="article-figure__number"&gt;图1&lt;/span&gt;</code>'
+                    '<span class="article-figure__number">图1</span>'
+                    '<span class="article-figure__number">图2</span>').duplicate_figure_labels
     # Failed Goldmark passthrough can leave delimiters without a KaTeX error.
     assert Page('<p>$$\n</p><p>$$</p>').unrendered_math == ["$$", "$$"]
     assert Page('<p>$$\n\\begin{aligned}</p>').unrendered_math
@@ -104,7 +110,7 @@ def core():
     assert not Page('<p>Cost: $2 + $3</p>').unrendered_math
     return {"f_string_blocks": len(formatting), "unicode_blocks": len(unicode_blocks),
             "unicode_cpp": standards, "exception_propagation": "passed",
-            "validator_regression": "fences, JSONC, shell non-execution, XML, duplicate ids, unrendered math passed"}
+            "validator_regression": "fences, JSONC, shell non-execution, XML, duplicate ids/figure labels, unrendered math passed"}
 
 
 def jacobian():

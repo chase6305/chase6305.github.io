@@ -1,7 +1,7 @@
 ---
 title: "LeRobot 与 ACT 详解：从机器人示教数据到动作分块、训练与部署"
 date: 2026-09-16
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["LeRobot", "ACT", "Imitation Learning", "Transformer", "Embodied AI"]
 categories: ["人工智能", "机器人"]
@@ -48,6 +48,7 @@ related_posts:
 | ACT | Action Chunking with Transformers | 根据观测预测连续的一段动作 |
 | ALOHA | 原论文使用的双臂遥操作硬件系统 | 采集双臂示教并执行策略 |
 | Behavior Cloning，BC | 行为克隆训练方法 | 用专家动作监督策略输出 |
+{.table-readable}
 
 ACT 是行为克隆的一种具体实现，不要求先设计奖励函数。ALOHA 是它最初验证的硬件背景，但并不是算法的必要条件；输入输出特征匹配以后，也可以在单臂机器人上使用。LeRobot 还包含其他策略，选择 ACT 只是确定了学习算法，没有替你确定相机安装、动作单位与任务成功标准。[LeRobot 项目介绍](https://github.com/huggingface/lerobot)、[ACT 原项目](https://tonyzhaozh.github.io/aloha/)
 
@@ -125,6 +126,7 @@ $$
 | --- | --- | --- |
 | `use_degrees=true` | 角度（度） | 标定后的 `0～100` 范围值 |
 | `use_degrees=false` | 标定后的 `-100～100` 范围值 | 标定后的 `0～100` 范围值 |
+{.table-readable}
 
 这里的范围映射属于电机接口，和 ACT Processor 的均值／标准差归一化是不同层次。夹爪值也不能直接解释成毫米。使用已有数据或 checkpoint 时，先查其采集配置；更改 `use_degrees` 后，形状虽然不变，数值含义却变了，不能仅切换部署参数继续沿用原模型。[SO follower 配置](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/robots/so_follower/config_so_follower.py)、[关节与夹爪映射](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/robots/so_follower/so_follower.py)
 
@@ -149,6 +151,7 @@ $$
 | `action` | 当前或未来时刻的控制目标 | `[B, K, Da]` |
 | `action_is_pad` | 动作是否因越过 episode 边界而填充 | `[B, K]` |
 | `episode_index`、`frame_index`、`timestamp` | 轨迹、帧与时间定位 | 元数据，不都直接输入网络 |
+{.table-readable}
 
 其中 `B` 为 batch size，`K` 为动作块长度，`Ds` 与 `Da` 分别为状态和动作维度，不必相等。图像在读取、预处理以后应满足模型需要的通道顺序与数值范围。
 
@@ -412,6 +415,7 @@ $$
 | 50 帧 | 25.5 | 25.5% | 0 |
 | 100 帧 | 50.5 | 50.5% | 1 |
 | 300 帧 | 83.5 | 83.5% | 201 |
+{.table-readable}
 
 这些比例按所有窗口位置统计，重复出现的标签也重复计数，不代表独立示教数量；实际训练的采样器若筛掉部分起点，统计还会变化。选择 `K` 时，应同时查看 episode 长度分布和各预测偏移的有效标签数。大量 padding 不会凭空提供长时域监督；也不宜只为降低 padding 比例裁掉尾部，因为那可能删除释放夹爪、完成放置等关键阶段。下面的时序脚本会打印这张表对应的数值。
 
@@ -577,6 +581,7 @@ ACT 时间集成与 RTC 也不是同一个机制：这里融合重叠预测，RT
 | `dim_model`、层数、动作维度 | 改变网络参数形状或含义 | 需要相应模型与训练方案 |
 | `kl_weight` | 改变训练目标；标准推理没有 KL 损失 | 已有 checkpoint 不会因改这个值而重新学会动作 |
 | `fps` | 改变动作序列对应的物理时间尺度 | 对照数据采样率和执行计划处理，不能随意覆盖 |
+{.table-readable}
 
 尤其不要把 `policy.config.temporal_ensemble_coeff` 从 `None` 改成数值后，就认为 `policy.reset()` 会自动创建集成器。源码在 `ACTPolicy.__init__()` 中创建它；`reset()` 只清空现有状态。即使原来已经开启集成，系数对应的权重也在集成器初始化时计算。[策略与集成器初始化](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/modeling_act.py)
 
@@ -917,6 +922,7 @@ lerobot-train \
 | GPU 利用率低、训练等待很多 | 视频解码、磁盘、网络、DataLoader | 分别测量取 batch 与训练一步耗时 |
 | KL 很低或很高 | 重建与 KL 比例、归一化尺度 | 结合 L1 和 rollout 做受控对比 |
 | 视觉遮挡以后难以恢复 | 单帧观测的歧义、缺少纠错示范 | 增加有效视角、补充恢复轨迹 |
+{.table-readable}
 
 ACT 的能力边界也很清楚：当前实现只有一个观测时间步；没有通过标准输入建立语言理解；动作输出没有自动施加完整的机器人动力学与环境约束。长任务、强部分可观测任务或跨本体任务可能需要记忆、分层策略、额外条件或不同模型，但前提仍是先把当前数据与执行接口验证正确。
 

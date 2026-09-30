@@ -16,9 +16,13 @@ Treat a clean Hugo production build as the minimum validation for every change, 
 
 For heading or table-of-contents changes, run `python3 -B scripts/test_blog_toc.py` (use `--hugo /path/to/hugo` if needed). It builds disposable fixtures covering formulas, escaped dollar signs, code spans, linked labels and Unicode anchors. TOC formulas must reuse Markdown's rendered headings rather than guessing from dollar signs in plain text.
 
+For changes to the shared image partial, run `python3 -B scripts/test_blog_images.py --hugo /path/to/hugo`. Article images should reserve their aspect ratio before lazy loading; preserve small images' intrinsic width and read SVG dimensions from `viewBox` when available. For reading-layout changes, `node scripts/check_blog_reading.cjs <baseURL> <CDP-port> <output-directory> --drafts` checks all article chapter links at 320/1440 pixels, with and without JavaScript. Use a draft-inclusive build with `--drafts`; omit the flag for a production build. Keep published URLs, existing chapter anchors, original publication dates and draft states stable during editorial revisions.
+
 ## Coding Style & Naming Conventions
 
 Use two-space indentation in YAML and preserve the existing front matter format. Write Markdown with descriptive headings and fenced code blocks that specify a language. Keep post bundles lowercase and topic-oriented; use hyphens for multiword names, for example `content/posts/python/new-feature/index.md`. Store post-specific media beside `index.md` and reference it relatively. Put theme customizations in repository-owned overrides rather than changing the submodule.
+
+Check explanatory tables at 320 pixels wide. If long sentences collapse into near-vertical text, add `{.table-readable}` immediately after that Markdown table to use the existing minimum column widths and horizontal scrolling. Keep compact numerical tables compact; select tables based on their rendered content. Verify that an overflowing table can receive keyboard focus and scroll with the arrow keys.
 
 ## Article Illustrations and Captions
 
@@ -31,6 +35,7 @@ Use two-space indentation in YAML and preserve the existing front matter format.
 - Keep generation prompts and asset provenance in `docs/image-generation/`, outside published page bundles. Do not insert them into article text or captions.
 - Store article images in the page bundle's `assets/` directory. Prefer the existing `post-image` shortcode and `article-figure` markup with numbered captions; use descriptive alt text, responsive image processing, and image zoom for dense diagrams. Do not edit shared CSS solely to style one figure when the existing components suffice.
 - Inside `article-figure`, wrap the caption number in `span.article-figure__number` and its explanation in `span.article-figure__text`. The caption uses a two-column grid; bare caption text can be clipped even when the page itself has no horizontal overflow. Inspect the full caption on a narrow viewport.
+- Keep figure numbers unique within each article. When inserting a figure, update later captions and textual references; `scripts/validate_blog.py` rejects duplicate rendered figure labels.
 - Before accepting a diagram, inspect every label and arrow against the explanation or source code. Check training/inference branches, tensor shapes, time alignment, units, numeric examples, legends, and figure references. Regenerate or edit misleading connections rather than explaining away an incorrect diagram.
 - Validate image loading, zoom, captions, formulas, navigation, and horizontal overflow on desktop and mobile in both light and dark themes. Run the production Hugo build after integration.
 

@@ -2,7 +2,7 @@
 title: '机器人运动学参数标定'
 math: true
 date: 2025-04-01
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["Calibration", "Kinematic Calibration"]
 categories: ["机器人技术"]
@@ -110,6 +110,7 @@ python calibration_identifiability.py
 | 原始参数 $(\beta,\delta_1,\delta_2)$ | $(0.07,-0.02,0.04)$ rad | 合成数据的设定 |
 | 固定规范后的拟合值 | $(0,0.05,0.04)$ rad | 第一关节参数吸收了基座偏航 |
 | 留出位置误差 | 小于 $10^{-10}$ m | 检查代数实现，不代表实机测量精度 |
+{.table-readable}
 
 因此，即使留出误差也接近零，仍不能声称恢复了真实的第一关节零偏 $-0.02$ rad。若业务需要区分这两个物理量，必须独立测量基座朝向，或增加能打破该等价关系的观测；简单补充同一末端在外部测量系中的姿态，仍然只看到它们的和，也未必足够。
 

@@ -1,7 +1,7 @@
 ---
 title: "CasADi: 数值优化和自动微分库"
 date: 2025-04-03
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["CasADi", "Optimization", "Automatic Differentiation"]
 categories: ["机器人技术"]
@@ -118,13 +118,23 @@ python casadi_bounds.py
 
 ## 4. 如何读图
 
-![目标函数等高线、x+y=1 以及变量边界](casadi_1.png)
+先看浅绿色区域：它只表示变量边界 `x≥0、y≤1`，还没有施加等式。左图再与蓝色的 `x+y=1` 相交，完整可行域才变成绿色射线；右图还需满足紫色的 `x=y`，所以只剩 `(0.5,0.5)` 一个点。灰色叉号 `(1,2)` 的目标值虽然是零，却不满足这些约束，不能作为答案。
 
-![在共同边界下同时加入 x+y=1 与 x=y](casadi_2.png)
+<figure class="article-figure">
+{{< post-image src="assets/feasible-sets.png" alt="同一目标函数的两个约束问题：一个等式得到以零一为端点的可行射线，增加第二个等式后只剩零点五零点五一个可行点" >}}
+<figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">等高线上的数字是目标函数值，橙点来自本文求解器代码。左侧射线延伸到视窗之外；右侧虽然还有大片满足变量边界的区域，同时满足两个等式的只有绿色圆圈中的点。</span></figcaption>
+</figure>
 
-图中直线表示等式或不等式边界，不代表整张平面都是可行域；需要同时满足全部条件。以上是保留的历史绘图，不是当前精简代码的自动输出。
+这里最优值从 2 增大到 2.5，是因为第二个问题增加约束、缩小了可行集合，不代表求解器退步。一般地，在目标函数不变、确实取到全局最优的前提下，增加约束不会让最小值变得更小；一般非凸求解器返回的局部解则还受到初值和优化过程影响。
 
-若需要重画，单独安装 Matplotlib，用网格计算目标的等高线，再绘制约束直线和 `solve_example` 返回的点。不要用“图上有一个点”代替约束验收。
+图与数值记录可通过 [plot_feasible_sets.py](plot_feasible_sets.py) 复现。脚本使用相同的模型与验收条件求解，再画解析约束和数值解：
+
+```bash
+python -m pip install casadi numpy matplotlib
+python plot_feasible_sets.py --output /tmp/casadi-figures
+```
+
+判断结果时仍需检查原始残差和容差，不能只看图上是否有一个点。
 
 ## 5. 修改模型时的排查顺序
 
@@ -189,7 +199,7 @@ $$
 
 <figure class="article-figure">
 {{< post-image src="assets/solver-candidates.png" alt="约束最小值的目标梯度非零、不可行结果目标值接近零，以及不同初值收敛到两个局部最小值的三个对照" >}}
-<figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">曲线来自本节明确给出的标量目标。左图检查可行方向，中图检查约束交集，右图检查非凸目标的多个局部解；三者分别说明不同的验收条件。</span></figcaption>
+<figcaption><span class="article-figure__number">图 2</span><span class="article-figure__text">曲线来自本节明确给出的标量目标。左图检查可行方向，中图检查约束交集，右图检查非凸目标的多个局部解；三者分别说明不同的验收条件。</span></figcaption>
 </figure>
 
 下载脚本后运行：

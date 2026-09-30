@@ -1,0 +1,14 @@
+{
+  "date": "2026-09-30",
+  "mode": "builtin",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-7add6378-f2d3-4351-9438-26d38f238756.png",
+  "output": "content/posts/coacd/assets/convex-parts-opening.webp",
+  "prompt": "docs/image-generation/convex-parts-20260930-prompt.txt",
+  "edit": "docs/image-generation/convex-parts-20260930-edit.txt",
+  "size": [
+    1721,
+    914
+  ],
+  "sha256": "90ae2c40f8fdba2a58c478c3cb7b96405dce22b6a17516c71c2682851d72c6bb",
+  "review": "U opening is white/open upward in original and three-piece union; middle convex hull fills it. Removed sequential arrows so no inverse reconstruction from filled hull is implied. Three ideal rectangles, not algorithm output."
+}

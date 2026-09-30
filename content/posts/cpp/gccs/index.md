@@ -1,7 +1,7 @@
 ---
 title: 在 Ubuntu 上安装和切换多个 GCC 版本
 date: 2025-03-07
-lastmod: 2026-09-05
+lastmod: 2026-09-30
 draft: false
 tags: ["C++", "GCC"]
 categories: ["编程开发"]
@@ -54,6 +54,12 @@ CC=gcc-11 CXX=g++-11 cmake -S . -B build-gcc11-env
 ```
 
 `CC` 和 `CXX` 不会覆盖已经写入 `CMakeCache.txt` 的编译器选择。对应行为见 [CMake CXX 环境变量文档](https://cmake.org/cmake/help/latest/envvar/CXX.html)。
+
+### 一次配置包含两次选择
+
+第一次运行 CMake 时，要选择“用哪个编译器生成程序”；运行编译产物时，动态加载器还要选择“到哪里找运行库”。这两次选择不完全由同一个开关控制。`CMAKE_CXX_COMPILER` 记录的是前者，运行时的 `libstdc++.so.6` 需要另查依赖路径。
+
+例如已有 `build/` 用 GCC 11 配置，后来把 shell 中的 `CXX` 改成 `g++-12`，再对同一个目录执行 CMake，缓存通常仍保留 GCC 11。新建 `build-gcc12/` 并显式指定编译器，可以把两套产物分开比较。相比同时修改系统链接和删除所有构建目录，这样更容易知道哪个配置产生了哪个程序。
 
 ## 3. 系统默认命令与 alternatives
 

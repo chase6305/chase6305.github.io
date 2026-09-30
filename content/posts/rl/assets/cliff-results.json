@@ -1,0 +1,506 @@
+{
+  "numpy": "2.2.6",
+  "training_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "training_episodes": 500,
+  "alpha": 0.5,
+  "gamma": 1.0,
+  "training_epsilon": 0.1,
+  "evaluation_episodes_per_seed": 100,
+  "greedy_seed_offset": 100000,
+  "exploratory_seed_offset": 200000,
+  "training_step_budget": 10000,
+  "evaluation_step_budget": 200,
+  "evaluation_budget_semantics": "Truncate after 200 steps; retain return and mark unsuccessful.",
+  "results": {
+    "sarsa": {
+      "summary": {
+        "training_last_100": {
+          "mean": -26.537,
+          "seed_std": 6.130193694887799
+        },
+        "greedy_evaluation": {
+          "mean": -35.5,
+          "seed_std": 56.26113924791858
+        },
+        "exploratory_evaluation": {
+          "mean": -25.848000000000003,
+          "seed_std": 10.37700271095454
+        },
+        "greedy_success_rate": {
+          "mean": 0.9,
+          "seed_std": 0.30779350562554625
+        },
+        "exploratory_success_rate": {
+          "mean": 0.9995,
+          "seed_std": 0.002236067977499791
+        },
+        "greedy_falls_per_episode": {
+          "mean": 0.0,
+          "seed_std": 0.0
+        },
+        "exploratory_falls_per_episode": {
+          "mean": 0.03250000000000001,
+          "seed_std": 0.01681947492765768
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 0,
+          "training_last_100": -26.19,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -19.91,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.01
+        },
+        {
+          "seed": 1,
+          "training_last_100": -24.24,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -19.05,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.0
+        },
+        {
+          "seed": 2,
+          "training_last_100": -33.46,
+          "greedy_evaluation": -19.0,
+          "exploratory_evaluation": -31.42,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.08
+        },
+        {
+          "seed": 3,
+          "training_last_100": -23.23,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -23.62,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.04
+        },
+        {
+          "seed": 4,
+          "training_last_100": -33.35,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -21.55,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.02
+        },
+        {
+          "seed": 5,
+          "training_last_100": -23.63,
+          "greedy_evaluation": -200.0,
+          "exploratory_evaluation": -49.86,
+          "greedy_success_rate": 0.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.04
+        },
+        {
+          "seed": 6,
+          "training_last_100": -22.98,
+          "greedy_evaluation": -200.0,
+          "exploratory_evaluation": -60.01,
+          "greedy_success_rate": 0.0,
+          "exploratory_success_rate": 0.99,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.05
+        },
+        {
+          "seed": 7,
+          "training_last_100": -25.53,
+          "greedy_evaluation": -19.0,
+          "exploratory_evaluation": -24.9,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.04
+        },
+        {
+          "seed": 8,
+          "training_last_100": -24.75,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -23.21,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.04
+        },
+        {
+          "seed": 9,
+          "training_last_100": -24.27,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -21.85,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.03
+        },
+        {
+          "seed": 10,
+          "training_last_100": -22.22,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -22.11,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.03
+        },
+        {
+          "seed": 11,
+          "training_last_100": -24.21,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -22.89,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.04
+        },
+        {
+          "seed": 12,
+          "training_last_100": -47.7,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -22.23,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.03
+        },
+        {
+          "seed": 13,
+          "training_last_100": -29.93,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -23.22,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.04
+        },
+        {
+          "seed": 14,
+          "training_last_100": -23.22,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -22.5,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.03
+        },
+        {
+          "seed": 15,
+          "training_last_100": -21.53,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -22.35,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.03
+        },
+        {
+          "seed": 16,
+          "training_last_100": -21.71,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -21.91,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.03
+        },
+        {
+          "seed": 17,
+          "training_last_100": -24.56,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -22.84,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.04
+        },
+        {
+          "seed": 18,
+          "training_last_100": -30.6,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -20.49,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.01
+        },
+        {
+          "seed": 19,
+          "training_last_100": -23.43,
+          "greedy_evaluation": -17.0,
+          "exploratory_evaluation": -21.04,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.02
+        }
+      ]
+    },
+    "q_learning": {
+      "summary": {
+        "training_last_100": {
+          "mean": -50.467,
+          "seed_std": 7.647946473607011
+        },
+        "greedy_evaluation": {
+          "mean": -13.0,
+          "seed_std": 0.0
+        },
+        "exploratory_evaluation": {
+          "mean": -47.722500000000004,
+          "seed_std": 7.327030614892976
+        },
+        "greedy_success_rate": {
+          "mean": 1.0,
+          "seed_std": 0.0
+        },
+        "exploratory_success_rate": {
+          "mean": 1.0,
+          "seed_std": 0.0
+        },
+        "greedy_falls_per_episode": {
+          "mean": 0.0,
+          "seed_std": 0.0
+        },
+        "exploratory_falls_per_episode": {
+          "mean": 0.30999999999999994,
+          "seed_std": 0.06920602346769049
+        }
+      },
+      "per_seed": [
+        {
+          "seed": 0,
+          "training_last_100": -61.81,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -47.31,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.31
+        },
+        {
+          "seed": 1,
+          "training_last_100": -46.6,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -46.22,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.28
+        },
+        {
+          "seed": 2,
+          "training_last_100": -52.89,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -53.34,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.37
+        },
+        {
+          "seed": 3,
+          "training_last_100": -53.77,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -41.54,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.26
+        },
+        {
+          "seed": 4,
+          "training_last_100": -53.41,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -47.27,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.31
+        },
+        {
+          "seed": 5,
+          "training_last_100": -35.61,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -37.36,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.21
+        },
+        {
+          "seed": 6,
+          "training_last_100": -48.69,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -63.57,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.46
+        },
+        {
+          "seed": 7,
+          "training_last_100": -45.5,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -46.2,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.3
+        },
+        {
+          "seed": 8,
+          "training_last_100": -42.06,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -45.52,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.29
+        },
+        {
+          "seed": 9,
+          "training_last_100": -54.29,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -43.15,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.27
+        },
+        {
+          "seed": 10,
+          "training_last_100": -38.95,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -53.37,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.36
+        },
+        {
+          "seed": 11,
+          "training_last_100": -42.49,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -41.99,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.26
+        },
+        {
+          "seed": 12,
+          "training_last_100": -43.21,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -45.21,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.29
+        },
+        {
+          "seed": 13,
+          "training_last_100": -50.68,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -48.17,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.32
+        },
+        {
+          "seed": 14,
+          "training_last_100": -46.4,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -63.49,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.46
+        },
+        {
+          "seed": 15,
+          "training_last_100": -57.99,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -45.74,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.29
+        },
+        {
+          "seed": 16,
+          "training_last_100": -56.6,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -51.04,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.32
+        },
+        {
+          "seed": 17,
+          "training_last_100": -61.31,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -34.27,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.18
+        },
+        {
+          "seed": 18,
+          "training_last_100": -59.16,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -54.1,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.37
+        },
+        {
+          "seed": 19,
+          "training_last_100": -57.92,
+          "greedy_evaluation": -13.0,
+          "exploratory_evaluation": -45.59,
+          "greedy_success_rate": 1.0,
+          "exploratory_success_rate": 1.0,
+          "greedy_falls_per_episode": 0.0,
+          "exploratory_falls_per_episode": 0.29
+        }
+      ]
+    }
+  },
+  "scope": "4x12 deterministic cliff; fixed hyperparameters, not a general ranking."
+}

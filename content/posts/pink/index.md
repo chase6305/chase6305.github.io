@@ -1,8 +1,8 @@
 ---
-title: 'Pink: 一个高效易用的机器人逆运动学库'
+title: "Pink 微分逆运动学：任务、约束与控制周期"
 math: true
 date: 2026-02-14
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["Pink", "Inverse Kinematics", "Optimization"]
 categories: ["机器人技术"]
@@ -15,7 +15,7 @@ comments: false
 description: "用一致的残差与 Jacobian 解释 Pink 微分 IK，运行二连杆位置跟踪，验证速度、关节限位和独立停止条件。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "Jacobian、QP 与 Pinocchio"
-reading_focus: "把一个控制周期的局部解和全局 IK 分开，权重不能代替缺失的硬约束。"
+reading_focus: "用单关节算例换算局部位移、控制周期与速度限制，再验证多任务求解和停止条件。"
 related_posts:
   - "/posts/robotics/kinematics/jacobian"
   - "/posts/robotics/kinematics/pinocchio"
@@ -47,6 +47,18 @@ $$
 
 这是解释 QP 的简化模型，不是逐项复刻 Pink 的任务成本和 LM 阻尼实现。实际调用应使用同一个 Task 提供的 error 与 Jacobian，避免混用其他库的约定。
 
+### 手算一个只含一个关节的周期
+
+设一个转动关节当前为 $q=0.2$ rad，目标为 $q^*=0.5$ rad，选残差 $e=q-q^*=-0.3$ rad，因此 $J_e=1$。暂不加阻尼、令权重为 1，并取离散增益 $\alpha=0.2$，则本周期求解
+
+$$
+\min_{\Delta q}\frac12(\Delta q-0.06)^2.
+$$
+
+无约束解为 $\Delta q=0.06$ rad，更新后为 0.26 rad，误差从 −0.3 缩小到 −0.24。若周期只有 0.01 s，这个增量对应 6 rad/s；再加入 $|\dot q|\le1$ rad/s，等价增量约束为 $|\Delta q|\le0.01$ rad，本周期最优解就只能前进 0.01 rad。
+
+这说明局部求解同时受“想消掉多少误差”和“这段时间允许移动多少”约束。QP 成功返回 0.01 rad，并不表示已经到达 0.5 rad；它只表示这一周期找到了满足已建模约束的折中。实际 Pink 接口返回速度，仍需乘以 `dt` 通过 `integrate` 推进，后文示例会验证这个单位关系。
+
 ## FrameTask 与 PostureTask
 
 | 任务 | 用途 | 边界 |
@@ -54,6 +66,7 @@ $$
 | FrameTask | 跟踪指定 frame 的位置与姿态 | SE(3) 误差与几何 Jacobian 不可随意互换 |
 | PostureTask | 将受控关节拉向参考姿态，提供正则化 | 不直接约束浮动基座，也不自动保证参考姿态无碰撞 |
 | 约束/Barrier | 限位、速度或显式配置的几何条件 | 没添加的约束不会因使用 QP 自动存在 |
+{.table-readable}
 
 位置与姿态有不同单位，应明确 cost 的缩放。任务权重越高表示违反该任务的代价越大，**不构成严格优先级保证**；多个任务冲突时仍会折中。需要严格层级时，应采用相应的层级求解方案或硬约束，而不只是无限增大权重。
 

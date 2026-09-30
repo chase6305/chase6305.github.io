@@ -1,20 +1,20 @@
 ---
 title: "CoACD: 基于碰撞感知凹性与树搜索的近似凸分解"
 date: 2025-04-03
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["CoACD", "Mesh Processing", "Collision Geometry"]
 categories: ["三维视觉"]
 authors: ["chase"]
-summary: "演示 CoACD 网格检查、凸分解、逐块导出与 Open3D 可视化，说明阈值单位、预处理和物理引擎加载边界。"
+summary: "用 U 形开口解释凸分解，演示 CoACD 网格检查、逐块导出与可视化，并说明阈值单位和物理引擎加载边界。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
-description: "演示 CoACD 网格检查、凸分解、逐块导出与 Open3D 可视化，说明阈值单位、预处理和物理引擎加载边界。"
+description: "用 U 形开口解释凸分解，演示 CoACD 网格检查、逐块导出与可视化，并说明阈值单位和物理引擎加载边界。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "Python、三角网格与碰撞几何"
-reading_focus: "保存原始模型和每次参数，检查功能孔洞在最终引擎中是否仍然存在。"
+reading_focus: "先理解凸组件的并集如何保留凹结构，再验证关键开口在最终引擎中是否仍能通过。"
 related_posts:
   - "/posts/thesis/coacd"
   - "/posts/open3d/introduction"
@@ -25,6 +25,19 @@ related_posts:
 CoACD 是面向碰撞几何的近似凸分解方法。输入是三角网格，输出是多个凸组件；它不是纹理简化器，也不保证物体所有功能孔洞在任意阈值下都保留。
 
 本文演示 Python 分解与 Open3D 检查，并保留已有分解结果用于对照。
+
+### 为什么不能只取一个凸包
+
+想象一个 U 形支架，中央开口要让细杆穿过。凸集要求任意两点之间的整条线段都在集合内；因此，单个凸包只要包含两侧支臂，也会填入它们之间原本空着的区域。渲染模型仍有开口，碰撞模型却可能把细杆挡住。
+
+用左臂、底座、右臂三个凸长方体的**并集**，就能表达这个理想 U 形轮廓。每一块各自是凸的，并集不必是凸的；这正是“多个凸组件”能保留凹结构的原因。真实网格的分解数量和切面由算法与参数决定，不一定恰好是这三块。
+
+<figure class="article-figure">
+{{< post-image src="assets/convex-parts-opening.webp" alt="同一 U 形轮廓的三种表达：原始模型保留开口，单个凸包填满开口，三个独立凸组件的并集保留开口" >}}
+<figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">二维理想轮廓说明集合表示的差异。三块长方体是便于解释的人工划分，不是某次 CoACD 分解结果；实际碰撞引擎还需保留各组件的独立形状与正确变换。</span></figcaption>
+</figure>
+
+因此，验收至少包含两步：先检查分解后的组件并集是否保留关键开口，再在最终引擎中让测试几何体通过该开口。只看到组件数增加，或把颜色区分开的零件截图保存下来，都不足以证明碰撞行为正确。
 
 ## 安装与版本记录
 

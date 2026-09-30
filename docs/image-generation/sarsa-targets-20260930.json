@@ -1,0 +1,14 @@
+{
+  "date": "2026-09-30",
+  "mode": "builtin",
+  "source": "/home/ubuntu/.codex/generated_images/01a0a869-bda5-7cc1-958c-12ebdd9d34ea/exec-e872b551-2e79-409f-b336-10de4bfac776.png",
+  "output": "content/posts/rl/assets/sarsa-q-targets.webp",
+  "prompt": "docs/image-generation/sarsa-targets-20260930-prompt.txt",
+  "edit": "docs/image-generation/sarsa-targets-20260930-edit.txt",
+  "size": [
+    1627,
+    967
+  ],
+  "sha256": "a8d520330969343acebd6aa8e3470c590ad066f6569042cb60a3eeb10af96c27",
+  "review": "Blue arrow corrected to originate at Left Q=2, purple arrow from Right Q=5. Arithmetic 0.8/3.5 and terminal reward-only targets checked; behavior and bootstrap choices distinguished."
+}

@@ -1,7 +1,7 @@
 ---
 title: 'TOPP-RA 时间参数化：路径、曲率与连续约束验收'
 date: 2025-03-16
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["Trajectory Optimization", "TOPP-RA", "Motion Planning"]
 categories: ["机器人技术"]
@@ -14,7 +14,7 @@ comments: false
 description: "沿给定路径做时间参数化，用直线解析解与弯曲多项式实验区分求解网格、连续峰值和输出轨迹，并验证统一减速的作用与边界。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "路径插值与运动学约束"
-reading_focus: "路径参数不是时间，时间优化不会自动修复原路径的碰撞和限位问题。"
+reading_focus: "先手算路径导数如何转成关节速度，再检查连续峰值；时间参数化不修复原路径。"
 related_posts:
   - "/posts/trajectory/ruckig"
   - "/posts/casadi"
@@ -36,6 +36,14 @@ TOPP-RA 沿给定几何路径 $q(s)$ 求时间规律 $s(t)$，输出 $q(s(t))$�
 | $\ddot q=q''(s)\dot s^2+q'(s)\ddot s$ | 关节加速度，包含路径曲率项 |
 
 `compute_trajectory(0, 0)` 的两个零是起止 **路径速度**，不是两组关节位置。
+
+### 一个路径参数，同时驱动多个关节
+
+用简单路径 $q(s)=[s,2s]$ rad、$s\in[0,1]$ 来读上表。$s=0.5$ 表示走到路径中间，即关节位置 $[0.5,1]$ rad；它没有说明用了多久。如果此时 $\dot s=0.3$ s⁻¹，则关节速度为 $[0.3,0.6]$ rad/s。
+
+若两个关节的速度上限都为 0.5 rad/s，第二关节给出更紧的限制：$2\dot s\le0.5$，所以只能让 $\dot s\le0.25$ s⁻¹。TOPP-RA 要在整条路径上协调这类限制，再考虑哪里需要提前减速，才能以指定速度抵达终点。路径已经固定，不同关节不能各自选择一个互不一致的进度。
+
+本例 $q''(s)=0$，因此加速度只剩 $q'(s)\ddot s$。后文的弯曲路径则保留曲率项：即使路径进度速度恒定，机器人关节也可能正在加速。把几何路径、进度和时间分开，才能解释“同一条路，换一种速度走”。
 
 ## 安装
 

@@ -1,17 +1,17 @@
 ---
 title: 'Gymnasium入门(一)'
 date: 2025-03-20
-lastmod: 2026-09-28
+lastmod: 2026-09-30
 draft: false
 tags: ["Reinforcement Learning", "Gymnasium", "Python"]
 categories: ["人工智能"]
 authors: ["chase"]
-summary: "使用 Gymnasium 运行 LunarLander 随机交互与录像，讲清 reset、step、随机种子以及终止和截断的差别。"
+summary: "使用 Gymnasium 运行随机交互与录像，讲清 reset、step 和随机种子，并用 TD 算例解释终止与截断的差别。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
-description: "使用 Gymnasium 运行 LunarLander 随机交互与录像，讲清 reset、step、随机种子以及终止和截断的差别。"
+description: "使用 Gymnasium 运行随机交互与录像，讲清 reset、step 和随机种子，并用 TD 算例解释终止与截断的差别。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "Python 循环与强化学习基本概念"
 reading_focus: "先无窗口验证环境接口；随机动作示例不是训练算法。"
@@ -72,6 +72,7 @@ finally:
 | `reset(seed=42)` | `observation, info` | 开始回合并初始化环境随机数 |
 | `step(action)` | `observation, reward, terminated, truncated, info` | 推进一步，返回观测、奖励与两种结束标记 |
 | `close()` | 无 | 释放窗口、视频或环境资源 |
+{.table-readable}
 
 `reset(seed=42)` 不会自动为 `action_space.sample()` 的随机数生成器设种子，所以示例分别设置两者。固定种子有助于同一实现下复现，但不保证跨平台、跨依赖版本逐位一致。后续回合一般调用无 seed 的 `reset()`，避免每回合重播同一个初始随机序列。
 
@@ -87,6 +88,21 @@ y_t=r_t+\gamma(1-\mathrm{terminated}_t)V(s_{t+1}).
 $$
 
 这要求使用结束前的真实下一观测；自动重置的向量环境可能另行提供 final observation，不能用新回合的初始观测替代。具体还需遵循环境的有限时域建模方式。
+
+### 用一笔 TD 目标看清区别
+
+假设本步奖励为 1，折扣 $\gamma=0.9$，结束前下一观测的价值估计为 5。若是任务真正终止，目标就是 1；若只是训练器在这一步达到外部步数上限，任务本来还可以继续，目标通常是 $1+0.9\times5=5.5$。把两种情况都压成一个 `done` 并统一清零，会让后者少算 4.5。
+
+再假设自动重置后，新回合初始观测的估值为 20。误用它会得到 19，而不是 5.5：虽然公式里的 `terminated` 用对了，数据仍串到了另一条轨迹。可按下表分别处理“环境要不要重置”和“价值要不要继续估计”。
+
+| 本步结果 | 当前回合之后是否重置 | 本步价值目标 |
+| --- | --- | --- |
+| 普通非终止步 | 否 | 奖励 + 下一观测的折扣价值 |
+| 真正终止 | 是 | 只有本步奖励 |
+| 外部时间截断 | 是 | 使用截断前观测继续 bootstrap |
+| 两标记同时为真 | 是 | 真正终止成立，不 bootstrap |
+
+这里讨论的是任务定义之外的截断。若任务本身规定“在 30 秒内完成，否则失败”，倒计时可能就是状态的一部分，到时结束也可能属于任务终止。应先定义 MDP，再映射 API 标记，不能只凭“由计时器触发”来分类。[Gymnasium 的时间限制说明](https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/)
 
 ## 保存视频
 

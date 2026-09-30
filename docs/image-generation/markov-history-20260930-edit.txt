@@ -1,0 +1,1 @@
+Edit only the bottom sentence in this technical Markov-chain diagram. Replace 'One state contains two observations' with exactly 'Two symbols, one composite state'. Keep all other labels, circles, bracket spans, arrows, layout, opaque white background and colors unchanged. The existing S,M,C labels denote values of a stochastic process, so avoid calling them observations.
