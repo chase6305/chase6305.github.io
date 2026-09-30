@@ -1,0 +1,8 @@
+{{- /* Version URLs so existing visitors receive the new icon. SVG comes last
+     for browsers that support it; PNG and ICO remain available as fallbacks. */ -}}
+<link rel="icon" href="{{ "favicon.ico?v=orca-1" | relURL }}" sizes="16x16 32x32 48x48" />
+<link rel="icon" href="{{ "favicon-16x16.png?v=orca-1" | relURL }}" type="image/png" sizes="16x16" />
+<link rel="icon" href="{{ "favicon-32x32.png?v=orca-1" | relURL }}" type="image/png" sizes="32x32" />
+<link rel="icon" href="{{ "favicon.svg?v=orca-1" | relURL }}" type="image/svg+xml" sizes="any" id="favicon-svg" />
+<link rel="apple-touch-icon" href="{{ "apple-touch-icon.png?v=orca-1" | relURL }}" sizes="180x180" />
+<link fetchpriority="low" href="{{ "site.webmanifest?v=orca-1" | relURL }}" rel="manifest" />
