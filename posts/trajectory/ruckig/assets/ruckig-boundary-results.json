@@ -1,0 +1,43 @@
+{
+  "ruckig": "0.19.4",
+  "viability": {
+    "unavoidable_peak_velocity_rad_s": 1.115,
+    "approaching_limit_rejected": "[ruckig] DoF 0 will inevitably reach a velocity 1.115000 from the current kinematic state that will exceed its maximum velocity limit 1.000000.",
+    "opposite_acceleration_valid": true
+  },
+  "moving_terminal_continuous": {
+    "duration_s": 2.695913258384432,
+    "first_finished_tick": 270,
+    "first_finished_time_s": 2.6999999999999864,
+    "position_at_first_finished_rad": 1.0012260224846663,
+    "velocity_at_first_finished_rad_s": 0.30000000000000004,
+    "exact_terminal_state": [
+      1.0,
+      0.30000000000000004,
+      0.0
+    ]
+  },
+  "moving_terminal_discrete": {
+    "duration_s": 2.7,
+    "first_finished_tick": 271,
+    "first_finished_time_s": 2.709999999999986,
+    "position_at_first_finished_rad": 1.0029999999999961,
+    "velocity_at_first_finished_rad_s": 0.30000000000000004,
+    "exact_terminal_state": [
+      1.0000000000000002,
+      0.30000000000000004,
+      0.0
+    ]
+  },
+  "time_synchronization": {
+    "duration_s": 3.1748021039363987,
+    "max_joint_line_error_rad": 0.034838510888881506,
+    "max_tcp_distance_from_endpoint_line_m": 0.2621662390941874
+  },
+  "phase_synchronization": {
+    "duration_s": 3.1748021039363987,
+    "max_joint_line_error_rad": 1.1102230246251565e-16,
+    "max_tcp_distance_from_endpoint_line_m": 0.2621635424420171
+  },
+  "scope": "Two planar revolute joints; links 1 and 0.6 m; no collision, torque or hardware test."
+}

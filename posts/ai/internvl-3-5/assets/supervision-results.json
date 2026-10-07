@@ -1,0 +1,70 @@
+{
+  "scope": "Synthetic tiny causal attention model; no InternVL weights or training reproduction.",
+  "torch": "2.13.0+cu130",
+  "device": "cpu",
+  "cases": {
+    "train_all": {
+      "loss": 2.9159204959869385,
+      "loss_requires_grad": true,
+      "vision_grad_norm": 0.029479106254331092,
+      "projector_grad_norm": 0.05694812716753986,
+      "language_grad_norm": 1.2470517393056306,
+      "language_gradients_absent": false
+    },
+    "frozen_language": {
+      "loss": 2.9159204959869385,
+      "loss_requires_grad": true,
+      "vision_grad_norm": 0.029479106254331092,
+      "projector_grad_norm": 0.05694812716753986,
+      "language_grad_norm": 0.0,
+      "language_gradients_absent": true
+    },
+    "no_grad_language": {
+      "loss": 2.9159204959869385,
+      "loss_requires_grad": false,
+      "vision_grad_norm": 0.0,
+      "projector_grad_norm": 0.0,
+      "language_grad_norm": 0.0,
+      "language_gradients_absent": true
+    },
+    "hidden_visual_prefix": {
+      "loss": 2.9072206020355225,
+      "loss_requires_grad": true,
+      "vision_grad_norm": 0.0,
+      "projector_grad_norm": 0.0,
+      "language_grad_norm": 1.3023751344576044,
+      "language_gradients_absent": false
+    },
+    "extra_padding": {
+      "loss": 2.9159204959869385,
+      "loss_requires_grad": true,
+      "vision_grad_norm": 0.029479105760696206,
+      "projector_grad_norm": 0.056948130233891406,
+      "language_grad_norm": 1.2470517408915283,
+      "language_gradients_absent": false
+    }
+  },
+  "supervised_logit_positions": [
+    3,
+    4,
+    5
+  ],
+  "target_token_ids": [
+    5,
+    6,
+    7
+  ],
+  "square_averaging": {
+    "global_weighted_gradient": 1.3333333730697632,
+    "average_of_rank_local_means_gradient": 1.5
+  },
+  "checks": [
+    "causal one-position shift",
+    "visual gradients without visual targets",
+    "frozen language preserves input gradients",
+    "no_grad cuts the path",
+    "hidden visual keys cut answer dependence",
+    "padding invariance",
+    "global weighting differs from local means"
+  ]
+}

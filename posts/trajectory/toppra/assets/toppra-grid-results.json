@@ -1,0 +1,150 @@
+{
+  "toppra_version": "0.6.3",
+  "path_polynomial_coefficients": [
+    [
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      16,
+      -32,
+      16
+    ]
+  ],
+  "path_interval": [
+    0,
+    1
+  ],
+  "joint_velocity_limits_rad_s": [
+    1,
+    1
+  ],
+  "joint_acceleration_limits_rad_s2": [
+    2,
+    2
+  ],
+  "endpoint_path_speeds": [
+    0,
+    0
+  ],
+  "constraint_discretization": "Interpolation",
+  "parametrizer": "ParametrizeConstAccel",
+  "verification": "polynomial stationary points and one-sided segment endpoints, float64",
+  "results": [
+    {
+      "grid_points": 11,
+      "duration_s": 3.780848460228163,
+      "continuous_max_velocity_rad_s": [
+        0.3720237988994193,
+        1.0486399985863821
+      ],
+      "continuous_max_acceleration_rad_s2": [
+        0.38109751097560984,
+        2.069298939764665
+      ],
+      "dense_max_velocity_rad_s": [
+        0.3720233239178643,
+        1.0486399976697447
+      ],
+      "dense_max_acceleration_rad_s2": [
+        0.38109751097560984,
+        2.0692989387699403
+      ],
+      "uniform_time_scale": 1.0486410472263805,
+      "scaled_duration_s": 3.964752888737909
+    },
+    {
+      "grid_points": 21,
+      "duration_s": 3.5331500298446112,
+      "continuous_max_velocity_rad_s": [
+        0.3758821884419425,
+        1.0140622689527297
+      ],
+      "continuous_max_acceleration_rad_s2": [
+        0.5470458518599569,
+        2.019210062824378
+      ],
+      "dense_max_velocity_rad_s": [
+        0.37588154474278507,
+        1.014062266537621
+      ],
+      "dense_max_acceleration_rad_s2": [
+        0.5470458518599569,
+        2.0192100585709643
+      ],
+      "uniform_time_scale": 1.0140632830149985,
+      "scaled_duration_s": 3.5828377186487663
+    },
+    {
+      "grid_points": 51,
+      "duration_s": 3.26250853360653,
+      "continuous_max_velocity_rad_s": [
+        0.3905005830146796,
+        1.0025743131972715
+      ],
+      "continuous_max_acceleration_rad_s2": [
+        1.1550115773211118,
+        2.0024992033817908
+      ],
+      "dense_max_velocity_rad_s": [
+        0.39049811499851433,
+        1.0025743102310791
+      ],
+      "dense_max_acceleration_rad_s2": [
+        1.1550115773211118,
+        2.002499203239876
+      ],
+      "uniform_time_scale": 1.0025753157715847,
+      "scaled_duration_s": 3.2709105232880566
+    },
+    {
+      "grid_points": 101,
+      "duration_s": 3.156560720166986,
+      "continuous_max_velocity_rad_s": [
+        0.3916502544106648,
+        1.0007839992205563
+      ],
+      "continuous_max_acceleration_rad_s2": [
+        1.9999995,
+        2.0008529461334543
+      ],
+      "dense_max_velocity_rad_s": [
+        0.39164780687417056,
+        1.0007839992205017
+      ],
+      "dense_max_acceleration_rad_s2": [
+        1.9999995,
+        2.0008529458502666
+      ],
+      "uniform_time_scale": 1.0007850000045555,
+      "scaled_duration_s": 3.1590386203466965
+    },
+    {
+      "grid_points": 401,
+      "duration_s": 3.142156691336394,
+      "continuous_max_velocity_rad_s": [
+        0.39377397917157836,
+        1.0000540901769024
+      ],
+      "continuous_max_acceleration_rad_s2": [
+        2.000000000000001,
+        2.0001085309352753
+      ],
+      "dense_max_velocity_rad_s": [
+        0.3937720786575172,
+        1.000054090131266
+      ],
+      "dense_max_acceleration_rad_s2": [
+        2.000000000000001,
+        2.0001085308191624
+      ],
+      "uniform_time_scale": 1.0000550902309926,
+      "scaled_duration_s": 3.1423297934743344
+    }
+  ]
+}

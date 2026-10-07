@@ -1,0 +1,56 @@
+{
+  "plant": {
+    "mass_kg": 1.0,
+    "damping_Ns_per_m": 2.0,
+    "spring_N_per_m": 4.0,
+    "disturbance_N": -1.0,
+    "force_limit_N": 8.0
+  },
+  "controller": {
+    "kp_N_per_m": 16.0,
+    "ki_N_per_m_s": 8.0,
+    "kd_Ns_per_m": 6.0,
+    "derivative_tau_s": 0.02
+  },
+  "sample_interval_s": 0.002,
+  "maximum_position_difference_after_halving_dt_m": 0.0007814576145483976,
+  "checks": {
+    "held_saturation": "passed",
+    "invalid_sample_state_rollback": "passed",
+    "reference_derivative_kick": "absent",
+    "reset": "passed"
+  },
+  "metrics": {
+    "constant": {
+      "PD": {
+        "final_position_m": 0.7499999999999962,
+        "final_error_m": 0.2500000000000038,
+        "max_abs_integral_N": 0.0,
+        "fraction_saturated_samples": 0.0098990100989901
+      },
+      "PID": {
+        "final_position_m": 0.9999897076020451,
+        "final_error_m": 1.0292397954914101e-05,
+        "max_abs_integral_N": 4.999832444338684,
+        "fraction_saturated_samples": 0.0098990100989901
+      }
+    },
+    "saturation": {
+      "PID without anti-windup": {
+        "final_position_m": 0.5041894016006423,
+        "final_error_m": -0.004189401600642295,
+        "max_abs_integral_N": 36.6738127585933,
+        "fraction_saturated_samples": 0.2458442694663167,
+        "recorded_2cm_settling_after_switch_s": 9.818
+      },
+      "PID": {
+        "final_position_m": 0.49911368555973096,
+        "final_error_m": 0.0008863144402690426,
+        "max_abs_integral_N": 2.9855711950851305,
+        "fraction_saturated_samples": 0.1954755655543057,
+        "recorded_2cm_settling_after_switch_s": 6.656000000000001
+      }
+    }
+  },
+  "scope": "Synthetic exact-ZOH plant; no sensor noise, hardware or latency model."
+}

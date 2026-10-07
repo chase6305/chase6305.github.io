@@ -1,0 +1,225 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chase – Network Protocols</title>
+    <link>http://127.0.0.1:13155/tags/network-protocols/</link>
+    <description>Recent content in Network Protocols on Chase</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Mon, 01 Apr 2024 00:00:00 +0000</lastBuildDate>
+    
+	  <atom:link href="http://127.0.0.1:13155/tags/network-protocols/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>TCP 与 UDP 协议详解</title>
+      <link>http://127.0.0.1:13155/posts/network-protocol/tcp-udp-introduction/</link>
+      <pubDate>Mon, 01 Apr 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://127.0.0.1:13155/posts/network-protocol/tcp-udp-introduction/</guid>
+      <description>
+        
+        
+        &lt;h2 data-hextra-search-id=&#34;字节流与数据报&#34; id=&#34;字节流与数据报&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;字节流与数据报&lt;a href=&#34;#%e5%ad%97%e8%8a%82%e6%b5%81%e4%b8%8e%e6%95%b0%e6%8d%ae%e6%8a%a5&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;TCP 提供可靠有序的字节流，应用仍需定义消息边界。UDP 保留数据报边界，但不保证送达、顺序或去重。选择协议前，先说明业务需要的是完整历史、最新状态，还是必须确认执行结果的一次操作。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;维度&lt;/th&gt;
+					&lt;th&gt;TCP&lt;/th&gt;
+					&lt;th&gt;UDP&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;接收单位&lt;/td&gt;
+					&lt;td&gt;一段字节流，可能短读&lt;/td&gt;
+					&lt;td&gt;一份数据报，缓冲区不足会截断&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;连接语义&lt;/td&gt;
+					&lt;td&gt;建立传输连接&lt;/td&gt;
+					&lt;td&gt;无 TCP 式握手，connect 可设置默认对端&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;应用责任&lt;/td&gt;
+					&lt;td&gt;分帧、超时、业务确认与重连&lt;/td&gt;
+					&lt;td&gt;长度限制、丢包处理、去重与拥塞策略&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;不能默认获得&lt;/td&gt;
+					&lt;td&gt;身份认证、加密、业务幂等&lt;/td&gt;
+					&lt;td&gt;可靠性、保序、机密性&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;这些是传输语义，不是应用性能排名。TCP 可能因重传等待后续字节，UDP 应用也可能自行重传、排队并产生高延迟。&lt;a
+    href=&#34;https://www.rfc-editor.org/rfc/rfc9293.html&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;TCP 标准&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;与 &lt;a
+    href=&#34;https://www.rfc-editor.org/rfc/rfc8085.html&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;UDP 应用指南&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;分别说明了传输服务和上层设计责任。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;一次发送为什么不是一条接收消息&#34; id=&#34;一次发送为什么不是一条接收消息&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;一次发送为什么不是一条接收消息&lt;a href=&#34;#%e4%b8%80%e6%ac%a1%e5%8f%91%e9%80%81%e4%b8%ba%e4%bb%80%e4%b9%88%e4%b8%8d%e6%98%af%e4%b8%80%e6%9d%a1%e6%8e%a5%e6%94%b6%e6%b6%88%e6%81%af&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;假设应用发送两个消息体 &lt;code&gt;HELLO&lt;/code&gt; 和 &lt;code&gt;OK&lt;/code&gt;，每个消息前加 4 字节大端长度：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;应用消息： [00 00 00 05 | H E L L O] [00 00 00 02 | O K]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;接收方式 A：[00 00] [00 05 H E L] [L O 00 00 00 02 O K]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;接收方式 B：[00 00 00 05 H E L L O 00 00 00 02 O K]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;两种接收方式都合法。TCP 负责顺序和传输完整性，应用负责积累 4 字节头、检查长度上限，再积累对应数量的消息体。不要将缓冲区末尾补零后的 C 字符串长度当作实际收到的字节数；消息中可能包含零字节，UTF-8 字符也可能跨接收边界。&lt;/p&gt;
+&lt;p&gt;下面只验证分帧逻辑，不创建 socket。&lt;code&gt;chunks&lt;/code&gt; 模拟多次读取到的字节片段，流结束时仍剩半条消息会报错。&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;decode_chunks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;chunks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;max_length&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1024&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;bytearray&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;messages&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;chunk&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;chunks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;extend&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;chunk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;length&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;from_bytes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;big&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;length&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;max_length&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                &lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;ne&#34;&gt;ValueError&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;message exceeds the configured limit&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;length&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                &lt;span class=&#34;k&#34;&gt;break&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;messages&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;bytes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;length&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;k&#34;&gt;del&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;length&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;ne&#34;&gt;ValueError&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;stream ended in the middle of a message&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;messages&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;expected&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;sa&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;HELLO&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;机械臂&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;encode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;utf-8&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;sa&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;wire&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;sa&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;body&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;to_bytes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;big&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;body&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;body&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;expected&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;assert&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;decode_chunks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;wire&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;])&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;expected&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;assert&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;decode_chunks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;wire&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;range&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;wire&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))])&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;expected&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cut&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;range&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;wire&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;assert&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;decode_chunks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;wire&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cut&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;wire&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cut&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:]])&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;expected&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;all byte splits preserve the same three messages&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;这是有限输入的解析实验。真实服务还要限制读取缓存、连接数、整条消息的完成期限和输出队列，不能因为单个消息不超过上限，就允许无限数量的消息同时驻留内存。可继续使用本站的 &lt;a
+    href=&#34;http://127.0.0.1:13155/posts/network-protocol/c&amp;#43;&amp;#43;_tcp/&#34;&gt;C++ TCP 完整示例&lt;/a&gt;练习短读、短写和长度前缀。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;udp-的边界截断与零长度报文&#34; id=&#34;udp-的边界截断与零长度报文&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;UDP 的边界、截断与零长度报文&lt;a href=&#34;#udp-%e7%9a%84%e8%be%b9%e7%95%8c%e6%88%aa%e6%96%ad%e4%b8%8e%e9%9b%b6%e9%95%bf%e5%ba%a6%e6%8a%a5%e6%96%87&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;一次 UDP 接收对应一份数据报。若接收缓冲区太小，在本文 Linux socket 场景中，超出的内容会被丢弃；下一次接收不会自动拿到上一份报文的剩余部分。因此应明确最大业务报文长度，并通过接口提供的截断标志拒绝不完整消息。&lt;/p&gt;
+&lt;p&gt;UDP 零长度数据报可以是合法消息，不能照搬 TCP 中请求读取正长度时 &lt;code&gt;recv&lt;/code&gt; 返回 0 表示对端有序关闭的解释。对 UDP 调用 &lt;code&gt;connect&lt;/code&gt; 也不会变成 TCP：它主要指定默认对端和接收来源，不能证明另一端程序已经启动。&lt;/p&gt;
+&lt;p&gt;大报文还可能导致 IP 分片，任一分片丢失就会影响整个数据报。实际业务通常应控制报文尺寸并遵循路径 MTU 与拥塞控制要求，不能把协议字段的理论上限当作推荐业务包长。Linux 的截断和超时处理可见 &lt;a
+    href=&#34;http://127.0.0.1:13155/posts/network-protocol/c&amp;#43;&amp;#43;_udp/&#34;&gt;C++ UDP 示例&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;机器人消息需要表达什么&#34; id=&#34;机器人消息需要表达什么&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;机器人消息需要表达什么&lt;a href=&#34;#%e6%9c%ba%e5%99%a8%e4%ba%ba%e6%b6%88%e6%81%af%e9%9c%80%e8%a6%81%e8%a1%a8%e8%be%be%e4%bb%80%e4%b9%88&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;以下是应用协议设计项，不是 TCP 或 UDP 自带的机器人语义：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;信息&lt;/th&gt;
+					&lt;th&gt;要解决的问题&lt;/th&gt;
+					&lt;th&gt;常见错误&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;消息类型与协议版本&lt;/td&gt;
+					&lt;td&gt;同一端口区分状态、请求与结果&lt;/td&gt;
+					&lt;td&gt;将不同版本的结构体按原布局解析&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;长度与字段编码&lt;/td&gt;
+					&lt;td&gt;明确帧边界、字节序和字符串编码&lt;/td&gt;
+					&lt;td&gt;直接发送含填充字节的内存结构体&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;会话与序号&lt;/td&gt;
+					&lt;td&gt;检测重复、乱序和重启后的新序列&lt;/td&gt;
+					&lt;td&gt;发送端重启后把新消息长期当作旧包&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;观测时间与有效期&lt;/td&gt;
+					&lt;td&gt;判断数据是否仍适合当前决策&lt;/td&gt;
+					&lt;td&gt;队列里的旧指令迟到后继续执行&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;坐标系与单位&lt;/td&gt;
+					&lt;td&gt;明确米、毫米、角度与参考系&lt;/td&gt;
+					&lt;td&gt;相同维度的数组被误当成同一语义&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;请求 ID 与执行状态&lt;/td&gt;
+					&lt;td&gt;关联重试、接受、开始、完成和失败&lt;/td&gt;
+					&lt;td&gt;收到报文就回复“动作完成”&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;跨机器时间戳只有在时钟关系已知时才能直接相减。如果没有同步，先用接收端单调时钟测量本地排队时间，用请求—响应测 RTT；不要把两个任意时钟的差值当作单向网络延迟。&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;已经发送已经接收和已经完成是三个事件&#34; id=&#34;已经发送已经接收和已经完成是三个事件&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;“已经发送”“已经接收”和“已经完成”是三个事件&lt;a href=&#34;#%e5%b7%b2%e7%bb%8f%e5%8f%91%e9%80%81%e5%b7%b2%e7%bb%8f%e6%8e%a5%e6%94%b6%e5%92%8c%e5%b7%b2%e7%bb%8f%e5%ae%8c%e6%88%90%e6%98%af%e4%b8%89%e4%b8%aa%e4%ba%8b%e4%bb%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;send&lt;/code&gt; 成功通常表示数据被本机协议栈接受。TCP 的传输确认也不是机器人动作完成的确认。一个业务请求可以先返回“已接受”，稍后才报告“已完成”或“失败”，调用方需要分别设置期限。&lt;/p&gt;
+&lt;p&gt;重连后重发“设置目标位置”与重发“向前再移动 10 cm”的含义也不同。后者重复执行可能累积位移，应使用请求 ID 和明确的去重/恢复规则。即使传输层是 TCP，连接中断发生在动作执行之后、结果返回之前，调用方仍可能不知道业务是否已完成。&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;最新状态与完整历史使用不同队列策略&#34; id=&#34;最新状态与完整历史使用不同队列策略&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;最新状态与完整历史使用不同队列策略&lt;a href=&#34;#%e6%9c%80%e6%96%b0%e7%8a%b6%e6%80%81%e4%b8%8e%e5%ae%8c%e6%95%b4%e5%8e%86%e5%8f%b2%e4%bd%bf%e7%94%a8%e4%b8%8d%e5%90%8c%e9%98%9f%e5%88%97%e7%ad%96%e7%95%a5&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;相机姿态、摇杆设定等连续状态，过期样本可能应该被新样本替换；日志文件则需要保留完整顺序。是否丢弃旧数据由应用语义决定，不能仅靠选择 UDP 来解决。&lt;/p&gt;
+&lt;p&gt;例如 50 Hz 的状态流每 20 ms 产生一帧，若处理速度更慢而队列持续增长，最新收到的数据也可能来自很久以前。应同时记录产生时间、接收时间、处理时间和队列深度，区分网络延迟与应用积压。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;从本机实验开始&#34; id=&#34;从本机实验开始&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;从本机实验开始&lt;a href=&#34;#%e4%bb%8e%e6%9c%ac%e6%9c%ba%e5%ae%9e%e9%aa%8c%e5%bc%80%e5%a7%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;先在 &lt;code&gt;127.0.0.1&lt;/code&gt; 测试单次请求—响应，确认发送长度、接收长度和退出码，再考虑局域网地址、防火墙和网络故障。不要把广播作为默认示例，也不把应用调试端口直接暴露到公网。&lt;/p&gt;
+&lt;p&gt;测试至少包括对端不存在、提前退出、错误长度、超时、零长度消息与多次重复请求。机器人通信还需独立的状态机、指令有效期与硬件安全措施，传输协议本身不能代替这些保障。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;测试&lt;/th&gt;
+					&lt;th&gt;应能区分的结果&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;每次只送一个字节&lt;/td&gt;
+					&lt;td&gt;TCP 解析器仍恢复同一消息序列&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;一次送多条消息&lt;/td&gt;
+					&lt;td&gt;不能误合并为一个业务请求&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;长度字段超过上限&lt;/td&gt;
+					&lt;td&gt;在分配大消息缓存前拒绝&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;消息体未收完就断开&lt;/td&gt;
+					&lt;td&gt;报告截断，不能当作正常完整消息&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;UDP 报文大于接收缓冲区&lt;/td&gt;
+					&lt;td&gt;报告截断，不能解析残缺字段&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;重复或乱序请求&lt;/td&gt;
+					&lt;td&gt;按应用约定去重、丢弃或重排&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;处理暂停后恢复&lt;/td&gt;
+					&lt;td&gt;根据有效期处理积压，不能盲目追赶旧指令&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 data-hextra-search-id=&#34;阅读自测与验收&#34; id=&#34;阅读自测与验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;阅读自测与验收&lt;a href=&#34;#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;给聊天、遥测和文件传输分别列出时延、可靠性及顺序需求，再解释为什么选择某种传输或应用协议。&lt;/li&gt;
+&lt;li&gt;写出应用消息的边界和最大长度；即便使用 TCP，也仍需要定义消息格式与失败处理。&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

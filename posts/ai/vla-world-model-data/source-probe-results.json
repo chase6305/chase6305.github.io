@@ -1,0 +1,41 @@
+{
+  "scope": "fixed upstream functions with artificial inputs; no robot execution",
+  "numpy_version": "2.2.6",
+  "sources": [
+    {
+      "commit": "79e5cb8a56e3455515ce1b476e993c764ec58739",
+      "path": "xrobotoolkit_teleop/common/data_logger.py",
+      "sha256": "b9a6398abdf33a2f215ac910fc0421e28ecdcc5ca1ffac7aa0af7b87b14a1b2e"
+    },
+    {
+      "commit": "d095ba9590df789df5189eea5ee7e431689038a6",
+      "path": "diffusion_policy/common/pose_repr_util.py",
+      "sha256": "6438d8746c8ee026a556d7df8a034ad54306746ee17b10973bb25f536894f348"
+    }
+  ],
+  "xr_logger_adds_timestamp": false,
+  "umi": {
+    "relative_translation_m": [
+      0.0,
+      -0.1,
+      0.0
+    ],
+    "legacy_rel_translation_m": [
+      0.1,
+      0.0,
+      0.0
+    ],
+    "target_translation_m": [
+      0.4,
+      0.2,
+      0.0
+    ],
+    "mixed_decoder_translation_m": [
+      0.3,
+      0.3,
+      0.0
+    ],
+    "consistent_roundtrips_pass": true,
+    "mixed_translation_error_m": 0.14142135623730956
+  }
+}

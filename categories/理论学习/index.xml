@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>理论学习 on Chase Blog</title>
+    <link>https://chase6305.github.io/categories/%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0/</link>
+    <description>Recent content in 理论学习 on Chase Blog</description>
+    <generator>Hugo -- 0.165.0</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 06 May 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://chase6305.github.io/categories/%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TO、MPC与WBC在机器人控制中的作用与区别对比文档</title>
+      <link>https://chase6305.github.io/posts/planner/to_mpc_wbc/</link>
+      <pubDate>Tue, 06 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/planner/to_mpc_wbc/</guid>
+      <description>TO、MPC与WBC在机器人控制中的作用与区别对比文档</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,41 @@
+{
+  "expired_sample_rejected": true,
+  "events": [
+    {
+      "stamp": 0.0,
+      "success": true,
+      "reason": "initial",
+      "plan_present": true
+    },
+    {
+      "stamp": 0.02,
+      "success": false,
+      "reason": "goal_changed",
+      "plan_present": false
+    },
+    {
+      "stamp": 0.04,
+      "success": true,
+      "reason": "goal_changed",
+      "plan_present": true
+    },
+    {
+      "stamp": 0.03,
+      "success": false,
+      "reason": "clock_rollback",
+      "plan_present": false
+    },
+    {
+      "stamp": 0.06,
+      "success": false,
+      "reason": "clock_rollback",
+      "plan_present": false
+    },
+    {
+      "stamp": 0.06,
+      "success": true,
+      "reason": "initial",
+      "plan_present": true
+    }
+  ]
+}

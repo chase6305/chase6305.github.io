@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>正运动学 on Chase Blog</title>
+    <link>http://localhost:1314/tags/%E6%AD%A3%E8%BF%90%E5%8A%A8%E5%AD%A6/</link>
+    <description>Recent content in 正运动学 on Chase Blog</description>
+    <generator>Hugo -- 0.165.0</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 01 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1314/tags/%E6%AD%A3%E8%BF%90%E5%8A%A8%E5%AD%A6/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>机器人运动学基础</title>
+      <link>http://localhost:1314/posts/robotics/kinematics/kinematics-introduction/</link>
+      <pubDate>Mon, 01 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1314/posts/robotics/kinematics/kinematics-introduction/</guid>
+      <description>介绍机器人运动学的基本概念、坐标变换及 D-H 参数方法</description>
+    </item>
+  </channel>
+</rss>

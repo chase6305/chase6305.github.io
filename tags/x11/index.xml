@@ -1,0 +1,93 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chase – X11</title>
+    <link>https://chase6305.github.io/tags/x11/</link>
+    <description>Recent content in X11 on Chase</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 27 Feb 2025 00:00:00 +0000</lastBuildDate>
+    
+	  <atom:link href="https://chase6305.github.io/tags/x11/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>libEGL warning: FIXME: egl/x11 doesn‘t support front buffer rendering 解决方法</title>
+      <link>https://chase6305.github.io/posts/egl/x11_warnning/</link>
+      <pubDate>Thu, 27 Feb 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://chase6305.github.io/posts/egl/x11_warnning/</guid>
+      <description>
+        
+        
+        &lt;p&gt;&lt;code&gt;libEGL warning: FIXME: egl/x11 doesn&#39;t support front buffer rendering&lt;/code&gt; 是 EGL 实现报告的前缓冲渲染警告。先判断程序是否仍正确出图，以及实际使用的 EGL 驱动和窗口后端，再决定是否调整配置。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;1-区分警告与功能故障&#34; id=&#34;1-区分警告与功能故障&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;1. 区分警告与功能故障&lt;a href=&#34;#1-%e5%8c%ba%e5%88%86%e8%ad%a6%e5%91%8a%e4%b8%8e%e5%8a%9f%e8%83%bd%e6%95%85%e9%9a%9c&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果窗口和渲染结果正常，日志本身不等于程序失败。如果出现黑屏、崩溃或无法创建上下文，应保留完整日志，检查 X11/Wayland 会话、显卡驱动及动态库加载路径。&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;printenv DISPLAY WAYLAND_DISPLAY XDG_SESSION_TYPE
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;glxinfo -B&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;glxinfo&lt;/code&gt; 是 GLX 诊断工具，结果只能辅助判断桌面 OpenGL 环境，不能单独证明 EGL 或无头渲染正常。存在 &lt;code&gt;eglinfo&lt;/code&gt; 时，可进一步查看 EGL 平台信息。&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;一次诊断要留下哪三种结果&#34; id=&#34;一次诊断要留下哪三种结果&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;一次诊断要留下哪三种结果&lt;a href=&#34;#%e4%b8%80%e6%ac%a1%e8%af%8a%e6%96%ad%e8%a6%81%e7%95%99%e4%b8%8b%e5%93%aa%e4%b8%89%e7%a7%8d%e7%bb%93%e6%9e%9c&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;把日志、进程退出状态和实际画面分开记录。例如“打印警告、退出码为 0、保存的图像内容正常”和“打印同样警告、随后上下文创建失败、没有图像”是两种不同问题。退出码为 0 也不独自证明图像正确，仍需检查应用预期的窗口或输出文件。&lt;/p&gt;
+&lt;p&gt;同一台机器上，桌面窗口渲染、SSH 会话和无窗口 EGL 渲染使用的入口可能不同。应在发生问题的启动方式下复现：桌面中的 &lt;code&gt;glxinfo -B&lt;/code&gt; 正常，只能支持那条测试路径，不能直接替代后台服务的 EGL 上下文检查。先缩小复现到“创建上下文并画一帧”，再逐步恢复相机、仿真和业务逻辑，才能区分图形初始化与后续处理错误。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;2-临时调整-mesa-日志等级&#34; id=&#34;2-临时调整-mesa-日志等级&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;2. 临时调整 Mesa 日志等级&lt;a href=&#34;#2-%e4%b8%b4%e6%97%b6%e8%b0%83%e6%95%b4-mesa-%e6%97%a5%e5%bf%97%e7%ad%89%e7%ba%a7&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果已经确认功能正常，只想在一次运行中减少 Mesa EGL 日志：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;EGL_LOG_LEVEL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;fatal python app.py&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;这是日志过滤，不是修复，也不是所有 EGL 实现都支持的通用设置。排查时恢复默认输出，或使用 &lt;code&gt;EGL_LOG_LEVEL=debug&lt;/code&gt; 获取信息。&lt;a
+    href=&#34;https://docs.mesa3d.org/egl.html&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Mesa EGL 文档&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;3-确认实际加载的库&#34; id=&#34;3-确认实际加载的库&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;3. 确认实际加载的库&lt;a href=&#34;#3-%e7%a1%ae%e8%ae%a4%e5%ae%9e%e9%99%85%e5%8a%a0%e8%bd%bd%e7%9a%84%e5%ba%93&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;对可信的本地程序，可以检查动态库来源：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;LD_DEBUG&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;libs python app.py&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;重点查看 &lt;code&gt;libEGL&lt;/code&gt;、&lt;code&gt;libGL&lt;/code&gt; 以及驱动库是否混用了系统、Conda 或应用打包版本。&lt;code&gt;mesa-utils&lt;/code&gt; 主要提供诊断工具，安装它本身不会替换所有渲染驱动。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;4-根据证据修复并复测&#34; id=&#34;4-根据证据修复并复测&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;4. 根据证据修复并复测&lt;a href=&#34;#4-%e6%a0%b9%e6%8d%ae%e8%af%81%e6%8d%ae%e4%bf%ae%e5%a4%8d%e5%b9%b6%e5%a4%8d%e6%b5%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果确认是发行版中的 Mesa 包问题，使用发行版支持的包更新，并保留原版本与最小复现。需要测试自行构建的 Mesa 时，使用独立安装前缀和明确的库搜索路径；直接安装到 &lt;code&gt;/usr&lt;/code&gt; 会覆盖包管理器维护的图形栈。&lt;/p&gt;
+&lt;p&gt;验收应包括上下文创建、窗口显示、图像内容和程序退出。不要仅以“警告消失”作为修复成功的标准。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;阅读自测与验收&#34; id=&#34;阅读自测与验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;阅读自测与验收&lt;a href=&#34;#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;区分日志警告与实际窗口/渲染失败，记录所用平台、DISPLAY 和驱动；不要因出现一个 EGL 字样就修改整套显示环境。&lt;/li&gt;
+&lt;li&gt;在应用真正运行的会话中测试，确认硬件渲染或所需离屏后端可用；把输出重定向隐藏只会隐藏症状。&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

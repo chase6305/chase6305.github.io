@@ -1,0 +1,58 @@
+{
+  "torch": "2.13.0+cu130",
+  "pytorch_kinematics": "0.10.0",
+  "device": "cpu",
+  "dtype": "float64",
+  "cases": [
+    {
+      "q_rad": [
+        0.4,
+        -0.7
+      ],
+      "jacobian_finite_difference_max_error": 1.4770426548516014e-10,
+      "position_decimal_geometry_max_error_m": 3.375689949791649e-08,
+      "jacobian_closed_form_max_error": 3.375689949791649e-08
+    },
+    {
+      "q_rad": [
+        -0.8,
+        1.1
+      ],
+      "jacobian_finite_difference_max_error": 7.663170098481942e-11,
+      "position_decimal_geometry_max_error_m": 3.108238799676144e-08,
+      "jacobian_closed_form_max_error": 3.108238799676144e-08
+    },
+    {
+      "q_rad": [
+        0.0,
+        0.0
+      ],
+      "jacobian_finite_difference_max_error": 2.333688797762079e-13,
+      "position_decimal_geometry_max_error_m": 3.576278695405222e-08,
+      "jacobian_closed_form_max_error": 3.576278695405222e-08
+    },
+    {
+      "q_rad": [
+        1.2,
+        -2.0
+      ],
+      "jacobian_finite_difference_max_error": 3.214406518736723e-11,
+      "position_decimal_geometry_max_error_m": 2.0930423283438415e-08,
+      "jacobian_closed_form_max_error": 2.0930423283438415e-08
+    }
+  ],
+  "gradcheck_default": true,
+  "gradgradcheck_standard_autograd": true,
+  "loss_hessian": [
+    [
+      1.2193124144250924,
+      0.4626880853143581
+    ],
+    [
+      0.462688085314358,
+      0.09556381535901864
+    ]
+  ],
+  "closed_form_hessian_max_error": 2.9660152778276938e-08,
+  "scope": "Two bounded revolute joints and one fixed tool; position FK derivatives and yaw geometric Jacobian. Does not differentiate through IK or calibrate URDF parameters."
+}

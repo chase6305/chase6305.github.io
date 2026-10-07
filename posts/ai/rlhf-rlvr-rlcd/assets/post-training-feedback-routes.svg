@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">三条后训练路线的反馈来源与闭环</title>
+  <desc id="desc">RLHF 使用人工比较回答；RLVR 使用可执行验证器；RLCD 使用正负对比提示生成的合成偏好。三条路线都将评分信号送入策略优化，并由独立评测检验。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L9,4 Z" fill="#315d93"/></marker>
+    <style>text{font-family:system-ui,-apple-system,"Noto Sans CJK SC",sans-serif;fill:#17243c}.title{font-size:32px;font-weight:700}.head{font-size:25px;font-weight:700}.body{font-size:19px}.small{font-size:17px}.box{stroke:#8ba8ca;stroke-width:2}.arrow{fill:none;stroke:#315d93;stroke-width:3;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1200" height="760" rx="24" fill="#fffef9"/>
+  <text x="48" y="58" class="title">后训练的关键差异：谁给出“这条回答更好”的信号？</text>
+  <text x="48" y="91" class="body">同一策略可配不同优化器；这里按反馈的来源、可扩展性与误差模式比较。</text>
+  <rect x="45" y="130" width="335" height="300" rx="20" class="box" fill="#eaf3ff"/>
+  <text x="70" y="172" class="head">RLHF</text><text x="70" y="202" class="body">人类对同题候选排序／打分</text>
+  <rect x="70" y="230" width="285" height="76" rx="12" fill="#fff" stroke="#a4b9d3"/><text x="92" y="261" class="body">偏好对 → 奖励模型</text><text x="92" y="287" class="small">覆盖细腻的主观价值</text>
+  <text x="70" y="347" class="body">优势：表达“有帮助、得体、安全”</text><text x="70" y="380" class="body">风险：标注成本、偏好偏差、</text><text x="70" y="406" class="body">奖励投机</text>
+  <rect x="432" y="130" width="335" height="300" rx="20" class="box" fill="#ecf8ed"/>
+  <text x="457" y="172" class="head">RLVR</text><text x="457" y="202" class="body">程序或规则验证结果</text>
+  <rect x="457" y="230" width="285" height="76" rx="12" fill="#fff" stroke="#a4b9d3"/><text x="479" y="261" class="body">答案／测试 → 可验证奖励</text><text x="479" y="287" class="small">可自动重复检查</text>
+  <text x="457" y="347" class="body">优势：规模大、标准清楚</text><text x="457" y="380" class="body">风险：只奖励可判定目标、</text><text x="457" y="406" class="body">验证器漏洞与稀疏信号</text>
+  <rect x="819" y="130" width="335" height="300" rx="20" class="box" fill="#fff1df"/>
+  <text x="844" y="172" class="head">RLCD</text><text x="844" y="202" class="body">正／负对比提示生成候选</text>
+  <rect x="844" y="230" width="285" height="76" rx="12" fill="#fff" stroke="#a4b9d3"/><text x="866" y="261" class="body">合成偏好对 → 偏好模型</text><text x="866" y="287" class="small">无需逐条人工标注</text>
+  <text x="844" y="347" class="body">优势：用原则扩充反馈</text><text x="844" y="380" class="body">风险：提示诱导偏差、</text><text x="844" y="406" class="body">教师模型的盲点</text>
+  <path d="M212,438 L445,522" class="arrow"/><path d="M600,438 L600,522" class="arrow"/><path d="M987,438 L755,522" class="arrow"/>
+  <rect x="365" y="526" width="470" height="104" rx="18" class="box" fill="#eee9fa"/>
+  <text x="405" y="568" class="head">采样 → 评分 → 策略更新</text><text x="405" y="601" class="body">PPO、GRPO、DPO 等是“怎样更新”，不是反馈来源</text>
+  <path d="M600,636 L600,683" class="arrow"/>
+  <rect x="365" y="688" width="470" height="48" rx="16" class="box" fill="#f2f5f8"/>
+  <text x="418" y="721" class="body">独立评测：能力、偏好、安全、校准与成本</text>
+</svg>

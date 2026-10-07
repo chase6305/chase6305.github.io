@@ -1,0 +1,139 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chase – Humanoid Robots</title>
+    <link>https://chase6305.github.io/tags/humanoid-robots/</link>
+    <description>Recent content in Humanoid Robots on Chase</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Wed, 02 Apr 2025 00:00:00 +0000</lastBuildDate>
+    
+	  <atom:link href="https://chase6305.github.io/tags/humanoid-robots/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>论文《Being-0: 基于视觉语言模型与模块化技能的人形机器人代理》深度解析</title>
+      <link>https://chase6305.github.io/posts/thesis/being_0/</link>
+      <pubDate>Wed, 02 Apr 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://chase6305.github.io/posts/thesis/being_0/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Being-0 讨论如何把高层语言规划与已有运动技能连接起来，让人形机器人完成长时程任务。本文依据 &lt;a
+    href=&#34;https://arxiv.org/html/2503.12533v1&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;论文 arXiv:2503.12533v1&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;整理；实验数字属于论文报告，不代表在本地完成了复现。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;1-研究问题&#34; id=&#34;1-研究问题&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;1. 研究问题&lt;a href=&#34;#1-%e7%a0%94%e7%a9%b6%e9%97%ae%e9%a2%98&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;高层模型能够理解指令和生成计划，低层策略能够完成行走或抓取，但两者直接拼接时，推理延迟、导航落点误差和技能初始状态不匹配会逐步累积。论文的关注点是中间的协调层。&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+    &lt;img src=&#34;https://chase6305.github.io/posts/thesis/being_0/assets/being-zero-hierarchy.webp&#34; title=&#34;Connector 将高层计划与视觉观测结合，协调低层技能，并向高层反馈任务进展。&#34; alt=&#34;Being-0 的云端基础模型、机载 Connector 与移动操作技能之间的概念关系&#34; width=&#34;1536&#34; height=&#34;1024&#34; style=&#34;width: min(100%, 1536px); aspect-ratio: 1536 / 1024; &#34;  decoding=&#34;async&#34; srcset=&#34;https://chase6305.github.io/posts/thesis/being_0/assets/being-zero-hierarchy_hu_a6a7c454451dd7c2.webp 480w, https://chase6305.github.io/posts/thesis/being_0/assets/being-zero-hierarchy_hu_77f1cece96b9e751.webp 960w, https://chase6305.github.io/posts/thesis/being_0/assets/being-zero-hierarchy_hu_70fa3c570812c391.webp 1440w, https://chase6305.github.io/posts/thesis/being_0/assets/being-zero-hierarchy.webp 1536w&#34; sizes=&#34;(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 20rem), 900px&#34; data-zoomable loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Connector 将高层计划与视觉观测结合，协调低层技能，并向高层反馈任务进展。&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;2-三层架构&#34; id=&#34;2-三层架构&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;2. 三层架构&lt;a href=&#34;#2-%e4%b8%89%e5%b1%82%e6%9e%b6%e6%9e%84&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;模块&lt;/th&gt;
+					&lt;th&gt;职责&lt;/th&gt;
+					&lt;th&gt;需要区分的边界&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Foundation Model&lt;/td&gt;
+					&lt;td&gt;指令理解、计划、执行结果推理&lt;/td&gt;
+					&lt;td&gt;不直接承担高频关节控制&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Connector&lt;/td&gt;
+					&lt;td&gt;把计划和视觉观测转成技能指令&lt;/td&gt;
+					&lt;td&gt;需要判断导航与操作能否衔接&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;模块化技能库&lt;/td&gt;
+					&lt;td&gt;行走、转向、头部动作和操作&lt;/td&gt;
+					&lt;td&gt;技能有各自的训练数据与适用条件&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;论文采用云端 FM 与机载模块组合。操作技能通过遥操作数据与模仿学习获得，移动技能通过强化学习训练。Connector 的价值体现在技能选择与衔接，不能简单等同于端到端输出所有关节动作的 VLA。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;3-为什么导航终点影响操作&#34; id=&#34;3-为什么导航终点影响操作&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;3. 为什么导航终点影响操作&lt;a href=&#34;#3-%e4%b8%ba%e4%bb%80%e4%b9%88%e5%af%bc%e8%88%aa%e7%bb%88%e7%82%b9%e5%bd%b1%e5%93%8d%e6%93%8d%e4%bd%9c&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;“已经到达桌子附近”不意味着“抓取策略可以成功启动”。机器人还需要合适的距离、朝向与可见范围。&lt;/p&gt;
+&lt;p&gt;我的理解是，可以把每个技能看作有输入条件的模块：执行前检查目标可见性和姿态范围，执行后检查是否达到下一技能需要的状态。这个解释用于理解系统接口，不是论文额外声明的形式化保证。&lt;/p&gt;
+&lt;p&gt;主动视觉同样影响下一步决策：相机姿态改变了可见信息，但增加了对头部控制、观测时间戳和反馈判断的要求。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;4-论文实验应如何阅读&#34; id=&#34;4-论文实验应如何阅读&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;4. 论文实验应如何阅读&lt;a href=&#34;#4-%e8%ae%ba%e6%96%87%e5%ae%9e%e9%aa%8c%e5%ba%94%e5%a6%82%e4%bd%95%e9%98%85%e8%af%bb&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;论文表 1 报告以下长时程任务完成率：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;任务&lt;/th&gt;
+					&lt;th&gt;不使用 Connector&lt;/th&gt;
+					&lt;th&gt;Being-0&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Fetch-bottle&lt;/td&gt;
+					&lt;td&gt;0%&lt;/td&gt;
+					&lt;td&gt;90%&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Deliver-basket&lt;/td&gt;
+					&lt;td&gt;0%&lt;/td&gt;
+					&lt;td&gt;80%&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Prepare-coffee&lt;/td&gt;
+					&lt;td&gt;0%&lt;/td&gt;
+					&lt;td&gt;75%&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Make-coffee&lt;/td&gt;
+					&lt;td&gt;90%&lt;/td&gt;
+					&lt;td&gt;90%&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Deliver-coffee&lt;/td&gt;
+					&lt;td&gt;33%&lt;/td&gt;
+					&lt;td&gt;87%&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;这里 Fetch-bottle 是取瓶任务，不能翻译为“抓取杯子”。论文报告的导航效率提升也不应直接填入每一个任务的效率列。任务定义、尝试次数和消融条件应一起对照&lt;a
+    href=&#34;https://arxiv.org/html/2503.12533v1#S5&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;原文实验部分&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;。&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;消融实验的结论应保留到任务这一层&#34; id=&#34;消融实验的结论应保留到任务这一层&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;消融实验的结论应保留到任务这一层&lt;a href=&#34;#%e6%b6%88%e8%9e%8d%e5%ae%9e%e9%aa%8c%e7%9a%84%e7%bb%93%e8%ae%ba%e5%ba%94%e4%bf%9d%e7%95%99%e5%88%b0%e4%bb%bb%e5%8a%a1%e8%bf%99%e4%b8%80%e5%b1%82&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;表 1 中 Make-coffee 两种配置都是 90%，因此不能写成“Connector 对每个任务都提升成功率”。表 2 的姿态调整消融也有差异：Grasp-bottle 从 2/5 变为 4/5，而 Place-basket 从 4/5 变为 3/5。每项只有 5 次导航后操作试验，应保留成功数与尝试数，不能把一项的变化当作稳定的通用增益。&lt;a
+    href=&#34;https://arxiv.org/html/2503.12533v1#S5&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;论文表 1–3&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这些结果支持进一步分析“哪类技能衔接受益”，而不是只给模块贴上有效或无效的标签。自己的复现还应记录失败发生在目标识别、导航终止、姿态调整还是操作阶段；相同的整体成功率可能对应完全不同的瓶颈。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;5-复现时关注哪些接口&#34; id=&#34;5-复现时关注哪些接口&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;5. 复现时关注哪些接口&lt;a href=&#34;#5-%e5%a4%8d%e7%8e%b0%e6%97%b6%e5%85%b3%e6%b3%a8%e5%93%aa%e4%ba%9b%e6%8e%a5%e5%8f%a3&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;高层指令和技能参数如何表示，目标 ID 与视觉检测结果如何对应。&lt;/li&gt;
+&lt;li&gt;技能开始、结束、失败与超时如何上报，是否允许中断和重试。&lt;/li&gt;
+&lt;li&gt;视觉观测、机器人状态与动作时间戳是否一致。&lt;/li&gt;
+&lt;li&gt;导航到操作的切换是否包含姿态修正和成功判定。&lt;/li&gt;
+&lt;li&gt;云端请求延迟变化时，低层系统如何保持有定义的行为。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这些是由架构推导出的工程检查项，不代表论文已经证明了每一种异常都能恢复。&lt;/p&gt;
+&lt;p&gt;例如日志可以记录“子任务、所选技能、观测时间、开始时间、结束状态、失败阶段”，用于还原一次取瓶过程。这里是接口设计建议，不是作者源码字段。若希望进一步比较模块化技能调用与直接生成动作块，可接着阅读 &lt;a
+    href=&#34;https://chase6305.github.io/posts/ai/vla-evolution/&#34;&gt;VLA 发展路线&lt;/a&gt;：二者可以共享视觉语言能力，但动作接口、训练标签和控制周期并不相同。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;6-局限与进一步阅读&#34; id=&#34;6-局限与进一步阅读&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;6. 局限与进一步阅读&lt;a href=&#34;#6-%e5%b1%80%e9%99%90%e4%b8%8e%e8%bf%9b%e4%b8%80%e6%ad%a5%e9%98%85%e8%af%bb&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;实验中的模块化设计不等于可直接迁移到任意人形平台。新硬件、相机布局、物体或技能仍可能需要数据、适配和重新验证。也不能据此断言已经支持某个未参与实验的商业机器人。&lt;/p&gt;
+&lt;p&gt;原始材料：&lt;a
+    href=&#34;https://arxiv.org/abs/2503.12533&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;论文&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;、&lt;a
+    href=&#34;https://research.beingbeyond.com/being-0&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;作者项目页&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;。论文贡献、作者发布状态和个人推测应分别阅读。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;阅读自测与验收&#34; id=&#34;阅读自测与验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;阅读自测与验收&lt;a href=&#34;#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;把论文实际报告的任务、成功定义和评估次数逐项对照，区分系统概念图与原始实验结果。&lt;/li&gt;
+&lt;li&gt;单独说明高层模型、Connector 和低层技能的输入输出；不同硬件或任务上的数字不能直接拼成统一成功率。&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

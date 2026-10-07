@@ -4,20 +4,78 @@
     <title>编程技术 on Chase Blog</title>
     <link>https://chase6305.github.io/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/</link>
     <description>Recent content in 编程技术 on Chase Blog</description>
-    <image>
-      <title>Chase Blog</title>
-      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.92.2</generator>
+    <generator>Hugo -- 0.165.0</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 11 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 14 Feb 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://chase6305.github.io/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Pink: 一个高效易用的机器人逆运动学库</title>
+      <link>https://chase6305.github.io/posts/pink/</link>
+      <pubDate>Sat, 14 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/pink/</guid>
+      <description>Pink: 一个高效易用的机器人逆运动学库</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;中std::前缀函数的必要性：从abs、max到数学函数的全面解析</title>
+      <link>https://chase6305.github.io/posts/cpp/std/</link>
+      <pubDate>Fri, 06 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/cpp/std/</guid>
+      <description>C++中std::前缀函数的必要性：从abs、max到数学函数的全面解析</description>
+    </item>
+    <item>
+      <title>VS Code Python 调试完全指南：从入门到精通</title>
+      <link>https://chase6305.github.io/posts/vscode/debug/</link>
+      <pubDate>Tue, 27 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/vscode/debug/</guid>
+      <description>VS Code Python 调试完全指南：从入门到精通</description>
+    </item>
+    <item>
+      <title>解决 Isaac Lab 中module &#39;omni.usd&#39; has no attribute &#39;UsdContext&#39; 错误</title>
+      <link>https://chase6305.github.io/posts/isaaclab/usdcontext/</link>
+      <pubDate>Mon, 17 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/isaaclab/usdcontext/</guid>
+      <description>解决 Isaac Lab 中 &lt;code&gt;module ‘omni.usd‘ has no attribute ‘UsdContext‘&lt;/code&gt; 错误</description>
+    </item>
+    <item>
+      <title>关于 nvidia-smi: no devices were found 解决方案</title>
+      <link>https://chase6305.github.io/posts/nvidia/no_devices/</link>
+      <pubDate>Sat, 15 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/nvidia/no_devices/</guid>
+      <description>关于 nvidia-smi: no devices were found 解决方案</description>
+    </item>
+    <item>
+      <title>Matplotlib与PySide6兼容性问题及解决方案</title>
+      <link>https://chase6305.github.io/posts/qt/pyside6_matplotlib/</link>
+      <pubDate>Mon, 04 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/qt/pyside6_matplotlib/</guid>
+      <description>Matplotlib与PySide6兼容性问题及解决方案</description>
+    </item>
+    <item>
+      <title>Python中5个提升效率的f-string高阶技巧</title>
+      <link>https://chase6305.github.io/posts/python/f_string/</link>
+      <pubDate>Sat, 03 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/python/f_string/</guid>
+      <description>Python中5个提升效率的f-string高阶技巧</description>
+    </item>
+    <item>
+      <title>PD vs PID control 简要对比</title>
+      <link>https://chase6305.github.io/posts/pid/</link>
+      <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/pid/</guid>
+      <description>PD vs PID control 简要对比</description>
+    </item>
+    <item>
+      <title>ExternalProject_Add 使用手册与文档详解</title>
+      <link>https://chase6305.github.io/posts/cmake/externalproject_add/</link>
+      <pubDate>Tue, 08 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/cmake/externalproject_add/</guid>
+      <description>ExternalProject_Add 使用手册与文档详解</description>
+    </item>
+    <item>
       <title>Ubuntu 22.04 无法进入图形界面的解决方法</title>
-      <link>https://chase6305.github.io/posts/vscode/bug/gdm/</link>
+      <link>https://chase6305.github.io/posts/vscode/gdm/</link>
       <pubDate>Tue, 11 Mar 2025 00:00:00 +0000</pubDate>
-      <guid>https://chase6305.github.io/posts/vscode/bug/gdm/</guid>
+      <guid>https://chase6305.github.io/posts/vscode/gdm/</guid>
       <description>Ubuntu 22.04 无法进入图形界面的解决方法</description>
     </item>
     <item>
@@ -64,9 +122,9 @@
     </item>
     <item>
       <title>VScode终端出现显示两个环境名问题的解决方案</title>
-      <link>https://chase6305.github.io/posts/vscode/bug/two-env/</link>
+      <link>https://chase6305.github.io/posts/vscode/two-env/</link>
       <pubDate>Fri, 07 Feb 2025 00:00:00 +0000</pubDate>
-      <guid>https://chase6305.github.io/posts/vscode/bug/two-env/</guid>
+      <guid>https://chase6305.github.io/posts/vscode/two-env/</guid>
       <description>VScode终端出现显示两个环境名问题的解决方案</description>
     </item>
     <item>
@@ -99,9 +157,9 @@
     </item>
     <item>
       <title>Linux系统解决Qt platform plugin &#34;xcb&#34;缺失问题</title>
-      <link>https://chase6305.github.io/posts/post_2/</link>
+      <link>https://chase6305.github.io/posts/xcb/post_2/</link>
       <pubDate>Sat, 07 Aug 2021 00:00:00 +0000</pubDate>
-      <guid>https://chase6305.github.io/posts/post_2/</guid>
+      <guid>https://chase6305.github.io/posts/xcb/post_2/</guid>
       <description>解决Linux系统下Qt应用程序常见的xcb插件缺失问题</description>
     </item>
     <item>

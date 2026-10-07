@@ -1,0 +1,620 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chase – Troubleshooting</title>
+    <link>https://chase6305.github.io/tags/troubleshooting/</link>
+    <description>Recent content in Troubleshooting on Chase</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Mon, 17 Nov 2025 00:00:00 +0000</lastBuildDate>
+    
+	  <atom:link href="https://chase6305.github.io/tags/troubleshooting/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>解决 Isaac Lab 中module &#39;omni.usd&#39; has no attribute &#39;UsdContext&#39; 错误</title>
+      <link>https://chase6305.github.io/posts/isaaclab/usdcontext/</link>
+      <pubDate>Mon, 17 Nov 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://chase6305.github.io/posts/isaaclab/usdcontext/</guid>
+      <description>
+        
+        
+        &lt;p&gt;&lt;code&gt;module &#39;omni.usd&#39; has no attribute &#39;UsdContext&#39;&lt;/code&gt; 表示当前 Python 进程中的 &lt;code&gt;omni.usd&lt;/code&gt; 没有提供预期接口。可能涉及应用启动顺序、扩展初始化、版本混用或模块遮蔽；仅凭这一条异常，不能确定扩展缓存已经损坏。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;1-确认启动顺序&#34; id=&#34;1-确认启动顺序&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;1. 确认启动顺序&lt;a href=&#34;#1-%e7%a1%ae%e8%ae%a4%e5%90%af%e5%8a%a8%e9%a1%ba%e5%ba%8f&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Isaac Lab 需要先创建应用，再导入依赖运行中 Kit 扩展的模块。通过当前安装方式提供的 Isaac Lab 启动器运行下面的检查：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;isaaclab.app&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AppLauncher&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;app_launcher&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AppLauncher&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;headless&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;simulation_app&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;app_launcher&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;app&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;try&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;omni.usd&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Module path:&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;getattr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;omni&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;usd&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;__file__&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;None&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;context&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;omni&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;usd&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;get_context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Context:&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;finally&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;simulation_app&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;close&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;应用初始化顺序见 &lt;a
+    href=&#34;https://isaac-sim.github.io/IsaacLab/main/source/tutorials/00_sim/create_empty.html&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Isaac Lab 创建空场景教程&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;。普通系统 Python 和 Isaac Sim/Kit 环境中的 Python 不可随意混用。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;2-核对版本与模块来源&#34; id=&#34;2-核对版本与模块来源&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;2. 核对版本与模块来源&lt;a href=&#34;#2-%e6%a0%b8%e5%af%b9%e7%89%88%e6%9c%ac%e4%b8%8e%e6%a8%a1%e5%9d%97%e6%9d%a5%e6%ba%90&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python -m pip show isaaclab isaacsim
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python -m pip check
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python -c &lt;span class=&#34;s2&#34;&gt;&amp;#34;import sys; print(sys.executable); print(sys.version)&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;这些命令用于记录环境，不能替代应用启动检查。还要排除项目中的 &lt;code&gt;omni.py&lt;/code&gt;、&lt;code&gt;omni/&lt;/code&gt; 等同名模块，以及 &lt;code&gt;PYTHONPATH&lt;/code&gt; 指向另一套安装的情况。&lt;/p&gt;
+&lt;p&gt;选择 Isaac Lab、Isaac Sim 和 Python 版本时，应使用对应发行版的兼容组合，而不是无条件照抄 &lt;code&gt;Python 3.11 + Isaac Lab 2.3.0&lt;/code&gt;。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;3-只有日志支持时才处理缓存&#34; id=&#34;3-只有日志支持时才处理缓存&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;3. 只有日志支持时才处理缓存&lt;a href=&#34;#3-%e5%8f%aa%e6%9c%89%e6%97%a5%e5%bf%97%e6%94%af%e6%8c%81%e6%97%b6%e6%89%8d%e5%a4%84%e7%90%86%e7%bc%93%e5%ad%98&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;先保存完整启动日志，定位&lt;strong&gt;第一条扩展加载错误&lt;/strong&gt;。后续的 AttributeError 可能只是前序错误的结果。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;site-packages/isaacsim/extscache&lt;/code&gt; 可能由已安装的软件包提供，不应默认当成可随时删除、且一定能自动重新下载的普通缓存。确认安装方式与包归属后，按对应版本的恢复或重装流程处理。&lt;/p&gt;
+&lt;p&gt;需要隔离验证时，新建另一个环境复现，保留原环境以便比较；不要把删除整个旧环境作为首步。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;4-修复完成的标准&#34; id=&#34;4-修复完成的标准&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;4. 修复完成的标准&lt;a href=&#34;#4-%e4%bf%ae%e5%a4%8d%e5%ae%8c%e6%88%90%e7%9a%84%e6%a0%87%e5%87%86&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;应用能启动，&lt;code&gt;omni.usd.get_context()&lt;/code&gt; 能返回上下文，项目所需扩展加载成功，并且原始最小复现可以运行。单纯看到某个导入不再报错，还不足以证明完整仿真流程正常。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;阅读自测与验收&#34; id=&#34;阅读自测与验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;阅读自测与验收&lt;a href=&#34;#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;先运行当前 Isaac Lab 安装自带的最小示例，确认应用初始化顺序，再增加 USD 操作。&lt;/li&gt;
+&lt;li&gt;记录启动方式、扩展加载日志和 stage 状态；任意删除扩展缓存可能掩盖版本或依赖问题，不能作为默认步骤。&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>关于 nvidia-smi: no devices were found 解决方案</title>
+      <link>https://chase6305.github.io/posts/nvidia/no_devices/</link>
+      <pubDate>Sat, 15 Nov 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://chase6305.github.io/posts/nvidia/no_devices/</guid>
+      <description>
+        
+        
+        &lt;h2 data-hextra-search-id=&#34;结论先行先核对架构与内核模块类型&#34; id=&#34;结论先行先核对架构与内核模块类型&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;结论先行：先核对架构与内核模块类型&lt;a href=&#34;#%e7%bb%93%e8%ae%ba%e5%85%88%e8%a1%8c%e5%85%88%e6%a0%b8%e5%af%b9%e6%9e%b6%e6%9e%84%e4%b8%8e%e5%86%85%e6%a0%b8%e6%a8%a1%e5%9d%97%e7%b1%bb%e5%9e%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;这是一份 2025 年 11 月的 RTX 5070 Ti 排障记录，下面的内核、驱动版本和输出均属于当时环境，不是今天所有机器的安装清单。Blackwell GPU 要求使用 NVIDIA 的开放内核模块，不能把 &lt;code&gt;-open&lt;/code&gt; 仅理解为可选性能优化；它也不等于 Nouveau，用户态驱动仍需匹配。&lt;/p&gt;
+&lt;p&gt;先只读检查，再决定安装方案：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lspci -nnk -d 10de:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;uname -r
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;modinfo -F license nvidia
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat /proc/driver/nvidia/version
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;journalctl -k -b &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; rg -i &lt;span class=&#34;s1&#34;&gt;&amp;#39;nvidia|nvrm|nouveau|verification|firmware&amp;#39;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;如果 PCI 设备不可见，先查硬件、虚拟机直通或 BIOS；如果内核日志报告模块签名失败，检查 Secure Boot 与签名流程；如果日志明确要求 open kernel modules，再修正模块类型。不要仅凭一句 &lt;code&gt;No devices were found&lt;/code&gt; 判断所有机器的根因相同。&lt;/p&gt;
+&lt;p&gt;参考：&lt;a
+    href=&#34;https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/latest/kernel-modules.html&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NVIDIA 内核模块类型与硬件要求&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;ubuntu-2204-下的历史排障记录&#34; id=&#34;ubuntu-2204-下的历史排障记录&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;Ubuntu 22.04 下的历史排障记录&lt;a href=&#34;#ubuntu-2204-%e4%b8%8b%e7%9a%84%e5%8e%86%e5%8f%b2%e6%8e%92%e9%9a%9c%e8%ae%b0%e5%bd%95&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3 data-hextra-search-id=&#34;问题背景&#34; id=&#34;问题背景&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;问题背景&lt;a href=&#34;#%e9%97%ae%e9%a2%98%e8%83%8c%e6%99%af&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;最近在Ubuntu 22.04系统上安装NVIDIA RTX 5070 Ti 显卡驱动时，遇到了一系列挑战。尽管按照常规方法安装了官方推荐的驱动，但&lt;code&gt;nvidia-smi&lt;/code&gt;始终显示&amp;quot;No devices were found&amp;quot;。经过几天的摸索和多次重装，暂时找到了解决方案。&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;系统环境&#34; id=&#34;系统环境&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;系统环境&lt;a href=&#34;#%e7%b3%bb%e7%bb%9f%e7%8e%af%e5%a2%83&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;操作系统&lt;/strong&gt;: Ubuntu 22.04 LTS&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;内核版本&lt;/strong&gt;: 6.8.0-87-generic&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;显卡&lt;/strong&gt;: NVIDIA RTX 5070 Ti&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;多显卡配置&lt;/strong&gt;: 系统同时配备了NVIDIA RTX 5070 Ti 和 AMD集成显卡&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 data-hextra-search-id=&#34;问题排查过程&#34; id=&#34;问题排查过程&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;问题排查过程&lt;a href=&#34;#%e9%97%ae%e9%a2%98%e6%8e%92%e6%9f%a5%e8%bf%87%e7%a8%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4 data-hextra-search-id=&#34;1-初始硬件检测&#34; id=&#34;1-初始硬件检测&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;1. 初始硬件检测&lt;a href=&#34;#1-%e5%88%9d%e5%a7%8b%e7%a1%ac%e4%bb%b6%e6%a3%80%e6%b5%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 检查系统内核版本
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;chase@chase:~$ uname -r
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;6.8.0-87-generic
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 查看显卡硬件信息
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;chase@chase:~$ lspci | grep -i vga
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;01:00.0 VGA compatible controller: NVIDIA Corporation Device 2c05 (rev a1)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;79:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Device 13c0 (rev c9)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;从输出可以看到，系统正确识别到了NVIDIA GPU（设备 ID: 2c05）和AMD集成显卡。&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;2-可用驱动检测&#34; id=&#34;2-可用驱动检测&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;2. 可用驱动检测&lt;a href=&#34;#2-%e5%8f%af%e7%94%a8%e9%a9%b1%e5%8a%a8%e6%a3%80%e6%b5%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;chase@chase:~$ ubuntu-drivers devices
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;== /sys/devices/pci0000:00/0000:00:01.1/0000:01:00.0 ==
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;modalias : pci:v000010DEd00002C05sv00001043sd000089F4bc03sc00i00
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vendor   : NVIDIA Corporation
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;driver   : nvidia-driver-580-server-open - distro non-free
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;driver   : nvidia-driver-570-server-open - distro non-free
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;driver   : nvidia-driver-570 - distro non-free
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;driver   : nvidia-driver-570-open - distro non-free
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;driver   : nvidia-driver-580 - distro non-free recommended
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;driver   : nvidia-driver-570-server - distro non-free
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;driver   : nvidia-driver-580-open - distro non-free
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;driver   : nvidia-driver-580-server - distro non-free
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;driver   : xserver-xorg-video-nouveau - distro free builtin&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;系统推荐安装&lt;code&gt;nvidia-driver-580&lt;/code&gt;版本驱动。&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;3-初次安装尝试&#34; id=&#34;3-初次安装尝试&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;3. 初次安装尝试&lt;a href=&#34;#3-%e5%88%9d%e6%ac%a1%e5%ae%89%e8%a3%85%e5%b0%9d%e8%af%95&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;按照官方推荐安装580版本驱动：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt-get install nvidia-driver-580&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;安装完成后，检查驱动状态：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nvidia-smi&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;结果令人失望：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;No devices were found&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3 data-hextra-search-id=&#34;问题分析与解决方案&#34; id=&#34;问题分析与解决方案&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;问题分析与解决方案&lt;a href=&#34;#%e9%97%ae%e9%a2%98%e5%88%86%e6%9e%90%e4%b8%8e%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4 data-hextra-search-id=&#34;根本原因&#34; id=&#34;根本原因&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;根本原因&lt;a href=&#34;#%e6%a0%b9%e6%9c%ac%e5%8e%9f%e5%9b%a0&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;经过多次尝试和排查，发现问题可能源于以下几个方面：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;模块类型不匹配&lt;/strong&gt;：Blackwell 需要开放内核模块，不能使用专有内核模块。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;加载与固件错误&lt;/strong&gt;：需要以内核日志确认，不从安装成功推断驱动已经接管设备。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Secure Boot 与签名&lt;/strong&gt;：无论开放还是专有模块，签名策略都可能影响加载；没有日志证据时不能认定它是本次原因。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 data-hextra-search-id=&#34;最终解决方案&#34; id=&#34;最终解决方案&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;最终解决方案&lt;a href=&#34;#%e6%9c%80%e7%bb%88%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;使用开源版本的580驱动成功解决问题：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 卸载之前安装的驱动（如有）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt-get remove nvidia-driver-580
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 安装开源版本的580驱动&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt-get install nvidia-driver-580-open&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;安装完成后，重启系统并验证：&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;成功验证&#34; id=&#34;成功验证&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;成功验证&lt;a href=&#34;#%e6%88%90%e5%8a%9f%e9%aa%8c%e8%af%81&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;chase@chase:~$ nvidia-smi
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Sat Nov 15 15:27:11 2025
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;+-----------------------------------------------------------------------------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;| NVIDIA-SMI 580.95.05              Driver Version: 580.95.05      CUDA Version: 13.0     |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;+-----------------------------------------+------------------------+----------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|                                         |                        |               MIG M. |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|=========================================+========================+======================|
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|   0  NVIDIA GeForce RTX 5070 Ti     Off |   00000000:01:00.0  On |                  N/A |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|  0%   35C    P8             20W /  300W |     921MiB /  16303MiB |      6%      Default |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|                                         |                        |                  N/A |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;+-----------------------------------------+------------------------+----------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;+-----------------------------------------------------------------------------------------+
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;| Processes:                                                                              |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|        ID   ID                                                               Usage      |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|=========================================================================================|
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|    0   N/A  N/A            2044      G   /usr/lib/xorg/Xorg                      392MiB |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|    0   N/A  N/A            2191      G   /usr/bin/gnome-shell                     80MiB |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|    0   N/A  N/A            4977      G   ...rack-uuid=3190708988185955192        386MiB |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;+-----------------------------------------------------------------------------------------+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3 data-hextra-search-id=&#34;经验总结&#34; id=&#34;经验总结&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;经验总结&lt;a href=&#34;#%e7%bb%8f%e9%aa%8c%e6%80%bb%e7%bb%93&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;先核对架构要求&lt;/strong&gt;：Blackwell 对开放内核模块的要求不是一般性的“新卡优先尝试”。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;核对发行版推荐结果&lt;/strong&gt;：软件源元数据与硬件要求不一致时，以设备支持表和内核日志继续定位。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;多显卡不等于冲突&lt;/strong&gt;：分别确认设备绑定的驱动和显示/计算用途。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;记录完整版本组合&lt;/strong&gt;：本例证明当时的 580.95.05-open 组合可用，不能由此推断所有 570 或 580 包的表现。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 data-hextra-search-id=&#34;cuda-toolkit-是另一个安装问题&#34; id=&#34;cuda-toolkit-是另一个安装问题&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;CUDA Toolkit 是另一个安装问题&lt;a href=&#34;#cuda-toolkit-%e6%98%af%e5%8f%a6%e4%b8%80%e4%b8%aa%e5%ae%89%e8%a3%85%e9%97%ae%e9%a2%98&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;不要同时照抄发行版 Toolkit 包和 &lt;code&gt;.run&lt;/code&gt; 安装器两条路线。选择一种与项目要求匹配的安装方式；若使用包含驱动的安装器，避免覆盖已经验证的系统驱动。&lt;code&gt;nvidia-smi&lt;/code&gt; 里的 CUDA Version 不是本地 &lt;code&gt;nvcc&lt;/code&gt; 版本。下面保留当时独立安装 CUDA 12.8 后的版本记录。&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 仅在需要本地 CUDA 编译时检查 Toolkit&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nvcc --version&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nvcc: NVIDIA (R) Cuda compiler driver
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Copyright (c) 2005-2025 NVIDIA Corporation
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Built on Wed_Jan_15_19:20:09_PST_2025
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Cuda compilation tools, release 12.8, V12.8.61
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Build cuda_12.8.r12.8/compiler.35404655_0&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3 data-hextra-search-id=&#34;结论&#34; id=&#34;结论&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;结论&lt;a href=&#34;#%e7%bb%93%e8%ae%ba&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;本例通过匹配 Blackwell 所需的开放内核模块恢复设备识别。其他机器仍应按 PCI 枚举、模块加载、固件、签名和用户态库逐层检查；修复后除 &lt;code&gt;nvidia-smi&lt;/code&gt; 外，还应运行实际应用的最小 GPU 测试。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;阅读自测与验收&#34; id=&#34;阅读自测与验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;阅读自测与验收&lt;a href=&#34;#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;把 PCI 识别、内核模块加载、模块签名和 nvidia-smi 分开检查，保留原始日志以及驱动安装来源。&lt;/li&gt;
+&lt;li&gt;修复后在目标内核和重启后的会话中复测；安装命令成功与驱动实际绑定硬件是不同的验收条件。&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Ubuntu 22.04 无法进入图形界面的解决方法</title>
+      <link>https://chase6305.github.io/posts/vscode/gdm/</link>
+      <pubDate>Tue, 11 Mar 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://chase6305.github.io/posts/vscode/gdm/</guid>
+      <description>
+        
+        
+        &lt;h2 data-hextra-search-id=&#34;先保留日志再修改图形环境&#34; id=&#34;先保留日志再修改图形环境&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;先保留日志，再修改图形环境&lt;a href=&#34;#%e5%85%88%e4%bf%9d%e7%95%99%e6%97%a5%e5%bf%97%e5%86%8d%e4%bf%ae%e6%94%b9%e5%9b%be%e5%bd%a2%e7%8e%af%e5%a2%83&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Ubuntu 22.04 只能进入 TTY 时，问题可能在磁盘空间、显示管理器、用户会话、GPU 驱动或未完成的软件包配置。不要把“无法显示桌面”直接等同于“需要重装显卡驱动”。&lt;/p&gt;
+&lt;p&gt;可通过 &lt;code&gt;Ctrl+Alt+F3&lt;/code&gt; 等切换到文本终端登录；具体功能键取决于当前会话。远程操作前确认还有可用的 SSH/控制台回退通道。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;1-只读检查&#34; id=&#34;1-只读检查&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;1. 只读检查&lt;a href=&#34;#1-%e5%8f%aa%e8%af%bb%e6%a3%80%e6%9f%a5&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;df -h
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;df -i
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl status display-manager --no-pager
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;systemctl get-default
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;journalctl -b -u display-manager --no-pager
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;journalctl -b -p err --no-pager
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;dpkg --audit
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lspci -nnk&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;display-manager&lt;/code&gt; 是实际显示管理器的别名，可能对应 &lt;code&gt;gdm3&lt;/code&gt;、&lt;code&gt;lightdm&lt;/code&gt; 或其他服务。若按别名未查到日志，使用 &lt;code&gt;systemctl status&lt;/code&gt; 显示的真实服务名继续查询。&lt;/p&gt;
+&lt;p&gt;Xorg 日志可能在 &lt;code&gt;/var/log/&lt;/code&gt; 或用户会话目录；Wayland 会话主要查看 journal。不要因为 &lt;code&gt;/var/log/Xorg.0.log&lt;/code&gt; 不存在就判断没有图形驱动。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;2-根据证据分支处理&#34; id=&#34;2-根据证据分支处理&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;2. 根据证据分支处理&lt;a href=&#34;#2-%e6%a0%b9%e6%8d%ae%e8%af%81%e6%8d%ae%e5%88%86%e6%94%af%e5%a4%84%e7%90%86&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;证据&lt;/th&gt;
+					&lt;th&gt;下一步&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;分区或 inode 耗尽&lt;/td&gt;
+					&lt;td&gt;定位增长来源，优先移动自己的可再生缓存，避免批量删除系统目录&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;软件包处于未配置状态&lt;/td&gt;
+					&lt;td&gt;核对升级记录，恢复该次包事务，阅读拟执行的依赖变更&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;显示管理器反复退出&lt;/td&gt;
+					&lt;td&gt;查看该服务日志和最近配置修改&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;仅一个用户登录循环&lt;/td&gt;
+					&lt;td&gt;检查用户会话配置、权限与扩展；不先重装整个桌面&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;内核报告 GPU 模块/固件错误&lt;/td&gt;
+					&lt;td&gt;核对设备架构、驱动来源、模块签名与当前内核&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;默认目标被改为 multi-user&lt;/td&gt;
+					&lt;td&gt;确认机器原本是否应运行桌面，再调整启动目标&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;NVIDIA、AMD 和 Intel 的排查路径不同。新增 PPA 或换驱动会改变系统状态，应在确认包来源和兼容性后进行，不能作为所有黑屏问题的第一步。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;3-重启服务的代价&#34; id=&#34;3-重启服务的代价&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;3. 重启服务的代价&lt;a href=&#34;#3-%e9%87%8d%e5%90%af%e6%9c%8d%e5%8a%a1%e7%9a%84%e4%bb%a3%e4%bb%b7&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;只有在保存工作并确认可以终止图形会话时，再对实际服务执行重启。例如使用 GDM3 的机器：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo systemctl restart gdm3&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;这会结束现有图形会话，未保存内容可能丢失。重启服务只能验证修复是否生效，不能代替根因分析。&lt;code&gt;startx&lt;/code&gt; 启动的是另一条会话路径，也不能完整证明 GDM/Wayland 已恢复。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;4-验收与记录&#34; id=&#34;4-验收与记录&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;4. 验收与记录&lt;a href=&#34;#4-%e9%aa%8c%e6%94%b6%e4%b8%8e%e8%ae%b0%e5%bd%95&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;确认登录界面、目标用户桌面、注销再登录和需要的图形应用正常；若问题与内核更新相关，还需在计划维护窗口验证重启后的行为。&lt;/p&gt;
+&lt;p&gt;记录本次修改的包、配置文件和原值，保留日志时间。不要把整机升级、重装桌面、切换显示管理器和驱动替换同时进行，否则难以判断真正有效的修复。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;阅读自测与验收&#34; id=&#34;阅读自测与验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;阅读自测与验收&lt;a href=&#34;#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;保留显示管理器、用户会话与驱动日志，区分服务未启动、会话崩溃和显卡模块问题。&lt;/li&gt;
+&lt;li&gt;重启显示管理器会结束图形会话，操作前保存工作并确认远程恢复手段；不要把无差别重装桌面作为第一步。&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>libpython3.9.so.1.0: cannot open shared object file: No such file or directory 解决方法</title>
+      <link>https://chase6305.github.io/posts/python/py39/</link>
+      <pubDate>Fri, 28 Feb 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://chase6305.github.io/posts/python/py39/</guid>
+      <description>
+        
+        
+        &lt;h2 data-hextra-search-id=&#34;先定位谁需要-libpython&#34; id=&#34;先定位谁需要-libpython&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;先定位谁需要 libpython&lt;a href=&#34;#%e5%85%88%e5%ae%9a%e4%bd%8d%e8%b0%81%e9%9c%80%e8%a6%81-libpython&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;code&gt;libpython3.9.so.1.0: cannot open shared object file&lt;/code&gt; 表示动态加载器没有找到某个程序要求的 Python 3.9 共享库。报错者可能是嵌入 Python 的 C++ 程序、第三方扩展或独立应用，不一定是当前 shell 的 &lt;code&gt;python&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;不要把 Python 3.10/3.11 的库重命名成 3.9，也不要通过替换 &lt;code&gt;/usr/bin/python3&lt;/code&gt; 修复此问题。相邻版本的共享库不能靠软链接获得 ABI 兼容性。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;1-确认解释器与程序来源&#34; id=&#34;1-确认解释器与程序来源&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;1. 确认解释器与程序来源&lt;a href=&#34;#1-%e7%a1%ae%e8%ae%a4%e8%a7%a3%e9%87%8a%e5%99%a8%e4%b8%8e%e7%a8%8b%e5%ba%8f%e6%9d%a5%e6%ba%90&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;command&lt;/span&gt; -v python
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python -c &lt;span class=&#34;s2&#34;&gt;&amp;#34;import sys; print(sys.executable); print(sys.version)&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python -m pip --version&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;对于确认可信的本地可执行文件，检查其动态依赖：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ldd ./your_application
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;readelf -d ./your_application&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;将示例路径替换成真正报错的程序。&lt;code&gt;ldd&lt;/code&gt; 不应用于不可信的二进制文件。关注 &lt;code&gt;NEEDED&lt;/code&gt;、&lt;code&gt;RPATH/RUNPATH&lt;/code&gt; 和 &lt;code&gt;not found&lt;/code&gt;，不要把所有共享库问题都归因于 Python 包版本。&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;为什么换了终端里的-python原程序仍然报同一个错&#34; id=&#34;为什么换了终端里的-python原程序仍然报同一个错&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;为什么换了终端里的 Python，原程序仍然报同一个错&lt;a href=&#34;#%e4%b8%ba%e4%bb%80%e4%b9%88%e6%8d%a2%e4%ba%86%e7%bb%88%e7%ab%af%e9%87%8c%e7%9a%84-python%e5%8e%9f%e7%a8%8b%e5%ba%8f%e4%bb%8d%e7%84%b6%e6%8a%a5%e5%90%8c%e4%b8%80%e4%b8%aa%e9%94%99&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;假设你运行的是 C++ 可执行文件 &lt;code&gt;your_application&lt;/code&gt;。它在构建时记录了对 &lt;code&gt;libpython3.9.so.1.0&lt;/code&gt; 的依赖；启动时由动态加载器寻找这个名字。即便当前终端的 &lt;code&gt;python&lt;/code&gt; 已经变成 3.11，这个 ELF 文件记录的依赖也没有因此改变。&lt;/p&gt;
+&lt;p&gt;因此检查对象有两条线：&lt;code&gt;sys.executable&lt;/code&gt; 回答 Python 进程实际用了哪个解释器；&lt;code&gt;readelf -d ./your_application&lt;/code&gt; 回答这个原生程序声明了哪些共享库依赖。如果缺失库由另一个依赖间接引入，还要沿报错链继续定位。修复应针对实际依赖者选择匹配运行时或重新构建，不是反复切换命令行中的 &lt;code&gt;python&lt;/code&gt; 名称。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;2-区分库不存在和库找不到&#34; id=&#34;2-区分库不存在和库找不到&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;2. 区分“库不存在”和“库找不到”&lt;a href=&#34;#2-%e5%8c%ba%e5%88%86%e5%ba%93%e4%b8%8d%e5%ad%98%e5%9c%a8%e5%92%8c%e5%ba%93%e6%89%be%e4%b8%8d%e5%88%b0&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;在目标 Python 3.9 环境确实可用时查询其配置：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python3.9 -c &lt;span class=&#34;s2&#34;&gt;&amp;#34;import sysconfig; print(sysconfig.get_config_var(&amp;#39;LIBDIR&amp;#39;)); print(sysconfig.get_config_var(&amp;#39;LDLIBRARY&amp;#39;)); print(sysconfig.get_config_var(&amp;#39;Py_ENABLE_SHARED&amp;#39;))&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ldconfig -p &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; rg libpython&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;如果库不存在，应从原应用支持的发行渠道安装匹配运行时，或重建应用使其链接受支持的 Python。软件包名称和可用版本取决于发行版与软件源，&lt;code&gt;apt install python3.9&lt;/code&gt; 并非在所有系统上都成立。新建 &lt;code&gt;venv&lt;/code&gt; 也不会凭空生成缺失的共享库。&lt;/p&gt;
+&lt;p&gt;若自行编译 CPython，需要按嵌入应用要求启用共享库构建，并使用独立安装前缀；保留系统 Python 不变。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;3-库存在时修复搜索路径&#34; id=&#34;3-库存在时修复搜索路径&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;3. 库存在时修复搜索路径&lt;a href=&#34;#3-%e5%ba%93%e5%ad%98%e5%9c%a8%e6%97%b6%e4%bf%ae%e5%a4%8d%e6%90%9c%e7%b4%a2%e8%b7%af%e5%be%84&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;优先激活应用所属环境，或通过构建时的 RUNPATH 指向其私有库目录。排查阶段可以只对单次命令指定经过确认的目录：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;LD_LIBRARY_PATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/opt/your-python39/lib ./your_application&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;上面的目录只是示例，必须替换成检查得到的实际目录。不要将无关 Conda 库目录永久放到全局搜索路径前端，否则可能改变 OpenSSL、C++ 运行库或 Qt 的加载来源。&lt;/p&gt;
+&lt;p&gt;如需观察实际加载顺序：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;LD_DEBUG&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;libs ./your_application&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;输出可能很长，重点看 &lt;code&gt;libpython3.9.so.1.0&lt;/code&gt; 的搜索位置。系统级共享库目录只有在明确由管理员维护时，才考虑 &lt;code&gt;ld.so.conf.d&lt;/code&gt; 与 &lt;code&gt;ldconfig&lt;/code&gt;，而不是随意向 &lt;code&gt;/usr/lib&lt;/code&gt; 添加软链接。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;4-验收与迁移&#34; id=&#34;4-验收与迁移&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;4. 验收与迁移&lt;a href=&#34;#4-%e9%aa%8c%e6%94%b6%e4%b8%8e%e8%bf%81%e7%a7%bb&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;验收标准是原应用能够启动、所加载的库路径正确、关键功能通过测试，而非仅 &lt;code&gt;python3.9 --version&lt;/code&gt; 成功。保存解释器版本、构建配置和依赖清单。&lt;/p&gt;
+&lt;p&gt;本文保留 Python 3.9 作为历史错误场景。维护旧应用时应评估升级成本与上游支持状态，不把旧版本安装步骤当作新项目的默认环境方案。&lt;/p&gt;
+&lt;p&gt;参考：&lt;a
+    href=&#34;https://docs.python.org/3/extending/embedding.html&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CPython 嵌入文档&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;、&lt;a
+    href=&#34;https://docs.python.org/3/using/configure.html&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CPython 构建配置&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;阅读自测与验收&#34; id=&#34;阅读自测与验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;阅读自测与验收&lt;a href=&#34;#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;打印 sys.executable 和实际加载库路径，确认当前 Python 3.9 所属环境；目录名称相似不代表加载的是同一套库。&lt;/li&gt;
+&lt;li&gt;用相同入口启动最小导入和实际应用，避免终端可运行而 IDE 或服务仍使用其他解释器。&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>symbol version Qt_5_PRIVATE_API not defined in libQt5Gui.so.5 解决方法</title>
+      <link>https://chase6305.github.io/posts/gui/qt/qt5/</link>
+      <pubDate>Fri, 28 Feb 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://chase6305.github.io/posts/gui/qt/qt5/</guid>
+      <description>
+        
+        
+        &lt;p&gt;&lt;code&gt;Qt_5_PRIVATE_API not defined&lt;/code&gt; 通常提示插件或扩展加载了不匹配的 Qt 动态库。需要确认“哪个插件”与“哪套 Qt”发生冲突，而不是只根据 PyQt5-sip 版本猜测一个旧版 PyQt5。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;1-记录解释器与-qt-版本&#34; id=&#34;1-记录解释器与-qt-版本&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;1. 记录解释器与 Qt 版本&lt;a href=&#34;#1-%e8%ae%b0%e5%bd%95%e8%a7%a3%e9%87%8a%e5%99%a8%e4%b8%8e-qt-%e7%89%88%e6%9c%ac&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python -m pip show PyQt5 PyQt5-Qt5 PyQt5-sip
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python -m pip check
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python -c &lt;span class=&#34;s2&#34;&gt;&amp;#34;from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR; print(QT_VERSION_STR, PYQT_VERSION_STR)&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;QT_VERSION_STR&lt;/code&gt; 表示绑定编译时的 Qt 版本。进一步查看实际运行的版本与插件目录：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;PyQt5.QtCore&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;QLibraryInfo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;qVersion&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Runtime Qt:&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;qVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;())&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Plugins:&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;QLibraryInfo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;location&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QLibraryInfo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PluginsPath&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 data-hextra-search-id=&#34;2-查看插件与动态库来源&#34; id=&#34;2-查看插件与动态库来源&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;2. 查看插件与动态库来源&lt;a href=&#34;#2-%e6%9f%a5%e7%9c%8b%e6%8f%92%e4%bb%b6%e4%b8%8e%e5%8a%a8%e6%80%81%e5%ba%93%e6%9d%a5%e6%ba%90&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;QT_DEBUG_PLUGINS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; python app.py
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;LD_DEBUG&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;libs python app.py
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;printenv QT_PLUGIN_PATH QT_QPA_PLATFORM_PLUGIN_PATH LD_LIBRARY_PATH&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;如果系统 Qt、pip 自带 Qt、Conda Qt 或 OpenCV 的插件目录混在一起，优先在独立环境复现并统一来源。Qt 对插件版本有兼容性检查，私有 API 更不能按公共 API 的兼容假设处理。&lt;a
+    href=&#34;https://doc.qt.io/qt-6/deployment-plugins.html&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Qt 插件部署文档&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;怎样阅读一组路径不一致的证据&#34; id=&#34;怎样阅读一组路径不一致的证据&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;怎样阅读一组“路径不一致”的证据&lt;a href=&#34;#%e6%80%8e%e6%a0%b7%e9%98%85%e8%af%bb%e4%b8%80%e7%bb%84%e8%b7%af%e5%be%84%e4%b8%8d%e4%b8%80%e8%87%b4%e7%9a%84%e8%af%81%e6%8d%ae&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;假设 &lt;code&gt;sys.executable&lt;/code&gt; 指向 &lt;code&gt;/opt/project/.venv/bin/python&lt;/code&gt;，插件日志却选择了另一套 Conda 环境中的 &lt;code&gt;libqxcb.so&lt;/code&gt;，而加载器又从 &lt;code&gt;/usr/lib/&lt;/code&gt; 取得 QtGui。这个组合提示需要核对来源，但路径分散本身还不是不兼容的证明：有些发行方式本来就会使用系统依赖，关键是这些二进制是否属于支持的组合。&lt;/p&gt;
+&lt;p&gt;可把解释器、QtCore、QtGui 和平台插件的实际路径放在同一份记录中，再检查是谁设置了插件路径或库路径。只比较 &lt;code&gt;pip show&lt;/code&gt; 中的 Python 包版本，会漏掉进程最终加载的动态库；只删除一个环境变量，也可能漏掉应用代码对搜索路径的修改。&lt;/p&gt;
+&lt;p&gt;隔离实验一次只改变一个来源：先用原环境中的最小窗口测试，再在独立环境安装同一套绑定及其相容依赖。如果后者成功，继续比较库路径；不要把“独立环境成功”直接写成已经找到了原环境中哪个包有错。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;3-用最小窗口验收&#34; id=&#34;3-用最小窗口验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;3. 用最小窗口验收&lt;a href=&#34;#3-%e7%94%a8%e6%9c%80%e5%b0%8f%e7%aa%97%e5%8f%a3%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;先运行只导入 PyQt5 并创建 &lt;code&gt;QApplication&lt;/code&gt; 的小程序，再逐个加回 OpenCV、Matplotlib 等依赖。若只有某个依赖加入后失败，比较加入前后的插件搜索路径。&lt;/p&gt;
+&lt;p&gt;确需重装时，让包管理器为当前 Python 版本解析一组相容依赖，并保存版本清单。不要把 &lt;code&gt;PyQt5==5.13.2&lt;/code&gt; 视为所有平台、Python 和系统 Qt 的通用修复版本。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;阅读自测与验收&#34; id=&#34;阅读自测与验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;阅读自测与验收&lt;a href=&#34;#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;记录导入的 Qt binding、Qt 版本和插件目录，检查应用是否同时加载了不兼容的 Qt5/Qt6 组件。&lt;/li&gt;
+&lt;li&gt;用同一环境启动最小窗口，再逐步加回 Matplotlib、OpenCV 等依赖；不要在最小窗口尚未成功时调试业务界面。&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

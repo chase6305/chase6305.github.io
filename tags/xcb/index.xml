@@ -1,0 +1,141 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chase – XCB</title>
+    <link>https://chase6305.github.io/tags/xcb/</link>
+    <description>Recent content in XCB on Chase</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Sat, 07 Aug 2021 00:00:00 +0000</lastBuildDate>
+    
+	  <atom:link href="https://chase6305.github.io/tags/xcb/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Qt xcb 插件无法加载：依赖、版本与显示连接</title>
+      <link>https://chase6305.github.io/posts/xcb/post_2/</link>
+      <pubDate>Sat, 07 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://chase6305.github.io/posts/xcb/post_2/</guid>
+      <description>
+        
+        
+        &lt;p&gt;当 Qt 报告“已找到 xcb 插件，但无法加载”，可能是插件依赖缺失、Qt 库混用，也可能是无法连接显示服务器。下面以 Debian/Ubuntu 上的诊断流程为例。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;先读一遍插件加载链&#34; id=&#34;先读一遍插件加载链&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;先读一遍插件加载链&lt;a href=&#34;#%e5%85%88%e8%af%bb%e4%b8%80%e9%81%8d%e6%8f%92%e4%bb%b6%e5%8a%a0%e8%bd%bd%e9%93%be&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;应用启动时，Qt 先根据平台和配置选择 &lt;code&gt;xcb&lt;/code&gt;，再寻找 &lt;code&gt;libqxcb.so&lt;/code&gt;；动态加载器随后解析这个插件依赖的库，插件初始化后还要连接实际显示服务器。这几步中任意一步失败，都可能在最后汇总成类似的“无法初始化平台插件”。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;更早出现的日志线索&lt;/th&gt;
+					&lt;th&gt;失败发生在哪里&lt;/th&gt;
+					&lt;th&gt;下文应先看哪一节&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;找不到平台插件路径或文件&lt;/td&gt;
+					&lt;td&gt;插件发现&lt;/td&gt;
+					&lt;td&gt;第 1 节，核对搜索路径&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;某个 &lt;code&gt;.so&lt;/code&gt; 显示 &lt;code&gt;not found&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;依赖加载&lt;/td&gt;
+					&lt;td&gt;第 2 节，核对实际插件的依赖&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;undefined symbol&lt;/code&gt; 或符号版本缺失&lt;/td&gt;
+					&lt;td&gt;二进制接口匹配&lt;/td&gt;
+					&lt;td&gt;第 3 节及 Qt 版本冲突文章&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;could not connect to display&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;显示连接与授权&lt;/td&gt;
+					&lt;td&gt;第 4 节，核对会话&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;这些是排查入口，不是仅凭一个关键词得出的最终根因。例如，磁盘上存在 &lt;code&gt;libqxcb.so&lt;/code&gt; 只证明文件存在，不证明它的依赖完整，更不证明它能访问桌面。&lt;a
+    href=&#34;https://doc.qt.io/qt-6/deployment-plugins.html&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Qt 官方插件诊断说明&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;1-读取插件加载日志&#34; id=&#34;1-读取插件加载日志&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;1. 读取插件加载日志&lt;a href=&#34;#1-%e8%af%bb%e5%8f%96%e6%8f%92%e4%bb%b6%e5%8a%a0%e8%bd%bd%e6%97%a5%e5%bf%97&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;QT_DEBUG_PLUGINS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; python app.py&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;该变量在程序运行、加载插件时生效，不是编译器选项。对 C++ 程序，将 &lt;code&gt;python app.py&lt;/code&gt; 换成对应可执行文件。日志会显示实际选择的 &lt;code&gt;libqxcb.so&lt;/code&gt; 路径及失败原因。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;2-检查缺失的依赖&#34; id=&#34;2-检查缺失的依赖&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;2. 检查缺失的依赖&lt;a href=&#34;#2-%e6%a3%80%e6%9f%a5%e7%bc%ba%e5%a4%b1%e7%9a%84%e4%be%9d%e8%b5%96&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;将日志中的真实插件路径代入；只对可信的本地二进制运行：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ldd /path/to/platforms/libqxcb.so&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;如果明确缺少 &lt;code&gt;libxcb-xinerama.so.0&lt;/code&gt;，检查并安装发行版对应包：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;apt-cache policy libxcb-xinerama0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt-get install libxcb-xinerama0&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;其他缺失库应按日志逐项定位，包名随发行版与 Qt 版本变化。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;3-不要用软链接掩盖-abi-不匹配&#34; id=&#34;3-不要用软链接掩盖-abi-不匹配&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;3. 不要用软链接掩盖 ABI 不匹配&lt;a href=&#34;#3-%e4%b8%8d%e8%a6%81%e7%94%a8%e8%bd%af%e9%93%be%e6%8e%a5%e6%8e%a9%e7%9b%96-abi-%e4%b8%8d%e5%8c%b9%e9%85%8d&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;code&gt;libxcb-util.so.0&lt;/code&gt; 与 &lt;code&gt;libxcb-util.so.1&lt;/code&gt; 的 SONAME 不同。把旧文件软链接成新名称不能保证 ABI 兼容，可能把加载错误变成运行时崩溃。应安装对应运行时，或使用针对本机依赖构建的 Qt 包。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;4-检查显示连接&#34; id=&#34;4-检查显示连接&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;4. 检查显示连接&lt;a href=&#34;#4-%e6%a3%80%e6%9f%a5%e6%98%be%e7%a4%ba%e8%bf%9e%e6%8e%a5&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;printenv DISPLAY WAYLAND_DISPLAY XDG_SESSION_TYPE&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;“could not connect to display”应检查实际桌面会话、SSH 转发与访问权限。手工设置 &lt;code&gt;DISPLAY=:0&lt;/code&gt; 不会创建显示服务器，也不会自动授予访问权限。&lt;/p&gt;
+&lt;p&gt;仅做无窗口测试时，可以尝试 &lt;code&gt;QT_QPA_PLATFORM=offscreen&lt;/code&gt;，但它不保证支持应用所需的 OpenGL 上下文。&lt;/p&gt;
+&lt;p&gt;完成后恢复常规启动方式，验证窗口、输入事件和程序退出。参考 &lt;a
+    href=&#34;https://doc.qt.io/qt-6/deployment-plugins.html&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Qt 插件部署文档&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;阅读自测与验收&#34; id=&#34;阅读自测与验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;阅读自测与验收&lt;a href=&#34;#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;使用 QT_DEBUG_PLUGINS 记录实际插件路径，再对该二进制执行依赖检查；不要对系统中另一份同名插件下结论。&lt;/li&gt;
+&lt;li&gt;在匹配的解释器、架构和显示会话中验证最小窗口；伪造 soname 链接可能绕过报错，却留下 ABI 风险。&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

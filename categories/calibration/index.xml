@@ -4,28 +4,23 @@
     <title>Calibration on Chase Blog</title>
     <link>https://chase6305.github.io/categories/calibration/</link>
     <description>Recent content in Calibration on Chase Blog</description>
-    <image>
-      <title>Chase Blog</title>
-      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.92.2</generator>
+    <generator>Hugo -- 0.165.0</generator>
     <language>zh-CN</language>
     <lastBuildDate>Tue, 01 Apr 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://chase6305.github.io/categories/calibration/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>机器人运动学参数标定</title>
-      <link>https://chase6305.github.io/posts/calibration/kinematics/</link>
-      <pubDate>Tue, 01 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://chase6305.github.io/posts/calibration/kinematics/</guid>
-      <description>机器人运动学参数标定</description>
-    </item>
     <item>
       <title>机器人零位标定修正流程介绍</title>
       <link>https://chase6305.github.io/posts/calibration/zero/</link>
       <pubDate>Tue, 01 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://chase6305.github.io/posts/calibration/zero/</guid>
       <description>机器人零位标定修正流程介绍</description>
+    </item>
+    <item>
+      <title>机器人运动学参数标定</title>
+      <link>https://chase6305.github.io/posts/calibration/kinematics/</link>
+      <pubDate>Tue, 01 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/calibration/kinematics/</guid>
+      <description>机器人运动学参数标定</description>
     </item>
     <item>
       <title>libEGL warning: FIXME: egl/x11 doesn‘t support front buffer rendering 解决方法</title>

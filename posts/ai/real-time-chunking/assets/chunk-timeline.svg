@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="520" viewBox="0 0 1120 520" role="img" aria-labelledby="title desc">
+<title id="title">RTC: align chunks before switching</title><desc id="desc">H = 16   |   s = 5   |   d = 4   |   zero-based indices</desc>
+<rect width="100%" height="100%" rx="20" fill="#f8fafc"/>
+<g font-family="Arial, sans-serif">
+<text x="42" y="53" font-size="29" fill="#16334d" text-anchor="start" font-weight="bold">RTC: align chunks before switching</text>
+<text x="42" y="85" font-size="18" fill="#52687b" text-anchor="start" font-weight="normal">H = 16   |   s = 5   |   d = 4   |   zero-based indices</text>
+<text x="42" y="175" font-size="20" fill="#16334d" text-anchor="start" font-weight="bold">Old chunk</text>
+<text x="42" y="198" font-size="16" fill="#52687b" text-anchor="start" font-weight="normal">origin: t - 5</text>
+<text x="42" y="280" font-size="20" fill="#16334d" text-anchor="start" font-weight="bold">New chunk</text>
+<text x="42" y="303" font-size="16" fill="#52687b" text-anchor="start" font-weight="normal">origin: t</text>
+<rect x="220" y="150" width="35" height="48" rx="5" fill="#edf2f6"/>
+<rect x="258" y="150" width="35" height="48" rx="5" fill="#edf2f6"/>
+<rect x="296" y="150" width="35" height="48" rx="5" fill="#edf2f6"/>
+<rect x="334" y="150" width="35" height="48" rx="5" fill="#edf2f6"/>
+<rect x="372" y="150" width="35" height="48" rx="5" fill="#edf2f6"/>
+<rect x="410" y="150" width="35" height="48" rx="5" fill="#f6c58a"/>
+<rect x="448" y="150" width="35" height="48" rx="5" fill="#f6c58a"/>
+<rect x="486" y="150" width="35" height="48" rx="5" fill="#f6c58a"/>
+<rect x="524" y="150" width="35" height="48" rx="5" fill="#f6c58a"/>
+<rect x="562" y="150" width="35" height="48" rx="5" fill="#bddcf4"/>
+<rect x="600" y="150" width="35" height="48" rx="5" fill="#bddcf4"/>
+<rect x="638" y="150" width="35" height="48" rx="5" fill="#bddcf4"/>
+<rect x="676" y="150" width="35" height="48" rx="5" fill="#bddcf4"/>
+<rect x="714" y="150" width="35" height="48" rx="5" fill="#bddcf4"/>
+<rect x="752" y="150" width="35" height="48" rx="5" fill="#bddcf4"/>
+<rect x="790" y="150" width="35" height="48" rx="5" fill="#bddcf4"/>
+<rect x="410" y="250" width="35" height="48" rx="5" fill="#f6c58a"/>
+<text x="427.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">0</text>
+<rect x="448" y="250" width="35" height="48" rx="5" fill="#f6c58a"/>
+<text x="465.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">1</text>
+<rect x="486" y="250" width="35" height="48" rx="5" fill="#f6c58a"/>
+<text x="503.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">2</text>
+<rect x="524" y="250" width="35" height="48" rx="5" fill="#f6c58a"/>
+<text x="541.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">3</text>
+<rect x="562" y="250" width="35" height="48" rx="5" fill="#bddcf4"/>
+<text x="579.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">4</text>
+<rect x="600" y="250" width="35" height="48" rx="5" fill="#bddcf4"/>
+<text x="617.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">5</text>
+<rect x="638" y="250" width="35" height="48" rx="5" fill="#bddcf4"/>
+<text x="655.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">6</text>
+<rect x="676" y="250" width="35" height="48" rx="5" fill="#bddcf4"/>
+<text x="693.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">7</text>
+<rect x="714" y="250" width="35" height="48" rx="5" fill="#bddcf4"/>
+<text x="731.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">8</text>
+<rect x="752" y="250" width="35" height="48" rx="5" fill="#bddcf4"/>
+<text x="769.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">9</text>
+<rect x="790" y="250" width="35" height="48" rx="5" fill="#bddcf4"/>
+<text x="807.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">10</text>
+<rect x="828" y="250" width="35" height="48" rx="5" fill="#b8e2d3"/>
+<text x="845.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">11</text>
+<rect x="866" y="250" width="35" height="48" rx="5" fill="#b8e2d3"/>
+<text x="883.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">12</text>
+<rect x="904" y="250" width="35" height="48" rx="5" fill="#b8e2d3"/>
+<text x="921.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">13</text>
+<rect x="942" y="250" width="35" height="48" rx="5" fill="#b8e2d3"/>
+<text x="959.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">14</text>
+<rect x="980" y="250" width="35" height="48" rx="5" fill="#b8e2d3"/>
+<text x="997.5" y="280" font-size="16" fill="#16334d" text-anchor="middle" font-weight="normal">15</text>
+<line x1="218" y1="122" x2="218" y2="326" stroke="#9aafbf" stroke-width="1" stroke-dasharray="4 5"/>
+<text x="218" y="352" font-size="17" fill="#16334d" text-anchor="middle" font-weight="normal">t - 5</text>
+<line x1="408" y1="122" x2="408" y2="326" stroke="#9aafbf" stroke-width="1" stroke-dasharray="4 5"/>
+<text x="408" y="352" font-size="17" fill="#16334d" text-anchor="middle" font-weight="normal">t</text>
+<line x1="560" y1="122" x2="560" y2="326" stroke="#9aafbf" stroke-width="1" stroke-dasharray="4 5"/>
+<text x="560" y="352" font-size="17" fill="#16334d" text-anchor="middle" font-weight="normal">t + 4</text>
+<line x1="826" y1="122" x2="826" y2="326" stroke="#9aafbf" stroke-width="1" stroke-dasharray="4 5"/>
+<text x="826" y="352" font-size="17" fill="#16334d" text-anchor="middle" font-weight="normal">t + 11</text>
+<line x1="1016" y1="122" x2="1016" y2="326" stroke="#9aafbf" stroke-width="1" stroke-dasharray="4 5"/>
+<text x="1016" y="352" font-size="17" fill="#16334d" text-anchor="middle" font-weight="normal">t + 16</text>
+<text x="410" y="117" font-size="16" fill="#16334d" text-anchor="start" font-weight="normal">request</text>
+<text x="562" y="225" font-size="17" fill="#16334d" text-anchor="start" font-weight="bold">result ready / use new[4:]</text>
+<rect x="42" y="393" width="24" height="24" rx="5" fill="#f6c58a"/>
+<text x="76" y="413" font-size="19" fill="#16334d" text-anchor="start" font-weight="bold">Committed prefix: 4</text>
+<text x="42" y="451" font-size="17" fill="#52687b" text-anchor="start" font-weight="normal">Execute old actions while waiting</text>
+<rect x="404" y="393" width="24" height="24" rx="5" fill="#bddcf4"/>
+<text x="438" y="413" font-size="19" fill="#16334d" text-anchor="start" font-weight="bold">Remaining overlap: 7</text>
+<text x="404" y="451" font-size="17" fill="#52687b" text-anchor="start" font-weight="normal">Old plan can guide the new plan</text>
+<rect x="766" y="393" width="24" height="24" rx="5" fill="#b8e2d3"/>
+<text x="800" y="413" font-size="19" fill="#16334d" text-anchor="start" font-weight="bold">New future: 5</text>
+<text x="766" y="451" font-size="17" fill="#52687b" text-anchor="start" font-weight="normal">No old counterpart</text>
+</g></svg>

@@ -1,0 +1,181 @@
+{
+  "numpy": "2.3.5",
+  "mpc": [
+    {
+      "goal": 0.3,
+      "velocity": [
+        0.2,
+        0.4
+      ],
+      "positions": [
+        0.0,
+        0.020000000000000004,
+        0.06000000000000001
+      ],
+      "kkt": {
+        "primal": 0.0,
+        "dual": 0.0,
+        "stationarity": 1.1102230246251565e-16
+      }
+    },
+    {
+      "goal": -0.3,
+      "velocity": [
+        -0.2,
+        -0.4
+      ],
+      "positions": [
+        0.0,
+        -0.020000000000000004,
+        -0.06000000000000001
+      ],
+      "kkt": {
+        "primal": 0.0,
+        "dual": 0.0,
+        "stationarity": 1.1102230246251565e-16
+      }
+    },
+    {
+      "goal": 0.0,
+      "velocity": [
+        -0.0,
+        0.0
+      ],
+      "positions": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "kkt": {
+        "primal": 0.0,
+        "dual": 0.0,
+        "stationarity": 0.0
+      }
+    }
+  ],
+  "wbc": {
+    "unconstrained": 0.5490196078431373,
+    "command": 0.2,
+    "task_residuals": [
+      -0.6000000000000001,
+      0.6000000000000001
+    ],
+    "kkt": {
+      "primal": 0.0,
+      "dual": 0.0,
+      "stationarity": 0.0
+    }
+  },
+  "coupled_wbc": {
+    "unconstrained": [
+      0.4938271604938272,
+      0.49382716049382713
+    ],
+    "clipped": [
+      0.2,
+      0.49382716049382713
+    ],
+    "command": [
+      0.19999999999999998,
+      0.6666666666666667
+    ],
+    "clipped_objective": 0.24484407864654784,
+    "optimal_objective": 0.16866666666666671,
+    "task_residuals": [
+      -0.1333333333333333,
+      -0.4666666666666668
+    ],
+    "kkt": {
+      "primal": 0.0,
+      "dual": 0.0,
+      "stationarity": 0.0
+    }
+  },
+  "priority_wbc": {
+    "weighted": [
+      {
+        "weight": 4.0,
+        "command": [
+          0.2,
+          0.3529411764705882
+        ],
+        "high_residual": -0.04705882352941171,
+        "low_residual": -0.1529411764705882
+      },
+      {
+        "weight": 40.0,
+        "command": [
+          0.2,
+          0.3941605839416058
+        ],
+        "high_residual": -0.00583941605839422,
+        "low_residual": -0.1941605839416058
+      },
+      {
+        "weight": 400.0,
+        "command": [
+          0.19999999999999996,
+          0.3994016454749439
+        ],
+        "high_residual": -0.0005983545250561884,
+        "low_residual": -0.19940164547494393
+      }
+    ],
+    "hierarchical": {
+      "command": [
+        0.2,
+        0.39999999999999997
+      ],
+      "high_residual": 0.0,
+      "low_residual": -0.19999999999999996,
+      "reduced_kkt": {
+        "primal": 0.0,
+        "dual": 0.0,
+        "stationarity": 0.0
+      }
+    }
+  },
+  "unreachable_priority": [
+    {
+      "target": 1.2,
+      "achieved_sum": 1.0,
+      "command": [
+        0.19999999999999996,
+        0.8
+      ],
+      "high_residual": -0.19999999999999996,
+      "low_residual": -0.6000000000000001,
+      "remaining_interval": [
+        0.19999999999999996,
+        0.2
+      ],
+      "hard_target_rejected": true
+    },
+    {
+      "target": -1.2,
+      "achieved_sum": -1.0,
+      "command": [
+        -0.2,
+        -0.8
+      ],
+      "high_residual": 0.19999999999999996,
+      "low_residual": 0.6000000000000001,
+      "remaining_interval": [
+        -0.2,
+        -0.19999999999999996
+      ],
+      "hard_target_rejected": true
+    }
+  ],
+  "infeasible_rejected": true,
+  "rollout": {
+    "steps": 100,
+    "final": {
+      "step": 100,
+      "time": 10.0,
+      "position": 0.3,
+      "velocity": -0.0,
+      "absolute_error": 0.0
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "experiment": "synthetic; not model evaluation",
+  "checks": [
+    "8x30x3 shared-anchor roundtrip and millimeter quantization bound",
+    "legal zero delta differs from missing data; truncated block rejected",
+    "ADE/PWT use five valid entries; two FDE endpoint conventions differ",
+    "ground-truth mask is independent of prediction success",
+    "shared rigid frame change preserves Euclidean trajectory errors",
+    "moving camera makes a static world point move unless frames are aligned"
+  ],
+  "last_visible_endpoint": {
+    "ADE_m": 0.041,
+    "FDE_m": 0.060000000000000005,
+    "PWT": 0.6,
+    "PWT_per_threshold": [
+      0.0,
+      0.2,
+      0.8,
+      1.0,
+      1.0
+    ],
+    "scored_point_frames": 5
+  },
+  "common_final_endpoint": {
+    "ADE_m": 0.041,
+    "FDE_m": 0.035,
+    "PWT": 0.6,
+    "PWT_per_threshold": [
+      0.0,
+      0.2,
+      0.8,
+      1.0,
+      1.0
+    ],
+    "scored_point_frames": 5
+  }
+}

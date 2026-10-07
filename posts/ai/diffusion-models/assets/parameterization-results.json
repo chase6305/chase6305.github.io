@@ -1,0 +1,78 @@
+{
+  "numpy": "2.2.6",
+  "seed": 20260928,
+  "conversion_cases": [
+    {
+      "alpha_bar": 1.0,
+      "x0_roundtrip_max_error": 0.0,
+      "epsilon_roundtrip_max_error": 0.0,
+      "v_mse": 8.818230956804449e-05,
+      "converted_epsilon_mse": 8.818230956804442e-05,
+      "converted_x0_mse": 0.0
+    },
+    {
+      "alpha_bar": 0.999,
+      "x0_roundtrip_max_error": 8.881784197001252e-16,
+      "epsilon_roundtrip_max_error": 4.440892098500626e-16,
+      "v_mse": 0.00010160482283783174,
+      "converted_epsilon_mse": 0.00010150321801499367,
+      "converted_x0_mse": 1.0160482283784119e-07
+    },
+    {
+      "alpha_bar": 0.8,
+      "x0_roundtrip_max_error": 4.440892098500626e-16,
+      "epsilon_roundtrip_max_error": 8.881784197001252e-16,
+      "v_mse": 9.710525428647343e-05,
+      "converted_epsilon_mse": 7.768420342917857e-05,
+      "converted_x0_mse": 1.9421050857294632e-05
+    },
+    {
+      "alpha_bar": 0.1,
+      "x0_roundtrip_max_error": 4.440892098500626e-16,
+      "epsilon_roundtrip_max_error": 4.440892098500626e-16,
+      "v_mse": 9.02054622870348e-05,
+      "converted_epsilon_mse": 9.020546228703475e-06,
+      "converted_x0_mse": 8.118491605833134e-05
+    },
+    {
+      "alpha_bar": 0.0001,
+      "x0_roundtrip_max_error": 4.440892098500626e-16,
+      "epsilon_roundtrip_max_error": 4.440892098500626e-16,
+      "v_mse": 0.00010408846205876355,
+      "converted_epsilon_mse": 1.0408846205875096e-08,
+      "converted_x0_mse": 0.0001040780532125576
+    },
+    {
+      "alpha_bar": 1e-08,
+      "x0_roundtrip_max_error": 8.881784197001252e-16,
+      "epsilon_roundtrip_max_error": 8.881784197001252e-16,
+      "v_mse": 9.134207999716053e-05,
+      "converted_epsilon_mse": 9.134207999899428e-13,
+      "converted_x0_mse": 9.13420790837397e-05
+    },
+    {
+      "alpha_bar": 0.0,
+      "x0_roundtrip_max_error": 0.0,
+      "epsilon_roundtrip_max_error": 0.0,
+      "v_mse": 9.540415518319886e-05,
+      "converted_epsilon_mse": 0.0,
+      "converted_x0_mse": 9.540415518319883e-05
+    }
+  ],
+  "skipped_step": {
+    "alpha_bar_t": 0.2,
+    "alpha_bar_s": 0.7,
+    "deterministic_max_error": 4.440892098500626e-16,
+    "eta_one_conditional_mean_max_error": 7.771561172376096e-16,
+    "eta_one_conditional_variance": 0.26785714285714285
+  },
+  "adjacent_ddpm_max_mean_error": 3.6637359812630166e-15,
+  "clean_endpoint_variance": 0.0,
+  "sensitivity": {
+    "output_error": 0.01,
+    "snr": 0.0001,
+    "x0_error_from_epsilon": 1.0000000000000002,
+    "x0_error_from_v": 0.009999500037496875
+  },
+  "scope": "Oracle algebra and error propagation only; no trained denoiser, FID or model-quality comparison."
+}

@@ -1,0 +1,536 @@
+{
+  "torch": "2.13.0+cu130",
+  "device": "cpu",
+  "dtype": "float32 training; float64 oracle",
+  "optimizer": "Adam, lr=0.001",
+  "batch_size": 256,
+  "training_steps_per_seed": 6000,
+  "seeds": [
+    17,
+    29,
+    43
+  ],
+  "parameters": 4609,
+  "target": "A = c + sign + 0.15 * Normal(0,1); c in {-0.5,0.5}; sign equiprobable +/-1",
+  "time_sampling": "Uniform[0,1)",
+  "reference_quantiles": 2048,
+  "direct_L2_optimum": "E[A|c]=c; population MSE=1.0225; in-gap fraction=1",
+  "checks": [
+    "noise-endpoint conditional mean",
+    "CDF conservation for both conditions",
+    "whole-chunk oracle direction"
+  ],
+  "rows": [
+    {
+      "seed": 17,
+      "condition": -0.5,
+      "method": "euler",
+      "steps": 1,
+      "nfe": 1,
+      "learned_quantile_W1": 0.9565160534402821,
+      "exact_field_quantile_W1": 1.0,
+      "right_mode_fraction": 0.052734375,
+      "gap_fraction_abs_center_lt_0_4": 0.99951171875,
+      "mean": -0.6002599622297566,
+      "field_validation": {
+        "sample_target_mse": 1.255069613456726,
+        "exact_field_mse": 0.019414076581597328,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 17,
+      "condition": -0.5,
+      "method": "euler",
+      "steps": 4,
+      "nfe": 4,
+      "learned_quantile_W1": 0.16055652366055911,
+      "exact_field_quantile_W1": 0.09595224540917097,
+      "right_mode_fraction": 0.466796875,
+      "gap_fraction_abs_center_lt_0_4": 0.10400390625,
+      "mean": -0.5677688836476591,
+      "field_validation": {
+        "sample_target_mse": 1.255069613456726,
+        "exact_field_mse": 0.019414076581597328,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 17,
+      "condition": -0.5,
+      "method": "euler",
+      "steps": 16,
+      "nfe": 16,
+      "learned_quantile_W1": 0.06821396929068801,
+      "exact_field_quantile_W1": 0.02273216314514701,
+      "right_mode_fraction": 0.47705078125,
+      "gap_fraction_abs_center_lt_0_4": 0.02490234375,
+      "mean": -0.5403687026591797,
+      "field_validation": {
+        "sample_target_mse": 1.255069613456726,
+        "exact_field_mse": 0.019414076581597328,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 17,
+      "condition": -0.5,
+      "method": "euler",
+      "steps": 64,
+      "nfe": 64,
+      "learned_quantile_W1": 0.04576567231862898,
+      "exact_field_quantile_W1": 0.005923938502167609,
+      "right_mode_fraction": 0.4814453125,
+      "gap_fraction_abs_center_lt_0_4": 0.01416015625,
+      "mean": -0.5327126419033448,
+      "field_validation": {
+        "sample_target_mse": 1.255069613456726,
+        "exact_field_mse": 0.019414076581597328,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 17,
+      "condition": -0.5,
+      "method": "heun",
+      "steps": 8,
+      "nfe": 16,
+      "learned_quantile_W1": 0.04108883901981046,
+      "exact_field_quantile_W1": 0.007554600312702607,
+      "right_mode_fraction": 0.47998046875,
+      "gap_fraction_abs_center_lt_0_4": 0.015625,
+      "mean": -0.5331105217264849,
+      "field_validation": {
+        "sample_target_mse": 1.255069613456726,
+        "exact_field_mse": 0.019414076581597328,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 17,
+      "condition": 0.5,
+      "method": "euler",
+      "steps": 1,
+      "nfe": 1,
+      "learned_quantile_W1": 0.9205380003259052,
+      "exact_field_quantile_W1": 1.0,
+      "right_mode_fraction": 0.48046875,
+      "gap_fraction_abs_center_lt_0_4": 0.998046875,
+      "mean": 0.502840252709575,
+      "field_validation": {
+        "sample_target_mse": 1.255069613456726,
+        "exact_field_mse": 0.019414076581597328,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 17,
+      "condition": 0.5,
+      "method": "euler",
+      "steps": 4,
+      "nfe": 4,
+      "learned_quantile_W1": 0.15145860589109356,
+      "exact_field_quantile_W1": 0.095952245409171,
+      "right_mode_fraction": 0.470703125,
+      "gap_fraction_abs_center_lt_0_4": 0.09375,
+      "mean": 0.455008039571112,
+      "field_validation": {
+        "sample_target_mse": 1.255069613456726,
+        "exact_field_mse": 0.019414076581597328,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 17,
+      "condition": 0.5,
+      "method": "euler",
+      "steps": 16,
+      "nfe": 16,
+      "learned_quantile_W1": 0.07202879013106349,
+      "exact_field_quantile_W1": 0.02273216314514702,
+      "right_mode_fraction": 0.48046875,
+      "gap_fraction_abs_center_lt_0_4": 0.02197265625,
+      "mean": 0.4653779438849597,
+      "field_validation": {
+        "sample_target_mse": 1.255069613456726,
+        "exact_field_mse": 0.019414076581597328,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 17,
+      "condition": 0.5,
+      "method": "euler",
+      "steps": 64,
+      "nfe": 64,
+      "learned_quantile_W1": 0.05832377818015406,
+      "exact_field_quantile_W1": 0.005923938502167614,
+      "right_mode_fraction": 0.48095703125,
+      "gap_fraction_abs_center_lt_0_4": 0.01123046875,
+      "mean": 0.4694419315728737,
+      "field_validation": {
+        "sample_target_mse": 1.255069613456726,
+        "exact_field_mse": 0.019414076581597328,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 17,
+      "condition": 0.5,
+      "method": "heun",
+      "steps": 8,
+      "nfe": 16,
+      "learned_quantile_W1": 0.050217862917395564,
+      "exact_field_quantile_W1": 0.007554600312702605,
+      "right_mode_fraction": 0.48095703125,
+      "gap_fraction_abs_center_lt_0_4": 0.01220703125,
+      "mean": 0.47332841153547633,
+      "field_validation": {
+        "sample_target_mse": 1.255069613456726,
+        "exact_field_mse": 0.019414076581597328,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 29,
+      "condition": -0.5,
+      "method": "euler",
+      "steps": 1,
+      "nfe": 1,
+      "learned_quantile_W1": 0.9552892310312018,
+      "exact_field_quantile_W1": 1.0,
+      "right_mode_fraction": 0.1708984375,
+      "gap_fraction_abs_center_lt_0_4": 1.0,
+      "mean": -0.5589142837561667,
+      "field_validation": {
+        "sample_target_mse": 1.2577424049377441,
+        "exact_field_mse": 0.02275269478559494,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 29,
+      "condition": -0.5,
+      "method": "euler",
+      "steps": 4,
+      "nfe": 4,
+      "learned_quantile_W1": 0.13938477924345644,
+      "exact_field_quantile_W1": 0.09595224540917097,
+      "right_mode_fraction": 0.486328125,
+      "gap_fraction_abs_center_lt_0_4": 0.10791015625,
+      "mean": -0.5436501544827479,
+      "field_validation": {
+        "sample_target_mse": 1.2577424049377441,
+        "exact_field_mse": 0.02275269478559494,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 29,
+      "condition": -0.5,
+      "method": "euler",
+      "steps": 16,
+      "nfe": 16,
+      "learned_quantile_W1": 0.04239489033089638,
+      "exact_field_quantile_W1": 0.02273216314514701,
+      "right_mode_fraction": 0.48388671875,
+      "gap_fraction_abs_center_lt_0_4": 0.02490234375,
+      "mean": -0.533096629416832,
+      "field_validation": {
+        "sample_target_mse": 1.2577424049377441,
+        "exact_field_mse": 0.02275269478559494,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 29,
+      "condition": -0.5,
+      "method": "euler",
+      "steps": 64,
+      "nfe": 64,
+      "learned_quantile_W1": 0.04184747849975016,
+      "exact_field_quantile_W1": 0.005923938502167609,
+      "right_mode_fraction": 0.48583984375,
+      "gap_fraction_abs_center_lt_0_4": 0.013671875,
+      "mean": -0.5288408827636886,
+      "field_validation": {
+        "sample_target_mse": 1.2577424049377441,
+        "exact_field_mse": 0.02275269478559494,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 29,
+      "condition": -0.5,
+      "method": "heun",
+      "steps": 8,
+      "nfe": 16,
+      "learned_quantile_W1": 0.04958240097904078,
+      "exact_field_quantile_W1": 0.007554600312702607,
+      "right_mode_fraction": 0.48388671875,
+      "gap_fraction_abs_center_lt_0_4": 0.015625,
+      "mean": -0.5305335144112178,
+      "field_validation": {
+        "sample_target_mse": 1.2577424049377441,
+        "exact_field_mse": 0.02275269478559494,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 29,
+      "condition": 0.5,
+      "method": "euler",
+      "steps": 1,
+      "nfe": 1,
+      "learned_quantile_W1": 0.9465491057781037,
+      "exact_field_quantile_W1": 1.0,
+      "right_mode_fraction": 0.74755859375,
+      "gap_fraction_abs_center_lt_0_4": 1.0,
+      "mean": 0.5470812240091618,
+      "field_validation": {
+        "sample_target_mse": 1.2577424049377441,
+        "exact_field_mse": 0.02275269478559494,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 29,
+      "condition": 0.5,
+      "method": "euler",
+      "steps": 4,
+      "nfe": 4,
+      "learned_quantile_W1": 0.13413609400909815,
+      "exact_field_quantile_W1": 0.095952245409171,
+      "right_mode_fraction": 0.490234375,
+      "gap_fraction_abs_center_lt_0_4": 0.1005859375,
+      "mean": 0.500781521488534,
+      "field_validation": {
+        "sample_target_mse": 1.2577424049377441,
+        "exact_field_mse": 0.02275269478559494,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 29,
+      "condition": 0.5,
+      "method": "euler",
+      "steps": 16,
+      "nfe": 16,
+      "learned_quantile_W1": 0.031821640645133265,
+      "exact_field_quantile_W1": 0.02273216314514702,
+      "right_mode_fraction": 0.49609375,
+      "gap_fraction_abs_center_lt_0_4": 0.0224609375,
+      "mean": 0.5024280752440973,
+      "field_validation": {
+        "sample_target_mse": 1.2577424049377441,
+        "exact_field_mse": 0.02275269478559494,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 29,
+      "condition": 0.5,
+      "method": "euler",
+      "steps": 64,
+      "nfe": 64,
+      "learned_quantile_W1": 0.03148846860502452,
+      "exact_field_quantile_W1": 0.005923938502167614,
+      "right_mode_fraction": 0.49560546875,
+      "gap_fraction_abs_center_lt_0_4": 0.01171875,
+      "mean": 0.5041673850400912,
+      "field_validation": {
+        "sample_target_mse": 1.2577424049377441,
+        "exact_field_mse": 0.02275269478559494,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 29,
+      "condition": 0.5,
+      "method": "heun",
+      "steps": 8,
+      "nfe": 16,
+      "learned_quantile_W1": 0.037092538159204644,
+      "exact_field_quantile_W1": 0.007554600312702605,
+      "right_mode_fraction": 0.49560546875,
+      "gap_fraction_abs_center_lt_0_4": 0.0126953125,
+      "mean": 0.5080544604206807,
+      "field_validation": {
+        "sample_target_mse": 1.2577424049377441,
+        "exact_field_mse": 0.02275269478559494,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 43,
+      "condition": -0.5,
+      "method": "euler",
+      "steps": 1,
+      "nfe": 1,
+      "learned_quantile_W1": 0.9690968586364761,
+      "exact_field_quantile_W1": 1.0,
+      "right_mode_fraction": 0.2353515625,
+      "gap_fraction_abs_center_lt_0_4": 1.0,
+      "mean": -0.5313006335636601,
+      "field_validation": {
+        "sample_target_mse": 1.2557350397109985,
+        "exact_field_mse": 0.019335418939590454,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 43,
+      "condition": -0.5,
+      "method": "euler",
+      "steps": 4,
+      "nfe": 4,
+      "learned_quantile_W1": 0.1513241435750387,
+      "exact_field_quantile_W1": 0.09595224540917097,
+      "right_mode_fraction": 0.49853515625,
+      "gap_fraction_abs_center_lt_0_4": 0.1083984375,
+      "mean": -0.49760165717452765,
+      "field_validation": {
+        "sample_target_mse": 1.2557350397109985,
+        "exact_field_mse": 0.019335418939590454,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 43,
+      "condition": -0.5,
+      "method": "euler",
+      "steps": 16,
+      "nfe": 16,
+      "learned_quantile_W1": 0.05016710549641186,
+      "exact_field_quantile_W1": 0.02273216314514701,
+      "right_mode_fraction": 0.49951171875,
+      "gap_fraction_abs_center_lt_0_4": 0.0263671875,
+      "mean": -0.48054811188194435,
+      "field_validation": {
+        "sample_target_mse": 1.2557350397109985,
+        "exact_field_mse": 0.019335418939590454,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 43,
+      "condition": -0.5,
+      "method": "euler",
+      "steps": 64,
+      "nfe": 64,
+      "learned_quantile_W1": 0.03528801366146935,
+      "exact_field_quantile_W1": 0.005923938502167609,
+      "right_mode_fraction": 0.501953125,
+      "gap_fraction_abs_center_lt_0_4": 0.015625,
+      "mean": -0.47516542046196264,
+      "field_validation": {
+        "sample_target_mse": 1.2557350397109985,
+        "exact_field_mse": 0.019335418939590454,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 43,
+      "condition": -0.5,
+      "method": "heun",
+      "steps": 8,
+      "nfe": 16,
+      "learned_quantile_W1": 0.03588901196722953,
+      "exact_field_quantile_W1": 0.007554600312702607,
+      "right_mode_fraction": 0.50048828125,
+      "gap_fraction_abs_center_lt_0_4": 0.01708984375,
+      "mean": -0.47592257218275336,
+      "field_validation": {
+        "sample_target_mse": 1.2557350397109985,
+        "exact_field_mse": 0.019335418939590454,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 43,
+      "condition": 0.5,
+      "method": "euler",
+      "steps": 1,
+      "nfe": 1,
+      "learned_quantile_W1": 0.9296181530226022,
+      "exact_field_quantile_W1": 1.0,
+      "right_mode_fraction": 0.46240234375,
+      "gap_fraction_abs_center_lt_0_4": 1.0,
+      "mean": 0.5091181832249276,
+      "field_validation": {
+        "sample_target_mse": 1.2557350397109985,
+        "exact_field_mse": 0.019335418939590454,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 43,
+      "condition": 0.5,
+      "method": "euler",
+      "steps": 4,
+      "nfe": 4,
+      "learned_quantile_W1": 0.14844000228549697,
+      "exact_field_quantile_W1": 0.095952245409171,
+      "right_mode_fraction": 0.48779296875,
+      "gap_fraction_abs_center_lt_0_4": 0.10546875,
+      "mean": 0.47908269121762714,
+      "field_validation": {
+        "sample_target_mse": 1.2557350397109985,
+        "exact_field_mse": 0.019335418939590454,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 43,
+      "condition": 0.5,
+      "method": "euler",
+      "steps": 16,
+      "nfe": 16,
+      "learned_quantile_W1": 0.04579601890643712,
+      "exact_field_quantile_W1": 0.02273216314514702,
+      "right_mode_fraction": 0.49169921875,
+      "gap_fraction_abs_center_lt_0_4": 0.0234375,
+      "mean": 0.4788416242990934,
+      "field_validation": {
+        "sample_target_mse": 1.2557350397109985,
+        "exact_field_mse": 0.019335418939590454,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 43,
+      "condition": 0.5,
+      "method": "euler",
+      "steps": 64,
+      "nfe": 64,
+      "learned_quantile_W1": 0.03160673521452518,
+      "exact_field_quantile_W1": 0.005923938502167614,
+      "right_mode_fraction": 0.4912109375,
+      "gap_fraction_abs_center_lt_0_4": 0.01220703125,
+      "mean": 0.4815225442753217,
+      "field_validation": {
+        "sample_target_mse": 1.2557350397109985,
+        "exact_field_mse": 0.019335418939590454,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    },
+    {
+      "seed": 43,
+      "condition": 0.5,
+      "method": "heun",
+      "steps": 8,
+      "nfe": 16,
+      "learned_quantile_W1": 0.029870700484168886,
+      "exact_field_quantile_W1": 0.007554600312702605,
+      "right_mode_fraction": 0.49072265625,
+      "gap_fraction_abs_center_lt_0_4": 0.01318359375,
+      "mean": 0.48568511854682583,
+      "field_validation": {
+        "sample_target_mse": 1.2557350397109985,
+        "exact_field_mse": 0.019335418939590454,
+        "oracle_sample_target_mse": 1.2345058917999268
+      }
+    }
+  ],
+  "scope": "Synthetic scalar conditional density, online independent training samples. No robot, no pretrained VLM, no pi0 reproduction. Quantile-grid W1 is a finite-grid approximation; solver error and learned field error both contribute."
+}

@@ -1,0 +1,1205 @@
+{
+  "scope": "Constructed offline records, not Jev measurements or sampled robot trials.",
+  "records": [
+    {
+      "id": "validation-95-01",
+      "group": "validation",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "validation-95-02",
+      "group": "validation",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "validation-95-03",
+      "group": "validation",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "validation-95-04",
+      "group": "validation",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "validation-95-05",
+      "group": "validation",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "validation-95-06",
+      "group": "validation",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "validation-95-07",
+      "group": "validation",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "validation-95-08",
+      "group": "validation",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "validation-95-09",
+      "group": "validation",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "validation-95-10",
+      "group": "validation",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "validation-85-01",
+      "group": "validation",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "validation-85-02",
+      "group": "validation",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "validation-85-03",
+      "group": "validation",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "validation-85-04",
+      "group": "validation",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "validation-85-05",
+      "group": "validation",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "validation-85-06",
+      "group": "validation",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "validation-85-07",
+      "group": "validation",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "validation-85-08",
+      "group": "validation",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "validation-85-09",
+      "group": "validation",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "validation-85-10",
+      "group": "validation",
+      "routing_score": 0.85,
+      "acceptable": false
+    },
+    {
+      "id": "validation-65-01",
+      "group": "validation",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "validation-65-02",
+      "group": "validation",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "validation-65-03",
+      "group": "validation",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "validation-65-04",
+      "group": "validation",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "validation-65-05",
+      "group": "validation",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "validation-65-06",
+      "group": "validation",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "validation-65-07",
+      "group": "validation",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "validation-65-08",
+      "group": "validation",
+      "routing_score": 0.65,
+      "acceptable": false
+    },
+    {
+      "id": "validation-65-09",
+      "group": "validation",
+      "routing_score": 0.65,
+      "acceptable": false
+    },
+    {
+      "id": "validation-65-10",
+      "group": "validation",
+      "routing_score": 0.65,
+      "acceptable": false
+    },
+    {
+      "id": "validation-45-01",
+      "group": "validation",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "validation-45-02",
+      "group": "validation",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "validation-45-03",
+      "group": "validation",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "validation-45-04",
+      "group": "validation",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "validation-45-05",
+      "group": "validation",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "validation-45-06",
+      "group": "validation",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "validation-45-07",
+      "group": "validation",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "validation-45-08",
+      "group": "validation",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "validation-45-09",
+      "group": "validation",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "validation-45-10",
+      "group": "validation",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-95-01",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-02",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-03",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-04",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-05",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-06",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-07",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-08",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-09",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-10",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-11",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-12",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-13",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-14",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-15",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-16",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-17",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-18",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-19",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-95-20",
+      "group": "heldout",
+      "routing_score": 0.95,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-85-01",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-02",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-03",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-04",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-05",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-06",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-07",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-08",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-09",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-10",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-11",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-12",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-13",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-14",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-15",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-16",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-17",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-85-18",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-85-19",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-85-20",
+      "group": "heldout",
+      "routing_score": 0.85,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-65-01",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-65-02",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-65-03",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-65-04",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-65-05",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-65-06",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-65-07",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-65-08",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-65-09",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-65-10",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-65-11",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-65-12",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-65-13",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-65-14",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-65-15",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-65-16",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-65-17",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-65-18",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-65-19",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-65-20",
+      "group": "heldout",
+      "routing_score": 0.65,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-45-01",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-45-02",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-45-03",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-45-04",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-45-05",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-45-06",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-45-07",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-45-08",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-45-09",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-45-10",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "heldout-45-11",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-45-12",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-45-13",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-45-14",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-45-15",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-45-16",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-45-17",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-45-18",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-45-19",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "heldout-45-20",
+      "group": "heldout",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-95-01",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-95-02",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-95-03",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-95-04",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-95-05",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-95-06",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-95-07",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-95-08",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-95-09",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-95-10",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-95-11",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-95-12",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-95-13",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-95-14",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-95-15",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-95-16",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-95-17",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-95-18",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-95-19",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-95-20",
+      "group": "shifted",
+      "routing_score": 0.95,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-85-01",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-02",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-03",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-04",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-05",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-06",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-07",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-08",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-09",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-10",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-11",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-12",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-13",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-14",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-15",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-16",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-17",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-18",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-85-19",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-85-20",
+      "group": "shifted",
+      "routing_score": 0.85,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-65-01",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-02",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-03",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-04",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-05",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-06",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-07",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-08",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-09",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-10",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-11",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-12",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-13",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-14",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-15",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-65-16",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-65-17",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-65-18",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-65-19",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-65-20",
+      "group": "shifted",
+      "routing_score": 0.65,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-45-01",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-45-02",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-45-03",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-45-04",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-45-05",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-45-06",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-45-07",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-45-08",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-45-09",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-45-10",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": true
+    },
+    {
+      "id": "shifted-45-11",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-45-12",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-45-13",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-45-14",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-45-15",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-45-16",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-45-17",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-45-18",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-45-19",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": false
+    },
+    {
+      "id": "shifted-45-20",
+      "group": "shifted",
+      "routing_score": 0.45,
+      "acceptable": false
+    }
+  ]
+}

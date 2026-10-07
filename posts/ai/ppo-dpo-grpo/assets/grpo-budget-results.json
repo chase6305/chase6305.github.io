@@ -1,0 +1,309 @@
+{
+  "description": "Seed 7; 120 iterations; 128 sampled actions per rollout; prompt count changes with group size. Not equal FLOPs or prompt coverage.",
+  "runs": [
+    {
+      "settings": {
+        "algorithm": "grpo",
+        "seed": 7,
+        "steps": 120,
+        "dtype": "torch.float64",
+        "device": "cpu",
+        "torch": "2.8.0+cu128",
+        "learning_rate": 0.08,
+        "update_epochs": 4,
+        "clip_epsilon": 0.2,
+        "target_old_policy_kl": 0.05,
+        "kl_beta": 0.03,
+        "dpo_beta": 0.5,
+        "group_size": 2,
+        "online_batch_prompts": 64,
+        "offline_preference_pairs": 0,
+        "reward_table": [
+          [
+            1.0,
+            0.2,
+            -0.5
+          ],
+          [
+            -0.5,
+            1.0,
+            0.2
+          ],
+          [
+            0.2,
+            -0.5,
+            1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            0.2
+          ]
+        ],
+        "reference": "fixed uniform",
+        "scope": "one-step tabular contextual bandit; no language model or held-out generalization"
+      },
+      "initial": {
+        "algorithm": "grpo",
+        "step": 0,
+        "optimizer_steps": 0,
+        "sampled_actions": 0,
+        "pair_presentations": 0,
+        "expected_reward": 0.23333333333333334,
+        "best_action_probability": 0.3333333333333333,
+        "entropy": 1.0986122886681096,
+        "kl_reference": 0.0,
+        "loss": 0.0,
+        "value_loss": 0.0,
+        "clip_fraction": 0.0,
+        "old_policy_kl": 0.0,
+        "zero_group_fraction": 0.0
+      },
+      "final": {
+        "algorithm": "grpo",
+        "step": 120,
+        "optimizer_steps": 480,
+        "sampled_actions": 15360,
+        "pair_presentations": 0,
+        "expected_reward": 0.9983326872598828,
+        "best_action_probability": 0.998436344595987,
+        "entropy": 0.012217596370323821,
+        "kl_reference": 1.086394692297786,
+        "loss": 0.032628348275404215,
+        "value_loss": 0.0,
+        "clip_fraction": 0.0,
+        "old_policy_kl": 7.353192097465252e-07,
+        "zero_group_fraction": 1.0
+      },
+      "mean_zero_group_fraction": 0.9614583333333333
+    },
+    {
+      "settings": {
+        "algorithm": "grpo",
+        "seed": 7,
+        "steps": 120,
+        "dtype": "torch.float64",
+        "device": "cpu",
+        "torch": "2.8.0+cu128",
+        "learning_rate": 0.08,
+        "update_epochs": 4,
+        "clip_epsilon": 0.2,
+        "target_old_policy_kl": 0.05,
+        "kl_beta": 0.03,
+        "dpo_beta": 0.5,
+        "group_size": 4,
+        "online_batch_prompts": 32,
+        "offline_preference_pairs": 0,
+        "reward_table": [
+          [
+            1.0,
+            0.2,
+            -0.5
+          ],
+          [
+            -0.5,
+            1.0,
+            0.2
+          ],
+          [
+            0.2,
+            -0.5,
+            1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            0.2
+          ]
+        ],
+        "reference": "fixed uniform",
+        "scope": "one-step tabular contextual bandit; no language model or held-out generalization"
+      },
+      "initial": {
+        "algorithm": "grpo",
+        "step": 0,
+        "optimizer_steps": 0,
+        "sampled_actions": 0,
+        "pair_presentations": 0,
+        "expected_reward": 0.23333333333333334,
+        "best_action_probability": 0.3333333333333333,
+        "entropy": 1.0986122886681096,
+        "kl_reference": 0.0,
+        "loss": 0.0,
+        "value_loss": 0.0,
+        "clip_fraction": 0.0,
+        "old_policy_kl": 0.0,
+        "zero_group_fraction": 0.0
+      },
+      "final": {
+        "algorithm": "grpo",
+        "step": 120,
+        "optimizer_steps": 480,
+        "sampled_actions": 15360,
+        "pair_presentations": 0,
+        "expected_reward": 0.9990989898179795,
+        "best_action_probability": 0.9992299586162621,
+        "entropy": 0.0067264341020721145,
+        "kl_reference": 1.0918858545660377,
+        "loss": 0.03276798470224744,
+        "value_loss": 0.0,
+        "clip_fraction": 0.0,
+        "old_policy_kl": 8.788998393838835e-07,
+        "zero_group_fraction": 1.0
+      },
+      "mean_zero_group_fraction": 0.9390625
+    },
+    {
+      "settings": {
+        "algorithm": "grpo",
+        "seed": 7,
+        "steps": 120,
+        "dtype": "torch.float64",
+        "device": "cpu",
+        "torch": "2.8.0+cu128",
+        "learning_rate": 0.08,
+        "update_epochs": 4,
+        "clip_epsilon": 0.2,
+        "target_old_policy_kl": 0.05,
+        "kl_beta": 0.03,
+        "dpo_beta": 0.5,
+        "group_size": 8,
+        "online_batch_prompts": 16,
+        "offline_preference_pairs": 0,
+        "reward_table": [
+          [
+            1.0,
+            0.2,
+            -0.5
+          ],
+          [
+            -0.5,
+            1.0,
+            0.2
+          ],
+          [
+            0.2,
+            -0.5,
+            1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            0.2
+          ]
+        ],
+        "reference": "fixed uniform",
+        "scope": "one-step tabular contextual bandit; no language model or held-out generalization"
+      },
+      "initial": {
+        "algorithm": "grpo",
+        "step": 0,
+        "optimizer_steps": 0,
+        "sampled_actions": 0,
+        "pair_presentations": 0,
+        "expected_reward": 0.23333333333333334,
+        "best_action_probability": 0.3333333333333333,
+        "entropy": 1.0986122886681096,
+        "kl_reference": 0.0,
+        "loss": 0.0,
+        "value_loss": 0.0,
+        "clip_fraction": 0.0,
+        "old_policy_kl": 0.0,
+        "zero_group_fraction": 0.0
+      },
+      "final": {
+        "algorithm": "grpo",
+        "step": 120,
+        "optimizer_steps": 480,
+        "sampled_actions": 15360,
+        "pair_presentations": 0,
+        "expected_reward": 0.9988252368613543,
+        "best_action_probability": 0.9990314815282928,
+        "entropy": 0.008159542943892876,
+        "kl_reference": 1.090452745724217,
+        "loss": 0.032773108800449445,
+        "value_loss": 0.0,
+        "clip_fraction": 0.0,
+        "old_policy_kl": 1.758443622083082e-07,
+        "zero_group_fraction": 1.0
+      },
+      "mean_zero_group_fraction": 0.921875
+    },
+    {
+      "settings": {
+        "algorithm": "grpo",
+        "seed": 7,
+        "steps": 120,
+        "dtype": "torch.float64",
+        "device": "cpu",
+        "torch": "2.8.0+cu128",
+        "learning_rate": 0.08,
+        "update_epochs": 4,
+        "clip_epsilon": 0.2,
+        "target_old_policy_kl": 0.05,
+        "kl_beta": 0.03,
+        "dpo_beta": 0.5,
+        "group_size": 16,
+        "online_batch_prompts": 8,
+        "offline_preference_pairs": 0,
+        "reward_table": [
+          [
+            1.0,
+            0.2,
+            -0.5
+          ],
+          [
+            -0.5,
+            1.0,
+            0.2
+          ],
+          [
+            0.2,
+            -0.5,
+            1.0
+          ],
+          [
+            1.0,
+            -0.5,
+            0.2
+          ]
+        ],
+        "reference": "fixed uniform",
+        "scope": "one-step tabular contextual bandit; no language model or held-out generalization"
+      },
+      "initial": {
+        "algorithm": "grpo",
+        "step": 0,
+        "optimizer_steps": 0,
+        "sampled_actions": 0,
+        "pair_presentations": 0,
+        "expected_reward": 0.23333333333333334,
+        "best_action_probability": 0.3333333333333333,
+        "entropy": 1.0986122886681096,
+        "kl_reference": 0.0,
+        "loss": 0.0,
+        "value_loss": 0.0,
+        "clip_fraction": 0.0,
+        "old_policy_kl": 0.0,
+        "zero_group_fraction": 0.0
+      },
+      "final": {
+        "algorithm": "grpo",
+        "step": 120,
+        "optimizer_steps": 480,
+        "sampled_actions": 15360,
+        "pair_presentations": 0,
+        "expected_reward": 0.9993796660001137,
+        "best_action_probability": 0.9995028675071249,
+        "entropy": 0.004521588509185354,
+        "kl_reference": 1.0940907001589246,
+        "loss": 0.03280769554351463,
+        "value_loss": 0.0,
+        "clip_fraction": 0.0,
+        "old_policy_kl": 1.0188826455028582e-06,
+        "zero_group_fraction": 1.0
+      },
+      "mean_zero_group_fraction": 0.8916666666666667
+    }
+  ]
+}

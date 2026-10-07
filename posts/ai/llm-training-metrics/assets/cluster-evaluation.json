@@ -1,0 +1,39 @@
+{
+  "data_kind": "synthetic_example",
+  "numpy": "2.2.6",
+  "groups": 20,
+  "rows_per_group": 20,
+  "total_rows": 400,
+  "bootstrap_repeats": 20000,
+  "bootstrap_seed": 20260928,
+  "baseline_accuracy": 0.45,
+  "candidate_accuracy": 0.55,
+  "difference_pp": 10.0,
+  "paired_rows_as_iid": {
+    "percentile_95_pp": [
+      3.25,
+      16.75
+    ],
+    "exact_empirical_bootstrap_se_pp": 3.5000000000000004
+  },
+  "paired_groups": {
+    "percentile_95_pp": [
+      -20.0,
+      40.0
+    ],
+    "exact_empirical_bootstrap_se_pp": 15.652475842498529
+  },
+  "unequal_group_example": {
+    "sizes": [
+      2,
+      8
+    ],
+    "differences": [
+      1.0,
+      -1.0
+    ],
+    "question_weighted_difference_pp": -60.0,
+    "group_weighted_difference_pp": 0.0
+  },
+  "scope": "Fixed synthetic paired scores. Equal-size independent groups with identical outcomes within each group. No training or generation variability, no coverage study, and no guarantee that a 20-group percentile interval is well calibrated."
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>ExternalProject_Add on Chase Blog</title>
+    <link>http://localhost:1313/tags/externalproject_add/</link>
+    <description>Recent content in ExternalProject_Add on Chase Blog</description>
+    <generator>Hugo -- 0.165.0</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 08 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/externalproject_add/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ExternalProject_Add 使用手册与文档详解</title>
+      <link>http://localhost:1313/posts/cmake/externalproject_add/</link>
+      <pubDate>Tue, 08 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/cmake/externalproject_add/</guid>
+      <description>ExternalProject_Add 使用手册与文档详解</description>
+    </item>
+  </channel>
+</rss>

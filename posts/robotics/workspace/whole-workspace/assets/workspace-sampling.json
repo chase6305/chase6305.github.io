@@ -1,0 +1,18 @@
+{
+  "seed": 42,
+  "samples_per_distribution": 20000,
+  "link_lengths_m": [
+    1.0,
+    0.6
+  ],
+  "radial_bounds_m": [
+    0.4,
+    1.6
+  ],
+  "joint_cdf_max_error": 0.008328115006888404,
+  "outer_band_threshold_m": 1.5,
+  "joint_outer_band_observed_fraction": 0.23375,
+  "joint_outer_band_analytic_fraction": 0.23403564341608407,
+  "area_outer_band_observed_fraction": 0.1281,
+  "area_outer_band_analytic_fraction": 0.12916666666666685
+}

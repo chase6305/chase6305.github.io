@@ -1,0 +1,58 @@
+schema_version: 2
+config_id: cartesian-impedance-sim-001
+model_hash: replace-with-urdf-sha256
+tool_id: example-tool-v1
+payload_id: empty
+
+frames:
+  base: base_link
+  controlled: tool0
+  task_parameters: tool0
+  reference: local_world_aligned
+  spatial_order: [linear, angular]
+  characteristic_length_m: 0.10
+  pose_error: desired_minus_measured
+  wrench_sign: environment_on_robot
+
+interface:
+  command: raw_joint_torque
+  driver_compensation: none
+  effort_limit_scope: physical_total_torque
+
+control:
+  period_s: 0.001
+  formulation: inertia_shaped
+  model_compensation: gravity
+  stiffness: [300.0, 300.0, 200.0, 12.0, 12.0, 8.0]
+  damping_ratio: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  virtual_mass: [3.0, 3.0, 3.0, 0.15, 0.15, 0.10]
+  integral_gain: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+filter:
+  joint_velocity_cutoff_hz: 30.0
+  external_wrench_cutoff_hz: 20.0
+
+nullspace:
+  enabled: false
+  stiffness: 0.0
+  damping_ratio: 1.0
+
+contact:
+  enabled: false
+  normal_axis: positive_z
+  target_force_magnitude_n: 0.0
+  enter_force_magnitude_n: 3.0
+  exit_force_magnitude_n: 1.5
+  enter_hold_s: 0.03
+  exit_hold_s: 0.05
+  force_ramp_n_s: 20.0
+  allowed_peak_force_n: 20.0
+  emergency_force_n: 30.0
+
+safety:
+  translation_error_m: [0.02, 0.02, 0.02]
+  rotation_error_rad: [0.10, 0.10, 0.10]
+  wrench_abs_limit: [20.0, 20.0, 20.0, 3.0, 3.0, 3.0]
+  torque_rate_nm_s: 100.0
+  state_timeout_s: 0.005
+  consecutive_deadline_misses: 3

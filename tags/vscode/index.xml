@@ -4,27 +4,29 @@
     <title>Vscode on Chase Blog</title>
     <link>https://chase6305.github.io/tags/vscode/</link>
     <description>Recent content in Vscode on Chase Blog</description>
-    <image>
-      <title>Chase Blog</title>
-      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.92.2</generator>
+    <generator>Hugo -- 0.165.0</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 11 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 27 Jan 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://chase6305.github.io/tags/vscode/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>VS Code Python 调试完全指南：从入门到精通</title>
+      <link>https://chase6305.github.io/posts/vscode/debug/</link>
+      <pubDate>Tue, 27 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>https://chase6305.github.io/posts/vscode/debug/</guid>
+      <description>VS Code Python 调试完全指南：从入门到精通</description>
+    </item>
+    <item>
       <title>Ubuntu 22.04 无法进入图形界面的解决方法</title>
-      <link>https://chase6305.github.io/posts/vscode/bug/gdm/</link>
+      <link>https://chase6305.github.io/posts/vscode/gdm/</link>
       <pubDate>Tue, 11 Mar 2025 00:00:00 +0000</pubDate>
-      <guid>https://chase6305.github.io/posts/vscode/bug/gdm/</guid>
+      <guid>https://chase6305.github.io/posts/vscode/gdm/</guid>
       <description>Ubuntu 22.04 无法进入图形界面的解决方法</description>
     </item>
     <item>
       <title>VScode终端出现显示两个环境名问题的解决方案</title>
-      <link>https://chase6305.github.io/posts/vscode/bug/two-env/</link>
+      <link>https://chase6305.github.io/posts/vscode/two-env/</link>
       <pubDate>Fri, 07 Feb 2025 00:00:00 +0000</pubDate>
-      <guid>https://chase6305.github.io/posts/vscode/bug/two-env/</guid>
+      <guid>https://chase6305.github.io/posts/vscode/two-env/</guid>
       <description>VScode终端出现显示两个环境名问题的解决方案</description>
     </item>
   </channel>

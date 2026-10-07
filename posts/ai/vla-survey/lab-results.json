@@ -1,0 +1,49 @@
+{
+  "provenance": {
+    "paper_counts": "2405.14093v8, PDF page 53, Figure 11(a)",
+    "all_other_numbers": "Illustrative calculations, not robot measurements"
+  },
+  "quantization": {
+    "range_m": [
+      -1,
+      1
+    ],
+    "bins": 256,
+    "bin_width_m": 0.0078125,
+    "max_in_range_encoding_error_mm": 3.90625
+  },
+  "skill_scores": {
+    "place_cup": 0.04000000000000001,
+    "open_door": 0.45,
+    "wipe_table": 0.095
+  },
+  "selected_skill": "open_door",
+  "chain_success_p095": {
+    "5": 0.7737809374999998,
+    "10": 0.5987369392383787,
+    "20": 0.3584859224085419
+  },
+  "aggregation": {
+    "task_counts": [
+      [
+        90,
+        100
+      ],
+      [
+        1,
+        10
+      ]
+    ],
+    "micro": 0.8272727272727273,
+    "macro": 0.5
+  },
+  "paper_counts": {
+    "2020": 2,
+    "2021": 2,
+    "2022": 9,
+    "2023": 22,
+    "2024": 63,
+    "2025": 295
+  },
+  "paper_count_total": 393
+}

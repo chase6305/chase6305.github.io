@@ -1,0 +1,42 @@
+{
+  "checks": [
+    "WMA newest-weight convention and ramp delay",
+    "SOS state continuity across arbitrary chunks",
+    "Butterworth coefficients, prewarped cutoff and stable poles across sample rates",
+    "One Euro unit conversion and duplicate timestamp rejection",
+    "SO(3) quaternion sign invariance and 179/-179 crossing",
+    "SO(3) fixed world/body frame equivariance for coupled rotations",
+    "Exact ZOH critical-damping analytic step response",
+    "Critical damping does not prohibit overshoot from nonzero velocity",
+    "Causal endpoint SG preserves constant-velocity derivative",
+    "Aliasing: 70 Hz and 30 Hz cosines at 100 Hz sampling"
+  ],
+  "experiment": "synthetic; not robot measurements",
+  "metrics": {
+    "Measurement": {
+      "stationary_std_mm": 6.220245850003313,
+      "ramp_equivalent_lag_ms": -1.5282331605520414,
+      "whole_trace_rmse_mm": 6.458425630135085
+    },
+    "WMA [0.4,0.3,0.2,0.1]": {
+      "stationary_std_mm": 3.5688523400034606,
+      "ramp_equivalent_lag_ms": 3.3794414065138487,
+      "whole_trace_rmse_mm": 3.895989724020297
+    },
+    "Butterworth 2nd, 3 Hz": {
+      "stationary_std_mm": 0.7297434396490583,
+      "ramp_equivalent_lag_ms": 73.87837458874434,
+      "whole_trace_rmse_mm": 9.892408219973351
+    },
+    "One Euro (1 Hz, beta=4)": {
+      "stationary_std_mm": 0.6988477777602027,
+      "ramp_equivalent_lag_ms": 24.608285689090742,
+      "whole_trace_rmse_mm": 3.5921482926232224
+    },
+    "Critical MSD, fn=5 Hz": {
+      "stationary_std_mm": 0.834802966545175,
+      "ramp_equivalent_lag_ms": 65.02338488412046,
+      "whole_trace_rmse_mm": 8.694621844514387
+    }
+  }
+}

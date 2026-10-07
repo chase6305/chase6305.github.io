@@ -1,0 +1,235 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chase – 智能算法系列</title>
+    <link>http://127.0.0.1:13155/series/%E6%99%BA%E8%83%BD%E7%AE%97%E6%B3%95%E7%B3%BB%E5%88%97/</link>
+    <description>Recent content in 智能算法系列 on Chase</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Mon, 01 Apr 2024 00:00:00 +0000</lastBuildDate>
+    
+	  <atom:link href="http://127.0.0.1:13155/series/%E6%99%BA%E8%83%BD%E7%AE%97%E6%B3%95%E7%B3%BB%E5%88%97/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>智能算法概述</title>
+      <link>http://127.0.0.1:13155/posts/ai/algorithms/overview/</link>
+      <pubDate>Mon, 01 Apr 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://127.0.0.1:13155/posts/ai/algorithms/overview/</guid>
+      <description>
+        
+        
+        &lt;h2 data-hextra-search-id=&#34;从问题定义选择算法&#34; id=&#34;从问题定义选择算法&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;从问题定义选择算法&lt;a href=&#34;#%e4%bb%8e%e9%97%ae%e9%a2%98%e5%ae%9a%e4%b9%89%e9%80%89%e6%8b%a9%e7%ae%97%e6%b3%95&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;算法不是按名字堆叠的工具箱。先写清输入、输出、状态、目标与约束，再决定使用搜索、优化还是学习方法。本文以机器人任务为线索，把“系统要做什么”“怎样获得行为”和“模型内部怎样计算”分开理解。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;问题&lt;/th&gt;
+					&lt;th&gt;一个入门起点&lt;/th&gt;
+					&lt;th&gt;先验证什么&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;已知地图上找路径&lt;/td&gt;
+					&lt;td&gt;A* 与 Dijkstra&lt;/td&gt;
+					&lt;td&gt;路径有效性、代价与不可达返回&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;与环境交互学习行为&lt;/td&gt;
+					&lt;td&gt;MDP 与策略评估&lt;/td&gt;
+					&lt;td&gt;终止条件、回报定义与独立评估&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;从数据学习生成分布&lt;/td&gt;
+					&lt;td&gt;扩散模型&lt;/td&gt;
+					&lt;td&gt;噪声目标、采样过程与分布比较&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;处理序列依赖&lt;/td&gt;
+					&lt;td&gt;Attention / Transformer&lt;/td&gt;
+					&lt;td&gt;张量形状、掩码与数值稳定性&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 data-hextra-search-id=&#34;先写一张问题卡&#34; id=&#34;先写一张问题卡&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;先写一张问题卡&lt;a href=&#34;#%e5%85%88%e5%86%99%e4%b8%80%e5%bc%a0%e9%97%ae%e9%a2%98%e5%8d%a1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;例如“机械臂把杯子放到托盘”还不足以选择算法，需要把它具体化：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;项目&lt;/th&gt;
+					&lt;th&gt;一个可能的定义&lt;/th&gt;
+					&lt;th&gt;定义不清的后果&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;观测&lt;/td&gt;
+					&lt;td&gt;标定后的图像、关节状态、目标描述&lt;/td&gt;
+					&lt;td&gt;图像时间或坐标系不一致，后续模块难以补救&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;输出&lt;/td&gt;
+					&lt;td&gt;下一个末端目标，或未来一段关节动作&lt;/td&gt;
+					&lt;td&gt;不能直接比较不同动作空间的误差&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;可用知识&lt;/td&gt;
+					&lt;td&gt;已知几何、碰撞模型、示范或奖励&lt;/td&gt;
+					&lt;td&gt;决定哪些部分可求解、哪些部分需要学习&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;约束&lt;/td&gt;
+					&lt;td&gt;关节限位、速度、接触与工作区域&lt;/td&gt;
+					&lt;td&gt;成功到达目标不等于运动过程合法&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;成功定义&lt;/td&gt;
+					&lt;td&gt;杯子稳定落在托盘内且机器人退出&lt;/td&gt;
+					&lt;td&gt;不能只用末端到目标的距离代替任务完成&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;时间预算&lt;/td&gt;
+					&lt;td&gt;观测、推理、规划和执行的完整周期&lt;/td&gt;
+					&lt;td&gt;只测一次网络前向会遗漏队列与通信延迟&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;同一任务可以有多种实现。几何规划使用明确的模型和约束；模仿学习从示范中学习动作规律；强化学习通过回报优化交互行为。它们也可以组合，例如用学习模型生成候选目标，再用几何检查和控制器执行。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;不要混淆三个分类维度&#34; id=&#34;不要混淆三个分类维度&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;不要混淆三个分类维度&lt;a href=&#34;#%e4%b8%8d%e8%a6%81%e6%b7%b7%e6%b7%86%e4%b8%89%e4%b8%aa%e5%88%86%e7%b1%bb%e7%bb%b4%e5%ba%a6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;维度&lt;/th&gt;
+					&lt;th&gt;例子&lt;/th&gt;
+					&lt;th&gt;回答的问题&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;系统职责&lt;/td&gt;
+					&lt;td&gt;感知、任务规划、运动规划、控制&lt;/td&gt;
+					&lt;td&gt;这个模块在整个机器人链路里负责什么？&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;求解或学习方式&lt;/td&gt;
+					&lt;td&gt;图搜索、数值优化、监督学习、模仿学习、强化学习&lt;/td&gt;
+					&lt;td&gt;规则或参数从哪里来，优化的目标是什么？&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;表示与模型结构&lt;/td&gt;
+					&lt;td&gt;图、状态空间、CNN、Transformer、扩散或流模型&lt;/td&gt;
+					&lt;td&gt;输入、内部状态和输出怎样表示与计算？&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;因此，“Transformer 和强化学习哪个更好”通常不是一个完整问题：Transformer 可以作为强化学习策略网络，强化学习也可以用于大语言模型后训练。VLA 描述视觉、语言到动作的系统接口，其训练和动作生成还可能采用不同方案。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;一个小图说明比较前先统一目标&#34; id=&#34;一个小图说明比较前先统一目标&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;一个小图说明：比较前先统一目标&lt;a href=&#34;#%e4%b8%80%e4%b8%aa%e5%b0%8f%e5%9b%be%e8%af%b4%e6%98%8e%e6%af%94%e8%be%83%e5%89%8d%e5%85%88%e7%bb%9f%e4%b8%80%e7%9b%ae%e6%a0%87&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;考虑两条从 S 到 G 的路径：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;S --1--&amp;gt; A --100--&amp;gt; G             2 条边，总成本 101
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;S --2--&amp;gt; B --2--&amp;gt; C --2--&amp;gt; G       3 条边，总成本   6&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;BFS 在无权图上寻找边数最少的路径，因此会优先得到第一条；Dijkstra 在非负边权图上按累计成本扩展，应得到第二条。两者没有互相矛盾，它们优化的是不同目标。只有所有边权相同，边数最少才等价于总成本最小。&lt;/p&gt;
+&lt;p&gt;A* 进一步加入到目标的启发下界。启发函数恒为零时，它退化为 Dijkstra 的搜索顺序；使用可采纳且一致的启发函数，或正确处理不一致启发函数的节点重开，才能讨论对应条件下的最优性。实验中还应固定邻接方式、障碍处理和代价单位，详见 &lt;a
+    href=&#34;http://127.0.0.1:13155/posts/ai/algorithms/astar/astar-introduction/&#34;&gt;三维 A* 原理&lt;/a&gt;与&lt;a
+    href=&#34;http://127.0.0.1:13155/posts/ai/algorithms/astar/astar-cpp/&#34;&gt;可运行 C++ 实现&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;这个例子也说明，不能只报告“算法返回了路径”。还应验证路径是否存在、是否合法、代价是多少；要比较速度，再统计扩展节点和实际运行时间。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;学习算法需要另一个验证闭环&#34; id=&#34;学习算法需要另一个验证闭环&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;学习算法需要另一个验证闭环&lt;a href=&#34;#%e5%ad%a6%e4%b9%a0%e7%ae%97%e6%b3%95%e9%9c%80%e8%a6%81%e5%8f%a6%e4%b8%80%e4%b8%aa%e9%aa%8c%e8%af%81%e9%97%ad%e7%8e%af&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;对于监督或模仿学习，训练损失下降说明模型更适合当前目标和样本，不能直接证明新场景任务成功率提高。机器人示范中的相邻帧高度相关，按帧随机切分可能让同一段操作同时进入训练与验证；应优先考虑按 episode、场景、对象或采集批次划分。&lt;/p&gt;
+&lt;p&gt;对于强化学习，先明确状态、动作、奖励、终止和时间截断。训练时使用探索动作的回报，与独立评估策略的回报不一定是同一统计量。稀疏奖励任务还应同时报告成功率，避免“更高回报”只是策略利用了奖励定义中的空隙。&lt;/p&gt;
+&lt;p&gt;对于生成模型，单张看起来合理的输出只展示一个样本；还需检查分布覆盖、条件遵循和失败类型。把两个不同动作模式平均成一条轨迹，可能得到示范中从未出现过的行为。可以结合 &lt;a
+    href=&#34;http://127.0.0.1:13155/posts/ai/diffusion-models/&#34;&gt;扩散模型&lt;/a&gt;与 &lt;a
+    href=&#34;http://127.0.0.1:13155/posts/ai/vla-evolution/&#34;&gt;VLA 动作生成&lt;/a&gt;比较不同目标的含义。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;设计一次能说明问题的消融&#34; id=&#34;设计一次能说明问题的消融&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;设计一次能说明问题的消融&lt;a href=&#34;#%e8%ae%be%e8%ae%a1%e4%b8%80%e6%ac%a1%e8%83%bd%e8%af%b4%e6%98%8e%e9%97%ae%e9%a2%98%e7%9a%84%e6%b6%88%e8%9e%8d&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;假设想知道“加入姿态历史是否有帮助”，至少保留一个不使用历史的基线，固定训练数据划分、评估场景、成功判据与计算预算。还要注明历史窗口改变后，输入 token、显存和推理时延是否一起变化。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;记录&lt;/th&gt;
+					&lt;th&gt;用途&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;完整配置、代码版本和随机种子&lt;/td&gt;
+					&lt;td&gt;还原实验条件&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;每个场景与每次尝试的结果&lt;/td&gt;
+					&lt;td&gt;找到收益来自哪些任务，避免只看总体均值&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;失败、超时和无效输出&lt;/td&gt;
+					&lt;td&gt;保持分母完整，避免只统计成功运行的样本&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;训练资源与部署延迟&lt;/td&gt;
+					&lt;td&gt;判断改进是否满足实际预算&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;多个种子或配对评估&lt;/td&gt;
+					&lt;td&gt;区分稳定收益和偶然波动&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;“换模块后均值更高”还不足以解释原因。更大的模型、更长训练或更多样本可能同时改变结果；控制这些因素，才能缩小结论范围。具体的损失、成功率、置信区间与配对评估见 &lt;a
+    href=&#34;http://127.0.0.1:13155/posts/ai/llm-training-metrics/&#34;&gt;训练与指标专题&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;建议的实验路线&#34; id=&#34;建议的实验路线&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;建议的实验路线&lt;a href=&#34;#%e5%bb%ba%e8%ae%ae%e7%9a%84%e5%ae%9e%e9%aa%8c%e8%b7%af%e7%ba%bf&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;先用小规模、可手算的例子建立基准，再逐步增加数据量和复杂约束。优化性能前保留正确性测试，比较同一输入和相同评价口径。&lt;/p&gt;
+&lt;p&gt;模型或算法“成功运行”只是第一步：路径要检查碰撞，策略要做独立回合评估，生成模型要评估分布质量，GPU 程序要正确同步计时。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;当前目标&lt;/th&gt;
+					&lt;th&gt;建议继续阅读&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;跑通环境交互、区分结束与截断&lt;/td&gt;
+					&lt;td&gt;&lt;a
+    href=&#34;http://127.0.0.1:13155/posts/ai/gymnasium/1/&#34;&gt;Gymnasium 入门&lt;/a&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;理解策略梯度与后训练目标&lt;/td&gt;
+					&lt;td&gt;&lt;a
+    href=&#34;http://127.0.0.1:13155/posts/rl/&#34;&gt;强化学习基础&lt;/a&gt;、&lt;a
+    href=&#34;http://127.0.0.1:13155/posts/ai/ppo-dpo-grpo/&#34;&gt;PPO / DPO / GRPO&lt;/a&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;理解序列模型的计算结构&lt;/td&gt;
+					&lt;td&gt;&lt;a
+    href=&#34;http://127.0.0.1:13155/posts/ai/transformer-attention/&#34;&gt;Transformer Attention&lt;/a&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;从示范训练机器人动作策略&lt;/td&gt;
+					&lt;td&gt;&lt;a
+    href=&#34;http://127.0.0.1:13155/posts/ai/lerobot-act/&#34;&gt;LeRobot 与 ACT&lt;/a&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;区分规划、轨迹与底层控制&lt;/td&gt;
+					&lt;td&gt;&lt;a
+    href=&#34;http://127.0.0.1:13155/posts/planner/to_mpc_wbc/&#34;&gt;TO、MPC 与 WBC&lt;/a&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 data-hextra-search-id=&#34;阅读自测与验收&#34; id=&#34;阅读自测与验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;阅读自测与验收&lt;a href=&#34;#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;为同一张小地图分别运行 BFS、Dijkstra 与 A*：先说明边权与启发条件，再解释哪些结果应该相同。&lt;/li&gt;
+&lt;li&gt;在笔记中区分算法保证、实现测试与实验性能；草稿中的学习路线不是已经完成的性能对比。&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

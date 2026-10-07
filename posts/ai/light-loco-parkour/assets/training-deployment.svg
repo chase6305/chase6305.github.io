@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520" role="img" aria-labelledby="title desc">
+<title id="title">From training resources to one deployable policy</title><desc id="desc">A training lane and a deployment lane distinguish supervision from runtime inputs.</desc>
+<rect width="100%" height="100%" rx="18" fill="#fffdf9"/>
+<g font-family="Arial, sans-serif"><text x="40" y="46" font-size="28" fill="#18344f" text-anchor="start" font-weight="700">From training resources to one deployable policy</text>
+<text x="40" y="83" font-size="18" fill="#18344f" text-anchor="start" font-weight="400">Training uses extra information; deployment keeps one actor.</text>
+<text x="40" y="123" font-size="17" fill="#8064b9" text-anchor="start" font-weight="700">TRAINING</text>
+<rect x="40" y="140" width="270" height="94" rx="12" fill="#e8f1fb" stroke="#dce5ed"/><text x="175.0" y="176" font-size="22" fill="#18344f" text-anchor="middle" font-weight="700">Height-scan teachers</text><text x="175.0" y="205" font-size="16" fill="#18344f" text-anchor="middle" font-weight="400">Locomotion + individual skills</text>
+<rect x="365" y="140" width="270" height="94" rx="12" fill="#eee8fa" stroke="#dce5ed"/><text x="500.0" y="176" font-size="22" fill="#18344f" text-anchor="middle" font-weight="700">Unified height policy</text><text x="500.0" y="205" font-size="16" fill="#18344f" text-anchor="middle" font-weight="400">Distillation + transition RL</text>
+<rect x="690" y="140" width="270" height="94" rx="12" fill="#fff0d9" stroke="#dce5ed"/><text x="825.0" y="176" font-size="22" fill="#18344f" text-anchor="middle" font-weight="700">Depth student</text><text x="825.0" y="205" font-size="16" fill="#18344f" text-anchor="middle" font-weight="400">Action labels + scan loss + RL</text>
+<text x="337" y="199" font-size="36" fill="#18344f" text-anchor="middle" font-weight="400">→</text>
+<text x="662" y="199" font-size="36" fill="#18344f" text-anchor="middle" font-weight="400">→</text>
+<text x="40" y="279" font-size="17" fill="#208b83" text-anchor="start" font-weight="700">DEPLOYMENT</text>
+<rect x="40" y="300" width="270" height="94" rx="12" fill="#e8f1fb" stroke="#dce5ed"/><text x="175.0" y="336" font-size="22" fill="#18344f" text-anchor="middle" font-weight="700">Onboard observations</text><text x="175.0" y="365" font-size="16" fill="#18344f" text-anchor="middle" font-weight="400">Depth + body state + command</text>
+<rect x="365" y="300" width="270" height="94" rx="12" fill="#eee8fa" stroke="#dce5ed"/><text x="500.0" y="336" font-size="22" fill="#18344f" text-anchor="middle" font-weight="700">Recurrent actor</text><text x="500.0" y="365" font-size="16" fill="#18344f" text-anchor="middle" font-weight="400">Memory retained across steps</text>
+<rect x="690" y="300" width="270" height="94" rx="12" fill="#fff0d9" stroke="#dce5ed"/><text x="825.0" y="336" font-size="22" fill="#18344f" text-anchor="middle" font-weight="700">Joint targets</text><text x="825.0" y="365" font-size="16" fill="#18344f" text-anchor="middle" font-weight="400">PD tracking and robot motion</text>
+<text x="337" y="359" font-size="36" fill="#18344f" text-anchor="middle" font-weight="400">→</text>
+<text x="662" y="359" font-size="36" fill="#18344f" text-anchor="middle" font-weight="400">→</text>
+<line x1="825" y1="238" x2="825" y2="258" stroke="#8064b9" stroke-width="2"/>
+<line x1="825" y1="258" x2="500" y2="258" stroke="#8064b9" stroke-width="2"/>
+<line x1="500" y1="258" x2="500" y2="295" stroke="#8064b9" stroke-width="2"/>
+<text x="643" y="253" font-size="15" fill="#8064b9" text-anchor="middle" font-weight="400">Export trained actor</text>
+<text x="40" y="454" font-size="18" fill="#18344f" text-anchor="start" font-weight="400">Training-only experts, critic, references and scan decoder are omitted below.</text>
+<text x="40" y="486" font-size="16" fill="#18344f" text-anchor="start" font-weight="400">Schematic summary of the paper; not the complete third-party implementation.</text></g>
+</svg>

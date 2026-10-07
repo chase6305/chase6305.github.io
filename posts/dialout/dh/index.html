@@ -1,588 +1,148 @@
-<!doctype html><html lang=zh-cn dir=auto>
-<head><meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
-<meta name=robots content="index, follow">
-<title>Python优化控制大寰PGC夹具的串口通信程序 | Chase Blog</title>
-<meta name=keywords content="Linux,Python,Gripper">
-<meta name=description content="Python优化控制大寰PGC夹具的串口通信程序">
-<meta name=author content="Chase">
-<link rel=canonical href=https://chase6305.github.io/posts/dialout/dh/>
-<meta name=google-site-verification content="XYZabc">
-<meta name=yandex-verification content="XYZabc">
-<meta name=msvalidate.01 content="XYZabc">
-<link crossorigin=anonymous href=/assets/css/stylesheet.css rel="preload stylesheet" as=style>
-<link rel=icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E>
-<link rel=icon type=image/png sizes=16x16 href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E>
-<link rel=icon type=image/png sizes=32x32 href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E>
-<link rel=apple-touch-icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E>
-<link rel=mask-icon href=https://chase6305.github.io/%3Clink%20/%20abs%20url%3E>
-<meta name=theme-color content="#2e2e33">
-<meta name=msapplication-TileColor content="#2e2e33">
-<noscript>
-<style>#theme-toggle,.top-link{display:none}</style>
-<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
-</noscript>
-<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}}</script>
-<script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js defer></script><script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}}</script>
-<script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script><meta property="og:url" content="https://chase6305.github.io/posts/dialout/dh/">
-<meta property="og:site_name" content="Chase Blog">
-<meta property="og:title" content="Python优化控制大寰PGC夹具的串口通信程序">
-<meta property="og:description" content="Python优化控制大寰PGC夹具的串口通信程序">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:type" content="article">
-<meta property="article:section" content="posts">
-<meta property="article:published_time" content="2025-03-01T00:00:00+00:00">
-<meta property="article:modified_time" content="2025-03-01T00:00:00+00:00">
-<meta property="article:tag" content="Linux">
-<meta property="article:tag" content="Python">
-<meta property="article:tag" content="Gripper">
-<meta property="og:image" content="https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
-<meta name=twitter:title content="Python优化控制大寰PGC夹具的串口通信程序">
-<meta name=twitter:description content="Python优化控制大寰PGC夹具的串口通信程序">
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://chase6305.github.io/posts/"},{"@type":"ListItem","position":2,"name":"Python优化控制大寰PGC夹具的串口通信程序","item":"https://chase6305.github.io/posts/dialout/dh/"}]}</script>
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Python优化控制大寰PGC夹具的串口通信程序","name":"Python优化控制大寰PGC夹具的串口通信程序","description":"Python优化控制大寰PGC夹具的串口通信程序","keywords":["Linux","Python","Gripper"],"articleBody":"在工业自动化中，夹具的控制是一个非常重要的环节。本文将介绍如何使用Python通过串口控制大寰PGC夹具。我们将使用异步IO和事件锁来实现半双工通信，以提高通讯效率和鲁棒性。\n1. 环境准备 首先，我们需要安装pyserial库来处理串口通信。可以使用以下命令安装：\npip install pyserial asyncio 2. 异步IO 异步IO（Asynchronous I/O）在处理并发任务时具有显著的优势，尤其是在I/O密集型操作中。以下是异步IO的主要优势和处理逻辑：\n2.1优势   高效利用资源： 异步IO允许程序在等待I/O操作完成时执行其他任务，从而更高效地利用CPU资源。\n  更好的响应性： 异步IO可以提高应用程序的响应性，因为它不会因为等待I/O操作而阻塞整个程序。\n  简化并发编程： 使用异步IO可以避免传统多线程编程中的锁竞争和死锁问题，从而简化并发编程。\n  可扩展性： 异步IO使得应用程序更容易扩展，因为它可以处理大量并发连接而不需要为每个连接创建一个线程。\n  2.2 处理逻辑 异步IO的处理逻辑通常包括以下几个步骤：\n  定义异步函数： 使用async def定义异步函数，这些函数可以使用await关键字来等待异步操作完成。\n  创建事件循环： 使用asyncio库创建和管理事件循环，事件循环负责调度和执行异步任务。\n  执行异步任务： 使用await关键字等待异步任务完成，或者使用asyncio.run()来运行顶层异步函数。\n  3. 实现串口控制类 我们将创建一个名为dh_device的类来处理串口连接和数据读写。以下是PGC_device.py的实现：\nPGC_device.py\nimport asyncio import serial import threading import logging logging.basicConfig(level=logging.INFO) class dh_device(object): def __init__(self): r\"\"\"Initialize the dh_device class with a threading lock.\"\"\" self.lock = threading.Lock() self.serialPort = serial.Serial(timeout=1.0) def connect_device(self, portname, Baudrate): r\"\"\"Connect to the device via the specified serial port and baud rate. Args: portname (str): The name of the serial port to connect to. Baudrate (int): The baud rate for the serial communication. Returns: int: 0 if the connection is successful, -1 otherwise. \"\"\" with self.lock: try: self.serialPort.port = portname self.serialPort.baudrate = Baudrate self.serialPort.bytesize = 8 self.serialPort.parity = \"N\" self.serialPort.stopbits = 1 self.serialPort.set_output_flow_control = False self.serialPort.set_input_flow_control = False self.serialPort.open() if self.serialPort.isOpen(): logging.info(\"Serial Open Success\") return 0 else: logging.error(\"Serial Open Error\") return -1 except serial.SerialException as e: logging.error(f\"Serial Open Exception: {e}\") return -1 def disconnect_device(self): r\"\"\"Disconnect the device by closing the serial port.\"\"\" with self.lock: if self.serialPort.isOpen(): self.serialPort.close() logging.info(\"Serial Port Closed\") else: logging.warning(\"Serial Port Already Closed\") async def device_write(self, write_data): r\"\"\"Write data to the device. Args: write_data (bytes): The data to write to the device. Returns: int: The number of bytes written if successful, 0 if there is an error, -1 if the serial port is not open. \"\"\" with self.lock: if self.serialPort.isOpen(): try: write_length = self.serialPort.write(write_data) if write_length == len(write_data): return write_length else: logging.debug(f\"Write error! send_buff: {write_data}\") return 0 except serial.SerialTimeoutException as e: logging.debug(f\"Write Timeout Exception: {e}\") return 0 else: logging.error(\"Serial Port Not Open\") return -1 async def device_read(self, wlen): r\"\"\"Read data from the device. Args: wlen (int): The number of bytes to read from the device. Returns: bytes: The data read from the device if successful, -1 if the serial port is not open. \"\"\" with self.lock: if self.serialPort.isOpen(): try: responseData = self.serialPort.read(wlen) return responseData except serial.SerialTimeoutException as e: logging.error(f\"Read Timeout Exception: {e}\") return -1 else: logging.error(\"Serial Port Not Open\") return -1 4. 实现夹具控制类 接下来，我们创建一个名为dh_modbus_gripper的类来实现对夹具的具体控制。以下是PGC_gripper.py的实现： PGC_gripper.py\nimport asyncio import threading import logging from PGC_device import dh_device logging.basicConfig(level=logging.INFO) class dh_modbus_gripper(object): def __init__(self): r\"\"\"Initialize the gripper with default ID and create a lock for thread safety.\"\"\" self.gripper_ID = 0x01 self._transaction_lock = threading.Lock() self.device = dh_device() def CRC16(self, nData, wLength): r\"\"\"Calculate the CRC16 checksum for the given data. Args: nData (list): The data to calculate the checksum for. wLength (int): The length of the data. Returns: int: The calculated CRC16 checksum. \"\"\" if nData == 0x00: return 0x0000 wCRCWord = 0xFFFF poly = 0xA001 for num in range(wLength): date = nData[num] wCRCWord = (date \u0026 0xFF) ^ wCRCWord for bit in range(8): if (wCRCWord \u0026 0x01) != 0: wCRCWord = 1 wCRCWord ^= poly else: wCRCWord = 1 return wCRCWord def open(self, PortName, BaudRate): r\"\"\"Open the connection to the gripper device. Args: PortName (str): The name of the port to connect to. BaudRate (int): The baud rate for the connection. Returns: int: 0 if successful, negative value if failed. \"\"\" with self._transaction_lock: ret = self.device.connect_device(PortName, BaudRate) if ret  0: logging.error(\"Failed to open connection\") else: logging.info(\"Connection opened successfully\") return ret def close(self): r\"\"\"Close the connection to the gripper device.\"\"\" with self._transaction_lock: self.device.disconnect_device() logging.info(\"Connection closed\") async def _send_command(self, send_buf, expected_length): r\"\"\"Send a command to the device and read the response. Args: send_buf (list): The command to send. expected_length (int): The expected length of the response. Returns: list: The response from the device. \"\"\" send_temp = send_buf retrycount = 3 while retrycount  0: wdlen = await self.device.device_write(send_temp) if len(send_temp) != wdlen: logging.debug(f\"Write error! Sent: {send_temp}\") retrycount -= 1 continue rev_buf = await self.device.device_read(expected_length) if len(rev_buf) == expected_length: return rev_buf retrycount -= 1 logging.debug(\"Failed to communicate with device after retries\") return None def _prepare_command(self, function_code, index, value=None): r\"\"\"Prepare a command buffer with CRC16 checksum. Args: function_code (int): The function code for the command. index (int): The register index. value (int, optional): The value to write (for write commands). Returns: list: The prepared command buffer. \"\"\" send_buf = [self.gripper_ID, function_code, (index  8) \u0026 0xFF, index \u0026 0xFF] if value is not None: send_buf.extend([(value  8) \u0026 0xFF, value \u0026 0xFF]) else: send_buf.extend([0x00, 0x01]) crc = self.CRC16(send_buf, len(send_buf)) send_buf.extend([crc \u0026 0xFF, (crc  8) \u0026 0xFF]) return send_buf async def WriteRegisterFunc(self, index, value): r\"\"\"Write a value to a specific register of the gripper. Args: index (int): The register index to write to. value (int): The value to write to the register. Returns: bool: True if the write operation was successful, False otherwise. \"\"\" with self._transaction_lock: send_buf = self._prepare_command(0x06, index, value) response = await self._send_command(send_buf, 8) return response is not None async def ReadRegisterFunc(self, index): r\"\"\"Read a value from a specific register of the gripper. Args: index (int): The register index to read from. Returns: int: The value read from the register. \"\"\" with self._transaction_lock: send_buf = self._prepare_command(0x03, index) response = await self._send_command(send_buf, 7) if response: return (response[3]  8) | (response[4] \u0026 0xFF) return None async def Initialization(self): \"\"\"Initialize the gripper by writing to the initialization register.\"\"\" await self.WriteRegisterFunc(0x0100, 0xA5) async def SetTargetPosition(self, refpos): r\"\"\"Set the target position of the gripper. Args: refpos (int): The target position to set. \"\"\" await self.WriteRegisterFunc(0x0103, refpos) async def SetTargetForce(self, force): r\"\"\"Set the target force of the gripper. Args: force (int): The target force to set. \"\"\" await self.WriteRegisterFunc(0x0101, force) async def SetTargetSpeed(self, speed): r\"\"\"Set the target speed of the gripper. Args: speed (int): The target speed to set. \"\"\" await self.WriteRegisterFunc(0x0104, speed) async def GetCurrentPosition(self): r\"\"\"Get the current position of the gripper. Returns: int: The current position of the gripper. \"\"\" return await self.ReadRegisterFunc(0x0202) async def GetCurrentTargetForce(self): r\"\"\"Get the current target force of the gripper. Returns: int: The current target force of the gripper. \"\"\" return await self.ReadRegisterFunc(0x0101) async def GetCurrentTargetSpeed(self): r\"\"\"Get the current target speed of the gripper. Returns: int: The current target speed of the gripper. \"\"\" return await self.ReadRegisterFunc(0x0104) async def GetInitState(self): r\"\"\"Get the initialization state of the gripper. Returns: int: The initialization state of the gripper. \"\"\" return await self.ReadRegisterFunc(0x0200) async def GetGripState(self): r\"\"\"Get the grip state of the gripper. Returns: int: The grip state of the gripper. \"\"\" return await self.ReadRegisterFunc(0x0201) 5. 用法 5.2 示例代码 以下是如何使用dh_modbus_gripper类来控制大寰PGC夹具的具体示例：\nimport asyncio from PGC_gripper import dh_modbus_gripper # 定义串口和波特率 LEFT_GRIPPER_PORT = \"/dev/ttyUSB0\" BAUDRATE = 115200 # 创建夹具控制对象 gripper = dh_modbus_gripper() # 打开串口连接 gripper.open(LEFT_GRIPPER_PORT, BAUDRATE) # 初始化夹具 asyncio.run(gripper.Initialization()) # 设置目标位置 angle = 500 # 角度范围为0-1000 asyncio.run(gripper.SetTargetPosition(int(angle))) # 关闭串口连接 gripper.close() 5.2 代码说明   定义异步函数： 异步函数使用async def定义，例如device_write和device_read。\nasync def device_write(self, write_data): # 异步写入数据逻辑 pass async def device_read(self, wlen): # 异步读取数据逻辑 pass   创建事件循环： 使用asyncio.run(main())来创建和运行事件循环。\nasync def main(): # 主函数逻辑 pass if __name__ == \"__main__\": asyncio.run(main())   执行异步任务： 在异步函数内部使用await关键字等待异步操作完成，例如：\nasync def main(): device = dh_device() await device.device_write(b'example data') response = await device.device_read(10) print(response)   ","wordCount":"1104","inLanguage":"zh-cn","image":"https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E","datePublished":"2025-03-01T00:00:00Z","dateModified":"2025-03-01T00:00:00Z","author":{"@type":"Person","name":"Chase"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://chase6305.github.io/posts/dialout/dh/"},"publisher":{"@type":"Organization","name":"Chase Blog","logo":{"@type":"ImageObject","url":"https://chase6305.github.io/%3Clink%20/%20abs%20url%3E"}}}</script>
-</head>
-<body id=top>
-<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
-<header class=header>
-<nav class=nav>
-<div class=logo>
-<a href=https://chase6305.github.io/ accesskey=h title="Chase's Home (Alt + H)">
-<img src=https://chase6305.github.io/apple-touch-icon.png alt aria-label=logo height=35>Chase's Home</a>
-<div class=logo-switches>
-<button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+<!doctype html><html lang=en dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="index, follow"><link rel=icon href="/favicon.ico?v=orca-2" data-favicon-light="/favicon.ico?v=orca-2" data-favicon-dark="/favicon-dark.ico?v=orca-2" type=image/x-icon sizes="16x16 32x32 48x48"><link rel=icon href="/favicon-16x16.png?v=orca-2" data-favicon-light="/favicon-16x16.png?v=orca-2" data-favicon-dark="/favicon-16x16-dark.png?v=orca-2" type=image/png sizes=16x16><link rel=icon href="/favicon-32x32.png?v=orca-2" data-favicon-light="/favicon-32x32.png?v=orca-2" data-favicon-dark="/favicon-32x32-dark.png?v=orca-2" type=image/png sizes=32x32><link rel=icon href="/favicon.svg?v=orca-2" data-favicon-light="/favicon.svg?v=orca-2" data-favicon-dark="/favicon-dark.svg?v=orca-2" type=image/svg+xml sizes=any id=favicon-svg><link rel=apple-touch-icon href="/apple-touch-icon.png?v=orca-1" sizes=180x180><link fetchpriority=low href="/site.webmanifest?v=orca-1" rel=manifest><title>Python优化控制大寰PGC夹具的串口通信程序 – Chase</title><meta name=description content="把 Modbus RTU 请求与响应封装为串口事务，增加 CRC、异常帧、超时和并发检查，并以线程桥接异步调用。"><link rel=canonical href=https://chase6305.github.io/posts/dialout/dh/ itemprop=url><meta property="og:title" content="Python优化控制大寰PGC夹具的串口通信程序"><meta property="og:description" content="
+    把 Modbus RTU 请求与响应封装为串口事务，增加 CRC、异常帧、超时和并发检查，并以线程桥接异步调用。
+  "><meta property="og:type" content="
+    article
+  "><meta property="og:url" content="https://chase6305.github.io/posts/dialout/dh/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-03-01T00:00:00+00:00"><meta property="article:modified_time" content="2026-09-05T00:00:00+00:00"><meta itemprop=name content="Python优化控制大寰PGC夹具的串口通信程序"><meta itemprop=description content="把 Modbus RTU 请求与响应封装为串口事务，增加 CRC、异常帧、超时和并发检查，并以线程桥接异步调用。"><meta itemprop=datePublished content="2025-03-01T00:00:00+00:00"><meta itemprop=dateModified content="2026-09-05T00:00:00+00:00"><meta itemprop=wordCount content="1478"><meta itemprop=keywords content="Serial Communication,Python,Robot Gripper"><meta name=twitter:card content="summary"><meta name=twitter:title content="Python优化控制大寰PGC夹具的串口通信程序"><meta name=twitter:description content="把 Modbus RTU 请求与响应封装为串口事务，增加 CRC、异常帧、超时和并发检查，并以线程桥接异步调用。"><link rel=preload href=/css/compiled/main.min.e5d45942f312c19aa0a393e23f3481ac40ea030665f4f8f1f1b7024ea5dcdf24.css as=style integrity="sha256-5dRZQvMSwZqgo5PiPzSBrEDqAwZl9Pjx8bcCTqXc3yQ="><link href=/css/compiled/main.min.e5d45942f312c19aa0a393e23f3481ac40ea030665f4f8f1f1b7024ea5dcdf24.css rel=stylesheet integrity="sha256-5dRZQvMSwZqgo5PiPzSBrEDqAwZl9Pjx8bcCTqXc3yQ="><script src=/js/main-head.min.cd54e3d843382a8073ae569cbaf84935c3914070e60d3330ca2e87b596149374.js integrity="sha256-zVTj2EM4KoBzrlacuvhJNcORQHDmDTMwyi6HtZYUk3Q="></script><script type=application/ld+json>{"@context":"https://schema.org","@id":"https://chase6305.github.io/posts/dialout/dh/#article","@type":"BlogPosting","author":[{"@type":"Person","name":"chase"}],"dateModified":"2026-09-05T00:00:00Z","datePublished":"2025-03-01T00:00:00Z","description":"把 Modbus RTU 请求与响应封装为串口事务，增加 CRC、异常帧、超时和并发检查，并以线程桥接异步调用。","headline":"Python优化控制大寰PGC夹具的串口通信程序","inLanguage":"zh-CN","keywords":["Serial Communication","Python","Robot Gripper"],"mainEntityOfPage":{"@id":"https://chase6305.github.io/posts/dialout/dh/","@type":"WebPage"},"url":"https://chase6305.github.io/posts/dialout/dh/"}</script></head><body><a href=#content class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">Skip to content</a><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden"><div class="hextra-nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"></div><nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-1 hx:md:gap-2 hx:h-[var(--hextra-navbar-height)] hx:px-6"><a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href=/><img class="hx:mr-2 hx:block hx:dark:hidden" src=/orca-avatar-64.webp alt=Logo height=32 width=32>
+<img class="hx:mr-2 hx:hidden hx:dark:block" src=/orca-avatar-64.webp alt="Dark Logo" height=32 width=32>
+<span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none">Chase</span>
+</a><a title href=/projects/ class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"><span class=hx:text-center>Projects</span>
+</a><a title href=/posts/ class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"><span class=hx:text-center>Blog</span></a><div class="hx:relative hx:hidden hx:md:inline-block"><button title=Explore data-state=closed class="hextra-nav-menu-toggle hx:cursor-pointer hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:whitespace-nowrap hx:p-2 hx:flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200" type=button aria-label=Explore aria-expanded=false aria-haspopup=menu><span class=hx:text-center>Explore</span><svg height="12" class="hx:transition-transform hx:duration-200 hx:ease-in-out" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button><ul class="hextra-nav-menu-items hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" style=min-width:100px role=menu><li role=none class="hextra-nav-menu-item hx:flex hx:flex-col"><a href=/categories/ role=menuitem class="hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:flex hx:items-center hx:gap-1 hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800">Categories</a></li><li role=none class="hextra-nav-menu-item hx:flex hx:flex-col"><a href=/tags/ role=menuitem class="hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:flex hx:items-center hx:gap-1 hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800">Tags</a></li><li role=none class="hextra-nav-menu-item hx:flex hx:flex-col"><a href=/archives/ role=menuitem class="hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:flex hx:items-center hx:gap-1 hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800">Archives</a></li></ul></div><div class="theme-picker hx:flex hx:justify-items-start" data-theme=light><button title="Change appearance" data-state=closed data-location=top class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:p-1 hx:md:p-2" type=button aria-label="Change appearance" aria-expanded=false aria-haspopup=menu>
+<span class=theme-picker__icon aria-hidden=true></span></button><ul class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" style="position:fixed;inset:auto auto 0 0;min-width:130px" data-theme=light role=menu><li role=none><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=light class="theme-picker__option hx:relative hx:w-full hx:cursor-pointer hx:rounded-sm hx:border-0 hx:bg-transparent hx:px-3 hx:py-1.5 hx:text-left">
+<span class="theme-picker__swatch theme-picker__swatch--light" aria-hidden=true></span>Light</button></li><li role=none><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=warm class="theme-picker__option hx:relative hx:w-full hx:cursor-pointer hx:rounded-sm hx:border-0 hx:bg-transparent hx:px-3 hx:py-1.5 hx:text-left">
+<span class="theme-picker__swatch theme-picker__swatch--warm" aria-hidden=true></span>Warm</button></li><li role=none><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=dark class="theme-picker__option hx:relative hx:w-full hx:cursor-pointer hx:rounded-sm hx:border-0 hx:bg-transparent hx:px-3 hx:py-1.5 hx:text-left">
+<span class="theme-picker__swatch theme-picker__swatch--dark" aria-hidden=true></span>Dark</button></li><li role=none><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=system class="theme-picker__option hx:relative hx:w-full hx:cursor-pointer hx:rounded-sm hx:border-0 hx:bg-transparent hx:px-3 hx:py-1.5 hx:text-left">
+<span class="theme-picker__swatch theme-picker__swatch--system" aria-hidden=true></span>System</button></li></ul></div><div class="hx:flex hx:justify-items-start"><button title="Change language" data-state=closed data-location=top class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:p-1 hx:md:p-2 hx:grow" type=button aria-label="Change language" aria-expanded=false aria-haspopup=menu><div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022.0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg></div></button><ul class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" style="position:fixed;inset:auto auto 0 0;margin:0;min-width:100px" role=menu><li role=none class="hx:flex hx:flex-col"><a href=/posts/dialout/dh/ role=menuitem class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9">English<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height="1em" width="1em" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a></li><li role=none class="hx:flex hx:flex-col"><a href=/zh-cn/ role=menuitem class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9">简体中文</a></li></ul></div><button type=button class=hextra-search-trigger data-search-open aria-haspopup=dialog aria-controls=hextra-search-dialog aria-label=Search...><svg class="hextra-search-trigger-icon" focusable="false" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5A7 7 0 113 10a7 7 0 0114 0z"/></svg><span class=hextra-search-trigger-label>Search...</span>
+<kbd class=hextra-search-trigger-kbd>CTRL K</kbd>
 </button>
-</div>
-</div>
-<ul id=menu>
-<li>
-<a href=https://chase6305.github.io/categories/ title=categories>
-<span>categories</span>
-</a>
-</li>
-<li>
-<a href=https://chase6305.github.io/archives/ title=archives>
-<span>archives</span>
-</a>
-</li>
-<li>
-<a href=https://chase6305.github.io/tags/ title=tags>
-<span>tags</span>
-</a>
-</li>
-</ul>
-</nav>
-</header>
-<main class=main>
-<article class=post-single>
-<header class=post-header>
-<div class=breadcrumbs><a href=https://chase6305.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://chase6305.github.io/posts/>Posts</a></div>
-<h1 class="post-title entry-hint-parent">
-Python优化控制大寰PGC夹具的串口通信程序
-</h1>
-<div class=post-meta><span title="2025-03-01 00:00:00 +0000 UTC">2025-03-01</span>&nbsp;·&nbsp;Chase&nbsp;|&nbsp;<a href=https://github.com/%3cpath_to_repo%3e/content/posts/dialout/dh/index.md rel="noopener noreferrer" target=_blank>Suggest Changes</a>
-</div>
-</header> <div class=toc>
-<details open>
-<summary accesskey=c title="(Alt + C)">
-<span class=details>Table of Contents</span>
-</summary>
-<div class=inner><nav id=TableOfContents>
-<ul>
-<li><a href=#21优势>2.1优势</a></li>
-<li><a href=#22-处理逻辑>2.2 处理逻辑</a></li>
-</ul>
-<ul>
-<li><a href=#52-示例代码>5.2 示例代码</a></li>
-<li><a href=#52-代码说明>5.2 代码说明</a></li>
-</ul>
-</nav>
-</div>
-</details>
-</div>
-<div class=post-content><p>在工业自动化中，夹具的控制是一个非常重要的环节。本文将介绍如何使用Python通过串口控制大寰PGC夹具。我们将使用异步IO和事件锁来实现半双工通信，以提高通讯效率和鲁棒性。</p>
-<h1 id=1-环境准备>1. 环境准备<a hidden class=anchor aria-hidden=true href=#1-环境准备>#</a></h1>
-<p>首先，我们需要安装pyserial库来处理串口通信。可以使用以下命令安装：</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>pip install pyserial asyncio
-</code></pre></div><h1 id=2-异步io>2. 异步IO<a hidden class=anchor aria-hidden=true href=#2-异步io>#</a></h1>
-<p>异步IO（Asynchronous I/O）在处理并发任务时具有显著的优势，尤其是在I/O密集型操作中。以下是异步IO的主要优势和处理逻辑：</p>
-<h2 id=21优势>2.1优势<a hidden class=anchor aria-hidden=true href=#21优势>#</a></h2>
-<ol>
-<li>
-<p><strong>高效利用资源</strong>：
-异步IO允许程序在等待I/O操作完成时执行其他任务，从而更高效地利用CPU资源。</p>
-</li>
-<li>
-<p><strong>更好的响应性</strong>：
-异步IO可以提高应用程序的响应性，因为它不会因为等待I/O操作而阻塞整个程序。</p>
-</li>
-<li>
-<p><strong>简化并发编程</strong>：
-使用异步IO可以避免传统多线程编程中的锁竞争和死锁问题，从而简化并发编程。</p>
-</li>
-<li>
-<p><strong>可扩展性</strong>：
-异步IO使得应用程序更容易扩展，因为它可以处理大量并发连接而不需要为每个连接创建一个线程。</p>
-</li>
-</ol>
-<h2 id=22-处理逻辑>2.2 处理逻辑<a hidden class=anchor aria-hidden=true href=#22-处理逻辑>#</a></h2>
-<p>异步IO的处理逻辑通常包括以下几个步骤：</p>
-<ol>
-<li>
-<p><strong>定义异步函数</strong>：
-使用<code>async def</code>定义异步函数，这些函数可以使用<code>await</code>关键字来等待异步操作完成。</p>
-</li>
-<li>
-<p><strong>创建事件循环</strong>：
-使用<code>asyncio</code>库创建和管理事件循环，事件循环负责调度和执行异步任务。</p>
-</li>
-<li>
-<p><strong>执行异步任务</strong>：
-使用<code>await</code>关键字等待异步任务完成，或者使用<code>asyncio.run()</code>来运行顶层异步函数。</p>
-</li>
-</ol>
-<h1 id=3-实现串口控制类>3. 实现串口控制类<a hidden class=anchor aria-hidden=true href=#3-实现串口控制类>#</a></h1>
-<p>我们将创建一个名为<code>dh_device</code>的类来处理串口连接和数据读写。以下是<code>PGC_device.py</code>的实现：</p>
-<p><code>PGC_device.py</code></p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>asyncio</span>
-<span class=kn>import</span> <span class=nn>serial</span>
-<span class=kn>import</span> <span class=nn>threading</span>
-<span class=kn>import</span> <span class=nn>logging</span>
-
-<span class=n>logging</span><span class=o>.</span><span class=n>basicConfig</span><span class=p>(</span><span class=n>level</span><span class=o>=</span><span class=n>logging</span><span class=o>.</span><span class=n>INFO</span><span class=p>)</span>
-
-
-<span class=k>class</span> <span class=nc>dh_device</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
-    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Initialize the dh_device class with a threading lock.&#34;&#34;&#34;</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>lock</span> <span class=o>=</span> <span class=n>threading</span><span class=o>.</span><span class=n>Lock</span><span class=p>()</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span> <span class=o>=</span> <span class=n>serial</span><span class=o>.</span><span class=n>Serial</span><span class=p>(</span><span class=n>timeout</span><span class=o>=</span><span class=mf>1.0</span><span class=p>)</span>
-
-    <span class=k>def</span> <span class=nf>connect_device</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>portname</span><span class=p>,</span> <span class=n>Baudrate</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Connect to the device via the specified serial port and baud rate.
-</span><span class=s2>
-</span><span class=s2>        Args:
-</span><span class=s2>            portname (str): The name of the serial port to connect to.
-</span><span class=s2>            Baudrate (int): The baud rate for the serial communication.
-</span><span class=s2>
-</span><span class=s2>        Returns:
-</span><span class=s2>            int: 0 if the connection is successful, -1 otherwise.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>lock</span><span class=p>:</span>
-            <span class=k>try</span><span class=p>:</span>
-                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>port</span> <span class=o>=</span> <span class=n>portname</span>
-                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>baudrate</span> <span class=o>=</span> <span class=n>Baudrate</span>
-                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>bytesize</span> <span class=o>=</span> <span class=mi>8</span>
-                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>parity</span> <span class=o>=</span> <span class=s2>&#34;N&#34;</span>
-                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>stopbits</span> <span class=o>=</span> <span class=mi>1</span>
-                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>set_output_flow_control</span> <span class=o>=</span> <span class=kc>False</span>
-                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>set_input_flow_control</span> <span class=o>=</span> <span class=kc>False</span>
-
-                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>open</span><span class=p>()</span>
-                <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>isOpen</span><span class=p>():</span>
-                    <span class=n>logging</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s2>&#34;Serial Open Success&#34;</span><span class=p>)</span>
-                    <span class=k>return</span> <span class=mi>0</span>
-                <span class=k>else</span><span class=p>:</span>
-                    <span class=n>logging</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=s2>&#34;Serial Open Error&#34;</span><span class=p>)</span>
-                    <span class=k>return</span> <span class=o>-</span><span class=mi>1</span>
-            <span class=k>except</span> <span class=n>serial</span><span class=o>.</span><span class=n>SerialException</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
-                <span class=n>logging</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;Serial Open Exception: </span><span class=si>{</span><span class=n>e</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
-                <span class=k>return</span> <span class=o>-</span><span class=mi>1</span>
-
-    <span class=k>def</span> <span class=nf>disconnect_device</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Disconnect the device by closing the serial port.&#34;&#34;&#34;</span>
-        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>lock</span><span class=p>:</span>
-            <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>isOpen</span><span class=p>():</span>
-                <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
-                <span class=n>logging</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s2>&#34;Serial Port Closed&#34;</span><span class=p>)</span>
-            <span class=k>else</span><span class=p>:</span>
-                <span class=n>logging</span><span class=o>.</span><span class=n>warning</span><span class=p>(</span><span class=s2>&#34;Serial Port Already Closed&#34;</span><span class=p>)</span>
-
-    <span class=k>async</span> <span class=k>def</span> <span class=nf>device_write</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>write_data</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Write data to the device.
-</span><span class=s2>
-</span><span class=s2>        Args:
-</span><span class=s2>            write_data (bytes): The data to write to the device.
-</span><span class=s2>
-</span><span class=s2>        Returns:
-</span><span class=s2>            int: The number of bytes written if successful, 0 if there is an error, -1 if the serial port is not open.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>lock</span><span class=p>:</span>
-            <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>isOpen</span><span class=p>():</span>
-                <span class=k>try</span><span class=p>:</span>
-                    <span class=n>write_length</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=n>write_data</span><span class=p>)</span>
-                    <span class=k>if</span> <span class=n>write_length</span> <span class=o>==</span> <span class=nb>len</span><span class=p>(</span><span class=n>write_data</span><span class=p>):</span>
-                        <span class=k>return</span> <span class=n>write_length</span>
-                    <span class=k>else</span><span class=p>:</span>
-                        <span class=n>logging</span><span class=o>.</span><span class=n>debug</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;Write error! send_buff: </span><span class=si>{</span><span class=n>write_data</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
-                        <span class=k>return</span> <span class=mi>0</span>
-                <span class=k>except</span> <span class=n>serial</span><span class=o>.</span><span class=n>SerialTimeoutException</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
-                    <span class=n>logging</span><span class=o>.</span><span class=n>debug</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;Write Timeout Exception: </span><span class=si>{</span><span class=n>e</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
-                    <span class=k>return</span> <span class=mi>0</span>
-            <span class=k>else</span><span class=p>:</span>
-                <span class=n>logging</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=s2>&#34;Serial Port Not Open&#34;</span><span class=p>)</span>
-                <span class=k>return</span> <span class=o>-</span><span class=mi>1</span>
-
-    <span class=k>async</span> <span class=k>def</span> <span class=nf>device_read</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>wlen</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Read data from the device.
-</span><span class=s2>
-</span><span class=s2>        Args:
-</span><span class=s2>            wlen (int): The number of bytes to read from the device.
-</span><span class=s2>
-</span><span class=s2>        Returns:
-</span><span class=s2>            bytes: The data read from the device if successful, -1 if the serial port is not open.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>lock</span><span class=p>:</span>
-            <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>isOpen</span><span class=p>():</span>
-                <span class=k>try</span><span class=p>:</span>
-                    <span class=n>responseData</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>serialPort</span><span class=o>.</span><span class=n>read</span><span class=p>(</span><span class=n>wlen</span><span class=p>)</span>
-                    <span class=k>return</span> <span class=n>responseData</span>
-                <span class=k>except</span> <span class=n>serial</span><span class=o>.</span><span class=n>SerialTimeoutException</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
-                    <span class=n>logging</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;Read Timeout Exception: </span><span class=si>{</span><span class=n>e</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
-                    <span class=k>return</span> <span class=o>-</span><span class=mi>1</span>
-            <span class=k>else</span><span class=p>:</span>
-                <span class=n>logging</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=s2>&#34;Serial Port Not Open&#34;</span><span class=p>)</span>
-                <span class=k>return</span> <span class=o>-</span><span class=mi>1</span>
-</code></pre></div><h1 id=4-实现夹具控制类>4. 实现夹具控制类<a hidden class=anchor aria-hidden=true href=#4-实现夹具控制类>#</a></h1>
-<p>接下来，我们创建一个名为<code>dh_modbus_gripper</code>的类来实现对夹具的具体控制。以下是<code>PGC_gripper.py</code>的实现：
-<code>PGC_gripper.py</code></p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>asyncio</span>
-<span class=kn>import</span> <span class=nn>threading</span>
-<span class=kn>import</span> <span class=nn>logging</span>
-<span class=kn>from</span> <span class=nn>PGC_device</span> <span class=kn>import</span> <span class=n>dh_device</span>
-
-<span class=n>logging</span><span class=o>.</span><span class=n>basicConfig</span><span class=p>(</span><span class=n>level</span><span class=o>=</span><span class=n>logging</span><span class=o>.</span><span class=n>INFO</span><span class=p>)</span>
-
-
-<span class=k>class</span> <span class=nc>dh_modbus_gripper</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
-    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Initialize the gripper with default ID and create a lock for thread safety.&#34;&#34;&#34;</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>gripper_ID</span> <span class=o>=</span> <span class=mh>0x01</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>_transaction_lock</span> <span class=o>=</span> <span class=n>threading</span><span class=o>.</span><span class=n>Lock</span><span class=p>()</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>device</span> <span class=o>=</span> <span class=n>dh_device</span><span class=p>()</span>
-
-    <span class=k>def</span> <span class=nf>CRC16</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>nData</span><span class=p>,</span> <span class=n>wLength</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Calculate the CRC16 checksum for the given data.
-</span><span class=s2>
-</span><span class=s2>        Args:
-</span><span class=s2>            nData (list): The data to calculate the checksum for.
-</span><span class=s2>            wLength (int): The length of the data.
-</span><span class=s2>
-</span><span class=s2>        Returns:
-</span><span class=s2>            int: The calculated CRC16 checksum.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>if</span> <span class=n>nData</span> <span class=o>==</span> <span class=mh>0x00</span><span class=p>:</span>
-            <span class=k>return</span> <span class=mh>0x0000</span>
-        <span class=n>wCRCWord</span> <span class=o>=</span> <span class=mh>0xFFFF</span>
-        <span class=n>poly</span> <span class=o>=</span> <span class=mh>0xA001</span>
-        <span class=k>for</span> <span class=n>num</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>wLength</span><span class=p>):</span>
-            <span class=n>date</span> <span class=o>=</span> <span class=n>nData</span><span class=p>[</span><span class=n>num</span><span class=p>]</span>
-            <span class=n>wCRCWord</span> <span class=o>=</span> <span class=p>(</span><span class=n>date</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>)</span> <span class=o>^</span> <span class=n>wCRCWord</span>
-            <span class=k>for</span> <span class=n>bit</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>8</span><span class=p>):</span>
-                <span class=k>if</span> <span class=p>(</span><span class=n>wCRCWord</span> <span class=o>&amp;</span> <span class=mh>0x01</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>:</span>
-                    <span class=n>wCRCWord</span> <span class=o>&gt;&gt;=</span> <span class=mi>1</span>
-                    <span class=n>wCRCWord</span> <span class=o>^=</span> <span class=n>poly</span>
-                <span class=k>else</span><span class=p>:</span>
-                    <span class=n>wCRCWord</span> <span class=o>&gt;&gt;=</span> <span class=mi>1</span>
-        <span class=k>return</span> <span class=n>wCRCWord</span>
-
-    <span class=k>def</span> <span class=nf>open</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>PortName</span><span class=p>,</span> <span class=n>BaudRate</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Open the connection to the gripper device.
-</span><span class=s2>
-</span><span class=s2>        Args:
-</span><span class=s2>            PortName (str): The name of the port to connect to.
-</span><span class=s2>            BaudRate (int): The baud rate for the connection.
-</span><span class=s2>
-</span><span class=s2>        Returns:
-</span><span class=s2>            int: 0 if successful, negative value if failed.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>_transaction_lock</span><span class=p>:</span>
-            <span class=n>ret</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>connect_device</span><span class=p>(</span><span class=n>PortName</span><span class=p>,</span> <span class=n>BaudRate</span><span class=p>)</span>
-            <span class=k>if</span> <span class=n>ret</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>:</span>
-                <span class=n>logging</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=s2>&#34;Failed to open connection&#34;</span><span class=p>)</span>
-            <span class=k>else</span><span class=p>:</span>
-                <span class=n>logging</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s2>&#34;Connection opened successfully&#34;</span><span class=p>)</span>
-            <span class=k>return</span> <span class=n>ret</span>
-
-    <span class=k>def</span> <span class=nf>close</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Close the connection to the gripper device.&#34;&#34;&#34;</span>
-        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>_transaction_lock</span><span class=p>:</span>
-            <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>disconnect_device</span><span class=p>()</span>
-            <span class=n>logging</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s2>&#34;Connection closed&#34;</span><span class=p>)</span>
-
-    <span class=k>async</span> <span class=k>def</span> <span class=nf>_send_command</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>send_buf</span><span class=p>,</span> <span class=n>expected_length</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Send a command to the device and read the response.
-</span><span class=s2>
-</span><span class=s2>        Args:
-</span><span class=s2>            send_buf (list): The command to send.
-</span><span class=s2>            expected_length (int): The expected length of the response.
-</span><span class=s2>
-</span><span class=s2>        Returns:
-</span><span class=s2>            list: The response from the device.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=n>send_temp</span> <span class=o>=</span> <span class=n>send_buf</span>
-        <span class=n>retrycount</span> <span class=o>=</span> <span class=mi>3</span>
-
-        <span class=k>while</span> <span class=n>retrycount</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>:</span>
-            <span class=n>wdlen</span> <span class=o>=</span> <span class=k>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>device_write</span><span class=p>(</span><span class=n>send_temp</span><span class=p>)</span>
-            <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>send_temp</span><span class=p>)</span> <span class=o>!=</span> <span class=n>wdlen</span><span class=p>:</span>
-                <span class=n>logging</span><span class=o>.</span><span class=n>debug</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;Write error! Sent: </span><span class=si>{</span><span class=n>send_temp</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
-                <span class=n>retrycount</span> <span class=o>-=</span> <span class=mi>1</span>
-                <span class=k>continue</span>
-
-            <span class=n>rev_buf</span> <span class=o>=</span> <span class=k>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>device_read</span><span class=p>(</span><span class=n>expected_length</span><span class=p>)</span>
-            <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>rev_buf</span><span class=p>)</span> <span class=o>==</span> <span class=n>expected_length</span><span class=p>:</span>
-                <span class=k>return</span> <span class=n>rev_buf</span>
-
-            <span class=n>retrycount</span> <span class=o>-=</span> <span class=mi>1</span>
-
-        <span class=n>logging</span><span class=o>.</span><span class=n>debug</span><span class=p>(</span><span class=s2>&#34;Failed to communicate with device after retries&#34;</span><span class=p>)</span>
-        <span class=k>return</span> <span class=kc>None</span>
-
-    <span class=k>def</span> <span class=nf>_prepare_command</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>function_code</span><span class=p>,</span> <span class=n>index</span><span class=p>,</span> <span class=n>value</span><span class=o>=</span><span class=kc>None</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Prepare a command buffer with CRC16 checksum.
-</span><span class=s2>
-</span><span class=s2>        Args:
-</span><span class=s2>            function_code (int): The function code for the command.
-</span><span class=s2>            index (int): The register index.
-</span><span class=s2>            value (int, optional): The value to write (for write commands).
-</span><span class=s2>
-</span><span class=s2>        Returns:
-</span><span class=s2>            list: The prepared command buffer.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=n>send_buf</span> <span class=o>=</span> <span class=p>[</span><span class=bp>self</span><span class=o>.</span><span class=n>gripper_ID</span><span class=p>,</span> <span class=n>function_code</span><span class=p>,</span> <span class=p>(</span><span class=n>index</span> <span class=o>&gt;&gt;</span> <span class=mi>8</span><span class=p>)</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>,</span> <span class=n>index</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>]</span>
-        <span class=k>if</span> <span class=n>value</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
-            <span class=n>send_buf</span><span class=o>.</span><span class=n>extend</span><span class=p>([(</span><span class=n>value</span> <span class=o>&gt;&gt;</span> <span class=mi>8</span><span class=p>)</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>,</span> <span class=n>value</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>])</span>
-        <span class=k>else</span><span class=p>:</span>
-            <span class=n>send_buf</span><span class=o>.</span><span class=n>extend</span><span class=p>([</span><span class=mh>0x00</span><span class=p>,</span> <span class=mh>0x01</span><span class=p>])</span>
-        <span class=n>crc</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>CRC16</span><span class=p>(</span><span class=n>send_buf</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>send_buf</span><span class=p>))</span>
-        <span class=n>send_buf</span><span class=o>.</span><span class=n>extend</span><span class=p>([</span><span class=n>crc</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>,</span> <span class=p>(</span><span class=n>crc</span> <span class=o>&gt;&gt;</span> <span class=mi>8</span><span class=p>)</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>])</span>
-        <span class=k>return</span> <span class=n>send_buf</span>
-
-    <span class=k>async</span> <span class=k>def</span> <span class=nf>WriteRegisterFunc</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>index</span><span class=p>,</span> <span class=n>value</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Write a value to a specific register of the gripper.
-</span><span class=s2>
-</span><span class=s2>        Args:
-</span><span class=s2>            index (int): The register index to write to.
-</span><span class=s2>            value (int): The value to write to the register.
-</span><span class=s2>
-</span><span class=s2>        Returns:
-</span><span class=s2>            bool: True if the write operation was successful, False otherwise.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>_transaction_lock</span><span class=p>:</span>
-            <span class=n>send_buf</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>_prepare_command</span><span class=p>(</span><span class=mh>0x06</span><span class=p>,</span> <span class=n>index</span><span class=p>,</span> <span class=n>value</span><span class=p>)</span>
-            <span class=n>response</span> <span class=o>=</span> <span class=k>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>_send_command</span><span class=p>(</span><span class=n>send_buf</span><span class=p>,</span> <span class=mi>8</span><span class=p>)</span>
-            <span class=k>return</span> <span class=n>response</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span>
-
-    <span class=k>async</span> <span class=k>def</span> <span class=nf>ReadRegisterFunc</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>index</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Read a value from a specific register of the gripper.
-</span><span class=s2>
-</span><span class=s2>        Args:
-</span><span class=s2>            index (int): The register index to read from.
-</span><span class=s2>
-</span><span class=s2>        Returns:
-</span><span class=s2>            int: The value read from the register.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>_transaction_lock</span><span class=p>:</span>
-            <span class=n>send_buf</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>_prepare_command</span><span class=p>(</span><span class=mh>0x03</span><span class=p>,</span> <span class=n>index</span><span class=p>)</span>
-            <span class=n>response</span> <span class=o>=</span> <span class=k>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>_send_command</span><span class=p>(</span><span class=n>send_buf</span><span class=p>,</span> <span class=mi>7</span><span class=p>)</span>
-            <span class=k>if</span> <span class=n>response</span><span class=p>:</span>
-                <span class=k>return</span> <span class=p>(</span><span class=n>response</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>&lt;&lt;</span> <span class=mi>8</span><span class=p>)</span> <span class=o>|</span> <span class=p>(</span><span class=n>response</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>)</span>
-            <span class=k>return</span> <span class=kc>None</span>
-
-    <span class=k>async</span> <span class=k>def</span> <span class=nf>Initialization</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-        <span class=s2>&#34;&#34;&#34;Initialize the gripper by writing to the initialization register.&#34;&#34;&#34;</span>
-        <span class=k>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>WriteRegisterFunc</span><span class=p>(</span><span class=mh>0x0100</span><span class=p>,</span> <span class=mh>0xA5</span><span class=p>)</span>
-
-    <span class=k>async</span> <span class=k>def</span> <span class=nf>SetTargetPosition</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>refpos</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Set the target position of the gripper.
-</span><span class=s2>
-</span><span class=s2>        Args:
-</span><span class=s2>            refpos (int): The target position to set.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>WriteRegisterFunc</span><span class=p>(</span><span class=mh>0x0103</span><span class=p>,</span> <span class=n>refpos</span><span class=p>)</span>
-
-    <span class=k>async</span> <span class=k>def</span> <span class=nf>SetTargetForce</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>force</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Set the target force of the gripper.
-</span><span class=s2>
-</span><span class=s2>        Args:
-</span><span class=s2>            force (int): The target force to set.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>WriteRegisterFunc</span><span class=p>(</span><span class=mh>0x0101</span><span class=p>,</span> <span class=n>force</span><span class=p>)</span>
-
-    <span class=k>async</span> <span class=k>def</span> <span class=nf>SetTargetSpeed</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>speed</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Set the target speed of the gripper.
-</span><span class=s2>
-</span><span class=s2>        Args:
-</span><span class=s2>            speed (int): The target speed to set.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>WriteRegisterFunc</span><span class=p>(</span><span class=mh>0x0104</span><span class=p>,</span> <span class=n>speed</span><span class=p>)</span>
-
-    <span class=k>async</span> <span class=k>def</span> <span class=nf>GetCurrentPosition</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Get the current position of the gripper.
-</span><span class=s2>
-</span><span class=s2>        Returns:
-</span><span class=s2>            int: The current position of the gripper.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>return</span> <span class=k>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>ReadRegisterFunc</span><span class=p>(</span><span class=mh>0x0202</span><span class=p>)</span>
-
-    <span class=k>async</span> <span class=k>def</span> <span class=nf>GetCurrentTargetForce</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Get the current target force of the gripper.
-</span><span class=s2>
-</span><span class=s2>        Returns:
-</span><span class=s2>            int: The current target force of the gripper.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>return</span> <span class=k>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>ReadRegisterFunc</span><span class=p>(</span><span class=mh>0x0101</span><span class=p>)</span>
-
-    <span class=k>async</span> <span class=k>def</span> <span class=nf>GetCurrentTargetSpeed</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Get the current target speed of the gripper.
-</span><span class=s2>
-</span><span class=s2>        Returns:
-</span><span class=s2>            int: The current target speed of the gripper.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>return</span> <span class=k>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>ReadRegisterFunc</span><span class=p>(</span><span class=mh>0x0104</span><span class=p>)</span>
-
-    <span class=k>async</span> <span class=k>def</span> <span class=nf>GetInitState</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Get the initialization state of the gripper.
-</span><span class=s2>
-</span><span class=s2>        Returns:
-</span><span class=s2>            int: The initialization state of the gripper.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>return</span> <span class=k>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>ReadRegisterFunc</span><span class=p>(</span><span class=mh>0x0200</span><span class=p>)</span>
-
-    <span class=k>async</span> <span class=k>def</span> <span class=nf>GetGripState</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-        <span class=sa>r</span><span class=s2>&#34;&#34;&#34;Get the grip state of the gripper.
-</span><span class=s2>
-</span><span class=s2>        Returns:
-</span><span class=s2>            int: The grip state of the gripper.
-</span><span class=s2>        &#34;&#34;&#34;</span>
-        <span class=k>return</span> <span class=k>await</span> <span class=bp>self</span><span class=o>.</span><span class=n>ReadRegisterFunc</span><span class=p>(</span><span class=mh>0x0201</span><span class=p>)</span>
-</code></pre></div><h1 id=5-用法>5. 用法<a hidden class=anchor aria-hidden=true href=#5-用法>#</a></h1>
-<h2 id=52-示例代码>5.2 示例代码<a hidden class=anchor aria-hidden=true href=#52-示例代码>#</a></h2>
-<p>以下是如何使用dh_modbus_gripper类来控制大寰PGC夹具的具体示例：</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>asyncio</span>
-<span class=kn>from</span> <span class=nn>PGC_gripper</span> <span class=kn>import</span> <span class=n>dh_modbus_gripper</span>
-
-<span class=c1># 定义串口和波特率</span>
-<span class=n>LEFT_GRIPPER_PORT</span> <span class=o>=</span> <span class=s2>&#34;/dev/ttyUSB0&#34;</span>
-<span class=n>BAUDRATE</span> <span class=o>=</span> <span class=mi>115200</span>
-
-<span class=c1># 创建夹具控制对象</span>
-<span class=n>gripper</span> <span class=o>=</span> <span class=n>dh_modbus_gripper</span><span class=p>()</span>
-
-<span class=c1># 打开串口连接</span>
-<span class=n>gripper</span><span class=o>.</span><span class=n>open</span><span class=p>(</span><span class=n>LEFT_GRIPPER_PORT</span><span class=p>,</span> <span class=n>BAUDRATE</span><span class=p>)</span>
-
-<span class=c1># 初始化夹具</span>
-<span class=n>asyncio</span><span class=o>.</span><span class=n>run</span><span class=p>(</span><span class=n>gripper</span><span class=o>.</span><span class=n>Initialization</span><span class=p>())</span>
-
-<span class=c1># 设置目标位置</span>
-<span class=n>angle</span> <span class=o>=</span> <span class=mi>500</span>  <span class=c1># 角度范围为0-1000</span>
-<span class=n>asyncio</span><span class=o>.</span><span class=n>run</span><span class=p>(</span><span class=n>gripper</span><span class=o>.</span><span class=n>SetTargetPosition</span><span class=p>(</span><span class=nb>int</span><span class=p>(</span><span class=n>angle</span><span class=p>)))</span>
-
-<span class=c1># 关闭串口连接</span>
-<span class=n>gripper</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
-</code></pre></div><h2 id=52-代码说明>5.2 代码说明<a hidden class=anchor aria-hidden=true href=#52-代码说明>#</a></h2>
-<ol>
-<li>
-<p><strong>定义异步函数</strong>：
-异步函数使用<code>async def</code>定义，例如<code>device_write</code>和<code>device_read</code>。</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=k>async</span> <span class=k>def</span> <span class=nf>device_write</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>write_data</span><span class=p>):</span>
-    <span class=c1># 异步写入数据逻辑</span>
-    <span class=k>pass</span>
-
-<span class=k>async</span> <span class=k>def</span> <span class=nf>device_read</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>wlen</span><span class=p>):</span>
-    <span class=c1># 异步读取数据逻辑</span>
-    <span class=k>pass</span>
-</code></pre></div></li>
-<li>
-<p><strong>创建事件循环</strong>：
-使用<code>asyncio.run(main())</code>来创建和运行事件循环。</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=k>async</span> <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-    <span class=c1># 主函数逻辑</span>
-    <span class=k>pass</span>
-
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
-    <span class=n>asyncio</span><span class=o>.</span><span class=n>run</span><span class=p>(</span><span class=n>main</span><span class=p>())</span>
-</code></pre></div></li>
-<li>
-<p><strong>执行异步任务</strong>：
-在异步函数内部使用<code>await</code>关键字等待异步操作完成，例如：</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=k>async</span> <span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
-    <span class=n>device</span> <span class=o>=</span> <span class=n>dh_device</span><span class=p>()</span>
-    <span class=k>await</span> <span class=n>device</span><span class=o>.</span><span class=n>device_write</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;example data&#39;</span><span class=p>)</span>
-    <span class=n>response</span> <span class=o>=</span> <span class=k>await</span> <span class=n>device</span><span class=o>.</span><span class=n>device_read</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=n>response</span><span class=p>)</span>
-</code></pre></div></li>
-</ol>
-</div>
-<footer class=post-footer>
-<ul class=post-tags>
-<li><a href=https://chase6305.github.io/tags/linux/>Linux</a></li>
-<li><a href=https://chase6305.github.io/tags/python/>Python</a></li>
-<li><a href=https://chase6305.github.io/tags/gripper/>Gripper</a></li>
-</ul>
-<nav class=paginav>
-<a class=prev href=https://chase6305.github.io/posts/open3d/introduction/>
-<span class=title>« </span>
-<br>
-<span>Open3D 教程学习指南 (持续整理)</span>
-</a>
-<a class=next href=https://chase6305.github.io/posts/python/py39/>
-<span class=title> »</span>
-<br>
-<span>libpython3.9.so.1.0: cannot open shared object file: No such file or directory 解决方法</span>
-</a>
-</nav>
-<ul class=share-buttons>
-<li>
-<a target=_blank rel="noopener noreferrer" aria-label="share Python优化控制大寰PGC夹具的串口通信程序 on x" href="https://x.com/intent/tweet/?text=Python%e4%bc%98%e5%8c%96%e6%8e%a7%e5%88%b6%e5%a4%a7%e5%af%b0PGC%e5%a4%b9%e5%85%b7%e7%9a%84%e4%b8%b2%e5%8f%a3%e9%80%9a%e4%bf%a1%e7%a8%8b%e5%ba%8f&url=https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f&hashtags=Linux%2cPython%2cGripper"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg>
-</a>
-</li>
-<li>
-<a target=_blank rel="noopener noreferrer" aria-label="share Python优化控制大寰PGC夹具的串口通信程序 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f&title=Python%e4%bc%98%e5%8c%96%e6%8e%a7%e5%88%b6%e5%a4%a7%e5%af%b0PGC%e5%a4%b9%e5%85%b7%e7%9a%84%e4%b8%b2%e5%8f%a3%e9%80%9a%e4%bf%a1%e7%a8%8b%e5%ba%8f&summary=Python%e4%bc%98%e5%8c%96%e6%8e%a7%e5%88%b6%e5%a4%a7%e5%af%b0PGC%e5%a4%b9%e5%85%b7%e7%9a%84%e4%b8%b2%e5%8f%a3%e9%80%9a%e4%bf%a1%e7%a8%8b%e5%ba%8f&source=https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg>
-</a>
-</li>
-<li>
-<a target=_blank rel="noopener noreferrer" aria-label="share Python优化控制大寰PGC夹具的串口通信程序 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f&title=Python%e4%bc%98%e5%8c%96%e6%8e%a7%e5%88%b6%e5%a4%a7%e5%af%b0PGC%e5%a4%b9%e5%85%b7%e7%9a%84%e4%b8%b2%e5%8f%a3%e9%80%9a%e4%bf%a1%e7%a8%8b%e5%ba%8f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg>
-</a>
-</li>
-<li>
-<a target=_blank rel="noopener noreferrer" aria-label="share Python优化控制大寰PGC夹具的串口通信程序 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg>
-</a>
-</li>
-<li>
-<a target=_blank rel="noopener noreferrer" aria-label="share Python优化控制大寰PGC夹具的串口通信程序 on whatsapp" href="https://api.whatsapp.com/send?text=Python%e4%bc%98%e5%8c%96%e6%8e%a7%e5%88%b6%e5%a4%a7%e5%af%b0PGC%e5%a4%b9%e5%85%b7%e7%9a%84%e4%b8%b2%e5%8f%a3%e9%80%9a%e4%bf%a1%e7%a8%8b%e5%ba%8f%20-%20https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg>
-</a>
-</li>
-<li>
-<a target=_blank rel="noopener noreferrer" aria-label="share Python优化控制大寰PGC夹具的串口通信程序 on telegram" href="https://telegram.me/share/url?text=Python%e4%bc%98%e5%8c%96%e6%8e%a7%e5%88%b6%e5%a4%a7%e5%af%b0PGC%e5%a4%b9%e5%85%b7%e7%9a%84%e4%b8%b2%e5%8f%a3%e9%80%9a%e4%bf%a1%e7%a8%8b%e5%ba%8f&url=https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg>
-</a>
-</li>
-<li>
-<a target=_blank rel="noopener noreferrer" aria-label="share Python优化控制大寰PGC夹具的串口通信程序 on ycombinator" href="https://news.ycombinator.com/submitlink?t=Python%e4%bc%98%e5%8c%96%e6%8e%a7%e5%88%b6%e5%a4%a7%e5%af%b0PGC%e5%a4%b9%e5%85%b7%e7%9a%84%e4%b8%b2%e5%8f%a3%e9%80%9a%e4%bf%a1%e7%a8%8b%e5%ba%8f&u=https%3a%2f%2fchase6305.github.io%2fposts%2fdialout%2fdh%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentcolor" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg>
-</a>
-</li>
-</ul>
-</footer>
-</article>
-</main>
-<footer class=footer>
-<span>&copy; 2026 <a href=https://chase6305.github.io/>Chase Blog</a></span> ·
-<span>
-Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a>
-</span>
-</footer>
-<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
-</a>
-<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
-<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
-<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
-<script>document.querySelectorAll('pre > code').forEach(b=>{const c=b.parentNode.parentNode,a=document.createElement('button');a.classList.add('copy-code'),a.innerHTML='copy';function d(){a.innerHTML='copied!',setTimeout(()=>{a.innerHTML='copy'},2e3)}a.addEventListener('click',e=>{if('clipboard'in navigator){navigator.clipboard.writeText(b.textContent),d();return}const a=document.createRange();a.selectNodeContents(b);const c=window.getSelection();c.removeAllRanges(),c.addRange(a);try{document.execCommand('copy'),d()}catch(a){}c.removeRange(a)}),c.classList.contains("highlight")?c.appendChild(a):c.parentNode.firstChild==c||(b.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?b.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(a):b.parentNode.appendChild(a))})</script>
-</body>
-</html>
+<a class="hx:p-1 hx:md:p-2 hx:text-current" target=_blank rel=noreferrer href=https://github.com/chase6305/ title=GitHub><svg height="24" fill="currentColor" viewBox="3 3 18 18"><path d="M12 3C7.0275 3 3 7.12937 3 12.2276c0 4.0833 2.57625 7.5321 6.15374 8.7548C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441 9.77249 20.3249 9.76125 19.5982 9.76125 18.8254 7.5 19.2522 6.915 18.2602 6.735 17.7412 6.63375 17.4759 6.19499 16.6569 5.8125 16.4378 5.4975 16.2647 5.0475 15.838 5.80124 15.8264 6.51 15.8149 7.01625 16.4954 7.18499 16.7723 7.99499 18.1679 9.28875 17.7758 9.80625 17.5335 9.885 16.9337 10.1212 16.53 10.38 16.2993 8.3775 16.0687 6.285 15.2728 6.285 11.7432c0-1.0035.34875-1.834.92249-2.47994C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794c0 0 .753749999999999-.24223 2.47499.94583.72001-.20762 1.48501-.31143 2.25001-.31143C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377c1.7212-1.19959 2.475-.94583 2.475-.94583C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326 17.4113 9.9092 17.76 10.7281 17.76 11.7432c0 3.5411-2.1037 4.3255-4.1063 4.5561C13.98 16.5877 14.2613 17.1414 14.2613 18.0065 14.2613 19.2407 14.25 20.2326 14.25 20.5441 14.25 20.7863 14.4188 21.0746 14.8688 20.9824 16.6554 20.364 18.2079 19.1866 19.3078 17.6162c1.0999-1.5705 1.6917-3.4551 1.6922-5.3886C21 7.12937 16.9725 3 12 3z"/></svg>
+<span class=hx:sr-only>GitHub</span>
+</a><button type=button aria-label=Menu aria-expanded=false class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-1 hx:rounded-sm hx:p-1 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"/></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"/></g></svg></button></nav></div><div class="hx:mx-auto hx:flex hextra-max-page-width"><aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-[var(--hextra-navbar-height)] hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:hidden hx:xl:block"><div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--hextra-navbar-height)-var(--menu-height))]"><ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden"><li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active=false><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/projects/><span class="hx:min-w-0 [word-break:break-word]">Projects</span></a></div></li><li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active=false><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/posts/><span class="hx:min-w-0 [word-break:break-word]">Blog</span></a></div></li><li class=open><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center"><span class="hx:flex hx:grow hx:cursor-default hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:dark:text-gray-100">Explore</span></div><div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden"><ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active=false><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/categories/><span class="hx:min-w-0 [word-break:break-word]">Categories</span></a></div></li><li class="hx:flex hx:flex-col"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active=false><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/tags/><span class="hx:min-w-0 [word-break:break-word]">Tags</span></a></div></li><li class="hx:flex hx:flex-col"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active=false><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/archives/><span class="hx:min-w-0 [word-break:break-word]">Archives</span></a></div></li></ul></div></li></ul><div class="hx:max-xl:hidden hx:h-0 hx:w-64 hx:shrink-0"></div></div><div class="hx:md:hidden hx:justify-end hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation=show><div class="hx:flex hx:justify-items-start hx:grow"><button title="Change language" data-state=closed data-location class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow" type=button aria-label="Change language" aria-expanded=false aria-haspopup=menu><div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height="12" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657.0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657.0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>English</span></div></button><ul class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" style="position:fixed;inset:auto auto 0 0;margin:0;min-width:100px" role=menu><li role=none class="hx:flex hx:flex-col"><a href=/posts/dialout/dh/ role=menuitem class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9">English<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height="1em" width="1em" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a></li><li role=none class="hx:flex hx:flex-col"><a href=/zh-cn/ role=menuitem class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9">简体中文</a></li></ul></div><div class="theme-picker hx:flex hx:justify-items-start" data-theme=light><button title="Change appearance" data-state=closed data-location=bottom-right class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:h-7 hx:px-2 hx:text-xs" type=button aria-label="Change appearance" aria-expanded=false aria-haspopup=menu>
+<span class=theme-picker__icon aria-hidden=true></span></button><ul class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" style="position:fixed;inset:auto auto 0 0;min-width:130px" data-theme=light role=menu><li role=none><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=light class="theme-picker__option hx:relative hx:w-full hx:cursor-pointer hx:rounded-sm hx:border-0 hx:bg-transparent hx:px-3 hx:py-1.5 hx:text-left">
+<span class="theme-picker__swatch theme-picker__swatch--light" aria-hidden=true></span>Light</button></li><li role=none><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=warm class="theme-picker__option hx:relative hx:w-full hx:cursor-pointer hx:rounded-sm hx:border-0 hx:bg-transparent hx:px-3 hx:py-1.5 hx:text-left">
+<span class="theme-picker__swatch theme-picker__swatch--warm" aria-hidden=true></span>Warm</button></li><li role=none><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=dark class="theme-picker__option hx:relative hx:w-full hx:cursor-pointer hx:rounded-sm hx:border-0 hx:bg-transparent hx:px-3 hx:py-1.5 hx:text-left">
+<span class="theme-picker__swatch theme-picker__swatch--dark" aria-hidden=true></span>Dark</button></li><li role=none><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=system class="theme-picker__option hx:relative hx:w-full hx:cursor-pointer hx:rounded-sm hx:border-0 hx:bg-transparent hx:px-3 hx:py-1.5 hx:text-left">
+<span class="theme-picker__swatch theme-picker__swatch--system" aria-hidden=true></span>System</button></li></ul></div></div></aside><nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="Table of contents"><div class="hextra-scrollbar hx:sticky hx:top-[var(--hextra-navbar-height)] hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--hextra-navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">On this page</p><ul><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#%e5%85%88%e6%8a%8a%e4%b8%80%e6%ac%a1%e8%af%b7%e6%b1%82%e5%93%8d%e5%ba%94%e4%bd%9c%e4%b8%ba%e4%b8%8d%e5%8f%af%e5%88%86%e5%89%b2%e7%9a%84%e4%ba%8b%e5%8a%a1>先把一次请求—响应作为不可分割的事务</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#%e7%8e%af%e5%a2%83%e4%b8%8e%e5%8d%8f%e8%ae%ae%e7%ba%a6%e5%ae%9a>环境与协议约定</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#%e5%90%8c%e6%ad%a5%e4%ba%8b%e5%8a%a1%e5%ae%9e%e7%8e%b0>同步事务实现</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#%e4%b8%8d%e6%8e%a5%e7%a1%ac%e4%bb%b6%e4%b9%9f%e8%83%bd%e5%85%88%e6%b5%8b-crc>不接硬件也能先测 CRC</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#%e6%8e%a5%e5%85%a5-pgc-%e6%97%b6%e7%9a%84%e6%a3%80%e6%9f%a5%e9%a1%ba%e5%ba%8f>接入 PGC 时的检查顺序</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6>阅读自测与验收</a></li></ul><div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400"><div class="hx:flex hx:items-start hx:gap-x-2 hx:font-medium hx:text-xs"><div class="hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">Tags</div><div class="hx:flex hx:flex-wrap hx:gap-y-1"><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href=/tags/serial-communication/>#Serial Communication</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href=/tags/python/>#Python</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href=/tags/robot-gripper/>#Robot Gripper</a></div></div><a class="hx:inline-block hx:rounded-sm hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50 hx:hextra-focus-visible-inset" href=https://github.com/chase6305/chase6305.github.io/edit/main/content/posts/dialout/dh/index.md target=_blank rel=noreferrer>Edit this page on GitHub →</a>
+<button id=backToTop tabindex=-1 class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+<span>Scroll to top</span>
+<svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5"/></svg></button></div></div></nav><article lang=zh-CN class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--hextra-navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]"><main id=content class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12"><div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current"><div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100"><a href=/posts/ class="hx:inline-block hx:rounded-sm hx:hextra-focus-visible-inset">技术博客</a></div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">Python优化控制大寰PGC夹具的串口通信程序</div></div><div class="hx:flex hx:flex-col hx:sm:flex-row hx:items-start hx:sm:items-center hx:sm:justify-between hx:gap-4 hx:mt-2"><h1 class="hx:mb-0 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">Python优化控制大寰PGC夹具的串口通信程序</h1></div><div class="hx:mt-4 hx:mb-16 hx:text-gray-500 hx:dark:text-gray-400 hx:text-sm hx:flex hx:items-center hx:flex-wrap hx:gap-y-2"><span class=hx:mr-1>March 1, 2025</span><span class=hx:mx-1>·</span><span class=hx:mx-1>chase</span></div><div class=content><aside class=blog-reading-guide aria-label=阅读提示 lang=zh-CN><p class=blog-reading-guide__meta>阅读提示 <span aria-hidden=true>·</span> 约 3 分钟（含代码，实际练习时间另计）</p><dl><div><dt>前置知识</dt><dd>Python、串口与 Modbus 基础</dd></div><div><dt>阅读重点</dt><dd>先用假串口测试协议，再按设备手册接入；示例不自动初始化或移动夹爪。</dd></div><div><dt>所属专题</dt><dd><a href=/learning-paths/#systems>Linux、通信与设备</a> · 第 4 / 8 篇</dd></div></dl></aside><details class=blog-mobile-toc><summary>本文目录 <span>展开章节导航</span></summary><nav id=TableOfContents><ul><li><a href=#先把一次请求响应作为不可分割的事务>先把一次请求—响应作为不可分割的事务</a></li><li><a href=#环境与协议约定>环境与协议约定</a></li><li><a href=#同步事务实现>同步事务实现</a></li><li><a href=#不接硬件也能先测-crc>不接硬件也能先测 CRC</a></li><li><a href=#接入-pgc-时的检查顺序>接入 PGC 时的检查顺序</a></li><li><a href=#阅读自测与验收>阅读自测与验收</a></li></ul></nav></details><h2 data-hextra-search-id=先把一次请求响应作为不可分割的事务 id=先把一次请求响应作为不可分割的事务 style=scroll-margin-top:6rem>先把一次请求—响应作为不可分割的事务<a href=#%e5%85%88%e6%8a%8a%e4%b8%80%e6%ac%a1%e8%af%b7%e6%b1%82%e5%93%8d%e5%ba%94%e4%bd%9c%e4%b8%ba%e4%b8%8d%e5%8f%af%e5%88%86%e5%89%b2%e7%9a%84%e4%ba%8b%e5%8a%a1 class=subheading-anchor aria-label="Permalink for this section"></a></h2><p>半双工串口同一时刻只应有一个在途事务。仅分别给 <code>write</code> 和 <code>read</code> 加锁，仍可能出现 A 写、B 写、A 读到 B 响应的串包。</p><p><code>async def</code> 不会把 pySerial 的阻塞调用自动变成异步。这里采用“同步事务 + 工作线程”的结构：整个发包、收包和校验都在同一个线程锁内完成，异步调用方通过 <code>asyncio.to_thread</code> 等待，不阻塞事件循环。</p><p>本文针对 Modbus RTU 单寄存器读写框架，不代替对应 PGC 型号的厂商手册。串口参数、设备 ID、寄存器地址和夹持力范围必须逐项核对；示例不自动执行夹爪初始化或运动。</p><h2 data-hextra-search-id=环境与协议约定 id=环境与协议约定 style=scroll-margin-top:6rem>环境与协议约定<a href=#%e7%8e%af%e5%a2%83%e4%b8%8e%e5%8d%8f%e8%ae%ae%e7%ba%a6%e5%ae%9a class=subheading-anchor aria-label="Permalink for this section"></a></h2><p>Python 3.9+ 自带 <code>asyncio</code>，不需要从 pip 安装同名包：</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>python -m pip install pyserial</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>使用 <code>0x03</code> 读取一个保持寄存器、<code>0x06</code> 写一个寄存器。数据字段按大端编码，Modbus RTU CRC 的低字节先发送。必须验证设备地址、功能码、长度、CRC，以及写响应是否回显原请求；收到 8 字节不等于写入成功。</p><h2 data-hextra-search-id=同步事务实现 id=同步事务实现 style=scroll-margin-top:6rem>同步事务实现<a href=#%e5%90%8c%e6%ad%a5%e4%ba%8b%e5%8a%a1%e5%ae%9e%e7%8e%b0 class=subheading-anchor aria-label="Permalink for this section"></a></h2><p>保存为 <code>gripper_bus.py</code>。构造函数接收已配置的串口对象，使协议逻辑可以用假串口测试。每个物理总线只能共享一个该对象，不要让多个进程同时打开设备。</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>asyncio</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>threading</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>time</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>crc16</span><span class=p>(</span><span class=n>data</span><span class=p>:</span> <span class=nb>bytes</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>int</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>crc</span> <span class=o>=</span> <span class=mh>0xFFFF</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>value</span> <span class=ow>in</span> <span class=n>data</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>crc</span> <span class=o>^=</span> <span class=n>value</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>8</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>            <span class=n>crc</span> <span class=o>=</span> <span class=p>(</span><span class=n>crc</span> <span class=o>&gt;&gt;</span> <span class=mi>1</span><span class=p>)</span> <span class=o>^</span> <span class=p>(</span><span class=mh>0xA001</span> <span class=k>if</span> <span class=n>crc</span> <span class=o>&amp;</span> <span class=mi>1</span> <span class=k>else</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>crc</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>with_crc</span><span class=p>(</span><span class=n>body</span><span class=p>:</span> <span class=nb>bytes</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>bytes</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>body</span> <span class=o>+</span> <span class=n>crc16</span><span class=p>(</span><span class=n>body</span><span class=p>)</span><span class=o>.</span><span class=n>to_bytes</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=s2>&#34;little&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>ModbusRegisterBus</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>port</span><span class=p>,</span> <span class=n>unit</span><span class=o>=</span><span class=mi>1</span><span class=p>,</span> <span class=n>timeout</span><span class=o>=</span><span class=mf>0.5</span><span class=p>,</span> <span class=n>frame_gap</span><span class=o>=</span><span class=mf>0.004</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=ow>not</span> <span class=mi>1</span> <span class=o>&lt;=</span> <span class=n>unit</span> <span class=o>&lt;=</span> <span class=mi>247</span> <span class=ow>or</span> <span class=n>timeout</span> <span class=o>&lt;=</span> <span class=mi>0</span> <span class=ow>or</span> <span class=n>frame_gap</span> <span class=o>&lt;=</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>raise</span> <span class=ne>ValueError</span><span class=p>(</span><span class=s2>&#34;Invalid unit, timeout, or frame gap&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>port</span> <span class=o>=</span> <span class=n>port</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>unit</span> <span class=o>=</span> <span class=n>unit</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>timeout</span> <span class=o>=</span> <span class=n>timeout</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>frame_gap</span> <span class=o>=</span> <span class=n>frame_gap</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>lock</span> <span class=o>=</span> <span class=n>threading</span><span class=o>.</span><span class=n>Lock</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>failed</span> <span class=o>=</span> <span class=kc>False</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>last_end</span> <span class=o>=</span> <span class=mf>0.0</span>
+</span></span><span class=line><span class=cl>        <span class=c1># 限制单次 read/write 阻塞时间；总接收时间另由 deadline 控制。</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>port</span><span class=o>.</span><span class=n>timeout</span> <span class=o>=</span> <span class=nb>min</span><span class=p>(</span><span class=n>timeout</span><span class=p>,</span> <span class=mf>0.05</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>port</span><span class=o>.</span><span class=n>write_timeout</span> <span class=o>=</span> <span class=n>timeout</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>_read_exact</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>length</span><span class=p>,</span> <span class=n>deadline</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>data</span> <span class=o>=</span> <span class=nb>bytearray</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=k>while</span> <span class=nb>len</span><span class=p>(</span><span class=n>data</span><span class=p>)</span> <span class=o>&lt;</span> <span class=n>length</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>time</span><span class=o>.</span><span class=n>monotonic</span><span class=p>()</span> <span class=o>&gt;=</span> <span class=n>deadline</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=k>raise</span> <span class=ne>TimeoutError</span><span class=p>(</span><span class=s2>&#34;Incomplete Modbus response&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>data</span><span class=o>.</span><span class=n>extend</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>port</span><span class=o>.</span><span class=n>read</span><span class=p>(</span><span class=n>length</span> <span class=o>-</span> <span class=nb>len</span><span class=p>(</span><span class=n>data</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nb>bytes</span><span class=p>(</span><span class=n>data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>_exchange</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>function</span><span class=p>,</span> <span class=n>register</span><span class=p>,</span> <span class=n>value</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>function</span> <span class=ow>not</span> <span class=ow>in</span> <span class=p>(</span><span class=mh>0x03</span><span class=p>,</span> <span class=mh>0x06</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>            <span class=k>raise</span> <span class=ne>ValueError</span><span class=p>(</span><span class=s2>&#34;Only single-register 0x03/0x06 are implemented&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=ow>not</span> <span class=mi>0</span> <span class=o>&lt;=</span> <span class=n>register</span> <span class=o>&lt;=</span> <span class=mh>0xFFFF</span> <span class=ow>or</span> <span class=ow>not</span> <span class=mi>0</span> <span class=o>&lt;=</span> <span class=n>value</span> <span class=o>&lt;=</span> <span class=mh>0xFFFF</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>raise</span> <span class=ne>ValueError</span><span class=p>(</span><span class=s2>&#34;Register and value must fit uint16&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>request</span> <span class=o>=</span> <span class=n>with_crc</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>            <span class=nb>bytes</span><span class=p>([</span><span class=bp>self</span><span class=o>.</span><span class=n>unit</span><span class=p>,</span> <span class=n>function</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>            <span class=o>+</span> <span class=n>register</span><span class=o>.</span><span class=n>to_bytes</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=s2>&#34;big&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=o>+</span> <span class=n>value</span><span class=o>.</span><span class=n>to_bytes</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=s2>&#34;big&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>lock</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>failed</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=k>raise</span> <span class=ne>RuntimeError</span><span class=p>(</span><span class=s2>&#34;Bus faulted; inspect and resynchronize before reuse&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=n>delay</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>frame_gap</span> <span class=o>-</span> <span class=p>(</span><span class=n>time</span><span class=o>.</span><span class=n>monotonic</span><span class=p>()</span> <span class=o>-</span> <span class=bp>self</span><span class=o>.</span><span class=n>last_end</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=n>delay</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                    <span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=n>delay</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>port</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=n>request</span><span class=p>)</span> <span class=o>!=</span> <span class=nb>len</span><span class=p>(</span><span class=n>request</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>                    <span class=k>raise</span> <span class=ne>IOError</span><span class=p>(</span><span class=s2>&#34;Incomplete serial write&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=n>deadline</span> <span class=o>=</span> <span class=n>time</span><span class=o>.</span><span class=n>monotonic</span><span class=p>()</span> <span class=o>+</span> <span class=bp>self</span><span class=o>.</span><span class=n>timeout</span>
+</span></span><span class=line><span class=cl>                <span class=n>header</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>_read_exact</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=n>deadline</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=n>header</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>!=</span> <span class=bp>self</span><span class=o>.</span><span class=n>unit</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                    <span class=k>raise</span> <span class=ne>ValueError</span><span class=p>(</span><span class=s2>&#34;Unexpected device address&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=n>header</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>==</span> <span class=p>(</span><span class=n>function</span> <span class=o>|</span> <span class=mh>0x80</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>                    <span class=n>response</span> <span class=o>=</span> <span class=n>header</span> <span class=o>+</span> <span class=bp>self</span><span class=o>.</span><span class=n>_read_exact</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=n>deadline</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>elif</span> <span class=n>header</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>==</span> <span class=n>function</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                    <span class=k>if</span> <span class=n>function</span> <span class=o>==</span> <span class=mh>0x03</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                        <span class=k>if</span> <span class=n>header</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>!=</span> <span class=mi>2</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                            <span class=k>raise</span> <span class=ne>ValueError</span><span class=p>(</span><span class=s2>&#34;Expected exactly one register&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                        <span class=n>response</span> <span class=o>=</span> <span class=n>header</span> <span class=o>+</span> <span class=bp>self</span><span class=o>.</span><span class=n>_read_exact</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=n>deadline</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                    <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                        <span class=n>response</span> <span class=o>=</span> <span class=n>header</span> <span class=o>+</span> <span class=bp>self</span><span class=o>.</span><span class=n>_read_exact</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=n>deadline</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                    <span class=k>raise</span> <span class=ne>ValueError</span><span class=p>(</span><span class=s2>&#34;Unexpected function code&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=n>crc16</span><span class=p>(</span><span class=n>response</span><span class=p>[:</span><span class=o>-</span><span class=mi>2</span><span class=p>])</span> <span class=o>!=</span> <span class=nb>int</span><span class=o>.</span><span class=n>from_bytes</span><span class=p>(</span><span class=n>response</span><span class=p>[</span><span class=o>-</span><span class=mi>2</span><span class=p>:],</span> <span class=s2>&#34;little&#34;</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>                    <span class=k>raise</span> <span class=ne>ValueError</span><span class=p>(</span><span class=s2>&#34;CRC mismatch&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=n>header</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>&amp;</span> <span class=mh>0x80</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                    <span class=k>raise</span> <span class=ne>RuntimeError</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;Device exception: </span><span class=si>{</span><span class=n>header</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=si>:</span><span class=s2>#04x</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=n>function</span> <span class=o>==</span> <span class=mh>0x06</span> <span class=ow>and</span> <span class=n>response</span> <span class=o>!=</span> <span class=n>request</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                    <span class=k>raise</span> <span class=ne>ValueError</span><span class=p>(</span><span class=s2>&#34;Write echo mismatch&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span> <span class=n>response</span>
+</span></span><span class=line><span class=cl>            <span class=k>except</span> <span class=ne>Exception</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=c1># 超时后晚到的旧响应不能当作下一次响应，停止自动发送。</span>
+</span></span><span class=line><span class=cl>                <span class=bp>self</span><span class=o>.</span><span class=n>failed</span> <span class=o>=</span> <span class=kc>True</span>
+</span></span><span class=line><span class=cl>                <span class=k>raise</span>
+</span></span><span class=line><span class=cl>            <span class=k>finally</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=bp>self</span><span class=o>.</span><span class=n>last_end</span> <span class=o>=</span> <span class=n>time</span><span class=o>.</span><span class=n>monotonic</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>read_register</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>register</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>response</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>_exchange</span><span class=p>(</span><span class=mh>0x03</span><span class=p>,</span> <span class=n>register</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nb>int</span><span class=o>.</span><span class=n>from_bytes</span><span class=p>(</span><span class=n>response</span><span class=p>[</span><span class=mi>3</span><span class=p>:</span><span class=mi>5</span><span class=p>],</span> <span class=s2>&#34;big&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>write_register</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>register</span><span class=p>,</span> <span class=n>value</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>_exchange</span><span class=p>(</span><span class=mh>0x06</span><span class=p>,</span> <span class=n>register</span><span class=p>,</span> <span class=n>value</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>async</span> <span class=k>def</span> <span class=nf>read_register_async</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>register</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=k>await</span> <span class=n>asyncio</span><span class=o>.</span><span class=n>to_thread</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>read_register</span><span class=p>,</span> <span class=n>register</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>async</span> <span class=k>def</span> <span class=nf>write_register_async</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>register</span><span class=p>,</span> <span class=n>value</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>await</span> <span class=n>asyncio</span><span class=o>.</span><span class=n>to_thread</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>write_register</span><span class=p>,</span> <span class=n>register</span><span class=p>,</span> <span class=n>value</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>close</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>with</span> <span class=bp>self</span><span class=o>.</span><span class=n>lock</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=bp>self</span><span class=o>.</span><span class=n>failed</span> <span class=o>=</span> <span class=kc>True</span>
+</span></span><span class=line><span class=cl>            <span class=bp>self</span><span class=o>.</span><span class=n>port</span><span class=o>.</span><span class=n>close</span><span class=p>()</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p><code>frame_gap</code> 是事务间的保守等待值，不是通用波特率配置；应按设备手册、字符时间、RS-485 方向切换和适配器行为调整。这里没有实现完整的 RTU 帧间隔接收器或自动重新同步，不能直接替代经过验证的工业协议栈。</p><h2 data-hextra-search-id=不接硬件也能先测-crc id=不接硬件也能先测-crc style=scroll-margin-top:6rem>不接硬件也能先测 CRC<a href=#%e4%b8%8d%e6%8e%a5%e7%a1%ac%e4%bb%b6%e4%b9%9f%e8%83%bd%e5%85%88%e6%b5%8b-crc class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>gripper_bus</span> <span class=kn>import</span> <span class=n>crc16</span><span class=p>,</span> <span class=n>with_crc</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Modbus 常用测试向量：01 03 00 00 00 0A，CRC 低字节先传</span>
+</span></span><span class=line><span class=cl><span class=n>request</span> <span class=o>=</span> <span class=nb>bytes</span><span class=o>.</span><span class=n>fromhex</span><span class=p>(</span><span class=s2>&#34;01 03 00 00 00 0A&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>assert</span> <span class=n>crc16</span><span class=p>(</span><span class=n>request</span><span class=p>)</span> <span class=o>==</span> <span class=mh>0xCDC5</span>
+</span></span><span class=line><span class=cl><span class=k>assert</span> <span class=n>with_crc</span><span class=p>(</span><span class=n>request</span><span class=p>)</span><span class=o>.</span><span class=n>hex</span><span class=p>(</span><span class=s2>&#34; &#34;</span><span class=p>)</span> <span class=o>==</span> <span class=s2>&#34;01 03 00 00 00 0a c5 cd&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=s2>&#34;CRC test passed&#34;</span><span class=p>)</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>还应模拟短帧、CRC 错误、异常响应、错误设备 ID、超时和两个并发读请求，检查事务不会交错。</p><h2 data-hextra-search-id=接入-pgc-时的检查顺序 id=接入-pgc-时的检查顺序 style=scroll-margin-top:6rem>接入 PGC 时的检查顺序<a href=#%e6%8e%a5%e5%85%a5-pgc-%e6%97%b6%e7%9a%84%e6%a3%80%e6%9f%a5%e9%a1%ba%e5%ba%8f class=subheading-anchor aria-label="Permalink for this section"></a></h2><ol><li>用稳定串口别名识别设备，确认波特率、校验位、停止位和从站地址。</li><li>查对应型号/固件手册，先读取明确标为只读的状态或版本寄存器。</li><li>记录请求与响应原始十六进制帧，先验证状态读取，再考虑写入。</li><li>初始化、目标位置、速度和夹持力属于设备动作，应增加范围校验、状态确认、急停和安全空间检查。</li></ol><p>原笔记中的 <code>0x0100</code>、<code>0x0103</code> 等地址及 <code>0–1000</code> 数值是设备相关配置，不是通用角度单位；没有手册确认时不要发送。</p><p>取消等待 <code>asyncio.to_thread</code> 的协程不会杀死工作线程。关闭总线、重新打开或恢复发送之前，必须确认在途事务已经结束；超时也不能证明设备未执行上一条命令，所以本例不自动重试运动写入。</p><p>参考：<a href=https://pyserial.readthedocs.io/en/latest/pyserial_api.html target=_blank rel=noopener>pySerial API 与超时语义<svg class="hx:inline hx:rtl:rotate-270 hx:align-baseline" height="1em" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853" stroke-linecap="round" stroke-linejoin="round"/></svg></a>、<a href=https://www.modbus.org/modbus-specifications target=_blank rel=noopener>Modbus 官方规范入口<svg class="hx:inline hx:rtl:rotate-270 hx:align-baseline" height="1em" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853" stroke-linecap="round" stroke-linejoin="round"/></svg></a>。</p><h2 data-hextra-search-id=阅读自测与验收 id=阅读自测与验收 style=scroll-margin-top:6rem>阅读自测与验收<a href=#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6 class=subheading-anchor aria-label="Permalink for this section"></a></h2><ul><li>在假串口中依次注入短帧、错误 CRC、异常码和错误地址；失败后应禁止继续自动发送，尤其不能自动重试运动写入。</li><li>两个并发调用必须共享同一个总线对象，检查请求和响应不交错；取消协程后仍需等待正在运行的工作线程结束。</li></ul><nav class=blog-topic-nav aria-label=专题阅读顺序 lang=zh-CN><p><a href=/learning-paths/#systems>Linux、通信与设备</a> · 第 4 / 8 篇 <span>（建议顺序，可按需跳读）</span></p><div class=blog-topic-nav__links><a rel=prev href=/posts/dialout/udev/><small>← 专题上一篇</small><span>Linux固定串口设备别名方法</span></a><a rel=next href=/posts/network-protocol/c++_tcp/><small>专题下一篇 →</small><span>C++ TCP 通信：消息边界、完整读写与截止时间</span></a></div></nav><nav class=blog-related aria-labelledby=blog-related-title lang=zh-CN><h2 id=blog-related-title>继续阅读</h2><div class=blog-related__grid><a class=blog-related__card href=/posts/dialout/udev/><span class=blog-related__title>Linux固定串口设备别名方法 <span aria-hidden=true>→</span></span>
+<span class=blog-related__description>通过 udev 属性创建稳定串口别名，区分适配器序列号、USB 接口与物理端口，说明匹配层级、权限和插拔验收。</span>
+</a><a class=blog-related__card href=/posts/queue/><span class=blog-related__title>无锁队列：SPSC 内存序、背压与机器人数据新鲜度 <span aria-hidden=true>→</span></span>
+<span class=blog-related__description>区分线程安全、无锁与实时性，解释 SPSC 的 acquire/release 发布关系，再用离散事件实验比较积压、丢弃策略和机器人状态的数据年龄。</span></a></div></nav></div><div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">Last updated on <time datetime=2026-09-05T00:00:00.000Z>September 5, 2026</time></div></main></article></div><footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hx:mx-auto hx:flex hx:gap-2 hx:py-2 hx:px-4 hextra-max-footer-width"><div class="hx:flex hx:justify-items-start"><button title="Change language" data-state=closed data-location class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow" type=button aria-label="Change language" aria-expanded=false aria-haspopup=menu><div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height="12" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657.0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657.0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>English</span></div></button><ul class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" style="position:fixed;inset:auto auto 0 0;margin:0;min-width:100px" role=menu><li role=none class="hx:flex hx:flex-col"><a href=/posts/dialout/dh/ role=menuitem class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9">English<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height="1em" width="1em" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a></li><li role=none class="hx:flex hx:flex-col"><a href=/zh-cn/ role=menuitem class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9">简体中文</a></li></ul></div><div class="theme-picker hx:flex hx:justify-items-start" data-theme=light><button title="Change appearance" data-state=closed data-location=bottom class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:h-7 hx:px-2 hx:text-xs" type=button aria-label="Change appearance" aria-expanded=false aria-haspopup=menu>
+<span class=theme-picker__icon aria-hidden=true></span><span class=theme-picker__label>Theme</span></button><ul class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" style="position:fixed;inset:auto auto 0 0;min-width:130px" data-theme=light role=menu><li role=none><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=light class="theme-picker__option hx:relative hx:w-full hx:cursor-pointer hx:rounded-sm hx:border-0 hx:bg-transparent hx:px-3 hx:py-1.5 hx:text-left">
+<span class="theme-picker__swatch theme-picker__swatch--light" aria-hidden=true></span>Light</button></li><li role=none><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=warm class="theme-picker__option hx:relative hx:w-full hx:cursor-pointer hx:rounded-sm hx:border-0 hx:bg-transparent hx:px-3 hx:py-1.5 hx:text-left">
+<span class="theme-picker__swatch theme-picker__swatch--warm" aria-hidden=true></span>Warm</button></li><li role=none><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=dark class="theme-picker__option hx:relative hx:w-full hx:cursor-pointer hx:rounded-sm hx:border-0 hx:bg-transparent hx:px-3 hx:py-1.5 hx:text-left">
+<span class="theme-picker__swatch theme-picker__swatch--dark" aria-hidden=true></span>Dark</button></li><li role=none><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=system class="theme-picker__option hx:relative hx:w-full hx:cursor-pointer hx:rounded-sm hx:border-0 hx:bg-transparent hx:px-3 hx:py-1.5 hx:text-left">
+<span class="theme-picker__swatch theme-picker__swatch--system" aria-hidden=true></span>System</button></li></ul></div></div><hr class="hx:border-gray-200 hx:dark:border-neutral-800"><div class="hextra-custom-footer hextra-max-footer-width hx:mx-auto hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"><div class=chase-footer><div><strong>Chase</strong><p>Robotics, embodied intelligence, and engineering in practice.</p></div><div class=chase-footer__links><a href=/posts/>Blog</a>
+<a href=https://github.com/chase6305/ target=_blank rel="noopener noreferrer">GitHub ↗</a>
+<span>© 2026 Chase</span></div></div></div></footer><dialog id=hextra-search-dialog class=hextra-search-dialog aria-label=Search...><div class=hextra-search><div class=hextra-search-input-wrapper><svg class="hextra-search-input-icon" focusable="false" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5A7 7 0 113 10a7 7 0 0114 0z"/></svg><input class=hextra-search-input type=search role=combobox autocomplete=off autocorrect=off autocapitalize=off spellcheck=false placeholder=Search... aria-label=Search... aria-controls=hextra-search-results aria-expanded=false><button type=button class=hextra-search-input-kbd data-search-close aria-label=Close>ESC</button></div><div class=hextra-search-results-viewport data-search-viewport><div class="hextra-search-results-inner hextra-scrollbar" data-search-inner><ul id=hextra-search-results class=hextra-search-results role=listbox aria-label="Search results"></ul><div class=hextra-search-empty data-search-empty hidden>No results found.</div></div></div><div class="hextra-search-status hx:sr-only" aria-live=polite role=status></div></div></dialog><script defer src=/js/main.min.d4e8e77429929f73af5fc8d9f2fd2ca297e57f9319585e47d1a72cb820897603.js integrity="sha256-1OjndCmSn3OvX8jZ8v0sopflf5MZWF5H0acsuCCJdgM="></script><script defer src=/js/flexsearch.433e941a8a573ebb9931fc16fc75266ab6b93f569ac2fb4f3dc66882e0416f4c.js integrity="sha256-Qz6UGopXPruZMfwW/HUmara5P1aawvtPPcZoguBBb0w=" crossorigin=anonymous></script><script defer src=/en.search.min.616c28859d45fcdf805ab35258de5769f5103f540f64c4fb0e79711a1f178f3a.js integrity="sha256-YWwohZ1F/N+AWrNSWN5XafUQP1QPZMT7DnlxGh8Xjzo="></script><script defer src=/en.search-dialog.min.fda123910557b5b3a328696105af51f85abc3cfc6784387c49b11b5b857b256f.js integrity="sha256-/aEjkQVXtbOjKGlhBa9R+Fq8PPxnhDh8SbEbW4V7JW8="></script></body></html>

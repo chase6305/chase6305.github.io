@@ -2,22 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Debug on Chase Blog</title>
-    <link>https://chase6305.github.io/tags/debug/</link>
+    <link>http://localhost:1313/tags/debug/</link>
     <description>Recent content in Debug on Chase Blog</description>
-    <image>
-      <title>Chase Blog</title>
-      <url>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://chase6305.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
-    <generator>Hugo -- 0.92.2</generator>
+    <generator>Hugo -- 0.165.0</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 07 Aug 2021 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://chase6305.github.io/tags/debug/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 27 Jan 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/debug/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VS Code Python 调试完全指南：从入门到精通</title>
+      <link>http://localhost:1313/posts/vscode/debug/</link>
+      <pubDate>Tue, 27 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/vscode/debug/</guid>
+      <description>VS Code Python 调试完全指南：从入门到精通</description>
+    </item>
     <item>
       <title>Linux系统解决Qt platform plugin &#34;xcb&#34;缺失问题</title>
-      <link>https://chase6305.github.io/posts/post_2/</link>
+      <link>http://localhost:1313/posts/xcb/post_2/</link>
       <pubDate>Sat, 07 Aug 2021 00:00:00 +0000</pubDate>
-      <guid>https://chase6305.github.io/posts/post_2/</guid>
+      <guid>http://localhost:1313/posts/xcb/post_2/</guid>
       <description>解决Linux系统下Qt应用程序常见的xcb插件缺失问题</description>
     </item>
   </channel>

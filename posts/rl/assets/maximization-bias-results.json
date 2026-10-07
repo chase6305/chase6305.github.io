@@ -1,0 +1,26 @@
+{
+  "numpy": "2.2.6",
+  "seed": 42,
+  "trials": 100000,
+  "actions": 10,
+  "all_true_values": 0.0,
+  "error_distribution": "independent N(0,1)",
+  "results": {
+    "fixed_action": {
+      "mean": -0.005733835731155374,
+      "std": 0.9983470548095741,
+      "mean_standard_error": 0.0031570505885192123
+    },
+    "same_estimator": {
+      "mean": 1.5391377720136004,
+      "std": 0.5879740051895045,
+      "mean_standard_error": 0.0018593370613704965
+    },
+    "independent_evaluator": {
+      "mean": 0.000423927641223043,
+      "std": 1.0003880726567378,
+      "mean_standard_error": 0.0031635048536613032
+    }
+  },
+  "scope": "Independent synthetic estimators; learned Double Q tables need not be independent."
+}

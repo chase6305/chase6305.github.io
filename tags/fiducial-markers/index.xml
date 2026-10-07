@@ -1,0 +1,158 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chase – Fiducial Markers</title>
+    <link>https://chase6305.github.io/tags/fiducial-markers/</link>
+    <description>Recent content in Fiducial Markers on Chase</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 27 Feb 2025 00:00:00 +0000</lastBuildDate>
+    
+	  <atom:link href="https://chase6305.github.io/tags/fiducial-markers/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>CCTag 标记技术详解</title>
+      <link>https://chase6305.github.io/posts/calibration/cctag/</link>
+      <pubDate>Thu, 27 Feb 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://chase6305.github.io/posts/calibration/cctag/</guid>
+      <description>
+        
+        
+        &lt;p&gt;CCTag 使用同心圆环形成可识别的标记，重点是恢复标记身份和稳定的图像中心位置。它属于视觉标记检测方法，不由机器人是三轴、四轴还是六轴决定是否能使用。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://chase6305.github.io/posts/calibration/cctag/cctag.png&#34; alt=&#34;由多层同心圆环组成的 CCTag 标记样式&#34; width=&#34;258&#34; height=&#34;258&#34; style=&#34;width: min(100%, 258px); aspect-ratio: 258 / 258; &#34;  decoding=&#34;async&#34; data-zoomable loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;1-编码与检测&#34; id=&#34;1-编码与检测&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;1. 编码与检测&lt;a href=&#34;#1-%e7%bc%96%e7%a0%81%e4%b8%8e%e6%a3%80%e6%b5%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;圆环的相对几何关系对应码本中的标记 ID。实际使用应从工具提供的码本生成标记，并保持打印比例，不能任意改变圆环数量或宽度后仍期待同一检测器识别。&lt;/p&gt;
+&lt;p&gt;透视投影会把圆投成椭圆。官方实现围绕图像梯度、候选结构与几何验证进行检测，不能把“霍夫圆检测后匹配”当作其完整算法。&lt;a
+    href=&#34;https://github.com/alicevision/CCTag&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CCTag 官方实现与说明&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;2-一个标记能提供什么&#34; id=&#34;2-一个标记能提供什么&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;2. 一个标记能提供什么&lt;a href=&#34;#2-%e4%b8%80%e4%b8%aa%e6%a0%87%e8%ae%b0%e8%83%bd%e6%8f%90%e4%be%9b%e4%bb%80%e4%b9%88&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;单个旋转对称标记的身份和中心检测，并不直接提供完整的六维刚体位姿，尤其不能单独区分绕自身法向的面内旋转。需要姿态时，应使用具有已知空间布局的多个标记，并结合相机模型进行几何求解。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;任务&lt;/th&gt;
+					&lt;th&gt;还需要的信息&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;图像中跟踪中心&lt;/td&gt;
+					&lt;td&gt;合适的检测阈值、清晰度与像素尺度&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;相机外参或物体位姿&lt;/td&gt;
+					&lt;td&gt;多个已知三维位置与二维观测的对应关系&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;相机内参标定&lt;/td&gt;
+					&lt;td&gt;标定物几何、多个视角及内参优化流程&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;手眼标定&lt;/td&gt;
+					&lt;td&gt;机器人位姿、时间同步与可观测的运动激励&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 data-hextra-search-id=&#34;3-优势与限制如何评估&#34; id=&#34;3-优势与限制如何评估&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;3. 优势与限制如何评估&lt;a href=&#34;#3-%e4%bc%98%e5%8a%bf%e4%b8%8e%e9%99%90%e5%88%b6%e5%a6%82%e4%bd%95%e8%af%84%e4%bc%b0&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;同心圆结构可用于模糊等条件下的检测，但鲁棒性需要在实际曝光、焦距、距离、遮挡和运动速度下测试。不要把“对模糊有鲁棒性”扩展成任意遮挡和任意光照下都可靠。&lt;/p&gt;
+&lt;p&gt;标记类型与手眼问题的可观测性应分开分析：机器人运动缺少必要旋转激励时，换一个标记不一定能消除标定退化。&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;31-抖动很小为什么仍可能标偏&#34; id=&#34;31-抖动很小为什么仍可能标偏&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;3.1 抖动很小，为什么仍可能标偏&lt;a href=&#34;#31-%e6%8a%96%e5%8a%a8%e5%be%88%e5%b0%8f%e4%b8%ba%e4%bb%80%e4%b9%88%e4%bb%8d%e5%8f%af%e8%83%bd%e6%a0%87%e5%81%8f&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;假设静止标记的横坐标连续三次测得 &lt;code&gt;100.4、100.5、100.6 px&lt;/code&gt;。样本均值是 &lt;code&gt;100.5 px&lt;/code&gt;，样本标准差是 &lt;code&gt;0.1 px&lt;/code&gt;，看起来非常稳定。若独立参考值实际上为 &lt;code&gt;102.0 px&lt;/code&gt;，均值仍有 &lt;code&gt;−1.5 px&lt;/code&gt; 的系统偏差；“重复测量很一致”与“接近真实位置”是两回事。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;量&lt;/th&gt;
+					&lt;th&gt;这个例子的结果&lt;/th&gt;
+					&lt;th&gt;需要什么依据&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;重复性&lt;/td&gt;
+					&lt;td&gt;样本标准差 0.1 px&lt;/td&gt;
+					&lt;td&gt;同一静止目标的重复观测&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;均值偏差&lt;/td&gt;
+					&lt;td&gt;−1.5 px&lt;/td&gt;
+					&lt;td&gt;独立的参考坐标&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;三次测量相对参考的 RMSE&lt;/td&gt;
+					&lt;td&gt;约 1.502 px&lt;/td&gt;
+					&lt;td&gt;各次观测与同一参考的误差&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;也不能把像素误差直接当成毫米误差。仅在已去畸变的针孔模型、深度 Z 已知且固定时，水平方向有 &lt;code&gt;ΔX = Z × Δu / fx&lt;/code&gt;。例如 Z=2 m、焦距 fx=1000 px，1 px 对应该深度平面上约 2 mm 的横向变化；深度、视角和位姿求解条件改变后，这个换算也会改变。完整的六维位姿误差还受标记布局、内参、外参和时间同步影响。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;4-工程检查&#34; id=&#34;4-工程检查&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;4. 工程检查&lt;a href=&#34;#4-%e5%b7%a5%e7%a8%8b%e6%a3%80%e6%9f%a5&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;固定打印尺寸，记录图像中的最小标记直径；检查误检率、漏检率、中心定位抖动和处理耗时。进行位姿估计时，还应在独立图像上测量重投影误差和坐标变换残差。&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;先跑通样例再接真实相机&#34; id=&#34;先跑通样例再接真实相机&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;先跑通样例，再接真实相机&lt;a href=&#34;#%e5%85%88%e8%b7%91%e9%80%9a%e6%a0%b7%e4%be%8b%e5%86%8d%e6%8e%a5%e7%9c%9f%e5%ae%9e%e7%9b%b8%e6%9c%ba&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;按 &lt;a
+    href=&#34;https://github.com/alicevision/CCTag&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;官方仓库的构建说明&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;编译检测程序后，可以在仓库根目录运行其三环样例。下面的路径对应 README 的构建布局；使用不同构建目录时要相应调整。&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./build/src/detection -n &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; -i sample/01.png&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;这里的 &lt;code&gt;-n 3&lt;/code&gt; 指标记的环数，必须与打印图案和检测配置一致。先确认样例能产生有效识别，再替换输入图像；否则无法判断问题来自编译环境，还是实际拍摄条件。&lt;/p&gt;
+&lt;p&gt;API 返回的候选列表也不能直接当作可信的 ID—像素坐标表。&lt;a
+    href=&#34;https://cctag.readthedocs.io/en/stable/api/usage.html&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;官方使用示例&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;会检查 &lt;code&gt;getStatus()&lt;/code&gt; 是否为可靠识别状态；接口说明中有效状态值为 &lt;code&gt;1&lt;/code&gt;。集成时优先使用所安装版本提供的具名状态常量，并保留失败状态用于诊断。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;输出阶段&lt;/th&gt;
+					&lt;th&gt;建议保留的信息&lt;/th&gt;
+					&lt;th&gt;下一步能做什么&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;找到候选圆环&lt;/td&gt;
+					&lt;td&gt;帧号、中心、候选状态&lt;/td&gt;
+					&lt;td&gt;检查尺度、曝光与误检，尚不能用于 ID 对应&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;可靠解码&lt;/td&gt;
+					&lt;td&gt;ID、中心、检测状态&lt;/td&gt;
+					&lt;td&gt;与已知标记布局建立对应；重复 ID 或布局外 ID 仍需拒绝&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;几何求解&lt;/td&gt;
+					&lt;td&gt;内参、畸变、3D–2D 对应、内点集合&lt;/td&gt;
+					&lt;td&gt;估计位姿并检查深度、重投影与时间连续性&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;独立验收&lt;/td&gt;
+					&lt;td&gt;未参与拟合的图像及机器人位姿&lt;/td&gt;
+					&lt;td&gt;检查最终定位误差，不只统计解码成功率&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;在整条链路里保留亚像素中心，显示时再取整。把中心提前转换为整数像素会丢失信息；把未解码候选强行分配到最近 ID，则可能得到数值很稳定、对应关系却错误的外参。&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;怎样记录一次可比较的检测实验&#34; id=&#34;怎样记录一次可比较的检测实验&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;怎样记录一次可比较的检测实验&lt;a href=&#34;#%e6%80%8e%e6%a0%b7%e8%ae%b0%e5%bd%95%e4%b8%80%e6%ac%a1%e5%8f%af%e6%af%94%e8%be%83%e7%9a%84%e6%a3%80%e6%b5%8b%e5%ae%9e%e9%aa%8c&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;同一静止标记连续拍摄时，可用中心相对时间均值的标准差衡量&lt;strong&gt;重复性&lt;/strong&gt;；没有独立真值，这不等于圆心的绝对定位误差。运动场景则需使用同步参考轨迹，不能把真实运动算进检测抖动。&lt;/p&gt;
+&lt;p&gt;将测试按距离、倾角和曝光分组，同时报告“真实可见标记数、可靠识别数、错误 ID 数”和检测耗时的中位数、较高分位数。只在成功帧上统计误差会漏掉困难条件下的失败；只给平均耗时也看不出偶发长帧对控制链路的影响。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;阅读自测与验收&#34; id=&#34;阅读自测与验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;阅读自测与验收&lt;a href=&#34;#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;从不同距离和倾角拍摄标记，记录检出率与圆心误差；图案能被识别不等于它提供了完整、无歧义的六维位姿。&lt;/li&gt;
+&lt;li&gt;需要尺度或朝向时，明确增加了哪些已知几何信息和标记组合；不要仅由同心圆的 ID 推出绕对称轴的旋转。&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

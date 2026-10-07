@@ -1,0 +1,160 @@
+{
+  "settings": {
+    "seed": 7,
+    "steps": 120,
+    "gae_lambda": 0.95,
+    "gamma": 1.0,
+    "episodes_per_batch": 64,
+    "transitions_per_episode": 2,
+    "learning_rate": 0.08,
+    "update_epochs": 4,
+    "clip_epsilon": 0.2,
+    "target_old_policy_kl": 0.05,
+    "reference_kl": false,
+    "advantage_normalization": false,
+    "value_target": "GAE lambda return (advantage + old value)",
+    "kl_reduction": "old||current; rollout-state mean, exact action sum",
+    "device": "cpu",
+    "dtype": "torch.float64",
+    "torch": "2.8.0+cu128",
+    "scope": "two-step tabular decision tree, complete terminal episodes"
+  },
+  "initial": {
+    "step": 0,
+    "optimizer_steps": 0,
+    "sampled_episodes": 0,
+    "sampled_transitions": 0,
+    "old_policy_kl": 0.0,
+    "expected_return": 0.3,
+    "left_probability": 0.5,
+    "left_success_probability": 0.5,
+    "value_start": 0.0
+  },
+  "final": {
+    "step": 120,
+    "optimizer_steps": 480,
+    "sampled_episodes": 7680,
+    "sampled_transitions": 15360,
+    "old_policy_kl": 4.345998738864119e-11,
+    "expected_return": 0.9995921742541397,
+    "left_probability": 0.9997095339889668,
+    "left_success_probability": 0.9998277401316307,
+    "value_start": 1.0003276439622975
+  },
+  "first_rollout_trace": {
+    "states": [
+      0,
+      2,
+      0,
+      2,
+      0,
+      2,
+      0,
+      1
+    ],
+    "actions": [
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "rewards": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "values": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "next_values": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "old_logp": [
+      -0.6931471805599453,
+      -0.6931471805599453,
+      -0.6931471805599453,
+      -0.6931471805599453,
+      -0.6931471805599453,
+      -0.6931471805599453,
+      -0.6931471805599453,
+      -0.6931471805599453
+    ],
+    "terminated": [
+      false,
+      true,
+      false,
+      true,
+      false,
+      true,
+      false,
+      true
+    ],
+    "boundary": [
+      false,
+      true,
+      false,
+      true,
+      false,
+      true,
+      false,
+      true
+    ],
+    "advantages": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.95,
+      1.0
+    ],
+    "returns": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.95,
+      1.0
+    ]
+  },
+  "final_action_probabilities": [
+    [
+      0.9997095339889668,
+      0.0002904660110330988
+    ],
+    [
+      0.9998277401316307,
+      0.00017225986836936997
+    ],
+    [
+      0.05582588285868938,
+      0.9441741171413106
+    ]
+  ]
+}

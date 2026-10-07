@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520" role="img" aria-labelledby="title desc">
+<title id="title">Foot-impact memory outlasts a single control step</title><desc id="desc">The positive filtered acceleration excess decays geometrically after one impulse.</desc>
+<rect width="100%" height="100%" rx="18" fill="#fffdf9"/>
+<g font-family="Arial, sans-serif"><text x="40" y="46" font-size="28" fill="#18344f" text-anchor="start" font-weight="700">Foot-impact memory outlasts a single control step</text>
+<text x="40" y="82" font-size="18" fill="#18344f" text-anchor="start" font-weight="400">One foot reaches 50 m/s²; threshold 30, dt 0.02 s, tau 0.06 s.</text>
+<line x1="90" y1="410.0" x2="930" y2="410.0" stroke="#dce5ed" stroke-width="1"/>
+<text x="73" y="416.0" font-size="16" fill="#18344f" text-anchor="end" font-weight="400">0</text>
+<line x1="90" y1="342.5" x2="930" y2="342.5" stroke="#dce5ed" stroke-width="1"/>
+<text x="73" y="348.5" font-size="16" fill="#18344f" text-anchor="end" font-weight="400">5</text>
+<line x1="90" y1="275.0" x2="930" y2="275.0" stroke="#dce5ed" stroke-width="1"/>
+<text x="73" y="281.0" font-size="16" fill="#18344f" text-anchor="end" font-weight="400">10</text>
+<line x1="90" y1="207.5" x2="930" y2="207.5" stroke="#dce5ed" stroke-width="1"/>
+<text x="73" y="213.5" font-size="16" fill="#18344f" text-anchor="end" font-weight="400">15</text>
+<line x1="90" y1="140.0" x2="930" y2="140.0" stroke="#dce5ed" stroke-width="1"/>
+<text x="73" y="146.0" font-size="16" fill="#18344f" text-anchor="end" font-weight="400">20</text>
+<text x="90.0" y="438" font-size="16" fill="#18344f" text-anchor="middle" font-weight="400">0.00</text>
+<text x="258.0" y="438" font-size="16" fill="#18344f" text-anchor="middle" font-weight="400">0.06</text>
+<text x="426.0" y="438" font-size="16" fill="#18344f" text-anchor="middle" font-weight="400">0.12</text>
+<text x="594.0" y="438" font-size="16" fill="#18344f" text-anchor="middle" font-weight="400">0.18</text>
+<text x="762.0" y="438" font-size="16" fill="#18344f" text-anchor="middle" font-weight="400">0.24</text>
+<text x="930.0" y="438" font-size="16" fill="#18344f" text-anchor="middle" font-weight="400">0.30</text>
+<polyline points="90.000,140.000 146.000,216.537 202.000,271.377 258.000,310.673 314.000,338.829 370.000,359.004 426.000,373.459 482.000,383.818 538.000,391.239 594.000,396.557 650.000,400.368 706.000,403.098 762.000,405.055 818.000,406.457 874.000,407.461 930.000,408.181" fill="none" stroke="#8064b9" stroke-width="3.5" stroke-linejoin="round"/>
+<text x="400" y="110" font-size="19" fill="#8064b9" text-anchor="middle" font-weight="400">Positive excess accumulator</text>
+<text x="530" y="193" font-size="18" fill="#d7862b" text-anchor="start" font-weight="400">First contribution: +0.2 with code default</text>
+<text x="530" y="223" font-size="18" fill="#208b83" text-anchor="start" font-weight="400">Paper penalty direction: −0.2</text>
+<text x="500" y="471" font-size="18" fill="#18344f" text-anchor="middle" font-weight="400">Seconds after the impulse</text>
+<text x="40" y="500" font-size="16" fill="#18344f" text-anchor="start" font-weight="400">Teaching values from the recurrence. New input is not multiplied by (1 − alpha).</text></g>
+</svg>

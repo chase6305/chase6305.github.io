@@ -1,0 +1,209 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chase – Shared Libraries</title>
+    <link>https://chase6305.github.io/tags/shared-libraries/</link>
+    <description>Recent content in Shared Libraries on Chase</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Fri, 28 Feb 2025 00:00:00 +0000</lastBuildDate>
+    
+	  <atom:link href="https://chase6305.github.io/tags/shared-libraries/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>libpython3.9.so.1.0: cannot open shared object file: No such file or directory 解决方法</title>
+      <link>https://chase6305.github.io/posts/python/py39/</link>
+      <pubDate>Fri, 28 Feb 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://chase6305.github.io/posts/python/py39/</guid>
+      <description>
+        
+        
+        &lt;h2 data-hextra-search-id=&#34;先定位谁需要-libpython&#34; id=&#34;先定位谁需要-libpython&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;先定位谁需要 libpython&lt;a href=&#34;#%e5%85%88%e5%ae%9a%e4%bd%8d%e8%b0%81%e9%9c%80%e8%a6%81-libpython&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;code&gt;libpython3.9.so.1.0: cannot open shared object file&lt;/code&gt; 表示动态加载器没有找到某个程序要求的 Python 3.9 共享库。报错者可能是嵌入 Python 的 C++ 程序、第三方扩展或独立应用，不一定是当前 shell 的 &lt;code&gt;python&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;不要把 Python 3.10/3.11 的库重命名成 3.9，也不要通过替换 &lt;code&gt;/usr/bin/python3&lt;/code&gt; 修复此问题。相邻版本的共享库不能靠软链接获得 ABI 兼容性。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;1-确认解释器与程序来源&#34; id=&#34;1-确认解释器与程序来源&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;1. 确认解释器与程序来源&lt;a href=&#34;#1-%e7%a1%ae%e8%ae%a4%e8%a7%a3%e9%87%8a%e5%99%a8%e4%b8%8e%e7%a8%8b%e5%ba%8f%e6%9d%a5%e6%ba%90&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;command&lt;/span&gt; -v python
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python -c &lt;span class=&#34;s2&#34;&gt;&amp;#34;import sys; print(sys.executable); print(sys.version)&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python -m pip --version&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;对于确认可信的本地可执行文件，检查其动态依赖：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ldd ./your_application
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;readelf -d ./your_application&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;将示例路径替换成真正报错的程序。&lt;code&gt;ldd&lt;/code&gt; 不应用于不可信的二进制文件。关注 &lt;code&gt;NEEDED&lt;/code&gt;、&lt;code&gt;RPATH/RUNPATH&lt;/code&gt; 和 &lt;code&gt;not found&lt;/code&gt;，不要把所有共享库问题都归因于 Python 包版本。&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;为什么换了终端里的-python原程序仍然报同一个错&#34; id=&#34;为什么换了终端里的-python原程序仍然报同一个错&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;为什么换了终端里的 Python，原程序仍然报同一个错&lt;a href=&#34;#%e4%b8%ba%e4%bb%80%e4%b9%88%e6%8d%a2%e4%ba%86%e7%bb%88%e7%ab%af%e9%87%8c%e7%9a%84-python%e5%8e%9f%e7%a8%8b%e5%ba%8f%e4%bb%8d%e7%84%b6%e6%8a%a5%e5%90%8c%e4%b8%80%e4%b8%aa%e9%94%99&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;假设你运行的是 C++ 可执行文件 &lt;code&gt;your_application&lt;/code&gt;。它在构建时记录了对 &lt;code&gt;libpython3.9.so.1.0&lt;/code&gt; 的依赖；启动时由动态加载器寻找这个名字。即便当前终端的 &lt;code&gt;python&lt;/code&gt; 已经变成 3.11，这个 ELF 文件记录的依赖也没有因此改变。&lt;/p&gt;
+&lt;p&gt;因此检查对象有两条线：&lt;code&gt;sys.executable&lt;/code&gt; 回答 Python 进程实际用了哪个解释器；&lt;code&gt;readelf -d ./your_application&lt;/code&gt; 回答这个原生程序声明了哪些共享库依赖。如果缺失库由另一个依赖间接引入，还要沿报错链继续定位。修复应针对实际依赖者选择匹配运行时或重新构建，不是反复切换命令行中的 &lt;code&gt;python&lt;/code&gt; 名称。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;2-区分库不存在和库找不到&#34; id=&#34;2-区分库不存在和库找不到&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;2. 区分“库不存在”和“库找不到”&lt;a href=&#34;#2-%e5%8c%ba%e5%88%86%e5%ba%93%e4%b8%8d%e5%ad%98%e5%9c%a8%e5%92%8c%e5%ba%93%e6%89%be%e4%b8%8d%e5%88%b0&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;在目标 Python 3.9 环境确实可用时查询其配置：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python3.9 -c &lt;span class=&#34;s2&#34;&gt;&amp;#34;import sysconfig; print(sysconfig.get_config_var(&amp;#39;LIBDIR&amp;#39;)); print(sysconfig.get_config_var(&amp;#39;LDLIBRARY&amp;#39;)); print(sysconfig.get_config_var(&amp;#39;Py_ENABLE_SHARED&amp;#39;))&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ldconfig -p &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; rg libpython&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;如果库不存在，应从原应用支持的发行渠道安装匹配运行时，或重建应用使其链接受支持的 Python。软件包名称和可用版本取决于发行版与软件源，&lt;code&gt;apt install python3.9&lt;/code&gt; 并非在所有系统上都成立。新建 &lt;code&gt;venv&lt;/code&gt; 也不会凭空生成缺失的共享库。&lt;/p&gt;
+&lt;p&gt;若自行编译 CPython，需要按嵌入应用要求启用共享库构建，并使用独立安装前缀；保留系统 Python 不变。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;3-库存在时修复搜索路径&#34; id=&#34;3-库存在时修复搜索路径&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;3. 库存在时修复搜索路径&lt;a href=&#34;#3-%e5%ba%93%e5%ad%98%e5%9c%a8%e6%97%b6%e4%bf%ae%e5%a4%8d%e6%90%9c%e7%b4%a2%e8%b7%af%e5%be%84&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;优先激活应用所属环境，或通过构建时的 RUNPATH 指向其私有库目录。排查阶段可以只对单次命令指定经过确认的目录：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;LD_LIBRARY_PATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/opt/your-python39/lib ./your_application&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;上面的目录只是示例，必须替换成检查得到的实际目录。不要将无关 Conda 库目录永久放到全局搜索路径前端，否则可能改变 OpenSSL、C++ 运行库或 Qt 的加载来源。&lt;/p&gt;
+&lt;p&gt;如需观察实际加载顺序：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;LD_DEBUG&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;libs ./your_application&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;输出可能很长，重点看 &lt;code&gt;libpython3.9.so.1.0&lt;/code&gt; 的搜索位置。系统级共享库目录只有在明确由管理员维护时，才考虑 &lt;code&gt;ld.so.conf.d&lt;/code&gt; 与 &lt;code&gt;ldconfig&lt;/code&gt;，而不是随意向 &lt;code&gt;/usr/lib&lt;/code&gt; 添加软链接。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;4-验收与迁移&#34; id=&#34;4-验收与迁移&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;4. 验收与迁移&lt;a href=&#34;#4-%e9%aa%8c%e6%94%b6%e4%b8%8e%e8%bf%81%e7%a7%bb&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;验收标准是原应用能够启动、所加载的库路径正确、关键功能通过测试，而非仅 &lt;code&gt;python3.9 --version&lt;/code&gt; 成功。保存解释器版本、构建配置和依赖清单。&lt;/p&gt;
+&lt;p&gt;本文保留 Python 3.9 作为历史错误场景。维护旧应用时应评估升级成本与上游支持状态，不把旧版本安装步骤当作新项目的默认环境方案。&lt;/p&gt;
+&lt;p&gt;参考：&lt;a
+    href=&#34;https://docs.python.org/3/extending/embedding.html&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CPython 嵌入文档&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;、&lt;a
+    href=&#34;https://docs.python.org/3/using/configure.html&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CPython 构建配置&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;阅读自测与验收&#34; id=&#34;阅读自测与验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;阅读自测与验收&lt;a href=&#34;#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;打印 sys.executable 和实际加载库路径，确认当前 Python 3.9 所属环境；目录名称相似不代表加载的是同一套库。&lt;/li&gt;
+&lt;li&gt;用相同入口启动最小导入和实际应用，避免终端可运行而 IDE 或服务仍使用其他解释器。&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>symbol version Qt_5_PRIVATE_API not defined in libQt5Gui.so.5 解决方法</title>
+      <link>https://chase6305.github.io/posts/gui/qt/qt5/</link>
+      <pubDate>Fri, 28 Feb 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://chase6305.github.io/posts/gui/qt/qt5/</guid>
+      <description>
+        
+        
+        &lt;p&gt;&lt;code&gt;Qt_5_PRIVATE_API not defined&lt;/code&gt; 通常提示插件或扩展加载了不匹配的 Qt 动态库。需要确认“哪个插件”与“哪套 Qt”发生冲突，而不是只根据 PyQt5-sip 版本猜测一个旧版 PyQt5。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;1-记录解释器与-qt-版本&#34; id=&#34;1-记录解释器与-qt-版本&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;1. 记录解释器与 Qt 版本&lt;a href=&#34;#1-%e8%ae%b0%e5%bd%95%e8%a7%a3%e9%87%8a%e5%99%a8%e4%b8%8e-qt-%e7%89%88%e6%9c%ac&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python -m pip show PyQt5 PyQt5-Qt5 PyQt5-sip
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python -m pip check
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python -c &lt;span class=&#34;s2&#34;&gt;&amp;#34;from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR; print(QT_VERSION_STR, PYQT_VERSION_STR)&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;QT_VERSION_STR&lt;/code&gt; 表示绑定编译时的 Qt 版本。进一步查看实际运行的版本与插件目录：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;PyQt5.QtCore&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;QLibraryInfo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;qVersion&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Runtime Qt:&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;qVersion&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;())&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Plugins:&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;QLibraryInfo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;location&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;QLibraryInfo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PluginsPath&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 data-hextra-search-id=&#34;2-查看插件与动态库来源&#34; id=&#34;2-查看插件与动态库来源&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;2. 查看插件与动态库来源&lt;a href=&#34;#2-%e6%9f%a5%e7%9c%8b%e6%8f%92%e4%bb%b6%e4%b8%8e%e5%8a%a8%e6%80%81%e5%ba%93%e6%9d%a5%e6%ba%90&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;QT_DEBUG_PLUGINS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; python app.py
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;LD_DEBUG&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;libs python app.py
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;printenv QT_PLUGIN_PATH QT_QPA_PLATFORM_PLUGIN_PATH LD_LIBRARY_PATH&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;如果系统 Qt、pip 自带 Qt、Conda Qt 或 OpenCV 的插件目录混在一起，优先在独立环境复现并统一来源。Qt 对插件版本有兼容性检查，私有 API 更不能按公共 API 的兼容假设处理。&lt;a
+    href=&#34;https://doc.qt.io/qt-6/deployment-plugins.html&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Qt 插件部署文档&lt;svg class=&#34;hx:inline hx:rtl:rotate-270 hx:align-baseline&#34; height=&#34;1em&#34; aria-hidden=&#34;true&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; viewBox=&#34;0 0 24 24&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt;
+ &lt;path d=&#34;m9.1716 7.7574h7.0711m0 0v7.0711m0-7.0711-8.4853 8.4853&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;
+&lt;/svg&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;怎样阅读一组路径不一致的证据&#34; id=&#34;怎样阅读一组路径不一致的证据&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;怎样阅读一组“路径不一致”的证据&lt;a href=&#34;#%e6%80%8e%e6%a0%b7%e9%98%85%e8%af%bb%e4%b8%80%e7%bb%84%e8%b7%af%e5%be%84%e4%b8%8d%e4%b8%80%e8%87%b4%e7%9a%84%e8%af%81%e6%8d%ae&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;假设 &lt;code&gt;sys.executable&lt;/code&gt; 指向 &lt;code&gt;/opt/project/.venv/bin/python&lt;/code&gt;，插件日志却选择了另一套 Conda 环境中的 &lt;code&gt;libqxcb.so&lt;/code&gt;，而加载器又从 &lt;code&gt;/usr/lib/&lt;/code&gt; 取得 QtGui。这个组合提示需要核对来源，但路径分散本身还不是不兼容的证明：有些发行方式本来就会使用系统依赖，关键是这些二进制是否属于支持的组合。&lt;/p&gt;
+&lt;p&gt;可把解释器、QtCore、QtGui 和平台插件的实际路径放在同一份记录中，再检查是谁设置了插件路径或库路径。只比较 &lt;code&gt;pip show&lt;/code&gt; 中的 Python 包版本，会漏掉进程最终加载的动态库；只删除一个环境变量，也可能漏掉应用代码对搜索路径的修改。&lt;/p&gt;
+&lt;p&gt;隔离实验一次只改变一个来源：先用原环境中的最小窗口测试，再在独立环境安装同一套绑定及其相容依赖。如果后者成功，继续比较库路径；不要把“独立环境成功”直接写成已经找到了原环境中哪个包有错。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;3-用最小窗口验收&#34; id=&#34;3-用最小窗口验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;3. 用最小窗口验收&lt;a href=&#34;#3-%e7%94%a8%e6%9c%80%e5%b0%8f%e7%aa%97%e5%8f%a3%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;先运行只导入 PyQt5 并创建 &lt;code&gt;QApplication&lt;/code&gt; 的小程序，再逐个加回 OpenCV、Matplotlib 等依赖。若只有某个依赖加入后失败，比较加入前后的插件搜索路径。&lt;/p&gt;
+&lt;p&gt;确需重装时，让包管理器为当前 Python 版本解析一组相容依赖，并保存版本清单。不要把 &lt;code&gt;PyQt5==5.13.2&lt;/code&gt; 视为所有平台、Python 和系统 Qt 的通用修复版本。&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;阅读自测与验收&#34; id=&#34;阅读自测与验收&#34; style=&#34;scroll-margin-top: 6rem&#34;&gt;阅读自测与验收&lt;a href=&#34;#%e9%98%85%e8%af%bb%e8%87%aa%e6%b5%8b%e4%b8%8e%e9%aa%8c%e6%94%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;记录导入的 Qt binding、Qt 版本和插件目录，检查应用是否同时加载了不兼容的 Qt5/Qt6 组件。&lt;/li&gt;
+&lt;li&gt;用同一环境启动最小窗口，再逐步加回 Matplotlib、OpenCV 等依赖；不要在最小窗口尚未成功时调试业务界面。&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

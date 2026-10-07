@@ -1,0 +1,1172 @@
+{
+  "torch": "2.8.0+cu128",
+  "device": "cpu",
+  "dtype": "float64",
+  "scope": "two independent binary decisions; identical prompt; no LLM, MoE or benchmark",
+  "runs": [
+    {
+      "seed": 0,
+      "rounds": 20,
+      "groups": 8,
+      "group_size": 8,
+      "updates_per_round": 3,
+      "learning_rate": 0.5,
+      "epsilon": 0.2,
+      "beta": 0.0,
+      "sampled_responses": 1280,
+      "sampled_tokens": 2560,
+      "history": [
+        {
+          "round": 1,
+          "sampled_reward_before_update": 0.484375,
+          "exact_reward_after_update": 0.6281978291511703,
+          "exact_reference_kl_after_update": 0.06651839677576632,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 2,
+          "sampled_reward_before_update": 0.59375,
+          "exact_reward_after_update": 0.7340085399595505,
+          "exact_reference_kl_after_update": 0.22791196869831662,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 3,
+          "sampled_reward_before_update": 0.765625,
+          "exact_reward_after_update": 0.8076227244322863,
+          "exact_reference_kl_after_update": 0.4071222357676837,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 4,
+          "sampled_reward_before_update": 0.8203125,
+          "exact_reward_after_update": 0.8563055438600156,
+          "exact_reference_kl_after_update": 0.5630677739968677,
+          "zero_variance_group_fraction": 0.125,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 5,
+          "sampled_reward_before_update": 0.9140625,
+          "exact_reward_after_update": 0.8833848790786067,
+          "exact_reference_kl_after_update": 0.666758012385492,
+          "zero_variance_group_fraction": 0.25,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 6,
+          "sampled_reward_before_update": 0.875,
+          "exact_reward_after_update": 0.908696351988639,
+          "exact_reference_kl_after_update": 0.7758704563466067,
+          "zero_variance_group_fraction": 0.125,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 7,
+          "sampled_reward_before_update": 0.9296875,
+          "exact_reward_after_update": 0.9239875426342279,
+          "exact_reference_kl_after_update": 0.8501727328254669,
+          "zero_variance_group_fraction": 0.375,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 8,
+          "sampled_reward_before_update": 0.90625,
+          "exact_reward_after_update": 0.9403341203332103,
+          "exact_reference_kl_after_update": 0.9344536320777366,
+          "zero_variance_group_fraction": 0.125,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 9,
+          "sampled_reward_before_update": 0.921875,
+          "exact_reward_after_update": 0.9499798757546272,
+          "exact_reference_kl_after_update": 0.9892422092470196,
+          "zero_variance_group_fraction": 0.375,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 10,
+          "sampled_reward_before_update": 0.9296875,
+          "exact_reward_after_update": 0.9584268098428341,
+          "exact_reference_kl_after_update": 1.040480261593772,
+          "zero_variance_group_fraction": 0.375,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 11,
+          "sampled_reward_before_update": 0.9453125,
+          "exact_reward_after_update": 0.964436225019065,
+          "exact_reference_kl_after_update": 1.0791578145876466,
+          "zero_variance_group_fraction": 0.5,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 12,
+          "sampled_reward_before_update": 0.9296875,
+          "exact_reward_after_update": 0.9707584646212366,
+          "exact_reference_kl_after_update": 1.1222050531907755,
+          "zero_variance_group_fraction": 0.25,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 13,
+          "sampled_reward_before_update": 0.9609375,
+          "exact_reward_after_update": 0.9736472671856639,
+          "exact_reference_kl_after_update": 1.1426495110129107,
+          "zero_variance_group_fraction": 0.625,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 14,
+          "sampled_reward_before_update": 1.0,
+          "exact_reward_after_update": 0.9736472671856639,
+          "exact_reference_kl_after_update": 1.1426495110129107,
+          "zero_variance_group_fraction": 1.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 15,
+          "sampled_reward_before_update": 0.9609375,
+          "exact_reward_after_update": 0.9767537481276867,
+          "exact_reference_kl_after_update": 1.1655596088851714,
+          "zero_variance_group_fraction": 0.5,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 16,
+          "sampled_reward_before_update": 0.96875,
+          "exact_reward_after_update": 0.9789404685721494,
+          "exact_reference_kl_after_update": 1.1821160851470816,
+          "zero_variance_group_fraction": 0.625,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 17,
+          "sampled_reward_before_update": 0.984375,
+          "exact_reward_after_update": 0.980199464168475,
+          "exact_reference_kl_after_update": 1.191771335695652,
+          "zero_variance_group_fraction": 0.75,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 18,
+          "sampled_reward_before_update": 0.984375,
+          "exact_reward_after_update": 0.9813196577950982,
+          "exact_reference_kl_after_update": 1.200634458394779,
+          "zero_variance_group_fraction": 0.75,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 19,
+          "sampled_reward_before_update": 0.984375,
+          "exact_reward_after_update": 0.9824128933392668,
+          "exact_reference_kl_after_update": 1.209359279310135,
+          "zero_variance_group_fraction": 0.75,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 20,
+          "sampled_reward_before_update": 0.984375,
+          "exact_reward_after_update": 0.9834431879284433,
+          "exact_reference_kl_after_update": 1.217708334588953,
+          "zero_variance_group_fraction": 0.75,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        }
+      ]
+    },
+    {
+      "seed": 1,
+      "rounds": 20,
+      "groups": 8,
+      "group_size": 8,
+      "updates_per_round": 3,
+      "learning_rate": 0.5,
+      "epsilon": 0.2,
+      "beta": 0.0,
+      "sampled_responses": 1280,
+      "sampled_tokens": 2560,
+      "history": [
+        {
+          "round": 1,
+          "sampled_reward_before_update": 0.5078125,
+          "exact_reward_after_update": 0.623861623463442,
+          "exact_reference_kl_after_update": 0.06218480258583842,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 2,
+          "sampled_reward_before_update": 0.6171875,
+          "exact_reward_after_update": 0.7206762247532452,
+          "exact_reference_kl_after_update": 0.20178033618797073,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 3,
+          "sampled_reward_before_update": 0.7109375,
+          "exact_reward_after_update": 0.7893787603678397,
+          "exact_reference_kl_after_update": 0.3567387516519921,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 4,
+          "sampled_reward_before_update": 0.7421875,
+          "exact_reward_after_update": 0.8447160109069967,
+          "exact_reference_kl_after_update": 0.5229378629515908,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 5,
+          "sampled_reward_before_update": 0.84375,
+          "exact_reward_after_update": 0.8829680677603525,
+          "exact_reference_kl_after_update": 0.6644128038704629,
+          "zero_variance_group_fraction": 0.125,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 6,
+          "sampled_reward_before_update": 0.875,
+          "exact_reward_after_update": 0.9104248637803678,
+          "exact_reference_kl_after_update": 0.7832018992455142,
+          "zero_variance_group_fraction": 0.125,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 7,
+          "sampled_reward_before_update": 0.9140625,
+          "exact_reward_after_update": 0.9247517224269157,
+          "exact_reference_kl_after_update": 0.8523744390826394,
+          "zero_variance_group_fraction": 0.375,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 8,
+          "sampled_reward_before_update": 0.921875,
+          "exact_reward_after_update": 0.9390682288449015,
+          "exact_reference_kl_after_update": 0.9272607569304341,
+          "zero_variance_group_fraction": 0.25,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 9,
+          "sampled_reward_before_update": 0.9375,
+          "exact_reward_after_update": 0.9505176932600282,
+          "exact_reference_kl_after_update": 0.9923191170595347,
+          "zero_variance_group_fraction": 0.125,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 10,
+          "sampled_reward_before_update": 0.9765625,
+          "exact_reward_after_update": 0.9544332094353565,
+          "exact_reference_kl_after_update": 1.016186008108382,
+          "zero_variance_group_fraction": 0.625,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 11,
+          "sampled_reward_before_update": 0.9609375,
+          "exact_reward_after_update": 0.9599207998561547,
+          "exact_reference_kl_after_update": 1.0499040296175775,
+          "zero_variance_group_fraction": 0.5,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 12,
+          "sampled_reward_before_update": 0.9375,
+          "exact_reward_after_update": 0.966241839404986,
+          "exact_reference_kl_after_update": 1.091362718938878,
+          "zero_variance_group_fraction": 0.5,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 13,
+          "sampled_reward_before_update": 0.9765625,
+          "exact_reward_after_update": 0.9685466882219913,
+          "exact_reference_kl_after_update": 1.1067814651904273,
+          "zero_variance_group_fraction": 0.75,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 14,
+          "sampled_reward_before_update": 1.0,
+          "exact_reward_after_update": 0.9685466882219913,
+          "exact_reference_kl_after_update": 1.1067814651904273,
+          "zero_variance_group_fraction": 1.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 15,
+          "sampled_reward_before_update": 0.9765625,
+          "exact_reward_after_update": 0.9706363214138164,
+          "exact_reference_kl_after_update": 1.1212479418793293,
+          "zero_variance_group_fraction": 0.75,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 16,
+          "sampled_reward_before_update": 0.96875,
+          "exact_reward_after_update": 0.973860695214448,
+          "exact_reference_kl_after_update": 1.1442707819861555,
+          "zero_variance_group_fraction": 0.5,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 17,
+          "sampled_reward_before_update": 0.9765625,
+          "exact_reward_after_update": 0.9760448637970305,
+          "exact_reference_kl_after_update": 1.1603626369653535,
+          "zero_variance_group_fraction": 0.625,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 18,
+          "sampled_reward_before_update": 0.9765625,
+          "exact_reward_after_update": 0.9777064513861697,
+          "exact_reference_kl_after_update": 1.1726299863047647,
+          "zero_variance_group_fraction": 0.75,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 19,
+          "sampled_reward_before_update": 0.9921875,
+          "exact_reward_after_update": 0.9783452804044879,
+          "exact_reference_kl_after_update": 1.1775228362135497,
+          "zero_variance_group_fraction": 0.875,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 20,
+          "sampled_reward_before_update": 0.984375,
+          "exact_reward_after_update": 0.9796091215026972,
+          "exact_reference_kl_after_update": 1.1872289122556725,
+          "zero_variance_group_fraction": 0.75,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        }
+      ]
+    },
+    {
+      "seed": 2,
+      "rounds": 20,
+      "groups": 8,
+      "group_size": 8,
+      "updates_per_round": 3,
+      "learning_rate": 0.5,
+      "epsilon": 0.2,
+      "beta": 0.0,
+      "sampled_responses": 1280,
+      "sampled_tokens": 2560,
+      "history": [
+        {
+          "round": 1,
+          "sampled_reward_before_update": 0.5234375,
+          "exact_reward_after_update": 0.6178403118622133,
+          "exact_reference_kl_after_update": 0.05608317003846851,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 2,
+          "sampled_reward_before_update": 0.578125,
+          "exact_reward_after_update": 0.7152021804760014,
+          "exact_reference_kl_after_update": 0.19146801178529566,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 3,
+          "sampled_reward_before_update": 0.7578125,
+          "exact_reward_after_update": 0.7807037094176369,
+          "exact_reference_kl_after_update": 0.3349932127566122,
+          "zero_variance_group_fraction": 0.125,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 4,
+          "sampled_reward_before_update": 0.7734375,
+          "exact_reward_after_update": 0.8398660372100413,
+          "exact_reference_kl_after_update": 0.5071798422746405,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 5,
+          "sampled_reward_before_update": 0.7890625,
+          "exact_reward_after_update": 0.8827382319059633,
+          "exact_reference_kl_after_update": 0.664015378693178,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 6,
+          "sampled_reward_before_update": 0.828125,
+          "exact_reward_after_update": 0.9134443175265701,
+          "exact_reference_kl_after_update": 0.7973057114704695,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 7,
+          "sampled_reward_before_update": 0.859375,
+          "exact_reward_after_update": 0.9350043823346172,
+          "exact_reference_kl_after_update": 0.9053280811748485,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 8,
+          "sampled_reward_before_update": 0.9375,
+          "exact_reward_after_update": 0.9459293412978169,
+          "exact_reference_kl_after_update": 0.9656348124509153,
+          "zero_variance_group_fraction": 0.25,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 9,
+          "sampled_reward_before_update": 0.9453125,
+          "exact_reward_after_update": 0.9519144430438924,
+          "exact_reference_kl_after_update": 1.0006781636340525,
+          "zero_variance_group_fraction": 0.625,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 10,
+          "sampled_reward_before_update": 0.921875,
+          "exact_reward_after_update": 0.9609192810821781,
+          "exact_reference_kl_after_update": 1.0563279170162871,
+          "zero_variance_group_fraction": 0.25,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 11,
+          "sampled_reward_before_update": 0.984375,
+          "exact_reward_after_update": 0.9631633733105383,
+          "exact_reference_kl_after_update": 1.0708337602504445,
+          "zero_variance_group_fraction": 0.75,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 12,
+          "sampled_reward_before_update": 0.96875,
+          "exact_reward_after_update": 0.9665877886636574,
+          "exact_reference_kl_after_update": 1.0935225372485065,
+          "zero_variance_group_fraction": 0.625,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 13,
+          "sampled_reward_before_update": 0.953125,
+          "exact_reward_after_update": 0.9719682158371128,
+          "exact_reference_kl_after_update": 1.1306705367667287,
+          "zero_variance_group_fraction": 0.25,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 14,
+          "sampled_reward_before_update": 0.9765625,
+          "exact_reward_after_update": 0.9737920473531863,
+          "exact_reference_kl_after_update": 1.1438104654826653,
+          "zero_variance_group_fraction": 0.75,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 15,
+          "sampled_reward_before_update": 0.9609375,
+          "exact_reward_after_update": 0.9767656036961249,
+          "exact_reference_kl_after_update": 1.1659750394678157,
+          "zero_variance_group_fraction": 0.5,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 16,
+          "sampled_reward_before_update": 0.9765625,
+          "exact_reward_after_update": 0.9788279774944271,
+          "exact_reference_kl_after_update": 1.181401028589442,
+          "zero_variance_group_fraction": 0.625,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 17,
+          "sampled_reward_before_update": 0.96875,
+          "exact_reward_after_update": 0.9808805317542572,
+          "exact_reference_kl_after_update": 1.1971973976401935,
+          "zero_variance_group_fraction": 0.625,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 18,
+          "sampled_reward_before_update": 0.9609375,
+          "exact_reward_after_update": 0.982866211652463,
+          "exact_reference_kl_after_update": 1.2129908407794168,
+          "zero_variance_group_fraction": 0.625,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 19,
+          "sampled_reward_before_update": 0.9921875,
+          "exact_reward_after_update": 0.9833495902567513,
+          "exact_reference_kl_after_update": 1.216972849255539,
+          "zero_variance_group_fraction": 0.875,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 20,
+          "sampled_reward_before_update": 0.9921875,
+          "exact_reward_after_update": 0.9838050485308074,
+          "exact_reference_kl_after_update": 1.220780766751289,
+          "zero_variance_group_fraction": 0.875,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        }
+      ]
+    },
+    {
+      "seed": 0,
+      "rounds": 20,
+      "groups": 8,
+      "group_size": 8,
+      "updates_per_round": 3,
+      "learning_rate": 0.5,
+      "epsilon": 0.2,
+      "beta": 1.0,
+      "sampled_responses": 1280,
+      "sampled_tokens": 2560,
+      "history": [
+        {
+          "round": 1,
+          "sampled_reward_before_update": 0.484375,
+          "exact_reward_after_update": 0.6002003537250251,
+          "exact_reference_kl_after_update": 0.04045871129110609,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 2,
+          "sampled_reward_before_update": 0.546875,
+          "exact_reward_after_update": 0.6409449799026422,
+          "exact_reference_kl_after_update": 0.08054992029010512,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 3,
+          "sampled_reward_before_update": 0.6796875,
+          "exact_reward_after_update": 0.6571472893640742,
+          "exact_reference_kl_after_update": 0.10055389189014827,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 4,
+          "sampled_reward_before_update": 0.6796875,
+          "exact_reward_after_update": 0.6646667706810714,
+          "exact_reference_kl_after_update": 0.11051755480241474,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 5,
+          "sampled_reward_before_update": 0.65625,
+          "exact_reward_after_update": 0.6647006013135971,
+          "exact_reference_kl_after_update": 0.11073532001856437,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 6,
+          "sampled_reward_before_update": 0.671875,
+          "exact_reward_after_update": 0.6719510167887741,
+          "exact_reference_kl_after_update": 0.12074852234023117,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 7,
+          "sampled_reward_before_update": 0.6484375,
+          "exact_reward_after_update": 0.6643590878091807,
+          "exact_reference_kl_after_update": 0.11100900485111961,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 8,
+          "sampled_reward_before_update": 0.6484375,
+          "exact_reward_after_update": 0.6643174470714174,
+          "exact_reference_kl_after_update": 0.11026799530146897,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 9,
+          "sampled_reward_before_update": 0.6953125,
+          "exact_reward_after_update": 0.6594979742896366,
+          "exact_reference_kl_after_update": 0.1041314426892724,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 10,
+          "sampled_reward_before_update": 0.6484375,
+          "exact_reward_after_update": 0.662277952235124,
+          "exact_reference_kl_after_update": 0.1075385813623019,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 11,
+          "sampled_reward_before_update": 0.59375,
+          "exact_reward_after_update": 0.6797683563810955,
+          "exact_reference_kl_after_update": 0.13237346536732447,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 12,
+          "sampled_reward_before_update": 0.6484375,
+          "exact_reward_after_update": 0.6705475556767032,
+          "exact_reference_kl_after_update": 0.11888320665912111,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 13,
+          "sampled_reward_before_update": 0.6484375,
+          "exact_reward_after_update": 0.6678427124709696,
+          "exact_reference_kl_after_update": 0.11490796368437434,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 14,
+          "sampled_reward_before_update": 0.703125,
+          "exact_reward_after_update": 0.6524554383608709,
+          "exact_reference_kl_after_update": 0.09466783642471513,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 15,
+          "sampled_reward_before_update": 0.671875,
+          "exact_reward_after_update": 0.6494932809655662,
+          "exact_reference_kl_after_update": 0.09093742846602818,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 16,
+          "sampled_reward_before_update": 0.65625,
+          "exact_reward_after_update": 0.6586213881486254,
+          "exact_reference_kl_after_update": 0.10260908021737097,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 17,
+          "sampled_reward_before_update": 0.6875,
+          "exact_reward_after_update": 0.6557829410391502,
+          "exact_reference_kl_after_update": 0.1000061010383268,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 18,
+          "sampled_reward_before_update": 0.640625,
+          "exact_reward_after_update": 0.6545632646389941,
+          "exact_reference_kl_after_update": 0.09807534469885926,
+          "zero_variance_group_fraction": 0.125,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 19,
+          "sampled_reward_before_update": 0.6953125,
+          "exact_reward_after_update": 0.6689604779090949,
+          "exact_reference_kl_after_update": 0.11776754671984796,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 20,
+          "sampled_reward_before_update": 0.703125,
+          "exact_reward_after_update": 0.6615701104996374,
+          "exact_reference_kl_after_update": 0.10631729080091978,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        }
+      ]
+    },
+    {
+      "seed": 1,
+      "rounds": 20,
+      "groups": 8,
+      "group_size": 8,
+      "updates_per_round": 3,
+      "learning_rate": 0.5,
+      "epsilon": 0.2,
+      "beta": 1.0,
+      "sampled_responses": 1280,
+      "sampled_tokens": 2560,
+      "history": [
+        {
+          "round": 1,
+          "sampled_reward_before_update": 0.5078125,
+          "exact_reward_after_update": 0.5967051246709738,
+          "exact_reference_kl_after_update": 0.037753792021355745,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 2,
+          "sampled_reward_before_update": 0.6015625,
+          "exact_reward_after_update": 0.6256822771035713,
+          "exact_reference_kl_after_update": 0.0639856464488214,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 3,
+          "sampled_reward_before_update": 0.640625,
+          "exact_reward_after_update": 0.6370207579870224,
+          "exact_reference_kl_after_update": 0.07616253323619797,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 4,
+          "sampled_reward_before_update": 0.5859375,
+          "exact_reward_after_update": 0.6508042615881517,
+          "exact_reference_kl_after_update": 0.09239979508548901,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 5,
+          "sampled_reward_before_update": 0.71875,
+          "exact_reward_after_update": 0.6535584657004632,
+          "exact_reference_kl_after_update": 0.0958755199283984,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 6,
+          "sampled_reward_before_update": 0.609375,
+          "exact_reward_after_update": 0.6575757189534039,
+          "exact_reference_kl_after_update": 0.10103384328212481,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 7,
+          "sampled_reward_before_update": 0.640625,
+          "exact_reward_after_update": 0.6599269594314718,
+          "exact_reference_kl_after_update": 0.10461818259707294,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 8,
+          "sampled_reward_before_update": 0.6640625,
+          "exact_reward_after_update": 0.6679716771530333,
+          "exact_reference_kl_after_update": 0.11571689334687654,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 9,
+          "sampled_reward_before_update": 0.640625,
+          "exact_reward_after_update": 0.6698350549542453,
+          "exact_reference_kl_after_update": 0.11784662794350131,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 10,
+          "sampled_reward_before_update": 0.734375,
+          "exact_reward_after_update": 0.6653794198787861,
+          "exact_reference_kl_after_update": 0.11169218393180477,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 11,
+          "sampled_reward_before_update": 0.671875,
+          "exact_reward_after_update": 0.6572427111284871,
+          "exact_reference_kl_after_update": 0.10068134501735462,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 12,
+          "sampled_reward_before_update": 0.65625,
+          "exact_reward_after_update": 0.6664597419475875,
+          "exact_reference_kl_after_update": 0.11304812741431333,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 13,
+          "sampled_reward_before_update": 0.59375,
+          "exact_reward_after_update": 0.6592747929789475,
+          "exact_reference_kl_after_update": 0.10369660669613825,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 14,
+          "sampled_reward_before_update": 0.625,
+          "exact_reward_after_update": 0.6539117695795822,
+          "exact_reference_kl_after_update": 0.09703707415916825,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 15,
+          "sampled_reward_before_update": 0.7109375,
+          "exact_reward_after_update": 0.653192727295548,
+          "exact_reference_kl_after_update": 0.09542499780210786,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 16,
+          "sampled_reward_before_update": 0.671875,
+          "exact_reward_after_update": 0.6541114499837483,
+          "exact_reference_kl_after_update": 0.09664047655332943,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 17,
+          "sampled_reward_before_update": 0.6015625,
+          "exact_reward_after_update": 0.6544697131899486,
+          "exact_reference_kl_after_update": 0.09811541183023748,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 18,
+          "sampled_reward_before_update": 0.578125,
+          "exact_reward_after_update": 0.6655119232455219,
+          "exact_reference_kl_after_update": 0.11167311275857719,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 19,
+          "sampled_reward_before_update": 0.65625,
+          "exact_reward_after_update": 0.670833157744321,
+          "exact_reference_kl_after_update": 0.1191464058905628,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 20,
+          "sampled_reward_before_update": 0.6875,
+          "exact_reward_after_update": 0.6635859234922583,
+          "exact_reference_kl_after_update": 0.10909353174906677,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        }
+      ]
+    },
+    {
+      "seed": 2,
+      "rounds": 20,
+      "groups": 8,
+      "group_size": 8,
+      "updates_per_round": 3,
+      "learning_rate": 0.5,
+      "epsilon": 0.2,
+      "beta": 1.0,
+      "sampled_responses": 1280,
+      "sampled_tokens": 2560,
+      "history": [
+        {
+          "round": 1,
+          "sampled_reward_before_update": 0.5234375,
+          "exact_reward_after_update": 0.5919444520699122,
+          "exact_reference_kl_after_update": 0.03401570032048498,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 2,
+          "sampled_reward_before_update": 0.546875,
+          "exact_reward_after_update": 0.640611110790809,
+          "exact_reference_kl_after_update": 0.08020795735526677,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 3,
+          "sampled_reward_before_update": 0.6796875,
+          "exact_reward_after_update": 0.6460489277528412,
+          "exact_reference_kl_after_update": 0.0875732808018592,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 4,
+          "sampled_reward_before_update": 0.640625,
+          "exact_reward_after_update": 0.6558765392730785,
+          "exact_reference_kl_after_update": 0.09953375176623122,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 5,
+          "sampled_reward_before_update": 0.6953125,
+          "exact_reward_after_update": 0.6580687393300997,
+          "exact_reference_kl_after_update": 0.1018247743591896,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 6,
+          "sampled_reward_before_update": 0.640625,
+          "exact_reward_after_update": 0.6676723075040006,
+          "exact_reference_kl_after_update": 0.11494314778705927,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 7,
+          "sampled_reward_before_update": 0.640625,
+          "exact_reward_after_update": 0.6612856175432233,
+          "exact_reference_kl_after_update": 0.10594560203717585,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 8,
+          "sampled_reward_before_update": 0.59375,
+          "exact_reward_after_update": 0.6716035063877669,
+          "exact_reference_kl_after_update": 0.12047920006833185,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 9,
+          "sampled_reward_before_update": 0.578125,
+          "exact_reward_after_update": 0.6648516029848417,
+          "exact_reference_kl_after_update": 0.11125604396445923,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 10,
+          "sampled_reward_before_update": 0.6328125,
+          "exact_reward_after_update": 0.6715870617993706,
+          "exact_reference_kl_after_update": 0.12020112030529662,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 11,
+          "sampled_reward_before_update": 0.625,
+          "exact_reward_after_update": 0.6757699629535767,
+          "exact_reference_kl_after_update": 0.12733369353386487,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 12,
+          "sampled_reward_before_update": 0.734375,
+          "exact_reward_after_update": 0.6633856484545602,
+          "exact_reference_kl_after_update": 0.11208978095154769,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 13,
+          "sampled_reward_before_update": 0.6171875,
+          "exact_reward_after_update": 0.6686495955711718,
+          "exact_reference_kl_after_update": 0.11735709277647524,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 14,
+          "sampled_reward_before_update": 0.6953125,
+          "exact_reward_after_update": 0.6615751348855461,
+          "exact_reference_kl_after_update": 0.10634312491596545,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 15,
+          "sampled_reward_before_update": 0.6328125,
+          "exact_reward_after_update": 0.670981180069566,
+          "exact_reference_kl_after_update": 0.11942242247807439,
+          "zero_variance_group_fraction": 0.125,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 16,
+          "sampled_reward_before_update": 0.6328125,
+          "exact_reward_after_update": 0.6744681585854486,
+          "exact_reference_kl_after_update": 0.12460759455396914,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 17,
+          "sampled_reward_before_update": 0.6875,
+          "exact_reward_after_update": 0.6675721406705013,
+          "exact_reference_kl_after_update": 0.11457523782850171,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 18,
+          "sampled_reward_before_update": 0.6796875,
+          "exact_reward_after_update": 0.661820096055889,
+          "exact_reference_kl_after_update": 0.10689875880896213,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 19,
+          "sampled_reward_before_update": 0.6953125,
+          "exact_reward_after_update": 0.6561326297295941,
+          "exact_reference_kl_after_update": 0.09925474985139021,
+          "zero_variance_group_fraction": 0.125,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        },
+        {
+          "round": 20,
+          "sampled_reward_before_update": 0.59375,
+          "exact_reward_after_update": 0.6668532807878811,
+          "exact_reference_kl_after_update": 0.113903742262052,
+          "zero_variance_group_fraction": 0.0,
+          "initial_ratio_max_error": 0.0,
+          "old_logps_max_change": 0.0
+        }
+      ]
+    }
+  ]
+}
