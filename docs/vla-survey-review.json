@@ -1,0 +1,263 @@
+{
+  "article": "content/posts/ai/vla-survey/index.md",
+  "reviewed_on": "2026-10-05",
+  "paper": {
+    "id": "2405.14093v8",
+    "title": "A Survey on Vision-Language-Action Models for Embodied AI",
+    "version_date": "2026-05-01",
+    "pages": 54,
+    "sha256": "8f8419e0ec4e0dae9a8ec649db463159cb628359194c6a09223f31e873d35a00"
+  },
+  "source_map": [
+    {
+      "sections": "1–2",
+      "paper": "§I–II; Figs. 2–4; Eqs. (3), (8)",
+      "checks": [
+        "Generalized VLA versus LVLA",
+        "Table III parentheses designate related non-VLA work",
+        "Observation versus full physical state",
+        "Low-level policy is not necessarily motor servo"
+      ]
+    },
+    {
+      "sections": "3–4",
+      "paper": "§III-A; Tables I–II; Eqs. (1)–(2)",
+      "checks": [
+        "PVR objectives and downstream limits",
+        "Inverse dynamics not uniquely invertible",
+        "World model use versus auxiliary prediction",
+        "Language, visual and action-conditioned models distinguished"
+      ]
+    },
+    {
+      "sections": "5–9",
+      "paper": "§III-B; Table III; Fig. 5; Eqs. (4)–(7)",
+      "checks": [
+        "Axes of classification overlap",
+        "Action contract and chunk timing explicit",
+        "Flow matching derivation labeled explanatory convention",
+        "Generation time differs from robot time",
+        "Test-time policy selection includes verifier cost"
+      ]
+    },
+    {
+      "sections": "10",
+      "paper": "§IV; Table IV; Fig. 6",
+      "checks": [
+        "Monolithic planner not whole robot monolith",
+        "SayCan score is not an automatically calibrated joint probability",
+        "Completion feedback and recovery distinguished from command delivery"
+      ]
+    },
+    {
+      "sections": "11–13",
+      "paper": "§V–VI; Tables V–VII",
+      "checks": [
+        "Dataset counts use historical table snapshot",
+        "Aggregated datasets overlap",
+        "EQA active exploration is not universal",
+        "Generalization, latency and metric denominators explicit"
+      ]
+    },
+    {
+      "sections": "14",
+      "paper": "Appendix E; p. 45; Figs. 11–12, pp. 53–54",
+      "checks": [
+        "2020–2025 retrieval interval",
+        "Counts [2,2,9,22,63,295] verified visually",
+        "393 total verified",
+        "Citation age and institutional coauthorship caveats"
+      ]
+    }
+  ],
+  "illustrative_calculations": [
+    "Midpoint uniform quantization",
+    "Skill relevance times feasibility",
+    "Constant conditional stage success without recovery",
+    "Macro versus micro averaging",
+    "Straight-path flow matching derivative"
+  ],
+  "validation": {
+    "reviewed_posts": 83,
+    "learning_paths": 11,
+    "acceptance_checks": 266,
+    "blog_posting_schemas": 80,
+    "classified_tags": 161,
+    "code_blocks": 542,
+    "syntax_checked_by_language": {
+      "bash": 204,
+      "json": 8,
+      "jsonc": 6,
+      "python": 197,
+      "sh": 10,
+      "xml": 1
+    },
+    "html_pages": 271,
+    "local_references_checked": 21166,
+    "collection_pages_checked": 261,
+    "filter_indexes_checked": 8,
+    "errors": [],
+    "python_fragment_warnings": [],
+    "unrendered_math_warnings": []
+  },
+  "browser": {
+    "base": "http://127.0.0.1:13155",
+    "route": "/posts/ai/vla-survey/",
+    "results": [
+      {
+        "width": 1440,
+        "theme": "light",
+        "title": "VLA 综述精读：从视觉表征、动作生成到任务规划与评测 – Chase",
+        "dark": false,
+        "overflow": false,
+        "math": 59,
+        "mathErrors": [],
+        "brokenImages": [],
+        "imageCount": 5,
+        "missingDimensions": 0,
+        "captionOverflow": [],
+        "badCaptions": 0,
+        "tables": 14,
+        "badTableFocus": 0,
+        "badMathFocus": 0,
+        "brokenAnchors": [],
+        "related": 4,
+        "topic": true,
+        "rawMath": false
+      },
+      {
+        "width": 1440,
+        "theme": "dark",
+        "title": "VLA 综述精读：从视觉表征、动作生成到任务规划与评测 – Chase",
+        "dark": true,
+        "overflow": false,
+        "math": 59,
+        "mathErrors": [],
+        "brokenImages": [],
+        "imageCount": 5,
+        "missingDimensions": 0,
+        "captionOverflow": [],
+        "badCaptions": 0,
+        "tables": 14,
+        "badTableFocus": 0,
+        "badMathFocus": 0,
+        "brokenAnchors": [],
+        "related": 4,
+        "topic": true,
+        "rawMath": false
+      },
+      {
+        "width": 390,
+        "theme": "light",
+        "title": "VLA 综述精读：从视觉表征、动作生成到任务规划与评测 – Chase",
+        "dark": false,
+        "overflow": false,
+        "math": 59,
+        "mathErrors": [],
+        "brokenImages": [],
+        "imageCount": 5,
+        "missingDimensions": 0,
+        "captionOverflow": [],
+        "badCaptions": 0,
+        "tables": 14,
+        "badTableFocus": 0,
+        "badMathFocus": 0,
+        "brokenAnchors": [],
+        "related": 4,
+        "topic": true,
+        "rawMath": false
+      },
+      {
+        "width": 390,
+        "theme": "dark",
+        "title": "VLA 综述精读：从视觉表征、动作生成到任务规划与评测 – Chase",
+        "dark": true,
+        "overflow": false,
+        "math": 59,
+        "mathErrors": [],
+        "brokenImages": [],
+        "imageCount": 5,
+        "missingDimensions": 0,
+        "captionOverflow": [],
+        "badCaptions": 0,
+        "tables": 14,
+        "badTableFocus": 0,
+        "badMathFocus": 0,
+        "brokenAnchors": [],
+        "related": 4,
+        "topic": true,
+        "rawMath": false
+      },
+      {
+        "width": 320,
+        "theme": "light",
+        "title": "VLA 综述精读：从视觉表征、动作生成到任务规划与评测 – Chase",
+        "dark": false,
+        "overflow": false,
+        "math": 59,
+        "mathErrors": [],
+        "brokenImages": [],
+        "imageCount": 5,
+        "missingDimensions": 0,
+        "captionOverflow": [],
+        "badCaptions": 0,
+        "tables": 14,
+        "badTableFocus": 0,
+        "badMathFocus": 0,
+        "brokenAnchors": [],
+        "related": 4,
+        "topic": true,
+        "rawMath": false
+      },
+      {
+        "width": 320,
+        "theme": "dark",
+        "title": "VLA 综述精读：从视觉表征、动作生成到任务规划与评测 – Chase",
+        "dark": true,
+        "overflow": false,
+        "math": 59,
+        "mathErrors": [],
+        "brokenImages": [],
+        "imageCount": 5,
+        "missingDimensions": 0,
+        "captionOverflow": [],
+        "badCaptions": 0,
+        "tables": 14,
+        "badTableFocus": 0,
+        "badMathFocus": 0,
+        "brokenAnchors": [],
+        "related": 4,
+        "topic": true,
+        "rawMath": false
+      }
+    ],
+    "nojs": {
+      "overflow": false,
+      "headings": 18,
+      "math": 59,
+      "toc": true
+    },
+    "tableKeyboard": true,
+    "imageZoom": true,
+    "mobileToc": true,
+    "runtimeErrors": []
+  },
+  "checks": {
+    "hugo": "0.165.0 extended; fresh production directory; passed",
+    "table_of_contents": "scripts/test_blog_toc.py; all fixture modes passed",
+    "filter": "80 published articles, 11 topics; passed",
+    "numeric_examples": "survey_lab.py --check; passed",
+    "git_diff_check": "passed"
+  },
+  "artifacts": {
+    "lab-results.json": "ca9c1b1d69a1d66df1e5cd8d6ab403715713403058daa3eb910d5bc6e0c9139e",
+    "make_figures.py": "e1c9a8ee5793d6c60396185e4882d33b950aa2c3838bc572d1629edd4e5c45fe",
+    "index.md": "0f7311e68b0f42da03586fa68ac858a49556a5ab7b778ad52bdcd9991e62f784",
+    "survey_lab.py": "7db0e9b2bbb306cb551583912e54427003c8d1aa05354e977d8328e78fb76dde",
+    "assets/vla-research-map.webp": "9f856233d1bbb1b325f829a5e7d7e0f3420a426806d1be59ad1fe7bcf32c6a0b",
+    "assets/action-generation-clocks.webp": "b7eb8f5f85185c4c0e60e97e60e8f76e0893407e5db986aeb93e39a929b6056c",
+    "assets/long-task-success.png": "e15cc31e2dfd5c10ce93c1a2cb6912afd46985864ab761c28c5a5ba63dd864cf",
+    "assets/survey-paper-counts.png": "5674bb4c148b5b42e9b6f3a94146fa5839a98f48b6997dd1d3d8f5a01b37e7c1",
+    "assets/dynamics-and-planning.webp": "092764c86d5dfd3a3b196bf9ee200c46440fad9d7fe7088d1ec7391c53adf2bd"
+  }
+}

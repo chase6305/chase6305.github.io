@@ -53,6 +53,7 @@
       "posts/ai/gymnasium/1/index.md",
       "posts/rl/index.md",
       "posts/ai/ppo-dpo-grpo/index.md",
+      "posts/ai/rlhf-rlvr-rlcd/index.md",
       "posts/ai/gspo/index.md",
       "posts/ai/transformer-attention/index.md",
       "posts/ai/llm-training-metrics/index.md",
@@ -68,6 +69,7 @@
     "posts": [
       "posts/ai/lerobot-act/index.md",
       "posts/ai/vla-evolution/index.md",
+      "posts/ai/vla-survey/index.md",
       "posts/ai/jev-decision-layer/index.md",
       "posts/ai/vla-world-model-data/index.md",
       "posts/ai/x-vla/index.md",

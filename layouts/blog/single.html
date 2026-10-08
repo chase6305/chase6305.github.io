@@ -21,11 +21,11 @@
             {{- range $i, $author := . -}}
               {{- if reflect.IsMap $author -}}
                 {{- if and $i (not $author.image) }}<span class="hx:mr-1">,</span>{{ end -}}
-                <a
-                  {{ with $author.link }}href="{{ . }}" target="_blank"{{ end }}
-                  class="hx:group hx:inline-flex hx:items-center hx:text-current hx:gap-x-1.5 hx:mx-1"
-                  {{ with $author.name }}title="{{ . }}"{{ end }}
-                >
+                {{- if $author.link -}}
+                <a href="{{ $author.link }}" target="_blank" rel="noopener noreferrer" class="hx:group hx:inline-flex hx:items-center hx:text-current hx:gap-x-1.5 hx:mx-1" {{ with $author.name }}title="{{ . }}"{{ end }}>
+                {{- else -}}
+                <span class="hx:group hx:inline-flex hx:items-center hx:text-current hx:gap-x-1.5 hx:mx-1" {{ with $author.name }}title="{{ . }}"{{ end }}>
+                {{- end -}}
                   {{- with $image := $author.image }}
                     {{- $isLocal := not (urls.Parse $image).Scheme -}}
                     {{- $startsWithSlash := hasPrefix $image "/" -}}
@@ -35,7 +35,7 @@
                     <img src="{{ $image | safeURL }}" alt="{{ $author.name }}" class="hx:inline-block hx:h-4 hx:w-4 hx:rounded-full" {{ if $lazyLoading }}loading="lazy"{{ end }} />
                   {{ end -}}
                   <div class="hx:group-hover:underline">{{ $author.name }}</div>
-                </a>
+                {{- if $author.link }}</a>{{ else }}</span>{{ end -}}
               {{- else -}}
                 {{- if $i }}<span class="hx:mr-1">,</span>{{ end -}}<span class="hx:mx-1">{{ $author }}</span>
               {{- end -}}

@@ -9,7 +9,7 @@
   tags: [Jev, VLA, Humanoid Robots, Humanoid, Embodied AI, Robot Learning, Imitation Learning, LeRobot, ACT, Action Chunking, RT-2, OpenVLA, Physical Intelligence, RECAP, RTC, Generalist, GEN-1.5, RynnBrain, X-VLA, MolmoMotion, Motion Forecasting, World Model, World Action Model, Egocentric, Teleoperation, UMI, APG, Light-Loco-Parkour, Locomotion]
 - name: AI & Learning
   nameZh: 人工智能与学习
-  tags: [Artificial Intelligence, Machine Learning, Deep Learning, Reinforcement Learning, Transformer, Attention, Diffusion Models, Generative Models, Distributed Training, GPU Memory, Gymnasium, PyTorch, Paper Notes, LLM, VLM, Pretraining, Post-training, Evaluation, Ablation, DPO, PPO, RLHF, GRPO, GSPO, Distillation, MoE, In-Context Learning, Soft Prompt, Multimodal, Qwen, InternVL, Flow Matching]
+  tags: [Artificial Intelligence, Machine Learning, Deep Learning, Reinforcement Learning, Transformer, Attention, Diffusion Models, Generative Models, Distributed Training, GPU Memory, Gymnasium, PyTorch, Paper Notes, LLM, VLM, Pretraining, Post-training, Evaluation, Ablation, DPO, PPO, RLHF, RLVR, RLCD, GRPO, GSPO, Distillation, MoE, In-Context Learning, Soft Prompt, Multimodal, Qwen, InternVL, Flow Matching]
 - name: 3D Vision & Simulation
   nameZh: 三维视觉与仿真
   tags: [3D Vision, 3D Visualization, Open3D, Point Cloud, Mesh Processing, CoACD, Collision Geometry, MeshCat, OpenGL, NVIDIA Warp, Isaac Lab, USD, Simulation]

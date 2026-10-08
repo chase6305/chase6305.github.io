@@ -1,0 +1,52 @@
+{
+  "article": "content/posts/ai/vla-survey/index.md",
+  "tool": "built-in image_gen.imagegen",
+  "style_references": [
+    "content/posts/ai/transformer-attention/assets/training-lifecycle.webp",
+    "content/posts/ai/transformer-attention/assets/transformer-block-overview.webp",
+    "content/posts/ai/transformer-attention/assets/training-vs-kv-cache-inference.webp"
+  ],
+  "prompts": {
+    "vla-map-prompt": "Use case: scientific-educational. Asset type: technical blog diagram, landscape 1536x1024. Create a clean precise English diagram titled 'Three lenses on VLA systems'. White background, thin rounded navy outlines, generous spacing, clear readable sans-serif labels, restrained pastel blue, purple, orange and green. This is a conceptual research map, not measured results. Layout: THREE LARGE PANELS SIDE BY SIDE with numbers 1, 2, 3. Panel 1 blue header 'Components', inside four separate stacked modules labeled 'Visual representations', 'Dynamics & world models', 'Reasoning', 'Policy steering'. Panel 2 purple header 'Control policy', simple vertical arrows connecting 'Images + instruction + state' to 'Multimodal backbone' to 'Action decoder' to orange 'Robot action'. Panel 3 green header 'Task planner', vertical arrows connecting 'User goal + observation' to 'Subgoals / code' to 'Skill selection'. A single horizontal arrow from bottom of Panel 3 leftward into the 'Images + instruction + state' box of Panel 2, routed cleanly in empty corridor with label 'Subgoal'. Avoid connecting component list modules as a sequential pipeline; they are optional building blocks. Under the three panels one wide neutral rounded band 'Data and evaluation support all three'. Bottom small concise note 'Generalized VLA includes smaller language-conditioned policies'. Absolutely no logos, no extra unrelated decorations, no invented metrics, no claims about mandatory components.",
+    "vla-map-edit-prompt": "Edit only the connector between the rightmost Task planner panel and middle Control policy panel. Remove the existing leftward Subgoal arrow from the User goal + observation box. Instead draw one clear arrow from the LEFT EDGE of the Skill selection box, routed left into the gap between panels, then upward through that gap and left into the RIGHT EDGE of Images + instruction + state. Put label 'Subgoal' next to its upper horizontal segment. The arrow must start at Skill selection and terminate at Images + instruction + state. Keep all other boxes, text, icons, colors and panels exactly unchanged. Do not route line through any box or text.",
+    "vla-dynamics-prompt": "Use case: scientific-educational. Create a clean landscape 1536x1024 technical diagram titled 'Predicting actions and predicting outcomes'. White background, restrained pastel blue inputs, purple learned models, orange action outputs, green state outputs. Thin rounded outlines, generous spacing, large legible English sans-serif labels. Four independent horizontal rows, clearly separated; no connections between rows. ROW 1 header 'Policy': left blue box 'Observation + goal' arrow to purple box 'Policy' arrow to orange box 'Action'. ROW 2 header 'Forward dynamics': left blue box 'State + action' arrow to purple box 'Forward model' arrow to green box 'Next state'. ROW 3 header 'Inverse dynamics': left blue box 'State + next state' arrow to purple box 'Inverse model' arrow to orange box 'Possible action'. ROW 4 header 'Planning with a world model': left blue box 'Candidate actions' arrow to purple box 'Imagine outcomes' arrow to purple box 'Score outcomes' arrow to orange box 'Select action'. Small footer text 'Prediction alone is not planning: action conditioning and an objective are required.' No numerical metrics. All arrows point left to right. Keep rows spacious, never connect Next state back to Policy. Diagram explains interface distinctions, not a specific architecture.",
+    "vla-clocks-prompt": "Use case: scientific-educational. Landscape 1536x1024 technical diagram on white background, thin rounded navy outlines, pastel blue purple orange green, large sans-serif English labels, minimal flat icons. Title 'Two different clocks in action generation'. Two large stacked panels. TOP purple panel header 'Generation time: refine the whole action chunk'. Left-to-right three square matrices each with 4 columns and 3 rows, each clearly the same dimensions: noisy pixels labeled 'Noise', partially refined colored cells labeled 'Intermediate', clean orange cells labeled 'Action chunk'. Arrows only Noise -> Intermediate -> Action chunk. Under this pipeline put exact text 'Each update changes the whole future sequence'. BOTTOM blue panel header 'Robot time: execute, observe, replan'. Draw one horizontal timeline of 8 numbered blocks 1 through 8. Blocks 1 and 2 orange filled and bracket below with label 'Execute prefix'; blocks 3 through 8 pale outlined and bracket label 'Predicted future'. Under blocks 1 and 2, a downward arrow to a green box 'New observation'; from that green box a rightward arrow to a purple box 'Generate next chunk'. Do NOT draw a line from block 8 to new observation; re-observation is after executing the short prefix. Footer 'Generation steps and robot action steps are not the same'. All numbers are illustrative step indices only. Do not add milliseconds or performance claims. This diagram compares two clocks, not a real latency timeline; keep labels concise and accurate.",
+    "vla-clocks-edit-prompt": "Edit only the three matrices in the top generation-time panel: each of the three matrices (Noise, Intermediate, Action chunk) must have exactly EIGHT equally wide columns and THREE rows, to match the eight predicted action steps shown in the bottom panel. Keep the current outer dimensions of the matrices and preserve their noise/refinement/clean coloring style. Keep all arrows, labels, boxes, numbers, typography and the entire lower panel unchanged."
+  },
+  "assets": [
+    {
+      "file": "assets/vla-research-map.webp",
+      "source": "exec-33f0bd16-e6ac-499d-9c42-48dde132060f.png",
+      "prompt_keys": [
+        "vla-map-prompt",
+        "vla-map-edit-prompt"
+      ],
+      "review": "The Subgoal connector starts at Skill selection and ends at the policy input; components are independent optional modules.",
+      "sha256": "9f856233d1bbb1b325f829a5e7d7e0f3420a426806d1be59ad1fe7bcf32c6a0b"
+    },
+    {
+      "file": "assets/dynamics-and-planning.webp",
+      "source": "exec-ab29af20-38bf-423f-9d84-5db4d13106d7.png",
+      "prompt_keys": [
+        "vla-dynamics-prompt"
+      ],
+      "review": "Policy, forward and inverse model interfaces checked; planning row omits common state/goal inputs, explicitly described in caption.",
+      "sha256": "092764c86d5dfd3a3b196bf9ee200c46440fad9d7fe7088d1ec7391c53adf2bd"
+    },
+    {
+      "file": "assets/action-generation-clocks.webp",
+      "source": "exec-88440fde-d852-49eb-a1e2-f5765fd214b4.png",
+      "prompt_keys": [
+        "vla-clocks-prompt",
+        "vla-clocks-edit-prompt"
+      ],
+      "review": "All three matrices have eight time columns and three component rows; execute steps 1-2 before new observation, not all eight.",
+      "sha256": "b7eb8f5f85185c4c0e60e97e60e8f76e0893407e5db986aeb93e39a929b6056c"
+    }
+  ],
+  "quantitative_figures": {
+    "script": "content/posts/ai/vla-survey/make_figures.py",
+    "long-task-success.png": "Illustrative p^N with constant conditional stage success and no recovery.",
+    "survey-paper-counts.png": "Transcribed counts from local PDF page 53, Fig. 11(a); linear y axis and no venue subdivisions."
+  }
+}
