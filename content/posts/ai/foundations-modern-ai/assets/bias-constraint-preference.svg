@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 650" role="img" aria-labelledby="title desc">
+  <title id="title">硬约束与软归纳偏置</title>
+  <desc id="desc">左侧硬约束排除模型空间之外的解；右侧软偏好保留广阔的候选空间，但让更简单、符合结构的解获得更高偏好。</desc>
+  <defs>
+    <linearGradient id="soft" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#eaf3ff"/>
+      <stop offset=".48" stop-color="#c9dbff"/>
+      <stop offset=".72" stop-color="#d9d1fb"/>
+      <stop offset="1" stop-color="#f4efff"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#53657f"/>
+    </marker>
+    <style>
+      text { font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #172b4d }
+      .panel { fill: #fff; stroke: #9bb3d1; stroke-width: 2 }
+      .label { font-size: 25px; font-weight: 700 }
+      .small { font-size: 19px }
+      .tiny { font-size: 16px }
+    </style>
+  </defs>
+  <rect width="1500" height="650" rx="28" fill="#fff"/>
+  <rect class="panel" x="32" y="32" width="700" height="586" rx="24"/>
+  <rect class="panel" x="768" y="32" width="700" height="586" rx="24"/>
+  <text x="382" y="82" text-anchor="middle" class="label">硬约束：删掉一部分候选解</text>
+  <text x="1118" y="82" text-anchor="middle" class="label">软偏好：保留候选解，改变代价</text>
+  <text x="382" y="118" text-anchor="middle" class="small">模型空间只允许蓝色区域</text>
+  <text x="1118" y="118" text-anchor="middle" class="small">空间仍完整；颜色表示偏好强弱</text>
+
+  <!-- hard restriction: boundary and forbidden solutions -->
+  <rect x="106" y="155" width="552" height="350" rx="18" fill="#f8fafc" stroke="#c5d2e2" stroke-width="2"/>
+  <path d="M145 420 C205 230 271 240 326 410 S449 485 510 300 S600 245 628 405" fill="none" stroke="#d7dde6" stroke-width="5" stroke-dasharray="12 10"/>
+  <path d="M145 420 C207 335 253 302 326 300 S462 322 510 350 S585 389 628 405" fill="none" stroke="#1769c2" stroke-width="7" stroke-linecap="round"/>
+  <path d="M145 420 C214 412 257 398 326 390 S451 366 510 360 S589 350 628 338" fill="none" stroke="#5b8fd6" stroke-width="5" stroke-linecap="round"/>
+  <path d="M145 420 C198 370 272 360 326 350 S455 286 510 270 S591 264 628 250" fill="none" stroke="#91b5e5" stroke-width="5" stroke-linecap="round"/>
+  <path d="M145 420 C207 250 271 245 326 410 S449 480 510 300 S600 242 628 405" fill="none" stroke="#aab4c2" stroke-width="4" stroke-dasharray="10 9"/>
+  <g stroke="#bd4c4c" stroke-width="5" stroke-linecap="round">
+    <path d="m540 200 34 34m0-34-34 34"/><path d="m584 442 34 34m0-34-34 34"/>
+    <path d="m184 278 30 30m0-30-30 30"/>
+  </g>
+  <text x="382" y="465" text-anchor="middle" class="tiny" fill="#53657f">灰色虚线：被约束排除的函数</text>
+  <line x1="150" y1="545" x2="623" y2="545" stroke="#53657f" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="382" y="580" text-anchor="middle" class="small">违反结构的解无法通过增加数据恢复</text>
+
+  <!-- soft preference: all candidates remain, central region preferred -->
+  <rect x="842" y="155" width="552" height="350" rx="18" fill="url(#soft)" stroke="#9aaed0" stroke-width="2"/>
+  <path d="M882 420 C944 230 1008 240 1062 410 S1182 485 1245 300 S1335 245 1364 405" fill="none" stroke="#bbc3d0" stroke-width="5" stroke-dasharray="12 10"/>
+  <path d="M882 420 C944 335 990 302 1062 300 S1198 322 1245 350 S1322 389 1364 405" fill="none" stroke="#1769c2" stroke-width="7" stroke-linecap="round"/>
+  <path d="M882 420 C951 412 993 398 1062 390 S1187 366 1245 360 S1325 350 1364 338" fill="none" stroke="#5b8fd6" stroke-width="5" stroke-linecap="round"/>
+  <path d="M882 420 C944 250 1008 245 1062 410 S1182 480 1245 300 S1335 242 1364 405" fill="none" stroke="#6f63a8" stroke-width="4" stroke-linecap="round"/>
+  <text x="1118" y="465" text-anchor="middle" class="tiny" fill="#53657f">复杂解仍可选；只是需要更强证据抵消偏好</text>
+  <line x1="886" y1="545" x2="1359" y2="545" stroke="#53657f" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="1118" y="580" text-anchor="middle" class="small">软偏置：偏好结构，但保留纠错余地</text>
+  <text x="852" y="190" class="tiny">低偏好</text>
+  <text x="1292" y="490" class="tiny">高偏好</text>
+</svg>

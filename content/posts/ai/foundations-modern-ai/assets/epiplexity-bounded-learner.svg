@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 650" role="img" aria-labelledby="title desc">
+  <title id="title">有限计算观察者下的可学结构与残余随机性</title>
+  <desc id="desc">数据进入有固定计算预算的学习者后，可复用规律形成模型结构码长，仍不能预测的部分作为残余码长；两部分共同描述数据。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0 0 12 6 0 12Z" fill="#52657d"/>
+    </marker>
+    <style>
+      text { font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #172b4d }
+      .head { font-size: 27px; font-weight: 700 }
+      .body { font-size: 21px }
+      .small { font-size: 18px }
+      .box { stroke-width: 2.5 }
+    </style>
+  </defs>
+  <rect width="1500" height="650" rx="28" fill="#fff"/>
+  <text x="750" y="58" text-anchor="middle" class="head">Epiplexity：有限预算下，学习者能从数据中提取什么</text>
+
+  <rect x="55" y="155" width="315" height="310" rx="24" fill="#eef5ff" stroke="#4f84c4" class="box"/>
+  <text x="212" y="205" text-anchor="middle" class="head">数据 X</text>
+  <g fill="#72a7e4" stroke="#2d67aa" stroke-width="2">
+    <rect x="105" y="255" width="42" height="42" rx="7"/><rect x="156" y="255" width="42" height="42" rx="7" fill="#c7dcf7"/>
+    <rect x="207" y="255" width="42" height="42" rx="7"/><rect x="258" y="255" width="42" height="42" rx="7" fill="#c7dcf7"/>
+    <rect x="105" y="306" width="42" height="42" rx="7" fill="#c7dcf7"/><rect x="156" y="306" width="42" height="42" rx="7"/>
+    <rect x="207" y="306" width="42" height="42" rx="7" fill="#c7dcf7"/><rect x="258" y="306" width="42" height="42" rx="7"/>
+  </g>
+  <text x="212" y="402" text-anchor="middle" class="small">规律、重复与不可预测细节</text>
+
+  <line x1="382" y1="310" x2="478" y2="310" stroke="#52657d" stroke-width="4" marker-end="url(#arrow)"/>
+  <rect x="495" y="140" width="420" height="340" rx="24" fill="#f4f0ff" stroke="#7967b2" class="box"/>
+  <text x="705" y="196" text-anchor="middle" class="head">受限学习者</text>
+  <text x="705" y="236" text-anchor="middle" class="body">模型 + 优化器 + 计算预算 T</text>
+  <rect x="565" y="275" width="280" height="70" rx="15" fill="#fff" stroke="#9484c7" stroke-width="2"/>
+  <text x="705" y="319" text-anchor="middle" class="body">训练与预测</text>
+  <line x1="620" y1="374" x2="790" y2="374" stroke="#806eb7" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="650" cy="374" r="10" fill="#806eb7"/><circle cx="710" cy="374" r="10" fill="#806eb7"/><circle cx="770" cy="374" r="10" fill="#806eb7"/>
+  <text x="705" y="432" text-anchor="middle" class="small">T 改变时，可识别的结构也会改变</text>
+
+  <path d="M930 260 H1003 V225 H1060" fill="none" stroke="#52657d" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M930 360 H1003 V425 H1060" fill="none" stroke="#52657d" stroke-width="4" marker-end="url(#arrow)"/>
+  <rect x="1080" y="145" width="360" height="155" rx="22" fill="#eaf6ee" stroke="#4d9467" class="box"/>
+  <text x="1260" y="198" text-anchor="middle" class="head">学到的结构 S<tspan baseline-shift="sub" font-size="18">T</tspan></text>
+  <text x="1260" y="240" text-anchor="middle" class="body">模型码长 / 可复用规律</text>
+  <text x="1260" y="274" text-anchor="middle" class="small">有限预算内能编码的部分</text>
+  <rect x="1080" y="350" width="360" height="155" rx="22" fill="#fff4e5" stroke="#d28b32" class="box"/>
+  <text x="1260" y="402" text-anchor="middle" class="head">残余 H<tspan baseline-shift="sub" font-size="18">T</tspan></text>
+  <text x="1260" y="444" text-anchor="middle" class="body">模型仍无法预测的部分</text>
+  <text x="1260" y="478" text-anchor="middle" class="small">按条件分布编码的随机残差</text>
+
+  <rect x="260" y="548" width="980" height="64" rx="18" fill="#f7f9fc" stroke="#9bb0c9" stroke-width="2"/>
+  <text x="750" y="590" text-anchor="middle" class="body">总描述成本 ≈ 结构模型的描述成本 + 给定模型后的残余数据码长</text>
+</svg>

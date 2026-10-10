@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 650" role="img" aria-labelledby="title desc">
+  <title id="title">相同棋谱采用不同序列顺序，会形成不同的预测任务</title>
+  <desc id="desc">着法后接最终棋盘便于前向推演；最终棋盘后接着法要求反推中间过程。论文发现后一顺序的时间受限熵和 Epiplexity 较高，棋题表现接近而局面评价更好。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0 0 12 6 0 12Z" fill="#53657f"/>
+    </marker>
+    <style>
+      text { font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #172b4d }
+      .title { font-size: 28px; font-weight: 700 }
+      .head { font-size: 24px; font-weight: 700 }
+      .body { font-size: 20px }
+      .small { font-size: 17px }
+      .panel { stroke-width: 2.5 }
+    </style>
+  </defs>
+  <rect width="1500" height="650" rx="28" fill="#fff"/>
+  <text x="750" y="58" text-anchor="middle" class="title">序列化方向改变“给什么、预测什么”</text>
+  <text x="750" y="96" text-anchor="middle" class="small">两种格式包含同一盘棋的终局和记录着法，但自回归模型面临的条件预测不同</text>
+
+  <rect x="42" y="132" width="690" height="390" rx="24" fill="#eef5ff" stroke="#5b8dc7" class="panel"/>
+  <rect x="768" y="132" width="690" height="390" rx="24" fill="#f4f0ff" stroke="#8170b7" class="panel"/>
+  <text x="387" y="178" text-anchor="middle" class="head">前向：着法 → 终局</text>
+  <text x="1113" y="178" text-anchor="middle" class="head">反向：终局 → 着法</text>
+
+  <rect x="88" y="223" width="252" height="106" rx="18" fill="#fff" stroke="#6a99cb" stroke-width="2"/>
+  <text x="214" y="266" text-anchor="middle" class="body">1. e4 e5</text>
+  <text x="214" y="299" text-anchor="middle" class="small">… 着法序列</text>
+  <line x1="354" y1="276" x2="415" y2="276" stroke="#53657f" stroke-width="4" marker-end="url(#arrow)"/>
+  <rect x="431" y="223" width="252" height="106" rx="18" fill="#fff" stroke="#6a99cb" stroke-width="2"/>
+  <text x="557" y="266" text-anchor="middle" class="body">最终棋盘</text>
+  <text x="557" y="299" text-anchor="middle" class="small">FEN 局面</text>
+  <text x="387" y="377" text-anchor="middle" class="body">合法着法可逐步推演到局面</text>
+  <text x="387" y="414" text-anchor="middle" class="small">前向变换较直接，模型可利用规则性</text>
+  <rect x="134" y="450" width="506" height="42" rx="12" fill="#dceafb"/>
+  <text x="387" y="478" text-anchor="middle" class="small">较容易的序列预测，不保证学到丰富局面表示</text>
+
+  <rect x="814" y="223" width="252" height="106" rx="18" fill="#fff" stroke="#8878bb" stroke-width="2"/>
+  <text x="940" y="266" text-anchor="middle" class="body">最终棋盘</text>
+  <text x="940" y="299" text-anchor="middle" class="small">FEN 局面</text>
+  <line x1="1080" y1="276" x2="1141" y2="276" stroke="#53657f" stroke-width="4" marker-end="url(#arrow)"/>
+  <rect x="1157" y="223" width="252" height="106" rx="18" fill="#fff" stroke="#8878bb" stroke-width="2"/>
+  <text x="1283" y="266" text-anchor="middle" class="body">1. e4 e5</text>
+  <text x="1283" y="299" text-anchor="middle" class="small">… 反推着法</text>
+  <text x="1113" y="377" text-anchor="middle" class="body">从终局推断可能的中间过程</text>
+  <text x="1113" y="414" text-anchor="middle" class="small">预测更难，可能促使模型学习局面结构</text>
+  <rect x="860" y="450" width="506" height="42" rx="12" fill="#e5def6"/>
+  <text x="1113" y="478" text-anchor="middle" class="small">该实验中局面评价迁移更好，棋题成绩接近</text>
+
+  <rect x="230" y="550" width="1040" height="64" rx="18" fill="#f7f9fc" stroke="#9bb0c9" stroke-width="2"/>
+  <text x="750" y="578" text-anchor="middle" class="small">论文观察：反向序列的时间受限熵与 Epiplexity 更高。作者将迁移差异解释为</text>
+  <text x="750" y="603" text-anchor="middle" class="small">模型可能学到更丰富的棋盘表示；这是一组棋类实验，不是“越难越好”的普遍规律。</text>
+</svg>

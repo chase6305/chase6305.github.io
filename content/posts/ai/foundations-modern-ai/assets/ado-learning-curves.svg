@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 680" role="img" aria-labelledby="title desc">
+  <title id="title">ADO 根据各数据域的学习曲线调整采样比例</title>
+  <desc id="desc">训练中分别跟踪各数据域的损失并拟合学习曲线，估计继续投入后的边际改善，再平滑调整数据混合比例，最后通过独立留出任务检查迁移。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0 0 11 5.5 0 11Z" fill="#53657f"/>
+    </marker>
+    <style>
+      text { font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #172b4d }
+      .head { font-size: 26px; font-weight: 700 }
+      .body { font-size: 20px }
+      .small { font-size: 17px }
+      .panel { stroke-width: 2.5 }
+    </style>
+  </defs>
+  <rect width="1500" height="680" rx="28" fill="#fff"/>
+  <text x="750" y="57" text-anchor="middle" class="head">ADO：按学习曲线估计“继续训练能学到多少”</text>
+
+  <rect x="38" y="128" width="300" height="420" rx="22" fill="#eef5ff" stroke="#5b8dc7" class="panel"/>
+  <text x="188" y="177" text-anchor="middle" class="head">多个数据域</text>
+  <rect x="84" y="216" width="208" height="70" rx="14" fill="#fff" stroke="#7fa6d3" stroke-width="2"/>
+  <text x="188" y="260" text-anchor="middle" class="body">Domain A</text>
+  <rect x="84" y="315" width="208" height="70" rx="14" fill="#fff" stroke="#7fa6d3" stroke-width="2"/>
+  <text x="188" y="359" text-anchor="middle" class="body">Domain B</text>
+  <rect x="84" y="414" width="208" height="70" rx="14" fill="#fff" stroke="#7fa6d3" stroke-width="2"/>
+  <text x="188" y="458" text-anchor="middle" class="body">Domain C</text>
+  <text x="188" y="515" text-anchor="middle" class="small">跟踪各域训练损失</text>
+
+  <line x1="350" y1="335" x2="414" y2="335" stroke="#53657f" stroke-width="4" marker-end="url(#arrow)"/>
+  <rect x="432" y="128" width="365" height="420" rx="22" fill="#f4f0ff" stroke="#8170b7" class="panel"/>
+  <text x="614" y="177" text-anchor="middle" class="head">拟合学习曲线</text>
+  <text x="614" y="210" text-anchor="middle" class="small">loss 随已投入 token 的变化</text>
+  <line x1="492" y1="432" x2="748" y2="432" stroke="#687990" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="492" y1="432" x2="492" y2="254" stroke="#687990" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="486" y="246" text-anchor="end" class="small">loss</text>
+  <text x="742" y="459" text-anchor="end" class="small">投入 token</text>
+  <path d="M505 280 C540 338 577 366 620 385 S697 408 735 414" fill="none" stroke="#2878c8" stroke-width="5"/>
+  <path d="M505 298 C544 322 575 339 620 350 S691 366 735 373" fill="none" stroke="#7e6bb5" stroke-width="5"/>
+  <path d="M505 265 C552 267 584 270 620 272 S690 276 735 281" fill="none" stroke="#d18a2d" stroke-width="5"/>
+  <text x="500" y="488" class="small" fill="#2878c8">A</text><text x="535" y="488" class="small" fill="#7e6bb5">B</text><text x="570" y="488" class="small" fill="#d18a2d">C</text>
+  <text x="614" y="520" text-anchor="middle" class="small">曲线用于估算未来边际改善</text>
+
+  <line x1="809" y1="335" x2="873" y2="335" stroke="#53657f" stroke-width="4" marker-end="url(#arrow)"/>
+  <rect x="891" y="128" width="275" height="420" rx="22" fill="#fff4e5" stroke="#d2913e" class="panel"/>
+  <text x="1028" y="177" text-anchor="middle" class="head">调整混合比例</text>
+  <text x="1028" y="220" text-anchor="middle" class="small">预测收益与近期归因信号</text>
+  <rect x="938" y="268" width="180" height="47" rx="10" fill="#d8e8fb"/>
+  <text x="1028" y="299" text-anchor="middle" class="small">A 采样权重</text>
+  <rect x="938" y="329" width="180" height="47" rx="10" fill="#e3dcf7"/>
+  <text x="1028" y="360" text-anchor="middle" class="small">B 采样权重</text>
+  <rect x="938" y="390" width="180" height="47" rx="10" fill="#fae4c7"/>
+  <text x="1028" y="421" text-anchor="middle" class="small">C 采样权重</text>
+  <path d="M961 474 H1095" stroke="#d2913e" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="1028" y="511" text-anchor="middle" class="small">平滑更新，继续训练</text>
+
+  <line x1="1178" y1="335" x2="1232" y2="335" stroke="#53657f" stroke-width="4" marker-end="url(#arrow)"/>
+  <rect x="1250" y="128" width="212" height="420" rx="22" fill="#edf7ef" stroke="#559269" class="panel"/>
+  <text x="1356" y="177" text-anchor="middle" class="head">独立评估</text>
+  <circle cx="1356" cy="276" r="54" fill="#fff" stroke="#66a27a" stroke-width="3"/>
+  <path d="M1326 276 1347 297 1388 250" fill="none" stroke="#428557" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1356" y="368" text-anchor="middle" class="body">OOD 任务</text>
+  <text x="1356" y="410" text-anchor="middle" class="small">迁移、覆盖、质量</text>
+  <text x="1356" y="445" text-anchor="middle" class="small">安全与污染检查</text>
+  <text x="1356" y="510" text-anchor="middle" class="small">不由采样指标代替</text>
+
+  <rect x="230" y="586" width="1040" height="58" rx="16" fill="#f7f9fc" stroke="#9bb0c9" stroke-width="2"/>
+  <text x="750" y="623" text-anchor="middle" class="body">示意曲线无实验数值；低 loss 不等于高边际收益，高 loss 也可能只是难以学习</text>
+</svg>

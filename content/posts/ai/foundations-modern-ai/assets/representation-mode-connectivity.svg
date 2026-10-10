@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 680" role="img" aria-labelledby="title desc">
+  <title id="title">深度学习的表征学习与模式连通性</title>
+  <desc id="desc">左侧示意神经网络把像素输入映射到更适合预测头部角度的表示，使同角度而身份光照不同的样本更接近；右侧示意两个低损失参数解可以由弯曲的低损失路径连接，直线插值则可能经过高损失区域。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0 0 11 5.5 0 11Z" fill="#53657f"/>
+    </marker>
+    <style>
+      text { font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #172b4d }
+      .title { font-size: 28px; font-weight: 700 }
+      .head { font-size: 24px; font-weight: 700 }
+      .body { font-size: 19px }
+      .small { font-size: 16px }
+      .panel { stroke-width: 2.5 }
+    </style>
+  </defs>
+  <rect width="1500" height="680" rx="28" fill="#fff"/>
+  <text x="750" y="56" text-anchor="middle" class="title">深度学习的相对特色：学表示，也改变可达解的几何</text>
+  <rect x="36" y="105" width="704" height="500" rx="24" fill="#eef5ff" stroke="#5b8dc7" class="panel"/>
+  <rect x="760" y="105" width="704" height="500" rx="24" fill="#f4f0ff" stroke="#8170b7" class="panel"/>
+  <text x="388" y="151" text-anchor="middle" class="head">表征学习：从像素距离到任务相关表示</text>
+  <text x="1112" y="151" text-anchor="middle" class="head">模式连通：低损失解未必彼此隔离</text>
+
+  <!-- raw input space -->
+  <rect x="70" y="190" width="258" height="300" rx="18" fill="#fff" stroke="#8eb1d8" stroke-width="2"/>
+  <text x="199" y="226" text-anchor="middle" class="body">原像素空间</text>
+  <text x="199" y="255" text-anchor="middle" class="small">不同身份 / 光照</text>
+  <circle cx="125" cy="310" r="20" fill="#4e88c7"/><circle cx="276" cy="300" r="20" fill="#9bc0e9"/>
+  <circle cx="140" cy="420" r="20" fill="#9bc0e9"/><circle cx="262" cy="415" r="20" fill="#4e88c7"/>
+  <text x="199" y="350" text-anchor="middle" class="small">角度 A：身份不同</text>
+  <text x="199" y="460" text-anchor="middle" class="small">角度 B：光照不同</text>
+  <text x="199" y="480" text-anchor="middle" class="small">同角度也可能像素差异很大</text>
+  <line x1="343" y1="340" x2="403" y2="340" stroke="#53657f" stroke-width="4" marker-end="url(#arrow)"/>
+  <rect x="418" y="260" width="118" height="160" rx="18" fill="#fff" stroke="#8878bb" stroke-width="2"/>
+  <text x="477" y="326" text-anchor="middle" class="body">神经</text><text x="477" y="355" text-anchor="middle" class="body">网络</text>
+  <path d="M449 385h56" stroke="#8878bb" stroke-width="3"/><circle cx="449" cy="385" r="5" fill="#8878bb"/><circle cx="477" cy="385" r="5" fill="#8878bb"/><circle cx="505" cy="385" r="5" fill="#8878bb"/>
+  <line x1="550" y1="340" x2="589" y2="340" stroke="#53657f" stroke-width="4" marker-end="url(#arrow)"/>
+  <rect x="604" y="190" width="108" height="300" rx="18" fill="#fff" stroke="#69a07a" stroke-width="2"/>
+  <text x="658" y="226" text-anchor="middle" class="body">任务表示</text>
+  <circle cx="632" cy="300" r="11" fill="#2878c8"/><circle cx="659" cy="286" r="11" fill="#2878c8"/><circle cx="678" cy="310" r="11" fill="#2878c8"/>
+  <circle cx="632" cy="396" r="11" fill="#d18a2d"/><circle cx="660" cy="382" r="11" fill="#d18a2d"/><circle cx="681" cy="406" r="11" fill="#d18a2d"/>
+  <text x="658" y="342" text-anchor="middle" class="small">角度 A</text>
+  <text x="658" y="438" text-anchor="middle" class="small">角度 B</text>
+  <text x="388" y="548" text-anchor="middle" class="small">示例目标：预测头部角度；身份、光照是可能的干扰因素</text>
+
+  <!-- parameter-space conceptual low-loss connection -->
+  <rect x="800" y="190" width="624" height="300" rx="18" fill="#fff" stroke="#aa9ed1" stroke-width="2"/>
+  <line x1="858" y1="447" x2="1384" y2="447" stroke="#53657f" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="858" y1="447" x2="858" y2="223" stroke="#53657f" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="1382" y="477" text-anchor="end" class="small">参数方向 θ₁</text>
+  <text x="830" y="225" text-anchor="end" class="small">θ₂</text>
+  <path d="M910 366 C940 304 1015 290 1063 323 C1115 359 1123 407 1170 409 C1222 412 1243 347 1290 311 C1334 278 1371 308 1382 360" fill="none" stroke="#54a06a" stroke-width="7" stroke-linecap="round"/>
+  <path d="M910 366 C1020 350 1190 342 1382 360" fill="none" stroke="#cf654e" stroke-width="5" stroke-dasharray="12 9"/>
+  <circle cx="910" cy="366" r="12" fill="#2878c8" stroke="#fff" stroke-width="3"/>
+  <circle cx="1382" cy="360" r="12" fill="#2878c8" stroke="#fff" stroke-width="3"/>
+  <text x="900" y="340" class="small">解 θA</text><text x="1365" y="334" text-anchor="end" class="small">解 θB</text>
+  <text x="1112" y="255" text-anchor="middle" class="small" fill="#a44537">直线插值可能经过高损失区域</text>
+  <text x="1130" y="423" text-anchor="middle" class="small" fill="#34794b">某些模型中可找到弯曲的低损失连接路径</text>
+  <text x="1112" y="548" text-anchor="middle" class="small">这是特定网络与任务中的经验现象，不代表所有解对都相连</text>
+  <text x="750" y="647" text-anchor="middle" class="small">两幅图均为概念示意：空间位置不表示实测距离，参数图也不表示某个具体损失地形</text>
+</svg>

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 700" role="img" aria-labelledby="title desc">
+  <title id="title">三种元胞自动机数据呈现不同的可预测结构</title>
+  <desc id="desc">Rule 15 易预测且学习损失较快趋稳，Rule 30 对受限学习器难以预测而损失下降很少，Rule 54 同时包含随机与可学习结构，损失随计算继续下降。曲线为论文报告趋势的定性示意。</desc>
+  <defs>
+    <style>
+      text { font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #172b4d }
+      .title { font-size: 28px; font-weight: 700 }
+      .head { font-size: 24px; font-weight: 700 }
+      .body { font-size: 19px }
+      .small { font-size: 16px }
+      .panel { stroke-width: 2.5 }
+    </style>
+  </defs>
+  <rect width="1500" height="700" rx="28" fill="#fff"/>
+  <text x="750" y="56" text-anchor="middle" class="title">生成规则同样简短，有限学习者看到的数据却不同</text>
+  <text x="750" y="92" text-anchor="middle" class="small">元胞自动机：局部规则逐步更新格点；下方曲线概括模型训练 loss 随计算的变化</text>
+
+  <rect x="34" y="126" width="456" height="500" rx="22" fill="#eef5ff" stroke="#5b8dc7" class="panel"/>
+  <rect x="522" y="126" width="456" height="500" rx="22" fill="#f4f0ff" stroke="#8170b7" class="panel"/>
+  <rect x="1010" y="126" width="456" height="500" rx="22" fill="#edf7ef" stroke="#559269" class="panel"/>
+
+  <text x="262" y="174" text-anchor="middle" class="head">Rule 15</text>
+  <text x="750" y="174" text-anchor="middle" class="head">Rule 30</text>
+  <text x="1238" y="174" text-anchor="middle" class="head">Rule 54</text>
+
+  <!-- compact visual motifs: repeat, irregular, recurring structures -->
+  <g fill="#3e7fbe">
+    <rect x="102" y="220" width="26" height="26" rx="4"/><rect x="158" y="220" width="26" height="26" rx="4"/><rect x="214" y="220" width="26" height="26" rx="4"/><rect x="270" y="220" width="26" height="26" rx="4"/><rect x="326" y="220" width="26" height="26" rx="4"/><rect x="382" y="220" width="26" height="26" rx="4"/>
+    <rect x="130" y="256" width="26" height="26" rx="4"/><rect x="186" y="256" width="26" height="26" rx="4"/><rect x="242" y="256" width="26" height="26" rx="4"/><rect x="298" y="256" width="26" height="26" rx="4"/><rect x="354" y="256" width="26" height="26" rx="4"/>
+    <rect x="102" y="292" width="26" height="26" rx="4"/><rect x="158" y="292" width="26" height="26" rx="4"/><rect x="214" y="292" width="26" height="26" rx="4"/><rect x="270" y="292" width="26" height="26" rx="4"/><rect x="326" y="292" width="26" height="26" rx="4"/><rect x="382" y="292" width="26" height="26" rx="4"/>
+  </g>
+  <g fill="#6f63a8">
+    <rect x="590" y="220" width="26" height="26" rx="4"/><rect x="674" y="220" width="26" height="26" rx="4"/><rect x="730" y="220" width="26" height="26" rx="4"/><rect x="842" y="220" width="26" height="26" rx="4"/><rect x="898" y="220" width="26" height="26" rx="4"/>
+    <rect x="618" y="256" width="26" height="26" rx="4"/><rect x="646" y="256" width="26" height="26" rx="4"/><rect x="758" y="256" width="26" height="26" rx="4"/><rect x="814" y="256" width="26" height="26" rx="4"/><rect x="870" y="256" width="26" height="26" rx="4"/>
+    <rect x="590" y="292" width="26" height="26" rx="4"/><rect x="702" y="292" width="26" height="26" rx="4"/><rect x="786" y="292" width="26" height="26" rx="4"/><rect x="842" y="292" width="26" height="26" rx="4"/><rect x="898" y="292" width="26" height="26" rx="4"/>
+  </g>
+  <g fill="#4e9468">
+    <rect x="1078" y="220" width="26" height="26" rx="4"/><rect x="1134" y="220" width="26" height="26" rx="4"/><rect x="1190" y="220" width="26" height="26" rx="4"/><rect x="1246" y="220" width="26" height="26" rx="4"/><rect x="1302" y="220" width="26" height="26" rx="4"/><rect x="1358" y="220" width="26" height="26" rx="4"/>
+    <rect x="1106" y="256" width="26" height="26" rx="4"/><rect x="1162" y="256" width="26" height="26" rx="4"/><rect x="1218" y="256" width="26" height="26" rx="4"/><rect x="1274" y="256" width="26" height="26" rx="4"/><rect x="1330" y="256" width="26" height="26" rx="4"/>
+    <rect x="1078" y="292" width="26" height="26" rx="4"/><rect x="1134" y="292" width="26" height="26" rx="4"/><rect x="1190" y="292" width="26" height="26" rx="4"/><rect x="1246" y="292" width="26" height="26" rx="4"/><rect x="1302" y="292" width="26" height="26" rx="4"/><rect x="1358" y="292" width="26" height="26" rx="4"/>
+    <path d="M1190 211h82v10h-82zm-20 36h82v10h-82z" fill="#f4c36e"/>
+  </g>
+  <text x="262" y="354" text-anchor="middle" class="body">周期性，容易预测</text>
+  <text x="750" y="354" text-anchor="middle" class="body">对受限模型近似不可预测</text>
+  <text x="1238" y="354" text-anchor="middle" class="body">混合不可预测部分与可学结构</text>
+
+  <!-- qualitative loss curves -->
+  <g fill="none" stroke="#53657f" stroke-width="2">
+    <path d="M100 530V400M100 530H430"/><path d="M588 530V400M588 530H918"/><path d="M1076 530V400M1076 530H1406"/>
+  </g>
+  <g fill="none" stroke-width="5" stroke-linecap="round">
+    <path d="M115 420 C155 470 180 496 230 502 S345 504 414 504" stroke="#2878c8"/>
+    <path d="M603 420 C660 426 720 424 776 429 S860 426 902 431" stroke="#806eb7"/>
+    <path d="M1091 420 C1140 451 1195 466 1248 478 S1340 493 1390 500" stroke="#428557"/>
+  </g>
+  <text x="84" y="408" text-anchor="end" class="small">loss</text>
+  <text x="417" y="554" text-anchor="end" class="small">计算</text>
+  <text x="572" y="408" text-anchor="end" class="small">loss</text>
+  <text x="905" y="554" text-anchor="end" class="small">计算</text>
+  <text x="1060" y="408" text-anchor="end" class="small">loss</text>
+  <text x="1393" y="554" text-anchor="end" class="small">计算</text>
+  <text x="262" y="591" text-anchor="middle" class="small">低残余、低结构码长</text>
+  <text x="750" y="591" text-anchor="middle" class="small">高时间受限熵、低 Epiplexity</text>
+  <text x="1238" y="591" text-anchor="middle" class="small">中等残余、高 Epiplexity</text>
+  <text x="750" y="665" text-anchor="middle" class="small">曲线是论文趋势的定性概括，不含论文图表的数值；格点图案仅用于区分重复、无规律与混合结构</text>
+</svg>
