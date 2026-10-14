@@ -121,12 +121,33 @@
 {{- if $enableImageZoom -}}
   {{- .Page.Store.Set "hasImageZoom" true -}}
 {{- end -}}
+{{- $zoomLabel := "View full-size image" -}}
+{{- $linkStyle := "" -}}
+{{- if gt $width 0 -}}
+  {{- $linkWidth := $width -}}
+  {{- if and $reserveSpace (gt $intrinsicWidth 0) -}}{{- $linkWidth = $intrinsicWidth -}}{{- end -}}
+  {{- $linkStyle = printf "width: min(100%%, %vpx)" $linkWidth -}}
+{{- end -}}
+{{- $sizes := "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 20rem), 900px" -}}
+{{- if eq .Page.Section "posts" -}}
+  {{- $pageWidth := .Page.Params.width | default .Page.Site.Params.page.width | default "normal" -}}
+  {{- $cap := "42rem" -}}
+  {{- if eq $pageWidth "wide" -}}{{- $cap = "52rem" -}}{{- else if eq $pageWidth "full" -}}{{- $cap = "66rem" -}}{{- end -}}
+  {{- $sizes = printf "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), %s)" $cap -}}
+{{- end -}}
+{{- if hasPrefix (.Page.Params.contentLanguage | default .Page.Language.Lang) "zh" -}}
+  {{- $zoomLabel = "查看大图" -}}
+{{- end -}}
 
 {{- with .Title -}}
   <figure>
-    <img src="{{ $dest | safeURL }}" title="{{ . }}" alt="{{ $alt }}" {{ $dimensions | safeHTMLAttr }} {{ $attributes | safeHTMLAttr }} decoding="async"{{ if gt (len $srcset) 1 }} srcset="{{ delimit $srcset ", " | safeHTMLAttr }}" sizes="(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 20rem), 900px"{{ end }}{{ if $enableImageZoom }} data-zoomable{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }} />
+    {{ if $enableImageZoom }}<a class="post-image-link" href="{{ $dest | safeURL }}" target="_blank" rel="noopener" aria-label="{{ $zoomLabel }}：{{ $alt }}"{{ with $linkStyle }} style="{{ . | safeCSS }}"{{ end }}>{{ end }}
+    <img src="{{ $dest | safeURL }}" title="{{ . }}" alt="{{ $alt }}" {{ $dimensions | safeHTMLAttr }} {{ $attributes | safeHTMLAttr }} decoding="async"{{ if gt (len $srcset) 1 }} srcset="{{ delimit $srcset ", " | safeHTMLAttr }}" sizes="{{ $sizes }}"{{ end }}{{ if $enableImageZoom }} data-zoomable{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }} />
+    {{ if $enableImageZoom }}</a>{{ end }}
     <figcaption>{{ . }}</figcaption>
   </figure>
 {{- else -}}
-  <img src="{{ $dest | safeURL }}" alt="{{ $alt }}" {{ $dimensions | safeHTMLAttr }} {{ $attributes | safeHTMLAttr }} decoding="async"{{ if gt (len $srcset) 1 }} srcset="{{ delimit $srcset ", " | safeHTMLAttr }}" sizes="(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 20rem), 900px"{{ end }}{{ if $enableImageZoom }} data-zoomable{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }} />
+  {{ if $enableImageZoom }}<a class="post-image-link" href="{{ $dest | safeURL }}" target="_blank" rel="noopener" aria-label="{{ $zoomLabel }}：{{ $alt }}"{{ with $linkStyle }} style="{{ . | safeCSS }}"{{ end }}>{{ end }}
+  <img src="{{ $dest | safeURL }}" alt="{{ $alt }}" {{ $dimensions | safeHTMLAttr }} {{ $attributes | safeHTMLAttr }} decoding="async"{{ if gt (len $srcset) 1 }} srcset="{{ delimit $srcset ", " | safeHTMLAttr }}" sizes="{{ $sizes }}"{{ end }}{{ if $enableImageZoom }} data-zoomable{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }} />
+  {{ if $enableImageZoom }}</a>{{ end }}
 {{- end -}}

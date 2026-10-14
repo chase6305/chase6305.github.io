@@ -6,6 +6,7 @@
       <p class="chase-section__eyebrow">{{ if $zh }}知识索引{{ else }}Knowledge index{{ end }}</p>
       <h1>{{ if $zh }}{{ if eq .Data.Plural "tags" }}标签{{ else if eq .Data.Plural "categories" }}分类{{ else }}{{ .Title }}{{ end }}{{ else }}{{ .Title }}{{ end }}</h1>
       <p>{{ if $zh }}覆盖机器人、人工智能、软件与工程系统的 {{ len .Data.Terms }} 个主题。{{ else }}{{ len .Data.Terms }} topics across robotics, AI, software, and engineering systems.{{ end }}</p>
+      {{ partial "blog/collection-nav.html" . }}
     </header>
     {{ if eq .Data.Plural "tags" }}
       {{- $groups := slice -}}

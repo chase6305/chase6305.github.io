@@ -186,6 +186,7 @@ print("held-out rotation error [rad]:", max(rotation_errors))
 | --- | --- | --- | --- | --- |
 | 直接求相机在基座中的外参 | $G_i^{-1}XC_i=Z$ | $G_i^{-1}$ | $C_i$ | $X={}^{b}T_c$ |
 | 先求标定板的安装变换 | $G_iZC_i^{-1}=X$ | $G_i$ | $C_i^{-1}$ | $Z={}^{g}T_t$ |
+{.table-readable}
 
 第二条路径再用 $X=G_iZC_i^{-1}$ 恢复相机外参。两种调用都在复用函数的数学形式，所以不能继续按参数名 `gripper2base`、返回名 `cam2gripper` 的字面含义解释所有输入输出；应以表中的坐标方向为准。也不能在两组输入上同时随意求逆。
 

@@ -1,0 +1,12 @@
+{{- $zh := eq site.Language.Lang "zh-cn" -}}
+<nav class="collection-nav" aria-label="{{ if $zh }}继续浏览{{ else }}Continue browsing{{ end }}">
+  <a href="{{ relURL "posts/" }}">{{ if $zh }}全部文章{{ else }}All articles{{ end }}</a>
+  {{- if eq .Kind "term" -}}
+    <a href="{{ relURL (printf "%s/" .Data.Plural) }}">{{ if $zh }}{{ if eq .Data.Plural "tags" }}全部标签{{ else if eq .Data.Plural "categories" }}全部分类{{ else }}全部系列{{ end }}{{ else }}{{ if eq .Data.Plural "tags" }}All tags{{ else if eq .Data.Plural "categories" }}All categories{{ else }}All series{{ end }}{{ end }}</a>
+  {{- else if eq .Layout "archives" -}}
+    <a href="{{ relURL "tags/" }}">{{ if $zh }}标签索引{{ else }}Tag index{{ end }}</a>
+  {{- else -}}
+    <a href="{{ relURL "archives/" }}">{{ if $zh }}按年份归档{{ else }}By year{{ end }}</a>
+  {{- end -}}
+  <a href="{{ relURL "learning-paths/" }}">{{ if $zh }}专题学习路线{{ else }}Learning paths{{ end }}</a>
+</nav>

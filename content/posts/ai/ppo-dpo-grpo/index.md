@@ -765,6 +765,7 @@ GRPO 使用奖励 `[1,0]`，忽略稳定项时组优势为 `[+1,−1]`。每回�
 | `clip_fraction` | 更新后概率比超出 clip 区间的样本比例；还需结合优势符号，才能判断 surrogate 是否进入平坦分支 |
 | `old_policy_kl` | 更新后的 old 到 current 的精确 KL；DPO 无 rollout old policy，对应字段为占位零 |
 | `zero_group_fraction` | 当前 GRPO 采样批次中，奖励标准差为零的组比例；其他方法为占位零 |
+{.table-readable}
 
 `step=0` 是更新前的初始评估，`loss`、`value_loss` 和采样/更新计数为占位零；新增两项 DPO 诊断 loss 会真实计算，初始均为 log 2。其余行中，不能把 `loss` 与更新后奖励视为同一参数时点；需要同期对照时使用 `dpo_training_loss`。也不能仅凭 `clip_fraction` 推断有多少样本失去了策略梯度。
 

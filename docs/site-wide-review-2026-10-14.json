@@ -1,0 +1,283 @@
+{
+  "baseline": {
+    "reading_cases": 352,
+    "cramped_tables": [
+      {
+        "route": "/posts/calibration/model/",
+        "tables": [
+          {
+            "index": 0,
+            "readable": false,
+            "width": 270,
+            "scroll": 277,
+            "cells": [
+              {
+                "text": "Gi−1XCi=ZG_i^{-1}XC_i=ZGi−1​XCi​=Z",
+                "width": 99.796875,
+                "height": 257
+              },
+              {
+                "text": "GiZCi−1=XG_iZC_i^{-1}=XGi​ZCi−1​=X",
+                "width": 99.796875,
+                "height": 217
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "route": "/posts/ai/ppo-dpo-grpo/",
+        "tables": [
+          {
+            "index": 15,
+            "readable": false,
+            "width": 270,
+            "scroll": 310,
+            "cells": [
+              {
+                "text": "本轮最后一次 optimizer step 之前的训练目标；DPO/GRPO 不训练 critic，value_loss 为占位零",
+                "width": 99.453125,
+                "height": 200
+              },
+              {
+                "text": "仅 DPO 输出：更新后分别在实际训练标签、未翻转标签上计算的偏好 loss；两者都使用相同当前策略与 reference",
+                "width": 99.453125,
+                "height": 217
+              },
+              {
+                "text": "更新后概率比超出 clip 区间的样本比例；还需结合优势符号，才能判断 surrogate 是否进入平坦分支",
+                "width": 99.453125,
+                "height": 197
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "theme_arrow_key_opens": [
+      {
+        "arrowOpens": "false",
+        "focus": null
+      }
+    ],
+    "blocked_storage_errors": {
+      "exceptions": [
+        "SecurityError: Storage blocked",
+        "SecurityError: Storage blocked"
+      ]
+    },
+    "dark_figure_badge": {
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(96, 165, 250)"
+    }
+  },
+  "verified": {
+    "layouts": 135,
+    "mobile_menu_focus": true,
+    "theme_keyboard": true,
+    "system_and_cross_tab_theme": true,
+    "blocked_storage": true,
+    "keyboard_zoom": true,
+    "same_origin_features": {
+      "fonts": [
+        "KaTeX_Main",
+        "KaTeX_Math",
+        "KaTeX_Size2"
+      ],
+      "requests": 20,
+      "search": true,
+      "zoom": true
+    },
+    "exceptions": [],
+    "article_urls_and_existing_ids_preserved": 85,
+    "reading_cases": 352,
+    "reading_failures": 0,
+    "pinned_packages": 3,
+    "pinned_files": 29,
+    "local_math_fonts": 20,
+    "verified_integrity_assets": 21,
+    "image_fixture_modes": 5,
+    "images_per_fixture": 7,
+    "discovery": {
+      "articles": 85,
+      "drafts": 0,
+      "crossPageSearch": true,
+      "shareableURL": true,
+      "queryStates": 15,
+      "ime": true,
+      "history": true,
+      "noJavaScript": true,
+      "malformedDataFallback": true,
+      "keyboardControls": true
+    },
+    "image_sampling": [
+      {
+        "width": 320,
+        "dpr": 1,
+        "images": [
+          {
+            "width": 255.625,
+            "height": 127.8125,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 480,
+            "largest": 1774
+          },
+          {
+            "width": 255.625,
+            "height": 113.546875,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 480,
+            "largest": 1882
+          }
+        ]
+      },
+      {
+        "width": 320,
+        "dpr": 2,
+        "images": [
+          {
+            "width": 255.625,
+            "height": 127.8125,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 960,
+            "largest": 1774
+          },
+          {
+            "width": 255.625,
+            "height": 113.546875,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 960,
+            "largest": 1882
+          }
+        ]
+      },
+      {
+        "width": 768,
+        "dpr": 1,
+        "images": [
+          {
+            "width": 640.625,
+            "height": 320.3125,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 960,
+            "largest": 1774
+          },
+          {
+            "width": 640.625,
+            "height": 284.5625,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 960,
+            "largest": 1882
+          }
+        ]
+      },
+      {
+        "width": 768,
+        "dpr": 2,
+        "images": [
+          {
+            "width": 640.625,
+            "height": 320.3125,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 1440,
+            "largest": 1774
+          },
+          {
+            "width": 640.625,
+            "height": 284.5625,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 1440,
+            "largest": 1882
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "dpr": 1,
+        "images": [
+          {
+            "width": 879,
+            "height": 439.5,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 960,
+            "largest": 1774
+          },
+          {
+            "width": 879,
+            "height": 390.453125,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 960,
+            "largest": 1882
+          }
+        ]
+      },
+      {
+        "width": 1024,
+        "dpr": 2,
+        "images": [
+          {
+            "width": 879,
+            "height": 439.5,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 1774,
+            "largest": 1774
+          },
+          {
+            "width": 879,
+            "height": 390.453125,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 1882,
+            "largest": 1882
+          }
+        ]
+      },
+      {
+        "width": 1440,
+        "dpr": 1,
+        "images": [
+          {
+            "width": 638,
+            "height": 319,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 960,
+            "largest": 1774
+          },
+          {
+            "width": 638,
+            "height": 283.390625,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 960,
+            "largest": 1882
+          }
+        ]
+      },
+      {
+        "width": 1440,
+        "dpr": 2,
+        "images": [
+          {
+            "width": 638,
+            "height": 319,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 1440,
+            "largest": 1774
+          },
+          {
+            "width": 638,
+            "height": 283.390625,
+            "sizes": "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), 42rem)",
+            "selected": 1440,
+            "largest": 1882
+          }
+        ]
+      }
+    ]
+  },
+  "artifacts": {
+    "baseline_reading": "/tmp/site-wide-baseline-reading/results.json",
+    "final_reading": "/tmp/site-wide-verified-reading/results.json",
+    "site_accessibility": "/tmp/site-wide-final-accessibility/results.json",
+    "image_sampling": "/tmp/site-image-sampling-final.json",
+    "discovery": "/tmp/site-wide-final-discovery/results.json"
+  }
+}

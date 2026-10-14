@@ -15,14 +15,26 @@ class Images(HTMLParser):
     def __init__(self, source):
         super().__init__()
         self.images = {}
+        self.zoom_links = []
+        self.link_depth = 0
         self.feed(source)
 
     def handle_starttag(self, tag, attrs):
+        if tag == "a":
+            self.link_depth += 1
+            assert self.link_depth == 1, ("nested image links", attrs)
+            item = dict(attrs)
+            if "post-image-link" in item.get("class", "").split():
+                self.zoom_links.append(item)
         if tag == "img":
             keys = [key for key, _ in attrs]
             assert len(keys) == len(set(keys)), ("duplicate attribute", attrs)
             item = dict(attrs)
             self.images[item.get("alt")] = item
+
+    def handle_endtag(self, tag):
+        if tag == "a":
+            self.link_depth -= 1
 
 
 def main():
@@ -32,9 +44,10 @@ def main():
     with tempfile.TemporaryDirectory(prefix="chase-image-regression-") as directory:
         work = Path(directory)
         content = work / "content"
-        fixtures = [("posts/default", None, True), ("posts/opt-out", False, False),
-                    ("posts/opt-in", True, True), ("notes/default", None, False)]
-        for relative, option, reserve in fixtures:
+        fixtures = [("posts/default", None, True, True), ("posts/opt-out", False, False, True),
+                    ("posts/opt-in", True, True, True), ("notes/default", None, False, True),
+                    ("posts/no-zoom", None, True, False)]
+        for relative, option, reserve, zoom in fixtures:
             bundle = content / relative
             bundle.mkdir(parents=True)
             shutil.copyfile(ROOT / "content/orca-avatar-64.webp", bundle / "small.webp")
@@ -48,17 +61,27 @@ def main():
                 '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1e-2\n+2e-3\t1.25e2 5.02e1">'
                 '<rect width="125" height="50.2"/></svg>')
             setting = "" if option is None else f"reserveFigureSpace: {str(option).lower()}\n"
+            if not zoom:
+                setting += "imageZoom: false\n"
             (bundle / "index.md").write_text(
                 "---\ntitle: Image fixture\ndraft: true\n" + setting + "---\n\n"
                 '![raster](small.webp "Small raster")\n\n'
                 "![points](points.svg)\n\n![ratio](ratio.svg)\n\n![scientific](scientific.svg)\n\n"
                 '{{< post-image src="/external.svg" alt="explicit" width="240" height="120" >}}\n\n'
-                '![unknown](https://example.com/unknown.webp)\n')
+                '![unknown](https://example.com/unknown.webp)\n\n'
+                '[![linked](small.webp)](https://example.com/paper)\n')
         subprocess.run([args.hugo, "--minify", "-D", "--source", str(ROOT),
                         "--contentDir", str(content), "--destination", str(work / "public")],
                        check=True, capture_output=True, text=True)
-        for relative, _, reserve in fixtures:
-            images = Images((work / "public" / relative / "index.html").read_text()).images
+        for relative, _, reserve, zoom in fixtures:
+            rendered = (work / "public" / relative / "index.html").read_text()
+            assert "ZgotmplZ" not in rendered, "Unsafe or discarded image sizing"
+            parsed = Images(rendered)
+            images = parsed.images
+            assert len(parsed.zoom_links) == (6 if zoom else 0)
+            assert all(link.get("target") == "_blank" and link.get("aria-label") for link in parsed.zoom_links)
+            assert {link["href"] for link in parsed.zoom_links} == ({images[name]["src"] for name in
+                ("raster", "points", "ratio", "scientific", "explicit", "unknown")} if zoom else set())
             assert images["raster"]["width"] == "64"
             assert images["raster"]["height"] == "64"
             assert "width" not in images["unknown"]
@@ -74,9 +97,10 @@ def main():
                 assert "125.5/50.2" in images["ratio"]["style"].replace(" ", "")
                 assert "125/50.2" in images["scientific"]["style"].replace(" ", "")
                 assert "240px" in images["explicit"]["style"]
-    print(json.dumps({"page_modes": len(fixtures), "images_per_mode": 6,
+    print(json.dumps({"page_modes": len(fixtures), "images_per_mode": 7,
                       "svg_points_fractional_scientific_multiline_viewbox": "passed",
-                      "small_image_cap_and_opt_out": "passed"}, indent=2))
+                      "small_image_cap_and_opt_out": "passed",
+                      "native_zoom_links_and_author_links": "passed"}, indent=2))
 
 
 if __name__ == "__main__":

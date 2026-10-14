@@ -16,4 +16,14 @@ function setTheme(theme) {
   document.documentElement.style.colorScheme = theme;
 }
 
-setTheme("color-theme" in localStorage ? localStorage.getItem("color-theme") : '{{ site.Params.theme.default | default `system`}}')
+// Storage can be unavailable in embedded or privacy-restricted browsers.
+// Keep appearance usable for this visit even when preferences cannot be saved.
+function readThemePreference() {
+  try {
+    return localStorage.getItem("color-theme") || '{{ site.Params.theme.default | default `system`}}';
+  } catch {
+    return '{{ site.Params.theme.default | default `system`}}';
+  }
+}
+
+setTheme(readThemePreference());

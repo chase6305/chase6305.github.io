@@ -6,6 +6,7 @@
       <p class="chase-section__eyebrow">{{ if $zh }}主题{{ else }}Topic{{ end }}</p>
       <h1>{{ .Title }}</h1>
       <p>{{ if $zh }}{{ len .Pages }} 篇相关文章。{{ else }}{{ len .Pages }} related articles.{{ end }}</p>
+      {{ partial "blog/collection-nav.html" . }}
     </header>
     <section class="blog-list" aria-label="{{ if $zh }}文章{{ else }}Articles{{ end }}">
       {{ range .Pages.ByDate.Reverse }}

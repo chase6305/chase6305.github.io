@@ -61,6 +61,8 @@ jobs:
             --strict-math
           node scripts/test_blog_filter.cjs public
           python3 -B scripts/test_blog_toc.py
+          python3 -B scripts/test_blog_images.py
+          python3 -B scripts/test_site_assets.py --public public
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

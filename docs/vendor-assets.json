@@ -1,0 +1,148 @@
+[
+  {
+    "package": "katex",
+    "version": "0.16.21",
+    "source": "https://registry.npmjs.org/katex/-/katex-0.16.21.tgz",
+    "archive_sha256": "7764a23b6c42d0a260fc1c8dcfe91d73e07d802dfc0624c08997b33c02dac0cd",
+    "license": "MIT",
+    "modifications": "CSS retains WOFF2 sources only and uses ../fonts/katex/. Font bytes are unchanged.",
+    "files": [
+      {
+        "path": "assets/vendor/katex/LICENSE",
+        "sha256": "766ccc1f306c885aa45542a9846bbd0a505b27a0374f146778171c2254ce18e3"
+      },
+      {
+        "path": "assets/vendor/katex/katex.min.css",
+        "sha256": "22b9b59d6160c66ae58f42a34cd0c04b9edb50e94772f3a7a432872302fdcba5"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_AMS-Regular.woff2",
+        "sha256": "0cdd387c9590a1a9f9794560022dbb59654a7d86f187aa0c81495ad42d3a7308"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Caligraphic-Bold.woff2",
+        "sha256": "de7701e42cf1f4cf0b766c03fb27977207eee2f4fd5d76fa82188406da43ea4c"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Caligraphic-Regular.woff2",
+        "sha256": "5d53e70ad607c2352162dec9e0923fb54ecdafaccbf604cd8dcf7d00facb989b"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Fraktur-Bold.woff2",
+        "sha256": "74444efd593c005e3f4573b44524704c0af0a937fe911cca9e94068d0d140d3f"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Fraktur-Regular.woff2",
+        "sha256": "51814d270d06ff0255dba0799994fa4d8c84d11f09951d47595f4abb1f3602dc"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Main-Bold.woff2",
+        "sha256": "0f60d1b897938ec918c8ce073092411baf9438f6739465693ff18b0f9d20b021"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Main-BoldItalic.woff2",
+        "sha256": "99cd42a3c072d918f2f44984a807cf7aa16e13545fd0875fc07c6c65f99e715b"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Main-Italic.woff2",
+        "sha256": "97479ca6cce906abc961ecac96faa5f9ca2e61b8e7670d475826bcdee9a7c267"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Main-Regular.woff2",
+        "sha256": "c2342cd8b869e01752a9321dc17213fc40d4d04c79688c1d43f2cf316abd7866"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Math-BoldItalic.woff2",
+        "sha256": "dc47344dbb6cb5b655c8460d561f4df5f501b90c804ad3c6cec65fe322351ab1"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Math-Italic.woff2",
+        "sha256": "7af58c5ec8f132a2ddde9027c6d7814decce4d3b822a11192a42a20e2e973264"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_SansSerif-Bold.woff2",
+        "sha256": "e99ae51144bf1232efcc1bfe5add36262c6866b0faab24fa75740e1b98577a62"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_SansSerif-Italic.woff2",
+        "sha256": "00b26ac825e2095056396e0553b8ac26d3f8ad158c3826e28b4c45b385c4714a"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_SansSerif-Regular.woff2",
+        "sha256": "68e8c73ef42afd3ccec58bf0fba302cce448938e7fc020a5e31f8a952eee1342"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Script-Regular.woff2",
+        "sha256": "036d4e95149b69ff9bcc0cd55771efeb25ffa3947293e69acd78d5ac328c684b"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Size1-Regular.woff2",
+        "sha256": "6b47c40166b6dbe21a5dfca7718413f2147fd2399be1ba605d8ad39cedf25dfe"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Size2-Regular.woff2",
+        "sha256": "d04c54219f9eaec6d4d4fd42dfb28785975a4794d6b2fc71e566b9cd6db842dd"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Size3-Regular.woff2",
+        "sha256": "73d591271b1604960cb10bb90fee021670af7297017e0e98480b332d11f51995"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Size4-Regular.woff2",
+        "sha256": "a4af7d414440a1c1790825cfb700cf9cf43b0f2c4b04f0ebc523011ad9853ec0"
+      },
+      {
+        "path": "static/fonts/katex/KaTeX_Typewriter-Regular.woff2",
+        "sha256": "71d517d67827787cfabdf186914cc3358eda539e37931941f2b2fd4a21f68c0b"
+      },
+      {
+        "path": "static/licenses/katex.txt",
+        "sha256": "766ccc1f306c885aa45542a9846bbd0a505b27a0374f146778171c2254ce18e3"
+      }
+    ]
+  },
+  {
+    "package": "flexsearch",
+    "version": "0.8.143",
+    "source": "https://registry.npmjs.org/flexsearch/-/flexsearch-0.8.143.tgz",
+    "archive_sha256": "6dab54282cc4a775ebca83d2c9120c3f160ccaeda1d8c28ed43107c10ad9a03f",
+    "license": "Apache-2.0",
+    "modifications": "None.",
+    "files": [
+      {
+        "path": "assets/vendor/flexsearch/LICENSE",
+        "sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6"
+      },
+      {
+        "path": "assets/vendor/flexsearch/flexsearch.bundle.min.js",
+        "sha256": "433e941a8a573ebb9931fc16fc75266ab6b93f569ac2fb4f3dc66882e0416f4c"
+      },
+      {
+        "path": "static/licenses/flexsearch.txt",
+        "sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6"
+      }
+    ]
+  },
+  {
+    "package": "medium-zoom",
+    "version": "1.1.0",
+    "source": "https://registry.npmjs.org/medium-zoom/-/medium-zoom-1.1.0.tgz",
+    "archive_sha256": "d5c195aa78e571224fcb517ea547523d907180fbd6b823607a2def159a97aad1",
+    "license": "MIT",
+    "modifications": "None.",
+    "files": [
+      {
+        "path": "assets/vendor/medium-zoom/LICENSE",
+        "sha256": "166ba718b70c6278cce9c9758396e25e35c7f1a940d39b2c8eeaceed18cc03fb"
+      },
+      {
+        "path": "assets/vendor/medium-zoom/medium-zoom.min.js",
+        "sha256": "6603320c02180d81b16dca4971f52763035ebc6ff18bd38729a47ff062be8d67"
+      },
+      {
+        "path": "static/licenses/medium-zoom.txt",
+        "sha256": "166ba718b70c6278cce9c9758396e25e35c7f1a940d39b2c8eeaceed18cc03fb"
+      }
+    ]
+  }
+]
