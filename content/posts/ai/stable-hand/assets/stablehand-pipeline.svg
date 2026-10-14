@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 1490" role="img" aria-labelledby="title desc">
+  <title id="title">StableHand 质量感知的双手运动重建流程</title>
+  <desc id="desc">第一视角视频经过冻结手姿和场景几何模块得到世界坐标候选；质量网络预测左右腕和手指质量；质量感知 DiT 保留可信观测并补全低质量轨迹。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 L11 6 L1 11 Z" fill="#50627a"/></marker>
+    <style>
+      text { font-family: "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #253247; }
+      .head { font-size: 29px; font-weight: 700; }
+      .body { font-size: 22px; }
+      .small { font-size: 18px; fill: #536176; }
+      .box { stroke-width: 2.5; rx: 20; }
+      .arrow { fill: none; stroke: #50627a; stroke-width: 3.5; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="700" height="1490" rx="24" fill="#fff"/>
+  <text x="45" y="53" class="head">视频 → 世界坐标候选 → 分量质量 → 运动重建</text>
+
+  <rect x="50" y="95" width="600" height="130" class="box" fill="#eef5ff" stroke="#7a9bc7"/>
+  <text x="82" y="142" class="head">第一视角视频</text>
+  <text x="82" y="190" class="body">双手与物体交互；相机随头部移动</text>
+
+  <path d="M350 227 V265" class="arrow"/>
+  <rect x="50" y="278" width="600" height="210" class="box" fill="#eef5ff" stroke="#7a9bc7"/>
+  <text x="82" y="322" class="head">冻结的预训练感知模块</text>
+  <rect x="78" y="344" width="258" height="115" rx="14" fill="#fff" stroke="#b2c5df" stroke-width="2"/>
+  <text x="96" y="382" class="body">手姿估计器</text>
+  <text x="96" y="420" class="small">MANO 候选 + 手部特征</text>
+  <rect x="364" y="344" width="258" height="115" rx="14" fill="#fff" stroke="#b2c5df" stroke-width="2"/>
+  <text x="382" y="382" class="body">几何模型</text>
+  <text x="382" y="420" class="small">相机位姿 + 场景特征</text>
+
+  <path d="M350 490 V528" class="arrow"/>
+  <rect x="50" y="540" width="600" height="170" class="box" fill="#f2efff" stroke="#9a8cca"/>
+  <text x="82" y="585" class="head">相机坐标 → 世界坐标</text>
+  <text x="82" y="632" class="body">双手候选观测 ȳ：每手 54 维</text>
+  <text x="82" y="675" class="small">双手每帧共 108 维；另保留相机与场景条件</text>
+
+  <path d="M350 712 V750" class="arrow"/>
+  <path d="M650 625 H676 V1145 H653" fill="none" stroke="#50627a" stroke-width="3.5" stroke-dasharray="10 8" marker-end="url(#arrow)"/>
+  <rect x="50" y="762" width="600" height="205" class="box" fill="#f5f1ff" stroke="#9a8cca"/>
+  <text x="82" y="807" class="head">Quality Network：预测分量误差</text>
+  <text x="82" y="850" class="body">输入：世界坐标观测、检测标志、相机运动</text>
+  <text x="82" y="893" class="small">输出：左腕 | 左手指 | 右腕 | 右手指</text>
+  <text x="82" y="935" class="small">误差经数据集校准映射为 q ∈ [0, 1]⁴</text>
+
+  <path d="M350 969 V1007" class="arrow"/>
+  <text x="650" y="1018" class="small" text-anchor="end">虚线条件支路：观测、手部特征、相机与场景</text>
+  <rect x="50" y="1044" width="600" height="215" class="box" fill="#fff4e7" stroke="#d99a55"/>
+  <text x="82" y="1090" class="head">质量感知 Flow Matching DiT</text>
+  <text x="82" y="1134" class="body">每帧四个 token，AdaLN 接收流时间与质量</text>
+  <text x="82" y="1177" class="body">高质量通道锚定观测；低质量通道由先验补全</text>
+  <text x="82" y="1225" class="small">按质量初始化，再用 ODE 积分恢复整段轨迹</text>
+
+  <path d="M350 1261 V1299" class="arrow"/>
+  <rect x="50" y="1312" width="600" height="178" class="box" fill="#ecf7ef" stroke="#80ad8b"/>
+  <text x="82" y="1358" class="head">输出：世界坐标双手运动</text>
+  <text x="82" y="1407" class="body">腕部轨迹 + 手指姿态，附带质量估计</text>
+  <rect x="82" y="1455" width="20" height="20" rx="5" fill="#a9d6b2"/>
+  <text x="114" y="1472" class="small">可靠观测</text>
+  <rect x="248" y="1455" width="20" height="20" rx="5" fill="#f3c38e"/>
+  <text x="280" y="1472" class="small">先验补全</text>
+</svg>

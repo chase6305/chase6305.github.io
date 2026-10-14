@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1080" role="img" aria-labelledby="title desc">
+  <title id="title">视觉骨干的架构、训练目标与生成路径</title>
+  <desc id="desc">上半部分展示图像经过 patch 化和注意力、状态空间或混合视觉骨干得到表征，再用于识别或多模态任务；虚线连接表示监督、掩码、自蒸馏、JEPA 特征预测和图文对比可作为训练信号。下半部分展示带噪潜变量经 DiT 去噪和采样后由 VAE 解码，SiT 沿用 DiT 骨干并研究生成路径、目标和采样。</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#456b9a" />
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#bd7131" />
+    </marker>
+    <style>
+      text { font-family: Inter, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #243244; }
+      .title { font-size: 34px; font-weight: 700; }
+      .panel-title { font-size: 25px; font-weight: 700; }
+      .label { font-size: 19px; font-weight: 650; }
+      .small { font-size: 16px; }
+      .tiny { font-size: 14px; }
+      .blue-box { fill: #f1f6fc; stroke: #6388b2; stroke-width: 2; }
+      .purple-box { fill: #f6f2fb; stroke: #8a75ae; stroke-width: 2; }
+      .green-box { fill: #f1f7f1; stroke: #729578; stroke-width: 2; }
+      .orange-box { fill: #fff5eb; stroke: #c88850; stroke-width: 2; }
+      .neutral-box { fill: #fff; stroke: #aab5c2; stroke-width: 2; }
+      .solid { fill: none; stroke: #456b9a; stroke-width: 3; marker-end: url(#arrow-blue); }
+      .gen-arrow { fill: none; stroke: #bd7131; stroke-width: 3; marker-end: url(#arrow-orange); }
+      .dashed { fill: none; stroke: #8a75ae; stroke-width: 2.5; stroke-dasharray: 8 7; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="1080" rx="28" fill="#fff" />
+  <text x="720" y="54" text-anchor="middle" class="title">视觉模型：骨干结构、学习信号与任务不是同一层</text>
+
+  <rect x="30" y="82" width="1380" height="550" rx="22" fill="#fbfdff" stroke="#b9cce0" stroke-width="2" />
+  <text x="64" y="124" class="panel-title" fill="#315f91">视觉表征与识别</text>
+  <text x="1370" y="124" text-anchor="end" class="small">实线：数据流　　虚线：训练时可组合的学习信号</text>
+
+  <rect x="58" y="180" width="152" height="110" rx="15" class="blue-box" />
+  <text x="134" y="222" text-anchor="middle" class="label">输入图像</text>
+  <text x="134" y="253" text-anchor="middle" class="small">H × W × C</text>
+  <path d="M210 235 H258" class="solid" />
+
+  <rect x="270" y="180" width="184" height="110" rx="15" class="blue-box" />
+  <text x="362" y="218" text-anchor="middle" class="label">Patch / Token</text>
+  <text x="362" y="249" text-anchor="middle" class="small">位置 + 特征向量</text>
+  <path d="M454 235 H500" class="solid" />
+
+  <rect x="512" y="158" width="414" height="260" rx="18" class="blue-box" />
+  <text x="719" y="194" text-anchor="middle" class="label">视觉骨干（架构选择）</text>
+  <rect x="538" y="218" width="112" height="76" rx="12" class="neutral-box" />
+  <text x="594" y="250" text-anchor="middle" class="label">ViT</text>
+  <text x="594" y="275" text-anchor="middle" class="tiny">全局注意力</text>
+  <rect x="663" y="218" width="112" height="76" rx="12" class="neutral-box" />
+  <text x="719" y="250" text-anchor="middle" class="label">Swin / PVT</text>
+  <text x="719" y="275" text-anchor="middle" class="tiny">层级 / 高效</text>
+  <rect x="788" y="218" width="112" height="76" rx="12" class="neutral-box" />
+  <text x="844" y="250" text-anchor="middle" class="label">CMT</text>
+  <text x="844" y="275" text-anchor="middle" class="tiny">卷积 + 注意力</text>
+  <text x="719" y="322" text-anchor="middle" class="tiny">Vim / VMamba：状态空间骨干</text>
+  <text x="719" y="346" text-anchor="middle" class="tiny">MambaVision：状态空间 + 注意力混合</text>
+  <text x="719" y="378" text-anchor="middle" class="small">输出：单尺度或多尺度视觉特征</text>
+  <text x="719" y="402" text-anchor="middle" class="tiny">骨干可替换；计算属性因架构而异</text>
+
+  <rect x="522" y="444" width="394" height="132" rx="16" class="purple-box" />
+  <text x="719" y="478" text-anchor="middle" class="label">预训练目标（训练选择）</text>
+  <text x="719" y="513" text-anchor="middle" class="small">类别监督　·　MAE / BEiT 掩码预测</text>
+  <text x="719" y="543" text-anchor="middle" class="small">DINO 自蒸馏　·　CLIP 图文对比　·　I-/V-JEPA</text>
+  <text x="719" y="566" text-anchor="middle" class="tiny">具体选择取决于训练任务，可组合但非固定绑定</text>
+  <path d="M719 418 V440" class="dashed" />
+  <text x="936" y="471" class="tiny" fill="#725a9b">训练目标与骨干可组合，</text>
+  <text x="936" y="492" class="tiny" fill="#725a9b">不是一一对应的架构分支</text>
+
+  <path d="M926 235 H970" class="solid" />
+  <rect x="982" y="180" width="172" height="110" rx="15" class="green-box" />
+  <text x="1068" y="222" text-anchor="middle" class="label">视觉表示</text>
+  <text x="1068" y="253" text-anchor="middle" class="small">可迁移特征</text>
+  <path d="M1154 235 H1190" class="solid" />
+
+  <rect x="1202" y="145" width="176" height="260" rx="16" class="green-box" />
+  <text x="1290" y="184" text-anchor="middle" class="label">下游任务</text>
+  <text x="1225" y="226" class="small">分类</text>
+  <text x="1225" y="264" class="small">检测 / 分割</text>
+  <text x="1225" y="302" class="small">深度 / 跟踪</text>
+  <text x="1225" y="340" class="small">VLM 视觉塔</text>
+  <text x="1290" y="378" text-anchor="middle" class="tiny">通常还需任务头</text>
+
+  <rect x="30" y="664" width="1380" height="372" rx="22" fill="#fffdfa" stroke="#e2c4a4" stroke-width="2" />
+  <text x="64" y="708" class="panel-title" fill="#a95e24">生成 Transformer（另一类任务）</text>
+  <text x="1370" y="708" text-anchor="end" class="small">去噪器是生成流程中的一个组件</text>
+
+  <rect x="64" y="770" width="220" height="120" rx="15" class="orange-box" />
+  <text x="174" y="811" text-anchor="middle" class="label">带噪潜变量 zₜ</text>
+  <text x="174" y="846" text-anchor="middle" class="small">时间 t + 条件 c</text>
+  <path d="M284 830 H344" class="gen-arrow" />
+
+  <rect x="356" y="758" width="268" height="144" rx="17" class="orange-box" />
+  <text x="490" y="799" text-anchor="middle" class="label">DiT 去噪骨干</text>
+  <text x="490" y="833" text-anchor="middle" class="small">预测噪声、速度等目标</text>
+  <text x="490" y="866" text-anchor="middle" class="tiny">每个采样步重复调用</text>
+  <path d="M624 830 H684" class="gen-arrow" />
+
+  <rect x="696" y="770" width="218" height="120" rx="15" class="orange-box" />
+  <text x="805" y="811" text-anchor="middle" class="label">采样器更新</text>
+  <text x="805" y="846" text-anchor="middle" class="small">zₜ → zₜ₋₁</text>
+  <path d="M914 830 H974" class="gen-arrow" />
+
+  <rect x="986" y="770" width="166" height="120" rx="15" class="neutral-box" />
+  <text x="1069" y="811" text-anchor="middle" class="label">VAE 解码</text>
+  <text x="1069" y="846" text-anchor="middle" class="small">潜变量 → 图像</text>
+  <path d="M1152 830 H1212" class="gen-arrow" />
+
+  <rect x="1224" y="770" width="150" height="120" rx="15" class="orange-box" />
+  <text x="1299" y="811" text-anchor="middle" class="label">生成图像</text>
+  <text x="1299" y="846" text-anchor="middle" class="small">输出样本</text>
+
+  <path d="M805 896 C805 965 490 965 490 906" fill="none" stroke="#bd7131" stroke-width="2.5" stroke-dasharray="8 7" marker-end="url(#arrow-orange)" />
+  <text x="650" y="966" text-anchor="middle" class="small" fill="#965a2c">多步采样循环（具体方向与步数由采样器决定）</text>
+  <rect x="926" y="920" width="442" height="76" rx="14" class="purple-box" />
+  <text x="1147" y="950" text-anchor="middle" class="label">SiT：沿用 DiT 骨干</text>
+  <text x="1147" y="978" text-anchor="middle" class="small">研究插值路径、训练目标与采样选择</text>
+</svg>

@@ -1,5 +1,5 @@
 {
-  "reviewed_on": "2026-09-30",
+  "reviewed_on": "2026-10-14",
   "scope": "滚动文章清单：保留既有 URL 与草稿状态，新增文章同步维护阅读元数据与验收检查",
   "posts": [
     {
@@ -1794,6 +1794,128 @@
         "**棋盘在前的序列总能改善迁移吗？** 不能这样外推；优势来自特定棋谱格式与下游局面评价实验，棋题表现接近。",
         "**CIFAR-5M 超过 99% 的随机信息比例能推广到彩色图像吗？** 不能；论文实验将 32×32 图像灰度化并展平，结论还依赖计算预算和模型。",
         "**文章图中的曲线或元胞图案是论文原图吗？** 不是；曲线是趋势示意，格点图案用于区分模式类型。"
+      ]
+    },
+    {
+      "id": 85,
+      "added_on": "2026-10-12",
+      "summary": "从图像 patch 与注意力复杂度出发，比较 ViT、Swin、PVT、CMT 等视觉骨干，梳理 MAE、DINO、I-JEPA/V-JEPA、CLIP/SigLIP 等表征路线，介绍 SAM 系统，并区分 DiT、SiT 与视频 Transformer 的职责。",
+      "prerequisites": "神经网络、矩阵乘法和基本注意力机制；无需预先阅读相关论文",
+      "focus": "先区分模型架构、预训练目标和下游任务，再比较 token 数、多尺度特征、注意力范围、数据条件与实际计算代价。",
+      "related": [
+        6,
+        3,
+        67
+      ],
+      "path": "content/posts/ai/vision-transformers/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/transformer-attention",
+        "/posts/ai/diffusion-models",
+        "/posts/ai/internvl-3-5"
+      ],
+      "image_decision": "采用可缩放流程图解释主要模块与信息路径；图注交代省略项和示例数值，保留正文中的条件与适用边界。",
+      "image": "assets/vision-transformer-map.webp",
+      "acceptance_checks": [
+        "比如 224×224 图像、Patch 16，会得到 14×14=196 个图像 token",
+        "前向路径的形状依次是 `[2,3,224,224] → [2,196,192] → [2,197,192] → [2,10]`",
+        "标准全局注意力的主要交互项约随 token 数平方增长。",
+        "EfficientViT-M 与 EfficientViT-L 是两条不同论文路线，引用或比较时应同时核对副标题、版本后缀和任务定位。",
+        "Swin 用移位窗口和层级特征",
+        "Vision Mamba、VMamba 与 MambaVision 属于状态空间或混合骨干，不能统称为窗口注意力 Transformer。",
+        "DINO 系列用自蒸馏等方式训练视觉编码器",
+        "SigLIP 改用成对的 sigmoid 二分类目标",
+        "SAM 3 在 SAM 2 的提示式分割基础上",
+        "TimeSformer 比较多种时空注意力拆分方式",
+        "V-JEPA 2 的基础表征模型与 2-AC 的规划模型不能混为一个能力接口。",
+        "DiT 是扩散去噪骨干；SiT 基于可扩展插值 Transformer 研究生成过程。",
+        "理论成本不能替代实测",
+        "U-ViT 的 U 形长跳跃连接是否意味着空间多尺度下采样？",
+        "Swin 的窗口移位和 Patch Merging 各改变什么？"
+      ]
+    },
+    {
+      "id": 86,
+      "added_on": "2026-10-13",
+      "summary": "详解 What Enables In-Context Behavior Prompting for Manipulation：行为提示的定义、BPP 架构、DrawAnything 与 LIBERO-Gen 基准、任务多样性结论、提示扰动和回退实验、推理代价及低多样性失败案例。",
+      "prerequisites": "模仿学习、机器人观测与动作的基本概念；Transformer 注意力只需了解 Q/K/V",
+      "focus": "沿着任务描述、训练数据、提示编码、动作生成和评估协议阅读；特别区分任务多样性、每任务示范数与测试时更新权重。",
+      "related": [
+        75,
+        76,
+        79,
+        87
+      ],
+      "path": "content/posts/ai/behavior-prompting/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/vla-world-model-data",
+        "/posts/ai/lerobot-act",
+        "/posts/ai/molmo-motion",
+        "/posts/ai/stable-hand"
+      ],
+      "image_decision": "采用可缩放流程图解释主要模块与信息路径；图注交代省略项和示例数值，保留正文中的条件与适用边界。",
+      "image": "assets/behavior-prompting-flow.webp",
+      "acceptance_checks": [
+        "行为提示与少样本微调、轨迹重放有什么区别？",
+        "一段 BPP 提示包含哪些信号，片段如何汇总？",
+        "论文通常将提示中的哪些信号降采样到约 1 Hz，哪些时序仍保留？",
+        "BPP 如何使用当前观测查询提示，并把结果变成闭环动作？",
+        "LIBERO-Gen 的“未见任务”是否意味着学会了全新动作原语？",
+        "DrawAnything-Sim 的 Chamfer 是怎样汇总的，等于最终画布误差吗？",
+        "LIBERO-Gen Chain 的 20.8% 与 10.7% 分别对应什么训练设置？",
+        "DrawAnything 的误差单位、种子数和 π0.5 比较条件是什么？",
+        "任务多样性与每个任务的示范数是同一个数据量吗？",
+        "Laundry 实验支持什么失败模式结论，样本限制是什么？",
+        "BPP 的 attention 分析能否证明所有行为提示模型使用同一机制？",
+        "iPhUMI 解决了哪些示教采集问题，哪些跨硬件问题仍在？",
+        "推理速度数字能否证明 BPP 比 ICRT 快？",
+        "中途把画布回滚后，BPP 与 ICRT 的误差增加多少？",
+        "提示嵌入缓存与当前观测查询分别在什么时候计算？注意力加权是否等于硬检索？",
+        "提示查询会在每个扩散步重新执行吗？"
+      ]
+    },
+    {
+      "id": 87,
+      "added_on": "2026-10-13",
+      "summary": "拆解 StableHand 的四通道手部质量估计、质量感知 Flow Matching 与 DiT，解释 HOT3D、ARCTIC 结果、上游估计器迁移、ODE 步数取舍、推理耗时以及从人体轨迹到机器人策略之间的接口边界。",
+      "prerequisites": "三维坐标变换、手部姿态估计与扩散或 Flow Matching 的基本概念；公式会逐项解释",
+      "focus": "按视频观测、世界坐标变换、四通道质量估计、DiT 轨迹生成的顺序跟读；重点区分可信观测与模型补全。",
+      "related": [
+        75,
+        79,
+        86,
+        78
+      ],
+      "path": "content/posts/ai/stable-hand/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/vla-world-model-data",
+        "/posts/ai/molmo-motion",
+        "/posts/ai/behavior-prompting",
+        "/posts/ai/vla-evolution"
+      ],
+      "image_decision": "采用可缩放流程图解释主要模块与信息路径；图注交代省略项和示例数值，保留正文中的条件与适用边界。",
+      "image": "assets/stablehand-pipeline.webp",
+      "acceptance_checks": [
+        "StableHand 标题中的 4D 指什么？输出是机器人控制指令吗？",
+        "每只手的 54 维由哪些状态组成，双手每帧为何是 108 维？",
+        "左右腕部和手指的四个质量通道分别表达什么？q 是正确概率吗？",
+        "误差分数如何通过 p80 和 sigma 转成部署时质量值？",
+        "质量感知 Flow Matching 在 q=1 和 q=0 时分别怎样处理观测？",
+        "感知、几何、质量网络和 DiT 各自接收什么信息、负责什么工作？",
+        "PA-MPJPE、W-MPJPE、WA-MPJPE、AccEr 与 MRRPE 的对齐口径和单位是什么？",
+        "HOT3D 的 57.83 mm 与 ARCTIC 的 124.59 mm 对应什么评估结果？",
+        "论文的 ARCTIC 结果使用官方哪一个划分？",
+        "20 步 DiT 求解时间是否等于完整 150 帧流水线耗时？论文报告的整体速度如何？",
+        "长时间低质量区间、跨估计器迁移和人手到机器人动作映射有哪些边界？",
+        "QN 为什么不直接读取 WiLoR 的 1280 维视觉特征？论文消融报告了什么影响？",
+        "把 WiLoR 换成 HaMeR 后，重新校准质量带宽是否足够？",
+        "为什么论文选 20 步而不是最少步数或最多步数？",
+        "论文的 DiT 与 QN 有多大，复现时的训练预算和关键优化参数是什么？",
+        "HD-EPIC 零样本结果证明了什么？",
+        "训练真值端点与推理观测端点有何区别？q=1 的零速度目标是否等于硬投影？",
+        "视频帧索引与 ODE 流时间有何区别？q=0.5 如何进入初始化？"
       ]
     }
   ]

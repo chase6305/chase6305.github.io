@@ -58,6 +58,7 @@
       "posts/ai/transformer-attention/index.md",
       "posts/ai/llm-training-metrics/index.md",
       "posts/ai/foundations-modern-ai/index.md",
+      "posts/ai/vision-transformers/index.md",
       "posts/ai/internvl-3-5/index.md",
       "posts/ai/diffusion-models/index.md",
       "posts/ai/distributed-training-memory/index.md"
@@ -66,9 +67,10 @@
   {
     "id": "embodied-ai",
     "title": "具身策略与机器人学习",
-    "description": "从示教数据与 ACT 进入 VLA，区分动作生成、实时执行、运动先验和分层任务协调。",
+    "description": "从示教数据与 ACT 进入 VLA，理解行为提示、第一视角手部运动恢复、动作生成、实时执行、运动先验与分层任务协调。",
     "posts": [
       "posts/ai/lerobot-act/index.md",
+      "posts/ai/behavior-prompting/index.md",
       "posts/ai/vla-evolution/index.md",
       "posts/ai/vla-survey/index.md",
       "posts/ai/jev-decision-layer/index.md",
@@ -77,6 +79,7 @@
       "posts/ai/real-time-chunking/index.md",
       "posts/ai/gen-1-5/index.md",
       "posts/ai/molmo-motion/index.md",
+      "posts/ai/stable-hand/index.md",
       "posts/ai/rynnbrain/index.md",
       "posts/thesis/being_0/index.md",
       "posts/ai/light-loco-parkour/index.md"

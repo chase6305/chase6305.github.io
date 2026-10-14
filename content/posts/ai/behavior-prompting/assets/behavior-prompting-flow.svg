@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 1330" role="img" aria-labelledby="title desc">
+  <title id="title">行为提示策略的推理数据流</title>
+  <desc id="desc">示教观察、本体状态和动作汇总为提示片段；当前观测与提示片段进入提示编码器，动作扩散解码器生成短动作，机器人新观测再反馈给策略。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 L11 6 L1 11 Z" fill="#50627a"/></marker>
+    <style>
+      text { font-family: "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif; fill: #253247; }
+      .head { font-size: 29px; font-weight: 700; }
+      .body { font-size: 23px; }
+      .small { font-size: 19px; fill: #536176; }
+      .box { stroke-width: 2.5; rx: 20; }
+      .arrow { fill: none; stroke: #50627a; stroke-width: 3.5; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="700" height="1330" rx="24" fill="#fff"/>
+  <text x="48" y="54" class="head">测试时：固定参数，示教作为上下文</text>
+
+  <rect x="50" y="100" width="600" height="160" class="box" fill="#eef5ff" stroke="#7a9bc7"/>
+  <text x="82" y="143" class="head">行为提示</text>
+  <text x="82" y="187" class="body">观察 + 本体状态</text>
+  <text x="82" y="226" class="small">片段之间的动作序列保留较密时序</text>
+
+  <path d="M350 262 V293" class="arrow"/>
+  <rect x="50" y="305" width="600" height="135" class="box" fill="#f2efff" stroke="#9a8cca"/>
+  <text x="82" y="350" class="head">片段汇总：Attention Pooling</text>
+  <text x="82" y="397" class="body">同一片段的模态合成提示向量 p₀, p₁, …, pₙ</text>
+
+  <path d="M350 442 V468" class="arrow"/>
+  <rect x="50" y="480" width="280" height="120" class="box" fill="#f5f1ff" stroke="#9a8cca"/>
+  <text x="72" y="523" class="head">提示片段 P</text>
+  <text x="72" y="566" class="small">示教进度与后续动作</text>
+  <rect x="370" y="480" width="280" height="120" class="box" fill="#e8f5fa" stroke="#72aabd"/>
+  <text x="392" y="523" class="head">当前观测</text>
+  <text x="392" y="566" class="small">图像 + 状态历史</text>
+
+  <path d="M190 602 V642" class="arrow"/>
+  <path d="M510 602 V642" class="arrow"/>
+  <rect x="50" y="655" width="600" height="155" class="box" fill="#f5f1ff" stroke="#9a8cca"/>
+  <text x="82" y="703" class="head">提示编码器：Cross-Attention</text>
+  <text x="82" y="750" class="body">用当前状态查找示教中匹配的进度片段</text>
+  <text x="82" y="785" class="small">提示提供视觉子目标和对应动作上下文</text>
+
+  <path d="M350 812 V852" class="arrow"/>
+  <rect x="50" y="865" width="600" height="165" class="box" fill="#fff4e7" stroke="#d99a55"/>
+  <text x="82" y="912" class="head">动作解码器：CNN Diffusion</text>
+  <text x="82" y="959" class="body">结合当前状态与提示，去噪生成短动作段</text>
+  <text x="82" y="1000" class="small">每段执行后重新读取观测</text>
+
+  <path d="M350 1032 V1072" class="arrow"/>
+  <rect x="50" y="1085" width="600" height="155" class="box" fill="#ecf7ef" stroke="#80ad8b"/>
+  <text x="82" y="1133" class="head">机器人执行</text>
+  <text x="82" y="1178" class="body">执行动作 → 观察新状态 → 继续规划</text>
+  <text x="82" y="1215" class="small">这是一条闭环策略，不是完整轨迹重放</text>
+
+  <path d="M650 1160 H676 V540 H653" fill="none" stroke="#50627a" stroke-width="3.5" stroke-dasharray="10 8" marker-end="url(#arrow)"/>
+  <text x="50" y="1283" class="small">虚线表示执行后返回新观测</text>
+</svg>
