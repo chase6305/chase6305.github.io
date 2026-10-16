@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-16",
+  "method": "deterministic Matplotlib chart of configured time durations",
+  "script": "scripts/plot_v2d_control_clocks.py",
+  "asset": "content/posts/ai/video-to-data/assets/control-clock-durations.webp",
+  "sha256": "1aee66728b45b1633c14991c1bc66d3a0b41b467f12c6665e0c658dd52d0c5ca",
+  "dimensions": [
+    1368,
+    1152
+  ],
+  "physics_step_s": "0.01",
+  "control_decimation": 5,
+  "arm_delay_physics_substeps": 4,
+  "execution_length": 4,
+  "action_horizon": 16,
+  "duration_s": [
+    "0.04",
+    "0.05",
+    "0.20",
+    "0.80"
+  ],
+  "source_commit": "193382a184308f6800331f3db829f76dc4294cfe",
+  "sources": [
+    "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/config/vega_sharpa/vega_sharpa_manip_env_cfg.py",
+    "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/assets/vega_sharpa.py",
+    "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/contracts.py",
+    "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/scripts/rsl_rl/gr00t_infer.py"
+  ],
+  "interpretation": "Common linear seconds axis; configured duration/coverage, not measured latency. First-to-last timestamps for 16 samples differ by .75 s. No inference waiting, transport time, physical response or reference-time resampling included.",
+  "layout": "Compact 7.6 x 6.4 inch layout increases label size relative to inline width on narrow screens; common linear time axis and all values unchanged.",
+  "render_environment": {
+    "python": "3.10.0",
+    "matplotlib": "3.10.9",
+    "pillow": "12.3.0",
+    "font": "DejaVuSans.ttf",
+    "font_sha256": "3fdf69cabf06049ea70a00b5919340e2ce1e6d02b0cc3c4b44fb6801bd1e0d22"
+  }
+}

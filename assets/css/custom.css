@@ -168,6 +168,7 @@ body {
 
 .content .article-figure {
   margin: clamp(1.5rem, 4vw, 2.5rem) auto;
+  scroll-margin-top: calc(var(--hextra-navbar-height) + 1.5rem);
   padding: clamp(0.6rem, 2vw, 1rem);
   overflow: hidden;
   border: 1px solid var(--chase-border);

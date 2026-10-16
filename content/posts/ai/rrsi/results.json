@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "paper": {
+    "title": "RRSI: Regularized Recursive Self-Improvement of Agent Harnesses",
+    "version": "arXiv:2609.24972v3",
+    "source": "https://arxiv.org/pdf/2609.24972v3",
+    "main_results": "Figure 3 (p. 8), paired task-level confidence intervals: Table 6 (p. 24)",
+    "ablation": "Table 2 (p. 9)",
+    "note": "Published rounded values. Confidence intervals are reported paper statistics, not recomputed from raw trials. Different benchmark score definitions must not be conflated. Values are from the supplied paper, not the project explorer trajectories, which expose different run configurations."
+  },
+  "main_results": [
+    {
+      "benchmark": "Terminal-Bench 2.1",
+      "domain": "Coding",
+      "role": "Evolve",
+      "h0": 74.2,
+      "rrsi": 80.2,
+      "gain": 6,
+      "ci_low": 4.3,
+      "ci_high": 9.3
+    },
+    {
+      "benchmark": "SWE-bench Verified",
+      "domain": "Coding",
+      "role": "OOD",
+      "h0": 82,
+      "rrsi": 83.8,
+      "gain": 1.8,
+      "ci_low": 1.1,
+      "ci_high": 4
+    },
+    {
+      "benchmark": "Harvey LAB",
+      "domain": "Workspace",
+      "role": "Evolve",
+      "h0": 89.4,
+      "rrsi": 90.5,
+      "gain": 1.1,
+      "ci_low": 0.8,
+      "ci_high": 2.1
+    },
+    {
+      "benchmark": "Harvey LAB",
+      "domain": "Workspace",
+      "role": "ID held-out",
+      "h0": 86.9,
+      "rrsi": 89.2,
+      "gain": 2.3,
+      "ci_low": 0.9,
+      "ci_high": 3.8
+    },
+    {
+      "benchmark": "JobBench",
+      "domain": "Workspace",
+      "role": "OOD",
+      "h0": 36,
+      "rrsi": 40.7,
+      "gain": 4.7,
+      "ci_low": 2.9,
+      "ci_high": 7.4
+    },
+    {
+      "benchmark": "GDPval",
+      "domain": "Workspace",
+      "role": "OOD",
+      "h0": 48.8,
+      "rrsi": 52.3,
+      "gain": 3.5,
+      "ci_low": 1.8,
+      "ci_high": 6.9
+    },
+    {
+      "benchmark": "APEX-Agents",
+      "domain": "Workspace",
+      "role": "OOD",
+      "h0": 34.2,
+      "rrsi": 37.9,
+      "gain": 3.7,
+      "ci_low": 1.4,
+      "ci_high": 7.5
+    },
+    {
+      "benchmark": "EngDesign",
+      "domain": "Engineering",
+      "role": "Evolve",
+      "h0": 50,
+      "rrsi": 54.9,
+      "gain": 4.9,
+      "ci_low": 1.8,
+      "ci_high": 9.8
+    },
+    {
+      "benchmark": "Frontier-Eng",
+      "domain": "Engineering",
+      "role": "OOD",
+      "h0": 17.7,
+      "rrsi": 22,
+      "gain": 4.3,
+      "ci_low": 1.1,
+      "ci_high": 12.1
+    }
+  ],
+  "ablation": [
+    {
+      "variant": "H0",
+      "evolve": 89.4,
+      "id": 86.9,
+      "ood": 39.7,
+      "tokens_million": 1.56
+    },
+    {
+      "variant": "Unregularized",
+      "evolve": 92.8,
+      "id": 88.9,
+      "ood": 40.3,
+      "tokens_million": 3.8
+    },
+    {
+      "variant": "No proposal regularizers",
+      "evolve": 90.7,
+      "id": 88.8,
+      "ood": 41.9,
+      "tokens_million": 2.69
+    },
+    {
+      "variant": "No acceptance regularizers",
+      "evolve": 91.5,
+      "id": 88.7,
+      "ood": 41,
+      "tokens_million": 3.59
+    },
+    {
+      "variant": "RRSI",
+      "evolve": 90.5,
+      "id": 89.2,
+      "ood": 43.6,
+      "tokens_million": 2.42
+    }
+  ]
+}

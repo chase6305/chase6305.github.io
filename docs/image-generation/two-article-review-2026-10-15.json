@@ -1,0 +1,67 @@
+{
+  "assets": [
+    {
+      "created": "2026-10-15",
+      "article": "rrsi",
+      "asset": "content/posts/ai/rrsi/assets/selection-gates.webp",
+      "tool": "imagegen",
+      "mode": "generate then edit",
+      "reference_style": "content/posts/ai/transformer-attention/assets/",
+      "prompt": "Use case: scientific-educational. Create a precise technical flowchart for RRSI candidate selection, wide 3:2 landscape. Match a flat ML textbook diagram style: pure white background, thin rounded outlines, very restrained pale blue/purple/orange/green fills, dark sans-serif English labels, generous spacing. Flat vector-like line art with no gradients, no photorealistic imagery, no 3D icons, no decorative title, no numerical measurements.\nEvery label below must be verbatim.\nAt the top center a blue rounded rectangle: \"Screened + measured candidate\".\nA downward arrow goes to a blue diamond: \"Historical score floor\". From its LEFT a clearly labeled \"Fail\" arrow goes to a red outlined rounded rectangle at the LEFT margin labeled \"Reject\". From its BOTTOM a \"Pass\" arrow goes to a purple diamond centered in the image: \"Gain above noise?\".\nThis central diamond branches into TWO parallel boxes: a \"Yes\" arrow down-left enters orange box \"Gain-dependent token allowance\"; a \"No\" arrow down-right enters orange box \"Within-band score / cost / novelty\". Keep the two branches visually separate and do not connect them sequentially.\nBoth orange boxes have one \"Pass\" arrow merging into a common blue box below labeled \"Domain guards\". Both orange boxes also have short \"Fail\" arrows routed to the same left-margin Reject box. Do not cross arrows through any labels.\nDomain guards has a \"Fail\" arrow to Reject and a downward \"Pass\" arrow to a green box \"Admissible pool\". Below that green box, an arrow goes to another green box \"Choose highest score\".\nAt the very bottom a detached gray strip reads \"Empty pool: keep current harness\".\nAt the lower right a compact pale-purple note reads \"Novelty types only: tool, skill, memory, subagent\". This note connects by a short dotted line ONLY to the within-band box. It is not another workflow stage.\nMake Pass/Fail directions unmistakable. There must be no direct arrow from candidate to acceptance, no universal weighted ranking, and no requirement that every round must accept a candidate. No additional text, no formulas, no numbers. Ensure all text is legible and all decision edges connect to the correct box.",
+      "edit_prompt": "Edit the supplied RRSI selection flowchart. Preserve ALL labels, all boxes, the white background, palette, typography, all blue Pass edges, and the two Yes/No branches exactly.\nFix ONLY the red rejection edges:\n1. There are currently two red edges leaving the left side of \"Domain guards\". Keep exactly ONE Domain guards -> Reject edge with its \"Fail\" label. Remove the duplicate lower edge.\n2. ADD the missing red Fail edge from \"Within-band score / cost / novelty\" to Reject. Route it from the bottom-right of that orange box DOWN through the whitespace to the RIGHT of the blue/green central column, then LEFT through the whitespace BELOW \"Choose highest score\" but ABOVE the detached gray bottom strip, then UP into the existing red rejection lane at the left. Label this new edge \"Fail\" along its right-side vertical segment.\nIt must be visibly connected to the orange within-band box; it must NOT originate from Domain guards. The new red line must avoid crossing all boxes and blue arrows. A junction with an existing red rejection lane is fine.\nAll three scored gates must have a rejection route: historical floor, either cost branch, and domain guards. Do not add any new text, boxes or decision rules. This is a precise edge correction.",
+      "rejected_initial_reason": "Missing failure edge from within-band branch; duplicate domain guard failure edge.",
+      "accepted_source": "/home/ubuntu/.codex/generated_images/01a13f13-5bd5-7e63-89d7-3b2a69c9ad50/exec-6a28ae0f-dff6-4a24-9709-8983bd0e9576.png"
+    },
+    {
+      "created": "2026-10-15",
+      "article": "video-to-data",
+      "asset": "content/posts/ai/video-to-data/assets/contact-wrench-support-v2.webp",
+      "tool": "imagegen",
+      "mode": "generate then edit",
+      "reference_style": "content/posts/ai/transformer-attention/assets/",
+      "prompt": "Create a wide 3:2 scientific concept diagram for a robotics article about contact wrench comparison. Flat vector-like textbook illustration, pure white background, thin rounded outlines, muted pastel blue/purple/orange/green, dark clean sans-serif English labels, ample whitespace. No gradients, no decorative icons, no numeric measurements. Use exactly these labels.\nThree columns with the middle split into two parallel rows. On the left two separate rounded panels: upper label \"Human reference contacts\", showing a simple pale-blue rounded object outline with three small blue contact dots along its boundary; lower label \"Robot contacts\", same object outline with two orange contact dots in different boundary locations. Do not draw hands or forces. Contact dots represent geometry only.\nEach left panel has a right arrow to its own matching center panel, upper blue, lower orange. Each center panel has top label \"Object-frame wrench features\" and below it a tiny abstract matrix icon made of six rows and several columns of dots. The upper matrix has more columns than the lower matrix. Small sublabel below both center panels: \"Contact position + feasible force rays\". Keep this text separate for each panel and readable.\nAbove the center column place one pale-purple rounded box \"Shared 6D directions\". Two thin purple arrows from this box go down to the RIGHT edges of each center panel, clearly feeding both feature projection paths.\nFrom the upper center panel a right arrow goes to an upper-right green panel labeled \"Reference support vector\" with a single schematic row of six unequal small bars. From the lower center panel a right arrow goes to a lower-right green panel \"Robot support vector\" with a row of six unequal bars at the exact same x positions. These bars are qualitative, not an axis chart; do not add ticks or numbers.\nThe two right panels connect by simple arrows to a small common green box between them at far right labeled \"Compare directions\". This box has no arrow back to contacts.\nAt the bottom, a detached gray strip reads \"Different contact counts; comparable directional capability\".\nArrows must preserve reference and robot paths separately until the comparison box. Shared directions feed both paths, not only one. Contact matrices may differ in width, support vectors must have the same width. No real sensor, no exact force reconstruction, no net-wrench summation, no reward formula. All text legible; avoid overlapping paths and labels.",
+      "review": "Six rows in both matrices; six reference columns and four robot columns depict two illustrative rays per contact. Both support vectors show six shared directions. Actual runtime ray and basis counts are configurable; bars are qualitative.",
+      "initial_source": "/home/ubuntu/.codex/generated_images/01a13f13-5bd5-7e63-89d7-3b2a69c9ad50/exec-9071aaf4-4e8a-4942-b15e-39e194954b8f.png",
+      "edit_prompt": "Precisely edit this existing robotics contact-support diagram. Keep ALL boxes, titles, text, arrows, colors, object shapes, contact dots, support bars and layout unchanged. Correct only the small blue dot matrix in the upper middle panel labeled Object-frame wrench features. It currently has six rows and eight columns. Change it to exactly SIX ROWS and SIX COLUMNS, evenly spaced and centered in that panel. Keep the lower orange matrix at exactly SIX ROWS and FOUR COLUMNS. This makes the schematic feature-column counts proportional to the three reference contacts versus two robot contacts when each contact is represented by two illustrative ray columns. Do not add any numerical text or new labels. All other elements must remain unchanged.",
+      "accepted_source": "/home/ubuntu/.codex/generated_images/01a13f13-5bd5-7e63-89d7-3b2a69c9ad50/exec-55fbf08f-9e8a-4447-bb3c-ac325dc262b2.png"
+    }
+  ],
+  "revised_figures": [
+    {
+      "created": "2026-10-15",
+      "article": "video-to-data",
+      "asset": "content/posts/ai/video-to-data/assets/reference-to-policy-v2.webp",
+      "tool": "imagegen",
+      "mode": "edit",
+      "source": "docs/image-generation/archive/2026-10-15/v2d-reference-to-policy-original.webp",
+      "prompt": "Precisely edit this robotics RL training diagram. Preserve every existing box, label, robot illustration, arrow and layout. Add ONLY one missing input to the existing green box Tracking + contact reward: a compact pale-purple rounded box in the empty TOP-RIGHT whitespace labeled exactly \"Human contact reference\" (two lines are fine). Place this new box above the blue Simulated motion + contacts label, without overlapping that label. Draw a thin purple arrow from the new box's LEFT edge, through the empty space above the green reward box, then DOWN into the TOP of the green Tracking + contact reward box near its right side. The arrow must terminate at the reward box. It must NOT connect to Policy, Action, or Physics simulation. It must NOT cross any existing arrow or text. This makes human demonstrated contacts a separate reference input to the reward, while the existing Robot reference motion still feeds both Policy and the tracking reward. Keep all existing text verbatim, including Solid rollout signals / Dashed parameter update. Use the same pure white background, thin rounded borders and pastel colors. Do not add any other new elements.",
+      "accepted_source": "/home/ubuntu/.codex/generated_images/01a13f13-5bd5-7e63-89d7-3b2a69c9ad50/exec-4ddee4b5-ff59-49a9-af3a-c3da183bbf31.png",
+      "review": "Human contact reference is a separate reward input. Retargeted robot motion still feeds the policy command and tracking target; training update remains dashed.",
+      "original_source": "content/posts/ai/video-to-data/assets/reference-to-policy.webp"
+    },
+    {
+      "created": "2026-10-15",
+      "article": "rrsi",
+      "asset": "content/posts/ai/rrsi/assets/regularized-evolution-loop-v2.webp",
+      "tool": "imagegen",
+      "mode": "edit",
+      "source": "docs/image-generation/archive/2026-10-15/rrsi-regularized-evolution-loop-original.webp",
+      "prompt": "Precisely edit the supplied RRSI evolution-loop diagram. Preserve EVERY existing box, arrow, label, color, position and illustration. Add ONLY the missing decision-outcome input to the history log. Add a thin BLUE arrow leaving the BOTTOM edge of the orange Select box near its left corner. Route it DOWN into the empty whitespace between Select and Next incumbent, then LEFT to join the existing BLUE vertical path from Evolve-set evaluation down to Log every measured candidate. Put a small blue label exactly \"Decision outcomes\" above this new horizontal segment. This new edge represents accepted/rejected/lost decisions being recorded together with measurements. It must visibly start at Select, not at Next incumbent. Do not cross any box, text, the green Select-to-Next-incumbent arrow, or the dashed final-transfer arrow. A junction with the existing blue logging path is correct. Keep the original evaluation-to-log blue edge and all other edges unchanged. No other additions or changes. Keep white background and thin rounded pastel textbook style.",
+      "edit_prompt": "Make one precise routing correction to the supplied RRSI diagram. Keep every original element unchanged. The newly added blue Decision outcomes arrow currently runs horizontally at the same height as the top border of Next incumbent and touches that green box. Move ONLY this arrow's horizontal segment and its Decision outcomes label UP by about 40 pixels into clear white space. Keep the arrow originating at the bottom-left of Select, shorten its downward vertical portion accordingly, and keep it joining the existing vertical blue evaluation-to-log lane on the left. The new horizontal segment should be around y=500 in this 1536x1024 image, visibly separated by at least 30 pixels from the Next incumbent top border at y=540. Place its label just above the segment. Preserve all other boxes, arrows, text, positions and colors exactly. No blue line should touch the Next incumbent box.",
+      "accepted_source": "/home/ubuntu/.codex/generated_images/01a13f13-5bd5-7e63-89d7-3b2a69c9ad50/exec-1f13e5c3-68e1-4ea6-b638-9c8047d6ace6.png",
+      "review": "Selection outcomes join measured-candidate history. Initial edge touched the Next incumbent border; final edge routed through whitespace and inspected.",
+      "original_source": "content/posts/ai/rrsi/assets/regularized-evolution-loop.webp"
+    }
+  ],
+  "deterministic_figures": [
+    {
+      "article": "video-to-data",
+      "assets": [
+        "assets/state-action-layout.webp",
+        "assets/height-criteria-examples.webp"
+      ],
+      "script": "scripts/plot_v2d_contracts.py",
+      "data": "Published Vega contract indices and constructed traces from data_contract_lab.py; no measured robot values."
+    }
+  ]
+}

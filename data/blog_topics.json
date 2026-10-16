@@ -47,7 +47,7 @@
   {
     "id": "ai",
     "title": "强化学习、生成与多模态模型",
-    "description": "从模型归纳偏置、泛化和数据选择出发，理解策略优化、Transformer、扩散模型、多模态理解与训练资源。",
+    "description": "从模型归纳偏置、泛化和数据选择出发，理解策略优化、Agent 系统演化、Transformer、生成模型与多模态训练。",
     "posts": [
       "posts/ai/algorithms/overview.md",
       "posts/ai/gymnasium/1/index.md",
@@ -58,6 +58,7 @@
       "posts/ai/transformer-attention/index.md",
       "posts/ai/llm-training-metrics/index.md",
       "posts/ai/foundations-modern-ai/index.md",
+      "posts/ai/rrsi/index.md",
       "posts/ai/vision-transformers/index.md",
       "posts/ai/internvl-3-5/index.md",
       "posts/ai/diffusion-models/index.md",
@@ -67,7 +68,7 @@
   {
     "id": "embodied-ai",
     "title": "具身策略与机器人学习",
-    "description": "从示教数据与 ACT 进入 VLA，理解行为提示、第一视角手部运动恢复、动作生成、实时执行、运动先验与分层任务协调。",
+    "description": "从示教数据与 ACT 进入 VLA，理解行为提示、第一视角运动恢复、视频到仿真数据、动作生成、实时执行与分层任务协调。",
     "posts": [
       "posts/ai/lerobot-act/index.md",
       "posts/ai/behavior-prompting/index.md",
@@ -80,6 +81,7 @@
       "posts/ai/gen-1-5/index.md",
       "posts/ai/molmo-motion/index.md",
       "posts/ai/stable-hand/index.md",
+      "posts/ai/video-to-data/index.md",
       "posts/ai/rynnbrain/index.md",
       "posts/thesis/being_0/index.md",
       "posts/ai/light-loco-parkour/index.md"

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>V2D 高度判定实验</title>
+  <link rel="stylesheet" href="/labs/navigation.css">
+  <style>
+    :root{color-scheme:light;--bg:#fff;--fg:#25354a;--line:#ccd5df;--soft:#f4f6f9;--pass:#27663b;--fail:#a23d30;--link:#275e9e;--control:#7b8898;--window:#eee7fa;--blue:#3173b8;--purple:#8463b1;--green:#39814a}
+    @media(prefers-color-scheme:dark){:root:not([data-theme]){color-scheme:dark;--bg:#121820;--fg:#e0e8f2;--line:#4e5d6d;--soft:#202b38;--pass:#99d9aa;--fail:#ffb7a8;--link:#a6cbff;--control:#8296ab;--window:#302b45;--blue:#91c0f1;--purple:#c3a6ee;--green:#99d9aa}}
+    :root[data-theme=dark]{color-scheme:dark;--bg:#121820;--fg:#e0e8f2;--line:#4e5d6d;--soft:#202b38;--pass:#99d9aa;--fail:#ffb7a8;--link:#a6cbff;--control:#8296ab;--window:#302b45;--blue:#91c0f1;--purple:#c3a6ee;--green:#99d9aa}
+    :root[data-theme=warm]{--bg:#fdfaf4;--fg:#302b24;--line:#ded3c2;--soft:#faf6ee;--link:#26678f;--control:#8f7c63}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 system-ui,sans-serif}main{max-width:920px;margin:auto;padding:24px}h1{font-size:1.8rem;line-height:1.3}h2,legend{font-size:1.1rem;font-weight:650}a{color:var(--link)}p{margin:.8em 0}fieldset{border:1px solid var(--line);border-radius:12px;padding:16px;margin:20px 0;min-width:0}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}label{display:block}input{display:block;width:100%;margin-top:5px;padding:9px;font:inherit;border:1px solid var(--control);border-radius:6px;background:var(--bg);color:inherit}.presets{display:flex;flex-wrap:wrap;gap:10px}button{font:inherit;color:inherit;background:var(--soft);border:1px solid var(--control);border-radius:6px;padding:8px 14px;cursor:pointer}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--link);outline-offset:3px}.hint,figcaption{font-size:.9rem}.result{border:1px solid var(--line);border-radius:12px;background:var(--soft);padding:18px;margin-top:24px}#status{font-size:1.1rem;font-weight:700}.pass,#status[data-state=pass]{color:var(--pass)}.fail,#status[data-state=fail]{color:var(--fail)}figure{margin:16px 0}svg{display:block;width:100%;height:auto;overflow:visible}svg text{font:12px system-ui,sans-serif;fill:var(--fg)}.axis{stroke:var(--control)}.terminal-window{fill:var(--window)}.height-trace{fill:none;stroke:var(--blue);stroke-width:2.5;stroke-linejoin:round}.lift-line{stroke:var(--blue);stroke-dasharray:7 4}.hold-line{stroke:var(--purple);stroke-dasharray:2 4}.place-line{stroke:var(--green);stroke-dasharray:9 3 2 3}.zero-line{stroke:var(--line)}li{margin:10px 0;overflow-wrap:anywhere}code{font-size:.92em;overflow-wrap:anywhere}footer{border-top:1px solid var(--line);margin-top:32px;padding-top:16px;font-size:.9rem}@media(max-width:550px){main{padding:18px}.fields{grid-template-columns:1fr}h1{font-size:1.5rem}fieldset,.result{padding:12px}}
+  </style>
+  <script src="/labs/rrsi/appearance.js"></script>
+  <script src="/labs/video-to-data/height_lab.js" defer></script>
+</head>
+<body>
+<main>
+  <a href="../../posts/ai/video-to-data/#fig-height-criteria">← 返回 V2D 文章的高度曲线</a>
+  <h1>V2D 高度判定实验</h1>
+  <p>同样抬到 0.11 m，缓慢放回、一直举着和突然落下会得到不同结论。调整下面的构造轨迹，观察纸巾盒 <code>lift_hold</code> 的各项条件。</p>
+  <p>固定部分：初始高度为 0，上升 22 步到 0.11 m，再在该高度停留 25 步。每步按 20 Hz 计时；下方改变之后的下降和末段。这里没有运行机器人或模型。</p>
+  <nav class="lab-nav" aria-label="实验页导航">
+    <a href="#height-form">调整输入</a>
+    <a href="#calculation">查看曲线与判定</a>
+  </nav>
+  <noscript><p>此实验需要 JavaScript。文章第 6.4 节提供同样的三条曲线、完整阈值和 Python 数值脚本。</p></noscript>
+  <form id="height-form" aria-label="高度轨迹输入" tabindex="-1" data-lab-anchor>
+    <fieldset>
+      <legend>构造后半段轨迹</legend>
+      <div class="fields">
+        <label>过渡到末段的步数<input name="descentSteps" type="number" min="1" max="200" step="1" value="22" required></label>
+        <label>末段中心相对高度 / m<input name="finalHeight" type="number" min="-0.05" max="0.2" step="0.001" value="0" required></label>
+        <label>末段交替波动幅度 / m<input name="jitter" type="number" min="0" max="0.03" step="0.0005" value="0" required></label>
+        <label>末段样本数<input name="terminalSamples" type="number" min="1" max="200" step="1" value="25" required></label>
+      </div>
+      <p class="hint">过渡按等步长线性变化。波动设为 a 时，末段依次为中心高度 +a、−a；相邻变化可能达到 2a。评估器的最后 20 次更新窗口可能包含过渡段，不能只看“末段样本数”。</p>
+      <div class="presets" aria-label="载入文章曲线">
+        <button type="button" data-preset="stable">平稳放回</button>
+        <button type="button" data-preset="aloft">一直举着</button>
+        <button type="button" data-preset="drop">突然落下</button>
+      </div>
+    </fieldset>
+  </form>
+  <section class="result" id="calculation" aria-labelledby="result-title" tabindex="-1" data-lab-anchor>
+    <h2 id="result-title">曲线与逐项判定</h2>
+    <a class="lab-return" href="#height-form">↑ 返回输入</a>
+    <p id="status" role="status" aria-live="polite">启用 JavaScript 后可查看结果。</p>
+    <div id="details" hidden>
+      <p id="sample-count"></p>
+      <figure>
+        <div><svg id="height-chart" role="img" aria-labelledby="chart-title" aria-describedby="chart-description"></svg></div>
+        <figcaption>实线是构造高度；横向虚线从高到低是抬升 0.10 m、保持 0.05 m、末窗高度上限 0.03 m，线型各不相同。紫色区标出最后 20 次更新。所有条件仍以图后的数值判定为准。</figcaption>
+      </figure>
+      <ol id="checks"></ol>
+      <p class="hint">读数显示六位有效数字，判定使用未舍入数值，并沿用固定源码的严格阈值比较。临界输入可能受浮点表示影响；下载的轨迹保留计算精度。</p>
+      <p id="precision-warning" class="hint" hidden></p>
+      <p><a id="download-trace" download="height.json">下载这条构造轨迹</a>，可交给文章的 <code>data_contract_lab.py --trace height.json</code> 复算。</p>
+    </div>
+  </section>
+  <footer>
+    <p>阈值对应 <a href="https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/task_profiles/tissue_box_lift_hold.json">固定版本的纸巾盒 profile</a>。首样本只建立基准，之后每个样本模拟一次动作前更新；没有加入终止动作后的状态或自动 reset 状态。</p>
+    <p>这些条件只看高度，不检验 XY 放置位置、物体接触或手是否松开。通过本实验不能证明真机操作成功。</p>
+    <p><a href="../../posts/ai/video-to-data/">阅读全文</a> · <a href="height_lab.js">查看计算代码</a></p>
+  </footer>
+</main>
+</body>
+</html>

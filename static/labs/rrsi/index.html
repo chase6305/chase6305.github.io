@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>RRSI 候选筛选实验</title>
+  <link rel="stylesheet" href="/labs/navigation.css">
+  <style>
+    :root{color-scheme:light;--bg:#fff;--fg:#25354a;--line:#ccd5df;--soft:#f4f6f9;--pass:#27663b;--fail:#a23d30;--link:#275e9e;--control-line:#7b8898}
+    @media(prefers-color-scheme:dark){:root:not([data-theme]){color-scheme:dark;--bg:#121820;--fg:#e0e8f2;--line:#4e5d6d;--soft:#202b38;--pass:#99d9aa;--fail:#ffb7a8;--link:#a6cbff;--control-line:#8296ab}}
+    :root[data-theme=dark]{color-scheme:dark;--bg:#121820;--fg:#e0e8f2;--line:#4e5d6d;--soft:#202b38;--pass:#99d9aa;--fail:#ffb7a8;--link:#a6cbff;--control-line:#8296ab}
+    :root[data-theme=warm]{--bg:#fdfaf4;--fg:#302b24;--line:#ded3c2;--soft:#faf6ee;--link:#26678f;--control-line:#8f7c63}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 system-ui,sans-serif}main{max-width:1000px;margin:auto;padding:24px}h1{font-size:1.8rem;line-height:1.3}h2,legend{font-size:1.1rem;font-weight:650}a{color:var(--link)}p{margin:.8em 0}fieldset{border:1px solid var(--line);border-radius:12px;padding:16px;margin:20px 0;min-width:0}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}label{display:block}input[type=number],select{display:block;width:100%;margin-top:5px;padding:9px;font:inherit;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:inherit}input[type=checkbox]{width:1.1rem;height:1.1rem;vertical-align:middle;margin-right:8px}.components{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.check{display:block;padding:5px 0}.hint{font-size:.9rem}.result{border:1px solid var(--line);border-radius:12px;background:var(--soft);padding:18px;margin-top:24px}#status{font-size:1.15rem;font-weight:700}#status[data-state=pass]{color:var(--pass)}#status[data-state=fail]{color:var(--fail)}[data-skipped=true]{opacity:.75}li{margin:10px 0;overflow-wrap:anywhere}.examples{display:flex;flex-wrap:wrap;gap:10px}button{font:inherit;color:inherit;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:8px 14px;cursor:pointer}input[type=number],select,button{border-color:var(--control-line)}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--link);outline-offset:3px}code{font-size:.92em;overflow-wrap:anywhere}footer{border-top:1px solid var(--line);margin-top:32px;padding-top:16px;font-size:.9rem}@media(max-width:550px){main{padding:18px}.fields,.components{grid-template-columns:1fr}h1{font-size:1.5rem}fieldset{padding:12px}}
+  </style>
+  <style>
+    button:disabled{opacity:.6;cursor:not-allowed}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+    .table-scroll{max-width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+    .table-scroll table{width:100%;min-width:42rem;border-collapse:collapse;font-size:.9rem}
+    .table-scroll th,.table-scroll td{padding:9px 12px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--line)}
+    .table-scroll th{background:var(--soft)}
+    .table-scroll .winner{font-weight:700}
+    .table-scroll .winner td:first-child{box-shadow:inset 3px 0 var(--pass)}
+    .table-scroll button{padding:4px 10px}
+    .table-scroll:focus-visible,summary:focus-visible{outline:3px solid var(--link);outline-offset:3px}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+    #round-history{padding-left:22px}
+    #round-history details{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+    #round-history summary{cursor:pointer;font-weight:650;overflow-wrap:anywhere}
+    #round-history p,#round-history ul{font-size:.9rem}
+  </style>
+  <script src="/labs/rrsi/appearance.js"></script>
+  <script src="/labs/rrsi/selection_lab.js" defer></script>
+</head>
+<body>
+<main>
+  <a href="../../posts/ai/rrsi/#worked-example">← 返回 RRSI 文章的计算例子</a>
+  <h1>RRSI 候选筛选实验</h1>
+  <p>调整分数、token 成本和组件历史，观察候选怎样经过历史下限与两条互斥成本规则。这里假设候选已经通过 diff 审查并得到有效测量；输入是构造例子，没有运行模型。</p>
+  <nav class="lab-nav" aria-label="实验页导航">
+    <a href="#selection-form">调整输入</a>
+    <a href="#calculation">查看判定</a>
+    <a href="#round-selection">候选池与历史</a>
+  </nav>
+  <noscript><p>此实验需要 JavaScript 才能计算。文章第 6 节提供同一组 A～F 例子、公式和可运行 Python 代码。</p></noscript>
+  <form id="selection-form" aria-label="筛选实验输入" tabindex="-1" data-lab-anchor>
+    <fieldset>
+      <legend>1. 当前路径与候选测量</legend>
+      <div class="fields">
+        <label>领域参数<select name="domain"><option value="coding">Coding</option><option value="workspace">Workspace</option><option value="engineering">Engineering</option></select></label>
+        <label>噪声带 δ<input name="delta" type="number" min="0" max="1" step="any" value="0.017" required></label>
+        <label>当前得分 S<input name="score" type="number" min="0" max="1" step="any" value="0.81" required></label>
+        <label>已接受路径的历史最高分 S*<input name="best" type="number" min="0" max="1" step="any" value="0.82" required></label>
+        <label>当前平均 policy tokens<input name="cost" type="number" min="1" step="any" value="1000000" required></label>
+        <label>候选平均 policy tokens<input name="candidateCost" type="number" min="1" step="any" value="1800000" required></label>
+        <label>候选得分 S′<input name="candidate" type="number" min="0" max="1" step="any" value="0.835" required></label>
+      </div>
+      <p class="hint">得分按 [0,1] 输入，0.01 表示一个分数点。切换领域会恢复该领域发布的 δ；其他参数见下方，保留当前示例输入以便比较两套规则。</p>
+      <p id="parameters" class="hint"></p>
+      <a href="#calculation">查看当前判定 ↓</a>
+    </fieldset>
+    <fieldset>
+      <legend>2. 结构类型历史</legend>
+      <p class="hint">ν 只计算“本次触及且过去从未进入获胜路径”的不同类型。它不同于提议侧的“从未测量”。</p>
+      <div class="components">
+        <div role="group" aria-labelledby="touched-title"><strong id="touched-title">本次候选触及</strong>
+          <label class="check"><input type="checkbox" name="touched" value="client_tool">client_tool</label>
+          <label class="check"><input type="checkbox" name="touched" value="skill">skill</label>
+          <label class="check"><input type="checkbox" name="touched" value="memory">memory</label>
+          <label class="check"><input type="checkbox" name="touched" value="subagent">subagent</label>
+        </div>
+        <div role="group" aria-labelledby="accepted-title"><strong id="accepted-title">过去已有获胜编辑触及</strong>
+          <label class="check"><input type="checkbox" name="accepted" value="client_tool">client_tool</label>
+          <label class="check"><input type="checkbox" name="accepted" value="skill">skill</label>
+          <label class="check"><input type="checkbox" name="accepted" value="memory">memory</label>
+          <label class="check"><input type="checkbox" name="accepted" value="subagent">subagent</label>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>3. 领域约束与文章示例</legend>
+      <label class="check"><input type="checkbox" name="guardOK" checked>领域约束已通过</label>
+      <p class="hint">这里只接收领域约束的通过/失败结果。公开工程实例会独立检查有效率下降和无提交率上升；coding/workspace 默认没有这两项。例 F 额外模拟 guard 失败，用于观察筛选顺序。</p>
+      <div class="examples" role="group" aria-label="载入文章例子">
+        <button type="button" data-example="A">载入 A</button><button type="button" data-example="B">载入 B</button>
+        <button type="button" data-example="C">载入 C</button><button type="button" data-example="D">载入 D</button>
+        <button type="button" data-example="E">载入 E</button><button type="button" data-example="F">载入 F</button>
+      </div>
+      <p class="hint">A～F 只替换候选分数、成本、触及类型与 guard，不改当前路径或领域。要回到文章的完整起点，使用下方“重置整个实验”。</p>
+      <p><strong>工程噪声边界算例</strong></p>
+      <p class="hint">以下按钮会清空候选池与轮次历史，恢复 S=0.810、S*=0.820、当前成本 1M 的工程起点；候选成本均为 2M，无新颖度且 guard 通过。只改变候选得分，比较两条成本分支。</p>
+      <div class="examples" id="engineering-boundary" role="group" aria-label="重置为工程边界算例" tabindex="-1" data-lab-anchor>
+        <button type="button" data-boundary="within" disabled>重置并载入 0.830</button>
+        <button type="button" data-boundary="above" disabled>重置并载入 0.831</button>
+      </div>
+      <noscript><p class="hint">载入算例需要 JavaScript；可回到<a href="../../posts/ai/rrsi/#selection">文章的筛选规则</a>，阅读这两个候选的完整计算。</p></noscript>
+    </fieldset>
+  </form>
+  <section class="result" id="calculation" aria-labelledby="result-title" tabindex="-1" data-lab-anchor>
+    <h2 id="result-title">逐项计算</h2>
+    <a class="lab-return" href="#selection-form">↑ 返回输入</a>
+    <p class="hint">显示值保留约 12 位有效数字，判定使用未舍入数值；阈值附近应同时核对分支与原始记录。</p>
+    <p class="hint">应用一轮后，本区会按新的当前路径重算；上一轮的判断保存在下方记录中。</p>
+    <p id="status" role="status" aria-live="polite">启用 JavaScript 后可逐项计算。</p>
+    <div id="details" hidden>
+      <p id="deltas"></p>
+      <p id="noise-boundary" class="hint" hidden></p>
+      <ol><li id="floor-check"></li><li id="cost-check"></li><li id="guard-check"></li></ol>
+      <p id="interpretation"></p>
+    </div>
+  </section>
+  <section class="result" id="round-selection" aria-labelledby="pool-title" tabindex="-1" data-lab-anchor>
+    <h2 id="pool-title">整轮选择与历史</h2>
+    <a class="lab-return" href="#selection-form">↑ 返回输入</a>
+    <p>把当前候选加入候选池，再载入其他候选。整轮选择在同一当前路径上判断所有候选，选合格者中得分最高的一项；没有合格者就保留当前版本。</p>
+    <div class="actions">
+      <button type="button" id="add-candidate" disabled>加入当前候选</button>
+      <button type="button" id="apply-round" disabled>应用本轮选择</button>
+      <button type="button" id="clear-pool" disabled>清空候选池</button>
+      <button type="button" id="reset-lab" disabled>重置整个实验</button>
+    </div>
+    <p id="pool-summary" role="status" aria-live="polite">启用 JavaScript 后可加入候选并模拟轮次。</p>
+    <div id="pool-content" hidden>
+      <div id="pool-scroll" class="table-scroll" role="region" aria-label="本轮候选池，可横向滚动" tabindex="0">
+        <table>
+          <caption class="sr-only">候选测量、筛选结论与本轮赢家</caption>
+          <thead><tr><th scope="col">候选</th><th scope="col">得分</th><th scope="col">tokens</th><th scope="col">ν</th><th scope="col">判断</th><th scope="col">选择</th><th scope="col">操作</th></tr></thead>
+          <tbody id="pool-rows"></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="hint">候选池保存加入时的候选测量，上方当前路径或领域改变时会重新判定。合格者同分时保留先加入者，与固定版本的遍历顺序一致。</p>
+    <p id="round-status" role="status" aria-live="polite"></p>
+    <p class="hint">应用后更新当前 S、成本、历史最高 S* 和获胜路径类型；只有赢家消耗新颖度。记录按候选展示，不模拟完整的逐编辑 JSONL 日志。手动修改当前路径会清空旧轮次记录；刷新或重置会清空本页实验。</p>
+    <p id="history-empty">尚未应用任何一轮。</p>
+    <ol id="round-history"></ol>
+    <p><a id="download-history" download="rrsi-selection-trace.json" hidden>下载本页轮次记录</a></p>
+    <p class="hint">下载内容包含各轮起点、领域参数、候选测量、判定与下一状态，便于按公式复核；它使用本页的候选级格式。</p>
+  </section>
+  <footer>
+    <p>数学分支对应 <a href="https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/selection.py">固定版本的 selection.py</a>；参数来自各领域 <code>rrsi.json</code>。成本必须完整且为正；实验直接标出缺失输入，避免把缺失记录误当零增长。</p>
+    <p><a href="../../posts/ai/rrsi/">阅读全文</a> · <a href="selection_lab.js">查看计算代码</a></p>
+  </footer>
+</main>
+</body>
+</html>

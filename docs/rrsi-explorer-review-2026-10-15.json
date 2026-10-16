@@ -1,0 +1,173 @@
+{
+  "retrieved_on": "2026-10-15",
+  "source": "https://regularized-rsi.com/data/evolution.js",
+  "sha256": "6328ffe686058c2be4eb102527910b30c0ac994715d1bb09bd746cb2a3c89f50",
+  "purpose": "Preserve run-level metadata separately from the supplied paper tables. This is not a reconstruction of a paid evolution run.",
+  "runs": [
+    {
+      "id": "coding_opus",
+      "name": "Coding · Claude Opus 4.8",
+      "policy": "Claude Opus 4.8",
+      "proposer": "Claude Opus 4.8",
+      "T": 20,
+      "m": 2,
+      "delta": 0.03406,
+      "metric": {
+        "label": "pass rate",
+        "countLabel": "passes",
+        "denom": 178
+      },
+      "summary": {
+        "rounds": 20,
+        "evaluated": 37,
+        "accepted": 5,
+        "byStatus": {
+          "accepted": 5,
+          "rejected_cost": 8,
+          "rejected_floor": 24,
+          "critic_reject": 1,
+          "smoke_fail": 2
+        }
+      },
+      "initial": {
+        "t": 0,
+        "S": 0.7415730337078652,
+        "count": 132,
+        "C": 417222.75483870966
+      },
+      "final": {
+        "t": 20,
+        "S": 0.8089887640449438,
+        "count": 144,
+        "C": 441640.6645962733
+      },
+      "protocol_summary": "统一搜索循环，Opus 基线重新标定噪声带；每轮两候选均进入完整演化集评估。"
+    },
+    {
+      "id": "coding_gemini",
+      "name": "Coding · Gemini 3.5 Flash",
+      "policy": "Gemini 3.5 Flash",
+      "proposer": "Claude Opus 4.8",
+      "T": 30,
+      "m": 1,
+      "delta": 0.016853932584269662,
+      "metric": {
+        "label": "pass rate",
+        "countLabel": "passes",
+        "denom": 178
+      },
+      "summary": {
+        "rounds": 30,
+        "evaluated": 19,
+        "accepted": 10,
+        "byStatus": {
+          "accepted": 10,
+          "rejected_score": 9,
+          "no_proposal": 3,
+          "smoke_fail": 2,
+          "screen_kill": 6
+        }
+      },
+      "initial": {
+        "t": 0,
+        "S": 0.6460674157303371,
+        "count": 115,
+        "C": null
+      },
+      "final": {
+        "t": 30,
+        "S": 0.7865168539325843,
+        "count": 140,
+        "C": 1438727.0179640718
+      },
+      "protocol_summary": "较早的两阶段运行，每阶段 15 次、每次一候选；第二阶段先用 24 个分层任务筛去明显较差候选。"
+    },
+    {
+      "id": "lab",
+      "name": "Agentic workspace · Harvey LAB",
+      "policy": "Claude Opus 4.8",
+      "proposer": "Claude Opus 4.8",
+      "T": 20,
+      "m": 2,
+      "delta": 0.004244181933932234,
+      "metric": {
+        "label": "criteria passed",
+        "countLabel": "criteria",
+        "denom": 14137
+      },
+      "summary": {
+        "rounds": 20,
+        "evaluated": 32,
+        "accepted": 4,
+        "byStatus": {
+          "accepted": 4,
+          "lost_to_peer": 1,
+          "rejected_score": 27,
+          "smoke_fail": 1,
+          "no_proposal": 7
+        }
+      },
+      "initial": {
+        "t": 0,
+        "S": 0.8967249062743157,
+        "count": 12677,
+        "C": 1561362.0
+      },
+      "final": {
+        "t": 20,
+        "S": 0.9085378793237604,
+        "count": 12844,
+        "C": 2685614.591666667
+      },
+      "protocol_summary": "约 1.41 万 rubric 条目，Gemini 3.5 Flash 评审；40 个 ID 留出任务不参与选择。"
+    },
+    {
+      "id": "eng",
+      "name": "Engineering design · EngDesign",
+      "policy": "Claude Opus 4.8",
+      "proposer": "Claude Opus 4.8",
+      "T": 40,
+      "m": 1,
+      "delta": 0.020491803278688523,
+      "metric": {
+        "label": "pass rate",
+        "countLabel": "passes",
+        "denom": 244
+      },
+      "summary": {
+        "rounds": 40,
+        "evaluated": 20,
+        "accepted": 4,
+        "byStatus": {
+          "rejected_score": 15,
+          "accepted": 4,
+          "screen_kill": 4,
+          "no_proposal": 14,
+          "void": 3
+        }
+      },
+      "initial": {
+        "t": 0,
+        "S": 0.5,
+        "count": 122,
+        "C": null
+      },
+      "final": {
+        "t": 40,
+        "S": 0.5491803278688525,
+        "count": 134,
+        "C": 192688.67213114753
+      },
+      "protocol_summary": "每次一候选，先用 24 个分层任务预筛；结合连续评分统计与通过数下限，使用冻结代码评分器。"
+    }
+  ],
+  "paper_identity": {
+    "url": "https://arxiv.org/pdf/2609.24972v3",
+    "supplied_sha256": "26f8b5417f8a60c9284bb4a36d3981c41b8e071134aea0bf3402fe9584c8cd76",
+    "public_sha256": "26f8b5417f8a60c9284bb4a36d3981c41b8e071134aea0bf3402fe9584c8cd76",
+    "supplied_pages": 27,
+    "public_pages": 27,
+    "byte_identical": true,
+    "normalized_text_identical": true
+  }
+}

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Check chapter links, image stability and readable tables, with and without JS.
 // Run serially against an existing loopback Chrome CDP endpoint.
-// node scripts/check_blog_reading.cjs [baseURL] [CDP port] [result directory] [--drafts]
+// node scripts/check_blog_reading.cjs [baseURL] [CDP port] [result directory] [--drafts] [--figures]
 const fs = require("node:fs");
 const path = require("node:path");
 const assert = require("node:assert/strict");
@@ -10,6 +10,7 @@ const port = process.argv[3] || "9237";
 const output = process.argv[4] || "/tmp/blog-reading-browser";
 const root = path.resolve(__dirname, "..");
 const includeDrafts = process.argv.includes("--drafts");
+const includeFigures = process.argv.includes("--figures");
 const posts = JSON.parse(fs.readFileSync(path.join(root, "docs/blog-editorial-review.json"))).posts
   .filter(post => includeDrafts || !post.draft);
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -70,53 +71,59 @@ async function main() {
             .replace(/\/index\.md$/, "").replace(/\.md$/, "").toLowerCase() + "/";
           await cdp("Page.navigate", {url: base + route});
           await waitFor("location.pathname === " + JSON.stringify(route) + " && document.readyState === 'complete'");
-          const id = await evaluate(`(() => {
+          const ids = await evaluate(`(() => {
             const headings = [...document.querySelectorAll('.content h2,.content h3')];
-            return headings[Math.floor(headings.length * .6)]?.dataset.hextraSearchId;
+            const chapter = headings[Math.floor(headings.length * .6)]?.dataset.hextraSearchId;
+            const figures = ${includeFigures} ? [...document.querySelectorAll('.content .article-figure[id]')].map(f => f.id) : [];
+            return [chapter, ...figures];
           })()`);
-          assert(id, "No chapter to check: " + route);
-          // Force a fresh document so this does not merely test in-page scrolling.
-          await cdp("Page.navigate", {url: "about:blank"});
-          await waitFor("location.href === 'about:blank' && document.readyState === 'complete'");
-          await cdp("Page.navigate", {url: base + route + "#" + encodeURIComponent(id)});
-          await waitFor("location.pathname === " + JSON.stringify(route) + " && document.readyState === 'complete' && !!document.getElementById(" + JSON.stringify(id) + ")");
-          await evaluate("document.fonts.ready");
-          // Loading images above the target used to move it thousands of pixels.
-          await evaluate("Promise.all([...document.querySelectorAll('.content img')].map(img => {img.loading='eager';return img.decode().catch(() => null)}))");
-          await delay(200);
-          const measured = await evaluate(`(() => {
-            const heading = document.getElementById(${JSON.stringify(id)}).closest('h2,h3');
-            return {
-              top: heading.getBoundingClientRect().top,
-              bottom: heading.getBoundingClientRect().bottom,
-              hash: location.hash,
-              brokenImages: [...document.querySelectorAll('.content img')].filter(img => !img.complete || !img.naturalWidth).map(img => img.src),
-              tableIssues: [...document.querySelectorAll('.content table.table-readable')].flatMap((table, index) => {
-                if (!table.clientWidth) return [];
-                const issues = [];
-                if ([...table.querySelectorAll('th,td')].some(cell =>
-                  cell.getBoundingClientRect().width + 1 < parseFloat(getComputedStyle(cell).minWidth))) {
-                  issues.push({index, issue: 'column narrower than its reading width'});
-                }
-                if (${scripts} && table.scrollWidth > table.clientWidth + 1 && table.tabIndex !== 0) {
-                  issues.push({index, issue: 'overflowing table not keyboard focusable'});
-                }
-                return issues;
-              }),
-              overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1
-            };
-          })()`);
-          const passed = decodeURIComponent(measured.hash.slice(1)) === id &&
-            measured.top >= 55 && measured.bottom <= height &&
-            !measured.overflow && !measured.brokenImages.length && !measured.tableIssues.length;
-          rows.push({route, id, width, scripts, passed, ...measured});
-          if (!passed) failures.push(rows.at(-1));
+          assert(ids[0], "No chapter to check: " + route);
+          for (const id of ids) {
+            // Force a fresh document so this does not merely test in-page scrolling.
+            await cdp("Page.navigate", {url: "about:blank"});
+            await waitFor("location.href === 'about:blank' && document.readyState === 'complete'");
+            await cdp("Page.navigate", {url: base + route + "#" + encodeURIComponent(id)});
+            await waitFor("location.pathname === " + JSON.stringify(route) + " && document.readyState === 'complete' && !!document.getElementById(" + JSON.stringify(id) + ")");
+            await evaluate("document.fonts.ready");
+            // Loading images above the target used to move it thousands of pixels.
+            await evaluate("Promise.all([...document.querySelectorAll('.content img')].map(img => {img.loading='eager';return img.decode().catch(() => null)}))");
+            await delay(200);
+            const measured = await evaluate(`(() => {
+              const anchor = document.getElementById(${JSON.stringify(id)});
+              const heading = anchor.closest('h2,h3') || anchor;
+              return {
+                kind: heading.matches('.article-figure') ? 'figure' : 'chapter',
+                top: heading.getBoundingClientRect().top,
+                bottom: heading.getBoundingClientRect().bottom,
+                hash: location.hash,
+                brokenImages: [...document.querySelectorAll('.content img')].filter(img => !img.complete || !img.naturalWidth).map(img => img.src),
+                tableIssues: [...document.querySelectorAll('.content table.table-readable')].flatMap((table, index) => {
+                  if (!table.clientWidth) return [];
+                  const issues = [];
+                  if ([...table.querySelectorAll('th,td')].some(cell =>
+                    cell.getBoundingClientRect().width + 1 < parseFloat(getComputedStyle(cell).minWidth))) {
+                    issues.push({index, issue: 'column narrower than its reading width'});
+                  }
+                  if (${scripts} && table.scrollWidth > table.clientWidth + 1 && table.tabIndex !== 0) {
+                    issues.push({index, issue: 'overflowing table not keyboard focusable'});
+                  }
+                  return issues;
+                }),
+                overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1
+              };
+            })()`);
+            const passed = decodeURIComponent(measured.hash.slice(1)) === id &&
+              measured.top >= 55 && (measured.kind === 'figure' ? measured.top <= height - 48 : measured.bottom <= height) &&
+              !measured.overflow && !measured.brokenImages.length && !measured.tableIssues.length;
+            rows.push({route, id, width, scripts, passed, ...measured});
+            if (!passed) failures.push(rows.at(-1));
+          }
         }
       }
     }
     assert.equal(exceptions.length, 0, JSON.stringify(exceptions));
     assert.equal(failures.length, 0, JSON.stringify(failures));
-    console.log(JSON.stringify({cases: rows.length, exceptions: exceptions.length, result: path.join(output, "results.json")}));
+    console.log(JSON.stringify({cases: rows.length, figureCases: rows.filter(row => row.kind === "figure").length, exceptions: exceptions.length, result: path.join(output, "results.json")}));
   } finally {
     fs.writeFileSync(path.join(output, "results.json"), JSON.stringify({rows, exceptions}, null, 2));
     for (const task of pending.values()) clearTimeout(task.timer);

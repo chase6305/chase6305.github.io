@@ -1,0 +1,353 @@
+{
+  "review_date": "2026-10-16",
+  "timezone": "Asia/Shanghai",
+  "scope": "Second two-hour editorial and executable-example review",
+  "v2d_commit": "193382a184308f6800331f3db829f76dc4294cfe",
+  "rrsi_commit": "be50316e1db05914068a973f322770ef08ed7ba1",
+  "rrsi_pdf_sha256": "26f8b5417f8a60c9284bb4a36d3981c41b8e071134aea0bf3402fe9584c8cd76",
+  "claims": [
+    {
+      "id": "v2d-expert-observations",
+      "article": "video-to-data",
+      "section": "expert-observations",
+      "claim": "Vega expert uses state/reference observations; first three nominal reference offsets are 0, 2, 4 at the default playback clock, clamped to the selected trajectory end. GR00T receives current three-view RGB, current joint state and instruction.",
+      "sources": [
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/config/vega_sharpa/vega_sharpa_manip_env_cfg.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/mdp/commands/tracking_command.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/vega_sharpa_joint_config.py"
+      ],
+      "verification": "Checked observation declarations, offset construction and modality delta_indices; did not train either policy."
+    },
+    {
+      "id": "v2d-voc-two-clocks",
+      "article": "video-to-data",
+      "section": "voc-curriculum",
+      "claim": "Configured zero-scale threshold is common_step_counter=300000. Reset assistance remains 1 through command update 40, reaches target at update 50 and reference can first advance at update 51, provided the trajectory has not ended.",
+      "sources": [
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/mdp/curriculum/curriculum.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/mdp/commands/tracking_command.py"
+      ],
+      "verification": "35 global boundaries and 1458 per-command cases match complete pinned methods. Diagram is configuration data, not measured forces."
+    },
+    {
+      "id": "v2d-voc-manager-order",
+      "article": "video-to-data",
+      "section": "voc-curriculum",
+      "claim": "Default IsaacLab 2.3.2 step advances physics before commands; curriculum is checked during reset. Auto-reset can return with command count already 1.",
+      "sources": [
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/workflow/Dockerfile",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/config/vega_sharpa/__init__.py",
+        "https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/envs/manager_based_rl_env.py",
+        "https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/managers/command_manager.py"
+      ],
+      "verification": "Executed complete step/reset/command methods with fake physics and CPU managers over 54 env steps and 108 physics substeps; no simulator or force evaluation."
+    },
+    {
+      "id": "v2d-reference-and-data-clocks",
+      "article": "video-to-data",
+      "section": "e2e",
+      "claim": "50 Hz retargeted motion can be resampled at 40 Hz along source time and consumed at 20 Hz for half-speed playback. Contact de-flickering uses target-reference frames.",
+      "sources": [
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/motion_schema/timing.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/scripts/retarget/ego_recon_to_dexmate_sharpa.py"
+      ],
+      "verification": "Checked resolve_playback_timing and order of resampling before FK/contact labeling; these frequencies are distinct from control labels and source video FPS."
+    },
+    {
+      "id": "v2d-state-action-semantics",
+      "article": "video-to-data",
+      "section": "groot-data",
+      "claim": "Both raw vectors have 58 joint radians with different field order. Actions are applied absolute joint targets rather than next measured positions.",
+      "sources": [
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/contracts.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/vega_sharpa_joint_config.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/scripts/rsl_rl/export_parallel_rollouts.py"
+      ],
+      "verification": "Contract slices and modality declarations checked; all 58 selected URDF joints are revolute. Python sentinel example verifies reordering without claiming to infer expert labels."
+    },
+    {
+      "id": "v2d-height-checks",
+      "article": "video-to-data",
+      "section": "fig-height-criteria",
+      "claim": "Height result uses first-sample baseline, N-1 scored updates, lift/hold/descent/terminal placement/stability/final floor. It does not test XY placement or hand release.",
+      "sources": [
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/task_profiles/tissue_box_lift_hold.json",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/closed_loop/evaluation.py"
+      ],
+      "verification": "2003 identical JSON traces match official evaluate_lift_hold and Python companion. Three browser presets now equal Python arrays sample-for-sample. No robot data measured."
+    },
+    {
+      "id": "rrsi-round-selection",
+      "article": "rrsi",
+      "section": "multi-round-state",
+      "claim": "Select highest score among admissible candidates; incumbent is fallback only. Only accepted winner updates current path, running maximum and accepted structural types.",
+      "sources": [
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/selection.py",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/history.py",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/loop.py"
+      ],
+      "verification": "1500 rounds in three domains, 3036 constructed candidates compared with official select_round plus real JSONL History; 631 accepts, 869 fallbacks, 74 accepted regressions and 216 admissible losers."
+    },
+    {
+      "id": "rrsi-novelty",
+      "article": "rrsi",
+      "section": "selection",
+      "claim": "Novelty counts distinct client_tool, skill, memory, subagent types never previously accepted. Measured losers affect tried-history but do not consume novelty. Accepted deletion and later reintroduction do not erase the ever-accepted type history.",
+      "sources": [
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/components.py",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/history.py"
+      ],
+      "verification": "Checked complete-history accepted counts and multi-round pool tests; actual JSONL History retains introduce/delete/reintroduce accepted edits. Browser records preserve accepted type history."
+    },
+    {
+      "id": "rrsi-cost-branch-boundary",
+      "article": "rrsi",
+      "section": "selection",
+      "claim": "Coding within-band novelty credit with nu=1 requires relative cost growth <1/30. Public engineering branches are not necessarily continuous: constructed score .830/cost 2M can pass while .831/2M fails from S=.810, C=1M, best=.820.",
+      "sources": [
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/selection.py",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/domains/coding/rrsi.json",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/domains/eng/rrsi.json"
+      ],
+      "verification": "Both engineering cases checked with actual official judge. One-click lab presets restore the complete documented baseline and clear pool/history; browser checks cover pointer and keyboard activation, both cost branches and return to coding defaults. Browser preserves strict comparisons and shows raw delta when formatted values appear equal."
+    },
+    {
+      "id": "rrsi-starting-agents-and-roles",
+      "article": "rrsi",
+      "section": "evaluation-protocol",
+      "claim": "Coding H0 is Terminus-2; agentic domains use react_toolbelt. Diff critic, execution policy and deliverable judge have separate responsibilities.",
+      "sources": [
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/domains/coding/README.md",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/domains/workspace/README.md",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/third_party/archipelago/harness_eng/README.md",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/README.md"
+      ],
+      "verification": "Cross-checked paper implementation details and vendored harness features; no claim that existing ReAct/toolbelt/context summarization was introduced by RRSI."
+    },
+    {
+      "id": "rrsi-environment-scope",
+      "article": "rrsi",
+      "section": "reproduction",
+      "claim": "Search core supports Python >=3.10; the tested Harbor 0.18.0 runner requires Python >=3.12. Import and constructor checks are narrower than task smoke or benchmark reproduction.",
+      "sources": [
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/pyproject.toml",
+        "https://pypi.org/project/harbor/0.18.0/",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/domains/coding/adapter.py"
+      ],
+      "verification": "Installed main dev extra in isolated 3.10 env, eight pytest groups passed. Harbor 0.18.0 imports, parsers, constructor and CLI checked in 3.12.14. Network disabled for constructor; no model requests or Docker tasks."
+    },
+    {
+      "id": "v2d-training-split-and-open-loop",
+      "article": "video-to-data",
+      "section": "dataset-files",
+      "claim": "Default converter marks every episode as train. The E2E finetune open-loop command reads the same dataset_host path as training; it does not establish an independent held-out data evaluation.",
+      "sources": [
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/convert_to_gr00t.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/tools/e2e/stages.py"
+      ],
+      "verification": "Read pinned converter info.splits and finetune training/open-loop command construction. Grouped source/episode split guidance is an explicitly identified extension, not claimed built-in behavior."
+    },
+    {
+      "id": "v2d-action-chunk-requery",
+      "article": "video-to-data",
+      "section": "groot-data",
+      "claim": "Vega labels span 16 by 58 absolute targets. With execution_length=4 and no reset, actions at control steps 100-103 use the query at 100; step 104 uses a new query. Any done environment causes a whole-batch requery.",
+      "sources": [
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/vega_sharpa_joint_config.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/closed_loop/action_adapter.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/closed_loop/test_profiles.py"
+      ],
+      "verification": "All 14 upstream profile/adapter tests passed with pytest plugin autoload disabled, including the four-step buffer, done invalidation and explicit reset. Clean source checkout at the pinned commit; no simulator or model call."
+    },
+    {
+      "id": "rrsi-comparison-references",
+      "article": "rrsi",
+      "section": "selection",
+      "claim": "Candidate delta score/cost use the incumbent; the historical accepted-path maximum sets the floor; H0 is the final reporting baseline. The score floor constrains aggregate performance rather than each task.",
+      "sources": [
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/selection.py",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/evaluate.py"
+      ],
+      "verification": "Read judge/select_round and weighted evaluator in the pinned source; eight upstream core checks passed."
+    },
+    {
+      "id": "rrsi-paired-task-example",
+      "article": "rrsi",
+      "section": "main-results",
+      "claim": "Paper Appendix E.2 resamples matched tasks and recomputes each reported statistic. Constructed 100-task binary example has 75 joint passes, 5 regressions, 7 gains and 13 joint failures, giving 80 to 82 percent without per-task nonregression.",
+      "sources": [
+        "https://arxiv.org/abs/2609.24972v3",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/evaluate.py"
+      ],
+      "verification": "Checked Appendix E.2 text and weighted scoring. New contingency table is explicitly constructed explanatory data, not a reconstruction of paper trials or confidence intervals."
+    },
+    {
+      "id": "v2d-active-run-and-preview",
+      "article": "video-to-data",
+      "section": "e2e",
+      "claim": "init changes the repository-local active pointer. Explicit --config selects one command without changing the pointer. Reconstruct --dry-run prints commands without spawning reconstruction or persisting newly supplied stage parameters.",
+      "sources": [
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/tools/e2e/config.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/tools/e2e/cli.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/tools/e2e/runner.py"
+      ],
+      "verification": "Five targeted upstream unit tests passed for active-run switching, missing pointer, config override, all-stage previews and nonpersistent import preview; article command parser and explicit-path walkthrough checked in temporary fixtures. No GPU/model execution."
+    },
+    {
+      "id": "rrsi-missing-trial-validity",
+      "article": "rrsi",
+      "section": "source-map",
+      "claim": "Coding distinguishes reward-bearing timeouts from infrastructure missing trials. Missing slots remain zero in the full score denominator. Candidate default threshold is 0.2: 35/178 passes this completeness gate, 36/178 retries once and is invalid if still over threshold.",
+      "sources": [
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/domains/coding/adapter.py",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/domains/coding/rrsi.json",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/loop.py",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/evaluate.py"
+      ],
+      "verification": "Eight constructed runtime cases execute complete official Run methods with mocked domain evaluation/analysis; five JSON fixture cases execute complete pinned classifier and CodingDomain.score bodies, including AgentTimeoutError with reward=1. No model/network calls."
+    },
+    {
+      "id": "rrsi-resume-rejudge-and-dry-run",
+      "article": "rrsi",
+      "section": "reproduction",
+      "claim": "Run._evaluate reuses stored eval.json. Run.round dry_run stops after Analyze and report writes; a cached analysis avoids another analyst invocation. readjudicate updates mutable search state and refuses a historical round with descendants. reevaluate measures first, then invokes readjudicate.",
+      "sources": [
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/loop.py",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi.py"
+      ],
+      "verification": "Executed pinned methods with isolated temporary runs, including reuse, requery failure/recovery, analysis cache persistence and descendant rejection. Analysis was mocked so this verification did not call a model. Rejudging mutations and reevaluate ordering also inspected directly."
+    },
+    {
+      "id": "rrsi-normalize-priority",
+      "article": "rrsi",
+      "section": "source-map",
+      "claim": "normalize first retains a valid declared label with regex evidence, then falls back to classify_diff; text-only prompt priority applies inside that fallback, not before declared-label validation. A string-only diff mentioning skills/example.md can normalize to skill.",
+      "sources": [
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/components.py",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/loop.py"
+      ],
+      "verification": "Executed the exact article snippet and four declaration/diff cases with pinned functions. Labels are heuristics and do not prove a skill ran or that the full critic accepted the candidate."
+    },
+    {
+      "id": "rrsi-stall-window-net-gain",
+      "article": "rrsi",
+      "section": "proposal",
+      "claim": "stall_flag compares trajectory endpoints S[t]-S[t-w], not the largest intermediate gain. Constructed accepted scores [.80,.83,.82,.815] stall for w=3, delta=.017 despite an intermediate .03 gain.",
+      "sources": [
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/history.py",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/selection.py"
+      ],
+      "verification": "Actual pinned stall_flag returns 1; actual judge admits all three transitions under coding parameters and 5% cost saving per step. Example respects the historical score floor and is not a measured search."
+    },
+    {
+      "id": "v2d-residual-target-composition",
+      "article": "video-to-data",
+      "section": "groot-data",
+      "claim": "Vega PPO scales raw outputs by .15, uses old-residual EMA weight .3, clips residuals to +/-1 rad, adds the current reference, then clips joint limits. Zero raw output can leave residual state. GR00T uses absolute JointPositionAction with scale=1 and no default offset. Stored targets precede actuator delay/PD.",
+      "sources": [
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/mdp/actions/reference_residual_action.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/config/vega_sharpa/vega_sharpa_manip_env_cfg.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/config/vega_sharpa/vega_sharpa_gr00t_env_cfg.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/scripts/rsl_rl/export_parallel_rollouts.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/config/vega_sharpa/agents/rsl_rl_ppo_cfg.py",
+        "https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab_rl/isaaclab_rl/rsl_rl/rl_cfg.py",
+        "https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab_rl/isaaclab_rl/rsl_rl/vecenv_wrapper.py"
+      ],
+      "verification": "Executed complete pinned reference mapping, process, apply and reset methods on CPU for 3 environments x 58 joints x 41 steps in each dtype. 7134 float64 targets exactly match the standard-library helper; float32 maximum absolute difference is 1.5925265683947032e-7 rad. Checked permuted reference names, clipping, partial/full reset and preserved last_applied_actions. No simulator or model. Checked that the current Vega agent does not override the wrapper default clip_actions=None; article u denotes the input actually reaching the residual action term."
+    },
+    {
+      "id": "v2d-physics-control-clocks",
+      "article": "video-to-data",
+      "section": "fig-control-clocks",
+      "claim": "Configured physics dt=.01 and decimation=5 imply .05 s control intervals. Arm DelayedPD lag=4 counts physics substeps (.04 s); GR00T execution_length=4 covers .20 s and horizon=16 covers .80 s, with .75 s first-to-last timestamp span. These are configuration durations, not latency measurements.",
+      "sources": [
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/config/vega_sharpa/vega_sharpa_manip_env_cfg.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/assets/vega_sharpa.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/contracts.py",
+        "https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/actuators/actuator_pd.py",
+        "https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/assets/articulation/articulation.py",
+        "https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/envs/manager_based_rl_env.py",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/scripts/rsl_rl/gr00t_infer.py"
+      ],
+      "verification": "Read the full per-physics-step actuator call chain; executed complete pinned DelayedPD and buffer methods with a capture replacing base PD over 40 physics steps in two environments. A target change at .05 s reaches the delayed output at .09 s; partial reset checked. No torque or physics execution. Deterministic Fraction-based chart rebuilt byte-for-byte. The current inference CLI defaults to execution_length=4 and passes it explicitly; the standalone adapter constructor has a different default of 8."
+    },
+    {
+      "id": "rrsi-token-coverage",
+      "article": "rrsi",
+      "section": "source-map",
+      "claim": "Token cost averages observed positive counts without rubric weights. Missing token records do not imply missing task results. Constructed complete rewards with one missing token count report an 84 percent reduction and pass the coding cost rule, while filling the unknown count can remove that reduction and fail the same cost rule.",
+      "sources": [
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/evaluate.py",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/rrsi/selection.py",
+        "https://github.com/google-research/rrsi/blob/be50316e1db05914068a973f322770ef08ed7ba1/domains/coding/rrsi.json"
+      ],
+      "verification": "Executed the exact published snippet against the pinned modules: S=.5 for both, C=500000 vs 80000, delta_C=-.84; actual judge accepts the partial-cost case and rejects a complete-cost candidate with C=500000 and no novelty. Both have missing=0 and n_expected=2. A 2:8 rubric-weight example yields S=.6 and unweighted C=500000. No claim of missing records in the paper."
+    },
+    {
+      "id": "v2d-instruction-and-height-thresholds",
+      "article": "video-to-data",
+      "section": "groot-data",
+      "claim": "The profile instruction says lift the box and hold it, while full success also requires height-based stable placement. Peak lift>=.10m and a continuous hold>=.05m for 20 updates are independent conditions; the hold need not include the peak or stay above .10m.",
+      "sources": [
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/task_profiles/tissue_box_lift_hold.json",
+        "https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/closed_loop/evaluation.py"
+      ],
+      "verification": "Executed the exact article snippet using the standard-library companion and the pinned official evaluate_lift_hold. A 69-sample constructed trace gives 68 updates, peak .11m, longest hold 33, full success; only 3 samples are >=.10m and the peak appears once. A second trace has its longest hold before and separately from its peak and also passes. Both match JavaScript evaluate(). Initial rise is illustrative and not a simulated feasible robot movement. Samples are constructed in exact half-centimeter steps before conversion to meters, avoiding repeated-subtraction ambiguity at .05m."
+    }
+  ],
+  "article_files": {
+    "content/posts/ai/video-to-data/index.md": "ec30a5ce67c8744de7a00624b56e8be833b58772e53529aa9fa6c88c785a558e",
+    "content/posts/ai/rrsi/index.md": "db772414abadcf5818a8d1085373ff1172da7999f7e64cfdff1c7557fd27d641"
+  },
+  "latest_review_scope": "Sixth pass: token measurement coverage and unweighted cost aggregation; language/evaluator agreement and independent lift/hold thresholds; exact published snippets and mobile code reading.",
+  "hour_review": {
+    "start_utc": "2026-10-16T03:42:32Z",
+    "requested_deadline_utc": "2026-10-16T04:42:32Z",
+    "status": "complete",
+    "execution": "CPU source methods and deterministic constructed examples; no model calls or robot simulator",
+    "artifacts": "/tmp/two-article-hour-20261016/",
+    "final_production_directory": "/tmp/two-article-hour-final-production",
+    "validation": {
+      "acceptance_checks": 397,
+      "code_blocks": 564,
+      "local_references": 26272,
+      "chapter_and_figure_direct_loads": 416,
+      "native_lab_navigation_scenarios": 32,
+      "engineering_fragment_entries": 16,
+      "rrsi_lab_scenarios": 9,
+      "v2d_article_scenarios": 12,
+      "errors": 0,
+      "large_text_reflow_scenarios": 24,
+      "byte_identical_final_files": 58
+    },
+    "completed_utc": "2026-10-16T04:42:53Z",
+    "elapsed_seconds": 3622
+  },
+  "supporting_files": {
+    "content/posts/ai/video-to-data/data_contract_lab.py": "f3069cd1062ba2772609bf942f27d0f0721e911691805723383ce72d3bcd2284",
+    "content/posts/ai/video-to-data/assets/control-clock-durations.webp": "1aee66728b45b1633c14991c1bc66d3a0b41b467f12c6665e0c658dd52d0c5ca",
+    "scripts/plot_v2d_control_clocks.py": "e68de089bb2f9cedc45bf694647ebc19adb1c8d81bf718cb95776b16f728a63e",
+    "static/labs/navigation.css": "55c3fabd656584f25bc1afda6dfc17bb52165211898be5d7b9a362b392fed41f",
+    "static/labs/rrsi/index.html": "a48d044ae09660885617b7115ff4438cd636cf5220d02b6af9789c7e4df2734a",
+    "static/labs/rrsi/selection_lab.js": "f9105145d6c1411baf419fb521128d8dd68a6240531d564d4f43c9623a17eba6",
+    "static/labs/video-to-data/index.html": "07ae8359f54786bd7471cea8531b36dea620f18174d278d0622fe1b826f314e9",
+    "scripts/check_rrsi_lab.cjs": "67d46c20d2aa216d89cb4bdb8799d057daadaefe463f6493380926e5f3e69327"
+  },
+  "sixth_review": {
+    "start_utc": "2026-10-16T06:03:03Z",
+    "artifacts": "/tmp/two-article-pass6-20261016/",
+    "production_directory": "/tmp/two-article-pass6-final-production",
+    "status": "complete",
+    "completed_utc": "2026-10-16T06:13:55Z",
+    "validation": {
+      "acceptance_checks": 399,
+      "code_blocks": 566,
+      "local_references": 26272,
+      "page_scenarios": 20,
+      "source_claims": 24,
+      "errors": 0,
+      "copy_payload": "exact DOM text captured through clipboard stub; no host clipboard changes",
+      "manual_screenshots": 4
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "article": "content/posts/ai/rrsi/index.md",
+  "created_on": "2026-10-15",
+  "tool": "built-in image_gen",
+  "paper_sha256": "26f8b5417f8a60c9284bb4a36d3981c41b8e071134aea0bf3402fe9584c8cd76",
+  "source_revision": "be50316e1db05914068a973f322770ef08ed7ba1",
+  "assets": [
+    {
+      "path": "content/posts/ai/rrsi/assets/frozen-model-evolving-harness.webp",
+      "source": "/home/ubuntu/.codex/generated_images/01a13f13-5bd5-7e63-89d7-3b2a69c9ad50/exec-fab4438d-035e-4102-aeee-f371a0bc0ab6.png",
+      "prompt": "Create a clean technical architecture illustration for a Chinese educational article about RRSI (Regularized Recursive Self-Improvement of Agent Harnesses). White background, thin rounded blue and purple outlines, restrained pastel blue/purple/orange/green fills, generous whitespace, very legible sans-serif English labels. Wide 3:2 landscape. Exact wording below, no additional text or numerical results.\nThe composition has two large matching rounded panels side by side. LEFT panel titled \"Current agent\"; RIGHT panel titled \"Evolved agent\".\nInside EACH large panel, at its center show the SAME rounded blue core box titled \"Frozen LLM\" and sub-label \"Same weights\", with a simple abstract neural network icon. Surround the core box with four smaller purple module cards positioned neatly at the top, bottom, left and right INSIDE the panel. Exact module labels: \"Prompts\", \"Control flow\", \"Tools + memory\", \"Context management\". Cards must not overlap the blue core.\nEach large purple outline itself has a small label \"Harness\" beneath the panel title. Thin internal arrows show modules provide context or coordinate the model; avoid arbitrary circular arrows suggesting weight training.\nBetween the two large panels place a single bold right-pointing arrow, labeled above \"Edit source + evaluate\" and below \"RRSI\".\nIn the RIGHT panel only, mark a few harness cards with small green check marks and one small orange edit pencil. The Frozen LLM box is identical in both panels and has NO pencil or update arrow.\nBelow both panels, a single detached rounded green strip reads \"Transfer test: keep the final harness fixed on unseen tasks\". Connect the RIGHT large panel downward to this strip with ONE arrow. Do not connect the transfer strip back into the edit arrow or the left panel.\nTop left outside the panels: a small task-sheet icon labeled \"Task\". An arrow points into Current agent.\nTop right outside panels: a small document icon labeled \"Deliverable\". An arrow exits Evolved agent toward it.\nNo optimizer, no gradient, no changed model sizes. This illustration must convey that the program around a frozen model is the optimized object, and unseen tasks are used only for transfer evaluation.",
+      "review": "Frozen LLM identical; edit marks on harness only. Transfer evaluation has no feedback into search. Module arrows denote structural context and coordination rather than a detailed invocation sequence."
+    },
+    {
+      "path": "docs/image-generation/archive/2026-10-15/rrsi-regularized-evolution-loop-original.webp",
+      "source": "docs/image-generation/archive/2026-10-15/rrsi-regularized-evolution-loop-original.webp",
+      "prompt": "Create a precise technical flowchart for RRSI, in the style of a modern robotics/ML article: white background, thin rounded outlines, restrained pastel blue (feedback/data), purple (proposal), orange (screening and selection), green (evaluation), generous whitespace, legible sans-serif English labels. Wide 3:2 landscape. No logo, no benchmark numbers, no formulas.\nAt the top center a wide blue rounded box titled \"Current harness + edit history\". Its small sublabel reads \"Gains, regressions, unused components, pruning targets\".\nBelow it, the main workflow has four large aligned rounded cards LEFT TO RIGHT:\n1 purple: \"Propose\" with three short lines \"Sparse edit budget\", \"History-based feedback\", \"Explore when stalled\".\n2 orange: \"Diff critic\" with two lines \"Reject task-specific logic\", \"Check declared edits\".\n3 green: \"Evolve-set evaluation\" with two lines \"Frozen policy\", \"Score + policy-token cost\".\n4 orange: \"Select\" with three lines \"Best-ever score floor\", \"Cost / novelty rule\", \"Domain guards\".\nDraw bold main arrows Propose -> Diff critic -> Evolve-set evaluation -> Select.\nA solid blue arrow from the TOP blue box curves to the TOP of Propose.\nFrom Diff critic draw a SHORT downward orange branch ending in a small rounded card \"Reject or repair\". A thin orange arrow from this card loops back to Propose. This branch must not pass through evaluation.\nFrom Select draw a bold arrow DOWN into a green rounded box \"Next incumbent\", subtitle \"Highest-score admissible candidate; otherwise keep current\".\nA thin blue return arrow from Next incumbent goes around the RIGHT and TOP margin back to Current harness + edit history, labeled \"Next round\". Keep this loop distinct from the main workflow.\nFrom Evolve-set evaluation draw a thin blue arrow down into a compact blue box at bottom LEFT labeled \"Log every measured candidate\". A thin blue arrow from that log box routes along the LEFT margin back up into Current harness + edit history. This means failed measured candidates and winners both inform later proposals. Do not confuse this with reject/repair branch.\nAt bottom RIGHT detached from the loop, a light-green box \"Final transfer evaluation\", subtitle \"Final harness fixed; unseen tasks\". A dashed arrow labeled \"After search\" from Next incumbent enters this detached box. NO return arrow from the unseen-tasks box to any search stage.\nAll wording must be spelled correctly and large enough to read. Avoid crossing edges or overlapping text. The pruning targets only feed the proposer; do not show automatic untested deletion of harness components.",
+      "review": "Critic precedes expensive evaluation. Every measured candidate informs history; pruning targets feed proposals rather than deleting without evaluation. No transfer-to-search feedback. Smoke checks and finite repair limits are described in selectable article text.",
+      "status": "superseded; original retained outside published bundle",
+      "original_path": "content/posts/ai/rrsi/assets/regularized-evolution-loop.webp",
+      "original_source": "/home/ubuntu/.codex/generated_images/01a13f13-5bd5-7e63-89d7-3b2a69c9ad50/exec-d8697c7f-5357-464e-854d-22b387f3d956.png"
+    }
+  ],
+  "quantitative_assets": {
+    "tool": "Matplotlib",
+    "script": "scripts/plot_rrsi_results.py",
+    "data": "content/posts/ai/rrsi/results.json",
+    "outputs": [
+      "content/posts/ai/rrsi/assets/heldout-gains.webp",
+      "content/posts/ai/rrsi/assets/cost-transfer-ablation.webp"
+    ],
+    "review": "Data transcribed from provided PDF Figure 3 and Tables 2, 6; values are published results, not local model evaluations."
+  }
+}

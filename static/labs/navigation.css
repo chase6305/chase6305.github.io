@@ -1,0 +1,29 @@
+.lab-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.lab-nav a {
+  padding: 7px 12px;
+  border: 1px solid var(--control-line, var(--control));
+  border-radius: 6px;
+  background: var(--soft);
+  text-decoration: none;
+}
+
+.lab-return {
+  display: inline-block;
+  margin: 0 0 8px;
+  font-size: .9rem;
+}
+
+[data-lab-anchor] {
+  scroll-margin-top: 20px;
+}
+
+[data-lab-anchor]:focus-visible {
+  outline: 3px solid var(--link);
+  outline-offset: 4px;
+}

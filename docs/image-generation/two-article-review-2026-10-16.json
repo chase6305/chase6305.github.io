@@ -1,0 +1,50 @@
+{
+  "created": "2026-10-16",
+  "deterministic_figures": [
+    {
+      "article": "video-to-data",
+      "asset": "content/posts/ai/video-to-data/assets/voc-two-clocks.webp",
+      "tool": "Matplotlib",
+      "script": "scripts/plot_v2d_voc.py",
+      "numeric_companion": "content/posts/ai/video-to-data/voc_schedule_lab.py",
+      "source_commit": "193382a184308f6800331f3db829f76dc4294cfe",
+      "sources": [
+        "VegaManipCurriculumCfg",
+        "FixedTimestepCurriculum",
+        "TrackingCommand._resample_command",
+        "TrackingCommand._update_command",
+        "export_parallel_rollouts.py",
+        "gr00t_infer.py",
+        "IsaacLab v2.3.2 ManagerBasedRLEnv.step/_reset_idx",
+        "IsaacLab v2.3.2 CommandTerm.compute"
+      ],
+      "assumptions": [
+        "Upper panel uses the configured schedule at environment_step_counter / 24. Actual global-target refresh occurs during reset in the default IsaacLab v2.3.2 manager workflow.",
+        "Lower panel fixes the actual global target at zero and plots scale after k command updates since resample. k=0 is the resample state; automatic reset is followed by a command update in the same env.step. Values are not timestamps of applied physical forces.",
+        "Collection/evaluation sets global and reset scales, decay, freeze to zero and removes curriculum.",
+        "Scales are not measured forces, rewards or success rates.",
+        "Reference increments are considered before trajectory-end clipping."
+      ],
+      "review": "Inspected all labels, arrow routing, reset/update counts and title/legend spacing. Numeric methods match 35 global-clock and 1458 per-command source cases; complete IsaacLab step/reset/command methods executed with CPU fake managers across 54 environment steps to verify call order."
+    }
+  ],
+  "interactive_visuals": [
+    {
+      "path": "static/labs/video-to-data/",
+      "renderer": "Native SVG from constructed JSON height samples",
+      "source": "Released tissue_box_lift_hold profile at 193382a184308f6800331f3db829f76dc4294cfe",
+      "assumptions": "20 Hz, first sample baseline, fixed rise and high plateau; user changes transition length, end height, alternating jitter and tail length. Six score conditions retained. No XY, release, physics or model evaluation.",
+      "verification": "2003 identical JSON traces match actual official evaluate_lift_hold plus Python article companion; nine browser width/theme cases."
+    }
+  ],
+  "runtime_sources": {
+    "isaaclab_tag": "v2.3.2",
+    "container_base": "nvcr.io/nvidia/isaac-lab:2.3.2",
+    "sha256": {
+      "envs/manager_based_rl_env.py": "974977825dbbd916460b4f9bb12176ab2cde41026fadc05e1de02d8fbbc94725",
+      "envs/manager_based_env.py": "74d495925e264521b05a92296bbaf98adcabb7d94f3787ab3ed61f4d0680a198",
+      "managers/command_manager.py": "a0f4f2b35a33c9b0d3a5fea514e85b16e3230c7507c653289b68345d1671b69c",
+      "managers/curriculum_manager.py": "0d51d1c0716662567c238ce50033a60d55f260c8ab48d62d186512265a7a4bb6"
+    }
+  }
+}
