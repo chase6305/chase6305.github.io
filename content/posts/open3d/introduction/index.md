@@ -17,6 +17,7 @@ contentLanguage: "zh-CN"
 reading_prerequisites: "NumPy、点云与三维坐标变换"
 reading_focus: "先跑通无窗口的完整流程，再分章核对 legacy/Tensor API、长度单位和配准的可观测性。"
 related_posts:
+  - "/posts/ai/multiview-geometry"
   - "/posts/coacd"
   - "/posts/meshcat"
 ---

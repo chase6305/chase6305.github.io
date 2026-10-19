@@ -17,6 +17,7 @@ contentLanguage: "zh-CN"
 reading_prerequisites: "Python、OpenCV 与相机标定"
 reading_focus: "先查看检测点顺序并测量板尺寸，再将对应点用于内参或位姿求解。"
 related_posts:
+  - "/posts/ai/multiview-geometry"
   - "/posts/calibration/cctag"
   - "/posts/calibration/model"
 ---

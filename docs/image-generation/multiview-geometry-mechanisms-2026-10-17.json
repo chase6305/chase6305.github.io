@@ -1,0 +1,59 @@
+{
+  "created_on": "2026-10-17",
+  "article": "content/posts/ai/multiview-geometry/index.md",
+  "mode": "built-in image_gen.imagegen",
+  "use_case": "infographic-diagram",
+  "style_reference_images": [
+    "content/posts/ai/transformer-attention/assets/transformer-block-overview.webp",
+    "content/posts/ai/transformer-attention/assets/training-vs-kv-cache-inference.webp",
+    "content/posts/ai/transformer-attention/assets/training-lifecycle.webp"
+  ],
+  "style_reference_role": "Inspected for white backgrounds, thin rounded borders, pastel semantic colors, clear branches and legible sans-serif labels; no reference figure's subject matter is reused.",
+  "prompts": [
+    {
+      "key": "model_paths",
+      "prompt": "Use case: infographic-diagram. Create a high quality technical article illustration in the visual style of clean Transformer architecture explainers: pure white background, thin rounded outlines, restrained pastel blue for images/tokens, purple for learned modules, orange for geometry operations, green for outputs, dark sans-serif text. Flat vector-like raster diagram, generous spacing, readable large English labels, no gradients or photos, no watermark. Landscape composition about 1800x1450. Two separate wide panels stacked vertically. Title \"VGGT and DA3: paths to geometry\". These are simplified INFERENCE data paths, not exact layer counts.\nTOP panel \"VGGT\". Left: a blue group of three tiny image grids labelled \"Images\". Arrow to purple group \"Alternating attention\" containing two small sequential modules \"Within each view\" then \"Across views\", with a subtle loop labelled \"repeat\". That group branches to four distinct purple head boxes stacked vertically: \"Camera\", \"Depth\", \"Point map\", \"Tracks\". Camera and Depth BOTH feed an orange \"Unproject\" box, which feeds green \"3D points\". Point map feeds a separate direct arrow into the SAME green \"3D points\" output, bypassing Unproject. Tracks feeds a separate green \"2D tracks\" output. A small dashed blue input \"Query pixels\" has a dashed arrow ONLY into Tracks. Do not connect track output to 3D output.\nBOTTOM panel \"DA3 Any-view\". Blue \"Images\" arrow to purple \"Cross-view Transformer\". A small optional blue input box \"Known K, poses\" feeds purple \"Camera tokens\" with a dashed arrow into Cross-view Transformer; mark \"optional\". The Transformer branches to TWO independent purple outputs: top \"Depth + ray maps\", bottom \"Camera decoder\". Depth + ray maps feeds orange \"X = C + z d\" then green \"3D points\"; small note \"d is not unit-length\". Camera decoder feeds green \"Camera parameters\", with note \"default pose path\". Depth + ray maps ALSO has a separate DASHED optional path through orange \"Ray-based pose\" to the SAME \"Camera parameters\" output, labelled \"optional pose path\". Make clear the direct camera decoder is not downstream of ray-based pose. Use dashed arrows ONLY for optional inputs and optional pose path.\nKeep every required label spelled correctly, short, legible; route arrows with clear junctions and no ambiguous crossings. No accuracy, speed or metric-scale claims. No legends or panels about training, no extra models."
+    },
+    {
+      "key": "validation_paths",
+      "prompt": "Use case: infographic-diagram. Create a polished technical article flowchart, flat vector-like raster, pure white background, thin rounded borders, restrained blue inputs, purple learned inference, orange alignment/geometry, green evaluation. Match the style of clear Transformer architecture diagrams with large sans-serif English labels and generous whitespace. Landscape canvas about 1800x1450. Title \"Three views, separate evidence\". NO measured numbers, NO performance rankings, NO robots or photos.\nTop: three small camera/image icons side by side labelled \"Left chest\", \"Right chest\", \"Wrist\". They feed a wide blue box \"Synced RGB + fixed preprocessing\". That box splits into THREE separated vertical lanes.\nLEFT lane blue heading \"Image correspondences\": purple box \"RoMaV2 / LightGlue\" -> blue box \"2D matches\". This output will feed the final checks, not the reconstruction networks.\nMIDDLE lane purple heading \"Image-only reconstruction\": purple box \"VGGT / DA3 / MapAnything\" -> blue box \"Predicted cameras + depth\". This branch feeds orange box \"Align frames and scale\" then the final checks.\nRIGHT lane orange heading \"Pose-conditioned reconstruction\": purple box \"DA3 / MapAnything\" -> blue box \"Depth with supplied cameras\". A separate blue side input \"Known K and poses\" feeds ONLY the right model box, in addition to RGB input. The right output feeds the same orange \"Align frames and scale\" box. Beneath right output, add small orange note \"Supplied poses are inputs, not independent pose evidence\". Do NOT connect known poses into the image-only model branch.\nBottom wide green evaluation box \"Common-sample checks\" receiving separate clear arrows from \"2D matches\" and \"Align frames and scale\". It contains three equal labels: \"Reprojection\", \"Coverage + failures\", \"Metric scale\". A separate blue box \"Independent size / depth reference\" feeds ONLY the Metric scale portion, outside the model inference lanes. Final arrow from the wide evaluation box to a green box \"Review disagreements\".\nFootnote \"Use held-out samples; report confidence filtering and pixel resolution\". No arrows from final checks back into predictions or calibration, no arrows claiming agreement establishes truth. Keep arrows away from labels. This is an evaluation design, not an already-integrated implementation."
+    }
+  ],
+  "assets": [
+    {
+      "file": "content/posts/ai/multiview-geometry/assets/vggt-da3-geometry-paths.webp",
+      "source_file": "/home/ubuntu/.codex/generated_images/01a148d3-c1c8-7cd0-b5f6-903e77827691/exec-ae428aea-b81d-4200-8a70-812dfaa3e60c.png",
+      "status": "accepted",
+      "review": [
+        "VGGT camera and depth heads both feed unprojection; point-map route bypasses it.",
+        "Query pixels only enter the track head, which returns 2D tracks.",
+        "DA3 known camera inputs pass through camera tokens; direct camera decoder is the default pose path.",
+        "Optional ray-based pose path is separately dashed, and ray direction is explicitly not unit length.",
+        "Diagram shows internal representations; article states that high-level API can remove intermediate rays.",
+        "Omitted confidence, preprocessing, Gaussian and metric/nested branches are described in caption."
+      ]
+    },
+    {
+      "file": "content/posts/ai/multiview-geometry/assets/three-view-validation.webp",
+      "source_file": "/home/ubuntu/.codex/generated_images/01a148d3-c1c8-7cd0-b5f6-903e77827691/exec-1a37f968-3b00-4e68-a330-197873918139.png",
+      "initial_file": "/home/ubuntu/.codex/generated_images/01a148d3-c1c8-7cd0-b5f6-903e77827691/exec-05f45d67-dc21-4a77-aff6-5eb55c16524a.png",
+      "status": "accepted after targeted edit",
+      "review": [
+        "Known camera parameters feed only pose-conditioned inference; image-only models receive RGB.",
+        "Matching evidence is evaluated against reconstruction and is not supplied as model ground truth.",
+        "Removed a redundant arrow along the conditioned panel border.",
+        "Changed alignment label to record scale; article also requires uncorrected metric errors.",
+        "Independent size/depth reference feeds metric checks, not reconstruction.",
+        "Caption states that LightGlue lane includes its feature extractor.",
+        "Chart is an evaluation design with no measured results or claims of dpv2 integration."
+      ]
+    }
+  ],
+  "primary_sources": [
+    "https://github.com/facebookresearch/vggt/blob/main/vggt/models/aggregator.py",
+    "https://github.com/facebookresearch/vggt/blob/main/vggt/models/vggt.py",
+    "https://github.com/ByteDance-Seed/Depth-Anything-3/blob/main/src/depth_anything_3/model/da3.py",
+    "https://github.com/ByteDance-Seed/Depth-Anything-3/blob/main/src/depth_anything_3/api.py"
+  ],
+  "encoding": "RGB WebP quality=90, method=6; original image dimensions; no semantic retouching outside imagegen."
+}

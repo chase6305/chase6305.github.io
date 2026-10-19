@@ -89,9 +89,10 @@
   },
   {
     "id": "geometry",
-    "title": "几何处理与仿真可视化",
-    "description": "从点云和凸分解开始，按需进入网格处理、浏览器可视化与仿真场景。",
+    "title": "三维视觉、几何处理与仿真",
+    "description": "从图像匹配、深度与多视图重建进入点云和网格处理，再按需使用浏览器可视化与仿真场景。",
     "posts": [
+      "posts/ai/multiview-geometry/index.md",
       "posts/open3d/introduction/index.md",
       "posts/thesis/coacd/index.md",
       "posts/coacd/index.md",

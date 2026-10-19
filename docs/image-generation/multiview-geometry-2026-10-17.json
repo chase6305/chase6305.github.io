@@ -1,0 +1,15 @@
+{
+  "created_on": "2026-10-17",
+  "article": "content/posts/ai/multiview-geometry/index.md",
+  "asset": "assets/images-to-geometry.webp",
+  "tool": "image_gen.imagegen",
+  "prompt": "Create one polished technical overview illustration, landscape 1800x1300 or similar, white background, fine rounded outlines, restrained pastel blue purple orange and green panels, generous whitespace, large legible sans-serif English labels. Flat diagram with light perspective in the miniature icons only, no decorative robots, no watermark, no invented benchmark numbers. Title: \"From images to geometry\". EXACT layout: four horizontal rows; each row is a separate left-to-right path and no arrows connect different rows. Blue row heading \"Pixel matching\". Left shows two thumbnail views of the SAME tabletop corner with a few correctly connected corresponding dots, middle box \"RoMaV2 / LightGlue\", right box \"2D correspondences\". Orange row heading \"Calibrated stereo\". Left shows two parallel cameras and thumbnail pair, middle box \"Rectify + FoundationStereo\", right box \"Disparity + known baseline -> depth\". Purple row heading \"3D reconstruction\". Left shows three small overlapping views of the same table and cube, middle box \"VGGT / DA3 / MapAnything\", right shows tiny camera frustums around point cloud labeled \"Cameras + depth + 3D points\". Green row heading \"Video over time\". Left shows three chronological thumbnails labeled \"t0\", \"t1\", \"t2\", middle area shows TWO vertically stacked INDEPENDENT boxes and arrows: top box \"SLAM\" leads to \"Camera trajectory + map\"; bottom box \"CoTracker3\" leads to \"2D point tracks\". The video thumbnails feed both separate branches; do not connect CoTracker to 3D output or SLAM map. A small footer reads \"Check frames, scale, overlap and reprojection\". Model names must be spelled exactly. All four rows are tool families, not a single pipeline; arrows stay within rows. No claim that all model interfaces or outputs are identical. Keep text short and diagram uncluttered.",
+  "source_file": "/home/ubuntu/.codex/generated_images/01a148d3-c1c8-7cd0-b5f6-903e77827691/exec-b9d5d497-00cf-4ec7-bf21-e0d528d03584.png",
+  "processing": "RGB WebP quality=88, method=6, original dimensions",
+  "review": [
+    "Checked tool and output labels and arrows; four separate routes, SLAM and CoTracker3 remain separate.",
+    "Stereo metric depth requires rectification and known calibration; caption and prose state assumptions.",
+    "Illustrated thumbnails and colors are not measured model outputs.",
+    "Image summarizes task families; specific model versions and input conditions are explained in selectable article text."
+  ]
+}

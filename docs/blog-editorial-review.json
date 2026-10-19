@@ -1,5 +1,5 @@
 {
-  "reviewed_on": "2026-10-15",
+  "reviewed_on": "2026-10-19",
   "scope": "滚动文章清单：保留既有 URL 与草稿状态，新增文章同步维护阅读元数据与验收检查",
   "posts": [
     {
@@ -188,12 +188,14 @@
       "prerequisites": "Python、OpenCV 与相机标定",
       "focus": "先查看检测点顺序并测量板尺寸，再将对应点用于内参或位姿求解。",
       "related": [
+        90,
         7,
         9
       ],
       "path": "content/posts/calibration/opencv/index.md",
       "draft": false,
       "related_posts": [
+        "/posts/ai/multiview-geometry",
         "/posts/calibration/cctag",
         "/posts/calibration/model"
       ],
@@ -638,12 +640,14 @@
       "prerequisites": "NumPy、点云与三维坐标变换",
       "focus": "先跑通无窗口的完整流程，再分章核对 legacy/Tensor API、长度单位和配准的可观测性。",
       "related": [
+        90,
         14,
         29
       ],
       "path": "content/posts/open3d/introduction/index.md",
       "draft": false,
       "related_posts": [
+        "/posts/ai/multiview-geometry",
         "/posts/coacd",
         "/posts/meshcat"
       ],
@@ -2025,6 +2029,51 @@
         "RRSI 的 round --dry-run 保证不调用模型吗？",
         "继续轮次、重测与重新裁决有何区别？",
         "35／178 与 36／178 个缺失 trial 在默认 coding 配置中怎样处理？"
+      ]
+    },
+    {
+      "id": 90,
+      "added_on": "2026-10-17",
+      "summary": "从左胸、右胸与腕部相机出发，比较 RoMaV2、LightGlue、DA3、VGGT、FoundationStereo 和 MapAnything 等方案，区分匹配、深度、重建与跟踪，并用可下载复算的交互实验解释坐标、尺度与重投影验证。",
+      "prerequisites": "相机内外参、三维坐标变换和像素坐标的基本概念",
+      "focus": "先按输出区分任务，再看已知标定如何参与推理；比较模型时同时检查图像证据、尺度来源和失败覆盖。",
+      "related": [
+        10,
+        35,
+        88
+      ],
+      "path": "content/posts/ai/multiview-geometry/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/calibration/opencv",
+        "/posts/open3d/introduction",
+        "/posts/ai/video-to-data"
+      ],
+      "image_decision": "三张可缩放图解释任务分工、VGGT／DA3 内部预测路径与三相机验证。保留构造数据和原始尺度；标准库脚本与交互实验交叉验证外参方向、裁剪内参、尺度盲区及沿极线错配，并支持下载 JSON 后用 Python 复算。",
+      "image": "assets/images-to-geometry.webp",
+      "acceptance_checks": [
+        "RoMaV2 能否直接输出三台相机的米制位置？",
+        "VGGT 与 DA3 是“三维重建”和“仅深度”的关系吗？",
+        "DA3 的条件化输出与输入外参完全一致，说明标定正确吗？",
+        "米制单目深度与已知基线双目深度的尺度来源相同吗？",
+        "把原图关键点、缩放后的深度和旧内参混用会怎样？",
+        "MapAnything 的 cam2world 能直接当作 DA3 的 world2cam 使用吗？",
+        "三角化结果可以无条件作为真值吗？",
+        "CoTracker3 中桌角发生像素移动，说明桌子在世界中运动吗？",
+        "一个方法残差更低但只保留很少像素，就一定更好吗？",
+        "每帧独立缩放对齐后误差很小，能证明尺度稳定吗？",
+        "DA3 的射线方向是单位向量吗？",
+        "设成 `align_to_input_ext_scale=False` 就是无位姿条件推理吗？",
+        "从匹配重新拟合的基础矩阵残差很低，就证明原标定正确吗？",
+        "深度和基线同时扩大两倍，重投影误差会随之扩大吗？",
+        "三台相机必须每一对都有公共视野吗？",
+        "VGGT 的普通图像推理一定输出点轨迹吗？",
+        "跨视图 attention 能直接证明某对像素匹配正确吗？",
+        "DA3 内部预测射线图，高层结果就一定带有 `ray` 字段吗？",
+        "交互实验中候选匹配与真实观测是一回事吗？",
+        "匹配图连通，就一定能恢复所有相机间的尺度吗？",
+        "同一组全局位姿派生出的相对变换环乘为单位阵，能验证标定吗？",
+        "校正后的 Z 深度能直接与原相机深度逐像素比较吗？"
       ]
     }
   ]

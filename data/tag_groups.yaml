@@ -12,7 +12,7 @@
   tags: [RRSI, LLM Agents, Agent Harness, Self-Improvement, Regularization, Artificial Intelligence, Machine Learning, Deep Learning, Reinforcement Learning, Transformer, Attention, Computer Vision, Diffusion Models, Generative Models, Distributed Training, GPU Memory, Gymnasium, PyTorch, Paper Notes, LLM, VLM, Pretraining, Post-training, Evaluation, Ablation, DPO, PPO, RLHF, RLVR, RLCD, GRPO, GSPO, Distillation, MoE, In-Context Learning, Soft Prompt, Multimodal, Qwen, InternVL, Flow Matching]
 - name: 3D Vision & Simulation
   nameZh: 三维视觉与仿真
-  tags: [3D Vision, 3D Visualization, Hand Pose Estimation, Open3D, Point Cloud, Mesh Processing, CoACD, Collision Geometry, MeshCat, OpenGL, NVIDIA Warp, Isaac Lab, USD, Simulation]
+  tags: [3D Vision, Depth Estimation, Image Matching, VGGT, DA3, SLAM, 3D Visualization, Hand Pose Estimation, Open3D, Point Cloud, Mesh Processing, CoACD, Collision Geometry, MeshCat, OpenGL, NVIDIA Warp, Isaac Lab, USD, Simulation]
 - name: Programming & Build
   nameZh: 编程与构建
   tags: [C++, Python, CUDA, GPU Programming, GCC, CMake, ExternalProject, Build Systems, Concurrency, Lock-Free Queue, f-string, tqdm, Unicode]

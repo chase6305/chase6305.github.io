@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>多视图几何：重投影与尺度实验</title>
+  <link rel="stylesheet" href="/labs/navigation.css">
+  <link rel="stylesheet" href="/labs/multiview-geometry/geometry_lab.css">
+  <script src="/labs/rrsi/appearance.js"></script>
+  <script src="/labs/multiview-geometry/geometry_lab.js" defer></script>
+</head>
+<body>
+<main>
+  <a href="../../posts/ai/multiview-geometry/#numerical-lab">← 返回文章的数值实验</a>
+  <h1>重投影一致，尺度就正确吗？</h1>
+  <p>调整重建中的基线、深度和坐标约定，比较构造的真实观测、候选匹配与重建投影。这里使用两台平行针孔相机和一个静态点，没有运行视觉模型。</p>
+  <details>
+    <summary>固定参考与简化条件</summary>
+    <p>原图为 640 × 480 px，fx = fy = 800 px，主点 (320, 240)。左相机作为世界系，右相机中心为 (0.12, 0, 0) m，真实点为 (0.2, 0.1, 2) m。真实左像素 (400, 280)，右像素 (352, 280)。重建使用左图该点的 Z 深度。</p>
+    <p>裁剪从 (80, 40) 开始，再缩小一半；输出为 280 × 220 px，新焦距 400 px、主点 (120, 100)。使用连续像素坐标，不包含半像素偏移、畸变、遮挡、旋转或观测噪声。</p>
+    <p>这里的真实基线与真实深度是独立给定的构造参考；在真实数据中，需要通过标定、测距或其他观测获得相应信息。</p>
+  </details>
+  <noscript><p>交互实验需要 JavaScript。无需脚本也可阅读上面的固定参考，或<a href="../../posts/ai/multiview-geometry/#numerical-lab">回到文章查看六组数值结果</a>，并<a href="../../posts/ai/multiview-geometry/geometry_sanity.py">下载 Python 实验</a>复算。</p></noscript>
+  <div id="interactive" hidden>
+    <nav class="lab-nav" aria-label="实验页导航">
+      <a href="#geometry-form">调整输入</a>
+      <a href="#results">查看投影与尺度</a>
+      <a href="#reproduce">下载与复算</a>
+    </nav>
+    <form id="geometry-form" tabindex="-1" data-lab-anchor aria-label="重建参数">
+      <fieldset>
+        <legend>重建参数与候选匹配</legend>
+        <div class="fields">
+          <label>重建基线长度 / m<input name="baseline_m" type="number" min="0.01" max="0.5" step="any" value="0.12" required></label>
+          <label>预测 Z 深度 / m<input name="depth_z_m" type="number" min="0.1" max="10" step="any" value="2" required></label>
+          <label>匹配水平偏差 / 原图 px<input name="match_offset_px" type="number" min="-200" max="200" step="any" value="0" required></label>
+        </div>
+        <div class="switches">
+          <label><input name="reverse_pose" type="checkbox"> 把右相机 cam2world 当作 world2cam</label>
+          <label><input name="crop_resize" type="checkbox"> 两幅图同样裁剪并缩小一半</label>
+          <label><input name="stale_intrinsics" type="checkbox" disabled> 裁剪缩放后仍使用旧内参</label>
+        </div>
+        <p class="hint">偏差只改变候选匹配，真实观测保持固定。启用缩放后，该偏差也会映射到新像素网格；同一物理误差的像素数随分辨率改变。</p>
+        <div class="presets" aria-label="载入构造条件">
+          <button type="button" data-preset="correct">正确几何</button>
+          <button type="button" data-preset="reversed">外参方向用反</button>
+          <button type="button" data-preset="updated">缩放并更新内参</button>
+          <button type="button" data-preset="stale">缩放沿用旧内参</button>
+          <button type="button" data-preset="scaled">基线和深度都翻倍</button>
+          <button type="button" data-preset="baseline">只有基线翻倍</button>
+          <button type="button" data-preset="mismatch">沿极线错配 100 px</button>
+        </div>
+      </fieldset>
+    </form>
+    <section id="results" class="result" tabindex="-1" data-lab-anchor aria-labelledby="result-title">
+      <h2 id="result-title">投影与尺度</h2>
+      <a class="lab-return" href="#geometry-form">↑ 返回输入</a>
+      <p id="status" role="status" aria-live="polite">填写参数后查看结果。</p>
+      <div id="details" hidden>
+        <figure>
+          <svg id="pixel-chart" role="img" aria-labelledby="plot-title" aria-describedby="plot-description"></svg>
+          <figcaption>圆形是真实观测，方形是候选匹配，菱形是重建投影。三行展开显示同一条水平极线上的位置，行间高度没有几何含义；细竖线标出真实观测的横坐标。横轴会扩展以显示越界位置。</figcaption>
+        </figure>
+        <dl class="coordinates">
+          <div><dt>真实右像素</dt><dd id="value-observed"></dd></div>
+          <div><dt>候选右像素</dt><dd id="value-matched"></dd></div>
+          <div><dt>重建右投影</dt><dd id="value-projected"></dd></div>
+          <div><dt>当前图像网格</dt><dd id="value-grid"></dd></div>
+        </dl>
+        <dl class="metrics">
+          <div><dt>投影到真实观测的误差</dt><dd id="value-reprojection"></dd></div>
+          <div><dt>投影到候选匹配的误差</dt><dd id="value-matchError"></dd></div>
+          <div><dt>候选匹配的纵向极线残差</dt><dd id="value-epipolar"></dd></div>
+          <div><dt>基线相对参考的倍数</dt><dd id="value-baselineScale"></dd></div>
+          <div><dt>深度相对参考的倍数</dt><dd id="value-depthScale"></dd></div>
+          <div><dt>Z 深度相对误差</dt><dd id="value-depthError"></dd></div>
+        </dl>
+        <p id="match-warning" class="notice" hidden>当前候选匹配被故意水平移开。纵向极线残差仍可为零；候选匹配与真实观测的误差需要分别看。</p>
+        <p id="bounds-warning" class="notice" hidden>至少一个位置越界。真实评估还需检查正深度、图像边界和可见性，不能只统计这里的公式值。</p>
+        <p class="hint">显示七位有效数字，计算使用未舍入值。1e−9 px 仅用于识别本实验的数值零，不是实际系统的验收阈值。此例只检查一个静态点，不能评估整幅深度图或完整标定。</p>
+      </div>
+    </section>
+    <section id="reproduce" tabindex="-1" data-lab-anchor aria-labelledby="reproduce-title">
+      <h2 id="reproduce-title">下载与 Python 复算</h2>
+      <p><a id="download-case" download="geometry-case.json">下载当前构造样本 JSON</a>，再下载文章的 <a href="../../posts/ai/multiview-geometry/geometry_sanity.py">geometry_sanity.py</a>，在同一目录运行：</p>
+      <pre tabindex="0" aria-label="Python 复算命令"><code>python3 -B geometry_sanity.py \
+  --input geometry-case.json</code></pre>
+      <p>JSON 保存输入、图像网格、三种像素位置及未舍入结果。Python 从输入重新计算，不信任下载文件里已经写好的结果。</p>
+    </section>
+  </div>
+  <footer><p><a href="../../posts/ai/multiview-geometry/">阅读全文</a> · <a href="geometry_lab.js">查看计算代码</a></p></footer>
+</main>
+</body>
+</html>
