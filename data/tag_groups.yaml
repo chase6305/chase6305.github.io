@@ -6,7 +6,7 @@
   tags: [Signal Processing, Kalman Filter, EKF, Butterworth, One Euro Filter, Pose Filter, Mass Spring Damper, Weighted Moving Average]
 - name: Embodied AI & Robot Learning
   nameZh: 具身智能与机器人学习
-  tags: [Video to Data, CHORD, Jev, VLA, Behavior Prompting, StableHand, Bimanual Manipulation, Humanoid Robots, Humanoid, Embodied AI, Robot Learning, Imitation Learning, LeRobot, ACT, Action Chunking, RT-2, OpenVLA, Physical Intelligence, RECAP, RTC, Generalist, GEN-1.5, RynnBrain, X-VLA, MolmoMotion, Motion Forecasting, World Model, World Action Model, Egocentric, Teleoperation, UMI, APG, Light-Loco-Parkour, Locomotion]
+  tags: [Cosmos 3, SuperMimic, Video to Data, CHORD, Jev, VLA, Behavior Prompting, StableHand, Bimanual Manipulation, Humanoid Robots, Humanoid, Embodied AI, Robot Learning, Imitation Learning, LeRobot, ACT, Action Chunking, RT-2, OpenVLA, Physical Intelligence, RECAP, RTC, Generalist, GEN-1.5, RynnBrain, X-VLA, MolmoMotion, Motion Forecasting, World Model, World Action Model, Egocentric, Teleoperation, UMI, APG, Light-Loco-Parkour, Locomotion]
 - name: AI & Learning
   nameZh: 人工智能与学习
   tags: [RRSI, LLM Agents, Agent Harness, Self-Improvement, Regularization, Artificial Intelligence, Machine Learning, Deep Learning, Reinforcement Learning, Transformer, Attention, Computer Vision, Diffusion Models, Generative Models, Distributed Training, GPU Memory, Gymnasium, PyTorch, Paper Notes, LLM, VLM, Pretraining, Post-training, Evaluation, Ablation, DPO, PPO, RLHF, RLVR, RLCD, GRPO, GSPO, Distillation, MoE, In-Context Learning, Soft Prompt, Multimodal, Qwen, InternVL, Flow Matching]

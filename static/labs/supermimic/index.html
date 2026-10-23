@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>SuperMimic：两步策略梯度实验</title>
+  <link rel="stylesheet" href="/labs/navigation.css">
+  <link rel="stylesheet" href="/labs/supermimic/gradient_lab.css">
+  <script src="/labs/rrsi/appearance.js"></script>
+  <script src="/labs/supermimic/gradient_lab.js" defer></script>
+</head>
+<body>
+<main>
+  <a href="../../posts/ai/supermimic/#bptt-example">← 返回 SuperMimic 的两步手算</a>
+  <h1>模型权重固定，策略梯度怎样通过？</h1>
+  <p>改变策略输出、替代模型或中间状态的反向路径，比较预测轨迹、梯度与一次更新后的回报。</p>
+  <div class="assumptions">
+    <p><strong>固定的一维问题：</strong><code>s₀ = 0，a₀ = a₁ = θ</code>。参照转移为 <code>s′ = s + 2a</code>；替代转移为 <code>s′ = s + ba + c</code>。每步奖励 <code>r = −(s′ − 1)²</code>，目标是两步奖励之和。</p>
+    <p>参数 b、c 在策略更新中固定。梯度按链式法则显式计算，再用中心有限差分核对完整目标。这里取 γ = 1，省略观测噪声、终止、critic 和状态依赖的 actor；状态与动作没有指定物理单位。这些构造值用于核对计算，不是 G1 的动力学或论文实验结果。</p>
+  </div>
+  <noscript><p>交互计算需要 JavaScript。默认算例的两步状态为 0.2、0.4，回报 −1；完整梯度为 8，切断中间状态后的梯度为 5.6。<a href="../../posts/ai/supermimic/#bptt-example">文章提供完整推导与 Python 有限差分代码。</a></p></noscript>
+  <div id="interactive" hidden>
+    <nav class="lab-nav" aria-label="实验页导航">
+      <a href="#gradient-form">调整输入</a>
+      <a href="#results">比较轨迹与梯度</a>
+      <a href="#reproduce">下载与复算</a>
+    </nav>
+    <form id="gradient-form" aria-label="标量策略与替代模型参数" tabindex="-1" data-lab-anchor>
+      <fieldset>
+        <legend>策略与固定的替代模型</legend>
+        <div class="fields">
+          <label>策略参数 θ（−0.5～0.75）<input name="theta" type="number" min="-0.5" max="0.75" step="any" value="0.1" required></label>
+          <label>动作增益 b（−4～4）<input name="gain" type="number" min="-4" max="4" step="any" value="2" required></label>
+          <label>每步偏移 c（−1～1）<input name="offset" type="number" min="-1" max="1" step="any" value="0" required></label>
+          <label>学习率 η（0.001～0.1）<input name="learningRate" type="number" min="0.001" max="0.1" step="any" value="0.01" required></label>
+        </div>
+        <label class="switch"><input name="detach" type="checkbox"> 切断传入第二步的中间状态梯度</label>
+        <p class="hint">切断只改变反向路径，当前两步的前向状态和回报保持相同。调整 b、c 会改变替代模型；点击下方按钮会重置全部输入。</p>
+        <div class="presets" aria-label="重置为文章算例">
+          <button type="button" data-preset="full">完整 BPTT</button>
+          <button type="button" data-preset="detached">中间状态 detach</button>
+          <button type="button" data-preset="opposite">轨迹相同，梯度相反</button>
+        </div>
+      </fieldset>
+    </form>
+    <section id="results" class="result" aria-labelledby="results-title" tabindex="-1" data-lab-anchor>
+      <h2 id="results-title">先比较前向值，再看梯度与更新</h2>
+      <a class="lab-return" href="#gradient-form">↑ 返回输入</a>
+      <p id="status" role="status" aria-live="polite">填写参数后查看结果。</p>
+      <div id="result-details" hidden>
+        <div class="paths">
+          <div class="path reference">
+            <h3>参照系统：s′ = s + 2a</h3>
+            <ol start="0" aria-label="参照系统状态序列">
+              <li>s₀ = <span class="value" id="reference-state-0"></span></li>
+              <li>s₁ = <span class="value" id="reference-state-1"></span></li>
+              <li>s₂ = <span class="value" id="reference-state-2"></span></li>
+            </ol>
+          </div>
+          <div class="path model">
+            <h3>替代模型：s′ = s + ba + c</h3>
+            <ol start="0" aria-label="替代模型状态序列">
+              <li>s₀ = <span class="value" id="model-state-0"></span></li>
+              <li>s₁ = <span class="value" id="model-state-1"></span></li>
+              <li>s₂ = <span class="value" id="model-state-2"></span></li>
+            </ol>
+          </div>
+        </div>
+        <dl class="metrics">
+          <div><dt>当前参照回报</dt><dd id="reference-return"></dd></div>
+          <div><dt>当前模型回报</dt><dd id="model-return"></dd></div>
+          <div><dt>两步状态 RMSE</dt><dd id="state-error"></dd></div>
+          <div><dt>参照系统的完整梯度</dt><dd id="gradient-reference"></dd></div>
+          <div><dt>替代模型的完整梯度</dt><dd id="gradient-full"></dd></div>
+          <div><dt>替代目标的中心有限差分</dt><dd id="gradient-fd"></dd></div>
+          <div><dt>当前反向路径</dt><dd id="selected-path"></dd></div>
+          <div><dt>本次更新使用的梯度</dt><dd id="gradient-selected"></dd></div>
+        </dl>
+        <h3>两步分别贡献多少梯度</h3>
+        <ol class="steps">
+          <li>ds₁/dθ = <span class="value" id="derivative-1"></span>；第一步奖励贡献 <span class="value" id="contribution-1"></span>。</li>
+          <li>ds₂/dθ = <span class="value" id="derivative-2"></span>；第二步奖励贡献 <span class="value" id="contribution-2"></span>。</li>
+        </ol>
+        <p id="detach-note" class="hint" hidden>这里第二步只保留当前动作的导数 b，丢掉了第一步状态传来的 b。完整前向目标的有限差分仍使用两步全部依赖，因此不应拿它作为 detach 路径的“预期相等值”。</p>
+        <h3>一次更新：θ新 = θ + η × 当前梯度</h3>
+        <dl class="metrics">
+          <div><dt>更新后的策略参数</dt><dd id="theta-after"></dd></div>
+          <div><dt>更新后的参照回报</dt><dd id="reference-after"></dd></div>
+          <div><dt>参照回报变化</dt><dd id="reference-change"></dd></div>
+          <div><dt>更新后的模型回报</dt><dd id="model-after"></dd></div>
+          <div><dt>模型回报变化</dt><dd id="model-change"></dd></div>
+        </dl>
+        <p class="hint">两种回报均从 s₀ = 0 重新执行两步。模型增益与偏移不更新；较大学习率也可能越过最优点。有限差分只核对替代目标的导数，不能检验它与参照动力学是否一致。读数显示七位有效数字，计算与下载保留未舍入值。</p>
+      </div>
+    </section>
+    <section id="reproduce" aria-labelledby="reproduce-title" tabindex="-1" data-lab-anchor>
+      <h2 id="reproduce-title">下载当前算例并复算</h2>
+      <p><a id="download-case" download="supermimic-gradient-case.json" hidden>下载输入与结果 JSON</a>，再<a href="gradient_lab.js" download>下载计算代码 gradient_lab.js</a>，在同一目录用 Node.js 运行：</p>
+      <pre tabindex="0" aria-label="Node.js 复算命令"><code>node gradient_lab.js supermimic-gradient-case.json</code></pre>
+      <p>代码只从 JSON 的 input 重新计算，不采用文件里保存的结果作为真值。全部计算在本地完成，无需模型权重或额外软件包。</p>
+    </section>
+  </div>
+  <footer><p><a href="../../posts/ai/supermimic/">阅读全文</a> · <a href="gradient_lab.js">查看计算代码</a></p></footer>
+</main>
+</body>
+</html>

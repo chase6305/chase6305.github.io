@@ -1,0 +1,409 @@
+{
+  "reviewed_on": "2026-10-23",
+  "article": "content/posts/ai/supermimic/index.md",
+  "source": {
+    "local_pdf": "/home/ubuntu/Documents/SuperMimic.pdf",
+    "pages": 19,
+    "version": "arXiv:2610.28480v1, 2026-10-20",
+    "paper": "https://arxiv.org/abs/2610.28480v1",
+    "project": "https://supermimic.github.io/",
+    "figure_provenance": "docs/image-generation/supermimic-20261022.json",
+    "sha256": "fe213017ab062f4acc3965da89abd3c29969163e144a2628a662b8ce46691009"
+  },
+  "coverage": [
+    "目标条件运动跟踪与共享身体动力学",
+    "模拟器采集、八步自回归模型拟合、三十二步策略想象",
+    "物理上下文、噪声、软终止与存活权重",
+    "BPTT 链式法则、参数冻结与输入梯度的区别",
+    "末端 critic、GAE 目标与短时域消融",
+    "G1 的 93 维单帧观测、十帧历史、目标编码器与 PD 动作接口",
+    "奖励、终止、域随机化、动作筛选与困难片段重置",
+    "SONIC 比较预算、训练数据与硬件差异",
+    "完整片段失败判据及 Table A.8 全部动作组",
+    "PPO-Sim、模型吞吐率和 PPO-WM 对照",
+    "四类真机动作与证据范围",
+    "速度编码器的训练梯度、命令来源与阶跃测试",
+    "训练参数、复现检查项、局限与十八项阅读验收",
+    "三张方法图、两步标量 BPTT 手算、有限差分及冻结参数的自动求导交叉验证",
+    "同一点预测值相等但动作 Jacobian 相反的一步算例",
+    "存活权重与转移奖励的时间下标",
+    "速度命令坐标系、先平均后求范数、未跌倒试验条件统计与绘图截断",
+    "两步 BPTT 交互实验：完整梯度、切断中间状态、轨迹相同但导数相反",
+    "可下载输入与结果 JSON；Node.js 从输入独立重算",
+    "每轮采集、模型、actor、critic 的参数更新对象与梯度依赖"
+  ],
+  "numerical_checks": {
+    "observation_dimensions": "29+29+3+3+29=93; ten frames=930",
+    "model_window": "8/50=0.16 s",
+    "imagination_window": "32/50=0.64 s",
+    "sonic_gpu_hours": "128*168=21504",
+    "reported_budget_ratio": "21504/3=7168; different hardware and training data",
+    "two_gpu_budget": "2*9.8=19.6 GPU-h",
+    "filter_counts": "142220-12553-153=129514",
+    "table_a8": "motion counts=129514; failures=179/25/0",
+    "velocity_responses": "3*(15*15-1)=672",
+    "velocity_error_wins": "650/15 reported; remaining seven not assigned an inferred category",
+    "two_step_toy": {
+      "theta": 0.1,
+      "fixed_model_gain": 2,
+      "return_before": -1.0,
+      "full_gradient": 8.0,
+      "detached_middle_gradient": 5.6,
+      "gradient_ascent_step": 0.01,
+      "theta_after": 0.18,
+      "return_after": -0.488,
+      "checks": [
+        "finite difference using Python standard library",
+        "PyTorch 2.13.0 CPU autograd; model gain gradient remains None"
+      ]
+    },
+    "value_fit_vs_gradient": {
+      "action": 0.1,
+      "true_transition": "2a",
+      "model_transition": "0.4-2a",
+      "both_next_states": 0.2,
+      "reward": "-(next_state-1)^2",
+      "true_return_gradient": 3.2,
+      "surrogate_return_gradient": -3.2,
+      "verified_by": "Python standard library central finite differences"
+    },
+    "velocity_mean_order": {
+      "equal_time_errors": [
+        1,
+        -1
+      ],
+      "norm_of_mean": 0,
+      "mean_of_norms": 1,
+      "scope": "constructed scalar example; not a paper measurement"
+    },
+    "two_gpu_learning_rate": "sqrt(2) * 2e-4; Table A.5 visually checked on PDF page 16",
+    "cosine_schedule": "250000 iterations to 0.03x, then constant through 320000 iterations",
+    "interactive_presets": {
+      "shared_initial_theta": 0.1,
+      "shared_states": [
+        0,
+        0.2,
+        0.4
+      ],
+      "learning_rate": 0.01,
+      "full_bptt": {
+        "gradient": 8,
+        "theta_after": 0.18,
+        "reference_return_after": -0.488
+      },
+      "detached": {
+        "gradient": 5.6,
+        "theta_after": 0.156,
+        "reference_return_after": -0.61472
+      },
+      "opposite_model": {
+        "gain": -2,
+        "offset": 0.4,
+        "gradient": -8,
+        "theta_after": 0.02,
+        "model_return_after": -0.488,
+        "reference_return_after": -1.768
+      },
+      "scope": "constructed scalar two-step problem; gamma=1; no termination, critic, observation noise or physical units"
+    }
+  },
+  "validation": {
+    "hugo": "0.165.0 extended",
+    "draft_preview_before_publication": "passed; hugo server -D",
+    "fresh_production_build": "passed; hugo --minify --destination /tmp/chase-supermimic-round4-compact-20261023",
+    "release_validation": {
+      "status": "passed",
+      "script": "scripts/validate_blog.py --python-snippets --structured-snippets",
+      "local_references_checked": 27765,
+      "reviewed_posts": 93,
+      "acceptance_checks": 459,
+      "errors": [],
+      "warnings": [],
+      "artifacts": "/tmp/chase-supermimic-round4-final-validation-20261023.json"
+    },
+    "filter_inventory": "passed; 90 published posts, 11 learning paths",
+    "toc_fixtures": "passed; scripts/test_blog_toc.py",
+    "site_assets": "passed; 3 pinned packages, 29 files, 20 local formula fonts, 21 integrity assets",
+    "scalar_gradient_checks": {
+      "script": "scripts/test_supermimic_gradient_lab.cjs",
+      "presets": 3,
+      "closed_form_cases": 100,
+      "finite_differences": "passed",
+      "invalid_input_rejection": "passed",
+      "downloaded_cli_recalculation": "passed"
+    },
+    "browser": {
+      "widths": [
+        320,
+        390,
+        1440
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "javascript_disabled_widths": [
+        320,
+        1440
+      ],
+      "figures_loaded_and_dimensioned": 7,
+      "rendered_math_expressions": 113,
+      "headings_checked": 46,
+      "local_routes_checked": 13,
+      "horizontal_page_overflow": false,
+      "clipped_captions": false,
+      "broken_anchors": false,
+      "keyboard_table_scroll": true,
+      "keyboard_formula_scroll": true,
+      "keyboard_image_zoom_and_focus_return": true,
+      "native_disclosure_keyboard": true,
+      "native_disclosure_without_javascript": true,
+      "self_check_answers": 18,
+      "runtime_exceptions": 0,
+      "artifacts": "/tmp/chase-supermimic-browser-round4-20261023"
+    },
+    "interactive_lab_browser": {
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "themes": [
+        "light",
+        "dark",
+        "warm"
+      ],
+      "layouts": 12,
+      "presets": 3,
+      "keyboard_preset_and_switch": true,
+      "keyboard_chapter_links": true,
+      "invalid_input_clears_results": true,
+      "download_recomputed": true,
+      "blocked_storage": true,
+      "javascript_disabled_widths": [
+        320,
+        1440
+      ],
+      "external_requests": 0,
+      "runtime_exceptions": 0,
+      "artifacts": "/tmp/chase-supermimic-gradient-round4-20261023/results.json"
+    },
+    "full_reading_regression": {
+      "cases": 372,
+      "failed": 0,
+      "runtime_exceptions": 0,
+      "includes_drafts": true,
+      "artifacts": "/tmp/chase-supermimic-reading-round4-20261023/results.json"
+    },
+    "full_accessibility_regression": {
+      "layouts": 135,
+      "runtime_exceptions": 0,
+      "mobile_menu_focus": true,
+      "theme_keyboard": true,
+      "blocked_storage": true,
+      "keyboard_zoom": true,
+      "artifacts": "/tmp/chase-supermimic-accessibility-round4-20261023/results.json"
+    },
+    "diff_check": "passed",
+    "existing_heading_anchors": {
+      "preserved": 45,
+      "removed": [],
+      "new": [
+        "gradient-lab"
+      ]
+    }
+  },
+  "publication": {
+    "draft": false,
+    "route": "/posts/ai/supermimic/",
+    "git_push_performed": false
+  },
+  "image_review": {
+    "generated_method_diagrams": 3,
+    "preserved_rendered_paper_figures": 4,
+    "original_training_loop": "preserved and linked from Figure 1",
+    "style_rules": "AGENTS.md:29",
+    "tool_mode": "built-in image_gen",
+    "provenance": "docs/image-generation/supermimic-20261022.json",
+    "checks": [
+      "Logged and current actor actions distinguished",
+      "Prediction targets feed loss separately from predicted states",
+      "Backward gradients pass through fixed model computations",
+      "Terminal critic output is a scalar value",
+      "Deployment contains actor, reference and proprioception, setpoint scaling and PD, with no privileged context, world model or critic"
+    ]
+  },
+  "review_history": [
+    {
+      "round": 2,
+      "reviewed_on": "2026-10-22",
+      "validation": {
+        "hugo": "0.165.0 extended",
+        "draft_preview_before_publication": "passed; hugo server -D",
+        "fresh_production_build": "passed; hugo --minify --destination /tmp/chase-supermimic-round2-release-20261022",
+        "release_validation": "passed; scripts/validate_blog.py --python-snippets --structured-snippets; 27252 local references; no errors or warnings",
+        "filter_inventory": "passed; 89 published posts, 11 learning paths",
+        "toc_fixtures": "passed; scripts/test_blog_toc.py",
+        "browser": {
+          "widths": [
+            320,
+            390,
+            1440
+          ],
+          "themes": [
+            "light",
+            "dark"
+          ],
+          "javascript_disabled_widths": [
+            320,
+            1440
+          ],
+          "figures_loaded_and_dimensioned": 7,
+          "rendered_math_expressions": 82,
+          "headings_checked": 45,
+          "local_routes_checked": 12,
+          "horizontal_page_overflow": false,
+          "clipped_captions": false,
+          "broken_anchors": false,
+          "keyboard_table_scroll": "passed",
+          "keyboard_formula_scroll": "passed",
+          "keyboard_image_zoom_and_focus_return": "passed",
+          "runtime_exceptions": 0,
+          "artifacts": "/tmp/chase-supermimic-browser-round2-20261022"
+        },
+        "diff_check": "passed",
+        "existing_heading_anchors": {
+          "preserved": 44,
+          "removed": 0,
+          "new": [
+            "bptt-example"
+          ]
+        }
+      }
+    },
+    {
+      "round": 3,
+      "reviewed_on": "2026-10-23",
+      "validation": {
+        "hugo": "0.165.0 extended",
+        "draft_preview_before_publication": "passed; hugo server -D",
+        "fresh_production_build": "passed; hugo --minify --destination /tmp/chase-supermimic-round3-final-20261023",
+        "release_validation": {
+          "status": "passed",
+          "script": "scripts/validate_blog.py --python-snippets --structured-snippets",
+          "local_references_checked": 27760,
+          "reviewed_posts": 93,
+          "acceptance_checks": 457,
+          "errors": [],
+          "warnings": [],
+          "artifacts": "/tmp/chase-supermimic-round3-final-validation-20261023.json"
+        },
+        "filter_inventory": "passed; 90 published posts, 11 learning paths",
+        "toc_fixtures": "passed; scripts/test_blog_toc.py",
+        "site_assets": "passed; 3 pinned packages, 29 files, 20 local formula fonts, 21 integrity assets",
+        "browser": {
+          "widths": [
+            320,
+            390,
+            1440
+          ],
+          "themes": [
+            "light",
+            "dark"
+          ],
+          "javascript_disabled_widths": [
+            320,
+            1440
+          ],
+          "figures_loaded_and_dimensioned": 7,
+          "rendered_math_expressions": 100,
+          "headings_checked": 45,
+          "local_routes_checked": 12,
+          "horizontal_page_overflow": false,
+          "clipped_captions": false,
+          "broken_anchors": false,
+          "keyboard_table_scroll": true,
+          "keyboard_formula_scroll": true,
+          "keyboard_image_zoom_and_focus_return": true,
+          "native_disclosure_keyboard": true,
+          "native_disclosure_without_javascript": true,
+          "self_check_answers": 16,
+          "runtime_exceptions": 0,
+          "artifacts": "/tmp/chase-supermimic-browser-round3-20261023"
+        },
+        "full_reading_regression": {
+          "cases": 372,
+          "failed": 0,
+          "exceptions": 0,
+          "article_cases": 4,
+          "includes_drafts": true,
+          "artifacts": "/tmp/chase-supermimic-reading-round3-20261023/results.json"
+        },
+        "full_accessibility_regression": {
+          "layouts": 135,
+          "runtime_exceptions": 0,
+          "mobile_menu_focus": true,
+          "theme_keyboard": true,
+          "blocked_storage": true,
+          "keyboard_zoom": true,
+          "artifacts": "/tmp/chase-supermimic-accessibility-round3-20261023/results.json"
+        },
+        "diff_check": "passed",
+        "existing_heading_anchors": {
+          "preserved": 45,
+          "removed": [],
+          "new": []
+        }
+      }
+    }
+  ],
+  "round_3": {
+    "reviewed_on": "2026-10-23",
+    "source_sections": [
+      "3.1–3.3: Equations 1–3",
+      "Appendix D: Table A.5, PDF page 16",
+      "Appendix G.1–G.2, PDF pages 18–19"
+    ],
+    "changes": [
+      "Shortened title and prerequisites; reading routes use a native disclosure",
+      "Added a zero state-error/opposite-gradient counterexample and survival indexing explanation",
+      "Expanded velocity score definition, trial selection and display cap; clarified unassigned seven responses",
+      "Recorded two-GPU learning-rate scaling and exact cosine schedule",
+      "Separated 16 self-check questions from native disclosure answers; synchronized editorial metadata"
+    ],
+    "validation_status": "passed",
+    "reading_regression": {
+      "cases": 372,
+      "failed": 0,
+      "exceptions": 0,
+      "article_cases": 4,
+      "includes_drafts": true,
+      "artifacts": "/tmp/chase-supermimic-reading-round3-20261023/results.json"
+    }
+  },
+  "round_4": {
+    "reviewed_on": "2026-10-23",
+    "changes": [
+      "Added linked local interactive gradient lab with 3 presets, input validation, theme inheritance, keyboard controls and no-JavaScript fallback",
+      "Added downloadable JSON and Node.js recalculation that ignores stored output",
+      "Added a compact numerical comparison readable at 320 pixels and an update-ownership table",
+      "Extended self-check to 18 questions and synchronized metadata"
+    ],
+    "lab": {
+      "route": "/labs/supermimic/",
+      "files": [
+        "static/labs/supermimic/index.html",
+        "static/labs/supermimic/gradient_lab.js",
+        "static/labs/supermimic/gradient_lab.css"
+      ],
+      "quantitative_checks": "scripts/test_supermimic_gradient_lab.cjs",
+      "browser_checks": "scripts/check_supermimic_gradient_lab.cjs",
+      "closed_form_cases": 100,
+      "finite_difference_cases": 100,
+      "presets": 3,
+      "framework": "explicit scalar chain rule; independent central finite differences"
+    },
+    "validation_status": "passed"
+  }
+}

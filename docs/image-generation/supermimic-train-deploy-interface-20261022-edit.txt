@@ -1,0 +1,9 @@
+Edit the supplied SuperMimic training-versus-deployment diagram. Keep the entire RIGHT Deployment panel unchanged, including its correct encoder, 32-D latent, 10-frame 93-value history, decoder, 29-D action, PD, and physical G1 feedback. Keep title and pastel white style.
+Fix ONLY the LEFT Training panel:
+- In "Simulator transitions" remove the incorrect observation-tuple subtitle completely; use only the plain label "Simulator transitions". These are state-based logged transitions, not observation-only dynamics.
+- In "Physics context ξ" change subtitle from "Friction • offsets • mass" to "Friction • calibration • COM offset".
+- Remove the formula subtitle "r_t, V(o_t)" from the Rewards + critic value box entirely; the critic uses privileged state, goal and context, not only o_t.
+- Add a clear SOLID forward arrow from World model to Rewards + critic value.
+- Remove BOTH existing dashed direct arrows from Rewards + critic value into Actor. Replace them by exactly one orange dashed gradient path Rewards + critic value → World model computation → Actor. Use separate ports so it cannot be confused with the solid forward rollout arrows. Label it "Policy gradient"; explicitly show "ω fixed" beside World model during this imagined policy update. The dashed gradient must not end at simulator transitions or physics context.
+- Keep the separate solid actor action → model and predicted observation + noise → actor arrows. Remove the small observation formula under that label, leaving only words.
+No arrows cross the divider. No other additions. Make all labels short and readable.

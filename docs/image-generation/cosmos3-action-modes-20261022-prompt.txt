@@ -1,0 +1,10 @@
+Use case: scientific-educational. Asset: simple three-row technical explainer for Cosmos 3 action generation modes.
+Create a polished flat diagram with white background, thin rounded outlines, restrained pastel blue for known conditions, purple for the model, orange for unknown generation targets, dark sans-serif labels, generous whitespace. Match the clean academic blog style. Wide landscape.
+Title "One model, three action configurations".
+Exactly three horizontal rows with a short row title on the left, a pale-blue Known conditions box, an arrow into a purple Cosmos 3 box, and an arrow into a pale-orange Generation targets box. Use an identical model icon and layout in each row.
+Row 1 title "Forward dynamics". Known conditions text "Observed video + known actions". Targets text "Future video".
+Row 2 title "Inverse dynamics". Known conditions text "Observed video transitions". Targets text "Actions explaining transitions".
+Row 3 title "Policy / world-action". Known conditions text "Observed video + task". Targets text "Future video + actions".
+Top column headings: "Known conditions" above blue boxes; "Generation targets" above orange boxes.
+Bottom tiny timeline with just three items, "video at t−1" → "action a_t" → "video at t", and caption "a_t describes the transition from t−1 to t".
+Scientific constraints: action and video in the policy row are joint generation targets, so put them in ONE output box. Do not draw predicted video feeding predicted action sequentially. These are generative training/conditioning modes; do not draw motors, PD controllers, rewards, or model-based policy gradients. No quantitative results or claims about physical accuracy. Use only the supplied short labels, do not add long footnotes or equations.

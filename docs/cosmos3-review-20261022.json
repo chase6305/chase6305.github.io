@@ -1,0 +1,544 @@
+{
+  "reviewed_on": "2026-10-23",
+  "article": "content/posts/ai/cosmos3/index.md",
+  "source": {
+    "local_pdf": "/home/ubuntu/Documents/cosmos3.pdf",
+    "pages": 139,
+    "sha256": "df058bd2447fbdd83d13fd63be60a8b0aceb00ef6e50ba428b0a6bdbbed64b8d",
+    "version": "arXiv:2606.02800v4, revised 2026-06-23; PDF cover 2026-06-24",
+    "paper": "https://arxiv.org/abs/2606.02800v4",
+    "project": "https://research.nvidia.com/labs/cosmos-lab/cosmos3/"
+  },
+  "coverage": [
+    "模型家族、通用权重与图像／视频／DROID 专用检查点",
+    "ViT／VAE 编码、双塔参数、单向 AR 到 DM 条件依赖与样本隔离",
+    "相对位姿、6D 旋转、抓握状态与跨具身动作投影",
+    "FD／ID／policy 的干净条件、带噪目标与时间约定",
+    "TPS 调制、MRoPE、15000 位置偏移与流匹配积分方向",
+    "Reasoner、生成预训练、中期动作训练及专用后训练课程",
+    "数据去重、合成数据取舍、音频处理后的重新标注",
+    "结构化提示、采样配置、缓存、CFG 并行与控制延迟",
+    "DROID 绝对关节接口、三视角输入、动作块与真机执行",
+    "RoboLab 指令条件、LIBERO 适配、真机榜单快照与动作视频一致性",
+    "理解、图像、视频、音频、前向动力学评估及指标边界",
+    "Reasoner、FPS、动作模式消融与负迁移",
+    "长序列工程、训练成本、局限、报告内部不一致与二十项验收",
+    "贯穿操作任务的 FD／ID／policy 条件概率、训练监督与推理可见信息",
+    "Attention mask、loss mask 与固定条件采样的区别及标量核对",
+    "DROID 单次请求顺序、反馈要求、缓存范围与控制调度的证据边界",
+    "Table 11 图像基准、视频评估与 Artificial Analysis 迭代评审的不同协议",
+    "TPS 与时空网格 token 数、采样预算与数据池份额的区别",
+    "HUE 的 Unclear 分母、问答级汇总、题数上限差异与独立性近似",
+    "FPS Composite 的档位内乘积与跨档位平均，以及可运行评分核对",
+    "跨域矩阵的行列方向、目标域预算与总预算、人体运动 warmup 的证据范围",
+    "动作输入投影、MoT 输出隐藏状态与流速度读出的区别",
+    "相对位姿的局部坐标推导、物理时间与噪声坐标的区别",
+    "CFG 组合约定、shift 重参数化、逻辑分支数与按分支缓存",
+    "初读与复现两条阅读路线、按问题查阅索引及自测答案的原生折叠交互",
+    "音视频事件对应图、频谱瞬态与感知音质的区别，及 AQ／PQ 符号差异",
+    "理解上下文、复制权重初始化与辅助视频目标的不同证据要求"
+  ],
+  "numerical_checks": {
+    "audio_TPS": "48000/1920=25",
+    "base_video_TPS": "24/4=6",
+    "temporal_steps": {
+      "16fps_video": 1.5,
+      "30fps_video": 0.8,
+      "25hz_audio": 0.24,
+      "15hz_action": 0.4
+    },
+    "action_dimensions": {
+      "single_arm": "9+1=10",
+      "humanoid": "9+2*9+2=29",
+      "egocentric_hands": "9+2*9+2*15=57"
+    },
+    "flow_sign_example": "clean=2, noise=-1, sigma=0.5, x=0.5, v=-3; integrating sigma to zero recovers 2",
+    "generation_mix": "20+56+16+8=100; video-only 70/20/10",
+    "midtraining_mix": "10+32+8+25+20+5=100",
+    "droid_canvas": "360+180=540 pixels high; two 320-wide lower views make 640 pixels wide",
+    "droid_action_block": "32/15=2.1333 seconds; four denoising steps do not imply 15 model queries per second",
+    "robolab_specific_gain": "39.7-28.1=11.6 percentage points",
+    "libero_table_20": {
+      "iterations": [
+        500,
+        1000,
+        1500,
+        2000
+      ],
+      "MT_init": [
+        24.6,
+        91.4,
+        95.8,
+        97.4
+      ],
+      "PT_init": [
+        0,
+        73.8,
+        93.4,
+        95.2
+      ],
+      "rollouts_per_checkpoint": 500
+    },
+    "pusht_fd_tradeoff": "26.22-27.13=-0.91 dB; coverage is not task success",
+    "masked_flow_example": {
+      "input": [
+        5,
+        0.5
+      ],
+      "predicted_velocity": [
+        100,
+        -2
+      ],
+      "target_velocity": [
+        0,
+        -3
+      ],
+      "condition_target_entry": "placeholder ignored by loss",
+      "target_mask": [
+        false,
+        true
+      ],
+      "target_mse": 1,
+      "incorrect_unmasked_mse": 5000.5,
+      "delta_sigma": -0.5,
+      "after_euler_step": [
+        5,
+        1.5
+      ],
+      "condition_stays_fixed_with_velocity_minus_1000": true
+    },
+    "visual_tokens_480x832": {
+      "effective_spatial_stride": 32,
+      "latent_grid": [
+        15,
+        26
+      ],
+      "tokens_per_latent_step": 390,
+      "temporal_steps_per_second_at_24fps": 6,
+      "steady_state_visual_tokens_per_second": 2340,
+      "excluded": "first-frame and clip-boundary effects, AR and other modalities"
+    },
+    "hue_illustrative_example": {
+      "video_question_counts": [
+        10,
+        2
+      ],
+      "video_yes_counts": [
+        4,
+        2
+      ],
+      "video_unclear_counts": [
+        5,
+        0
+      ],
+      "correct_score_percent": 50,
+      "incorrect_video_mean_percent": 70,
+      "incorrect_discard_unclear_percent": 85.71428571428571
+    },
+    "fps_composite_illustrative_example": {
+      "quality": [
+        10,
+        20
+      ],
+      "motion_fidelity": [
+        0.9,
+        0.5
+      ],
+      "mean_of_products": 9.5,
+      "incorrect_product_of_means": 10.5
+    },
+    "pusht_rollouts": "50 initializations * 10 rollouts = 500; coverage remains a continuous metric",
+    "cross_domain_FD_figure_28": [
+      {
+        "evaluation": "Camera Motion",
+        "added": "Autonomous Vehicle",
+        "single_dB": 11.96,
+        "mixed_dB": 12.82,
+        "reported_delta_dB": 0.86
+      },
+      {
+        "evaluation": "Autonomous Vehicle",
+        "added": "Camera Motion",
+        "single_dB": 17.87,
+        "mixed_dB": 17.83,
+        "reported_delta_dB": -0.05,
+        "note": "retain reported delta; rounded displayed values differ by -0.04 dB"
+      },
+      {
+        "evaluation": "WidowX-250",
+        "added": "Google Robot",
+        "single_dB": 15.63,
+        "mixed_dB": 17.02,
+        "reported_delta_dB": 1.39
+      },
+      {
+        "evaluation": "Google Robot",
+        "added": "WidowX-250",
+        "single_dB": 19.7,
+        "mixed_dB": 20.09,
+        "reported_delta_dB": 0.39
+      }
+    ],
+    "cross_domain_budget": "single domain 2000 iterations; two-domain 50/50 mixture 4000; target-domain exposure matched, total iterations differ",
+    "relative_pose_example": {
+      "convention": "local-to-world transforms",
+      "previous_world_z_rotation_degrees": 90,
+      "previous_world_position_m": [
+        1,
+        2,
+        0
+      ],
+      "current_world_position_m": [
+        1,
+        3,
+        0
+      ],
+      "world_displacement_m": [
+        0,
+        1,
+        0
+      ],
+      "previous_local_displacement_m": [
+        1,
+        0,
+        0
+      ]
+    },
+    "action_projection_examples": {
+      "Nano_hidden_dimension": 4096,
+      "single_arm": [
+        10,
+        4096,
+        10
+      ],
+      "egocentric_hands": [
+        57,
+        4096,
+        57
+      ],
+      "readout": "output hidden state follows MoT; not a direct affine reconstruction of the input token"
+    },
+    "shift_example": {
+      "u": 0.5,
+      "s": 5,
+      "sigma": 0.8333333333333334,
+      "interpretation": "noise coordinate, not physical FPS"
+    },
+    "cfg_example": {
+      "convention": "negative + g * (conditional - negative)",
+      "conditional": -2,
+      "negative": 1,
+      "g": 3,
+      "combined": -8
+    },
+    "droid_cfg_logical_branches": "4 denoising steps * 2 branches = 8 Generator branch evaluations; two branches may run concurrently and cache AR context separately",
+    "soundbench_table15_displayed_precision": {
+      "Nano": {
+        "SAV": "8.35",
+        "PQ": "6.32",
+        "equal_weight_mean": "7.335",
+        "rounded_half_up": "7.34"
+      },
+      "Super": {
+        "SAV": "8.34",
+        "PQ": "6.28",
+        "equal_weight_mean": "7.31"
+      },
+      "assumption": "PQ is used as the audio-quality term for this arithmetic check; paper formula calls that term AQ, so mapping remains to be confirmed",
+      "benchmark_prompts": 144,
+      "seeds_per_prompt": 5,
+      "scope": "non-speech sound events"
+    }
+  },
+  "source_discrepancies": [
+    {
+      "location": "Figure 10 caption versus main text and plot",
+      "issue": "uniform sampling versus explicit 20/56/16/8 overall and 70/20/10 video ratios",
+      "article_choice": "use explicit main-text proportions"
+    },
+    {
+      "location": "Table 19 versus following paragraph",
+      "issue": "DreamZero Specific overall 23.9 versus 25.2",
+      "article_choice": "use Table 19 and disclose discrepancy"
+    },
+    {
+      "location": "Section 5.2.8 versus Table 8 caption",
+      "issue": "Nano/Super GPU counts 1024/2048 versus 2048/4096",
+      "article_choice": "disclose discrepancy; do not infer wall-clock training cost from throughput table"
+    },
+    {
+      "location": "Section 6.2.2 and Appendix F reliability versus annotation-protocol paragraph",
+      "issue": "up to 20 questions per video versus up to 16",
+      "article_choice": "disclose both; use actual per-video question counts when recomputing"
+    },
+    {
+      "location": "Section 6.2.3 final AVQ equation versus surrounding metric description and Table 15",
+      "issue": "final equation uses AQ; described audio-quality metric and table column are named PQ",
+      "article_choice": "retain reported table values; an equal-weight SAV/PQ check matches displayed values, but do not silently assert that AQ and PQ are the same implementation metric"
+    }
+  ],
+  "image_review": {
+    "generated_method_diagrams": 2,
+    "tool_mode": "built-in image_gen",
+    "cited_paper_figures": [
+      8,
+      25,
+      37,
+      20
+    ],
+    "deterministic_quantitative_chart": "Table 20; four reported points; no invented uncertainty intervals",
+    "provenance": "docs/image-generation/cosmos3-20261022.json",
+    "style_reference": "AGENTS.md:29 and transformer-attention assets",
+    "checks": [
+      "AR cannot attend to DM",
+      "independent tower parameters",
+      "iterative continuous generation",
+      "FD/ID/policy condition-target assignments",
+      "a_t represents v_(t-1) to v_t transition"
+    ],
+    "article_figure_count": 7,
+    "new_figure_on_2026_10_23": "assets/audio-event-alignment.webp; PDF page 62, Figure 20",
+    "audio_figure_checks": [
+      "four contact frames linked to spectral transients",
+      "gray non-contact frame and spectrogram interval preserved",
+      "no invented time/frequency axes or latency measurements",
+      "qualitative sample distinguished from benchmark statistics",
+      "all prior figure numbers and figure anchors preserved"
+    ]
+  },
+  "validation": {
+    "hugo": "0.165.0 extended",
+    "draft_preview_before_publication": "passed; hugo server -D at port 13143",
+    "draft_inclusive_validation": "passed; 93 posts, no errors or snippet/math warnings",
+    "fresh_production_build": "passed; hugo --minify --destination /tmp/chase-cosmos3-round5-release-20261023",
+    "production_validation": {
+      "reviewed_posts": 93,
+      "learning_paths": 11,
+      "acceptance_checks": 455,
+      "blog_posting_schemas": 90,
+      "classified_tags": 184,
+      "code_blocks": 572,
+      "syntax_checked_by_language": {
+        "bash": 224,
+        "json": 8,
+        "jsonc": 6,
+        "python": 205,
+        "sh": 10,
+        "xml": 1
+      },
+      "html_pages": 308,
+      "local_references_checked": 27751,
+      "collection_pages_checked": 295,
+      "filter_indexes_checked": 9,
+      "errors": [],
+      "python_fragment_warnings": [],
+      "unrendered_math_warnings": []
+    },
+    "filter_inventory": {
+      "articles": 90,
+      "drafts": 0,
+      "topics": 11,
+      "metadata_bytes": 56609,
+      "tests": "normalization, literal/AND matching, sorting, immutability, URL state, exact coverage passed"
+    },
+    "toc_fixtures": "passed; python3 -B scripts/test_blog_toc.py --hugo /home/ubuntu/miniconda3/envs/blog/bin/hugo",
+    "token_lab": "passed; attention, sample isolation, temporal alignment, masked velocity MSE and fixed-condition Euler update",
+    "asset_renderer_syntax": "passed; source REGIONS parsed by ast and new crop rendered from the declared region",
+    "diff_check": "passed",
+    "browser": {
+      "widths": [
+        320,
+        390,
+        1440
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "javascript_disabled_widths": [
+        320,
+        1440
+      ],
+      "figures_loaded_and_dimensioned": 7,
+      "rendered_math_expressions": 117,
+      "headings_checked": 60,
+      "local_routes_checked": 14,
+      "horizontal_page_overflow": false,
+      "clipped_captions": false,
+      "broken_anchors": false,
+      "keyboard_table_scroll": true,
+      "keyboard_formula_scroll": true,
+      "keyboard_image_zoom_and_focus_return": true,
+      "runtime_exceptions": 0,
+      "artifacts": "/tmp/chase-cosmos3-browser-round5-20261023",
+      "fps_link_clears_navbar_320_1440": true,
+      "native_disclosure_keyboard": true,
+      "native_disclosure_without_javascript": true
+    },
+    "existing_heading_anchors": {
+      "preserved": 60,
+      "removed": [],
+      "new": []
+    },
+    "evaluation_lab": "passed; python3 -B content/posts/ai/cosmos3/evaluation_lab.py --self-test; Unclear denominator, weighted question aggregation, group partition invariance, mean-of-products Composite",
+    "editorial_calculations": "passed; standard-library checks of the 90-degree coordinate example, shift 5/6, CFG -8 and logical 4*2 branch count",
+    "site_asset_check": {
+      "pinned_packages": 3,
+      "pinned_files": 29,
+      "local_math_fonts": 20,
+      "verified_integrity_assets": 21
+    },
+    "site_reading_regression": {
+      "command": "node scripts/check_blog_reading.cjs http://127.0.0.1:13143 9226 /tmp/chase-cosmos3-reading-regression-20261023 --drafts",
+      "cases": 372,
+      "all_passed": true,
+      "exceptions": 0,
+      "artifacts": "/tmp/chase-cosmos3-reading-regression-20261023"
+    },
+    "site_accessibility": {
+      "command": "node scripts/check_site_accessibility.cjs http://127.0.0.1:13143 9226 /tmp/chase-cosmos3-accessibility-20261023",
+      "layouts": 135,
+      "mobile_menu_focus": true,
+      "theme_keyboard": true,
+      "system_and_cross_tab_theme": true,
+      "blocked_storage": true,
+      "keyboard_zoom": true,
+      "same_origin_search_fonts_and_zoom": true,
+      "exceptions": 0,
+      "artifacts": "/tmp/chase-cosmos3-accessibility-20261023"
+    }
+  },
+  "publication": {
+    "draft": false,
+    "route": "/posts/ai/cosmos3/",
+    "git_push_performed": false
+  },
+  "optimization_rounds": [
+    {
+      "date": "2026-10-22",
+      "round": 2,
+      "changes": [
+        "Add definitions of token, latent, clean conditions and checkpoints",
+        "Use a cup-manipulation example to distinguish FD, ID and joint policy conditioning",
+        "Explain training targets versus inference inputs and action marginal sampling",
+        "Add scalar masked-loss and fixed-condition flow-update walkthrough and executable checks",
+        "Separate Table 11 single-pass image protocol from Artificial Analysis iterative critic workflow",
+        "Clarify AR cache reuse versus changing DM representations",
+        "Trace DROID request inputs, predicted action block, execution and feedback requirements",
+        "Explain held-out RoboLab consistency setup and logarithmic PSNR interpretation",
+        "Expand acceptance checks from 16 to 18 and synchronize editorial metadata"
+      ],
+      "source_checks": {
+        "fixed_conditions_and_masked_loss": "Section 4.2, PDF page 27",
+        "robot_policy_interface_and_execution": "Section 4.2.5, PDF pages 31-32",
+        "image_benchmark_rewriter": "Section 6.2.1, PDF page 54; Claude Opus 4.7",
+        "video_benchmark_rewriter": "Section 6.2.2, PDF page 56; Claude Opus 4.6",
+        "agentic_submission": "Appendix B.7, PDF page 94; GPT-5.5 rewriter, Gemini 3.1 Pro critic, at most two rewrites",
+        "held_out_video_action_consistency": "Appendix E.5, PDF page 110"
+      },
+      "preserved": "Publication date, published route, draft state and all 55 existing chapter anchors",
+      "production_local_references": 27721,
+      "browser_states": 8
+    },
+    {
+      "date": "2026-10-22",
+      "round": 3,
+      "changes": [
+        "Separate temporal TPS from total sequence token rate with a 480x832 grid example",
+        "Distinguish Reasoner SFT sampling budgets, generator modes, stream mixtures and action-pool hours",
+        "Expand HUE denominator and model-level scoring with an executable counterexample",
+        "Disclose HUE question-count ambiguity and state the independence assumption behind the reported interval",
+        "Explain the FPS band-level Composite aggregation with a reproducible scalar example",
+        "Add PushT initialization/rollout counts and retain continuous coverage interpretation",
+        "Read cross-domain transfer by evaluation row and added training column; preserve reported values and budget conditions",
+        "Separate egocentric warmup FD evidence from robot-policy control and total-compute claims",
+        "Shorten repeated general caveats and expand acceptance checks to 20",
+        "Use the existing FPS chapter anchor to keep the linked heading clear of the sticky navbar"
+      ],
+      "source_checks": {
+        "visual_grid": "Section 2.1.1 and Table 5, PDF pages 7 and 28",
+        "reasoner_sft_budget": "Section 4.1.2, PDF page 26",
+        "hue_scoring": "Appendix F, Equations 12-13, PDF pages 110-111",
+        "hue_uncertainty_analysis": "Article inference from the report's independent-Bernoulli assumption; no new measured confidence interval",
+        "fps_composite": "Appendix E.2, Table 29, PDF page 108",
+        "pusht_rollouts": "Appendix E.4, Table 31, PDF page 109",
+        "domain_transfer": "Section 6.2.5, Figures 28-29, PDF pages 70-72; Figure 28 visually inspected"
+      },
+      "preserved_heading_anchors": 58,
+      "production_local_references": 27730,
+      "browser_states": 8
+    },
+    {
+      "date": "2026-10-22",
+      "round": 4,
+      "changes": [
+        "Separate action input and output hidden states so projection notation does not bypass MoT",
+        "Explain relative translation in the previous local frame using a 90-degree example",
+        "Distinguish Reasoner hidden context from visible chain-of-thought and a separate prompt-upsampling request",
+        "Distinguish visual state, latent flow velocity, physical time and noise level",
+        "Explain shift with the report's reparameterization and verify its scalar example",
+        "Check the CFG scale convention against Diffusers source and distinguish paper configuration values from cross-framework conventions",
+        "Explain four-step CFG branch counts, per-branch AR caching and physical action-rate differences",
+        "Shorten repeated introduction and training descriptions; align the cup-example heading with its task",
+        "Consolidate four paper discrepancies while preserving the former heading anchor",
+        "Avoid asserting that the reported rounded transfer delta difference has a confirmed cause"
+      ],
+      "source_checks": {
+        "action_projection": "Section 2.1.3, Equations 1-2, PDF pages 8-9; notation expanded to distinguish input/output states",
+        "flow_and_shift": "Section 4.2, PDF page 27",
+        "cfg_parallelism_and_AR_cache": "Section 5.3.1, PDF pages 45-46",
+        "policy_sampling": "Sections 4.2.5 and 6.3.1, PDF pages 32 and 74",
+        "cfg_convention": "Diffusers Cosmos3OmniPipeline main branch checked on 2026-10-22"
+      },
+      "preserved_heading_anchors": 60,
+      "new_heading_anchors": 0,
+      "production_local_references": 27734,
+      "browser_states": 8
+    },
+    {
+      "date": "2026-10-23",
+      "round": 5,
+      "changes": [
+        "Expose a short first-reading route and a reproduction route; retain detailed question navigation in a native disclosure",
+        "Preserve all twenty self-check questions and answers while separating questions from expandable answers",
+        "Add cited Figure 20 contact-frame/spectrogram evidence with qualitative scope and missing-axis limitations stated",
+        "Expand non-speech audio evaluation scope and SAV sub-score interpretation",
+        "Disclose the AVQ AQ/PQ naming mismatch without inventing a missing definition",
+        "Separate understanding-context ablation from copied Generator-weight initialization benefit",
+        "Replace repeated general limitations with concrete comparisons and proposed controls, including auxiliary-video and total-training-cost questions",
+        "Extend the existing asset renderer source regions and preserve Imagegen provenance",
+        "Update lastmod to 2026-10-23 while preserving publication date, route, draft state and existing anchors"
+      ],
+      "source_checks": {
+        "audio_event_figure": "Section 6.2.3, Figure 20, PDF page 62; full page and extracted region visually inspected",
+        "soundbench_protocol_and_scoring": "Section 6.2.3, PDF pages 61-62, Table 15",
+        "reasoner_ablation": "Appendix E.1, Table 28; both Generator towers trained from scratch",
+        "auxiliary_video_control": "Proposed isolating control based on Section 4.2.5 and Appendix E.4; no new empirical result claimed"
+      },
+      "preserved_heading_anchors": 60,
+      "article_figures": 7,
+      "production_local_references": 27751,
+      "browser_states": 8,
+      "full_site_reading_cases": 372,
+      "site_accessibility_layouts": 135
+    }
+  ],
+  "supplementary_primary_sources": [
+    {
+      "checked_on": "2026-10-22",
+      "source": "https://github.com/huggingface/diffusers/blob/main/src/diffusers/pipelines/cosmos/pipeline_cosmos3_omni.py#L1724-L1750",
+      "raw_source": "https://raw.githubusercontent.com/huggingface/diffusers/main/src/diffusers/pipelines/cosmos/pipeline_cosmos3_omni.py",
+      "checked_lines": [
+        1213,
+        1214,
+        1724,
+        1726,
+        1746,
+        1748
+      ],
+      "scope": "Supplementary implementation check for the CFG convention; paper-version sampling values remain unchanged",
+      "formula": "uncond + guidance_scale * (cond - uncond)",
+      "cfg_enabled": "guidance_scale != 1.0"
+    }
+  ]
+}

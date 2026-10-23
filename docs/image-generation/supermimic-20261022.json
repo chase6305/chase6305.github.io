@@ -1,0 +1,188 @@
+{
+  "reviewed_on": "2026-10-22",
+  "article": "content/posts/ai/supermimic/index.md",
+  "source_type": "user-supplied paper; preserved author result figures and three conceptual mechanism diagrams",
+  "source_pdf": "/home/ubuntu/Documents/SuperMimic.pdf",
+  "source_sha256": "fe213017ab062f4acc3965da89abd3c29969163e144a2628a662b8ce46691009",
+  "paper": "https://arxiv.org/abs/2610.28480v1",
+  "project": "https://supermimic.github.io/",
+  "generated_images": true,
+  "figures": [
+    {
+      "asset": "content/posts/ai/supermimic/assets/training-loop.webp",
+      "paper_figure": 2,
+      "pdf_page": 4,
+      "pdf_crop_points": [
+        104,
+        68,
+        508,
+        202
+      ],
+      "raster_dpi": 288,
+      "dimensions": [
+        1616,
+        536
+      ],
+      "processing": "PDF region rasterization; lossless WebP encoding; no plot values, labels, arrows, or photographs altered"
+    },
+    {
+      "asset": "content/posts/ai/supermimic/assets/compute-scaling.webp",
+      "paper_figure": 3,
+      "pdf_page": 7,
+      "pdf_crop_points": [
+        104,
+        70,
+        508,
+        197
+      ],
+      "raster_dpi": 288,
+      "dimensions": [
+        1616,
+        508
+      ],
+      "processing": "PDF region rasterization; lossless WebP encoding; no plot values, labels, arrows, or photographs altered"
+    },
+    {
+      "asset": "content/posts/ai/supermimic/assets/ppo-critic-ablation.webp",
+      "paper_figure": 4,
+      "pdf_page": 7,
+      "pdf_crop_points": [
+        104,
+        309,
+        508,
+        432
+      ],
+      "raster_dpi": 288,
+      "dimensions": [
+        1616,
+        492
+      ],
+      "processing": "PDF region rasterization; lossless WebP encoding; no plot values, labels, arrows, or photographs altered"
+    },
+    {
+      "asset": "content/posts/ai/supermimic/assets/rollout-gradient-efficiency.webp",
+      "paper_figure": 5,
+      "pdf_page": 8,
+      "pdf_crop_points": [
+        104,
+        70,
+        508,
+        173
+      ],
+      "raster_dpi": 288,
+      "dimensions": [
+        1616,
+        412
+      ],
+      "processing": "PDF region rasterization; lossless WebP encoding; no plot values, labels, arrows, or photographs altered"
+    },
+    {
+      "asset": "content/posts/ai/supermimic/assets/g1-real-robot.webp",
+      "paper_figure": 6,
+      "pdf_page": 9,
+      "pdf_crop_points": [
+        104,
+        69,
+        508,
+        313
+      ],
+      "raster_dpi": 288,
+      "dimensions": [
+        1616,
+        976
+      ],
+      "processing": "PDF region rasterization; lossless WebP encoding; no plot values, labels, arrows, or photographs altered"
+    }
+  ],
+  "style_reference_images": [
+    "public/posts/ai/transformer-attention/assets/training-lifecycle.webp",
+    "public/posts/ai/transformer-attention/assets/transformer-block-overview.webp",
+    "public/posts/ai/transformer-attention/assets/training-vs-kv-cache-inference.webp"
+  ],
+  "reference_use": "Inspected locally; appearance described in initial generation prompts. Subsequent image edits use the generated diagram as their edit target.",
+  "generated_assets": [
+    {
+      "asset": "content/posts/ai/supermimic/assets/training-cycle.webp",
+      "source_png": "/home/ubuntu/.codex/generated_images/01a16246-f113-7133-b053-2b55e6769409/exec-b3a3875f-43b8-40f7-b711-8f9ccf9db78b.png",
+      "source_sha256": "d5f9c3ae29a1b08ad9b5ea7974370ad85cc5f1a37969e3971b3117d7a6232d5f",
+      "dimensions": [
+        1942,
+        809
+      ],
+      "mode": "built-in image_gen generation and edits",
+      "processing": "lossless WebP encoding; no graphical or text modifications after image generation",
+      "prompts": [
+        "docs/image-generation/supermimic-training-cycle-20261022-prompt.txt",
+        "docs/image-generation/supermimic-training-cycle-20261022-edit.txt",
+        "docs/image-generation/supermimic-training-cycle-20261022-edit-2.txt"
+      ],
+      "acceptance": [
+        "Executed noisy actions are logged",
+        "8-step model fit uses logged actions and context",
+        "32-step actor rollout uses fixed model weights",
+        "Forward return arrow and backward gradient arrows are distinct",
+        "State seed enters the world model and actor path"
+      ]
+    },
+    {
+      "asset": "content/posts/ai/supermimic/assets/short-horizon-gradients.webp",
+      "source_png": "/home/ubuntu/.codex/generated_images/01a16246-f113-7133-b053-2b55e6769409/exec-36daa467-a709-4162-8e4e-352f915a5fd6.png",
+      "source_sha256": "7901f5f1b69dc007079d61f9b8cb760d79cea8d5fdf231078a6adbf3ae9d7081",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "built-in image_gen generation and edits",
+      "processing": "lossless WebP encoding; no graphical or text modifications after image generation",
+      "prompts": [
+        "docs/image-generation/supermimic-short-horizon-gradients-20261022-prompt.txt",
+        "docs/image-generation/supermimic-short-horizon-gradients-20261022-edit.txt",
+        "docs/image-generation/supermimic-short-horizon-gradients-20261022-edit-2.txt",
+        "docs/image-generation/supermimic-short-horizon-gradients-20261022-retry.txt"
+      ],
+      "acceptance": [
+        "8 steps correspond to 0.16 seconds at 50 Hz",
+        "Simulator targets feed the loss separately from predictions",
+        "No ground-truth state overwrites autoregressive predictions",
+        "32-step imagination corresponds to 0.64 seconds",
+        "Actor and model step blocks share parameters; only theta is updated in actor improvement",
+        "Critic contributes a scalar terminal value"
+      ]
+    },
+    {
+      "asset": "content/posts/ai/supermimic/assets/train-deploy-interface.webp",
+      "source_png": "/home/ubuntu/.codex/generated_images/01a16246-f113-7133-b053-2b55e6769409/exec-617d597a-663a-4584-bd11-7e7b2f287006.png",
+      "source_sha256": "4f69a5ee88fd6aaaf68e056128828c12919fb64449a090930f7fa1e57b6cc13c",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "mode": "built-in image_gen generation and edits",
+      "processing": "lossless WebP encoding; no graphical or text modifications after image generation",
+      "prompts": [
+        "docs/image-generation/supermimic-train-deploy-interface-20261022-prompt.txt",
+        "docs/image-generation/supermimic-train-deploy-interface-20261022-edit.txt",
+        "docs/image-generation/supermimic-train-deploy-interface-20261022-edit-2.txt"
+      ],
+      "acceptance": [
+        "Physics context enters the training world model",
+        "Ten known future reference frames feed the motion encoder",
+        "32-dimensional latent and ten-frame proprioceptive history both enter the decoder",
+        "Each observation frame contains 93 scalars",
+        "29-dimensional action maps to joint setpoints then PD",
+        "Physical feedback returns to proprioception",
+        "No world model, privileged physics context or critic is deployed with the actor"
+      ]
+    }
+  ],
+  "rendered_assets": [
+    "assets/training-cycle.webp",
+    "assets/short-horizon-gradients.webp",
+    "assets/train-deploy-interface.webp",
+    "assets/compute-scaling.webp",
+    "assets/ppo-critic-ablation.webp",
+    "assets/rollout-gradient-efficiency.webp",
+    "assets/g1-real-robot.webp"
+  ],
+  "preserved_source_asset": "assets/training-loop.webp; linked from Figure 1 caption"
+}

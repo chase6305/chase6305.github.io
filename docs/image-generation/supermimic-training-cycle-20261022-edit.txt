@@ -1,0 +1,6 @@
+Edit the supplied SuperMimic training-cycle diagram. Preserve the title, three-panel layout, white/pastel visual style, all other correct text, and legibility.
+Make these scientific connector corrections:
+1. In panel 3 the orange dashed gradient must follow the computation. Remove the existing direct dashed Return-to-Actor shortcut across the top. Instead draw one clear dashed orange path from "Return + terminal value" into/through the "World model ω" computation box, then from that box to "Actor θ". Arrow direction must be Return → World model → Actor. Label the final segment "Update θ". Keep "ω fixed; gradients pass"; there must be no arrow suggesting world-model parameter update in panel 3.
+2. The blue Start state is input to both the actor observation pathway and the world-model state pathway. Retain the upward arrow to Actor, and add a separate clear forward arrow from Start state to World model.
+3. In panel 2 change the data label to "Start state + logged actions + context ξ" and put "8-step fit" as its own short line. The Replay buffer metadata should read "states, executed actions, rewards, next states, terminals, context ξ".
+Keep panel 2's loss-to-model dashed Update ω arrow; keep panel 1 Simulator forward-only. Remove the extraneous instructional sentence "Do not update actor in this panel". No new conceptual branches, no other changes.

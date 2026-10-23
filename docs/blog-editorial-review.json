@@ -1,5 +1,5 @@
 {
-  "reviewed_on": "2026-10-19",
+  "reviewed_on": "2026-10-23",
   "scope": "滚动文章清单：保留既有 URL 与草稿状态，新增文章同步维护阅读元数据与验收检查",
   "posts": [
     {
@@ -2074,6 +2074,95 @@
         "匹配图连通，就一定能恢复所有相机间的尺度吗？",
         "同一组全局位姿派生出的相对变换环乘为单位阵，能验证标定吗？",
         "校正后的 Z 深度能直接与原相机深度逐像素比较吗？"
+      ]
+    },
+    {
+      "id": 91,
+      "added_on": "2026-10-22",
+      "summary": "拆解 SuperMimic 的在线世界模型、短时域 BPTT、存活权重与 critic，用手算和交互实验解释预测误差与梯度可靠性的区别，分析 G1 控制接口、算力比较、消融和速度评估，并厘清零失败与真机迁移的证据边界。",
+      "prerequisites": "策略与价值函数、链式法则、关节控制与本体观测的基本概念",
+      "focus": "先沿训练闭环理解梯度，用两步交互实验比较 BPTT、detach 与模型偏差，再核对 critic、参数更新和各类实验的评估口径。",
+      "related": [
+        74,
+        68,
+        75,
+        39
+      ],
+      "path": "content/posts/ai/supermimic/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/light-loco-parkour",
+        "/posts/ai/ppo-dpo-grpo",
+        "/posts/ai/vla-world-model-data",
+        "/posts/planner/to_mpc_wbc"
+      ],
+      "image_decision": "三张方法图解释训练闭环、8／32 步时域及训练／真机接口；四张论文原图保留实验曲线和真机序列。两步手算与交互实验对照完整 BPTT、detach 和预测相同但梯度相反的替代模型，提供可下载复算的输入与结果。",
+      "image": "assets/training-cycle.webp",
+      "acceptance_checks": [
+        "SuperMimic 需要可微的 MuJoCo 模拟器吗？",
+        "世界模型先预训练一次，之后永久冻结吗？",
+        "冻结模型参数为什么不能直接使用 no_grad？",
+        "八步拟合窗口与三十二步想象窗口有什么区别？",
+        "Critic 是否需要部署到 G1？",
+        "终止倾斜阈值 0.8 是弧度吗？",
+        "一张 H100 三小时已经在全部基准动作上零失败吗？",
+        "129,514 段零失败能证明未知动作泛化吗？",
+        "0.007 的模型误差能解释成 7 mm 吗？",
+        "世界模型快十倍与解析更新少六十四倍步数可以直接相乘吗？",
+        "速度接口的任务奖励会更新共享解码器吗？",
+        "真机翻滚是否证明能够自主处理复杂地形？",
+        "两步算例中模型增益固定，为什么仍能得到策略梯度 8？",
+        "Critic 的 bootstrap 会预测一条窗口外的状态轨迹吗？",
+        "一个日志动作上的状态预测误差为零，能证明策略梯度正确吗？",
+        "速度评估先求范数还是先取时间平均？跌倒试验怎样处理？",
+        "交互实验中三种预设的初始轨迹相同，为什么更新后回报不同？",
+        "Critic 拟合时，需要继续对生成监督目标的 actor 和世界模型求导吗？"
+      ],
+      "reviewed_on": "2026-10-23"
+    },
+    {
+      "id": 92,
+      "added_on": "2026-10-22",
+      "summary": "拆解 Cosmos 3 的双塔 MoT、AR／扩散 token 排列、几何伪动作、物理时间对齐与分阶段训练，分析 DROID 策略、跨域迁移、视频和音频评估、消融及推理成本，并区分统一架构、专用检查点和真实控制能力。",
+      "prerequisites": "Transformer attention、向量与坐标变换、扩散或 Flow Matching 的基本概念；动作表示与评估指标会逐项解释",
+      "focus": "先看双塔怎样交互，再用具体任务理解三种动作条件、物理时间与固定条件采样；沿训练课程和 DROID 请求追踪复用，最后分别核对生成、视觉预测与闭环控制的评测协议。",
+      "related": [
+        6,
+        75,
+        91,
+        88
+      ],
+      "path": "content/posts/ai/cosmos3/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/transformer-attention",
+        "/posts/ai/vla-world-model-data",
+        "/posts/ai/supermimic",
+        "/posts/ai/video-to-data"
+      ],
+      "image_decision": "两张方法图解释 MoT 单向条件关系及 FD／ID／policy 配置，四张论文图保留训练课程、真机、动作－视频一致性和音视频事件对齐，确定性曲线逐点呈现 LIBERO 适配结果；两份标准库脚本核对 mask、打包隔离、TPS、固定条件采样、HUE 分母和 FPS Composite 汇总。",
+      "image": "assets/dual-tower-overview.webp",
+      "acceptance_checks": [
+        "Cosmos 3 的 MoT 与稀疏 MoE 是同一种结构吗？",
+        "AR token 能读取正在去噪的 DM token 吗？",
+        "为什么同一张图还要有 ViT 和 VAE 两种编码？",
+        "人形动作的 29 维一定是 29 个关节吗？",
+        "$a_t$ 表示哪个时间区间？",
+        "音频 25 TPS、动作 15 Hz 怎样共享一秒时间？",
+        "15000 的位置间隔意味着新增 15000 个 token 吗？",
+        "干净条件 token 也加入目标重建损失吗？",
+        "生成预训练时 Reasoner 一直和 Generator 同时更新吗？",
+        "通用单臂伪动作能直接当 DROID 策略的关节输出吗？",
+        "四次去噪与 15 Hz 是同一种频率吗？",
+        "跳过视频解码意味着取消了联合视频预测吗？",
+        "RoboLab 的 39.7% 与 LIBERO 的 97.4% 能直接比较吗？",
+        "BoN 后的 Physics-IQ 分数与直接采样有相同成本吗？",
+        "联合 FD／ID／policy 训练在每个指标上都更好吗？",
+        "视频动作一致性足以证明物理控制可靠性吗？",
+        "不计条件重建损失，就能保证条件保持不变吗？",
+        "Table 11 图像分数和带评审循环的图像榜单是同一协议吗？",
+        "HUE 的 Unclear 应从分母删掉吗？",
+        "迁移矩阵中 A 帮助 B，就说明 B 同样帮助 A 吗？"
       ]
     }
   ]

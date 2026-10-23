@@ -1,0 +1,136 @@
+{
+  "reviewed_on": "2026-10-23",
+  "article": "content/posts/ai/cosmos3/index.md",
+  "source_pdf": "/home/ubuntu/Documents/cosmos3.pdf",
+  "source_sha256": "df058bd2447fbdd83d13fd63be60a8b0aceb00ef6e50ba428b0a6bdbbed64b8d",
+  "paper": "https://arxiv.org/abs/2606.02800v4",
+  "figures": [
+    {
+      "asset": "assets/training-curriculum.webp",
+      "paper_figure": 8,
+      "pdf_page": 20,
+      "pdf_crop_points": [
+        58,
+        288,
+        536,
+        427
+      ],
+      "raster_dpi": 288,
+      "dimensions": [
+        1912,
+        556
+      ],
+      "processing": "PDF region rasterization; lossless WebP encoding"
+    },
+    {
+      "asset": "assets/droid-real-robot.webp",
+      "paper_figure": 25,
+      "pdf_page": 69,
+      "pdf_crop_points": [
+        60,
+        80,
+        535,
+        215
+      ],
+      "raster_dpi": 288,
+      "dimensions": [
+        1900,
+        540
+      ],
+      "processing": "PDF region rasterization; lossless WebP encoding"
+    },
+    {
+      "asset": "assets/video-action-consistency.webp",
+      "paper_figure": 37,
+      "pdf_page": 110,
+      "pdf_crop_points": [
+        60,
+        80,
+        535,
+        265
+      ],
+      "raster_dpi": 288,
+      "dimensions": [
+        1900,
+        740
+      ],
+      "processing": "PDF region rasterization; lossless WebP encoding"
+    },
+    {
+      "asset": "assets/audio-event-alignment.webp",
+      "paper_figure": 20,
+      "pdf_page": 62,
+      "pdf_crop_points": [
+        62,
+        300,
+        532,
+        438
+      ],
+      "raster_dpi": 288,
+      "dimensions": [
+        1880,
+        552
+      ],
+      "processing": "PDF region rasterization; lossless WebP encoding"
+    }
+  ],
+  "quantitative_plot": {
+    "asset": "assets/libero-adaptation.webp",
+    "vector_asset": "assets/libero-adaptation.svg",
+    "source_table": 20,
+    "iterations": [
+      500,
+      1000,
+      1500,
+      2000
+    ],
+    "MT_init": [
+      24.6,
+      91.4,
+      95.8,
+      97.4
+    ],
+    "PT_init": [
+      0.0,
+      73.8,
+      93.4,
+      95.2
+    ],
+    "units": "percent",
+    "rollouts_per_checkpoint": 500,
+    "uncertainty": "not reported; no inferred error bars"
+  },
+  "generated_assets": [
+    {
+      "slug": "dual-tower-overview",
+      "source": "/home/ubuntu/.codex/generated_images/01a16246-f113-7133-b053-2b55e6769409/exec-aa54c85d-fc07-4715-bf1b-08fe11757496.png",
+      "prompt": "docs/image-generation/cosmos3-dual-tower-overview-20261022-prompt.txt",
+      "asset": "content/posts/ai/cosmos3/assets/dual-tower-overview.webp",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "source_sha256": "f8952d6be192b42d5b676c5b197dfb756552d1600a4e224f4ce9f21e35af831d"
+    },
+    {
+      "slug": "action-modes",
+      "source": "/home/ubuntu/.codex/generated_images/01a16246-f113-7133-b053-2b55e6769409/exec-aee58b98-c9be-402f-b459-20cbe2f9c7a8.png",
+      "prompt": "docs/image-generation/cosmos3-action-modes-20261022-prompt.txt",
+      "asset": "content/posts/ai/cosmos3/assets/action-modes.webp",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "source_sha256": "b13b7d305cb7667aeb6c5b5a19bf34d03cb3451fe9081f158b8f1aef2da66150"
+    }
+  ],
+  "tool_mode": "built-in image_gen",
+  "style_reference": "AGENTS.md:29; transformer-attention assets inspected in this session",
+  "diagram_checks": [
+    "AR-to-DM context only; no reverse attention",
+    "Independent tower parameters",
+    "Flow velocity with iterative denoising",
+    "FD/ID/policy conditions and targets",
+    "a_t connects v_(t-1) to v_t"
+  ]
+}
