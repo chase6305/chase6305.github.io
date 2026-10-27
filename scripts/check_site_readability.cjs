@@ -17,6 +17,17 @@ const captureOnly = process.argv.includes('--capture-only');
   fs.mkdirSync(output, {recursive: true});
   const browser = await connect(port);
   const report = {contrast: [], print: [], exceptions: browser.exceptions};
+  const waitForDisclosures = async expected => {
+    await browser.cdp('Page.bringToFront');
+    let actual;
+    const deadline=Date.now()+2000;
+    do {
+      await browser.pause(20);
+      actual=await browser.evaluate(`[...document.querySelectorAll('.content details:not(.blog-mobile-toc)')].map(d=>d.open)`);
+      if(JSON.stringify(actual)===JSON.stringify(expected))return;
+    } while(Date.now()<deadline);
+    assert.deepEqual(actual,expected,'Disclosure state was not restored after printing');
+  };
   try {
     const routes = new Set(['/posts/', '/learning-paths/', '/tags/', '/archives/', '/404.html', '/zh-cn/404.html', '/posts/ai/supermimic/', '/posts/cpp/gcc/']);
     if (full) {
@@ -45,7 +56,7 @@ const captureOnly = process.argv.includes('--capture-only');
         await browser.evaluate(`document.querySelector('[data-item=${theme}]').click()`);
         await browser.pause(350);
         await browser.cdp('Emulation.setEmulatedMedia', {media: 'print'});
-        await browser.pause(100);
+        await waitForDisclosures(original.map(()=>true));
         const state = await browser.evaluate(`({
           background:getComputedStyle(document.body).backgroundColor,
           rootBackground:getComputedStyle(document.documentElement).backgroundColor,
@@ -74,8 +85,7 @@ const captureOnly = process.argv.includes('--capture-only');
           canvasSignature = signature;
         }
         await browser.cdp('Emulation.setEmulatedMedia', {media: ''});
-        await browser.pause(100);
-        assert.deepEqual(await browser.evaluate(`[...document.querySelectorAll('.content details:not(.blog-mobile-toc)')].map(d=>d.open)`), original);
+        await waitForDisclosures(original);
         report.print.push({route, theme, ...state, canvasSignature: signature, stateRestored: true});
         if (route.includes('robot-filters') && theme === 'dark') {
           await browser.evaluate(`(() => {
@@ -93,19 +103,24 @@ const captureOnly = process.argv.includes('--capture-only');
             {type: 'afterprint', curves: ['#6d7d90', '#eef3f9', '#86bdff']}
           ]);
           report.nativeCanvasPrint = trace;
-          assert.deepEqual(await browser.evaluate(`[...document.querySelectorAll('.content details:not(.blog-mobile-toc)')].map(d=>d.open)`), original);
+          await waitForDisclosures(original);
         }
       }
     }
 
     await browser.navigate(base + '/posts/ai/supermimic/');
-    await browser.evaluate(`(() => {
+    await browser.cdp('Page.bringToFront');
+    await browser.evaluate(`(async () => {
       const image=document.querySelector('.post-image-link img');
+      image.loading='eager';await image.decode();await document.fonts.ready;
+      image.scrollIntoView({block:'center'});
       window.__printZoomOpened=false;
       image.addEventListener('medium-zoom:opened',()=>{window.__printZoomOpened=true},{once:true});
-      image.closest('a').focus();image.closest('a').click();
     })()`);
-    for (let attempt=0;attempt<100;attempt++) {
+    await browser.evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+    await browser.evaluate(`const link=document.querySelector('.post-image-link');link.focus({preventScroll:true});link.click()`);
+    // An original diagram can be much larger than its responsive preview.
+    for (let attempt=0;attempt<600;attempt++) {
       if(await browser.evaluate('window.__printZoomOpened'))break;
       await browser.pause(50);
     }

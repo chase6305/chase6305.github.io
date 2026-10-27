@@ -821,7 +821,8 @@
     "back_forward_cache": "disabled for long serial checks",
     "interrupted_run": "A Runtime.evaluate timeout interrupted the earlier reflow run after 1125 layouts; the owned test browser was restarted before final checks.",
     "native_print_test_adjustment": "Inspect the three actual curve stroke calls; querying context.strokeStyle after save/restore only returns the grid color.",
-    "zoom_test_adjustment": "Wait for the library medium-zoom:opened event before testing Escape; the original can finish loading while the opening animation is still active. The user interface closed and restored focus when tested after that event."
+    "zoom_test_adjustment": "Wait for the library medium-zoom:opened event before testing Escape; the original can finish loading while the opening animation is still active. The user interface closed and restored focus when tested after that event.",
+    "remote_check_waits": "Wait for disclosure state, focus the test tab, decode and settle the lazy image before opening zoom, and allow up to 30 seconds for the original diagram. The original SuperMimic WebP is about 1 MB; one diagnostic download took 9 seconds. These waits stabilize remote checks and do not alter website behavior."
   },
   "release_validation": {
     "status": "passed",
@@ -992,7 +993,7 @@
     "directory": "docs/site-reviews/2026-10-27",
     "notes": "Repository screenshots document 200% root-font home reflow, print panel theme, mobile search and the Chinese dark 404; PDF artifacts stay outside published content."
   },
-  "phase": "Four-hour improvement and local acceptance completed; publication uses the normal main branch workflow",
+  "phase": "Four-hour improvement, publication and live acceptance completed",
   "production_checks": {
     "verified_code_commit": "bc6df7cd694b98eeb99ac2ceeb4620a0bf829cbd",
     "github_actions": {
@@ -1060,5 +1061,55 @@
     "publication_workflow": "https://github.com/chase6305/chase6305.github.io/actions/workflows/hugo.yml",
     "scope_note": "Production checks above identify the already verified code release; this final print correction and review record are pushed together through the same workflow."
   },
-  "temporary_services": "Stopped 14 obsolete owned preview servers; retained the final preview for review. No user browser or unrelated process was modified."
+  "temporary_services": "Stopped 14 obsolete owned preview servers; retained the final preview for review. No user browser or unrelated process was modified.",
+  "final_online_acceptance": {
+    "verified_website_commit": "217960595b28f7c4e0eaabe03ff77eeaf7e4be99",
+    "github_actions": {
+      "id": 40472855076,
+      "head_sha": "217960595b28f7c4e0eaabe03ff77eeaf7e4be99",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40472855076",
+      "created_at": "2026-10-27T08:20:47Z",
+      "updated_at": "2026-10-27T08:23:56Z"
+    },
+    "http_audit": {
+      "urls": 121,
+      "failures": 0,
+      "bytes": 25278999,
+      "artifacts": "/tmp/chase-production-http-217960595b28-20261027.json"
+    },
+    "live_browser": {
+      "contrastLayouts": 24,
+      "textSamples": 5946,
+      "contrastFailures": 0,
+      "printLayouts": 18,
+      "runtimeExceptions": 0,
+      "native_canvas_print": [
+        {
+          "type": "beforeprint",
+          "curves": [
+            "#6d7d90",
+            "#26384c",
+            "#317ebd"
+          ]
+        },
+        {
+          "type": "afterprint",
+          "curves": [
+            "#6d7d90",
+            "#eef3f9",
+            "#86bdff"
+          ]
+        }
+      ],
+      "zoom_print": {
+        "originalVisible": true,
+        "overlayHidden": true,
+        "screenRestored": true
+      },
+      "artifacts": "/tmp/chase-live-acceptance-20261027/results.json"
+    },
+    "verified_at_utc": "2026-10-27T08:48:01.957952Z"
+  }
 }
