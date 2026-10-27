@@ -10,7 +10,7 @@
   "findings": [
     {
       "id": "slow-original-blocks-image-zoom",
-      "status": "fixed; controlled browser checks passed, full-site regression in progress",
+      "status": "fixed; controlled and all-image browser checks passed",
       "evidence": "Previous round live diagnostic: the 1,063,236-byte original WebP took 9.09 seconds to download; the viewer emitted open but no opened event while waiting, and deferred its transform and close handling."
     },
     {
@@ -200,12 +200,68 @@
         "/tmp/chase-round2-reopen-accessibility-20261027/results.json",
         "/tmp/chase-round2-reopen-validation-20261027.json"
       ]
+    },
+    {
+      "change": "Production-origin browser acceptance, throttled reading, network recovery and reference availability review.",
+      "checked_at_utc": "2026-10-27T12:36:59.981370+00:00",
+      "checks": {
+        "live_search_layouts": 12,
+        "live_accessibility_layouts": 165,
+        "live_article_layouts": 24,
+        "live_contrast_layouts": 24,
+        "live_print_layouts": 18,
+        "throttled_reading": {
+          "cases": 96,
+          "originalReady": 64,
+          "closedDuringDownload": 32,
+          "gracefulOriginalErrors": 0,
+          "maxOpenMilliseconds": 103.39999997615814,
+          "exceptions": 0
+        },
+        "network_recovery_layouts": 24,
+        "runtime_exceptions": 0,
+        "external_references": {
+          "urls": 896,
+          "reachable": 885,
+          "unverified": 11,
+          "confirmed_missing": 0
+        },
+        "unchanged_production_files": 2075
+      },
+      "network_profiles": [
+        {
+          "name": "cache-allowed",
+          "download_bytes_per_second": 60000,
+          "latency_ms": 300,
+          "cpu_slowdown": 4,
+          "cache_disabled": false,
+          "cases": 48
+        },
+        {
+          "name": "slow-transfer",
+          "download_bytes_per_second": 15000,
+          "latency_ms": 600,
+          "cpu_slowdown": 4,
+          "cache_disabled": true,
+          "cases": 48
+        }
+      ],
+      "limits": "Observed browser timings are diagnostics, not device-independent performance guarantees. Network recovery uses a fresh query on an existing asset to force an uncached original without clearing the shared browser cache. Reference HTTP reachability does not validate the entire source content.",
+      "artifacts": [
+        "/tmp/chase-round2-live-search-20261027/results.json",
+        "/tmp/chase-round2-live-accessibility-20261027/results.json",
+        "/tmp/chase-round2-live-readability-20261027/results.json",
+        "/tmp/chase-morphmimic-live-check-20261027/results.json",
+        "/tmp/chase-round2-live-slow-reading-20261027/results.json",
+        "/tmp/chase-round2-live-network-retry-20261027/results.json",
+        "/tmp/chase-round2-external-links-audit-20261027.json"
+      ]
     }
   ],
   "release": {
-    "production_directory": "/tmp/chase-round2-final-production-20261027",
-    "local_preview": "http://127.0.0.1:13175/",
-    "status": "portable checks fixed; final rapid-reopen state fix verified locally",
+    "production_directory": "/tmp/chase-round2-reopen-production-20261027",
+    "local_preview": "http://127.0.0.1:13177/",
+    "status": "published; local and production-origin acceptance passed",
     "initial_commit": "c6a96f9a9109b3f35460d6ad8e7f1d713137dbf6",
     "initial_workflow": {
       "id": 40497655469,
@@ -222,6 +278,176 @@
       "conclusion": "success",
       "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40498988128",
       "updated_at": "2026-10-27T11:53:39Z"
+    },
+    "latest_site_commit": "d19a8e2109e96f2c9e26bf0474d08f5077524f89",
+    "latest_site_workflow": {
+      "id": 40499719052,
+      "head_sha": "d19a8e2109e96f2c9e26bf0474d08f5077524f89",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40499719052",
+      "updated_at": "2026-10-27T11:58:24Z"
+    },
+    "article_url": "https://chase6305.github.io/posts/ai/morphmimic/",
+    "exact_http_audit": {
+      "artifact": "/tmp/chase-production-http-d19a8e2109e9-20261027.json",
+      "urls": 129,
+      "failures": 0,
+      "bytes": 26110547,
+      "comparison": "Exact status and content hashes against a fresh local production build; includes article inventories, search, scripts, styles, assets and expected missing/draft routes."
+    },
+    "https_origin_check": {
+      "status": "passed against loopback HTTP and production HTTPS",
+      "layouts_per_origin": 165,
+      "script": "scripts/check_site_accessibility.cjs",
+      "external_probe": "Synthetic .invalid request blocked while same-origin images, fonts, search and viewer continue to work.",
+      "limits": "The first live attempt used the former blanket HTTPS block, which also blocked the production origin; this harness issue was corrected and both origins rerun successfully."
+    },
+    "fresh_acceptance_build": "/tmp/chase-round2-final-acceptance-20261027",
+    "fresh_acceptance_validation": "/tmp/chase-round2-final-acceptance-validation-20261027.json",
+    "fresh_acceptance_assets": "/tmp/chase-round2-final-acceptance-assets-20261027.json",
+    "observation_planned_until_utc": "2026-10-27T12:52:45Z",
+    "downloaded_article_example": {
+      "artifact": "/tmp/chase-morphmimic-live-download-20261027/results.json",
+      "verified_sha256": {
+        "morphmimic_contracts.py": "7b65bb3e53de047349092aeec0184cbe107b68632fdbc400335867f434780784",
+        "assets/contracts-results.json": "87a7b5880eacfcc79d2043e73551b25a8b3301c5e8a6830363f19f8284dd5f7b"
+      },
+      "python_versions": [
+        "3.10",
+        "3.13"
+      ],
+      "output_and_record_check": "passed from an isolated download directory"
     }
+  },
+  "external_references": {
+    "checked_at_utc": "2026-10-27T12:32:45.024695+00:00",
+    "inventory": 896,
+    "checked": 896,
+    "reachable": 885,
+    "unverified": 11,
+    "confirmed_missing": 0,
+    "artifact": "/tmp/chase-round2-external-links-audit-20261027.json",
+    "method": "Unique fragment-free external anchors from all 91 published article pages. HEAD with bounded GET fallback for 400/404/405/410; redirects followed. Up to six workers, one request per host; at least three seconds between arXiv probes and 0.75 seconds on other hosts. No full document content validation.",
+    "unverified_sources": [
+      {
+        "url": "https://fbswiki.org/wiki/index.php/PID_Control",
+        "articles": [
+          "posts/pid"
+        ],
+        "head": {
+          "status": 500,
+          "final_url": "https://fbswiki.org/wiki/index.php/PID_Control"
+        }
+      },
+      {
+        "url": "https://khatib.stanford.edu/publications/pdfs/Khatib_1990_2.pdf",
+        "articles": [
+          "posts/robotics/control/impedance-control"
+        ],
+        "head": {
+          "error": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>"
+        }
+      },
+      {
+        "url": "https://fbsbook.org/",
+        "articles": [
+          "posts/pid"
+        ],
+        "head": {
+          "status": 500,
+          "final_url": "https://fbswiki.org/wiki/"
+        }
+      },
+      {
+        "url": "https://doi.org/10.1115/1.3140702",
+        "articles": [
+          "posts/robotics/control/impedance-control"
+        ],
+        "head": {
+          "status": 403,
+          "final_url": "https://asmedigitalcollection.asme.org/dynamicsystems/article/107/1/1/400604/Impedance-Control-An-Approach-to-Manipulation-Part"
+        }
+      },
+      {
+        "url": "https://www.mathworks.com/help/dsp/ref/dsp.lmsfilter-system-object.html",
+        "articles": [
+          "posts/robotics/control/robot-filters"
+        ],
+        "head": {
+          "status": 403,
+          "final_url": "https://www.mathworks.com/help/dsp/ref/dsp.lmsfilter-system-object.html"
+        }
+      },
+      {
+        "url": "https://khatib.stanford.edu/publications/pdfs/Khatib_1987_RA.pdf",
+        "articles": [
+          "posts/robotics/control/impedance-control"
+        ],
+        "head": {
+          "error": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>"
+        }
+      },
+      {
+        "url": "https://www.mathworks.com/help/dsp/ref/dsp.rlsfilter-system-object.html",
+        "articles": [
+          "posts/robotics/control/robot-filters"
+        ],
+        "head": {
+          "status": 403,
+          "final_url": "https://www.mathworks.com/help/dsp/ref/dsp.rlsfilter-system-object.html"
+        }
+      },
+      {
+        "url": "https://www.diag.uniroma1.it/~labrob/pub/papers/TRO_Collision_Dec2017.pdf",
+        "articles": [
+          "posts/robotics/control/robot-filters"
+        ],
+        "head": {
+          "error": "<urlopen error EOF occurred in violation of protocol (_ssl.c:997)>"
+        }
+      },
+      {
+        "url": "https://www.mathworks.com/help/signal/ref/hampel.html",
+        "articles": [
+          "posts/robotics/control/robot-filters"
+        ],
+        "head": {
+          "status": 403,
+          "final_url": "https://www.mathworks.com/help/signal/ref/hampel.html"
+        }
+      },
+      {
+        "url": "https://doi.org/10.1126/science.aar6404",
+        "articles": [
+          "posts/ai/foundations-modern-ai",
+          "posts/ai/foundations-modern-ai"
+        ],
+        "head": {
+          "status": 403,
+          "final_url": "https://www.science.org/doi/10.1126/science.aar6404"
+        }
+      },
+      {
+        "url": "https://doi.org/10.1162/neco.1996.8.7.1341",
+        "articles": [
+          "posts/ai/foundations-modern-ai",
+          "posts/ai/foundations-modern-ai"
+        ],
+        "head": {
+          "status": 403,
+          "final_url": "https://direct.mit.edu/neco/article/8/7/1341-1390/6016"
+        }
+      }
+    ],
+    "disposition": "Retained citations: no 404/410 confirmed, and an access restriction, TLS failure or server error does not establish permanent removal."
+  },
+  "last_verified_at_utc": "2026-10-27T12:40:23.462028+00:00",
+  "preview_cleanup": {
+    "stopped_owned_obsolete_servers": 15,
+    "retained": "http://127.0.0.1:13177/",
+    "artifact": "/tmp/chase-round2-preview-cleanup-20261027.json",
+    "build_artifacts_retained": true,
+    "shared_browser_retained": true
   }
 }

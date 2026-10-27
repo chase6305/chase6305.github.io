@@ -16,7 +16,7 @@ async function main() {
   fs.mkdirSync(output, {recursive: true});
   const tab = await (await fetch(endpoint + '/json/new?about:blank', {method: 'PUT'})).json();
   const ws = new WebSocket(tab.webSocketDebuggerUrl);
-  const pending = new Map(), exceptions = [], requests = [], layouts = [];
+  const pending = new Map(), exceptions = [], requests = [], layouts = [], blockedExternal = [];
   let serial = 0, savedTheme, savedScrollRestoration;
   const report = {layouts, exceptions, requests};
   const cdp = (method, params = {}) => new Promise((resolve, reject) => {
@@ -76,6 +76,14 @@ async function main() {
         message.error ? task.reject(Error(JSON.stringify(message.error))) : task.resolve(message.result);
       } else if (message.method === 'Runtime.exceptionThrown') exceptions.push(message.params.exceptionDetails);
       else if (message.method === 'Network.requestWillBeSent') requests.push(message.params.request.url);
+      else if (message.method === 'Fetch.requestPaused') {
+        const {requestId, request} = message.params;
+        const external = new URL(request.url).origin !== new URL(base).origin;
+        if (external) blockedExternal.push(request.url);
+        cdp(external ? 'Fetch.failRequest' : 'Fetch.continueRequest',
+          external ? {requestId, errorReason: 'BlockedByClient'} : {requestId})
+          .catch(error => exceptions.push({interceptionError: error.message}));
+      }
     };
     await cdp('Page.enable'); await cdp('Runtime.enable'); await cdp('Network.enable');
     await cdp('Network.setCacheDisabled', {cacheDisabled: true});
@@ -205,13 +213,15 @@ async function main() {
     await cdp('Page.removeScriptToEvaluateOnNewDocument', {identifier: injection.identifier});
 
     await cdp('Network.setCacheDisabled', {cacheDisabled: true});
-    await cdp('Network.setBlockedURLs', {urls: ['https://*']});
+    // Block external HTTP(S) resources while permitting the tested origin,
+    // including when the base URL itself uses HTTPS.
+    await cdp('Fetch.enable', {patterns: [{urlPattern: 'http*', requestStage: 'Request'}]});
     requests.length = 0;
     await navigate('/posts/ai/behavior-prompting/');
     await evaluate("Promise.all([...document.querySelectorAll('.content img')].map(i=>{i.loading='eager';return i.decode()}))");
     const fonts = await evaluate("[...document.fonts].filter(f=>f.family.startsWith('KaTeX') && f.status==='loaded').map(f=>f.family)");
     assert(fonts.length > 0, 'No loaded KaTeX fonts');
-    assert(requests.every(url => !url.startsWith('https://')), JSON.stringify(requests));
+    assert(requests.every(url => !/^https?:/.test(url) || new URL(url).origin === new URL(base).origin), JSON.stringify(requests));
     assert(await evaluate("document.querySelector('.katex-html > .base') && getComputedStyle(document.querySelector('.katex-html > .base')).display==='inline-block'"));
     assert((await evaluate("window.hextraSearch.search('逆运动学')")).length > 0);
     await evaluate("document.querySelector('.article-figure img').scrollIntoView({block:'center'});document.querySelector('.article-figure img').click()");
@@ -269,13 +279,17 @@ async function main() {
     assert(zoomRestored);
     report.originalResolutionZoom = {...zoomSource, fetchedOnOpen: true, focusRestored: true};
     report.keyboardZoom = true;
-    report.sameOriginFeatures = {fonts, requests: requests.length, search: true, zoom: true};
+    assert.deepEqual(blockedExternal, [], 'Unexpected cross-origin runtime requests');
+    const externalProbe = 'https://external-resource-check.invalid/probe';
+    assert(await evaluate(`fetch(${JSON.stringify(externalProbe)}).then(()=>false,()=>true)`));
+    assert(blockedExternal.includes(externalProbe), 'External resource blocker was not exercised');
+    report.sameOriginFeatures = {fonts, requests: requests.length, search: true, zoom: true, blockedExternal};
     assert.equal(exceptions.length, 0, JSON.stringify(exceptions));
     console.log(JSON.stringify({layouts: layouts.length, yearLinks: report.yearLinks.length, mobileMenuFocus: report.mobileMenuFocus, themeKeyboard: report.themeKeyboard, systemAndCrossTabTheme: report.systemAndCrossTabTheme, blockedStorage: report.blockedStorage, keyboardZoom: report.keyboardZoom, sameOriginFeatures: report.sameOriginFeatures, exceptions: exceptions.length, output}, null, 2));
   } finally {
     fs.writeFileSync(path.join(output, 'results.json'), JSON.stringify(report, null, 2));
     if (savedTheme !== undefined) {
-      await cdp('Network.setBlockedURLs', {urls: []}).catch(() => {});
+      await cdp('Fetch.disable').catch(() => {});
       await cdp('Emulation.setEmulatedMedia', {features: []}).catch(() => {});
       await navigate('/').catch(() => {});
       await evaluate(savedTheme === null ? "localStorage.removeItem('color-theme')" :

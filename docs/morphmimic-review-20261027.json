@@ -78,7 +78,7 @@
     "draft_layout_review": "passed: Hugo server -D, 24 layouts at 320/390/768/1440, three themes, 100/200% text, contrast, images, captions, formulas, focus and keyboard table scrolling",
     "production_validation": {
       "status": "passed",
-      "artifact": "/tmp/chase-round2-production-spacing-validation-20261027.json",
+      "artifact": "/tmp/chase-round2-final-acceptance-validation-20261027.json",
       "warnings": 0
     },
     "draft_inventory_and_snippets": "passed: 94 records, strict math, Python and structured snippets",
@@ -127,6 +127,34 @@
       "negative_tests": "changed four-decimal return, count/type changes, missing keys, wrong list length and nonfinite values rejected",
       "script": "scripts/test_morphmimic_contracts.py",
       "test_methods": 6
+    },
+    "publication": {
+      "url": "https://chase6305.github.io/posts/ai/morphmimic/",
+      "site_commit": "d19a8e2109e96f2c9e26bf0474d08f5077524f89",
+      "workflow_id": 40499719052,
+      "workflow_conclusion": "success",
+      "exact_http_audit": "/tmp/chase-production-http-d19a8e2109e9-20261027.json"
+    },
+    "live_acceptance": {
+      "checked_at_utc": "2026-10-27T12:36:59.981370+00:00",
+      "url": "https://chase6305.github.io/posts/ai/morphmimic/",
+      "layout_cases": 24,
+      "throttled_reading_cases": 24,
+      "network_recovery_cases": 12,
+      "exceptions": 0,
+      "artifacts": [
+        "/tmp/chase-morphmimic-live-check-20261027/results.json",
+        "/tmp/chase-round2-live-slow-reading-20261027/results.json",
+        "/tmp/chase-round2-live-network-retry-20261027/results.json"
+      ]
+    },
+    "live_download_execution": {
+      "artifact": "/tmp/chase-morphmimic-live-download-20261027/results.json",
+      "python_versions": [
+        "3.10",
+        "3.13"
+      ],
+      "status": "download hashes matched repository; output and record checks passed in an isolated directory"
     }
   }
 }
