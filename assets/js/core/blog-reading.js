@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     tableMeasurements.forEach(({table, overflowing}) => {
       if (overflowing && table.tabIndex !== 0) table.setAttribute("tabindex", "0");
-      else if (!overflowing && table.hasAttribute("tabindex")) table.removeAttribute("tabindex");
+      else if (!overflowing && table.hasAttribute("tabindex") && document.activeElement !== table) table.removeAttribute("tabindex");
     });
     formulaMeasurements.forEach(({formula, overflowing}, index) => {
       let hint = hints.get(formula);
@@ -34,7 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
         formula.setAttribute("aria-label", "可横向滚动的公式");
         formula.setAttribute("aria-describedby", hint.id);
       } else {
-        ["tabindex", "role", "aria-label", "aria-describedby"].forEach(name => formula.removeAttribute(name));
+        if (document.activeElement !== formula) formula.removeAttribute("tabindex");
+        ["role", "aria-label", "aria-describedby"].forEach(name => formula.removeAttribute(name));
       }
     });
   };
@@ -43,6 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
     cancelAnimationFrame(resizeFrame);
     resizeFrame = requestAnimationFrame(updateOverflow);
   };
+  // Reflow must not blur a region the reader is using. Drop its temporary
+  // keyboard entry only after focus has moved elsewhere.
+  [...tables, ...formulas].forEach(element => element.addEventListener("blur", scheduleUpdate));
   updateOverflow();
   window.addEventListener("resize", scheduleUpdate);
   // Font loading and opening a collapsed section may change formula width.

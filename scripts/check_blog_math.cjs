@@ -100,10 +100,16 @@ let browserSocket;
     await sleep(200);
     assert(await evaluate(`(() => {
       const f=window.__formula;
-      return f.scrollWidth <= f.clientWidth + 1 && !f.hasAttribute('tabindex') && !f.hasAttribute('aria-describedby') && f.previousElementSibling.hidden;
-    })()`), 'Fitting equation must lose its tab stop and visible hint');
+      return f.scrollWidth <= f.clientWidth + 1 && document.activeElement === f && f.tabIndex === 0
+        && !f.hasAttribute('aria-describedby') && f.previousElementSibling.hidden;
+    })()`), 'Fitting equation must retain active focus while hiding its scrolling hint');
+    await cdp('Input.dispatchKeyEvent', {type:'keyDown', key:'Tab', code:'Tab', windowsVirtualKeyCode:9});
+    await cdp('Input.dispatchKeyEvent', {type:'keyUp', key:'Tab', code:'Tab', windowsVirtualKeyCode:9});
+    await sleep(150);
+    assert(await evaluate("document.activeElement !== window.__formula && !window.__formula.hasAttribute('tabindex')"),
+      'Fitting equation must drop its temporary tab stop after the reader leaves');
     await screenshot('formula-1440-' + theme);
-    checks.push({theme, keyboardScroll:true, responsiveHint:true});
+    checks.push({theme, keyboardScroll:true, responsiveHint:true, reflowFocus:true, blurCleanup:true});
   }
   // Reparent a real equation into a closed details block, then open it.
   await viewport(390, 844);

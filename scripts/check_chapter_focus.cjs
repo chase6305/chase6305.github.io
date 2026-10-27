@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Chapter navigation keeps fragment history and respects subsequent input.
 // Run serially with the other loopback CDP checks.
+// Add --all-posts [--drafts] to activate every article TOC link at both widths/font sizes.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const{connect}=require('./lib/browser.cjs');
 const base=process.argv[2]||'http://127.0.0.1:13185',port=Number(process.argv[3]||9226),output=process.argv[4]||'/tmp/chase-chapter-focus';
@@ -41,6 +42,33 @@ report.legacyAnchor=legacy;
 const first=await b.evaluate('location.hash');const second=await b.evaluate('('+holdClick+')(1)');assert(second.focused&&second.closed);
 await b.evaluate('history.back()');for(let i=0;i<100;i++){if(await b.evaluate('location.hash==='+JSON.stringify(first)))break;await b.pause(30)}assert(await b.evaluate('location.hash==='+JSON.stringify(first)));
 await b.evaluate('history.forward()');for(let i=0;i<100;i++){if(await b.evaluate('location.hash==='+JSON.stringify(second.hash)))break;await b.pause(30)}assert(await b.evaluate('location.hash==='+JSON.stringify(second.hash)));report.fragmentHistory=true;
-assert.equal(b.exceptions.length,0,JSON.stringify(b.exceptions));console.log(JSON.stringify({layouts:report.layouts.length,modifiers:report.modifiers.length,legacyAnchor:true,fragmentHistory:true,exceptions:0},null,2));
+if(process.argv.includes('--all-posts')) {
+ const inventory=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/blog-editorial-review.json'))).posts;
+ const posts=inventory.filter(post=>process.argv.includes('--drafts')||!post.draft);
+ report.allChapters=[];
+ for(const width of [320,768])for(const size of ['100%','200%'])for(const post of posts) {
+  const route='/'+post.path.replace(/^content\//,'').replace(/\/index\.md$/,'').replace(/\.md$/,'').toLowerCase()+'/';
+  await b.viewport(width);await b.navigate(base+route);
+  await b.evaluate(`document.querySelector('[data-item=light]').click();document.documentElement.style.fontSize='${size}';document.fonts.ready`);
+  const count=await b.evaluate("document.querySelectorAll('.blog-mobile-toc a').length");assert(count>0,route+' has no mobile chapters');
+  for(let index=0;index<count;index++) {
+   const state=await b.evaluate(`(()=>{
+    const toc=document.querySelector('.blog-mobile-toc');toc.open=true;
+    const link=toc.querySelectorAll('a')[${index}],id=decodeURIComponent(link.hash.slice(1));
+    const anchor=document.getElementById(id);if(!anchor)return{id,missing:true};
+    const target=anchor.closest('h1,h2,h3,h4,h5,h6')||anchor;link.click();
+    const box=target.getBoundingClientRect(),nav=document.querySelector('.hextra-nav-container nav');
+    return{id,focused:document.activeElement===target,closed:!toc.open,hash:decodeURIComponent(location.hash.slice(1)),
+     top:box.top,bottom:box.bottom,navBottom:nav?.getBoundingClientRect().bottom||0,height:innerHeight,
+     overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth+1};
+   })()`);
+   const row={route,width,size,index,...state};
+   row.passed=!row.missing&&row.focused&&row.closed&&row.hash===row.id&&!row.overflow&&row.top>=row.navBottom-1&&row.top<row.height-24;
+   report.allChapters.push(row);assert(row.passed,JSON.stringify(row));
+  }
+ }
+ report.allPosts=posts.length;
+}
+assert.equal(b.exceptions.length,0,JSON.stringify(b.exceptions));console.log(JSON.stringify({layouts:report.layouts.length,modifiers:report.modifiers.length,legacyAnchor:true,fragmentHistory:true,allPosts:report.allPosts||0,allChapters:report.allChapters?.length||0,exceptions:0},null,2));
 }finally{if(savedTheme!==undefined)await b.evaluate(savedTheme===null?"localStorage.removeItem('color-theme')":'localStorage.setItem("color-theme",'+JSON.stringify(savedTheme)+')').catch(()=>{});fs.writeFileSync(path.join(output,'results.json'),JSON.stringify(report,null,2)+'\n');await b.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Regression checks extracted from the articles; no hardware or GPU access.
 
-Requires Python 3.10+, NumPy, Pinocchio, g++, CMake. Network tests bind only
-loopback, using ephemeral ports substituted into the extracted demonstrations.
+Requires Python 3.10+. C++/CMake checks need g++/CMake; only the Python group
+requires NumPy, Matplotlib and Pinocchio. Use --only to select portable groups.
+Network tests bind only loopback, using ephemeral ports in the demonstrations.
 All compiled output lives in a TemporaryDirectory, never in the repository.
 """
 import argparse
@@ -16,9 +17,6 @@ import struct
 import subprocess
 import tempfile
 from pathlib import Path
-
-import numpy as np
-import pinocchio as pin
 
 from validate_blog import ROOT, code_blocks
 
@@ -175,6 +173,8 @@ def test_cmake(directory):
 
 def test_markov():
     """Compare history-table propagation with its matrix representation."""
+    import numpy as np
+
     rl = blocks("rl/index.md", "python")
     ns = namespace(next(code for code in rl if "def convert_to_first_order" in code))
     histories, matrix, table = ns["histories"], ns["transition"], ns["second_order_probs"]
@@ -217,6 +217,9 @@ def test_markov():
 
 
 def test_python():
+    import numpy as np
+    import pinocchio as pin
+
     result = {}
     pid = namespace((ROOT / "content/posts/pid/pid_controller.py").read_text())["PID"]
     controller = pid(2.0, 1.0, 0.1, 3.0)
@@ -414,15 +417,19 @@ def test_network(directory):
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--only", nargs="+", choices=("cpp", "cmake", "python", "modbus", "network"),
+                        help="run selected groups without importing unrelated optional dependencies")
     parser.add_argument("--network", action="store_true",
                         help="also run loopback-only socket tests")
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix="chase-blog-tests-") as name:
         directory = Path(name)
-        results = {"cpp": test_cpp(directory), "cmake": test_cmake(directory),
-                   "python": test_python(), "modbus": test_modbus()}
-        if args.network:
-            results["network"] = test_network(directory)
+        checks = {"cpp": lambda: test_cpp(directory), "cmake": lambda: test_cmake(directory),
+                  "python": test_python, "modbus": test_modbus, "network": lambda: test_network(directory)}
+        selected = list(dict.fromkeys(args.only or ("cpp", "cmake", "python", "modbus")))
+        if args.network and "network" not in selected:
+            selected.append("network")
+        results = {name: checks[name]() for name in selected}
     print(json.dumps(results, ensure_ascii=False, indent=2))
 
 

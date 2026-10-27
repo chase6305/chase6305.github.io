@@ -57,6 +57,13 @@
       "evidence": "Holding the TOC frame, selecting a chapter and then pressing Tab moved focus to the permalink; flushing the old frame moved it back to H2. Chapter navigation is now synchronous and leaves modifier clicks to the browser.",
       "before": "/tmp/chase-round3-toc-frame-before-20261027.json",
       "after": "/tmp/chase-round3-chapter-focus-20261027/results.json"
+    },
+    {
+      "id": "reflow-removes-active-table-and-formula-focus",
+      "status": "fixed; 18 targeted cases passed; broader checks running",
+      "evidence": "Eleven sampled table/equation regions lost focus to BODY when resizing from 320 to 1440 because their temporary tabindex was removed. Keep active focus until blur, hide obsolete formula scroll semantics immediately, then clean up keyboard entry.",
+      "before": "/tmp/chase-round3-overflow-focus-before-20261028.json",
+      "after": "/tmp/chase-round3-overflow-focus-20261028/results.json"
     }
   ],
   "checks": [
@@ -124,6 +131,47 @@
       "print_cases": 18,
       "status": "passed",
       "artifact": "/tmp/chase-round3-readability-all-20261028/results.json"
+    },
+    {
+      "name": "every mobile chapter activation",
+      "articles_including_drafts": 94,
+      "activations": 9284,
+      "widths": [
+        320,
+        768
+      ],
+      "font_sizes": [
+        "100%",
+        "200%"
+      ],
+      "status": "passed",
+      "artifact": "/tmp/chase-round3-chapters-all-20261028/results.json"
+    },
+    {
+      "name": "C++17 article examples",
+      "std_programs": 3,
+      "astar_random_cases": 400,
+      "spsc_threaded_runs": 12,
+      "status": "passed",
+      "artifact": "/tmp/chase-round3-std-examples-20261028.log"
+    },
+    {
+      "name": "offline metrics, model contracts and impedance analysis",
+      "status": "passed",
+      "artifacts": [
+        "/tmp/chase-round3-llm-metrics-20261028.log",
+        "/tmp/chase-round3-model-examples-20261028.log",
+        "/tmp/chase-round3-impedance-20261028.log",
+        "/tmp/chase-round3-llm-budget-20261028.log"
+      ]
+    },
+    {
+      "name": "Markov group after lazy import",
+      "status": "passed",
+      "composite_states": 9,
+      "invalid_tables_rejected": 5,
+      "sampler_cases": 4,
+      "artifact": "/tmp/chase-round3-markov-lazy-import-20261028.log"
     }
   ],
   "ci_changes": {
@@ -133,14 +181,27 @@
     "wheel_sha256": "26445eca388f82e72884e0d580d5464cd801a3ea01e63e5601bdff9ba6a48de2",
     "environment": "Dedicated venv under RUNNER_TEMP; existing Hugo and standard-library validation steps are unchanged.",
     "local_equivalent": "/tmp/chase-round3-progress-ci-regression-20261028.log",
-    "local_status": "nine tests passed in an isolated Python 3.13 environment"
+    "local_status": "nine tests passed in an isolated Python 3.13 environment",
+    "portable_examples": {
+      "entry": "python3 -B scripts/test_blog_examples.py --only cpp cmake modbus network",
+      "change": "Import NumPy/Pinocchio only inside the optional Python group; portable groups run without robotics or plotting packages. Default groups and --network remain supported.",
+      "local_artifact": "/tmp/chase-round3-portable-ci-20261028.log",
+      "local_status": "passed in the isolated progress CI venv",
+      "network_scope": "loopback sockets and simulated serial transactions only"
+    }
   },
   "stable_contracts": "/tmp/chase-round3-phase1-stable-contracts-20261028.json",
   "release": {
-    "status": "first batch locally validated; upload pending",
+    "status": "first batch deployed and verified; second batch in local review",
     "production_directory": "/tmp/chase-round3-phase1-production-20261028",
     "validation": "/tmp/chase-round3-phase1-production-validation-20261028.json",
-    "assets": "/tmp/chase-round3-phase1-assets-20261028.json"
+    "assets": "/tmp/chase-round3-phase1-assets-20261028.json",
+    "commit": "4ac40164c45580d65fc15e73405f933cf6065243",
+    "workflow": "https://github.com/chase6305/chase6305.github.io/actions/runs/40542952322",
+    "workflow_path": ".github/workflows/hugo.yml",
+    "live_audit": "/tmp/chase-production-http-4ac40164c455-20261027.json",
+    "live_urls": 129,
+    "live_failures": 0
   },
   "visual_review": {
     "directory": "docs/site-reviews/2026-10-27-round3",
@@ -153,5 +214,76 @@
     "native_forced_dark_print": "/tmp/chase-round3-filter-forced-native-20261028.pdf",
     "native_print_trace": "/tmp/chase-round3-filter-forced-native-20261028.json",
     "status": "four screenshots inspected; native print restores forced-dark screen colors afterward"
+  },
+  "editorial_followup": {
+    "article": "content/posts/cpp/std/index.md",
+    "change": "Explain max/minmax reference returns versus initializer-list value returns, full-expression temporary lifetimes, implicit conversions and reference-bearing pair results with a compiled C++17 example.",
+    "original_date_preserved": "2026-02-06",
+    "lastmod": "2026-10-28",
+    "sources": [
+      "https://eel.is/c++draft/alg.min.max",
+      "https://eel.is/c++draft/class.temporary"
+    ],
+    "status": "example and heading fixtures passed; browser review running"
+  },
+  "phase2": {
+    "production": "/tmp/chase-round3-phase2-production-20261028",
+    "validation": "/tmp/chase-round3-phase2-validation-20261028.json",
+    "assets": "/tmp/chase-round3-phase2-assets-20261028.json",
+    "stable_contracts": "/tmp/chase-round3-phase2-stable-contracts-20261028.json",
+    "browser_queue": "/tmp/chase-round3-phase2-browser-queue-20261028.json",
+    "status": "all local checks passed; commit and deployment pending",
+    "browser_queue_results": [
+      {
+        "name": "math",
+        "exit": 0,
+        "seconds": 3.29,
+        "output": "/tmp/chase-round3-phase2-math-20261028",
+        "log": "/tmp/chase-round3-phase2-math-20261028.log"
+      },
+      {
+        "name": "chapters",
+        "exit": 0,
+        "seconds": 10.64,
+        "output": "/tmp/chase-round3-phase2-chapters-20261028",
+        "log": "/tmp/chase-round3-phase2-chapters-20261028.log"
+      },
+      {
+        "name": "copy",
+        "exit": 0,
+        "seconds": 5.74,
+        "output": "/tmp/chase-round3-phase2-copy-20261028",
+        "log": "/tmp/chase-round3-phase2-copy-20261028.log"
+      },
+      {
+        "name": "reading",
+        "exit": 0,
+        "seconds": 393.55,
+        "output": "/tmp/chase-round3-phase2-reading-20261028",
+        "log": "/tmp/chase-round3-phase2-reading-20261028.log"
+      },
+      {
+        "name": "reflow",
+        "exit": 0,
+        "seconds": 607.23,
+        "output": "/tmp/chase-round3-phase2-reflow-20261028",
+        "log": "/tmp/chase-round3-phase2-reflow-20261028.log"
+      },
+      {
+        "name": "print",
+        "exit": 0,
+        "seconds": 113.72,
+        "output": "/tmp/chase-round3-phase2-print-20261028",
+        "log": "/tmp/chase-round3-phase2-print-20261028.log"
+      },
+      {
+        "name": "accessibility",
+        "exit": 0,
+        "seconds": 29.63,
+        "output": "/tmp/chase-round3-phase2-accessibility-20261028",
+        "log": "/tmp/chase-round3-phase2-accessibility-20261028.log"
+      }
+    ],
+    "std_layout": "/tmp/chase-round3-std-layout-20261028.json"
   }
 }
