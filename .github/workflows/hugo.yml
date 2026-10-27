@@ -70,6 +70,7 @@ jobs:
           python3 -B scripts/test_morphmimic_contracts.py
           python3 -B scripts/test_blog_toc.py
           python3 -B scripts/test_blog_images.py
+          python3 -B scripts/test_blog_fallback.py
           python3 -B scripts/test_site_assets.py --public public
       - name: Test portable C++ and loopback examples
         run: |

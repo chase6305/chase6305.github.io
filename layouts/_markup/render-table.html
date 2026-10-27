@@ -1,0 +1,37 @@
+{{/* Adapted from Hugo v0.165.0 embedded table hook; Apache-2.0, /licenses/hugo.txt. */}}
+{{- $tabindex := index .Attributes "tabindex" | default "0" -}}
+<table tabindex="{{ $tabindex }}"
+	{{- range $k, $v := .Attributes }}
+		{{- if and (ne $k "tabindex") $v }}
+		{{- printf " %s=%q" $k ($v | transform.HTMLEscape) | safeHTMLAttr }}
+		{{- end }}
+	{{- end }}>
+	<thead>
+		{{- range .THead }}
+			<tr>
+				{{- range . }}
+					<th
+						{{- with .Alignment }}
+						{{- printf " style=%q" (printf "text-align: %s" .) | safeHTMLAttr }}
+						{{- end -}}>
+						{{- .Text -}}
+					</th>
+				{{- end }}
+			</tr>
+		{{- end }}
+	</thead>
+	<tbody>
+		{{- range .TBody }}
+			<tr>
+				{{- range . }}
+					<td
+						{{- with .Alignment }}
+						{{- printf " style=%q" (printf "text-align: %s" .) | safeHTMLAttr }}
+						{{- end -}}>
+						{{- .Text -}}
+					</td>
+				{{- end }}
+			</tr>
+		{{- end }}
+	</tbody>
+</table>

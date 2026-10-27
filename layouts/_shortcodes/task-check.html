@@ -1,0 +1,5 @@
+{{- $checked := printf "%v" (.Get "checked" | default false) | lower -}}
+{{- if not (in (slice "true" "false") $checked) -}}
+  {{- errorf "task-check checked must be true or false: %s" .Position -}}
+{{- end -}}
+<label><input type="checkbox" disabled{{ if eq $checked "true" }} checked{{ end }}> <span>{{ .Page.RenderString (dict "display" "inline") .Inner }}</span></label>

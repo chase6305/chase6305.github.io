@@ -84,7 +84,7 @@
       const tags = element("div", "blog-card__tags");
       article.tags.forEach(tag => tags.append(link(tag.url, "#" + tag.name)));
       const more = link(article.url, "阅读全文 →", "blog-card__read");
-      more.setAttribute("aria-label", "阅读 " + article.title);
+      more.setAttribute("aria-label", "阅读全文: " + article.title);
       footer.append(tags, more);
       node.append(meta, heading, element("p", "", article.summary), footer);
       return node;

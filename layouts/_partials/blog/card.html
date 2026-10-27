@@ -15,6 +15,6 @@
         {{ range $page.GetTerms "tags" }}<a href="{{ .RelPermalink }}">#{{ .LinkTitle }}</a>{{ end }}
       {{ end }}
     </div>
-    <a class="blog-card__read" href="{{ $page.RelPermalink }}" aria-label="{{ if $zh }}阅读{{ else }}Read{{ end }} {{ $page.Title }}">{{ if $zh }}阅读全文{{ else }}Read article{{ end }} <span aria-hidden="true">→</span></a>
+    <a class="blog-card__read" href="{{ $page.RelPermalink }}" aria-label="{{ if $zh }}阅读全文{{ else }}Read article{{ end }}: {{ $page.Title }}">{{ if $zh }}阅读全文{{ else }}Read article{{ end }} <span aria-hidden="true">→</span></a>
   </div>
 </article>

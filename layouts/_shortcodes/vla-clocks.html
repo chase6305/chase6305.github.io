@@ -7,7 +7,7 @@
   <p>先只把采样次数从 10 改成 5，观察四个时间结果；再改变执行长度或控制频率。</p>
   <p data-clocks-fallback>默认例子：50 行动作，执行前 25 行，控制频率 50 Hz。每行间隔 20 ms，预测覆盖 1 秒，执行前缀用 0.5 秒；忽略开销时约每秒重新规划 2 次。内部采样 10 次不改变这些时间。</p>
   <div data-clocks-interactive hidden>
-    <div class="vla-clocks__presets" aria-label="载入时钟算例">
+    <div role="group" class="vla-clocks__presets" aria-label="载入时钟算例">
       <button type="button" data-clocks-preset="default">50 Hz，执行 25 步</button>
       <button type="button" data-clocks-preset="slower">20 Hz，执行 16 步</button>
       <button type="button" data-clocks-preset="short">50 Hz，执行 5 步</button>

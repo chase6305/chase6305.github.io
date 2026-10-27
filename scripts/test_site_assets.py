@@ -72,6 +72,15 @@ def main():
         assert (ROOT / override['local']).is_file(), override
         assert (ROOT / 'themes/hextra' / override['upstream']).is_file(), override
 
+    renderer = json.loads((ROOT / 'docs/render-overrides.json').read_text())
+    version = re.search(r'HUGO_VERSION:\s*["\']?([0-9.]+)',
+                        (ROOT / '.github/workflows/hugo.yml').read_text()).group(1)
+    assert renderer['source_version'] == 'v' + version, 'Review table rendering after upgrading Hugo'
+    assert (ROOT / renderer['local']).is_file()
+    renderer_license = ROOT / renderer['published_license']
+    assert hashlib.sha256(renderer_license.read_bytes()).hexdigest() == renderer['license_sha256']
+    assert (public / renderer_license.relative_to(ROOT / 'static')).read_bytes() == renderer_license.read_bytes()
+
     checked = set()
     viewer_scripts = set()
     for html in public.rglob('index.html'):
@@ -95,6 +104,7 @@ def main():
                       'active_pinned_packages': sum(item.get('runtime', True) for item in manifest),
                       'native_image_viewers': len(viewer_scripts),
                       'theme_overrides': len(overrides['overrides']),
+                      'core_renderer_overrides': 1,
                       'local_math_fonts': len(font_paths), 'verified_integrity_assets': len(checked)}, indent=2))
 
 

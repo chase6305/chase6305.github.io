@@ -1,7 +1,7 @@
 ---
 title: "InternVL 3.5 深度解析：动态分辨率、Cascade RL、ViCO 与部署实践"
 date: 2026-09-05
-lastmod: 2026-09-30
+lastmod: 2026-10-28
 draft: false
 tags: ["InternVL", "VLM", "Multimodal", "Reinforcement Learning", "Paper Notes"]
 categories: ["人工智能"]
@@ -429,7 +429,7 @@ $$
 
 以下取 $\epsilon=0.2$ **仅为便于手算**，不是 InternVL 发布配方的超参数：
 
-| 比率 $s$ | 优势 $A$ | $sA$ | clip 后乘 $A$ | 取较小值 |
+| 比率 $s$ | 优势 $A$ | 乘积 $sA$ | clip 后乘 $A$ | 取较小值 |
 | ---: | ---: | ---: | ---: | ---: |
 | 1.5 | +1 | 1.5 | 1.2 | 1.2 |
 | 0.5 | −1 | −0.5 | −0.8 | −0.8 |

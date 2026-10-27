@@ -42,7 +42,7 @@
           <label><input name="stale_intrinsics" type="checkbox" disabled> 裁剪缩放后仍使用旧内参</label>
         </div>
         <p class="hint">偏差只改变候选匹配，真实观测保持固定。启用缩放后，该偏差也会映射到新像素网格；同一物理误差的像素数随分辨率改变。</p>
-        <div class="presets" aria-label="载入构造条件">
+        <div role="group" class="presets" aria-label="载入构造条件">
           <button type="button" data-preset="correct">正确几何</button>
           <button type="button" data-preset="reversed">外参方向用反</button>
           <button type="button" data-preset="updated">缩放并更新内参</button>
@@ -84,7 +84,7 @@
     <section id="reproduce" tabindex="-1" data-lab-anchor aria-labelledby="reproduce-title">
       <h2 id="reproduce-title">下载与 Python 复算</h2>
       <p><a id="download-case" download="geometry-case.json">下载当前构造样本 JSON</a>，再下载文章的 <a href="../../posts/ai/multiview-geometry/geometry_sanity.py">geometry_sanity.py</a>，在同一目录运行：</p>
-      <pre tabindex="0" aria-label="Python 复算命令"><code>python3 -B geometry_sanity.py \
+      <pre role="region" tabindex="0" aria-label="Python 复算命令"><code>python3 -B geometry_sanity.py \
   --input geometry-case.json</code></pre>
       <p>JSON 保存输入、图像网格、三种像素位置及未舍入结果。Python 从输入重新计算，不信任下载文件里已经写好的结果。</p>
     </section>

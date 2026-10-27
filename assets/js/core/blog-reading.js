@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (overflowing) {
         formula.setAttribute("tabindex", "0");
         formula.setAttribute("role", "region");
-        formula.setAttribute("aria-label", "可横向滚动的公式");
+        formula.setAttribute("aria-label", `第 ${index + 1} 个可横向滚动的公式`);
         formula.setAttribute("aria-describedby", hint.id);
       } else {
         if (document.activeElement !== formula) formula.removeAttribute("tabindex");

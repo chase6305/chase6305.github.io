@@ -7,8 +7,8 @@
       <h1>{{ .Title }}</h1>
       <div>{{ .Content }}</div>
     </header>
-    <section class="projects-page__featured" aria-label="Featured projects">
-      {{ partial "projects.html" . }}
+    <section class="projects-page__featured" aria-label="{{ if $zh }}精选项目{{ else }}Featured projects{{ end }}">
+      {{ partial "projects.html" (dict "Page" . "headingLevel" 2) }}
     </section>
     <section class="projects-principles">
       <div>

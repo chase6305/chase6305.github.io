@@ -27,3 +27,60 @@
   outline: 3px solid var(--link);
   outline-offset: 4px;
 }
+
+/* Keep a printable record of inputs, results and explanations in every lab. */
+@media print {
+  :root {
+    color-scheme: light !important;
+    forced-color-adjust: none;
+    --bg: #fff !important;
+    --fg: #111 !important;
+    --soft: #fff !important;
+    --line: #999 !important;
+    --control: #666 !important;
+    --control-line: #666 !important;
+    --link: #174c7e !important;
+    --pass: #245832 !important;
+    --fail: #932f26 !important;
+    --blue: #2462a0 !important;
+    --orange: #8c470d !important;
+    --purple: #67428f !important;
+    --green: #2f6e3f !important;
+    --window: #eee !important;
+    --reference: #f4f4f4 !important;
+    --model: #fff !important;
+    --notice: #f4f4f4 !important;
+  }
+
+  html, body { background: #fff !important; color: #111 !important; }
+  :root body { font-size: 10pt; }
+  :root main { width: 100%; max-width: none; padding: 0; }
+  :root h1 { font-size: 18pt; }
+  :root h2, :root legend { font-size: 13pt; }
+  :root h3 { font-size: 11pt; }
+  h1, h2, h3, legend { break-after: avoid; }
+  p, li { orphans: 3; widows: 3; }
+  a { color: #111 !important; text-decoration: underline; }
+  .lab-nav, .lab-return, .presets, .examples, .actions, button { display: none !important; }
+  :root :is(fieldset, .result, .assumptions, details) { margin: 12pt 0; padding: 10pt; }
+  details::details-content { content-visibility: visible; }
+  figure { break-inside: avoid; }
+  svg { max-height: 170mm; }
+  svg text { fill: #111 !important; }
+  :root pre, :root pre code {
+    max-width: 100%;
+    max-height: none;
+    overflow: visible;
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    font-size: 9pt;
+  }
+  :root .table-scroll { overflow: visible; border: 0; }
+  :root .table-scroll table { width: 100%; min-width: 0; table-layout: fixed; font-size: 9pt; }
+  :root .table-scroll th, :root .table-scroll td { padding: 5pt; white-space: normal; overflow-wrap: anywhere; }
+  .table-scroll thead { display: table-header-group; }
+  .table-scroll tr { break-inside: avoid; }
+  .table-scroll caption { position: static; width: auto; height: auto; clip: auto; white-space: normal; font-weight: 700; }
+  #pool-scroll th:last-child, #pool-scroll td:last-child { display: none; }
+}

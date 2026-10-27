@@ -1,7 +1,7 @@
 ---
 title: "Transformer Attention 学习指南：从 Q/K/V 到现代大模型架构"
 date: 2026-08-27
-lastmod: 2026-09-30
+lastmod: 2026-10-28
 draft: false
 tags: ["Transformer", "Attention", "PyTorch"]
 categories: ["人工智能"]
@@ -2187,28 +2187,28 @@ Post-Norm 计算 `LN(x + Sublayer(x))`，归一化发生在残差相加之后；
 
 #### 核心推导
 
-- [ ] 能从 `[B,T,C]` 推导出 Q/K/V、Scores、Attention Weights 和输出的形状。
-- [ ] 能把 `[B,T,C]` 拆成 `[B,H,T,Dh]`，并在多头拼接后恢复 `[B,T,C]`。
-- [ ] 能解释缩放因子为什么是实际点积维度的平方根。
-- [ ] 能手算一行稳定 Softmax，并解释减最大值和 Mask 填 `-∞` 的原因。
-- [ ] 能说明 Attention 沿序列维混合信息、FFN 沿特征维变换信息。
+- {{< task-check >}}能从 `[B,T,C]` 推导出 Q/K/V、Scores、Attention Weights 和输出的形状。{{< /task-check >}}
+- {{< task-check >}}能把 `[B,T,C]` 拆成 `[B,H,T,Dh]`，并在多头拼接后恢复 `[B,T,C]`。{{< /task-check >}}
+- {{< task-check >}}能解释缩放因子为什么是实际点积维度的平方根。{{< /task-check >}}
+- {{< task-check >}}能手算一行稳定 Softmax，并解释减最大值和 Mask 填 `-∞` 的原因。{{< /task-check >}}
+- {{< task-check >}}能说明 Attention 沿序列维混合信息、FFN 沿特征维变换信息。{{< /task-check >}}
 
 #### 代码实现
 
-- [ ] 能独立实现 Causal Mask，并正确组合 Key Padding Mask。
-- [ ] 能解释 `reshape → transpose → matmul → transpose → reshape` 中每一步的维度。
-- [ ] 能实现一个带残差、Dropout、Norm 和 FFN 的 Transformer Block。
-- [ ] 能运行单头、多头及 MiniGPT 示例，并验证形状、概率和梯度。
-- [ ] 能让 Padding 位置既不被有效 Query 读取，也不计入训练 Loss。
-- [ ] 能解释左/右 Padding 对批量生成锚点和 Position IDs 的影响。
+- {{< task-check >}}能独立实现 Causal Mask，并正确组合 Key Padding Mask。{{< /task-check >}}
+- {{< task-check >}}能解释 `reshape → transpose → matmul → transpose → reshape` 中每一步的维度。{{< /task-check >}}
+- {{< task-check >}}能实现一个带残差、Dropout、Norm 和 FFN 的 Transformer Block。{{< /task-check >}}
+- {{< task-check >}}能运行单头、多头及 MiniGPT 示例，并验证形状、概率和梯度。{{< /task-check >}}
+- {{< task-check >}}能让 Padding 位置既不被有效 Query 读取，也不计入训练 Loss。{{< /task-check >}}
+- {{< task-check >}}能解释左/右 Padding 对批量生成锚点和 Position IDs 的影响。{{< /task-check >}}
 
 #### 工程判断
 
-- [ ] 能区分 Post-Norm/Pre-Norm、LayerNorm/RMSNorm 和 GELU/SwiGLU。
-- [ ] 能区分 MHA/GQA/MQA，并根据 `Hkv` 估算 KV Cache。
-- [ ] 能说明 Prefill 与 Decode 的差异，以及 RoPE 解码位置偏移的必要性。
-- [ ] 能区分 Dense、Sparse/Window、Linear Attention 与 FlashAttention。
-- [ ] 能判断 NaN、未来信息泄漏、Padding 污染和 KV Cache 过大应优先检查什么。
+- {{< task-check >}}能区分 Post-Norm/Pre-Norm、LayerNorm/RMSNorm 和 GELU/SwiGLU。{{< /task-check >}}
+- {{< task-check >}}能区分 MHA/GQA/MQA，并根据 `Hkv` 估算 KV Cache。{{< /task-check >}}
+- {{< task-check >}}能说明 Prefill 与 Decode 的差异，以及 RoPE 解码位置偏移的必要性。{{< /task-check >}}
+- {{< task-check >}}能区分 Dense、Sparse/Window、Linear Attention 与 FlashAttention。{{< /task-check >}}
+- {{< task-check >}}能判断 NaN、未来信息泄漏、Padding 污染和 KV Cache 过大应优先检查什么。{{< /task-check >}}
 
 ## 21. 进一步学习路线
 

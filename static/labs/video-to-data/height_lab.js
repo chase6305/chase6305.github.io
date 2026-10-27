@@ -78,7 +78,7 @@
     svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
     const title = shape('title', {id: 'chart-title'}, '构造的 20 Hz 相对高度曲线');
     const description = shape('desc', {id: 'chart-description'},
-      `共 ${trace.length} 个样本；首样本建立基准，其余 ${trace.length - 1} 次更新参与判定。紫色区是最后 20 次更新，详细条件列在图后。`);
+      `共 ${trace.length} 个样本；首样本建立基准，其余 ${trace.length - 1} 次更新参与判定。阴影区是最后 20 次更新，详细条件列在图后。`);
     svg.replaceChildren(title, description);
     svg.append(shape('rect', {x: x(Math.max(1, trace.length - 20)), y: top,
       width: right - x(Math.max(1, trace.length - 20)), height: bottom - top, class: 'terminal-window'}));

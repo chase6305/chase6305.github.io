@@ -1,7 +1,7 @@
 ---
 title: "VLA 与世界模型的数据来源：VR、主从采集、UMI、人类视频与仿真"
 date: 2026-09-14
-lastmod: 2026-09-15
+lastmod: 2026-10-28
 draft: false
 tags: ["VLA", "World Model", "Teleoperation", "UMI", "Egocentric", "Simulation", "Paper Notes"]
 categories: ["人工智能"]
@@ -29,7 +29,7 @@ related_posts:
   {{< post-image src="assets/data-sources.png" alt="六个独立场景依次展示 VR 操控、主从机械臂、手持夹爪、第一视角采集、仿真厨房与人类动作视频" >}}
   <figcaption>
     <span class="article-figure__number">图 1</span>
-    <span class="article-figure__text"><strong>六类数据来源。</strong>上排是 VR、主从机械臂和手持夹爪，下排是第一视角、仿真和人类视频。它们强调的分类维度不同，可以组合使用；设备与场景为示意。 <a href="assets/data-sources.png" aria-label="查看图 1 原图">查看原图</a></span>
+    <span class="article-figure__text"><strong>六类数据来源。</strong>上排是 VR、主从机械臂和手持夹爪，下排是第一视角、仿真和人类视频。它们强调的分类维度不同，可以组合使用；设备与场景为示意。 <a href="assets/data-sources.png" aria-label="查看原图：图 1">查看原图</a></span>
   </figcaption>
 </figure>
 
@@ -84,7 +84,7 @@ $z$ 可以是视觉特征、潜变量或其他状态表征，不一定是 RGB �
   {{< post-image src="assets/supervision-map-flow.png" alt="真实机器人、人类示范和仿真分别经过动作契约、人体映射或物理执行检查，进入策略、时序预测与空间建模目标" >}}
   <figcaption>
     <span class="article-figure__number">图 2</span>
-    <span class="article-figure__text"><strong>从数据来源到学习目标。</strong>每行依次展示原始数据、必要处理和监督用途。真实机器人需要执行契约，人类示范需要对齐或表征学习，仿真需要物理与数据检查。 <a href="assets/supervision-map-flow.png" aria-label="查看图 2 原图">查看原图</a></span>
+    <span class="article-figure__text"><strong>从数据来源到学习目标。</strong>每行依次展示原始数据、必要处理和监督用途。真实机器人需要执行契约，人类示范需要对齐或表征学习，仿真需要物理与数据检查。 <a href="assets/supervision-map-flow.png" aria-label="查看原图：图 2">查看原图</a></span>
   </figcaption>
 </figure>
 
@@ -110,7 +110,7 @@ $z$ 可以是视觉特征、潜变量或其他状态表征，不一定是 RGB �
   {{< post-image src="assets/teleoperation-loop.png" alt="操作者的头手输入经工作站映射为机器人运动目标，机器人相机画面沿反方向返回头显" >}}
   <figcaption>
     <span class="article-figure__number">图 3</span>
-    <span class="article-figure__text"><strong>遥操作中的控制与视觉反馈。</strong>橙色路径把人端输入送往机器人，青色路径把相机画面返回操作者。两条路径各有延迟，应分别记录；设备为接口示意。 <a href="assets/teleoperation-loop.png" aria-label="查看图 3 原图">查看原图</a></span>
+    <span class="article-figure__text"><strong>遥操作中的控制与视觉反馈。</strong>橙色路径把人端输入送往机器人，青色路径把相机画面返回操作者。两条路径各有延迟，应分别记录；设备为接口示意。 <a href="assets/teleoperation-loop.png" aria-label="查看原图：图 3">查看原图</a></span>
   </figcaption>
 </figure>
 
@@ -124,7 +124,7 @@ $z$ 可以是视觉特征、潜变量或其他状态表征，不一定是 RGB �
   {{< post-image src="assets/xr-control-feedback-flow.png" alt="XR 输入经过重定向与控制器驱动机器人，机器人相机经网络返回操作者，本体状态另行反馈控制器" >}}
   <figcaption>
     <span class="article-figure__number">图 4</span>
-    <span class="article-figure__text"><strong>XR 遥操作的分层闭环。</strong>上排是追踪、重定向与控制执行，下排是视觉回传。绿色分支把实测状态送回控制器，与相机链路分开。 <a href="assets/xr-control-feedback-flow.png" aria-label="查看图 4 原图">查看原图</a></span>
+    <span class="article-figure__text"><strong>XR 遥操作的分层闭环。</strong>上排是追踪、重定向与控制执行，下排是视觉回传。绿色分支把实测状态送回控制器，与相机链路分开。 <a href="assets/xr-control-feedback-flow.png" aria-label="查看原图：图 4">查看原图</a></span>
   </figcaption>
 </figure>
 
@@ -259,7 +259,7 @@ RoboMIND 2.0 的意义在于把多具身、移动与接触模态放进同一研�
   {{< post-image src="assets/umi-interface-transfer.png" alt="左侧人手持带相机的平行夹爪抓杯子，右侧机器人使用相似工具，中央图标分别表示坐标、时间与可达性检查" >}}
   <figcaption>
     <span class="article-figure__number">图 5</span>
-    <span class="article-figure__text"><strong>从手持工具到机器人执行。</strong>两侧保持相近的夹爪接触方式与局部视角。中央图标对应坐标、时间和可达性检查；相似工具并不自动保证迁移成功，硬件为示意。 <a href="assets/umi-interface-transfer.png" aria-label="查看图 5 原图">查看原图</a></span>
+    <span class="article-figure__text"><strong>从手持工具到机器人执行。</strong>两侧保持相近的夹爪接触方式与局部视角。中央图标对应坐标、时间和可达性检查；相似工具并不自动保证迁移成功，硬件为示意。 <a href="assets/umi-interface-transfer.png" aria-label="查看原图：图 5">查看原图</a></span>
   </figcaption>
 </figure>
 
@@ -271,7 +271,7 @@ RoboMIND 2.0 的意义在于把多具身、移动与接触模态放进同一研�
   {{< post-image src="assets/umi-data-processing-flow.png" alt="UMI 从手持夹爪记录开始，依次重建运动、检查轨迹、构建动作目标、训练策略，最后在匹配接口的机器人上部署" >}}
   <figcaption>
     <span class="article-figure__number">图 6</span>
-    <span class="article-figure__text"><strong>UMI 从示范到部署。</strong>沿上排向右、下排向左，按 1—6 读取。运动重建与质量检查之后，再构造目标、训练并部署；相对表示和时序需与机器人接口匹配。 <a href="assets/umi-data-processing-flow.png" aria-label="查看图 6 原图">查看原图</a></span>
+    <span class="article-figure__text"><strong>UMI 从示范到部署。</strong>沿上排向右、下排向左，按 1—6 读取。运动重建与质量检查之后，再构造目标、训练并部署；相对表示和时序需与机器人接口匹配。 <a href="assets/umi-data-processing-flow.png" aria-label="查看原图：图 6">查看原图</a></span>
   </figcaption>
 </figure>
 
@@ -334,7 +334,7 @@ python source_probe.py \
   {{< post-image src="assets/human-video-supervision.png" alt="三个独立画面分别展示普通人类视频、带手部姿态追踪的第一视角记录，以及具有动作轨迹的机器人操作" >}}
   <figcaption>
     <span class="article-figure__number">图 7</span>
-    <span class="article-figure__text"><strong>同一行为的三种监督条件。</strong>左侧只有视频，中间增加人体姿态追踪，右侧包含机器人交互。三栏不是自动转换流水线：人体运动仍需对齐与执行验证。 <a href="assets/human-video-supervision.png" aria-label="查看图 7 原图">查看原图</a></span>
+    <span class="article-figure__text"><strong>同一行为的三种监督条件。</strong>左侧只有视频，中间增加人体姿态追踪，右侧包含机器人交互。三栏不是自动转换流水线：人体运动仍需对齐与执行验证。 <a href="assets/human-video-supervision.png" aria-label="查看原图：图 7">查看原图</a></span>
   </figcaption>
 </figure>
 
@@ -519,7 +519,7 @@ $$
   {{< post-image src="assets/scene-to-rollout-flow.png" alt="从照片或视频建立场景后，必须补足碰撞、质量关节、控制传感器与任务条件，再执行和验证，才能产生带动作的训练轨迹" >}}
   <figcaption>
     <span class="article-figure__number">图 8</span>
-    <span class="article-figure__text"><strong>从空间资产到训练数据。</strong>视觉输入需要补足物理属性、控制和任务定义，再执行、检查与训练。外侧虚线把真机评测发现的问题反馈给交互资产设计。 <a href="assets/scene-to-rollout-flow.png" aria-label="查看图 8 原图">查看原图</a></span>
+    <span class="article-figure__text"><strong>从空间资产到训练数据。</strong>视觉输入需要补足物理属性、控制和任务定义，再执行、检查与训练。外侧虚线把真机评测发现的问题反馈给交互资产设计。 <a href="assets/scene-to-rollout-flow.png" aria-label="查看原图：图 8">查看原图</a></span>
   </figcaption>
 </figure>
 
@@ -585,7 +585,7 @@ Atlas 的技术介绍未给出足以重建其完整训练语料的数据清单�
   {{< post-image src="assets/world-model-action-outcomes.png" alt="同一抓取初态分成两条动作序列：左侧移动到托盘后释放，右侧提前张开夹爪使物块落在托盘外" >}}
   <figcaption>
     <span class="article-figure__number">图 9</span>
-    <span class="article-figure__text"><strong>不同动作对应不同后果。</strong>从共同初态出发，左下在托盘上方释放，右下提前释放；半透明姿态表示中间动作。画面是教学示例，不是模型预测或实测结果。 <a href="assets/world-model-action-outcomes.png" aria-label="查看图 9 原图">查看原图</a></span>
+    <span class="article-figure__text"><strong>不同动作对应不同后果。</strong>从共同初态出发，左下在托盘上方释放，右下提前释放；半透明姿态表示中间动作。画面是教学示例，不是模型预测或实测结果。 <a href="assets/world-model-action-outcomes.png" aria-label="查看原图：图 9">查看原图</a></span>
   </figcaption>
 </figure>
 
@@ -672,7 +672,7 @@ $$
   {{< post-image src="assets/grouped-data-split-flow.png" alt="原始会话、场景和源示范家族先按组划分，再分别在训练、验证和测试集合内构造窗口与派生样本" >}}
   <figcaption>
     <span class="article-figure__number">图 10</span>
-    <span class="article-figure__text"><strong>先分组，再制作样本。</strong>确定 Train、Validation、Test 归属后，分别切窗和生成派生样本；同源后代留在同一集合。分组键由泛化评测目标决定。 <a href="assets/grouped-data-split-flow.png" aria-label="查看图 10 原图">查看原图</a></span>
+    <span class="article-figure__text"><strong>先分组，再制作样本。</strong>确定 Train、Validation、Test 归属后，分别切窗和生成派生样本；同源后代留在同一集合。分组键由泛化评测目标决定。 <a href="assets/grouped-data-split-flow.png" aria-label="查看原图：图 10">查看原图</a></span>
   </figcaption>
 </figure>
 
@@ -730,7 +730,7 @@ python data_contract_lab.py
   {{< post-image src="assets/observation-time.svg" alt="图像 A 在决策前已到达，图像 B 尚未到达；下方的未来动作窗口作为训练目标而非提前可见的输入" >}}
   <figcaption>
     <span class="article-figure__number">图 11</span>
-    <span class="article-figure__text"><strong>观测可用时间与训练目标。</strong>决策时只使用已经到达的观测，未来动作仍可作为训练目标。横轴是校准后的公共时钟，数值来自人工示例。 <a href="assets/observation-time.svg" aria-label="查看图 11 原图">查看原图</a></span>
+    <span class="article-figure__text"><strong>观测可用时间与训练目标。</strong>决策时只使用已经到达的观测，未来动作仍可作为训练目标。横轴是校准后的公共时钟，数值来自人工示例。 <a href="assets/observation-time.svg" aria-label="查看原图：图 11">查看原图</a></span>
   </figcaption>
 </figure>
 

@@ -1,7 +1,7 @@
 ---
 title: "机器人动力学参数辨识：从数据采集到安全验证"
 date: 2026-09-03
-lastmod: 2026-09-30
+lastmod: 2026-10-28
 draft: false
 authors: ["chase"]
 math: true
@@ -893,14 +893,14 @@ SaveCandidate("result.json", candidate, sha256("raw.csv"));
 
 ## 11. 上线前最后检查
 
-- [ ] 原始数据仍然存在且 SHA-256 与 `session.json` 一致。
-- [ ] 关节顺序、单位、编码器方向和力矩换算已由第二人复核。
-- [ ] 激励轨迹没有触发限位、碰撞、饱和或 watchdog。
-- [ ] 回归矩阵满秩，条件数和参数不确定性在可接受范围。
-- [ ] holdout 误差、逐关节峰值误差和残差趋势均已记录。
-- [ ] 质量矩阵在目标工作空间保持正定，质量和质心通过物理范围检查。
-- [ ] `review.json` 明确批准范围，`rollback.json` 可以独立恢复旧版本。
-- [ ] 已完成仿真、低速位置模式和逐步提高负载的验证，并保存运行日志。
+- {{< task-check >}}原始数据仍然存在且 SHA-256 与 `session.json` 一致。{{< /task-check >}}
+- {{< task-check >}}关节顺序、单位、编码器方向和力矩换算已由第二人复核。{{< /task-check >}}
+- {{< task-check >}}激励轨迹没有触发限位、碰撞、饱和或 watchdog。{{< /task-check >}}
+- {{< task-check >}}回归矩阵满秩，条件数和参数不确定性在可接受范围。{{< /task-check >}}
+- {{< task-check >}}holdout 误差、逐关节峰值误差和残差趋势均已记录。{{< /task-check >}}
+- {{< task-check >}}质量矩阵在目标工作空间保持正定，质量和质心通过物理范围检查。{{< /task-check >}}
+- {{< task-check >}}`review.json` 明确批准范围，`rollback.json` 可以独立恢复旧版本。{{< /task-check >}}
+- {{< task-check >}}已完成仿真、低速位置模式和逐步提高负载的验证，并保存运行日志。{{< /task-check >}}
 
 ## 12. 常见问题
 

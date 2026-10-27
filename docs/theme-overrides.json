@@ -29,7 +29,12 @@
         "Deactivate stale options immediately when the input is cleared",
         "Highlight each normalized query term independently",
         "Focus and select synchronously on open so a deferred frame cannot steal result focus",
-        "Ignore stale native close events when the search dialog has already reopened"
+        "Ignore stale native close events when the search dialog has already reopened",
+        "Update the trigger accessible name when the visible shortcut changes to the Mac command key",
+        "Derive chapter option names from their rendered title and excerpt instead of a separately concatenated label",
+        "Remove unsupported redundant naming from generic breadcrumb containers",
+        "Allow global search shortcuts from buttons while preserving input, select, textarea and contenteditable editing",
+        "Keep each chapter option associated with its article title through aria-describedby"
       ]
     },
     {
@@ -63,6 +68,36 @@
       "changes": [
         "Use the existing theme hook to load a repository-owned progressive native image viewer",
         "Retain the archived vendor source and license without loading Medium Zoom at runtime"
+      ]
+    },
+    {
+      "upstream": "layouts/_partials/components/search-trigger.html",
+      "local": "layouts/_partials/components/search-trigger.html",
+      "changes": [
+        "Expose Control+k and Meta+k through aria-keyshortcuts",
+        "Include the visible search label and shortcut hint in the accessible name"
+      ]
+    },
+    {
+      "upstream": "layouts/_partials/language-switch.html",
+      "local": "layouts/_partials/language-switch.html",
+      "changes": [
+        "Include the visible current-language label in the accessible name while keeping icon-only triggers concise"
+      ]
+    },
+    {
+      "upstream": "layouts/_partials/components/search-dialog.html",
+      "local": "layouts/_partials/components/search-dialog.html",
+      "changes": [
+        "Include the visible ESC text in the close control name and expose the Escape shortcut"
+      ]
+    },
+    {
+      "upstream": "layouts/_markup/render-passthrough.html",
+      "local": "layouts/_markup/render-passthrough.html",
+      "changes": [
+        "Add an initial display-formula tab stop for keyboard scrolling before or without page scripts",
+        "Retain the original KaTeX/MathML output, error handling and MathJax fallback"
       ]
     }
   ],

@@ -60,10 +60,85 @@
     },
     {
       "id": "reflow-removes-active-table-and-formula-focus",
-      "status": "fixed; 18 targeted cases passed; broader checks running",
+      "status": "fixed; 18 targeted cases and complete release browser queue passed",
       "evidence": "Eleven sampled table/equation regions lost focus to BODY when resizing from 320 to 1440 because their temporary tabindex was removed. Keep active focus until blur, hide obsolete formula scroll semantics immediately, then clean up keyboard entry.",
       "before": "/tmp/chase-round3-overflow-focus-before-20261028.json",
       "after": "/tmp/chase-round3-overflow-focus-20261028/results.json"
+    },
+    {
+      "id": "standalone-labs-retain-screen-print-palettes",
+      "status": "fixed; 72 print cases and eight native PDFs passed",
+      "before": "/tmp/chase-round3-lab-print-before-20261028/results.json",
+      "after": "/tmp/chase-round3-lab-print-verified-20261028/results.json",
+      "baseline": {
+        "cases": 72,
+        "failing_cases": 71,
+        "paper_palette": 64,
+        "code_clipping": 18,
+        "table_clipping": 9,
+        "closed_explanations": 27,
+        "svg_label_contrast_on_paper": 6
+      },
+      "change": "Use a shared neutral print palette with adequate selector priority; wrap code and table cells, expose closed explanations without changing their screen state, and omit action controls."
+    },
+    {
+      "id": "visible-labels-differ-from-accessible-names",
+      "status": "fixed; 638 full-page semantic cases and populated interactive states passed",
+      "before": "/tmp/chase-round3-axe-baseline-20261028.json",
+      "after": "/tmp/chase-round3-release-final-semantics-all-20261028/results.json",
+      "change": "Include visible language, search shortcut and read-link text in names; preserve Mac hint updates and expose actual keyboard shortcuts."
+    },
+    {
+      "id": "scrollable-formula-landmarks-share-one-name",
+      "status": "fixed; targeted and full first semantic scans passed this rule",
+      "change": "Name display-formula scroll regions by their stable ordinal within the article, while preserving the existing math and scroll-hint behavior."
+    },
+    {
+      "id": "project-headings-skip-a-level",
+      "status": "fixed; both project language entrances passed targeted rules",
+      "change": "Use H2 below the project page H1 and retain H3 when project cards follow a homepage H2."
+    },
+    {
+      "id": "named-generic-controls-have-no-supported-role",
+      "status": "fixed; full first scan retained no prohibited-attribute reviews",
+      "change": "Give six preset/view clusters group roles and two named preformatted command areas region roles."
+    },
+    {
+      "id": "table-headers-are-empty-or-math-only",
+      "status": "fixed; full semantic scan and 24 final responsive table layouts passed",
+      "before": "/tmp/chase-round3-semantics-all-20261028/results.json",
+      "change": "Add concise prose to symbol-only column headers and label the paired-evaluation table corner; preserve all data cells and mathematical expressions.",
+      "after": "/tmp/chase-round3-last-table-layouts-20261028.log"
+    },
+    {
+      "id": "search-shortcut-suppressed-on-focused-buttons",
+      "status": "fixed; button shortcuts and four editable contexts passed in four platform/width combinations",
+      "before": "/tmp/chase-round3-shortcut-focus-probe-20261028.log",
+      "after": "/tmp/chase-round3-semantics-controls-verified-20261028/results.json",
+      "evidence": "A real CDP Ctrl+K event reached a focused BUTTON with ctrl=true, but the dialog stayed closed. BUTTON was incorrectly included in EDITABLE_TAGS.",
+      "change": "Treat buttons as non-editable while preserving INPUT, SELECT, TEXTAREA and contenteditable behavior; verify both shortcut toggling and slash activation."
+    },
+    {
+      "id": "native-reading-relies-on-client-side-labels-and-tabstops",
+      "status": "fixed; 638 native semantic cases passed; three real arrow-key cases and 46 native checkbox names verified",
+      "before": "/tmp/chase-round3-phase3-final-semantics-native-20261028/results.json",
+      "baseline": {
+        "cases": 638,
+        "failing_cases": 77,
+        "scroll_focus_case_failures": 75,
+        "scroll_regions_without_keyboard_access": 601,
+        "unlabeled_checklist_articles": 4,
+        "checklist_items": 46
+      },
+      "after": "/tmp/chase-round3-native-semantics-verified-20261028/results.json",
+      "change": "Render initial table and display-formula tab stops; remove fitting tab stops only after scripts measure layout. Render task-check items with native implicit labels, preserving disabled and checked states."
+    },
+    {
+      "id": "mpc-comparison-table-compresses-long-text",
+      "status": "fixed; 24 keyboard and responsive layouts passed",
+      "before": "/tmp/chase-round3-table-mobile-before-20261028/results.json",
+      "after": "/tmp/chase-round3-table-mobile-after-20261028/results.json",
+      "change": "Use the existing table-readable class for the long comparison table; preserve compact numeric tables and all data cells."
     }
   ],
   "checks": [
@@ -190,9 +265,9 @@
       "network_scope": "loopback sockets and simulated serial transactions only"
     }
   },
-  "stable_contracts": "/tmp/chase-round3-phase1-stable-contracts-20261028.json",
+  "stable_contracts": "/tmp/chase-round3-final-stable-contracts-20261028.json",
   "release": {
-    "status": "first batch deployed and verified; second batch in local review",
+    "status": "first and second batches deployed and verified; third batch passed local release checks",
     "production_directory": "/tmp/chase-round3-phase1-production-20261028",
     "validation": "/tmp/chase-round3-phase1-production-validation-20261028.json",
     "assets": "/tmp/chase-round3-phase1-assets-20261028.json",
@@ -224,7 +299,7 @@
       "https://eel.is/c++draft/alg.min.max",
       "https://eel.is/c++draft/class.temporary"
     ],
-    "status": "example and heading fixtures passed; browser review running"
+    "status": "compiled examples, heading fixtures, responsive browser review and deployed phase2 passed"
   },
   "phase2": {
     "production": "/tmp/chase-round3-phase2-production-20261028",
@@ -232,7 +307,7 @@
     "assets": "/tmp/chase-round3-phase2-assets-20261028.json",
     "stable_contracts": "/tmp/chase-round3-phase2-stable-contracts-20261028.json",
     "browser_queue": "/tmp/chase-round3-phase2-browser-queue-20261028.json",
-    "status": "all local checks passed; commit and deployment pending",
+    "status": "deployed and verified",
     "browser_queue_results": [
       {
         "name": "math",
@@ -284,6 +359,158 @@
         "log": "/tmp/chase-round3-phase2-accessibility-20261028.log"
       }
     ],
-    "std_layout": "/tmp/chase-round3-std-layout-20261028.json"
+    "std_layout": "/tmp/chase-round3-std-layout-20261028.json",
+    "deployment": {
+      "id": 40548003899,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "2e5734c9d6dd4776753a611fe194d0cdc8074d16",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40548003899",
+      "updated_at": "2026-10-27T17:13:57Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-production-http-2e5734c9d6dd-20261027.json",
+      "verified_at_utc": "2026-10-27T17:14:51.941014+00:00"
+    }
+  },
+  "releases": [
+    {
+      "phase": 1,
+      "commit": "4ac40164c45580d65fc15e73405f933cf6065243",
+      "workflow": "https://github.com/chase6305/chase6305.github.io/actions/runs/40542952322",
+      "live_audit": "/tmp/chase-production-http-4ac40164c455-20261027.json",
+      "urls": 129,
+      "failures": 0
+    },
+    {
+      "phase": 2,
+      "id": 40548003899,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "2e5734c9d6dd4776753a611fe194d0cdc8074d16",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40548003899",
+      "updated_at": "2026-10-27T17:13:57Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-production-http-2e5734c9d6dd-20261027.json",
+      "verified_at_utc": "2026-10-27T17:14:51.941014+00:00"
+    }
+  ],
+  "phase3": {
+    "status": "complete local release queue and final targeted checks passed; ready for deployment",
+    "engine": {
+      "version": "4.14.0",
+      "tarball": "https://registry.npmjs.org/axe-core/-/axe-core-4.14.0.tgz",
+      "integrity": "sha512-9WTZxEjsZ7b13TH8JPmbV2z8CHbl80/2hm3XPEG4JgNdQLK81IBRXmSxHfMAOkSqQeRxT/0dwNDz2GOm3zzpcQ==",
+      "axe_min_sha256": "20c09fe157a8a34a30e241aaa1fcdade657734f08ab379ecfbeb7d45cc46e878",
+      "directory": "/tmp/chase-round3-axe-core-4.14.0-20261028"
+    },
+    "initial_full_scan": "/tmp/chase-round3-semantics-all-20261028/results.json",
+    "first_full_scan_cases": 638,
+    "first_full_scan_article_failures": 9,
+    "first_full_scan_unresolved_idrefs": 0,
+    "manual_popup_note": "axe requests manual review for hidden popup references; all referenced IDs resolve. Open-state checks supplement the initial-state scan.",
+    "new_theme_override_count": 10,
+    "theme_revision_unchanged": true,
+    "interactive_cases": 63,
+    "interactive_artifact": "/tmp/chase-round3-semantics-controls-verified-20261028/results.json",
+    "table_data_preservation": "/tmp/chase-round3-final-table-data-preservation-20261028.json",
+    "table_data_articles": 8,
+    "tables_compared": 166,
+    "figure_link_labels_fixed": 11,
+    "source_articles_with_label_refinements": 9,
+    "final_browser_queue": "/tmp/chase-round3-release-final-browser-queue-20261028.json",
+    "core_renderer_overrides": 1,
+    "renderer_provenance": "docs/render-overrides.json",
+    "native_semantics": "/tmp/chase-round3-native-semantics-verified-20261028/results.json",
+    "native_keyboard": "/tmp/chase-round3-publish-native-20261028/results.json",
+    "native_checklist_items": 46,
+    "native_fixtures": "/tmp/chase-round3-final-fallback-fixtures-20261028.log",
+    "final_production": "/tmp/chase-round3-publish-production-20261028",
+    "final_validation": "/tmp/chase-round3-publish-validation-20261028.json",
+    "final_assets": "/tmp/chase-round3-publish-assets-20261028.json",
+    "final_targeted_controls": "/tmp/chase-round3-publish-semantic-controls-20261028/results.json",
+    "final_table_layouts": "/tmp/chase-round3-last-table-layouts-20261028.log",
+    "final_browser_queue_results": [
+      {
+        "name": "semantics-all",
+        "exit": 0,
+        "seconds": 158.66,
+        "output": "/tmp/chase-round3-release-final-semantics-all-20261028",
+        "log": "/tmp/chase-round3-release-final-semantics-all-20261028.log"
+      },
+      {
+        "name": "semantic-controls",
+        "exit": 0,
+        "seconds": 32.58,
+        "output": "/tmp/chase-round3-release-final-semantic-controls-20261028",
+        "log": "/tmp/chase-round3-release-final-semantic-controls-20261028.log"
+      },
+      {
+        "name": "search",
+        "exit": 0,
+        "seconds": 30.74,
+        "output": "/tmp/chase-round3-release-final-search-20261028",
+        "log": "/tmp/chase-round3-release-final-search-20261028.log"
+      },
+      {
+        "name": "discovery",
+        "exit": 0,
+        "seconds": 6.14,
+        "output": "/tmp/chase-round3-release-final-discovery-20261028",
+        "log": "/tmp/chase-round3-release-final-discovery-20261028.log"
+      },
+      {
+        "name": "overflow",
+        "exit": 0,
+        "seconds": 34.69,
+        "output": "/tmp/chase-round3-release-final-overflow-20261028",
+        "log": "/tmp/chase-round3-release-final-overflow-20261028.log"
+      },
+      {
+        "name": "math",
+        "exit": 0,
+        "seconds": 3.21,
+        "output": "/tmp/chase-round3-release-final-math-20261028",
+        "log": "/tmp/chase-round3-release-final-math-20261028.log"
+      },
+      {
+        "name": "accessibility",
+        "exit": 0,
+        "seconds": 29.27,
+        "output": "/tmp/chase-round3-release-final-accessibility-20261028",
+        "log": "/tmp/chase-round3-release-final-accessibility-20261028.log"
+      },
+      {
+        "name": "reflow",
+        "exit": 0,
+        "seconds": 607.97,
+        "output": "/tmp/chase-round3-release-final-reflow-20261028",
+        "log": "/tmp/chase-round3-release-final-reflow-20261028.log"
+      },
+      {
+        "name": "print",
+        "exit": 0,
+        "seconds": 110.82,
+        "output": "/tmp/chase-round3-release-final-print-20261028",
+        "log": "/tmp/chase-round3-release-final-print-20261028.log"
+      },
+      {
+        "name": "lab-print",
+        "exit": 0,
+        "seconds": 23.87,
+        "output": "/tmp/chase-round3-release-final-lab-print-20261028",
+        "log": "/tmp/chase-round3-release-final-lab-print-20261028.log"
+      },
+      {
+        "name": "reading",
+        "exit": 0,
+        "seconds": 397.7,
+        "output": "/tmp/chase-round3-release-final-reading-20261028",
+        "log": "/tmp/chase-round3-release-final-reading-20261028.log"
+      }
+    ]
   }
 }

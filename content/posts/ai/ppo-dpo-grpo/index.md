@@ -1,7 +1,7 @@
 ---
 title: "PPO、DPO 与 GRPO 详解：从策略梯度原子模块到可运行 Python 实验"
 date: 2026-09-08
-lastmod: 2026-09-30
+lastmod: 2026-10-28
 draft: false
 tags: ["Reinforcement Learning", "PPO", "DPO", "GRPO", "RLHF", "PyTorch"]
 categories: ["人工智能"]
@@ -347,7 +347,7 @@ PPO 是方法族，原论文也讨论 KL-penalty 版本；此处展开最常用�
 
 设 $\epsilon=0.2$：
 
-| $\rho$ | $\hat A$ | 未 clip 项 | clip 后项 | 取 min |
+| 比率 $\rho$ | 优势 $\hat A$ | 未 clip 项 | clip 后项 | 取 min |
 | ---: | ---: | ---: | ---: | ---: |
 | 1.5 | +1 | 1.5 | 1.2 | 1.2 |
 | 0.5 | −1 | −0.5 | −0.8 | −0.8 |

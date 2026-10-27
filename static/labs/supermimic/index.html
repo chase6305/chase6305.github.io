@@ -37,7 +37,7 @@
         </div>
         <label class="switch"><input name="detach" type="checkbox"> 切断传入第二步的中间状态梯度</label>
         <p class="hint">切断只改变反向路径，当前两步的前向状态和回报保持相同。调整 b、c 会改变替代模型；点击下方按钮会重置全部输入。</p>
-        <div class="presets" aria-label="重置为文章算例">
+        <div role="group" class="presets" aria-label="重置为文章算例">
           <button type="button" data-preset="full">完整 BPTT</button>
           <button type="button" data-preset="detached">中间状态 detach</button>
           <button type="button" data-preset="opposite">轨迹相同，梯度相反</button>
@@ -97,7 +97,7 @@
     <section id="reproduce" aria-labelledby="reproduce-title" tabindex="-1" data-lab-anchor>
       <h2 id="reproduce-title">下载当前算例并复算</h2>
       <p><a id="download-case" download="supermimic-gradient-case.json" hidden>下载输入与结果 JSON</a>，再<a href="gradient_lab.js" download>下载计算代码 gradient_lab.js</a>，在同一目录用 Node.js 运行：</p>
-      <pre tabindex="0" aria-label="Node.js 复算命令"><code>node gradient_lab.js supermimic-gradient-case.json</code></pre>
+      <pre role="region" tabindex="0" aria-label="Node.js 复算命令"><code>node gradient_lab.js supermimic-gradient-case.json</code></pre>
       <p>代码只从 JSON 的 input 重新计算，不采用文件里保存的结果作为真值。全部计算在本地完成，无需模型权重或额外软件包。</p>
     </section>
   </div>

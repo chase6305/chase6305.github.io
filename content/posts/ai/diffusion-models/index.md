@@ -1,7 +1,7 @@
 ---
 title: "Diffusion 扩散模型入门指南：从 DDPM 到 Latent Diffusion 与 DiT"
 date: 2026-08-27
-lastmod: 2026-09-30
+lastmod: 2026-10-28
 draft: false
 tags: ["Diffusion Models", "Generative Models", "PyTorch"]
 categories: ["人工智能"]
@@ -792,12 +792,12 @@ U-Net/DiT 预测噪声等目标；Scheduler 保存噪声强度及相关系数；
 
 ### 11.5 学习完成标准
 
-- [ ] 能解释 `βₜ`、`αₜ`、`ᾱₜ` 的关系。
-- [ ] 能从闭式公式构造任意时间步的 `xₜ`。
-- [ ] 能说明训练为何预测已知噪声，以及采样为何要倒序迭代。
-- [ ] 能区分去噪器、时间调度器、采样器、文本编码器和 VAE。
-- [ ] 能解释 CFG Scale 过高的代价。
-- [ ] 能独立运行二维 DDPM，并排查训练正常但采样失败的问题。
+- {{< task-check >}}能解释 `βₜ`、`αₜ`、`ᾱₜ` 的关系。{{< /task-check >}}
+- {{< task-check >}}能从闭式公式构造任意时间步的 `xₜ`。{{< /task-check >}}
+- {{< task-check >}}能说明训练为何预测已知噪声，以及采样为何要倒序迭代。{{< /task-check >}}
+- {{< task-check >}}能区分去噪器、时间调度器、采样器、文本编码器和 VAE。{{< /task-check >}}
+- {{< task-check >}}能解释 CFG Scale 过高的代价。{{< /task-check >}}
+- {{< task-check >}}能独立运行二维 DDPM，并排查训练正常但采样失败的问题。{{< /task-check >}}
 
 ## 12. 进一步学习路线
 

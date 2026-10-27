@@ -1,7 +1,7 @@
 ---
 title: "RRSI 论文详解：让 Agent 的自我改进跨任务泛化"
 date: 2026-10-15
-lastmod: 2026-10-16
+lastmod: 2026-10-28
 draft: false
 tags: ["RRSI", "LLM Agents", "Agent Harness", "Self-Improvement", "Regularization", "LLM", "Evaluation", "Ablation", "Paper Notes"]
 categories: ["人工智能"]
@@ -375,7 +375,7 @@ Harvey LAB 的加权可以用一个小例子理解：假设任务 A 的 2 条 ru
 
 下面转录 PDF 图 3 的首轮主实验结果，并列出表 6 的增益区间，重采样方法见第 8.2 节。数值按论文保留一位小数；“增益”及其区间使用各基准的分数点，不是相对百分比。
 
-| 基准与分项 | $H_0$ | RRSI | 增益 | 95% 区间 |
+| 基准与分项 | 初始 $H_0$ | RRSI | 增益 | 95% 区间 |
 | --- | ---: | ---: | ---: | ---: |
 | Terminal-Bench 2.1，Evolve | 74.2 | 80.2 | +6.0 | [4.3,9.3] |
 | SWE-bench Verified，OOD | 82.0 | 83.8 | +1.8 | [1.1,4.0] |

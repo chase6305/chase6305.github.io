@@ -37,7 +37,7 @@
         <label>末段样本数<input name="terminalSamples" type="number" min="1" max="200" step="1" value="25" required></label>
       </div>
       <p class="hint">过渡按等步长线性变化。波动设为 a 时，末段依次为中心高度 +a、−a；相邻变化可能达到 2a。评估器的最后 20 次更新窗口可能包含过渡段，不能只看“末段样本数”。</p>
-      <div class="presets" aria-label="载入文章曲线">
+      <div role="group" class="presets" aria-label="载入文章曲线">
         <button type="button" data-preset="stable">平稳放回</button>
         <button type="button" data-preset="aloft">一直举着</button>
         <button type="button" data-preset="drop">突然落下</button>
@@ -52,7 +52,7 @@
       <p id="sample-count"></p>
       <figure>
         <div><svg id="height-chart" role="img" aria-labelledby="chart-title" aria-describedby="chart-description"></svg></div>
-        <figcaption>实线是构造高度；横向虚线从高到低是抬升 0.10 m、保持 0.05 m、末窗高度上限 0.03 m，线型各不相同。紫色区标出最后 20 次更新。所有条件仍以图后的数值判定为准。</figcaption>
+        <figcaption>实线是构造高度；横向虚线从高到低是抬升 0.10 m、保持 0.05 m、末窗高度上限 0.03 m，线型各不相同。阴影区标出最后 20 次更新。所有条件仍以图后的数值判定为准。</figcaption>
       </figure>
       <ol id="checks"></ol>
       <p class="hint">读数显示六位有效数字，判定使用未舍入数值，并沿用固定源码的严格阈值比较。临界输入可能受浮点表示影响；下载的轨迹保留计算精度。</p>

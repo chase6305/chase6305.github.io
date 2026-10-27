@@ -12,7 +12,7 @@
   const loadingText = '{{ T "searchLoading" }}';
   const unavailableText = '{{ T "searchUnavailable" }}';
 
-  const EDITABLE_TAGS = ['INPUT', 'SELECT', 'BUTTON', 'TEXTAREA'];
+  const EDITABLE_TAGS = ['INPUT', 'SELECT', 'TEXTAREA'];
   const isMac = /iPad|iPhone|Macintosh/.test(navigator.userAgent);
 
   let dialog;
@@ -49,6 +49,9 @@
         cmd.textContent = '⌘';
         el.appendChild(cmd);
         el.appendChild(document.createTextNode('K'));
+        const trigger = el.closest('[data-search-open]');
+        const label = trigger.querySelector('.hextra-search-trigger-label');
+        trigger.setAttribute('aria-label', `${label.textContent} ${el.textContent}`);
       });
     }
 
@@ -472,12 +475,12 @@
       if (result.breadcrumbs && result.breadcrumbs.length) {
         const crumb = document.createElement('div');
         crumb.className = 'hextra-search-crumb';
-        crumb.setAttribute('aria-label', result.breadcrumbs.join(' > '));
         appendBreadcrumb(crumb, result.breadcrumbs);
         link.appendChild(crumb);
       }
 
       const title = document.createElement('div');
+      title.id = `${result.id}-title`;
       title.className = 'hextra-search-title';
       appendHighlightedText(title, result.title, query);
       link.appendChild(title);
@@ -498,12 +501,10 @@
         excerptLink.id = match.id;
         excerptLink.href = match.route;
         excerptLink.setAttribute('role', 'option');
+        excerptLink.setAttribute('aria-describedby', title.id);
         excerptLink.setAttribute('aria-selected', isFirstOption ? 'true' : 'false');
         isFirstOption = false;
         optionCount++;
-
-        const label = hasExcerpt ? `${match.title} - ${match.content}` : match.title;
-        if (label) excerptLink.setAttribute('aria-label', label);
 
         if (match.title && match.title !== result.title) {
           const title = document.createElement('div');

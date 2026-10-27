@@ -6,7 +6,7 @@
       <span class="project-card__icon" aria-hidden="true">{{ .icon }}</span>
       <div>
         <p class="project-card__eyebrow">{{ if eq $.Page.Language.Lang "zh-cn" }}{{ .roleZh | default .role }}{{ else }}{{ .role }}{{ end }} · {{ .organization }}</p>
-        <h3 class="project-card__title">{{ .name }}</h3>
+        {{ if eq ($.headingLevel | default 3) 2 }}<h2 class="project-card__title">{{ .name }}</h2>{{ else }}<h3 class="project-card__title">{{ .name }}</h3>{{ end }}
       </div>
     </div>
     <p class="project-card__description">{{ if eq $.Page.Language.Lang "zh-cn" }}{{ .taglineZh | default .tagline }}。{{ .descriptionZh | default .description }}{{ else }}{{ .tagline }}. {{ .description }}{{ end }}</p>
