@@ -11,6 +11,7 @@ summary: "从质量—弹簧—阻尼关系推导机器人阻抗控制，连接�
 showToc: true
 TocOpen: true
 comments: false
+images: ["assets/impedance-principle-v2.webp"]
 description: "从质量—弹簧—阻尼关系推导机器人阻抗控制，连接操作空间动力学、Pinocchio、整定和分阶段安全验证。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "机器人动力学、Jacobian 与力矩接口"

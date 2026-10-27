@@ -9,6 +9,7 @@ authors: ["chase"]
 summary: "从 Q/K/V、张量形状与掩码理解注意力和 Transformer，进一步讨论多头、位置编码、KV Cache 与实现验证。"
 math: true
 toc: true
+images: ["assets/transformer-block-overview.webp"]
 description: "从 Q/K/V、张量形状与掩码理解注意力和 Transformer，进一步讨论多头、位置编码、KV Cache 与实现验证。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "矩阵乘法、概率与 PyTorch"

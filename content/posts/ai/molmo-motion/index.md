@@ -1,7 +1,7 @@
 ---
 title: "MolmoMotion 详解：从三维点轨迹预测到机器人运动先验"
 date: 2026-09-25T03:14:26+08:00
-lastmod: 2026-09-30
+lastmod: 2026-10-27
 draft: false
 tags: ["MolmoMotion", "Motion Forecasting", "World Model", "Robotics", "Flow Matching", "Paper Notes"]
 categories: ["人工智能"]
@@ -11,6 +11,7 @@ description: "从输入坐标系、点轨迹表示、AR 与 Flow Matching、视�
 contentLanguage: "zh-CN"
 math: true
 toc: true
+images: ["assets/motion-contract.png"]
 imageZoom: true
 reading_prerequisites: "相机坐标系、Transformer 与监督学习的基本概念；不要求运行过机器人基础模型"
 reading_focus: "先确定模型预测什么，再连接数据、目标函数、评估协议和下游控制；区分论文设计与公开代码。"
@@ -126,7 +127,13 @@ $$
 
 这样，第一点在 $t_0$ 的相对位置为零，其他点仍保留相对它的空间布局。若所有点各自减去起点，初始点间几何关系就会丢失。
 
-举例：锚点是 $(0.4,0.1,0.8)$ 米，某点未来的位置为 $(0.412,0.097,0.806)$ 米，编码后的三个整数就是 $(12,-3,6)$。解码时除以 1000，再加回共同锚点。
+举例：锚点是 $(0.4,0.1,0.8)$ 米，某点未来的位置（单位 m）为：
+
+$$
+p=(0.412,0.097,0.806).
+$$
+
+编码后的三个整数就是 $(12,-3,6)$。解码时除以 1000，再加回共同锚点。
 
 这种 **1 mm 的量化间隔只描述编码分辨率**，不代表模型具有 1 mm 的预测精度。深度估计、相机标定、目标歧义与预测误差往往大得多。仅就逐轴四舍五入而言，单个三维点的量化误差上界是 $\sqrt{3}/2$ mm；这是本文对编码的推导，不是模型实验结果。
 

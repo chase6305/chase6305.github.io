@@ -1,7 +1,7 @@
 ---
 title: "机器人雅可比矩阵：从关节速度到末端速度"
 date: 2026-09-03
-lastmod: 2026-09-30
+lastmod: 2026-10-27
 draft: false
 tags: ["Kinematics", "Jacobian", "Pinocchio", "Python"]
 categories: ["机器人技术"]
@@ -11,6 +11,7 @@ showToc: true
 TocOpen: true
 math: true
 comments: false
+images: ["assets/jacobian-flow.webp"]
 description: "用几何直觉和 Pinocchio 理解关节速度到末端 twist 的映射，解释参考系、奇异与阻尼最小二乘校验。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "FK、矩阵微分与坐标变换"
@@ -143,7 +144,7 @@ $$J_{:,4}=[0.35,\;-0.12,\;0.00,\;0.00,\;0.00,\;1.00]^T.$$
 
 $$J_{:,4}\dot q_4=[0.07,\;-0.024,\;0,\;0,\;0,\;0.2]^T,$$
 
-即末端获得约 $(0.07,-0.024,0)\ \mathrm{m/s}$ 的线速度和 $0.2\ \mathrm{rad/s}$ 的绕 $z$ 轴角速度。完整结果还要把其余 6 列分别乘以对应的关节速度后相加。
+即末端线速度的三个分量依次约为 0.07、−0.024、0 m/s，绕 $z$ 轴的角速度约为 $0.2\ \mathrm{rad/s}$。完整结果还要把其余 6 列分别乘以对应的关节速度后相加。
 
 ## 4. 用 Pinocchio 计算末端雅可比
 

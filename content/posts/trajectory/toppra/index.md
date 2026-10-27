@@ -1,7 +1,7 @@
 ---
 title: 'TOPP-RA 时间参数化：路径、曲率与连续约束验收'
 date: 2025-03-16
-lastmod: 2026-09-30
+lastmod: 2026-10-27
 draft: false
 tags: ["Trajectory Optimization", "TOPP-RA", "Motion Planning"]
 categories: ["机器人技术"]
@@ -11,6 +11,7 @@ showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+images: ["assets/path-vs-state-trajectory.webp"]
 description: "沿给定路径做时间参数化，用直线解析解与弯曲多项式实验区分求解网格、连续峰值和输出轨迹，并验证统一减速的作用与边界。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "路径插值与运动学约束"
@@ -143,9 +144,11 @@ plt.show()
 直线例子的 $q''(s)=0$，无法检验曲率项是否处理正确。换成下面这条二关节路径，单位为 rad，$s\in[0,1]$：
 
 $$
-q(s)=\begin{bmatrix}s\\16s^2(1-s)^2\end{bmatrix},\qquad
-q'(s)=\begin{bmatrix}1\\32s-96s^2+64s^3\end{bmatrix},\qquad
-q''(s)=\begin{bmatrix}0\\32-192s+192s^2\end{bmatrix}.
+\begin{aligned}
+q(s)&=\begin{bmatrix}s\\16s^2(1-s)^2\end{bmatrix},\\
+q'(s)&=\begin{bmatrix}1\\32s-96s^2+64s^3\end{bmatrix},\\
+q''(s)&=\begin{bmatrix}0\\32-192s+192s^2\end{bmatrix}.
+\end{aligned}
 $$
 
 例如 $s=0.5$ 时，第二关节的 $q'_2(s)=0$，但 $q''_2(s)=-16$。即使路径加速度 $\ddot s=0$，只要 $\dot s\ne0$，第二关节仍有 $\ddot q_2=-16\dot s^2$；把关节加速度只写成 $q'(s)\ddot s$ 就会漏掉它。

@@ -11,6 +11,7 @@ description: "结合 LeRobot 源码，梳理机器人数据与策略接口，推
 contentLanguage: "zh-CN"
 math: true
 toc: true
+images: ["assets/lerobot-workflow.png"]
 imageZoom: true
 reading_prerequisites: "PyTorch 张量、Transformer 基础与机器人关节控制"
 reading_focus: "沿观测、动作标签、预测动作块和实际执行四条时间线理解 ACT，再核对数据与部署接口。"

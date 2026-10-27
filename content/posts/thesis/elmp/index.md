@@ -7,6 +7,7 @@ math: true
 tags: ["ELMP", "Motion Planning", "APG", "Robot Learning", "Paper Notes"]
 categories: ["机器人"]
 authors: ["chase"]
+images: ["assets/paper-method.png"]
 summary: "从工具点云、行为克隆和可微运动学展开理解 ELMP，详解梯度路径、碰撞损失、实验口径与复现边界。"
 description: "从工具点云、行为克隆和可微运动学展开理解 ELMP，详解梯度路径、碰撞损失、实验口径与复现边界。"
 showToc: true

@@ -2,11 +2,12 @@
 title: "Open3D 点云与网格指南：空间索引、滤波、配准与重建"
 math: true
 date: 2025-03-04
-lastmod: 2026-09-30
+lastmod: 2026-10-27
 draft: false
 tags: ["Open3D", "Point Cloud", "3D Vision"]
 categories: ["三维视觉"]
 authors: ["chase"]
+images: ["assets/point-cloud-pipeline.webp"]
 summary: "串联点云 I/O、滤波、坐标变换、配准与重建，用完整预处理流程、退化平面和纹理对照实验解释几何信息与验证方法。"
 showToc: true
 TocOpen: true
@@ -1256,7 +1257,13 @@ $$
 
 脚本还独立对残差做中心差分，核对上面的扰动方向与 Jacobian。运行 `python icp_observability.py` 可得到[完整结果](assets/icp-observability.json)，无需显示窗口或下载数据。
 
-诊断局部退化时，应构造**实际残差对应**的 $J$，先约定平移／旋转尺度，再分析奇异值。本例取特征长度 $\ell=1\,\mathrm m$，参数写成 $[\delta t/\ell;\delta\theta]$，残差除以 $\ell$，比较 $H=J_s^TJ_s/N$。平面的特征值是 $[0,0,0,0.13,0.13,1]$，三个平面块的最小特征值约为 0.0118。换单位、特征长度、点分布或权重后，数值阈值也要随之解释。
+诊断局部退化时，应构造**实际残差对应**的 $J$，先约定平移／旋转尺度，再分析奇异值。本例取特征长度 $\ell=1\,\mathrm m$，参数写成 $[\delta t/\ell;\delta\theta]$，残差除以 $\ell$，比较 $H=J_s^TJ_s/N$。平面的特征值近似为：
+
+$$
+[0,0,0,0.13,0.13,1].
+$$
+
+三个平面块的最小特征值约为 0.0118。换单位、特征长度、点分布或权重后，数值阈值也要随之解释。
 
 不要仅因为函数名含有 information matrix，就默认它是当前 point-to-plane 目标的 Hessian：这个版本的 `get_information_matrix_from_point_clouds` 不使用目标法线，脚本在同一个平面上得到它的秩为 6，而上述点到平面矩阵的秩为 3。两者描述不同的残差假设，不能互换。
 

@@ -11,6 +11,7 @@ showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+images: ["assets/immutable-snapshot.webp"]
 description: "通过 RAII、unique_ptr、shared_ptr 和 weak_ptr 理解资源所有权，再用 C++20 不可变状态快照说明原子发布、对象保活和实时性边界。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "C++ 类、析构与值语义"

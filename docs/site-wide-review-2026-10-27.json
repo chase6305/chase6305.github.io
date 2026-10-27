@@ -1,0 +1,973 @@
+{
+  "started_at_utc": "2026-10-27T04:19:24Z",
+  "planned_until_utc": "2026-10-27T08:19:24Z",
+  "scope": "Four-hour site-wide improvement requested by user; preserve URLs, publication dates and draft states.",
+  "baseline_commit": "893fa9c09f157037db07157c1d928d92e4d9985e",
+  "baseline": {
+    "reviewed_posts": 93,
+    "learning_paths": 11,
+    "acceptance_checks": 459,
+    "blog_posting_schemas": 90,
+    "classified_tags": 184,
+    "code_blocks": 572,
+    "syntax_checked_by_language": {
+      "bash": 224,
+      "json": 8,
+      "jsonc": 6,
+      "python": 205,
+      "sh": 10,
+      "xml": 1
+    },
+    "html_pages": 309,
+    "local_references_checked": 27765,
+    "collection_pages_checked": 295,
+    "filter_indexes_checked": 9,
+    "errors": [],
+    "python_fragment_warnings": [],
+    "unrendered_math_warnings": [],
+    "code_regression": "scripts/test_blog_examples.py --network; C++, CMake, RL, SRS, Pinocchio, Modbus and loopback network checks passed",
+    "discovery_regression": "93 articles including drafts; 15 filter states, IME/history/no-JS and 12 width/theme states passed"
+  },
+  "findings": [
+    {
+      "id": "code-contrast",
+      "evidence": "/tmp/chase-site-audit-20261027/visual-audit.json",
+      "status": "fixed; full regression passed",
+      "detail": "Light/warm numeric, comment and builtin token colors fall below 4.5:1; dark builtin colors can inherit light palette."
+    },
+    {
+      "id": "print-output",
+      "evidence": "/tmp/chase-site-audit-20261027/print-dark.pdf",
+      "status": "fixed; full regression passed",
+      "detail": "Print inherits dark text colors; closed supplemental details omit their contents."
+    },
+    {
+      "id": "search-trigger-contrast",
+      "evidence": "/tmp/chase-site-audit-20261027/visual-audit.json",
+      "status": "fixed; full regression passed",
+      "detail": "Desktop search label and shortcut label have insufficient contrast in some themes."
+    },
+    {
+      "id": "inline-code-link-contrast",
+      "status": "fixed",
+      "detail": "Linked inline code had insufficient contrast in dark/warm themes across 14 article routes; use the site accent palette."
+    },
+    {
+      "id": "search-query-semantics",
+      "status": "fixed; browser regression passed",
+      "detail": "C++ and A* lost punctuation, full-width queries returned nothing, and partial-term suggestions returned unrelated pages for unmatched multiword queries.",
+      "evidence": "/tmp/chase-search-baseline-20261027.json"
+    },
+    {
+      "id": "search-text-editing",
+      "status": "fixed; browser regression passed",
+      "detail": "Home/End in the search input prevented native caret movement."
+    },
+    {
+      "id": "chinese-discovery",
+      "status": "fixed; static and browser regressions passed",
+      "detail": "Chinese home had zero latest article cards; its search data contained one project page and zero blog pages.",
+      "baseline_search_records": {
+        "en": 96,
+        "zh-cn": 1
+      }
+    },
+    {
+      "id": "text-resize-reflow",
+      "status": "fixed; complete 1236-layout reflow regression passed",
+      "detail": "At 200% root font size, home/project/latest cards, blog cards, footer appearance controls and navigation overflowed narrow viewports; search input also exceeded the dialog width.",
+      "baseline_layouts": 42,
+      "baseline_failing_layouts": 12,
+      "baseline_artifacts": "/tmp/chase-text-spacing-20261027.json"
+    },
+    {
+      "id": "table-focus-after-resize",
+      "status": "fixed; complete 1236-layout reflow regression passed",
+      "detail": "Tables that became scrollable after larger text could keep tabIndex=-1. ResizeObserver originally watched formulas only.",
+      "affected_routes_in_initial_scan": 21
+    },
+    {
+      "id": "print-interactive-panels",
+      "status": "fixed; complete print regression passed",
+      "detail": "JEV/filter panels and canvas colors could retain dark-screen styles when printing."
+    },
+    {
+      "id": "wide-print-formulas",
+      "status": "fixed; complete print regression passed",
+      "detail": "MPC objective/definitions and TOPP-RA derivatives exceeded the A4 print content width; split into aligned rows without changing formulas."
+    },
+    {
+      "id": "search-placeholder-contrast",
+      "status": "fixed; 12-layout production search regression passed",
+      "detail": "The empty search input placeholder was omitted by text-node-only sampling. Its light/warm contrast was 2.602:1 and dark contrast 3.707:1. Audit placeholders too and use the site muted palette.",
+      "artifacts": "/tmp/chase-site-search-placeholder-baseline-20261027/results.json"
+    },
+    {
+      "id": "native-print-page-color-scheme",
+      "status": "fixed; final 297-layout contrast and 18-layout print regression passed",
+      "detail": "The screen theme sets color-scheme inline. A non-important print override left native PDF paper margins dark when background graphics were enabled. Give the print color scheme priority over that inline preference and verify the root scheme, paper background and restored curve colors.",
+      "baseline_artifact": "/tmp/chase-site-readability-release-20261027/filter-native-dark.pdf",
+      "after_artifacts": "/tmp/chase-site-readability-final-colors-20261027/results.json"
+    },
+    {
+      "id": "article-filter-placeholder-contrast",
+      "status": "fixed; final 297-layout contrast and 18-layout print regression passed",
+      "detail": "The article filter placeholder inherited a half-opacity text color; measured 3.338:1 in light and 2.861:1 in warm. Use the site muted palette at full opacity.",
+      "artifacts": "/tmp/chase-site-readability-final-colors-20261027/results.json"
+    },
+    {
+      "id": "combined-text-stress-pagination",
+      "status": "fixed; complete 1872-layout combined regression passed",
+      "detail": "With 200% root text and increased spacing together, the blog pager arrow exceeded its link width and added about five pixels to the page. The fixed mobile sidebar then followed the enlarged layout viewport. Allow the pager link contents to wrap, preserving the default layout.",
+      "baseline_artifacts": "/tmp/chase-keyboard-reflow-release-20261027.json"
+    }
+  ],
+  "rounds": [
+    {
+      "name": "shared reading baseline",
+      "status": "passed",
+      "changes": [
+        "Improve light/warm code token contrast and dark builtin fallback",
+        "Improve desktop search label and shortcut contrast",
+        "Print black text independently of screen theme; unfold and restore supplemental details; wrap code and print tables"
+      ],
+      "full_text_contrast_scan": {
+        "layouts": 291,
+        "text_samples": 244770,
+        "remaining_failing_layouts_before_inline_fix": 28,
+        "print_layouts": 9,
+        "runtime_exceptions": 0,
+        "artifacts": "/tmp/chase-site-readability-full-20261027/results.json"
+      },
+      "pdf_review": {
+        "articles": [
+          "SuperMimic",
+          "Cosmos 3",
+          "C++ GCC"
+        ],
+        "pages": [
+          27,
+          31,
+          5
+        ],
+        "right_edge_word_overflow": 0,
+        "supermimic_nojs_print_text_identical": true,
+        "artifacts": "/tmp/chase-site-print-review-20261027"
+      },
+      "final_readability_regression": {
+        "contrastLayouts": 297,
+        "textSamples": 244878,
+        "contrastFailures": 0,
+        "printLayouts": 9,
+        "runtimeExceptions": 0,
+        "artifacts": "/tmp/chase-site-readability-final2-20261027/results.json"
+      }
+    },
+    {
+      "name": "search correctness and input behavior",
+      "status": "passed",
+      "changes": [
+        "Normalize full-width queries and preserve C++/A* tokens",
+        "Use CJK bigrams and require all terms",
+        "Rank title and chapter matches ahead of body matches",
+        "Deduplicate chapter destinations and retain matching pages even if query terms span sections",
+        "Separate loading/network failure/empty results and keep Home/End native text editing"
+      ],
+      "baseline_artifacts": "/tmp/chase-search-baseline-20261027.json",
+      "candidate_artifacts": "/tmp/chase-search-after-20261027.json",
+      "upstream_provenance": "docs/theme-overrides.json",
+      "responsiveness": {
+        "cpu_throttle": 4,
+        "before": {
+          "index_ready_ms": 3513.5,
+          "longest_main_thread_task_ms": 3327
+        },
+        "after": {
+          "index_ready_ms": 4462.8,
+          "long_tasks_over_50ms": 0
+        },
+        "scope": "Single local Chrome run, same candidate corpus; cooperative scheduling trades some completion time for responsive input. Not a general device performance guarantee."
+      },
+      "browser_regression": {
+        "layouts": 12,
+        "contrast_failures": 0,
+        "runtime_exceptions": 0,
+        "checks": [
+          "punctuation",
+          "NFKC",
+          "CJK",
+          "all terms",
+          "title/chapter ranking",
+          "Home/End",
+          "IME",
+          "cleared input",
+          "stale responses",
+          "network retry",
+          "individual query-term highlighting",
+          "Chinese entry search and latest cards"
+        ],
+        "artifacts": "/tmp/chase-site-search-final-20261027/results.json"
+      }
+    },
+    {
+      "name": "article social previews",
+      "status": "passed",
+      "changes": [
+        "Add existing article covers to 50 articles",
+        "Reuse first body image description for Open Graph, Twitter and BlogPosting image metadata",
+        "Verify local image dimensions and shared image fixtures"
+      ],
+      "selected_images": [
+        {
+          "id": 8,
+          "path": "content/posts/calibration/kinematics/index.md",
+          "image": "assets/calibration-validation.webp"
+        },
+        {
+          "id": 10,
+          "path": "content/posts/calibration/opencv/index.md",
+          "image": "assets/circle-grid-check.png"
+        },
+        {
+          "id": 12,
+          "path": "content/posts/casadi/index.md",
+          "image": "assets/feasible-sets.png"
+        },
+        {
+          "id": 14,
+          "path": "content/posts/coacd/index.md",
+          "image": "assets/convex-parts-opening.webp"
+        },
+        {
+          "id": 20,
+          "path": "content/posts/cuda/warp/index.md",
+          "image": "assets/cuda-warp-vs-library.webp"
+        },
+        {
+          "id": 35,
+          "path": "content/posts/open3d/introduction/index.md",
+          "image": "assets/point-cloud-pipeline.webp"
+        },
+        {
+          "id": 37,
+          "path": "content/posts/pid/index.md",
+          "image": "assets/pid-feedback.webp"
+        },
+        {
+          "id": 39,
+          "path": "content/posts/planner/to_mpc_wbc/index.md",
+          "image": "assets/planning-control-loop.webp"
+        },
+        {
+          "id": 46,
+          "path": "content/posts/queue/index.md",
+          "image": "assets/spsc-publication.webp"
+        },
+        {
+          "id": 47,
+          "path": "content/posts/rl/index.md",
+          "image": "assets/sarsa-q-targets.webp"
+        },
+        {
+          "id": 52,
+          "path": "content/posts/robotics/kinematics/pinocchio/index.md",
+          "image": "assets/numerical-ik-loop.webp"
+        },
+        {
+          "id": 54,
+          "path": "content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+          "image": "assets/srs-arm-angle.webp"
+        },
+        {
+          "id": 55,
+          "path": "content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+          "image": "assets/frame-chain.webp"
+        },
+        {
+          "id": 56,
+          "path": "content/posts/robotics/workspace/whole-workspace/index.md",
+          "image": "assets/workspace-sampling.png"
+        },
+        {
+          "id": 57,
+          "path": "content/posts/thesis/being_0/index.md",
+          "image": "assets/being-zero-hierarchy.webp"
+        },
+        {
+          "id": 66,
+          "path": "content/posts/ai/rynnbrain/index.md",
+          "image": "assets/embodied-foundation-model.webp"
+        },
+        {
+          "id": 67,
+          "path": "content/posts/ai/internvl-3-5/index.md",
+          "image": "assets/visual-token-pipeline.webp"
+        },
+        {
+          "id": 68,
+          "path": "content/posts/ai/ppo-dpo-grpo/index.md",
+          "image": "assets/policy-optimization-overview.webp"
+        },
+        {
+          "id": 69,
+          "path": "content/posts/ai/gspo/index.md",
+          "image": "assets/ratio-gradient.png"
+        },
+        {
+          "id": 70,
+          "path": "content/posts/ai/gen-1-5/index.md",
+          "image": "assets/demonstration-ambiguity.png"
+        },
+        {
+          "id": 71,
+          "path": "content/posts/thesis/elmp/index.md",
+          "image": "assets/paper-method.png"
+        },
+        {
+          "id": 72,
+          "path": "content/posts/ai/x-vla/index.md",
+          "image": "assets/domain-conditioning.png"
+        },
+        {
+          "id": 73,
+          "path": "content/posts/ai/real-time-chunking/index.md",
+          "image": "assets/rtc-overview.png"
+        },
+        {
+          "id": 74,
+          "path": "content/posts/ai/light-loco-parkour/index.md",
+          "image": "assets/whole-body-contacts-clean.png"
+        },
+        {
+          "id": 75,
+          "path": "content/posts/ai/vla-world-model-data/index.md",
+          "image": "assets/data-sources.png"
+        },
+        {
+          "id": 76,
+          "path": "content/posts/ai/lerobot-act/index.md",
+          "image": "assets/lerobot-workflow.png"
+        },
+        {
+          "id": 77,
+          "path": "content/posts/ai/llm-training-metrics/index.md",
+          "image": "assets/llm-training-map.png"
+        },
+        {
+          "id": 78,
+          "path": "content/posts/ai/vla-evolution/index.md",
+          "image": "assets/one-decision-loop.webp"
+        },
+        {
+          "id": 79,
+          "path": "content/posts/ai/molmo-motion/index.md",
+          "image": "assets/motion-contract.png"
+        },
+        {
+          "id": 80,
+          "path": "content/posts/robotics/control/robot-filters/index.md",
+          "image": "assets/filter-map.png"
+        },
+        {
+          "id": 85,
+          "path": "content/posts/ai/vision-transformers/index.md",
+          "image": "assets/vision-transformer-map.webp"
+        },
+        {
+          "id": 86,
+          "path": "content/posts/ai/behavior-prompting/index.md",
+          "image": "assets/behavior-prompting-flow.webp"
+        },
+        {
+          "id": 87,
+          "path": "content/posts/ai/stable-hand/index.md",
+          "image": "assets/stablehand-pipeline.webp"
+        },
+        {
+          "id": 88,
+          "path": "content/posts/ai/video-to-data/index.md",
+          "image": "assets/video-to-data-pipeline.webp"
+        },
+        {
+          "id": 89,
+          "path": "content/posts/ai/rrsi/index.md",
+          "image": "assets/frozen-model-evolving-harness.webp"
+        },
+        {
+          "id": 90,
+          "path": "content/posts/ai/multiview-geometry/index.md",
+          "image": "assets/images-to-geometry.webp"
+        },
+        {
+          "id": 91,
+          "path": "content/posts/ai/supermimic/index.md",
+          "image": "assets/training-cycle.webp"
+        },
+        {
+          "id": 92,
+          "path": "content/posts/ai/cosmos3/index.md",
+          "image": "assets/dual-tower-overview.webp"
+        },
+        {
+          "id": 1,
+          "path": "content/posts/ai/algorithms/Astar/Astar-introduction/index.md",
+          "image": "Astar.png"
+        },
+        {
+          "id": 3,
+          "path": "content/posts/ai/diffusion-models/index.md",
+          "image": "assets/diffusion-overview.webp"
+        },
+        {
+          "id": 4,
+          "path": "content/posts/ai/distributed-training-memory/index.md",
+          "image": "assets/zero-memory-comparison.png"
+        },
+        {
+          "id": 6,
+          "path": "content/posts/ai/transformer-attention/index.md",
+          "image": "assets/transformer-block-overview.webp"
+        },
+        {
+          "id": 9,
+          "path": "content/posts/calibration/model/index.md",
+          "image": "eye_in_hand.png"
+        },
+        {
+          "id": 17,
+          "path": "content/posts/cpp/smart-pointer/index.md",
+          "image": "assets/immutable-snapshot.webp"
+        },
+        {
+          "id": 30,
+          "path": "content/posts/network-protocol/c++_tcp/index.md",
+          "image": "assets/tcp-framing.webp"
+        },
+        {
+          "id": 48,
+          "path": "content/posts/robotics/control/impedance-control/index.md",
+          "image": "assets/impedance-principle-v2.webp"
+        },
+        {
+          "id": 49,
+          "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+          "image": "assets/dynamics-regression-principle.webp"
+        },
+        {
+          "id": 50,
+          "path": "content/posts/robotics/kinematics/jacobian/index.md",
+          "image": "assets/jacobian-flow.webp"
+        },
+        {
+          "id": 59,
+          "path": "content/posts/trajectory/ruckig/index.md",
+          "image": "assets/ruckig-synchronization.png"
+        },
+        {
+          "id": 60,
+          "path": "content/posts/trajectory/toppra/index.md",
+          "image": "assets/path-vs-state-trajectory.webp"
+        }
+      ],
+      "validation": {
+        "production_sharing_images": 52,
+        "image_fixture_modes": 5,
+        "local_link_and_schema_errors": 0
+      }
+    },
+    {
+      "name": "404 recovery",
+      "status": "passed",
+      "changes": [
+        "Use shared navigation, search and theme in both language 404 pages",
+        "Provide home, article and learning-path links",
+        "Emit a viewport and noindex metadata through the shared head override"
+      ],
+      "validation": {
+        "layouts": 165,
+        "themes": 3,
+        "widths": [
+          320,
+          390,
+          768,
+          1024,
+          1440
+        ],
+        "runtime_exceptions": 0,
+        "artifacts": "/tmp/chase-site-accessibility-20261027/results.json"
+      }
+    },
+    {
+      "name": "shared article discovery",
+      "status": "passed",
+      "changes": [
+        "Use the canonical article collection for latest cards in both language home pages",
+        "Include all published canonical articles and learning paths in both search indexes",
+        "Keep card prose language and UI link language explicit"
+      ],
+      "production_articles_per_language": 90,
+      "latest_cards_per_home": 3,
+      "draft_leaks": 0
+    },
+    {
+      "name": "high density image delivery",
+      "status": "passed; responsive image fixtures and enlarged-text source selection verified",
+      "changes": [
+        "Offer full-width WebP for large PNG diagrams while keeping original image sources and links"
+      ],
+      "sample": "/posts/ai/vla-world-model-data/",
+      "sample_dpr": 3,
+      "before_image_bytes": 16552392,
+      "after_image_bytes": 1116586,
+      "relative_reduction_percent": 93.25,
+      "scope": "Document image-resource bodies with all 11 article images decoded and cache disabled; includes the shared navbar image. Widths 768 and 1440 at DPR 3; not a network speed claim.",
+      "artifacts": "/tmp/chase-image-delivery-20261027.json",
+      "full_width_candidate_inventory": {
+        "images": 142,
+        "original_bytes": 95943982,
+        "webp_bytes": 9741762,
+        "larger_candidates": [],
+        "scope": "Deduplicated published PNG URLs and their full-width WebP candidates in the fresh production build; aggregate file sizes, not page-load/network timing.",
+        "artifacts": "/tmp/chase-full-width-image-audit-20261027.json"
+      }
+    },
+    {
+      "name": "external references and paper spot checks",
+      "status": "checked; no editorial change required",
+      "external_endpoints_checked": 789,
+      "confirmed_http_404_or_410": 0,
+      "temporary_or_blocked_responses": "Kept for follow-up; not treated as missing references.",
+      "link_artifacts": "/tmp/chase-site-links-results-20261027.json",
+      "papers": [
+        {
+          "file": "/home/ubuntu/Documents/SuperMimic.pdf",
+          "sha256": "fe213017ab062f4acc3965da89abd3c29969163e144a2628a662b8ce46691009",
+          "checks": [
+            "Executed noisy action in replay",
+            "Survival and reward time subscripts",
+            "Actor/model/critic update order",
+            "Table A.5 hyperparameters"
+          ]
+        },
+        {
+          "file": "/home/ubuntu/Documents/cosmos3.pdf",
+          "sha256": "df058bd2447fbdd83d13fd63be60a8b0aceb00ef6e50ba428b0a6bdbbed64b8d",
+          "checks": [
+            "DROID observations and action interface",
+            "32-step action horizon versus model latency",
+            "4 denoising steps and CFG/shift values",
+            "Sampling table and native-control frequency scope"
+          ]
+        }
+      ],
+      "scope": "Spot checks of the two user-provided papers; does not claim a new factual audit of every paper or every remote endpoint.",
+      "follow_up": {
+        "retried": 25,
+        "resolved_http_200": 5,
+        "remaining_unconfirmed_or_blocked": 20,
+        "confirmed_http_404_or_410": 0,
+        "artifacts": "/tmp/chase-site-links-followup-20261027.json"
+      }
+    },
+    {
+      "name": "numerical article and lab checks",
+      "status": "passed",
+      "checks": [
+        "Six-DoF DH zero position and 100 finite-difference Jacobians",
+        "Base/flange/TCP frame chain",
+        "SuperMimic three presets and 100 closed-form cases",
+        "LLM memory budget scaling and invalid inputs",
+        "RRSI selection boundaries, novelty and immutability",
+        "Video-to-Data height conditions and invalid inputs",
+        "Pinocchio Jacobian and time variation across 20 poses and three reference frames",
+        "OpenCV 4.11 hand-eye six-pose and zero-offset ten-pose held-out checks",
+        "Open3D 0.19 residual Hessian spectrum, planar degeneracy and corner pose recovery",
+        "RynnBrain and InternVL 13 offline tests",
+        "Cosmos token/mask and evaluation arithmetic",
+        "Light-Loco-Parkour standard-library checks",
+        "All five filter methods produce exactly the same arrays and metrics as the baseline commit"
+      ],
+      "ci_change": "Add the pure Node lab regressions to the existing Pages workflow",
+      "environment_note": "Calibration was rerun in /tmp/chase-site-numeric-review-20261027 with OpenCV 4.11.0.86; the default OpenCV 5 package lacked calibrateHandEye. The project/system environment was left intact."
+    },
+    {
+      "name": "text resizing and article formulas",
+      "status": "passed",
+      "baseline": {
+        "layouts": 1236,
+        "failing_layouts": 66,
+        "affected_routes": 33,
+        "runtime_exceptions": 0,
+        "artifacts": "/tmp/chase-site-reflow-full-20261027/results.json"
+      },
+      "changes": [
+        "Allow home, project, latest, related and topic-navigation cards to wrap long titles",
+        "Wrap footer switches and maintain sticky navigation offsets when its rows change",
+        "Constrain the search input inside the dialog at 200% text size",
+        "Move long inline expressions into displayed math or separate named fields",
+        "Let filter metrics wrap at larger text sizes",
+        "Cap decorative gutters and desktop side-column widths while allowing text to enlarge, improving available reading width at 200% text size."
+      ],
+      "edited_articles": {
+        "content/posts/calibration/zero/index.md": 3,
+        "content/posts/open3d/introduction/index.md": 1,
+        "content/posts/rl/index.md": 11,
+        "content/posts/robotics/kinematics/jacobian/index.md": 1,
+        "content/posts/robotics/kinematics/kinematics-introduction.md": 1,
+        "content/posts/robotics/kinematics/pinocchio/index.md": 1,
+        "content/posts/thesis/coacd/index.md": 1,
+        "content/posts/ai/rynnbrain/index.md": 1,
+        "content/posts/ai/gspo/index.md": 2,
+        "content/posts/ai/x-vla/index.md": 1,
+        "content/posts/ai/real-time-chunking/index.md": 3,
+        "content/posts/ai/light-loco-parkour/index.md": 2,
+        "content/posts/ai/llm-training-metrics/index.md": 1,
+        "content/posts/ai/molmo-motion/index.md": 1,
+        "content/posts/ai/stable-hand/index.md": 1,
+        "content/posts/ai/cosmos3/index.md": 3
+      },
+      "additional_article": "content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+      "targeted_after": {
+        "routes": 33,
+        "width": 320,
+        "root_font_percent": 200,
+        "page_overflow": 0
+      },
+      "math_validation": "fresh production build; no unrendered math, invalid snippets or broken local links",
+      "final": {
+        "layouts": 1236,
+        "failures": 0,
+        "runtimeExceptions": 0,
+        "not_found_menu": true,
+        "search_input_bounds": true,
+        "artifacts": "/tmp/chase-site-reflow-final-20261027/results.json"
+      }
+    },
+    {
+      "name": "print geometry and adaptive table focus",
+      "status": "passed",
+      "changes": [
+        "Observe table size changes as well as formula size changes",
+        "Reset interactive-panel print variables and form colors independently of screen theme",
+        "Render filter canvas with a print palette and restore screen rendering afterwards",
+        "Split the MPC objective/definitions and TOPP-RA derivatives into aligned rows"
+      ],
+      "baseline_print_math_overflows": 2,
+      "baseline_table_focus_routes": 21,
+      "sample_print_layouts": 15,
+      "sample_print_runtime_exceptions": 0,
+      "printed_canvas_theme_independent": true,
+      "sample_artifacts": "/tmp/chase-site-print-panels-20261027/results.json",
+      "print_validation": {
+        "layouts": 558,
+        "failures": 0,
+        "runtimeExceptions": 0,
+        "max_restore_wait_ms": 225,
+        "artifacts": "/tmp/chase-blog-print-final-20261027/results.json"
+      },
+      "table_focus_validation": {
+        "layouts": 1236,
+        "failures": 0,
+        "artifacts": "/tmp/chase-site-reflow-complete-20261027/results.json"
+      },
+      "final_print_validation": {
+        "layouts": 558,
+        "failures": 0,
+        "runtimeExceptions": 0,
+        "artifacts": "/tmp/chase-print-release-20261027/results.json"
+      }
+    },
+    {
+      "name": "reading overflow measurements",
+      "status": "passed",
+      "change": "Measure table/formula geometry before writing hints and focus attributes; avoid repeated style/layout work.",
+      "sample": "/posts/ai/transformer-attention/",
+      "action": "Change root text size to 200% at a 320px viewport",
+      "before": {
+        "cpuThrottle": 4,
+        "elapsedMs": 1990.800000011921,
+        "layoutCount": 14,
+        "layoutMs": 378.03899999999993,
+        "styleCount": 30,
+        "styleMs": 1455.3899999999999
+      },
+      "after": {
+        "cpuThrottle": 4,
+        "elapsedMs": 1042.300000011921,
+        "layoutCount": 4,
+        "layoutMs": 421.61400000000003,
+        "styleCount": 4,
+        "styleMs": 382.10600000000005
+      },
+      "scope": "One local Chrome run per version with 4x CPU throttling and a fixed 250ms settling wait; counts describe this action, not a universal time guarantee.",
+      "regression": {
+        "layouts": 1236,
+        "failures": 0,
+        "runtime_exceptions": 0,
+        "artifacts": "/tmp/chase-site-reflow-complete-20261027/results.json"
+      }
+    },
+    {
+      "name": "combined text spacing and keyboard table operation",
+      "status": "passed",
+      "changes": [
+        "Add simultaneous 200% root text plus increased spacing to the all-article regression",
+        "Cover the second native pagination page",
+        "Verify actual arrow-key table scrolling in Cosmos, Open3D and RL"
+      ],
+      "keyboard_before_pagination_fix": [
+        {
+          "route": "/posts/ai/cosmos3/",
+          "scrollLeft": 160,
+          "clientWidth": 270,
+          "scrollWidth": 801,
+          "focused": true
+        },
+        {
+          "route": "/posts/open3d/introduction/",
+          "scrollLeft": 7,
+          "clientWidth": 270,
+          "scrollWidth": 277,
+          "focused": true
+        },
+        {
+          "route": "/posts/rl/",
+          "scrollLeft": 81,
+          "clientWidth": 270,
+          "scrollWidth": 351,
+          "focused": true
+        }
+      ],
+      "regression": {
+        "layouts": 1872,
+        "failures": 0,
+        "runtimeExceptions": 0,
+        "keyboard_tables": [
+          {
+            "route": "/posts/ai/cosmos3/",
+            "focused": true,
+            "scrollLeft": 160,
+            "clientWidth": 270,
+            "scrollWidth": 801
+          },
+          {
+            "route": "/posts/open3d/introduction/",
+            "focused": true,
+            "scrollLeft": 7,
+            "clientWidth": 270,
+            "scrollWidth": 277
+          },
+          {
+            "route": "/posts/rl/",
+            "focused": true,
+            "scrollLeft": 81,
+            "clientWidth": 270,
+            "scrollWidth": 351
+          }
+        ],
+        "artifacts": "/tmp/chase-reflow-final-combined-20261027/results.json"
+      }
+    },
+    {
+      "name": "original resolution zoom after responsive image conversion",
+      "status": "passed",
+      "change": "Explicit data-zoom-src on responsive zoomable images loads the original on demand; regular page images retain WebP candidates.",
+      "reason": "Medium Zoom otherwise selects its high-definition image from srcset, whose largest PNG candidate now uses WebP.",
+      "fixtures": "/tmp/chase-images-original-zoom-20261027.json",
+      "browser_validation": {
+        "original": "http://127.0.0.1:13157/posts/ai/vla-world-model-data/assets/data-sources.png",
+        "normalSource": "http://127.0.0.1:13157/posts/ai/vla-world-model-data/assets/data-sources_hu_b254b8907a23086f.webp",
+        "explicitSource": "http://127.0.0.1:13157/posts/ai/vla-world-model-data/assets/data-sources.png",
+        "fetchedOnOpen": true,
+        "focusRestored": true
+      }
+    }
+  ],
+  "references": [
+    "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Printing",
+    "https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeprint_event",
+    "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/",
+    "https://github.com/nextapps-de/flexsearch/blob/master/doc/document-search.md"
+  ],
+  "configuration_changes": [
+    "Remove the fixed navbar logo root link so the Chinese entrance links to its own home."
+  ],
+  "preservation": {
+    "source_articles": 93,
+    "changed_original_publication_dates": 0,
+    "changed_draft_states": 0,
+    "updated_lastmod_articles": 19,
+    "baseline_article_and_section_pages": 100,
+    "removed_original_static_anchors": 0,
+    "final_anchor_artifacts": "/tmp/chase-anchor-release-preservation-20261027.json",
+    "publication_artifacts": "/tmp/chase-publication-release-preservation-20261027.json"
+  },
+  "browser_environment": {
+    "chrome": "155",
+    "cdp_port": 9226,
+    "release_profile": "/tmp/chrome-site-review-release-20261027",
+    "back_forward_cache": "disabled for long serial checks",
+    "interrupted_run": "A Runtime.evaluate timeout interrupted the earlier reflow run after 1125 layouts; the owned test browser was restarted before final checks.",
+    "native_print_test_adjustment": "Inspect the three actual curve stroke calls; querying context.strokeStyle after save/restore only returns the grid color.",
+    "zoom_test_adjustment": "Wait for the library medium-zoom:opened event before testing Escape; the original can finish loading while the opening animation is still active. The user interface closed and restored focus when tested after that event."
+  },
+  "release_validation": {
+    "status": "local validation passed; production verification pending",
+    "production_build": "/tmp/chase-site-final-zoom-build-20261027.log",
+    "production_directory": "/tmp/chase-site-final-zoom-production-20261027",
+    "draft_preview_directory": "/tmp/chase-site-release-preview-20261027",
+    "strict_validator": {
+      "reviewed_posts": 93,
+      "learning_paths": 11,
+      "acceptance_checks": 459,
+      "blog_posting_schemas": 90,
+      "sharing_images": 52,
+      "shared_search_indexes": 2,
+      "classified_tags": 184,
+      "code_blocks": 572,
+      "syntax_checked_by_language": {
+        "bash": 224,
+        "json": 8,
+        "jsonc": 6,
+        "python": 205,
+        "sh": 10,
+        "xml": 1
+      },
+      "html_pages": 309,
+      "local_references_checked": 27765,
+      "collection_pages_checked": 295,
+      "filter_indexes_checked": 9,
+      "errors": [],
+      "python_fragment_warnings": [],
+      "unrendered_math_warnings": []
+    },
+    "assets": {
+      "pinned_packages": 3,
+      "pinned_files": 29,
+      "theme_overrides": 4,
+      "local_math_fonts": 20,
+      "verified_integrity_assets": 21
+    },
+    "toc": {
+      "toc_variants": 2,
+      "anchor_modes": 3,
+      "headings_per_variant": 7,
+      "literal_dollars": "preserved",
+      "both_math_delimiters": "passed",
+      "nested_links": "absent",
+      "automatic_section": "passed"
+    },
+    "images": {
+      "page_modes": 5,
+      "images_per_mode": 8,
+      "full_width_png_webp_and_original_links": "passed",
+      "responsive_zoom_uses_original": "passed",
+      "svg_points_fractional_scientific_multiline_viewbox": "passed",
+      "small_image_cap_and_opt_out": "passed",
+      "native_zoom_links_and_author_links": "passed"
+    },
+    "source_diff_whitespace": "passed",
+    "remote_main_at_release_review": "893fa9c09f157037db07157c1d928d92e4d9985e",
+    "reading": {
+      "cases": 896,
+      "figure_cases": 524,
+      "failures": 0,
+      "runtime_exceptions": 0,
+      "artifacts": "/tmp/chase-blog-reading-release-20261027/results.json"
+    },
+    "search": {
+      "layouts": 12,
+      "contrastFailures": 0,
+      "runtimeExceptions": 0,
+      "artifacts": "/tmp/chase-search-final-combined-20261027/results.json"
+    },
+    "reflow": {
+      "layouts": 1872,
+      "failures": 0,
+      "runtimeExceptions": 0,
+      "keyboard_tables": [
+        {
+          "route": "/posts/ai/cosmos3/",
+          "focused": true,
+          "scrollLeft": 160,
+          "clientWidth": 270,
+          "scrollWidth": 801
+        },
+        {
+          "route": "/posts/open3d/introduction/",
+          "focused": true,
+          "scrollLeft": 7,
+          "clientWidth": 270,
+          "scrollWidth": 277
+        },
+        {
+          "route": "/posts/rl/",
+          "focused": true,
+          "scrollLeft": 81,
+          "clientWidth": 270,
+          "scrollWidth": 351
+        }
+      ],
+      "artifacts": "/tmp/chase-reflow-final-combined-20261027/results.json"
+    },
+    "readability": {
+      "contrastLayouts": 297,
+      "textSamples": 244944,
+      "contrastFailures": 0,
+      "printLayouts": 18,
+      "runtimeExceptions": 0,
+      "native_canvas_print": [
+        {
+          "type": "beforeprint",
+          "curves": [
+            "#6d7d90",
+            "#26384c",
+            "#317ebd"
+          ]
+        },
+        {
+          "type": "afterprint",
+          "curves": [
+            "#6d7d90",
+            "#eef3f9",
+            "#86bdff"
+          ]
+        }
+      ],
+      "artifacts": "/tmp/chase-readability-final-combined-20261027/results.json"
+    },
+    "accessibility": {
+      "layouts": 165,
+      "exceptions": 0,
+      "mobileMenuFocus": true,
+      "themeKeyboard": true,
+      "systemAndCrossTabTheme": true,
+      "blockedStorage": true,
+      "keyboardZoom": true,
+      "originalResolutionZoom": {
+        "original": "http://127.0.0.1:13157/posts/ai/vla-world-model-data/assets/data-sources.png",
+        "normalSource": "http://127.0.0.1:13157/posts/ai/vla-world-model-data/assets/data-sources_hu_b254b8907a23086f.webp",
+        "explicitSource": "http://127.0.0.1:13157/posts/ai/vla-world-model-data/assets/data-sources.png",
+        "fetchedOnOpen": true,
+        "focusRestored": true
+      },
+      "artifacts": "/tmp/chase-accessibility-final-20261027/results.json"
+    },
+    "print": {
+      "layouts": 558,
+      "failures": 0,
+      "runtimeExceptions": 0,
+      "artifacts": "/tmp/chase-print-release-20261027/results.json"
+    },
+    "discovery": {
+      "status": "passed; 90 published articles, 15 filter states, IME, history, native pagination and no-JS fallback",
+      "log": "/tmp/chase-final-discovery-20261027.log"
+    }
+  },
+  "visual_evidence": {
+    "directory": "docs/site-reviews/2026-10-27",
+    "notes": "Repository screenshots document 200% root-font home reflow, print panel theme, mobile search and the Chinese dark 404; PDF artifacts stay outside published content."
+  },
+  "phase": "Production deployment and four-hour follow-through in progress"
+}

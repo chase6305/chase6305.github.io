@@ -1,0 +1,51 @@
+{
+  "theme": "Hextra",
+  "source_repository": "https://github.com/imfing/hextra",
+  "source_commit": "38d18a5a25d9700dc88888b6e906f1bccf4631b0",
+  "license": "MIT",
+  "published_license": "static/licenses/hextra.txt",
+  "license_sha256": "749fbcaf565aeec8feab572b554ad7f4798397521b737a35ee1dbdbfe6b9c1db",
+  "overrides": [
+    {
+      "upstream": "assets/js/flexsearch.js",
+      "local": "assets/js/flexsearch.js",
+      "changes": [
+        "Use repository-owned normalized technical/CJK encoder",
+        "Require all query terms instead of silent partial suggestions",
+        "Rank page titles, chapter headings, then body matches",
+        "Deduplicate chapter destinations and retain page-only results",
+        "Validate HTTP status and data shape before building indexes",
+        "Build indexes in cooperatively scheduled chapter-sized batches to keep the dialog responsive"
+      ]
+    },
+    {
+      "upstream": "assets/js/search-dialog.js",
+      "local": "assets/js/search-dialog.js",
+      "changes": [
+        "Preserve native Home/End text editing in the input",
+        "Show loading and connection failure separately from no results",
+        "Clear stale options while a query is pending and reject stale completions",
+        "Normalize query highlighting and bound input length",
+        "Deactivate stale options immediately when the input is cleared",
+        "Highlight each normalized query term independently"
+      ]
+    },
+    {
+      "upstream": "layouts/_partials/head.html",
+      "local": "layouts/_partials/head.html",
+      "changes": [
+        "Mark the 404 page noindex while retaining the shared head, theme, navigation and search assets"
+      ]
+    },
+    {
+      "upstream": "assets/json/search-data.json",
+      "local": "assets/json/search-data.json",
+      "changes": [
+        "Include the shared canonical blog and learning path in both language search indexes",
+        "Retain language-specific pages, exclusion rules and glossary handling"
+      ]
+    }
+  ],
+  "maintenance": "When upgrading the theme, compare these overrides with their upstream versions and rerun site assets, image fixtures, the search unit test and the full browser regressions.",
+  "scope": "Upstream-derived overrides introduced in the 2026-10-27 review; earlier repository overrides remain documented in their original reviews."
+}

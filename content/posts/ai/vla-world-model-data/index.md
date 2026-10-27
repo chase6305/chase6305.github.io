@@ -6,6 +6,7 @@ draft: false
 tags: ["VLA", "World Model", "Teleoperation", "UMI", "Egocentric", "Simulation", "Paper Notes"]
 categories: ["人工智能"]
 authors: ["chase"]
+images: ["assets/data-sources.png"]
 summary: "从 PICO 遥操作、主从机械臂、UMI 与人类视频，到 BEHAVIOR、RoboCasa 和空间世界模型，比较数据监督、动作迁移、采集工程与截至 2026 年 9 月的研究进展。"
 description: "从 PICO 遥操作、主从机械臂、UMI 与人类视频，到 BEHAVIOR、RoboCasa 和空间世界模型，比较数据监督、动作迁移、采集工程与截至 2026 年 9 月的研究进展。"
 contentLanguage: "zh-CN"

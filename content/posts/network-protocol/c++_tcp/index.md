@@ -11,6 +11,7 @@ showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+images: ["assets/tcp-framing.webp"]
 description: "实现带长度前缀的 Linux C++17 TCP 通信，区分空消息与截断连接，用整帧截止时间阻止慢速收包无限等待，并澄清机器人指令确认的含义。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "C++17 与 Linux socket"

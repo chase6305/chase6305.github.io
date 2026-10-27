@@ -6,6 +6,7 @@ draft: false
 tags: ["Reinforcement Learning", "PPO", "DPO", "GRPO", "RLHF", "PyTorch"]
 categories: ["人工智能"]
 authors: ["chase"]
+images: ["assets/policy-optimization-overview.webp"]
 summary: "从 REINFORCE、baseline、GAE、重要性采样、KL 与偏好建模推导 PPO、DPO、GRPO，提供 CPU 可运行训练、梯度测试与扩展路线。"
 description: "从 REINFORCE、baseline、GAE、重要性采样、KL 与偏好建模推导 PPO、DPO、GRPO，提供 CPU 可运行训练、梯度测试与扩展路线。"
 contentLanguage: "zh-CN"

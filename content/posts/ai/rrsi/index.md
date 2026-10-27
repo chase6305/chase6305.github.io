@@ -11,6 +11,7 @@ description: "详解 RRSI 如何在冻结模型权重时，通过稀疏编辑、
 contentLanguage: "zh-CN"
 math: true
 toc: true
+images: ["assets/frozen-model-evolving-harness.webp"]
 imageZoom: true
 reading_prerequisites: "LLM 工具调用、训练集与测试集、均值和误差的基本概念；公式会逐项解释"
 reading_focus: "把模型权重与外围程序分开，再按候选提议、筛选、独立评估和成本口径阅读，重点检查附录中的完整接受规则。"

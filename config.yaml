@@ -84,7 +84,6 @@ params:
       path: orca-avatar-64.webp
       width: 32
       height: 32
-      link: /
     width: wide
 
   theme:

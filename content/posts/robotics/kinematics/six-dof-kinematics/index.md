@@ -1,11 +1,12 @@
 ---
 title: 六自由度机器人正逆运动学
 date: 2021-12-07
-lastmod: 2026-09-30
+lastmod: 2026-10-27
 draft: false
 tags: ["Kinematics", "Inverse Kinematics", "C++"]
 categories: ["机器人技术"]
 authors: ["chase"]
+images: ["assets/frame-chain.webp"]
 summary: "从 World、Base、Flange、TCP 坐标链建立六轴 FK，串联 Elfin05 历史 DH 模型、腕心分解与数值验证，说明解析解的适用边界。"
 showToc: true
 TocOpen: true
@@ -166,7 +167,13 @@ $$
 
 下载 [dh_fk_check.py](dh_fk_check.py)，安装 NumPy 后运行 `python -B dh_fk_check.py`。脚本直接使用上表参数，先核对零角度位姿，再随机抽取 100 组关节角，用关节轴叉积得到的位置 Jacobian 与中心差分比较，同时检查上述腕心公式。
 
-在这套**无额外零位偏置**的模型中，$q=0$ 得到 $R_{06}=I$、$p_{06}=[0.455,0,-0.430]^T$ m。它不是机器人厂家定义的“零位姿态”；如果另一段程序给出不同结果，应先比较 DH 约定、长度符号和 offset，而不是先调逆解参数。
+在这套**无额外零位偏置**的模型中，$q=0$ 得到 $R_{06}=I$，末端位置为：
+
+$$
+p_{06}=[0.455,0,-0.430]^T\ \mathrm{m}.
+$$
+
+它不是机器人厂家定义的“零位姿态”；如果另一段程序给出不同结果，应先比较 DH 约定、长度符号和 offset，而不是先调逆解参数。
 
 这里验证的是 DH 表、数值实现和腕心关系的内部一致性。它没有复现下面依赖原工程的 C++ 逆解，也不能替代独立测量、碰撞检查或实机标定。
 

@@ -7,6 +7,7 @@ draft: false
 tags: ["PID", "Robot Control"]
 categories: ["机器人技术"]
 authors: ["chase"]
+images: ["assets/pid-feedback.webp"]
 summary: "区分 PD 与 PID 的适用条件，用可运行的饱和实验核对稳态误差、微分冲击、积分累积和恢复时间，并明确离散状态与单位。"
 showToc: true
 TocOpen: true

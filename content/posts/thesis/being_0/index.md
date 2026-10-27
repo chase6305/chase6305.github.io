@@ -6,6 +6,7 @@ draft: false
 tags: ["VLA", "Humanoid Robots", "Paper Notes"]
 categories: ["人工智能"]
 authors: ["chase"]
+images: ["assets/being-zero-hierarchy.webp"]
 summary: "依据 Being-0 论文梳理分层具身智能系统与实验结果，区分论文报告、概念示意和个人工程解读。"
 showToc: true
 TocOpen: true

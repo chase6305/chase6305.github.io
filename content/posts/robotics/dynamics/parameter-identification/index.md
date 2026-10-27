@@ -11,6 +11,7 @@ summary: "从同步采样和激励轨迹建立动力学回归，结合相关噪�
 showToc: true
 TocOpen: true
 comments: false
+images: ["assets/dynamics-regression-principle.webp"]
 description: "从同步采样和激励轨迹建立动力学回归，结合相关噪声算例讲清参数不确定性、RLS 尺度、物理一致性与独立验证。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "刚体动力学、回归与数据处理"

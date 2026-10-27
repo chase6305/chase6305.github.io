@@ -60,7 +60,12 @@ jobs:
             --structured-snippets \
             --strict-math
           node scripts/test_blog_filter.cjs public
+          node scripts/test_site_search.cjs
           node scripts/test_multiview_geometry_lab.cjs
+          node scripts/test_supermimic_gradient_lab.cjs
+          node scripts/test_llm_budget.cjs
+          node scripts/test_rrsi_selection_lab.cjs
+          node scripts/test_v2d_height_lab.cjs
           python3 -B scripts/test_blog_toc.py
           python3 -B scripts/test_blog_images.py
           python3 -B scripts/test_site_assets.py --public public

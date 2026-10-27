@@ -1,7 +1,7 @@
 ---
 title: "StableHand 论文详解：从第一视角视频恢复世界坐标双手动作"
 date: 2026-10-13
-lastmod: 2026-10-14
+lastmod: 2026-10-27
 draft: false
 tags: ["StableHand", "Egocentric", "Hand Pose Estimation", "Bimanual Manipulation", "Flow Matching", "Robot Learning", "Paper Notes"]
 categories: ["人工智能"]
@@ -11,6 +11,7 @@ description: "拆解 StableHand 的四通道手部质量估计、质量感知 Fl
 contentLanguage: "zh-CN"
 math: true
 toc: true
+images: ["assets/stablehand-pipeline.webp"]
 imageZoom: true
 reading_prerequisites: "三维坐标变换、手部姿态估计与扩散或 Flow Matching 的基本概念；公式会逐项解释"
 reading_focus: "按视频观测、世界坐标变换、四通道质量估计、DiT 轨迹生成的顺序跟读；重点区分可信观测与模型补全。"
@@ -218,7 +219,13 @@ ARCTIC 的报告划分值得单独标出：论文采用官方 P2 划分，训练
 两个数值例子有助于区分这些指标，均为合成情况：
 
 - 若整只手每帧都只偏移相同的 10 cm，逐帧或共享相似对齐可以消除这个常量偏移；未对齐的世界坐标误差仍是 100 mm。因此，对齐分数低不代表绝对位置准确。
-- 若某关节连续三帧的位置误差为 0、1 mm、0，在 30 fps 下，中间帧的加速度误差是 $2\times0.001/(1/30)^2=1.8$ m/s²。很小的单帧抖动也会形成明显的加速度误差；公式必须带上采样时间，不能把 mm/frame² 当作 m/s²。
+- 若某关节连续三帧的位置误差为 0、1 mm、0，在 30 fps 下，中间帧的加速度误差是：
+
+  $$
+  2\times0.001/(1/30)^2=1.8\ \mathrm{m/s^2}.
+  $$
+
+  很小的单帧抖动也会形成明显的加速度误差；公式必须带上采样时间，不能把 mm/frame² 当作 m/s²。
 
 同样，恒定漂移速度可能带来较大的位置误差，却没有额外加速度误差；把运动预测成静止虽然很平滑，也可能与真实加速度相差很大。轨迹精度与 AccEr 要一起看。[论文指标定义](https://arxiv.org/html/2605.18553v1#A7)
 

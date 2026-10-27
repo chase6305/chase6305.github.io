@@ -1,0 +1,13 @@
+{{ define "main" }}
+  {{ partial "sidebar.html" (dict "context" . "disableSidebar" true) }}
+  <main id="content" class="chase-not-found">
+    <p class="chase-section__eyebrow" aria-hidden="true">404</p>
+    <h1>{{ T "pageNotFound" }}</h1>
+    <p>{{ T "pageNotFoundDescription" }}</p>
+    <nav class="chase-actions" aria-label="{{ T "pageNotFoundNavigation" }}">
+      <a class="chase-button chase-button--primary" href="{{ .Site.Home.RelPermalink }}">{{ T "backToHome" }}</a>
+      <a class="chase-button" href="{{ relURL "posts/" }}">{{ T "browseArticles" }}</a>
+      <a class="chase-button" href="{{ relURL "learning-paths/" }}">{{ T "learning-paths" }}</a>
+    </nav>
+  </main>
+{{ end }}

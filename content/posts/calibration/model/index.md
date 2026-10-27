@@ -11,6 +11,7 @@ showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+images: ["eye_in_hand.png"]
 description: "统一坐标变换记号，推导眼在手上与眼在手外的手眼标定方程，并说明采样退化、求解接口与验收。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "齐次变换与相机外参"

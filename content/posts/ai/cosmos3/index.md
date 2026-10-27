@@ -1,7 +1,7 @@
 ---
 title: "Cosmos 3 论文详解：把推理、视频、音频与动作接入同一个世界模型"
 date: 2026-10-22
-lastmod: 2026-10-23
+lastmod: 2026-10-27
 draft: false
 tags: ["Cosmos 3", "World Model", "World Action Model", "Multimodal", "Flow Matching", "Robot Learning", "Paper Notes"]
 categories: ["人工智能"]
@@ -11,6 +11,7 @@ description: "拆解 Cosmos 3 的双塔 MoT、AR／扩散 token 排列、几何�
 contentLanguage: "zh-CN"
 math: true
 toc: true
+images: ["assets/dual-tower-overview.webp"]
 imageZoom: true
 reading_prerequisites: "Transformer attention、向量与坐标变换、扩散或 Flow Matching 的基本概念；动作表示与评估指标会逐项解释"
 reading_focus: "先看双塔怎样交互，再用具体任务理解三种动作条件、物理时间与固定条件采样；沿训练课程和 DROID 请求追踪复用，最后分别核对生成、视觉预测与闭环控制的评测协议。"
@@ -137,7 +138,13 @@ AR query 只看自身因果前缀，DM query 则能看全部 AR 条件及 DM tok
 
 ### 3.3 五个 token 就能看懂 mask
 
-取三个 AR token 和两个 DM token，按 $[R_0,R_1,R_2,D_0,D_1]$ 排列，行是 query、列是 key，1 表示允许注意：
+取三个 AR token 和两个 DM token，依次排列为：
+
+$$
+[R_0,R_1,R_2,D_0,D_1].
+$$
+
+下面的掩码中，行是 query、列是 key，1 表示允许注意：
 
 $$
 M=\begin{bmatrix}
@@ -611,7 +618,13 @@ HUE 使用 Yes／No／Unclear 原子问题，两人独立标注并对分歧复�
 
 Cosmos-SoundBench 在 144 条非语音提示上区分声音语义、视听事件对齐与感知音质，每条提示生成 5 个随机种子样本。Nano 的综合 AVQ 为 7.34，Super 为 7.31；报告中 Seedance-1.5-Pro 为 7.64、Veo-3.1 为 7.45。
 
-语义视听 SAV 按 $0.60\,\mathrm{SA}+0.30\,\mathrm{AVAlign}+0.10\,\mathrm{VisualSupport}$ 组合声音语义、视听对齐与关键视觉证据；Production Quality（PQ）则另外衡量声音清晰度、保真度、动态范围等。Nano 的 SAV=8.35、AVAlign=8.16 更突出，PQ 为 6.32。语义与对齐表现较强，感知音质仍有提升空间。
+语义视听 SAV 组合声音语义、视听对齐与关键视觉证据：
+
+$$
+\mathrm{SAV}=0.60\,\mathrm{SA}+0.30\,\mathrm{AVAlign}+0.10\,\mathrm{VisualSupport}.
+$$
+
+Production Quality（PQ）则另外衡量声音清晰度、保真度、动态范围等。Nano 的 SAV=8.35、AVAlign=8.16 更突出，PQ 为 6.32。语义与对齐表现较强，感知音质仍有提升空间。
 
 <figure class="article-figure" id="fig-cosmos3-audio-alignment">
   {{< post-image src="assets/audio-event-alignment.webp" alt="Cosmos 3 报告中的锤击音视频对齐：红蓝绿橙四个接触画面由标记连接到频谱瞬态，灰色非接触画面对应两次锤击之间的区间" >}}
@@ -629,7 +642,13 @@ Cosmos-SoundBench 在 144 条非语音提示上区分声音语义、视听事件
 
 该实验给定初始图像与长度 16 的末端动作块，预测后续 16 帧。它使用的接口与 DROID policy 的 32 个绝对关节动作不同。相机控制使用 RRE／RTE／ATE 检查轨迹，驾驶 ID 使用车辆位姿误差；这些指标与 PSNR、闭环成功率各自回答不同问题。
 
-PSNR 的定义为 $10\log_{10}(L^2/\mathrm{MSE})$，其中 $L$ 是像素动态范围：对归一化到 $[0,1]$ 的像素，$L=1$；对 8 bit 像素，$L=255$。因此 dB 差值属于对数尺度，不能把 26.04 dB 与 22.69 dB 相除，得到“物理能力提升倍数”。画面轻微错位、相机运动和物体纹理都会影响像素 MSE；比较还需保持视角、分辨率、归一化和时间对齐一致。
+PSNR 的定义为：
+
+$$
+\mathrm{PSNR}=10\log_{10}(L^2/\mathrm{MSE}).
+$$
+
+其中 $L$ 是像素动态范围：对归一化到 $[0,1]$ 的像素，$L=1$；对 8 bit 像素，$L=255$。因此 dB 差值属于对数尺度，不能把 26.04 dB 与 22.69 dB 相除，得到“物理能力提升倍数”。画面轻微错位、相机运动和物体纹理都会影响像素 MSE；比较还需保持视角、分辨率、归一化和时间对齐一致。
 
 ### 13.6 HUE 的分母与误差范围怎样核对 {#evaluation-aggregation}
 

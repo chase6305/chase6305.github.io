@@ -11,6 +11,7 @@ description: "详解 GEN-1.5 的示范上下文与少步适应，串联训练记
 contentLanguage: "zh-CN"
 math: true
 toc: true
+images: ["assets/demonstration-ambiguity.png"]
 imageZoom: true
 reading_prerequisites: "模仿学习、条件概率与机器人观测—动作闭环基础"
 reading_focus: "先分清示范进入输入还是参数，再用可检查的概率算例与匹配实验解释任务信息、成本和泛化边界。"

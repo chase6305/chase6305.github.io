@@ -11,6 +11,7 @@ description: "从左胸、右胸与腕部相机出发，比较 RoMaV2、LightGlu
 contentLanguage: "zh-CN"
 math: true
 toc: true
+images: ["assets/images-to-geometry.webp"]
 imageZoom: true
 reading_prerequisites: "相机内外参、三维坐标变换和像素坐标的基本概念"
 reading_focus: "先按输出区分任务，再看已知标定如何参与推理；比较模型时同时检查图像证据、尺度来源和失败覆盖。"

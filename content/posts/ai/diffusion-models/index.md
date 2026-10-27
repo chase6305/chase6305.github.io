@@ -9,6 +9,7 @@ authors: ["chase"]
 summary: "从前向加噪与反向去噪推导 DDPM，串联 CFG、DDIM、Latent Diffusion 和 DiT，并提供二维 PyTorch 示例。"
 math: true
 toc: true
+images: ["assets/diffusion-overview.webp"]
 description: "从前向加噪与反向去噪推导 DDPM，串联 CFG、DDIM、Latent Diffusion 和 DiT，并提供二维 PyTorch 示例。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "概率分布、神经网络与 PyTorch 张量"

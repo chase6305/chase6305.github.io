@@ -81,6 +81,8 @@ class Page(HTMLParser):
         self.links = []
         self.images = []
         self.schemas = []
+        self.meta = {}
+        self.latest_links = []
         self.unrendered_math = []
         self._math_literal_depth = 0
         self.filter_data = None
@@ -96,6 +98,9 @@ class Page(HTMLParser):
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         classes = attrs.get("class", "").split()
+        if tag == "meta":
+            key = attrs.get("property", attrs.get("name"))
+            self.meta.setdefault(key, []).append(attrs.get("content", ""))
         if tag == "span":
             if self._figure_label_depth:
                 self._figure_label_depth += 1
@@ -106,6 +111,8 @@ class Page(HTMLParser):
             self.has_ungrouped_tags = True
         if tag == "a" and "taxonomy-card" in classes:
             self.taxonomy_cards.append(attrs.get("href", ""))
+        if tag == "a" and "latest-card__link" in classes:
+            self.latest_links.append(attrs.get("href", ""))
         if tag in ("pre", "code", "script", "style", "math"):
             self._math_literal_depth += 1
         if tag == "nav":
@@ -292,6 +299,28 @@ def main():
     def article_route(path):
         value = path.relative_to(ROOT / "content").as_posix()
         return "/" + re.sub(r"/index\.md$|\.md$", "", value).lower() + "/"
+    shared_articles = {article_route(path) for path, record in records.items()
+                       if not record["draft"] or args.include_drafts}
+    latest_links = None
+    for relative in ("index.html", "zh-cn/index.html"):
+        home = html.get(public / relative)
+        if home is None or len(home.latest_links) != 3 or not set(home.latest_links) <= shared_articles:
+            errors.append(f"Missing latest articles or draft leak on home page: {relative}")
+        elif latest_links is not None and home.latest_links != latest_links:
+            errors.append("Language home pages must link to the same latest canonical articles")
+        else:
+            latest_links = home.latest_links
+    search_indexes = 0
+    for language in ("en", "zh-cn"):
+        files = list(public.glob(f"{language}.search-data*.json"))
+        if len(files) != 1:
+            errors.append(f"Expected one fresh search index for {language}, found {len(files)}")
+            continue
+        index = json.loads(files[0].read_text())
+        indexed_articles = {route for route in index if route.startswith("/posts/") and route != "/posts/"}
+        if indexed_articles != shared_articles:
+            errors.append(f"Search inventory mismatch or draft leak for {language}")
+        search_indexes += 1
     for topic in topics:
         paths = [ROOT / "content" / path for path in topic["posts"]]
         visible = [path for path in paths if args.include_drafts or not records[path]["draft"]]
@@ -315,6 +344,7 @@ def main():
             if actual_links != expected_links:
                 errors.append(f"Incorrect topic neighbors: {path}: {actual_links}")
     schema_count = 0
+    sharing_image_count = 0
     for path, record in records.items():
         if record["draft"] and not args.include_drafts:
             continue
@@ -334,6 +364,26 @@ def main():
             errors.append(f"Missing or invalid BlogPosting metadata: {route}")
         else:
             schema_count += 1
+            covers = page.meta.get("og:image", [])
+            if len(covers) == 1:
+                cover = covers[0]
+                image = next((item for item in page.images if
+                              urlsplit(item.get("src", "")).path == urlsplit(cover).path), None)
+                if image and all(image.get(key) for key in ("width", "height")):
+                    schema_image = schemas[0].get("image", {})
+                    expected_meta = {"og:image:width": image["width"],
+                                     "og:image:height": image["height"],
+                                     "og:image:alt": image.get("alt", ""),
+                                     "twitter:image:alt": image.get("alt", ""),
+                                     "twitter:image": cover}
+                    if any(page.meta.get(key) != [value] for key, value in expected_meta.items()):
+                        errors.append(f"Inconsistent sharing image metadata: {route}")
+                    if (schema_image.get("url") != cover
+                            or str(schema_image.get("width")) != image["width"]
+                            or str(schema_image.get("height")) != image["height"]
+                            or schema_image.get("caption") != image.get("alt")):
+                        errors.append(f"Inconsistent BlogPosting image: {route}")
+                    sharing_image_count += 1
     checked = 0
     collection_pages = 0
     filter_indexes = 0
@@ -398,7 +448,9 @@ def main():
             if "alt" not in image:
                 errors.append(f"Missing image alt: {relative} -> {image.get('src')}")
     print(json.dumps({"reviewed_posts": len(expected), "learning_paths": len(topics), "acceptance_checks": sum(map(len, self_checks.values())),
-                      "blog_posting_schemas": schema_count, "classified_tags": tag_count, "code_blocks": block_count,
+                      "blog_posting_schemas": schema_count, "sharing_images": sharing_image_count,
+                      "shared_search_indexes": search_indexes,
+                      "classified_tags": tag_count, "code_blocks": block_count,
                       "syntax_checked_by_language": dict(sorted(syntax_counts.items())),
                       "html_pages": len(html), "local_references_checked": checked,
                       "collection_pages_checked": collection_pages, "filter_indexes_checked": filter_indexes,

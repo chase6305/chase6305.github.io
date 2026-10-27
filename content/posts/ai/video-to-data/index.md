@@ -11,6 +11,7 @@ description: "沿源码拆解 NVIDIA Video to Data 的视频检索、三维重�
 contentLanguage: "zh-CN"
 math: true
 toc: true
+images: ["assets/video-to-data-pipeline.webp"]
 imageZoom: true
 reading_prerequisites: "三维坐标变换、逆运动学、模仿学习与强化学习的基本概念；不要求熟悉全部视觉模型"
 reading_focus: "按每阶段的输入、输出和验收条件阅读，重点区分人类运动、机器人参考轨迹、物理策略和策略训练数据。"

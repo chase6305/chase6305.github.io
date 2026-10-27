@@ -9,6 +9,7 @@ authors: ["chase"]
 summary: "从图像 patch 与注意力复杂度出发，比较 ViT、Swin、PVT、CMT 等视觉骨干，梳理 MAE、DINO、I-JEPA/V-JEPA、CLIP/SigLIP 等表征路线，介绍 SAM 系统，并区分 DiT、SiT 与视频 Transformer 的职责。"
 math: true
 toc: true
+images: ["assets/vision-transformer-map.webp"]
 imageZoom: true
 description: "从图像 patch 与注意力复杂度出发，比较 ViT、Swin、PVT、CMT 等视觉骨干，梳理 MAE、DINO、I-JEPA/V-JEPA、CLIP/SigLIP 等表征路线，介绍 SAM 系统，并区分 DiT、SiT 与视频 Transformer 的职责。"
 contentLanguage: "zh-CN"

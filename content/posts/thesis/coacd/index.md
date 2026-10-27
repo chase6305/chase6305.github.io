@@ -2,7 +2,7 @@
 title: "CoACD 论文详解：碰撞感知凹度、网格切割与多步树搜索"
 math: true
 date: 2025-04-02
-lastmod: 2026-09-09
+lastmod: 2026-10-27
 draft: false
 tags: ["CoACD", "Mesh Processing", "Paper Notes"]
 categories: ["三维视觉"]
@@ -110,7 +110,13 @@ $$
 \max(H_b,H_i)\leq\sqrt2\max(H_b,R_v).
 $$
 
-它不能直接变成“加权采样指标低于 epsilon，所有实际碰撞误差就低于 epsilon”。例如当 $0<k\leq1$，仅通过代数放缩，原来的右侧至多可进一步放宽为 $\sqrt2\,\max(H_b,kR_v)/k$；这已经不是同一个界，而且采样、预处理和后处理还要另外核对。
+它不能直接变成“加权采样指标低于 epsilon，所有实际碰撞误差就低于 epsilon”。例如当 $0<k\leq1$，仅通过代数放缩，原来的右侧至多可进一步放宽为：
+
+$$
+\sqrt2\,\max(H_b,kR_v)/k.
+$$
+
+这已经不是同一个界，而且采样、预处理和后处理还要另外核对。
 
 ## 4. 一刀究竟做了哪些几何工作 {#cutting}
 

@@ -6,6 +6,7 @@ draft: false
 tags: ["CasADi", "Optimization", "Automatic Differentiation"]
 categories: ["机器人技术"]
 authors: ["chase"]
+images: ["assets/feasible-sets.png"]
 summary: "使用 CasADi 建立变量与约束边界，通过可手算实验核对 KKT 条件、不可行候选和局部最优，区分求解状态、目标值与可用结果。"
 showToc: true
 TocOpen: true

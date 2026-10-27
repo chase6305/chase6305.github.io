@@ -1,11 +1,12 @@
 ---
 title: TO、MPC与WBC在机器人控制中的作用与区别对比文档
 date: 2025-05-06
-lastmod: 2026-09-30
+lastmod: 2026-10-27
 draft: false
 tags: ["Motion Planning", "MPC", "Whole-Body Control"]
 categories: ["机器人技术"]
 authors: ["chase"]
+images: ["assets/planning-control-loop.webp"]
 summary: "梳理轨迹优化、MPC 与全身控制的职责、反馈链路和接口，说明它们如何组合以及不能相互替代的约束。"
 math: true
 showToc: true
@@ -242,9 +243,12 @@ $$
 $U,Q,\bar q$ 均有 Nn 个元素，B 为 $Nn\times Nn$ 矩阵。消去位置变量后，优化器只需求 Nn 个速度。对目标序列 $Q^\star$，令位置权重为 W、速度权重为 R，目标为：
 
 $$
+\begin{aligned}
 \frac12\|\bar q+BU-Q^\star\|_W^2+\frac12 U^TRU
-=\frac12 U^THU+g^TU+\text{const},
-\quad H=B^TWB+R,\quad g=B^TW(\bar q-Q^\star).
+&=\frac12 U^THU+g^TU+\text{const},\\
+H&=B^TWB+R,\\
+g&=B^TW(\bar q-Q^\star).
+\end{aligned}
 $$
 
 因此，构造 Hessian 时不能漏掉速度代价 R，梯度也应使用“当前位置减目标”的方向。WholeBodyX 默认 W 的最后一个节点用 30 替换普通节点的 10，R 为 $0.1I$，并非再给终端叠加一次普通权重。

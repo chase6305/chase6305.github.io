@@ -11,6 +11,7 @@ showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+images: ["Astar.png"]
 description: "用可手算搜索过程区分发现目标与目标弹出，说明标准 A*、视线裁剪、三维碰撞检查和最优性条件。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "图搜索与基础几何"

@@ -1,7 +1,7 @@
 ---
 title: "大语言模型训练与指标详解：参数、权重、预训练、后训练与消融实验"
 date: 2026-09-17
-lastmod: 2026-09-30
+lastmod: 2026-10-27
 draft: false
 tags: ["LLM", "Pretraining", "Post-training", "Evaluation", "Ablation"]
 categories: ["人工智能"]
@@ -11,6 +11,7 @@ description: "从参数量、权重体积和显存预算出发，解释大语言
 contentLanguage: "zh-CN"
 math: true
 toc: true
+images: ["assets/llm-training-map.png"]
 imageZoom: true
 reading_prerequisites: "概率、交叉熵与 Transformer 基础；不要求运行过大模型训练"
 reading_focus: "把模型规模、资源成本、训练目标和实际能力分开，逐项检查指标的分母、评估协议与实验对照。"
@@ -414,7 +415,13 @@ GRPO 的组内奖励全相同时，基于组内差异的任务优势通常为零
 
 ### 6.3 训练奖励模型时，又有一套不同的 loss
 
-显式奖励模型 $r_\phi(x,y)$ 通常给一个回答输出标量分数；基于成对偏好的常见目标是 $-\log\sigma(r_\phi(x,y_w)-r_\phi(x,y_l))$。它与 DPO 的数学外形相似，但这里更新的是**奖励模型参数**，DPO 更新的是生成策略；二者不能仅凭日志都叫 `reward` 就混同。[Reward Trainer](https://huggingface.co/docs/trl/v0.24.0/en/reward_trainer)
+显式奖励模型 $r_\phi(x,y)$ 通常给一个回答输出标量分数；基于成对偏好的常见目标是：
+
+$$
+-\log\sigma(r_\phi(x,y_w)-r_\phi(x,y_l)).
+$$
+
+它与 DPO 的数学外形相似，但这里更新的是**奖励模型参数**，DPO 更新的是生成策略；二者不能仅凭日志都叫 `reward` 就混同。[Reward Trainer](https://huggingface.co/docs/trl/v0.24.0/en/reward_trainer)
 
 在同一 prompt 下，两个回答分数都加 100，差值及偏好概率不变。因此“平均 reward 从 1 变为 101”本身没有能力含义；不同奖励模型的原始分数通常也不在同一标尺上。应固定奖励器并报告 held-out pair accuracy、margin 分布、分领域错误，以及它是否更偏爱更长的回答。
 

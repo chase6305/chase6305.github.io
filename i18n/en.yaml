@@ -9,3 +9,10 @@ changeLanguage: Change language
 appearance: Appearance
 warm: Warm
 learning-paths: Learning paths
+searchLoading: Searching…
+searchUnavailable: Search could not load. Check your connection, then type again to retry.
+pageNotFound: Page not found
+pageNotFoundDescription: The address may be incomplete or the page may have moved. Browse the articles or use search to find a topic.
+pageNotFoundNavigation: Find another page
+backToHome: Back to home
+browseArticles: Browse articles

@@ -9,6 +9,7 @@ authors: ["chase"]
 summary: "建立训练显存账本，解释 DDP、NCCL、ZeRO 与 FSDP 的数据所有权，用双进程实验验证变长 token 的累积梯度，并梳理混合精度与 OOM 排查。"
 math: true
 toc: true
+images: ["assets/zero-memory-comparison.png"]
 description: "建立训练显存账本，解释 DDP、NCCL、ZeRO 与 FSDP 的数据所有权，用双进程实验验证变长 token 的累积梯度，并梳理混合精度与 OOM 排查。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "PyTorch 训练循环与 GPU 基础"

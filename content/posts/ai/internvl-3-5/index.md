@@ -11,6 +11,7 @@ description: "从视觉 token 到答案监督与梯度路径，详解 InternVL 3
 contentLanguage: "zh-CN"
 math: true
 toc: true
+images: ["assets/visual-token-pipeline.webp"]
 imageZoom: true
 reading_prerequisites: "Transformer、视觉编码器与强化学习基础"
 reading_focus: "沿像素、标签错位、梯度与后训练目标逐步追踪计算，再用参数与上下文账本解释部署成本。"

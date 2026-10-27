@@ -7,6 +7,7 @@ draft: false
 tags: ["Calibration", "Kinematic Calibration"]
 categories: ["机器人技术"]
 authors: ["chase"]
+images: ["assets/calibration-validation.webp"]
 summary: "以 TCP 位置观测建立参数残差，用二连杆实验解释参数不唯一、Jacobian 秩与尺度，并验证独立留出误差。"
 showToc: true
 TocOpen: true

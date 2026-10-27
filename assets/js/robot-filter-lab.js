@@ -101,15 +101,15 @@
       rmse:Math.sqrt(squared/y.length)*1000};
   }
 
-  function draw(canvas, data, result, view) {
+  function draw(canvas, data, result, view, printing = window.matchMedia("print").matches) {
     const width = canvas.clientWidth, height = canvas.clientHeight;
     if (!width || !height) return;
     const ratio = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(width*ratio); canvas.height = Math.round(height*ratio);
     const ctx = canvas.getContext("2d"); if (!ctx) return;
     ctx.scale(ratio,ratio);
-    const dark = document.documentElement.classList.contains("dark");
-    const colors = {grid:dark?"#354458":"#dce4ed",text:dark?"#cbd8e8":"#465a70",raw:dark?"#6d7d90":"#bcc5cf",truth:dark?"#eef3f9":"#26384c",filtered:dark?"#86bdff":"#317ebd"};
+    const dark = !printing && document.documentElement.classList.contains("dark");
+    const colors = {grid:dark?"#354458":"#dce4ed",text:dark?"#cbd8e8":"#465a70",raw:printing?"#6d7d90":dark?"#6d7d90":"#bcc5cf",truth:dark?"#eef3f9":"#26384c",filtered:dark?"#86bdff":"#317ebd"};
     const ranges = {all:[0,10],still:[.8,1.8],onset:[2,2.65]};
     const [lo,hi] = ranges[view];
     const indexes = data.t.map((_,i)=>i).filter(i=>data.t[i]>=lo&&data.t[i]<=hi);
@@ -163,6 +163,9 @@
       element.querySelector("[data-filter-reset]").addEventListener("click",()=>{for(const [key,value] of Object.entries(defaults))form.elements.namedItem(key).value=value;update()});
       const redraw=()=>{if(result)draw(canvas,data,result,view)};
       new ResizeObserver(redraw).observe(canvas);new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:["class"]});
+      window.matchMedia("print").addEventListener("change",redraw);
+      window.addEventListener("beforeprint",()=>{if(result)draw(canvas,data,result,view,true)});
+      window.addEventListener("afterprint",redraw);
       element.querySelector("[data-filter-interactive]").hidden=false;status.hidden=true;update();
     }catch(_){status.textContent="交互信号暂时无法载入，请使用下方静态曲线或下载脚本。";}
   }

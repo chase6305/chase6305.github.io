@@ -85,9 +85,18 @@ async function main() {
     savedScrollRestoration = await evaluate('history.scrollRestoration');
     await evaluate("history.scrollRestoration='manual'");
     const routes = interactionsOnly ? [] : ['/', '/zh-cn/', '/posts/', '/learning-paths/', '/archives/',
-      '/tags/', '/categories/', '/tags/transformer/', '/posts/ai/behavior-prompting/'];
+      '/tags/', '/categories/', '/tags/transformer/', '/posts/ai/behavior-prompting/', '/404.html', '/zh-cn/404.html'];
     for (const route of routes) {
       await navigate(route);
+      check(await evaluate(`document.querySelector('.hextra-nav-container nav > a:first-child').getAttribute('href')===${JSON.stringify(route.startsWith('/zh-cn/') ? '/zh-cn/' : '/')}`), 'Brand link preserves the current language entrance');
+      if (route.endsWith('/404.html')) {
+        check(await evaluate(`document.querySelectorAll('main#content h1').length===1 &&
+          document.querySelector('meta[name=viewport]').content.includes('width=device-width') &&
+          document.querySelectorAll('meta[name=robots]').length===1 &&
+          document.querySelector('meta[name=robots]').content==='noindex, nofollow' &&
+          document.querySelectorAll('.chase-not-found nav a').length===3 &&
+          !!document.querySelector('[data-search-open]')`), '404 recovery links, viewport, noindex and search');
+      }
       for (const width of [320, 390, 768, 1024, 1440]) {
         await cdp('Emulation.setDeviceMetricsOverride', {width, height: 1000, deviceScaleFactor: 1, mobile: width < 768});
         for (const theme of ['light', 'dark', 'warm']) {
@@ -229,6 +238,37 @@ async function main() {
     await key('Escape', 'Escape', 27);
     await delay(150);
     assert(await evaluate("!document.querySelector('.medium-zoom-image--opened')"));
+    // A compressed responsive candidate should not replace the original when
+    // the reader explicitly opens a dense diagram at full resolution.
+    await navigate('/posts/ai/vla-world-model-data/');
+    const zoomSource = await evaluate(`(async()=>{
+      const image=[...document.querySelectorAll('.post-image-link img')].find(i=>new URL(i.src).pathname.endsWith('.png'));
+      image.loading='eager';await image.decode();image.scrollIntoView({block:'center'});
+      image.closest('a').focus();
+      window.__originalResolutionOpened=false;
+      image.addEventListener('medium-zoom:opened',()=>{window.__originalResolutionOpened=true},{once:true});
+      return {original:image.src,normalSource:image.currentSrc,explicitSource:new URL(image.dataset.zoomSrc,location.href).href};
+    })()`);
+    assert.equal(zoomSource.explicitSource, zoomSource.original);
+    assert(zoomSource.normalSource.endsWith('.webp'));
+    assert(!requests.includes(zoomSource.original), 'Original image was fetched before opening zoom');
+    await key('Enter', 'Enter', 13);
+    let originalOpened = false;
+    for (let attempt=0;attempt<100;attempt++) {
+      originalOpened=await evaluate(`window.__originalResolutionOpened && [...document.querySelectorAll('.medium-zoom-image--opened')].some(i=>!i.hasAttribute('srcset')&&i.currentSrc===${JSON.stringify(zoomSource.original)}&&i.complete&&i.naturalWidth>0)`);
+      if(originalOpened)break;
+      await delay(50);
+    }
+    assert(originalOpened && requests.includes(zoomSource.original), 'Zoom did not load the original image');
+    await key('Escape', 'Escape', 27);
+    let zoomRestored = false;
+    for (let attempt=0;attempt<40;attempt++) {
+      zoomRestored=await evaluate("!document.querySelector('.medium-zoom-image--opened') && document.activeElement.classList.contains('post-image-link')");
+      if(zoomRestored)break;
+      await delay(50);
+    }
+    assert(zoomRestored);
+    report.originalResolutionZoom = {...zoomSource, fetchedOnOpen: true, focusRestored: true};
     report.keyboardZoom = true;
     report.sameOriginFeatures = {fonts, requests: requests.length, search: true, zoom: true};
     assert.equal(exceptions.length, 0, JSON.stringify(exceptions));

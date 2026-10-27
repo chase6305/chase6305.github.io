@@ -20,6 +20,12 @@ For changes to the shared image partial, run `python3 -B scripts/test_blog_image
 
 For navigation, appearance or image zoom changes, run `node scripts/check_site_accessibility.cjs <baseURL> <CDP-port> <output-directory>` serially with other browser checks. It covers five viewport widths, three themes, mobile menu focus, theme keyboard controls, blocked storage, keyboard zoom and reduced motion. `python3 -B scripts/test_site_assets.py --public <fresh-directory>` verifies pinned browser assets, local formula fonts and emitted integrity. Keep vendored versions, licenses and `docs/vendor-assets.json` in sync; formula fonts must match Hugo's embedded KaTeX version.
 
+For search changes, run `node scripts/test_site_search.cjs` and `node scripts/check_site_search.cjs <baseURL> <CDP-port> <output-directory>`. Both language entrances share the canonical blog collection; verify the Chinese home cards and search as well as the default-language pages. Keep theme override provenance and its published license in `docs/theme-overrides.json` in sync with theme upgrades.
+
+For text sizing, spacing or sticky navigation changes, run `node scripts/check_site_reflow.cjs <baseURL> <CDP-port> <output-directory> --all-articles` against a draft-inclusive build. It checks 200% root text sizing, increased text spacing and their combination with and without JavaScript, plus actual arrow-key scrolling of enlarged tables. `node scripts/check_site_readability.cjs <baseURL> <CDP-port> <output-directory> --all-articles` checks text and placeholder contrast, print disclosure restoration and native canvas PDF colors. These browser suites also run serially.
+
+For print styles or long-formula revisions, run `node scripts/check_blog_print.cjs <baseURL> <CDP-port> <output-directory> --drafts` on the draft-inclusive build. It checks A4 content width, code wrapping, formula/table bounds, disclosures and screen-state restoration in three themes, with and without JavaScript. Keep canvas print palettes independent of screen themes and restore them after printing.
+
 ## Coding Style & Naming Conventions
 
 Use two-space indentation in YAML and preserve the existing front matter format. Write Markdown with descriptive headings and fenced code blocks that specify a language. Keep post bundles lowercase and topic-oriented; use hyphens for multiword names, for example `content/posts/python/new-feature/index.md`. Store post-specific media beside `index.md` and reference it relatively. Put theme customizations in repository-owned overrides rather than changing the submodule.

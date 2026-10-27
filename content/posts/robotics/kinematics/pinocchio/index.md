@@ -1,11 +1,12 @@
 ---
 title: Pinocchio 机械臂逆运动学迭代数值解
 date: 2024-08-18
-lastmod: 2026-09-28
+lastmod: 2026-10-27
 draft: false
 tags: ["Kinematics", "Pinocchio", "Python"]
 categories: ["机器人技术"]
 authors: ["chase"]
+images: ["assets/numerical-ik-loop.webp"]
 summary: "使用 Pinocchio frame、SE(3) 残差与阻尼最小二乘求 IK，解释单位尺度、限位和失败状态，并用独立 FK 验证。"
 showToc: true
 TocOpen: true
@@ -193,7 +194,13 @@ URDF 路径和 frame 名称必须替换为实际模型中的值。测试近目�
 
 ## 5. 尺度、容差与收敛状态应分别验证 {#ik-scaling-validation}
 
-令 $S=\operatorname{diag}(s_p^{-1}I_3,s_R^{-1}I_3)$，函数实际使用 $\tilde e=Se$、$\tilde J=SJ_e$，求解
+定义尺度矩阵：
+
+$$
+S=\operatorname{diag}(s_p^{-1}I_3,s_R^{-1}I_3).
+$$
+
+函数实际使用 $\tilde e=Se$、$\tilde J=SJ_e$，求解
 
 $$
 \min_{\Delta q}\;\|\tilde J\Delta q+\tilde e\|_2^2

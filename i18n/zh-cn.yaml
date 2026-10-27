@@ -9,3 +9,10 @@ changeLanguage: 切换语言
 appearance: 外观
 warm: 暖色
 learning-paths: 学习路线
+searchLoading: 正在搜索…
+searchUnavailable: 搜索暂时无法加载。请检查连接后重新输入，系统会重试。
+pageNotFound: 页面未找到
+pageNotFoundDescription: 地址可能不完整，或者页面已移动。可以浏览文章、查看学习路线，或使用搜索查找主题。
+pageNotFoundNavigation: 查找其他页面
+backToHome: 返回首页
+browseArticles: 浏览文章

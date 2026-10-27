@@ -1,11 +1,12 @@
 ---
 title: "RynnBrain 深度解析：从时空 Grounding、Chain-of-Point 到 1.1 跨本体 VLA"
 date: 2026-09-05
-lastmod: 2026-09-30
+lastmod: 2026-10-27
 draft: false
 tags: ["RynnBrain", "VLM", "VLA", "Embodied AI", "Paper Notes"]
 categories: ["人工智能"]
 authors: ["chase"]
+images: ["assets/embodied-foundation-model.webp"]
 summary: "结合 RynnBrain 1.0/1.1 论文、模型配置和官方示例，解析时空定位、接触点、3D Grounding、跨本体动作建模及复现边界。"
 description: "结合 RynnBrain 1.0/1.1 论文、模型配置和官方示例，解析时空定位、接触点、3D Grounding、跨本体动作建模及复现边界。"
 contentLanguage: "zh-CN"
@@ -471,7 +472,13 @@ $$
 
 ### 8.6 从相机到基座：外参方向与观测时间
 
-接着第 7.1 节的三维点 $p_C=(-0.001,-0.5405,2)$ 米，构造一个顶视相机例子：相机位于基座的 $(0.5,0,2.5)$ 米处，光轴朝下，相机 $x$ 轴与基座 $x$ 轴同向。声明：
+接着第 7.1 节的三维点，写成列向量（单位 m）：
+
+$$
+p_C=(-0.001,-0.5405,2)^T.
+$$
+
+构造一个顶视相机例子：相机位于基座的 $(0.5,0,2.5)$ 米处，光轴朝下，相机 $x$ 轴与基座 $x$ 轴同向。声明：
 
 $$
 \begin{aligned}

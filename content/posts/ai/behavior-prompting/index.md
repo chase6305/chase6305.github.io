@@ -11,6 +11,7 @@ description: "详解 What Enables In-Context Behavior Prompting for Manipulation
 contentLanguage: "zh-CN"
 math: true
 toc: true
+images: ["assets/behavior-prompting-flow.webp"]
 imageZoom: true
 reading_prerequisites: "模仿学习、机器人观测与动作的基本概念；Transformer 注意力只需了解 Q/K/V"
 reading_focus: "沿着任务描述、训练数据、提示编码、动作生成和评估协议阅读；特别区分任务多样性、每任务示范数与测试时更新权重。"

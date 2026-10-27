@@ -6,6 +6,7 @@ draft: false
 tags: ["Kinematics", "Inverse Kinematics", "C++"]
 categories: ["机器人技术"]
 authors: ["chase"]
+images: ["assets/srs-arm-angle.webp"]
 summary: "从七轴局部冗余与双球交圆推导臂角，再用理想 SRS 解析逆解验证可达性、解分支和 FK 残差。"
 showToc: true
 TocOpen: true

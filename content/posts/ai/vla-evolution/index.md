@@ -11,6 +11,7 @@ description: "从机器人把杯子放到托盘的一次决策讲起，逐步拆
 contentLanguage: "zh-CN"
 math: true
 toc: true
+images: ["assets/one-decision-loop.webp"]
 imageZoom: true
 headingAnchorAtStart: true
 reserveFigureSpace: true

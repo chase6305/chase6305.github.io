@@ -1,11 +1,12 @@
 ---
 title: "GSPO 论文详解：从 token 概率比到序列优化，为什么能改善 MoE 强化学习？"
 date: 2026-09-09
-lastmod: 2026-09-30
+lastmod: 2026-10-27
 draft: false
 tags: ["Reinforcement Learning", "GSPO", "GRPO", "RLHF", "MoE", "Qwen", "PyTorch"]
 categories: ["人工智能"]
 authors: ["chase"]
+images: ["assets/ratio-gradient.png"]
 summary: "分析 GSPO 的序列概率比、长度归一化、裁剪与梯度，核对 Qwen3 MoE 实验的证据边界，并提供可运行 PyTorch 对照。"
 description: "分析 GSPO 的序列概率比、长度归一化、裁剪与梯度，核对 Qwen3 MoE 实验的证据边界，并提供可运行 PyTorch 对照。"
 contentLanguage: "zh-CN"
@@ -223,10 +224,20 @@ GSPO 让整条回答共享一个标量权重 $s_i\widehat A_i$；GRPO 让每个 
 
 ### 4.1 用链式法则逐步得到 GSPO 梯度
 
-定义 $d_i=L_i^{-1}\sum_t(\log p_{i,t}-\log p^{\mathrm{old}}_{i,t})$，则 $s_i=\exp(d_i)$。反向传播经过三步：
+定义平均对数概率比：
+
+$$
+d_i=L_i^{-1}\sum_t(\log p_{i,t}-\log p^{\mathrm{old}}_{i,t}).
+$$
+
+则 $s_i=\exp(d_i)$。反向传播经过三步：
 
 1. 对 exp 求导得到 $\nabla s_i=s_i\nabla d_i$。
-2. old 和长度固定，因此 $\nabla d_i=L_i^{-1}\sum_t\nabla\log p_{i,t}$。
+2. old 和长度固定，因此：
+
+   $$
+   \nabla d_i=L_i^{-1}\sum_t\nabla\log p_{i,t}.
+   $$
 3. 优势固定，未进入平坦裁剪分支时，再乘 $\widehat A_i$。
 
 对**独立的 logp 输入坐标**，一条回答内每个有效 token 的导数都是 $s_i\widehat A_i/L_i$；若全批平均 N 条回答，还要乘 $1/N$。但真正训练时 logps 来自共享神经网络，某个参数会同时影响多个位置与多个候选，优化器移动参数后的概率变化不等于这些坐标导数本身。

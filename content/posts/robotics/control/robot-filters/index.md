@@ -11,6 +11,7 @@ description: "系统比较机器人中的滑动平均、Butterworth、One Euro�
 contentLanguage: "zh-CN"
 math: true
 toc: true
+images: ["assets/filter-map.png"]
 imageZoom: true
 reading_prerequisites: "离散采样、向量和基本反馈控制；位姿部分需要了解旋转矩阵或四元数"
 reading_focus: "按噪声类型、延迟预算和信号几何选择方法，区分测量滤波、状态估计、参考平滑与运动约束。"

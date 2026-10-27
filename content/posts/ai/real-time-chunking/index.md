@@ -1,11 +1,12 @@
 ---
 title: "RTC 详解：动作块如何实时执行，从推理时引导到训练时条件与世界动作模型"
 date: 2026-09-11
-lastmod: 2026-09-30
+lastmod: 2026-10-27
 draft: false
 tags: ["RTC", "Action Chunking", "Flow Matching", "VLA", "World Action Model", "Paper Notes"]
 categories: ["人工智能"]
 authors: ["chase"]
+images: ["assets/rtc-overview.png"]
 summary: "结合三篇论文与 Kinetix 官方实现，解释 RTC 的时间对齐、软掩码、VJP 引导、训练时前缀条件，以及高延迟世界动作模型的实时部署。"
 description: "结合三篇论文与 Kinetix 官方实现，解释 RTC 的时间对齐、软掩码、VJP 引导、训练时前缀条件，以及高延迟世界动作模型的实时部署。"
 contentLanguage: "zh-CN"
@@ -272,7 +273,7 @@ $$
 \right).
 $$
 
-$\beta$ 限制最大引导系数。公式在端点涉及除零；固定源码在 $\tau=0$ 用 `nan_to_num` 处理无穷大并裁剪，Euler 采样的网络求值发生在 $0,1/N,\ldots,(N-1)/N$，不需要在 $\tau=1$ 再求速度。
+$\beta$ 限制最大引导系数。公式在端点涉及除零；固定源码在 $\tau=0$ 用 `nan_to_num` 处理无穷大并裁剪，Euler 采样在 $\tau_j=j/N$ 处求值，其中 $j=0,\ldots,N-1$；不需要在 $\tau=1$ 再求速度。
 
 每步采样于是变成：
 
@@ -426,7 +427,7 @@ actions_to_use = x[:, delay:]
 
 ### 5.4 延迟分布也是训练配置 {#delay-distribution}
 
-Kinetix 实现的 `simulated_delay=5` 表示从 $\{0,1,2,3,4\}$ 中采样，并不是固定延迟 5，也不包含延迟 5。采样权重与 $\exp([4,3,2,1,0])$ 成正比，所以小延迟更常见。
+Kinetix 实现的 `simulated_delay=5` 表示从 $\{0,1,2,3,4\}$ 中采样，并不是固定延迟 5，也不包含延迟 5。对应五个延迟的权重依次与 $e^4$、$e^3$、$e^2$、$e^1$、$e^0$ 成正比，所以小延迟更常见。
 
 随机延迟同时改变了各位置收到直接训练损失的频率。索引 $i$ 只有在 $d\le i$ 时属于后缀，因而其直接监督覆盖率为：
 
@@ -887,7 +888,7 @@ $m<0$ 表示旧块无法覆盖等待过程；这时调整生成掩码也不能�
 
 #### 队列不断供，也可能一直使用陈旧观测 {#observation-age}
 
-覆盖余量衡量“还有没有动作可执行”，观测年龄衡量“这些动作依据多早的信息”。设观测采样、请求发出、结果可安装的时刻分别为 $t_{capture},t_{send},t_{install}$，则安装时观测年龄为：
+覆盖余量衡量“还有没有动作可执行”，观测年龄衡量“这些动作依据多早的信息”。记观测采样时刻为 $t_{capture}$，请求发出时刻为 $t_{send}$，结果可安装时刻为 $t_{install}$，则安装时观测年龄为：
 
 $$
 A_{obs}=t_{install}-t_{capture}

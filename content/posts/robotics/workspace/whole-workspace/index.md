@@ -6,6 +6,7 @@ draft: false
 tags: ["Robotics", "Workspace Analysis", "Monte Carlo"]
 categories: ["机器人技术"]
 authors: ["chase"]
+images: ["assets/workspace-sampling.png"]
 summary: "通过关节随机采样与 FK 估计机器人位置工作空间，给出可复现二连杆示例，并区分覆盖、密度和可达性。"
 showToc: true
 TocOpen: true

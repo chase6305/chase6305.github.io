@@ -60,7 +60,14 @@
           {{- $srcset = $srcset | append (printf "%s %dw" $resized.RelPermalink $resized.Width) -}}
         {{- end -}}
       {{- end -}}
-      {{- $srcset = $srcset | append (printf "%s %dw" $dest $resource.Width) -}}
+      {{- $largestURL := $dest -}}
+      {{- /* High-density screens may select the full-width candidate. Keep
+        large PNG diagrams in WebP there too; original links remain unchanged. */ -}}
+      {{- if and (eq $resource.MediaType.SubType "png") (gt $resource.Width 480) -}}
+        {{- $largest := $resource.Resize (printf "%dx webp q85" $resource.Width) -}}
+        {{- $largestURL = $largest.RelPermalink -}}
+      {{- end -}}
+      {{- $srcset = $srcset | append (printf "%s %dw" $largestURL $resource.Width) -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
@@ -121,6 +128,11 @@
 {{- if $enableImageZoom -}}
   {{- .Page.Store.Set "hasImageZoom" true -}}
 {{- end -}}
+{{- if and $resource $alt -}}
+  {{- if not (index (.Page.Store.Get "blogImageDescriptions" | default dict) $resource.RelPermalink) -}}
+    {{- .Page.Store.SetInMap "blogImageDescriptions" $resource.RelPermalink $alt -}}
+  {{- end -}}
+{{- end -}}
 {{- $zoomLabel := "View full-size image" -}}
 {{- $linkStyle := "" -}}
 {{- if gt $width 0 -}}
@@ -133,7 +145,7 @@
   {{- $pageWidth := .Page.Params.width | default .Page.Site.Params.page.width | default "normal" -}}
   {{- $cap := "42rem" -}}
   {{- if eq $pageWidth "wide" -}}{{- $cap = "52rem" -}}{{- else if eq $pageWidth "full" -}}{{- $cap = "66rem" -}}{{- end -}}
-  {{- $sizes = printf "(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc(100vw - 6rem), min(calc(100vw - 38rem), %s)" $cap -}}
+  {{- $sizes = printf "(max-width: 767px) calc(100vw - min(3rem, 48px)), (max-width: 1279px) calc(100vw - min(6rem, 96px)), min(calc(100vw - min(38rem, 608px)), %s)" $cap -}}
 {{- end -}}
 {{- if hasPrefix (.Page.Params.contentLanguage | default .Page.Language.Lang) "zh" -}}
   {{- $zoomLabel = "查看大图" -}}
@@ -142,12 +154,12 @@
 {{- with .Title -}}
   <figure>
     {{ if $enableImageZoom }}<a class="post-image-link" href="{{ $dest | safeURL }}" target="_blank" rel="noopener" aria-label="{{ $zoomLabel }}：{{ $alt }}"{{ with $linkStyle }} style="{{ . | safeCSS }}"{{ end }}>{{ end }}
-    <img src="{{ $dest | safeURL }}" title="{{ . }}" alt="{{ $alt }}" {{ $dimensions | safeHTMLAttr }} {{ $attributes | safeHTMLAttr }} decoding="async"{{ if gt (len $srcset) 1 }} srcset="{{ delimit $srcset ", " | safeHTMLAttr }}" sizes="{{ $sizes }}"{{ end }}{{ if $enableImageZoom }} data-zoomable{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }} />
+    <img src="{{ $dest | safeURL }}" title="{{ . }}" alt="{{ $alt }}" {{ $dimensions | safeHTMLAttr }} {{ $attributes | safeHTMLAttr }} decoding="async"{{ if gt (len $srcset) 1 }} srcset="{{ delimit $srcset ", " | safeHTMLAttr }}" sizes="{{ $sizes }}"{{ end }}{{ if $enableImageZoom }} data-zoomable{{ if gt (len $srcset) 1 }} data-zoom-src="{{ $dest | safeURL }}"{{ end }}{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }} />
     {{ if $enableImageZoom }}</a>{{ end }}
     <figcaption>{{ . }}</figcaption>
   </figure>
 {{- else -}}
   {{ if $enableImageZoom }}<a class="post-image-link" href="{{ $dest | safeURL }}" target="_blank" rel="noopener" aria-label="{{ $zoomLabel }}：{{ $alt }}"{{ with $linkStyle }} style="{{ . | safeCSS }}"{{ end }}>{{ end }}
-  <img src="{{ $dest | safeURL }}" alt="{{ $alt }}" {{ $dimensions | safeHTMLAttr }} {{ $attributes | safeHTMLAttr }} decoding="async"{{ if gt (len $srcset) 1 }} srcset="{{ delimit $srcset ", " | safeHTMLAttr }}" sizes="{{ $sizes }}"{{ end }}{{ if $enableImageZoom }} data-zoomable{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }} />
+  <img src="{{ $dest | safeURL }}" alt="{{ $alt }}" {{ $dimensions | safeHTMLAttr }} {{ $attributes | safeHTMLAttr }} decoding="async"{{ if gt (len $srcset) 1 }} srcset="{{ delimit $srcset ", " | safeHTMLAttr }}" sizes="{{ $sizes }}"{{ end }}{{ if $enableImageZoom }} data-zoomable{{ if gt (len $srcset) 1 }} data-zoom-src="{{ $dest | safeURL }}"{{ end }}{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }} />
   {{ if $enableImageZoom }}</a>{{ end }}
 {{- end -}}

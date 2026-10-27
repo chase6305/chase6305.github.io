@@ -6,6 +6,7 @@ draft: false
 tags: ["CUDA", "GPU Programming", "NVIDIA Warp"]
 categories: ["编程开发"]
 authors: ["chase"]
+images: ["assets/cuda-warp-vs-library.webp"]
 summary: "区分 CUDA 硬件 warp 与 NVIDIA Warp 库，说明 SIMT、分支、shuffle、核函数和自动微分的正确使用边界。"
 showToc: true
 TocOpen: true

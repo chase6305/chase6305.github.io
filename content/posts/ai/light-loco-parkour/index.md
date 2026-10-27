@@ -1,11 +1,12 @@
 ---
 title: "Light-Loco-Parkour 深度解析：从地形配对参考、多技能蒸馏到自主衔接与深度视觉控制"
 date: 2026-09-12
-lastmod: 2026-09-30
+lastmod: 2026-10-27
 draft: false
 tags: ["Light-Loco-Parkour", "Humanoid", "Locomotion", "Reinforcement Learning", "Distillation", "Paper Notes"]
 categories: ["人工智能"]
 authors: ["chase"]
+images: ["assets/whole-body-contacts-clean.png"]
 summary: "结合原论文与 lucidrains 实现，拆解地形配对参考增强、多专家 DAgger、阶段条件 AMP 和深度 GRU 策略，并用 CPU 实验核对奖励、PPO、蒸馏与时序接口。"
 description: "结合原论文与 lucidrains 实现，拆解地形配对参考增强、多专家 DAgger、阶段条件 AMP 和深度 GRU 策略，并用 CPU 实验核对奖励、PPO、蒸馏与时序接口。"
 contentLanguage: "zh-CN"
@@ -308,7 +309,13 @@ $$
 
 固定仓库的 `test_full_pipeline_e2e` 构造随机张量，计算 `amp_reward.detach()`，再把它从最终策略损失中减去。这个减去的标量没有梯度，而且该测试并未将 AMP 分数加入先前的 GAE 回报，所以这一行不会使 actor 学到先验运动。它能检查组件是否能共同执行，但不能说明动作先验已改善闭环行为。[测试中的奖励与反向传播](https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/tests/test_light_loco.py#L112)
 
-一个最小例子是 $L(p)=p^2-0.01\operatorname{stopgrad}(3p)$：在 $p=2$ 时，梯度仍为 4，与完全去掉第二项相同。`detach` 本身并没有错；PPO 通常也不对环境奖励直接求导。关键是这个分数是否已经进入优势估计，而不是在打印出来的 loss 中有没有出现它。
+一个最小例子是：
+
+$$
+L(p)=p^2-0.01\operatorname{stopgrad}(3p).
+$$
+
+在 $p=2$ 时，梯度仍为 4，与完全去掉第二项相同。`detach` 本身并没有错；PPO 通常也不对环境奖励直接求导。关键是这个分数是否已经进入优势估计，而不是在打印出来的 loss 中有没有出现它。
 
 ### 6.5 价值 critic 与动作判别器承担不同任务
 
@@ -538,7 +545,7 @@ $$
 [0,40\alpha]\approx[0,28.6613].
 $$
 
-不重置会得到约 $[14.3306,28.6613]$，让新 episode 继承旧冲击；调用当前 `reset_()` 则得到 $[0,0]$，同时丢掉仍在运行的环境 1 的历史。固定源码的 `FootAccelerationPenalty.reset_()` 将整份缓存设为 `None`，wrapper 再对全部有状态奖励调用它，没有 `done_mask` 参数。[奖励缓存与全局重置](https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/light_loco_parkour/light_loco_parkour.py#L1194)
+不重置时，环境 0 与环境 1 的分数分别约为 14.3306 和 28.6613，让新 episode 继承旧冲击；调用当前 `reset_()` 则得到 $[0,0]$，同时丢掉仍在运行的环境 1 的历史。固定源码的 `FootAccelerationPenalty.reset_()` 将整份缓存设为 `None`，wrapper 再对全部有状态奖励调用它，没有 `done_mask` 参数。[奖励缓存与全局重置](https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/light_loco_parkour/light_loco_parkour.py#L1194)
 
 随文 [source_probe.py](source_probe.py) 已在两个环境的真实组件上验证这三组数值；其中按行重置的值是期望行为对照，**不是声称上游已经实现该接口**。扩展训练器时，可以为有状态组件设计逐环境重置接口，或按环境隔离状态；还要明确 batch 维的位置及设备、形状变化时的处理方式。
 

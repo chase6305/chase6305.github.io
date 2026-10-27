@@ -7,6 +7,7 @@ math: true
 tags: ["Calibration", "OpenCV", "Circle Grid"]
 categories: ["机器人技术"]
 authors: ["chase"]
+images: ["assets/circle-grid-check.png"]
 summary: "用 OpenCV 检测非对称圆点阵，配置 blob 参数，通过合成图验证点序和物理间距，并解释误差统计与尺度问题。"
 showToc: true
 TocOpen: true

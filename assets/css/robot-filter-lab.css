@@ -32,7 +32,7 @@
 .robot-filter-lab__legend { display: flex; flex-wrap: wrap; gap: .2rem 1rem; font-size: .82rem; }
 .robot-filter-lab__metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; margin: .9rem 0; }
 .robot-filter-lab__metrics > div { padding: .7rem .45rem; border: 1px solid var(--filter-border); border-radius: 8px; font-size: .76rem; text-align: center; }
-.robot-filter-lab__metrics output { display: block; margin-top: .25rem; font-size: 1rem; font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.robot-filter-lab__metrics output { display: block; max-width: 100%; margin-top: .25rem; font-size: 1rem; font-weight: 650; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .robot-filter-lab__note, .robot-filter-lab__limits { font-size: .83rem; line-height: 1.7; }
 .robot-filter-lab__error { color: #b93341; }
 .dark .robot-filter-lab__error { color: #ffabb3; }
@@ -40,6 +40,6 @@
   .robot-filter-lab { padding: .85rem; }
   .robot-filter-lab__form { grid-template-columns: minmax(0, 1fr); }
   .robot-filter-lab__metrics { grid-template-columns: minmax(0, 1fr); gap: .35rem; }
-  .robot-filter-lab__metrics > div { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; padding: .45rem .7rem; font-size: .82rem; }
+  .robot-filter-lab__metrics > div { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: .5rem; padding: .45rem .7rem; font-size: .82rem; }
   .robot-filter-lab__metrics output { margin: 0; }
 }

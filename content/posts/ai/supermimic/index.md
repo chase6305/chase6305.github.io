@@ -11,6 +11,7 @@ description: "拆解 SuperMimic 的在线世界模型、短时域 BPTT、存活�
 contentLanguage: "zh-CN"
 math: true
 toc: true
+images: ["assets/training-cycle.webp"]
 imageZoom: true
 reading_prerequisites: "策略与价值函数、链式法则、关节控制与本体观测的基本概念"
 reading_focus: "先沿训练闭环理解梯度，用两步交互实验比较 BPTT、detach 与模型偏差，再核对 critic、参数更新和各类实验的评估口径。"

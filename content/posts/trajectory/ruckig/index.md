@@ -11,6 +11,7 @@ showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
+images: ["assets/ruckig-synchronization.png"]
 description: "用可运行例子理解 Ruckig 的状态可行性、时间与相位同步、非零终点速度和离散采样，区分轨迹结束与机器人停止。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "位置、速度、加速度与离散采样"

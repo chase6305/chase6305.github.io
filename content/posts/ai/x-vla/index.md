@@ -1,11 +1,12 @@
 ---
 title: "X-VLA 详解：软提示如何连接跨本体学习、动作生成与机器人控制"
 date: 2026-09-11
-lastmod: 2026-09-30
+lastmod: 2026-10-27
 draft: false
 tags: ["X-VLA", "VLA", "Embodied AI", "Flow Matching", "Soft Prompt", "Paper Notes"]
 categories: ["人工智能"]
 authors: ["chase"]
+images: ["assets/domain-conditioning.png"]
 summary: "从官方论文与源码理解 X-VLA 的软提示、多视角编码、动作生成与两阶段适应，逐项核对 EE6D、旋转排列、数据接口和 LIBERO 部署。"
 description: "从官方论文与源码理解 X-VLA 的软提示、多视角编码、动作生成与两阶段适应，逐项核对 EE6D、旋转排列、数据接口和 LIBERO 部署。"
 contentLanguage: "zh-CN"
@@ -216,7 +217,16 @@ $$
 | 转张量与归一化 | `ToTensor` 后使用 ImageNet 均值、标准差 | 由 image processor 执行 |
 | 缺失视角 | 预处理后补零并设置 mask | processor 补零并设置 mask |
 
-训练归一化的均值是 $(0.485,0.456,0.406)$，标准差是 $(0.229,0.224,0.225)$。这里补的是归一化之后的零张量，不等同于把一张 RGB 全黑图片当作有效图像送入处理器。两者的数值、mask 和视觉编码行为都可能不同。[训练图像变换](https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/datasets/dataset.py#L77)；[推理图像处理](https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/models/processing_xvla.py#L132)
+训练归一化的均值和标准差分别为：
+
+$$
+\begin{aligned}
+\mu&=(0.485,0.456,0.406),\\
+\sigma&=(0.229,0.224,0.225).
+\end{aligned}
+$$
+
+这里补的是归一化之后的零张量，不等同于把一张 RGB 全黑图片当作有效图像送入处理器。两者的数值、mask 和视觉编码行为都可能不同。[训练图像变换](https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/datasets/dataset.py#L77)；[推理图像处理](https://github.com/2toinf/X-VLA/blob/6bc2513f5f1cbec715cc668b414392a6cae5c671/models/processing_xvla.py#L132)
 
 一个可复查的接入步骤是：固定同一张 RGB 图像，关闭训练增强，分别经过读取器变换和服务端使用的 image processor，比较输出的形状、通道顺序、值域与逐像素差异。还应保存 processor 配置的 revision。HTTP 示例发送的是原始 `uint8` 图像，不应先在客户端归一化一次，再让服务端重复归一化。
 

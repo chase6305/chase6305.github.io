@@ -4,12 +4,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const formulas = [...document.querySelectorAll('.content .katex-display, .content mjx-container[display="true"]')];
   const hints = new Map();
   const updateOverflow = () => {
-    tables.forEach(table => {
-      if (table.scrollWidth > table.clientWidth) table.setAttribute("tabindex", "0");
-      else table.removeAttribute("tabindex");
+    // Measure the whole page before inserting hints or changing attributes.
+    // Interleaving these phases forces repeated layouts on formula-heavy pages.
+    const tableMeasurements = [...tables].map(table => ({
+      table, overflowing: table.scrollWidth > table.clientWidth
+    }));
+    const formulaMeasurements = formulas.map(formula => {
+      const width = formula.clientWidth;
+      return {formula, overflowing: width > 0 && formula.scrollWidth > width + 1};
     });
-    formulas.forEach((formula, index) => {
-      const overflowing = formula.clientWidth > 0 && formula.scrollWidth > formula.clientWidth + 1;
+    tableMeasurements.forEach(({table, overflowing}) => {
+      if (overflowing && table.tabIndex !== 0) table.setAttribute("tabindex", "0");
+      else if (!overflowing && table.hasAttribute("tabindex")) table.removeAttribute("tabindex");
+    });
+    formulaMeasurements.forEach(({formula, overflowing}, index) => {
       let hint = hints.get(formula);
       if (overflowing && !hint) {
         hint = document.createElement("span");
@@ -19,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
         formula.before(hint);
         hints.set(formula, hint);
       }
-      if (hint) hint.hidden = !overflowing;
+      if (hint && hint.hidden !== !overflowing) hint.hidden = !overflowing;
       if (overflowing) {
         formula.setAttribute("tabindex", "0");
         formula.setAttribute("role", "region");
@@ -42,8 +50,32 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("toggle", scheduleUpdate, true);
   if (typeof ResizeObserver !== "undefined") {
     const observer = new ResizeObserver(scheduleUpdate);
-    formulas.forEach(formula => observer.observe(formula));
+    [...formulas, ...tables].forEach(element => observer.observe(element));
   }
+
+  // Include supplemental explanations and answers in PDF/paper output, then
+  // restore exactly the sections the reader had left closed on screen.
+  const details = [...document.querySelectorAll('.content details:not(.blog-mobile-toc)')];
+  let printing = false;
+  let closedBeforePrint = [];
+  const preparePrint = () => {
+    if (printing) return;
+    printing = true;
+    closedBeforePrint = details.filter(section => !section.open);
+    closedBeforePrint.forEach(section => { section.open = true; });
+  };
+  const restorePrint = () => {
+    if (!printing) return;
+    closedBeforePrint.forEach(section => { section.open = false; });
+    closedBeforePrint = [];
+    printing = false;
+  };
+  window.addEventListener('beforeprint', preparePrint);
+  window.addEventListener('afterprint', restorePrint);
+  window.matchMedia('print').addEventListener('change', event => {
+    if (event.matches) preparePrint();
+    else restorePrint();
+  });
   const toc = document.querySelector(".blog-mobile-toc");
   if (!toc) return;
   toc.addEventListener("click", event => {

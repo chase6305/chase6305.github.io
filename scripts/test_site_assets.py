@@ -5,6 +5,7 @@ import base64
 import hashlib
 import json
 import re
+import subprocess
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -61,6 +62,16 @@ def main():
             font_paths.add(font)
     assert len(font_paths) == 20
 
+    overrides = json.loads((ROOT / 'docs/theme-overrides.json').read_text())
+    revision = subprocess.check_output(['git', '-C', str(ROOT / 'themes/hextra'), 'rev-parse', 'HEAD'], text=True, timeout=10).strip()
+    assert revision == overrides['source_commit'], 'Review the theme override manifest after upgrading Hextra'
+    theme_license = ROOT / overrides['published_license']
+    assert hashlib.sha256(theme_license.read_bytes()).hexdigest() == overrides['license_sha256']
+    assert (public / theme_license.relative_to(ROOT / 'static')).read_bytes() == theme_license.read_bytes()
+    for override in overrides['overrides']:
+        assert (ROOT / override['local']).is_file(), override
+        assert (ROOT / 'themes/hextra' / override['upstream']).is_file(), override
+
     checked = set()
     for html in public.rglob('index.html'):
         for href, integrity in Assets(html.read_text()).links:
@@ -75,6 +86,7 @@ def main():
                     assert actual == expected, f'Invalid integrity: {href}'
                 checked.add((href, integrity))
     print(json.dumps({'pinned_packages': len(manifest), 'pinned_files': pinned_files,
+                      'theme_overrides': len(overrides['overrides']),
                       'local_math_fonts': len(font_paths), 'verified_integrity_assets': len(checked)}, indent=2))
 
 

@@ -6,6 +6,7 @@ draft: false
 tags: ["CoACD", "Mesh Processing", "Collision Geometry"]
 categories: ["三维视觉"]
 authors: ["chase"]
+images: ["assets/convex-parts-opening.webp"]
 summary: "用 U 形开口解释凸分解，演示 CoACD 网格检查、逐块导出与可视化，并说明阈值单位和物理引擎加载边界。"
 showToc: true
 TocOpen: true

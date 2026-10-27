@@ -6,6 +6,7 @@ draft: false
 tags: ["Lock-Free Queue", "Concurrency", "C++"]
 categories: ["编程开发"]
 authors: ["chase"]
+images: ["assets/spsc-publication.webp"]
 summary: "区分线程安全、无锁与实时性，解释 SPSC 的 acquire/release 发布关系，再用离散事件实验比较积压、丢弃策略和机器人状态的数据年龄。"
 showToc: true
 TocOpen: true

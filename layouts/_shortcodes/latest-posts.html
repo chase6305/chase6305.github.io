@@ -1,16 +1,16 @@
 {{- $limit := .Get "limit" | default 3 -}}
-{{- $pages := where site.RegularPages "Section" "posts" -}}
+{{- $pages := where hugo.Sites.Default.RegularPages "Section" "posts" -}}
 <div class="latest-grid">
   {{- range first $limit ($pages.ByDate.Reverse) }}
-    <article class="latest-card">
+    <article class="latest-card" lang="{{ .Params.contentLanguage | default .Language.Lang }}">
       <div class="latest-card__meta">
-        <time datetime="{{ .Date.Format `2006-01-02` }}">{{ .Date.Format "Jan 02, 2006" }}</time>
+        <time lang="{{ $.Page.Language.Lang }}" datetime="{{ .Date.Format `2006-01-02` }}">{{ if eq $.Page.Language.Lang "zh-cn" }}{{ .Date.Format "2006-01-02" }}{{ else }}{{ .Date.Format "Jan 02, 2006" }}{{ end }}</time>
         {{- with index .Params.categories 0 }}<span>{{ . }}</span>{{ end }}
-        {{ if .Draft }}<span class="blog-draft-label">{{ if eq $.Page.Language.Lang "zh-cn" }}草稿预览{{ else }}Draft preview{{ end }}</span>{{ end }}
+        {{ if .Draft }}<span class="blog-draft-label" lang="{{ $.Page.Language.Lang }}">{{ if eq $.Page.Language.Lang "zh-cn" }}草稿预览{{ else }}Draft preview{{ end }}</span>{{ end }}
       </div>
       <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
       <p>{{ partial "utils/page-description" . }}</p>
-      <a class="latest-card__link" href="{{ .RelPermalink }}">{{ if eq $.Page.Language.Lang "zh-cn" }}阅读{{ else }}Read{{ end }} <span aria-hidden="true">→</span></a>
+      <a class="latest-card__link" lang="{{ $.Page.Language.Lang }}" href="{{ .RelPermalink }}" aria-label="{{ if eq $.Page.Language.Lang "zh-cn" }}阅读{{ else }}Read{{ end }} {{ .Title }}">{{ if eq $.Page.Language.Lang "zh-cn" }}阅读{{ else }}Read{{ end }} <span aria-hidden="true">→</span></a>
     </article>
   {{- end }}
 </div>
