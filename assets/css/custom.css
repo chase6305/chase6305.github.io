@@ -1812,6 +1812,14 @@ article main#content > .content {
   .blog-mobile-toc,
   .blog-topic-nav,
   .blog-related { display: none !important; }
+  .medium-zoom-overlay,
+  .medium-zoom-image--opened {
+    visibility: hidden !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+  .medium-zoom-image--hidden { visibility: visible !important; }
 
   article,
   article main#content {

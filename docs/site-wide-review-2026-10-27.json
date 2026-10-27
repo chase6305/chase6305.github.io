@@ -120,6 +120,17 @@
       "status": "fixed; complete 1872-layout combined regression passed",
       "detail": "With 200% root text and increased spacing together, the blog pager arrow exceeded its link width and added about five pixels to the page. The fixed mobile sidebar then followed the enlarged layout viewport. Allow the pager link contents to wrap, preserving the default layout.",
       "baseline_artifacts": "/tmp/chase-keyboard-reflow-release-20261027.json"
+    },
+    {
+      "id": "printing-with-image-zoom-open",
+      "status": "fixed; full readability, native PDF and screen-restoration regression passed",
+      "detail": "The original image retained visibility:hidden while the floating overlay and two zoom clones stayed rendered during printing. Print CSS now hides the floating layer and shows the original article image.",
+      "baseline": "/tmp/chase-zoom-print-baseline-20261027.json",
+      "validation": {
+        "originalVisible": true,
+        "overlayHidden": true,
+        "screenRestored": true
+      }
     }
   ],
   "rounds": [
@@ -813,10 +824,10 @@
     "zoom_test_adjustment": "Wait for the library medium-zoom:opened event before testing Escape; the original can finish loading while the opening animation is still active. The user interface closed and restored focus when tested after that event."
   },
   "release_validation": {
-    "status": "local validation passed; production verification pending",
-    "production_build": "/tmp/chase-site-final-zoom-build-20261027.log",
-    "production_directory": "/tmp/chase-site-final-zoom-production-20261027",
-    "draft_preview_directory": "/tmp/chase-site-release-preview-20261027",
+    "status": "passed",
+    "production_build": "/tmp/chase-site-zoom-print-stable-build-20261027.log",
+    "production_directory": "/tmp/chase-site-zoom-print-stable-production-20261027",
+    "draft_preview_directory": "/tmp/chase-site-zoom-print-stable-preview-20261027",
     "strict_validator": {
       "reviewed_posts": 93,
       "learning_paths": 11,
@@ -935,7 +946,12 @@
           ]
         }
       ],
-      "artifacts": "/tmp/chase-readability-final-combined-20261027/results.json"
+      "zoom_print": {
+        "originalVisible": true,
+        "overlayHidden": true,
+        "screenRestored": true
+      },
+      "artifacts": "/tmp/chase-readability-zoom-print-stable-20261027/results.json"
     },
     "accessibility": {
       "layouts": 165,
@@ -963,11 +979,86 @@
     "discovery": {
       "status": "passed; 90 published articles, 15 filter states, IME, history, native pagination and no-JS fallback",
       "log": "/tmp/chase-final-discovery-20261027.log"
+    },
+    "print_full_text": {
+      "layouts": 558,
+      "failures": 0,
+      "textSamples": 446184,
+      "runtimeExceptions": 0,
+      "artifacts": "/tmp/chase-print-full-text-20261027/results.json"
     }
   },
   "visual_evidence": {
     "directory": "docs/site-reviews/2026-10-27",
     "notes": "Repository screenshots document 200% root-font home reflow, print panel theme, mobile search and the Chinese dark 404; PDF artifacts stay outside published content."
   },
-  "phase": "Production deployment and four-hour follow-through in progress"
+  "phase": "Four-hour improvement and local acceptance completed; publication uses the normal main branch workflow",
+  "production_checks": {
+    "verified_code_commit": "bc6df7cd694b98eeb99ac2ceeb4620a0bf829cbd",
+    "github_actions": {
+      "id": 40468611512,
+      "head_sha": "bc6df7cd694b98eeb99ac2ceeb4620a0bf829cbd",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40468611512",
+      "created_at": "2026-10-27T07:41:14Z",
+      "updated_at": "2026-10-27T07:44:55Z"
+    },
+    "exact_http_audit": {
+      "urls": 121,
+      "failures": 0,
+      "bytes": 25278809,
+      "scope": "90 published article routes, both home pages, collection pages, both 404 files, three draft routes, missing routes, search indexes and shared assets; all response bytes match the fresh local production build.",
+      "artifacts": "/tmp/chase-production-http-bc6df7cd694b-20261027.json"
+    },
+    "live_browser": {
+      "home": {
+        "cards": 3,
+        "brand": "/zh-cn/",
+        "overflow": false
+      },
+      "search": {
+        "results": 61,
+        "first": "/posts/cpp/gcc/",
+        "highlight": true,
+        "navigation": "https://chase6305.github.io/posts/cpp/gcc/"
+      },
+      "zoom": {
+        "original": "https://chase6305.github.io/posts/ai/vla-world-model-data/assets/data-sources.png",
+        "normal": "https://chase6305.github.io/posts/ai/vla-world-model-data/assets/data-sources_hu_b254b8907a23086f.webp",
+        "explicit": "https://chase6305.github.io/posts/ai/vla-world-model-data/assets/data-sources.png",
+        "focusRestored": true
+      },
+      "custom404": true,
+      "chinese404": true,
+      "math": {
+        "formulas": 113,
+        "loadedFonts": [
+          "KaTeX_AMS",
+          "KaTeX_Caligraphic",
+          "KaTeX_Main",
+          "KaTeX_Math",
+          "KaTeX_Size1",
+          "KaTeX_Size2",
+          "KaTeX_Size3",
+          "KaTeX_Size4"
+        ]
+      },
+      "runtimeExceptions": [],
+      "completedAt": "2026-10-27T07:48:25.387Z"
+    }
+  },
+  "review_completed_at_utc": "2026-10-27T08:20:43.657591Z",
+  "review_duration_seconds": 14480,
+  "final_print_delta": {
+    "changes": "Hide zoom overlays from print with visibility and fixed positioning, restore the article image, and preserve transition completion on screen. Display:none interrupted close animations in the expanded regression.",
+    "native_pdf_comparison": {
+      "pages": 27,
+      "image_objects": 20,
+      "normalized_text_matches_normal_print": true
+    },
+    "publication_workflow": "https://github.com/chase6305/chase6305.github.io/actions/workflows/hugo.yml",
+    "scope_note": "Production checks above identify the already verified code release; this final print correction and review record are pushed together through the same workflow."
+  },
+  "temporary_services": "Stopped 14 obsolete owned preview servers; retained the final preview for review. No user browser or unrelated process was modified."
 }

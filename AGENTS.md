@@ -24,7 +24,7 @@ For search changes, run `node scripts/test_site_search.cjs` and `node scripts/ch
 
 For text sizing, spacing or sticky navigation changes, run `node scripts/check_site_reflow.cjs <baseURL> <CDP-port> <output-directory> --all-articles` against a draft-inclusive build. It checks 200% root text sizing, increased text spacing and their combination with and without JavaScript, plus actual arrow-key scrolling of enlarged tables. `node scripts/check_site_readability.cjs <baseURL> <CDP-port> <output-directory> --all-articles` checks text and placeholder contrast, print disclosure restoration and native canvas PDF colors. These browser suites also run serially.
 
-For print styles or long-formula revisions, run `node scripts/check_blog_print.cjs <baseURL> <CDP-port> <output-directory> --drafts` on the draft-inclusive build. It checks A4 content width, code wrapping, formula/table bounds, disclosures and screen-state restoration in three themes, with and without JavaScript. Keep canvas print palettes independent of screen themes and restore them after printing.
+For print styles or long-formula revisions, run `node scripts/check_blog_print.cjs <baseURL> <CDP-port> <output-directory> --drafts` on the draft-inclusive build. It checks A4 content width, code wrapping, formula/table bounds, printed text contrast, disclosures and screen-state restoration in three themes, with and without JavaScript. Keep canvas print palettes independent of screen themes and restore them after printing.
 
 ## Coding Style & Naming Conventions
 

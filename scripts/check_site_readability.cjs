@@ -98,6 +98,45 @@ const captureOnly = process.argv.includes('--capture-only');
       }
     }
 
+    await browser.navigate(base + '/posts/ai/supermimic/');
+    await browser.evaluate(`(() => {
+      const image=document.querySelector('.post-image-link img');
+      window.__printZoomOpened=false;
+      image.addEventListener('medium-zoom:opened',()=>{window.__printZoomOpened=true},{once:true});
+      image.closest('a').focus();image.closest('a').click();
+    })()`);
+    for (let attempt=0;attempt<100;attempt++) {
+      if(await browser.evaluate('window.__printZoomOpened'))break;
+      await browser.pause(50);
+    }
+    assert(await browser.evaluate('window.__printZoomOpened'));
+    await browser.cdp('Emulation.setEmulatedMedia', {media: 'print'});
+    const zoomPrint = await browser.evaluate(`({
+      originalVisible:getComputedStyle(document.querySelector('.post-image-link img')).visibility==='visible',
+      overlayHidden:[...document.querySelectorAll('.medium-zoom-overlay,.medium-zoom-image--opened')].every(e=>getComputedStyle(e).visibility==='hidden'&&getComputedStyle(e).position==='fixed')
+    })`);
+    assert(zoomPrint.originalVisible && zoomPrint.overlayHidden);
+    const zoomPDF=await browser.cdp('Page.printToPDF', {printBackground:true,paperWidth:8.27,paperHeight:11.69,
+      marginTop:.4,marginBottom:.4,marginLeft:.4,marginRight:.4});
+    fs.writeFileSync(path.join(output,'zoom-open-supermimic.pdf'),Buffer.from(zoomPDF.data,'base64'));
+    await browser.cdp('Emulation.setEmulatedMedia', {media: ''});
+    await browser.evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+    await browser.cdp('Page.bringToFront');
+    await browser.key('Escape', 'Escape', 27);
+    let zoomRestored=false;
+    for (let attempt=0;attempt<40;attempt++) {
+      zoomRestored=await browser.evaluate(`!document.querySelector('.medium-zoom-image--opened') && document.activeElement.classList.contains('post-image-link')`);
+      if(zoomRestored)break;
+      await browser.pause(50);
+    }
+    report.zoomAfterPrint=await browser.evaluate(`({
+      clones:document.querySelectorAll('.medium-zoom-image--opened').length,
+      overlays:document.querySelectorAll('.medium-zoom-overlay').length,
+      activeElement:document.activeElement.outerHTML.slice(0,300)
+    })`);
+    assert(zoomRestored,JSON.stringify(report.zoomAfterPrint));
+    report.zoomPrint={...zoomPrint,screenRestored:true};
+
     const failures = report.contrast.filter(row => row.issues.length);
     report.summary = {contrastLayouts: report.contrast.length, textSamples: report.contrast.reduce((n, row) => n + row.checked, 0),
       contrastFailures: failures.length, printLayouts: report.print.length, runtimeExceptions: browser.exceptions.length};
