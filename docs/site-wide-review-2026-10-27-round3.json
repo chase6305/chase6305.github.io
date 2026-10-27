@@ -267,7 +267,7 @@
   },
   "stable_contracts": "/tmp/chase-round3-final-stable-contracts-20261028.json",
   "release": {
-    "status": "first and second batches deployed and verified; third batch passed local release checks",
+    "status": "three implementation batches deployed and verified",
     "production_directory": "/tmp/chase-round3-phase1-production-20261028",
     "validation": "/tmp/chase-round3-phase1-production-validation-20261028.json",
     "assets": "/tmp/chase-round3-phase1-assets-20261028.json",
@@ -396,10 +396,27 @@
       "live_audit_exit": 0,
       "live_audit": "/tmp/chase-production-http-2e5734c9d6dd-20261027.json",
       "verified_at_utc": "2026-10-27T17:14:51.941014+00:00"
+    },
+    {
+      "phase": 3,
+      "id": 40562324100,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "a94310b42f1bc06e4d40330a5cbd2804544349dc",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40562324100",
+      "updated_at": "2026-10-27T18:45:53Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-production-http-a94310b42f1b-20261027.json",
+      "verified_at_utc": "2026-10-27T18:46:25.030053+00:00",
+      "expanded_live_audit": "/tmp/chase-full-production-http-a94310b42f1b-20261028.json",
+      "expanded_live_urls": 358,
+      "expanded_live_failures": 0
     }
   ],
   "phase3": {
-    "status": "complete local release queue and final targeted checks passed; ready for deployment",
+    "status": "deployed; production search, accessibility and discovery checks passed",
     "engine": {
       "version": "4.14.0",
       "tarball": "https://registry.npmjs.org/axe-core/-/axe-core-4.14.0.tgz",
@@ -511,6 +528,63 @@
         "output": "/tmp/chase-round3-release-final-reading-20261028",
         "log": "/tmp/chase-round3-release-final-reading-20261028.log"
       }
-    ]
+    ],
+    "deployment": {
+      "id": 40562324100,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "a94310b42f1bc06e4d40330a5cbd2804544349dc",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40562324100",
+      "updated_at": "2026-10-27T18:45:53Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-production-http-a94310b42f1b-20261027.json",
+      "verified_at_utc": "2026-10-27T18:46:25.030053+00:00"
+    },
+    "expanded_live_audit": "/tmp/chase-full-production-http-a94310b42f1b-20261028.json",
+    "expanded_live_urls": 358,
+    "expanded_live_failures": 0,
+    "delayed_script_reading": "/tmp/chase-round3-delayed-reading-20261028.json",
+    "delayed_script_cases": 18,
+    "collection_reflow": "/tmp/chase-round3-collections-reflow-20261028.json",
+    "collection_reflow_routes": 218,
+    "collection_reflow_layouts": 1308,
+    "publish_stable_contracts": "/tmp/chase-round3-publish-stable-contracts-20261028.json",
+    "production_browser": {
+      "search": "/tmp/chase-round3-live-search-20261028/results.json",
+      "accessibility": "/tmp/chase-round3-live-accessibility-20261028/results.json",
+      "discovery": "/tmp/chase-round3-live-discovery-20261028/results.json",
+      "published_articles": 91,
+      "navigation_layouts": 165,
+      "runtime_exceptions": 0
+    },
+    "article_languages": "/tmp/chase-round3-production-article-languages-20261028.json",
+    "build_manifest": "/tmp/chase-round3-publish-build-manifest-20261028.json"
+  },
+  "delivery": {
+    "scope": "Balance long print titles after native PDF inspection; record the completed production verification",
+    "production": "/tmp/chase-round3-delivery-production-20261028",
+    "draft_preview": "/tmp/chase-round3-delivery-drafts-20261028",
+    "validation": "/tmp/chase-round3-delivery-validation-20261028.json",
+    "assets": "/tmp/chase-round3-delivery-assets-20261028.json",
+    "native_pdf_baseline": "/tmp/chase-round3-production-pdf-inspection-20261028.json",
+    "native_pdf_sampled_pages": 9,
+    "native_pdf_total_pages": 76,
+    "normal_print": "/tmp/chase-round3-delivery-print-20261028/results.json",
+    "forced_print": "/tmp/chase-round3-delivery-print-forced-20261028/results.json",
+    "workflow_path": ".github/workflows/hugo.yml",
+    "local_status": "passed",
+    "print_layouts_per_mode": 564,
+    "print_failures": 0,
+    "native_pdf_after": "/tmp/chase-round3-delivery-paper-pdfs-20261028.json",
+    "native_pdf_text_preservation": "/tmp/chase-round3-delivery-pdf-text-preservation-20261028.json",
+    "native_pdf_pages_unchanged": [
+      27,
+      32,
+      17
+    ],
+    "screenshot_before": "docs/site-reviews/2026-10-27-round3/print-title-before.png",
+    "screenshot_after": "docs/site-reviews/2026-10-27-round3/print-title-after.png"
   }
 }

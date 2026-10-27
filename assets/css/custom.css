@@ -1822,7 +1822,7 @@ article main#content > .content {
     color: #111 !important;
     text-shadow: none !important;
   }
-  article main#content h1 { font-size: 24pt !important; }
+  article main#content h1 { font-size: 24pt !important; text-wrap: balance; }
   article main#content :is(h1, h2, h3, h4, h5, h6) { break-after: avoid; }
   article main#content a { text-decoration: underline; }
   article main#content p { orphans: 3; widows: 3; }
