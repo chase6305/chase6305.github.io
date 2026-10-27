@@ -185,6 +185,14 @@
   "release": {
     "production_directory": "/tmp/chase-round2-final-production-20261027",
     "local_preview": "http://127.0.0.1:13175/",
-    "status": "local validation complete; committing and uploading"
+    "status": "numeric check made portable; rebuilding and uploading the fix",
+    "initial_commit": "c6a96f9a9109b3f35460d6ad8e7f1d713137dbf6",
+    "initial_workflow": {
+      "id": 40497655469,
+      "conclusion": "failure",
+      "failed_step": "MorphMimic numerical-record check after a successful Hugo build and strict site validation",
+      "cause": "Exact float equality differed between Python 3.10 and newer compensated accumulation; observed differences are around 2e-16.",
+      "fix": "Structural/integer/boolean fields remain exact; finite floats use 1e-12 absolute/relative tolerance. Six negative/positive regression tests pass on Python 3.10 and 3.13."
+    }
   }
 }

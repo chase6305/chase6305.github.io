@@ -108,6 +108,25 @@
         "limits": "Tiny random networks and mocked gather; no task registration, checkpoint, simulator, GPU or robot."
       }
     },
-    "normalization_default_note_preview": "passed in 24 live draft-server layouts including 200% text"
+    "normalization_default_note_preview": "passed in 24 live draft-server layouts including 200% text",
+    "portable_record_comparison": {
+      "python_versions": [
+        "3.10",
+        "3.13"
+      ],
+      "status": "passed",
+      "float_tolerance": {
+        "relative": 1e-12,
+        "absolute": 1e-12
+      },
+      "exact_fields": [
+        "structure",
+        "integer",
+        "boolean"
+      ],
+      "negative_tests": "changed four-decimal return, count/type changes, missing keys, wrong list length and nonfinite values rejected",
+      "script": "scripts/test_morphmimic_contracts.py",
+      "test_methods": 6
+    }
   }
 }

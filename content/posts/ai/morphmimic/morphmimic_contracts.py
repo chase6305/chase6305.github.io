@@ -32,6 +32,32 @@ def native_position(canonical, permutation, signs, offsets, default):
     return result
 
 
+def compare_record(expected, actual, path='$'):
+    """Compare a numerical record without requiring identical float accumulation.
+
+    Integer, boolean and structural fields stay exact. Float tolerance is far
+    below the report's four-decimal precision and the 1e-9 gradient check bound.
+    """
+    if type(expected) is not type(actual):
+        raise ValueError(f'{path}: type differs')
+    if isinstance(expected, dict):
+        if expected.keys() != actual.keys():
+            raise ValueError(f'{path}: keys differ')
+        for key in expected:
+            compare_record(expected[key], actual[key], f'{path}.{key}')
+    elif isinstance(expected, list):
+        if len(expected) != len(actual):
+            raise ValueError(f'{path}: length differs')
+        for index, (left, right) in enumerate(zip(expected, actual)):
+            compare_record(left, right, f'{path}[{index}]')
+    elif isinstance(expected, float):
+        if not (math.isfinite(expected) and math.isfinite(actual)
+                and math.isclose(expected, actual, rel_tol=1e-12, abs_tol=1e-12)):
+            raise ValueError(f'{path}: number differs ({expected!r} versus {actual!r})')
+    elif expected != actual:
+        raise ValueError(f'{path}: value differs')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group()
@@ -105,8 +131,10 @@ def main():
     text = json.dumps(result, ensure_ascii=False, indent=2) + '\n'
     if args.check:
         stored = Path(__file__).resolve().parent / 'assets/contracts-results.json'
-        if json.loads(stored.read_text(encoding='utf-8')) != result:
-            raise SystemExit('Contract results differ from the article record')
+        try:
+            compare_record(json.loads(stored.read_text(encoding='utf-8')), result)
+        except ValueError as error:
+            raise SystemExit('Contract results differ from the article record: ' + str(error)) from error
         print('MorphMimic dimensions, mappings, gradients and Table I differences passed')
         return
     if args.output:
