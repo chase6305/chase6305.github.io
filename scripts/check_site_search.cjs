@@ -62,6 +62,17 @@ const output = process.argv[4] || '/tmp/chase-site-search';
     assert(await browser.evaluate('document.activeElement===window.__chosenSearchResult'), 'Opening frame stole result focus');
     report.openingFramePreservesFocus=true;
     await browser.key('Escape','Escape',27);await wait(`!document.getElementById('hextra-search-dialog').open`);
+    await browser.cdp('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+    await browser.evaluate(`(()=>{const open=document.querySelector('[data-search-open]'),close=document.querySelector('[data-search-close]');
+      for(let i=0;i<5;i++){open.click();close.click()}open.click()})()`);
+    await browser.pause(80);
+    assert(await browser.evaluate(`document.getElementById('hextra-search-dialog').open
+      &&document.querySelector('.hextra-search-input').getAttribute('aria-expanded')==='true'`), 'Stale close event changed a reopened dialog');
+    report.rapidReopenPreservesExpanded=true;
+    await browser.key('Escape','Escape',27);await wait(`!document.getElementById('hextra-search-dialog').open`);
+    await browser.pause(50);
+    assert.equal(await browser.evaluate(`document.querySelector('.hextra-search-input').getAttribute('aria-expanded')`),'false');
+    await browser.cdp('Emulation.setEmulatedMedia',{features:[]});
 
     for (const width of [320, 390, 768, 1440]) for (const theme of ['light', 'dark', 'warm']) {
       await browser.viewport(width);

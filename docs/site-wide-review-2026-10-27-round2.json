@@ -33,6 +33,12 @@
       "status": "fixed; delayed-frame regression, 12 search layouts and 165 accessibility layouts passed",
       "evidence": "A controlled delayed requestAnimationFrame on open deterministically moved focus from an already chosen search result back to the input. Opening now focuses/selects synchronously; no deferred callback can reclaim focus.",
       "before_artifact": "/tmp/chase-round2-search-frame-before-20261027.log"
+    },
+    {
+      "id": "search-stale-close-event",
+      "status": "fixed; rapid reduced-motion reopen regression, 12 search layouts and 165 accessibility layouts passed",
+      "evidence": "With reduced motion and immediate reopen, dialog.open remained true but a queued close event from the prior session set input aria-expanded=false. The close handler now verifies that the dialog is still closed.",
+      "before_artifact": "/tmp/chase-round2-search-reopen-before-20261027.log"
     }
   ],
   "rounds": [
@@ -180,12 +186,26 @@
         "/tmp/chase-round2-final-validation-20261027.json",
         "/tmp/chase-round2-final-assets-20261027.json"
       ]
+    },
+    {
+      "change": "Guard search aria-expanded against stale close events during rapid reduced-motion reopen.",
+      "checks": {
+        "search_layouts": 12,
+        "rapid_reopen_preserves_expanded": true,
+        "accessibility_layouts": 165,
+        "production_validation": "passed"
+      },
+      "artifacts": [
+        "/tmp/chase-round2-reopen-search-20261027/results.json",
+        "/tmp/chase-round2-reopen-accessibility-20261027/results.json",
+        "/tmp/chase-round2-reopen-validation-20261027.json"
+      ]
     }
   ],
   "release": {
     "production_directory": "/tmp/chase-round2-final-production-20261027",
     "local_preview": "http://127.0.0.1:13175/",
-    "status": "numeric check made portable; rebuilding and uploading the fix",
+    "status": "portable checks fixed; final rapid-reopen state fix verified locally",
     "initial_commit": "c6a96f9a9109b3f35460d6ad8e7f1d713137dbf6",
     "initial_workflow": {
       "id": 40497655469,
@@ -193,6 +213,15 @@
       "failed_step": "MorphMimic numerical-record check after a successful Hugo build and strict site validation",
       "cause": "Exact float equality differed between Python 3.10 and newer compensated accumulation; observed differences are around 2e-16.",
       "fix": "Structural/integer/boolean fields remain exact; finite floats use 1e-12 absolute/relative tolerance. Six negative/positive regression tests pass on Python 3.10 and 3.13."
+    },
+    "portable_fix_commit": "8b4dad42e208671462134965ba97d527e0e81d58",
+    "portable_fix_workflow": {
+      "id": 40498988128,
+      "head_sha": "8b4dad42e208671462134965ba97d527e0e81d58",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40498988128",
+      "updated_at": "2026-10-27T11:53:39Z"
     }
   }
 }

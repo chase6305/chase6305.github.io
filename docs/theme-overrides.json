@@ -28,7 +28,8 @@
         "Normalize query highlighting and bound input length",
         "Deactivate stale options immediately when the input is cleared",
         "Highlight each normalized query term independently",
-        "Focus and select synchronously on open so a deferred frame cannot steal result focus"
+        "Focus and select synchronously on open so a deferred frame cannot steal result focus",
+        "Ignore stale native close events when the search dialog has already reopened"
       ]
     },
     {

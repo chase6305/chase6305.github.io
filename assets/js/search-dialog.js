@@ -71,7 +71,8 @@
 
     // Keep the previous query and results when reopening — only flip aria state.
     dialog.addEventListener('close', () => {
-      input.setAttribute('aria-expanded', 'false');
+      // A queued close can belong to an earlier, already reopened session.
+      if (!dialog.open) input.setAttribute('aria-expanded', 'false');
     });
 
     // Intercept the native Escape "cancel" so we can play the close animation.
