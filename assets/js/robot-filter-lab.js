@@ -109,7 +109,13 @@
     const ctx = canvas.getContext("2d"); if (!ctx) return;
     ctx.scale(ratio,ratio);
     const dark = !printing && document.documentElement.classList.contains("dark");
-    const colors = {grid:dark?"#354458":"#dce4ed",text:dark?"#cbd8e8":"#465a70",raw:printing?"#6d7d90":dark?"#6d7d90":"#bcc5cf",truth:dark?"#eef3f9":"#26384c",filtered:dark?"#86bdff":"#317ebd"};
+    const forcedColors = !printing && window.matchMedia("(forced-colors: active)").matches;
+    // Canvas pixels do not receive the browser's automatic forced-color mapping.
+    // Use the resolved system foreground and retain distinct line patterns.
+    const foreground = getComputedStyle(canvas).color;
+    const colors = forcedColors
+      ? {grid:foreground,text:foreground,raw:foreground,truth:foreground,filtered:foreground}
+      : {grid:dark?"#354458":"#dce4ed",text:dark?"#cbd8e8":"#465a70",raw:"#6d7d90",truth:dark?"#eef3f9":"#26384c",filtered:dark?"#86bdff":"#317ebd"};
     const ranges = {all:[0,10],still:[.8,1.8],onset:[2,2.65]};
     const [lo,hi] = ranges[view];
     const indexes = data.t.map((_,i)=>i).filter(i=>data.t[i]>=lo&&data.t[i]<=hi);
@@ -121,7 +127,9 @@
     ctx.font="11px system-ui, sans-serif";ctx.fillStyle=colors.text;
     for(let i=0;i<=4;i++){
       const v=min+(max-min)*i/4, yy=ty(v);
-      ctx.strokeStyle=colors.grid;ctx.lineWidth=.6;ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(width-right,yy);ctx.stroke();
+      ctx.strokeStyle=colors.grid;ctx.lineWidth=.6;
+      ctx.globalAlpha=forcedColors ? .2 : 1;
+      ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(width-right,yy);ctx.stroke();ctx.globalAlpha=1;
       ctx.textAlign="right";ctx.fillText(v.toFixed(0),left-6,yy+4);
     }
     for(let i=0;i<=2;i++){
@@ -132,7 +140,7 @@
       ctx.save();ctx.beginPath();ctx.rect(left,top,w,h);ctx.clip();ctx.strokeStyle=color;ctx.lineWidth=lineWidth;ctx.setLineDash(dash);ctx.beginPath();
       indexes.forEach((i,j)=>{const x=tx(data.t[i]),y=ty(values[i]*1000);j?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();ctx.restore();
     }
-    line(result.measurement,colors.raw,.8,[]);line(data.truth,colors.truth,1.8,[5,4]);line(result.output,colors.filtered,2.2,[]);
+    line(result.measurement,colors.raw,1,[1,3]);line(data.truth,colors.truth,1.8,[5,4]);line(result.output,colors.filtered,2.2,[]);
     canvas.setAttribute("aria-label",`合成位置曲线，${lo} 至 ${hi} 秒。静止标准差 ${result.jitter.toFixed(3)} 毫米，匀速等效滞后 ${result.lag.toFixed(3)} 毫秒。`);
   }
 
@@ -164,6 +172,8 @@
       const redraw=()=>{if(result)draw(canvas,data,result,view)};
       new ResizeObserver(redraw).observe(canvas);new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:["class"]});
       window.matchMedia("print").addEventListener("change",redraw);
+      window.matchMedia("(forced-colors: active)").addEventListener("change",redraw);
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",redraw);
       window.addEventListener("beforeprint",()=>{if(result)draw(canvas,data,result,view,true)});
       window.addEventListener("afterprint",redraw);
       element.querySelector("[data-filter-interactive]").hidden=false;status.hidden=true;update();

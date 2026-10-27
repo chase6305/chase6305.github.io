@@ -711,7 +711,7 @@ article main#content > .content {
 .taxonomy-card:focus-visible,
 .archive-year__posts a:focus-visible {
   border-radius: 0.25rem;
-  outline: 3px solid color-mix(in srgb, var(--chase-accent) 35%, transparent);
+  outline: 3px solid var(--chase-accent);
   outline-offset: 3px;
 }
 
@@ -1044,7 +1044,7 @@ article main#content > .content {
 
 .chase-button:focus-visible,
 .project-link:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--chase-accent) 35%, transparent);
+  outline: 3px solid var(--chase-accent);
   outline-offset: 3px;
 }
 
@@ -1645,7 +1645,7 @@ article main#content > .content {
   overflow-wrap: anywhere;
 }
 .content .blog-code-copy-status:not(:empty) { margin: 1rem 0 0.4rem; }
-.content .hextra-code-copy-btn:disabled { cursor: wait; }
+.content .hextra-code-copy-btn:is(:disabled, [aria-busy="true"]) { cursor: wait; }
 .blog-mobile-toc summary:focus-visible,
 .content pre:focus-visible,
 .content table:focus-visible,
@@ -1783,6 +1783,7 @@ article main#content > .content {
   :root.dark,
   :root.warm {
     color-scheme: light !important;
+    forced-color-adjust: none;
     --chase-text: #111;
     --chase-muted: #333;
     --chase-accent: #111;

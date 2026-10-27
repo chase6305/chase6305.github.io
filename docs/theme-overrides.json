@@ -52,7 +52,9 @@
       "local": "assets/js/core/code-copy.js",
       "changes": [
         "Recheck code overflow after font loading, text sizing and disclosure changes with batched measurements",
-        "Keep the existing exact-copy and manual-selection fallback behavior"
+        "Keep the pending copy control focusable and suppress duplicate activation without native disabling",
+        "Offer exact manual selection on failure only when the reader has retained focus and selection",
+        "Retain manual-selection focus on short blocks until blur, then remove the temporary tab stop"
       ]
     },
     {

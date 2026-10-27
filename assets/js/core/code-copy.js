@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }));
     measurements.forEach(({pre, overflowing}) => {
       if (overflowing && pre.tabIndex !== 0) pre.setAttribute('tabindex', '0');
-      else if (!overflowing && pre.hasAttribute('tabindex')) pre.removeAttribute('tabindex');
+      else if (!overflowing && pre.hasAttribute('tabindex') && document.activeElement !== pre) pre.removeAttribute('tabindex');
     });
   };
   let resizeRaf;
@@ -43,6 +43,9 @@ document.addEventListener('DOMContentLoaded', function () {
     resizeRaf = requestAnimationFrame(updateScrollableCodeBlocks);
   };
   updateScrollableCodeBlocks();
+  // Manual-copy fallback may focus a short block. Retain that focus until the
+  // reader leaves; removing tabindex during the next layout would blur it.
+  codeBlocks.forEach(pre => pre.addEventListener('blur', scheduleCodeCheck));
   window.addEventListener('resize', scheduleCodeCheck);
   document.addEventListener('toggle', scheduleCodeCheck, true);
   document.fonts?.ready.then(scheduleCodeCheck);
@@ -70,9 +73,11 @@ document.addEventListener('DOMContentLoaded', function () {
     status.setAttribute('aria-atomic', 'true');
     button.closest('.hextra-code-block')?.before(status);
     let resetTimer;
+    let copyPending = false;
 
     button.addEventListener('click', async function (e) {
       e.preventDefault();
+      if (copyPending) return;
       clearTimeout(resetTimer);
       button.classList.remove('copied');
       button.setAttribute('aria-label', originalLabel);
@@ -91,7 +96,15 @@ document.addEventListener('DOMContentLoaded', function () {
         status.textContent = chinese ? '未找到代码，请手动选择。' : 'Code not found. Please select it manually.';
         return;
       }
-      button.disabled = true;
+      // Keep the focused button in the keyboard order while permission or
+      // clipboard work is pending. Native disabled can blur it on a later frame.
+      const focusBeforeCopy = document.activeElement;
+      const beforeSelection = window.getSelection();
+      const selectionBeforeCopy = beforeSelection ? [beforeSelection.anchorNode,
+        beforeSelection.anchorOffset, beforeSelection.focusNode, beforeSelection.focusOffset] : null;
+      copyPending = true;
+      button.setAttribute('aria-disabled', 'true');
+      button.setAttribute('aria-busy', 'true');
       try {
         if (typeof navigator.clipboard?.writeText !== 'function') {
           throw new Error('Clipboard API unavailable');
@@ -110,7 +123,12 @@ document.addEventListener('DOMContentLoaded', function () {
         // Permission denial and non-secure origins still allow manual copying.
         const selection = window.getSelection();
         const pre = codeElement.closest('pre');
-        if (selection) {
+        const selectionUnchanged = selection && selectionBeforeCopy &&
+          [selection.anchorNode, selection.anchorOffset, selection.focusNode, selection.focusOffset]
+            .every((value, index) => value === selectionBeforeCopy[index]);
+        const canSelect = selectionUnchanged && document.hasFocus() &&
+          document.activeElement === focusBeforeCopy && codeElement.isConnected;
+        if (canSelect) {
           if (pre) {
             pre.setAttribute('tabindex', '0');
             pre.focus({preventScroll: true});
@@ -121,10 +139,12 @@ document.addEventListener('DOMContentLoaded', function () {
           selection.addRange(range);
         }
         status.textContent = chinese
-          ? '自动复制不可用，请手动复制' + (selection ? '已选中的代码。' : '代码。')
-          : 'Automatic copying is unavailable. Please copy the ' + (selection ? 'selected ' : '') + 'code manually.';
+          ? canSelect ? '自动复制不可用，请手动复制已选中的代码。' : '自动复制不可用，请手动选择并复制代码。'
+          : 'Automatic copying is unavailable. Please ' + (canSelect ? 'copy the selected' : 'select and copy the') + ' code manually.';
       } finally {
-        button.disabled = false;
+        copyPending = false;
+        button.removeAttribute('aria-disabled');
+        button.removeAttribute('aria-busy');
       }
     });
   });

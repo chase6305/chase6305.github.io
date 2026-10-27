@@ -10,13 +10,16 @@ const base = process.argv[2] || 'http://127.0.0.1:13147';
 const port = Number(process.argv[3] || 9226);
 const output = process.argv[4] || '/tmp/chase-blog-print';
 const drafts = process.argv.includes('--drafts');
+const features = process.argv.includes('--forced-colors') ? [
+  {name: 'forced-colors', value: 'active'}, {name: 'prefers-color-scheme', value: 'dark'}
+] : [];
 const posts = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/blog-editorial-review.json'))).posts
   .filter(post => drafts || !post.draft);
 
 (async () => {
   fs.mkdirSync(output, {recursive: true});
   const browser = await connect(port);
-  const report = {layouts: [], exceptions: browser.exceptions};
+  const report = {layouts: [], exceptions: browser.exceptions, forcedColors: features.length > 0};
   try {
     // A4 with 0.4-inch side margins leaves about 717 CSS pixels.
     await browser.viewport(716);
@@ -29,7 +32,7 @@ const posts = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/blog-edit
         const original = await browser.evaluate(`[...document.querySelectorAll('.content details:not(.blog-mobile-toc)')].map(d=>d.open)`);
         for (const theme of ['light', 'dark', 'warm']) {
           await browser.evaluate(`document.documentElement.classList.remove('dark','warm');${theme === 'light' ? '' : `document.documentElement.classList.add('${theme}')`}`);
-          await browser.cdp('Emulation.setEmulatedMedia', {media: 'print'});
+          await browser.cdp('Emulation.setEmulatedMedia', {media: 'print', features});
           await browser.pause(60);
           const state = await browser.evaluate(`(() => {
             const math=[...document.querySelectorAll('.content .katex')].flatMap(e=>{
@@ -44,10 +47,13 @@ const posts = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/blog-edit
             const tables=[...document.querySelectorAll('.content table')].filter(e=>e.getBoundingClientRect().right>document.documentElement.clientWidth+1).length;
             const hiddenDetails=[...document.querySelectorAll('.content details:not(.blog-mobile-toc)')].filter(d=>getComputedStyle(d,'::details-content').contentVisibility!=='visible').length;
             const surfaces=[...document.querySelectorAll('.robot-filter-lab,.jev-routing-lab')].filter(e=>getComputedStyle(e).backgroundColor!=='rgb(255, 255, 255)').length;
-            return {math,code,tables,hiddenDetails,surfaces};
+            const paper=getComputedStyle(document.body).backgroundColor==='rgb(255, 255, 255)'
+              &&getComputedStyle(document.documentElement).backgroundColor==='rgb(255, 255, 255)'
+              &&getComputedStyle(document.documentElement).colorScheme==='light';
+            return {math,code,tables,hiddenDetails,surfaces,paper};
           })()`);
           const text = await browser.evaluate('(' + contrastAudit.toString() + ')(".content")');
-          await browser.cdp('Emulation.setEmulatedMedia', {media: ''});
+          await browser.cdp('Emulation.setEmulatedMedia', {media: '', features});
           const restoreStarted = Date.now();
           let restored;
           do {
@@ -55,7 +61,7 @@ const posts = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/blog-edit
             restored = await browser.evaluate(`[...document.querySelectorAll('.content details:not(.blog-mobile-toc)')].map(d=>d.open)`);
           } while (JSON.stringify(restored) !== JSON.stringify(original) && Date.now() - restoreStarted < 2000);
           const stateRestored = JSON.stringify(restored) === JSON.stringify(original);
-          const passed = !state.math.length && !state.code && !state.tables && !state.hiddenDetails && !state.surfaces && !text.issues.length && stateRestored;
+          const passed = state.paper && !state.math.length && !state.code && !state.tables && !state.hiddenDetails && !state.surfaces && !text.issues.length && stateRestored;
           report.layouts.push({route, scripts, theme, passed, stateRestored, restoreWaitMs: Date.now() - restoreStarted,
             ...state, textSamples: text.checked, contrastIssues: text.issues});
         }
@@ -70,7 +76,7 @@ const posts = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/blog-edit
   } finally {
     fs.writeFileSync(path.join(output, 'results.json'), JSON.stringify(report, null, 2) + '\n');
     await browser.cdp('Emulation.setScriptExecutionDisabled', {value: false}).catch(() => {});
-    await browser.cdp('Emulation.setEmulatedMedia', {media: ''}).catch(() => {});
+    await browser.cdp('Emulation.setEmulatedMedia', {media: '', features: []}).catch(() => {});
     await browser.close();
   }
 })().catch(error => {console.error(error); process.exitCode = 1;});

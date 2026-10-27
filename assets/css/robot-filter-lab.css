@@ -36,6 +36,14 @@
 .robot-filter-lab__note, .robot-filter-lab__limits { font-size: .83rem; line-height: 1.7; }
 .robot-filter-lab__error { color: #b93341; }
 .dark .robot-filter-lab__error { color: #ffabb3; }
+@media (forced-colors: active) {
+  .robot-filter-lab__views button[aria-pressed="true"] {
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: .2em;
+  }
+}
 @media (max-width: 540px) {
   .robot-filter-lab { padding: .85rem; }
   .robot-filter-lab__form { grid-template-columns: minmax(0, 1fr); }

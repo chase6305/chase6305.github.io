@@ -1,20 +1,20 @@
 ---
 title: Python可视化进度条库使用说明
 date: 2025-03-07
-lastmod: 2026-09-05
+lastmod: 2026-10-27
 draft: false
 tags: ["Python", "tqdm"]
 categories: ["编程开发"]
 authors: ["chase"]
-summary: "介绍 tqdm 基础、嵌套和手动进度条，补充版本查询、日志输出、非 TTY 和刷新开销处理。"
+summary: "介绍 tqdm 基础、嵌套和手动进度条，用单次遍历处理批次流，区分未知总量、异常退出、非 TTY 与异步完成量。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
-description: "介绍 tqdm 基础、嵌套和手动进度条，补充版本查询、日志输出、非 TTY 和刷新开销处理。"
+description: "介绍 tqdm 基础、嵌套和手动进度条，用单次遍历处理批次流，区分未知总量、异常退出、非 TTY 与异步完成量。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "Python 迭代器与终端"
-reading_focus: "先定义进度单位与总量，再配置刷新和日志，异步提交量不等于设备完成量。"
+reading_focus: "先定义进度单位；批次流只遍历一次，未知总量不编造百分比，异步提交量不等于设备完成量。"
 related_posts:
   - "/posts/python/f_string"
   - "/posts/linux/watch"
@@ -51,15 +51,19 @@ def process_items(items):
     return results
 
 
-def process_batches(batches):
-    total = sum(len(batch) for batch in batches)
+def process_batches(batches, total=None):
+    if total is not None and (
+        isinstance(total, bool) or not isinstance(total, int) or total < 0
+    ):
+        raise ValueError("total must be a nonnegative record count or None")
     completed = 0
     with tqdm(total=total, desc="Records", unit="record", disable=None) as bar:
         for batch in batches:
             results = [value * value for value in batch]
             completed += len(results)
             bar.update(len(results))  # 不是 bar.update(completed)
-    assert completed == total
+    if total is not None and completed != total:
+        raise ValueError(f"expected {total} records, processed {completed}")
     return completed
 
 
@@ -74,14 +78,29 @@ def nested():
 
 
 if __name__ == "__main__":
-    assert process_items([1, 2, 3]) == [1, 4, 9]
-    assert process_items([]) == []
-    assert process_batches([[1, 2], [], [3]]) == 3
-    assert len(nested()) == 6
+    item_results = process_items([1, 2, 3])
+    empty_results = process_items([])
+    known_count = process_batches([[1, 2], [], [3, 4, 5]], total=5)
+    streamed_count = process_batches(batch for batch in ([1, 2], [], [3, 4, 5]))
+    empty_count = process_batches(iter(()), total=0)
+    nested_results = nested()
+    assert item_results == [1, 4, 9] and empty_results == []
+    assert known_count == streamed_count == 5 and empty_count == 0
+    assert len(nested_results) == 6
     tqdm.write("All work completed")
 ```
 
 关闭显示后，不应依赖 `bar.n` 作为业务计数器；业务状态由自己的变量保存。上下文管理器在正常结束或异常退出时都会关闭进度条，异常仍应由业务层处理。
+
+实际处理放在 `assert` 外，断言只核对结果。这样即使用 `python -O` 关闭断言，程序仍会执行工作；输入与总量校验通过显式异常完成。
+
+### 批次流只遍历一次
+
+`process_batches` 的外层输入既可以是列表，也可以是只能消费一次的生成器。总记录数已由数据清单等元信息确定时传入 `total`；未知时保留 `None`，显示已完成记录数和速率，不编造百分比或剩余时间。`total=0` 则明确表示预期零条记录，与未知总量不同。这里的计数单位是记录，不是批次数：三个批次 `[[1, 2], [], [3, 4, 5]]` 共处理五条记录。
+
+不要先对同一个批次生成器执行 `sum(len(batch) for batch in batches)`，再用第二个循环处理它：第一次遍历已经耗尽数据。把流全部转为列表可以重复访问，但会物化全部批次；先消费一个 `itertools.tee` 分支来计数，也可能让另一个分支积累大量缓存，见 [Python 对 `tee` 的存储说明](https://docs.python.org/3/library/itertools.html#itertools.tee)。未知总量通常直接使用 `None` 更合适。
+
+本函数在给出 `total` 时核对最终完成量，不匹配就抛出 `ValueError`。总量错误时，显示本身可能暂时超过预期；因此百分比不能代替结果验收。批次处理抛出异常时，不会继续更新后续批次，也不会输出末尾的 `All work completed`。关闭进度条只是清理展示，既不吞掉异常，也不回滚业务已经产生的文件或数据库写入。
 
 ![原笔记的基础进度条效果](tqdm_1.png)
 ![原笔记的自定义格式效果](tqdm_2.png)
@@ -99,7 +118,7 @@ from tqdm import tqdm
 
 
 def scan_bytes(path, chunk_size=1024 * 1024):
-    if not isinstance(chunk_size, int) or chunk_size <= 0:
+    if isinstance(chunk_size, bool) or not isinstance(chunk_size, int) or chunk_size <= 0:
         raise ValueError("chunk_size must be a positive integer")
     path = Path(path)
     total = path.stat().st_size
@@ -139,3 +158,6 @@ def scan_bytes(path, chunk_size=1024 * 1024):
 
 - 在交互终端和重定向日志两种方式下检查进度条行为，必要时关闭动态显示，避免日志被回车刷新控制符淹没。
 - 进度更新应对应已完成的工作；异步 GPU 提交数量与完成数量不同，不能直接据此推断真实吞吐率。
+- 批次来源是一次性生成器时，为什么不能先遍历它来计算 total？
+- total=None 与 total=0 分别表示什么，批次数与记录数能否互换？
+- 处理中途抛出异常，进度条关闭是否意味着任务已经完成或副作用已回滚？

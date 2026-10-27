@@ -1,0 +1,157 @@
+{
+  "started_at_utc": "2026-10-27T15:06:39Z",
+  "planned_until_utc": "2026-10-27T19:06:39Z",
+  "baseline_commit": "4dff063f5ca7c9b50dd1d6b7c8fab7a81b4af0f7",
+  "scope": "Third four-hour site-wide improvement round. Preserve existing dates, URLs, anchors and draft states; publish verified changes through main.",
+  "baseline_validation": "/tmp/chase-round3-baseline-validation-20261027.json",
+  "findings": [
+    {
+      "id": "pending-clipboard-blurs-copy-control",
+      "status": "fixed; expanded clipboard checks passed",
+      "evidence": "A native disabled button retained focus during writeText but emitted focusout on a later frame while the promise remained pending. aria-disabled/aria-busy plus an activation guard keep it focusable without duplicate writes.",
+      "before": "/tmp/chase-round3-copy-focus-before-20261027.json",
+      "after": "/tmp/chase-round3-copy-focus-after-20261027/results.json"
+    },
+    {
+      "id": "late-clipboard-failure-overwrites-reader-context",
+      "status": "fixed; changed selection and background-tab checks passed",
+      "evidence": "After Tab and a new paragraph selection, permission rejection focused the earlier pre and replaced the selection. Manual selection now requires unchanged focus/selection and an active document.",
+      "before": "/tmp/chase-round3-copy-focus-before-20261027.json",
+      "after": "/tmp/chase-round3-copy-focus-after-20261027/results.json"
+    },
+    {
+      "id": "low-contrast-card-focus-outlines",
+      "status": "fixed; 540 ordinary and forced-color cases passed",
+      "evidence": "126 tested custom outline cases were below 3:1. The new check targets outline styles; related cards use a separate existing border indication and are excluded.",
+      "before": "/tmp/chase-round3-focus-before-20261027/results.json"
+    },
+    {
+      "id": "tqdm-batch-generator-consumed-by-total",
+      "status": "fixed; nine tests passed on Python 3.10/3.13 and tqdm 4.70.0/4.67.1",
+      "evidence": "Passing iter([[1,2],[],[3]]) computes total=3 during a first traversal, then processes no batches and fails its final assertion."
+    },
+    {
+      "id": "canvas-ignores-forced-system-colors",
+      "status": "fixed; 270 screen cases and three print modes passed",
+      "evidence": "In forced-light mode with a dark site theme, canvas axes kept #cbd8e8 on white (1.4456:1). In forced-dark mode with a light theme, #465a70 remained on black (2.9569:1). CSS foreground had correctly switched; canvas pixels had not.",
+      "before": "/tmp/chase-round3-filter-forced-before-20261027.json",
+      "screen_after": "/tmp/chase-round3-filter-colors-20261027/results.json"
+    },
+    {
+      "id": "forced-colors-overrides-neutral-print-palette",
+      "status": "fixed; 564 normal and 564 forced-color article print layouts passed",
+      "evidence": "The expanded canvas check passed all 270 screen layouts, but forced-dark print changed the paper background to black despite the existing white print CSS. Its canvas axes and truth trace fell below the contrast target.",
+      "before": "/tmp/chase-round3-filter-colors-20261027/results.json",
+      "change": "Retain the established light print palette with inherited forced-color-adjust:none only in print media."
+    },
+    {
+      "id": "short-manual-copy-focus-removed-by-overflow-check",
+      "status": "fixed; short-block focus retained and cleanup after blur passed",
+      "evidence": "At desktop width the short process/PID code block selected the correct text, but its layout observer removed tabindex and blurred the manual-copy target. The expanded clipboard check failed with focused=false, exact=true.",
+      "before": "/tmp/chase-round3-copy-context-verified-20261027.log",
+      "change": "Keep tabindex while the pre is focused; schedule cleanup after blur."
+    },
+    {
+      "id": "chapter-frame-overrides-later-focus",
+      "status": "fixed; 36 layout cases, five modifier cases, legacy anchor and fragment history passed",
+      "evidence": "Holding the TOC frame, selecting a chapter and then pressing Tab moved focus to the permalink; flushing the old frame moved it back to H2. Chapter navigation is now synchronous and leaves modifier clicks to the browser.",
+      "before": "/tmp/chase-round3-toc-frame-before-20261027.json",
+      "after": "/tmp/chase-round3-chapter-focus-20261027/results.json"
+    }
+  ],
+  "checks": [
+    {
+      "name": "tqdm published examples",
+      "python_versions": [
+        "3.10",
+        "3.13"
+      ],
+      "tests_per_version": 9,
+      "status": "passed",
+      "artifacts": [
+        "/tmp/chase-round3-tqdm-regression-20261027.log",
+        "/tmp/chase-round3-tqdm-py313-20261027.log"
+      ]
+    },
+    {
+      "name": "keyboard outline visibility",
+      "normal_and_forced_color_cases": 540,
+      "status": "passed",
+      "artifact": "/tmp/chase-round3-focus-20261027/results.json"
+    },
+    {
+      "name": "article print",
+      "drafts_included": true,
+      "layouts_per_mode": 564,
+      "modes": [
+        "normal",
+        "forced-dark"
+      ],
+      "status": "passed",
+      "artifacts": [
+        "/tmp/chase-round3-print-normal-20261027/results.json",
+        "/tmp/chase-round3-print-forced-20261027/results.json"
+      ]
+    },
+    {
+      "name": "expanded clipboard context checks",
+      "status": "passed",
+      "artifact": "/tmp/chase-round3-copy-final-20261028/results.json"
+    },
+    {
+      "name": "all-article reading and figures",
+      "cases": 912,
+      "figure_cases": 536,
+      "status": "passed",
+      "artifact": "/tmp/chase-round3-reading-all-20261028/results.json"
+    },
+    {
+      "name": "navigation and accessibility",
+      "layouts": 165,
+      "status": "passed",
+      "artifact": "/tmp/chase-round3-accessibility-20261028/results.json"
+    },
+    {
+      "name": "all-article reflow",
+      "layouts": 1890,
+      "status": "passed",
+      "artifact": "/tmp/chase-round3-reflow-all-20261028/results.json"
+    },
+    {
+      "name": "all-article readability",
+      "contrast_cases": 300,
+      "text_samples": 246834,
+      "print_cases": 18,
+      "status": "passed",
+      "artifact": "/tmp/chase-round3-readability-all-20261028/results.json"
+    }
+  ],
+  "ci_changes": {
+    "python": "3.13",
+    "setup_python_action": "actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 (v7)",
+    "dependency": "tqdm==4.67.1",
+    "wheel_sha256": "26445eca388f82e72884e0d580d5464cd801a3ea01e63e5601bdff9ba6a48de2",
+    "environment": "Dedicated venv under RUNNER_TEMP; existing Hugo and standard-library validation steps are unchanged.",
+    "local_equivalent": "/tmp/chase-round3-progress-ci-regression-20261028.log",
+    "local_status": "nine tests passed in an isolated Python 3.13 environment"
+  },
+  "stable_contracts": "/tmp/chase-round3-phase1-stable-contracts-20261028.json",
+  "release": {
+    "status": "first batch locally validated; upload pending",
+    "production_directory": "/tmp/chase-round3-phase1-production-20261028",
+    "validation": "/tmp/chase-round3-phase1-production-validation-20261028.json",
+    "assets": "/tmp/chase-round3-phase1-assets-20261028.json"
+  },
+  "visual_review": {
+    "directory": "docs/site-reviews/2026-10-27-round3",
+    "screenshots": [
+      "focus-before.png",
+      "focus-after.png",
+      "filter-forced-before.png",
+      "filter-forced-after.png"
+    ],
+    "native_forced_dark_print": "/tmp/chase-round3-filter-forced-native-20261028.pdf",
+    "native_print_trace": "/tmp/chase-round3-filter-forced-native-20261028.json",
+    "status": "four screenshots inspected; native print restores forced-dark screen colors afterward"
+  }
+}

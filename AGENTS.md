@@ -16,9 +16,13 @@ Treat a clean Hugo production build as the minimum validation for every change, 
 
 For heading or table-of-contents changes, run `python3 -B scripts/test_blog_toc.py` (use `--hugo /path/to/hugo` if needed). It builds disposable fixtures covering formulas, escaped dollar signs, code spans, linked labels and Unicode anchors. TOC formulas must reuse Markdown's rendered headings rather than guessing from dollar signs in plain text.
 
+For chapter navigation behavior, run `node scripts/check_chapter_focus.cjs <baseURL> <CDP-port> <output-directory>`. It checks immediate focus, later keyboard input, modifier clicks, legacy span anchors and native fragment Back/Forward behavior at narrow widths and large text.
+
 For changes to the shared image partial, run `python3 -B scripts/test_blog_images.py --hugo /path/to/hugo`. Article images should reserve their aspect ratio before lazy loading; preserve small images' intrinsic width and read SVG dimensions from `viewBox` when available. For reading-layout changes, `node scripts/check_blog_reading.cjs <baseURL> <CDP-port> <output-directory> --drafts` checks all article chapter links at 320/1440 pixels, with and without JavaScript. Use a draft-inclusive build with `--drafts`; omit the flag for a production build. Keep published URLs, existing chapter anchors, original publication dates and draft states stable during editorial revisions.
 
 For navigation, appearance or image zoom changes, run `node scripts/check_site_accessibility.cjs <baseURL> <CDP-port> <output-directory>` serially with other browser checks. It covers five viewport widths, three themes, mobile menu focus, theme keyboard controls, blocked storage, keyboard zoom and reduced motion. `python3 -B scripts/test_site_assets.py --public <fresh-directory>` verifies pinned browser assets, local formula fonts and emitted integrity. Keep vendored versions, licenses and `docs/vendor-assets.json` in sync; formula fonts must match Hugo's embedded KaTeX version.
+
+For repository-owned keyboard outline styles, run `node scripts/check_site_focus.cjs <baseURL> <CDP-port> <output-directory> --forced-colors`. It measures painted outlines against their surrounding surfaces in three themes, normal colors and light/dark forced-color palettes. Gradient or image backgrounds still need visual review.
 
 For image viewer changes, run `node scripts/check_image_viewer.cjs <fresh-public-directory> <CDP-port> <output-directory>` serially with other browser suites. It serves controlled delayed and failed originals to verify immediate previews, cancellation, retries, modal focus, small images, short screens, localized labels and printing during downloads. Keep native original-image links available when JavaScript or dialog support is unavailable. `node scripts/check_blog_image_viewers.cjs <baseURL> <CDP-port> <output-directory> --drafts` covers every article image at desktop/mobile widths in light and dark themes, including focus and scroll restoration.
 
@@ -28,7 +32,13 @@ For text sizing, spacing or sticky navigation changes, run `node scripts/check_s
 
 For code-copy or code-block changes, run `node scripts/check_code_reading.cjs <baseURL> <CDP-port> <output-directory>` to check overflow focus after text sizing and disclosure changes, exact asynchronous keyboard copying and focus after tabbing away.
 
+Copy failure checks must also preserve an existing selection and background-tab focus; a short manually selected block keeps focus until blur, then drops its temporary tab stop. Keep pending controls focusable and reject duplicate activations without native disabling.
+
 For print styles or long-formula revisions, run `node scripts/check_blog_print.cjs <baseURL> <CDP-port> <output-directory> --drafts` on the draft-inclusive build. It checks A4 content width, code wrapping, formula/table bounds, printed text contrast, disclosures and screen-state restoration in three themes, with and without JavaScript. Keep canvas print palettes independent of screen themes and restore them after printing.
+
+Repeat print checks with `--forced-colors` after changing print palettes. `node scripts/check_filter_colors.cjs <baseURL> <CDP-port> <output-directory>` checks actual canvas text/curve colors, line patterns, selected views, media-only redraws and print restoration for the filtering lab.
+
+For the tqdm article, run `python -B scripts/test_tqdm_examples.py` in a dedicated environment with `tqdm`. CI installs the wheel pinned by version and hash in `scripts/requirements-progress.txt`; the checks execute published snippets on one-shot iterators, failures, non-TTY streams, partial byte chunks and optimized Python.
 
 ## Coding Style & Naming Conventions
 

@@ -79,16 +79,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const toc = document.querySelector(".blog-mobile-toc");
   if (!toc) return;
   toc.addEventListener("click", event => {
+    if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     const link = event.target.closest("a[href^='#']");
     if (!link) return;
     const anchor = document.getElementById(decodeURIComponent(link.hash.slice(1)));
     if (!anchor) return;
     const target = anchor.closest("h1, h2, h3, h4, h5, h6") || anchor;
+    event.preventDefault();
     toc.open = false;
-    requestAnimationFrame(() => {
-      target.setAttribute("tabindex", "-1");
-      target.focus({preventScroll: true});
-      target.scrollIntoView({block: "start"});
-    });
+    // Location.hash retains native fragment history and hashchange semantics.
+    // Closing details, focusing and scrolling are synchronous: a later input
+    // cannot be overridden by a queued chapter callback.
+    window.location.hash = link.hash;
+    target.setAttribute("tabindex", "-1");
+    target.focus({preventScroll: true});
+    target.scrollIntoView({block: "start"});
   });
 });

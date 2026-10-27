@@ -56,11 +56,13 @@ const output = process.argv[4] || '/tmp/chase-code-reading';
       }}});
       const button=document.querySelector('.hextra-code-copy-btn');button.scrollIntoView({block:'center'});button.focus();
     })()`);
-    await browser.key('Enter','Enter',13);
+    await browser.key('Enter','Enter',13);await browser.pause(150);
     const pending=await browser.evaluate(`({focused:document.activeElement===document.querySelector('.hextra-code-copy-btn'),
-      calls:window.__copyCalls.length,disabled:document.querySelector('.hextra-code-copy-btn').disabled})`);
+      calls:window.__copyCalls.length,disabled:document.querySelector('.hextra-code-copy-btn').disabled,
+      busy:document.querySelector('.hextra-code-copy-btn').getAttribute('aria-busy'),
+      unavailable:document.querySelector('.hextra-code-copy-btn').getAttribute('aria-disabled')})`);
     report.pendingCopy=pending;
-    assert(pending.focused&&pending.calls===1&&pending.disabled,JSON.stringify(pending));
+    assert(pending.focused&&pending.calls===1&&!pending.disabled&&pending.busy==='true'&&pending.unavailable==='true',JSON.stringify(pending));
     await browser.key('Enter','Enter',13);assert.equal(await browser.evaluate('window.__copyCalls.length'),1);
     await browser.evaluate('window.__finishCopy()');await browser.pause(50);
     assert(await browser.evaluate(`document.activeElement===document.querySelector('.hextra-code-copy-btn')
@@ -73,6 +75,84 @@ const output = process.argv[4] || '/tmp/chase-code-reading';
     await browser.evaluate('window.__focusAfterTab=document.activeElement;window.__finishCopy()');await browser.pause(50);
     assert(await browser.evaluate('document.activeElement===window.__focusAfterTab'));
     report.pendingTab=true;
+
+    // A late permission rejection must not pull the reader back to the code
+    // or replace a selection made after leaving the pending copy button.
+    await browser.navigate(base+'/posts/python/tqdm/');
+    await browser.evaluate(`(()=>{
+      Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:()=>
+        new Promise((resolve,reject)=>{window.__rejectCopy=reject})}});
+      const button=document.querySelector('.hextra-code-copy-btn');
+      button.scrollIntoView({block:'center'});button.focus();
+    })()`);
+    await browser.key('Enter','Enter',13);await browser.key('Tab','Tab',9);
+    await browser.evaluate(`(()=>{
+      window.__focusBeforeRejection=document.activeElement;
+      const paragraph=document.querySelector('.content p'),range=document.createRange();
+      range.selectNodeContents(paragraph);const selection=getSelection();
+      selection.removeAllRanges();selection.addRange(range);
+      window.__selectionBeforeRejection=selection.toString();
+      window.__rejectCopy(new DOMException('Permission denied','NotAllowedError'));
+    })()`);await browser.pause(100);
+    const rejection=await browser.evaluate(`({
+      focusPreserved:document.activeElement===window.__focusBeforeRejection,
+      selectionPreserved:getSelection().toString()===window.__selectionBeforeRejection,
+      buttonEnabled:!document.querySelector('.hextra-code-copy-btn').disabled,
+      status:document.querySelector('.blog-code-copy-status').textContent
+    })`);
+    report.rejectionAfterTab=rejection;
+    assert(rejection.focusPreserved&&rejection.selectionPreserved&&rejection.buttonEnabled,JSON.stringify(rejection));
+    assert(!rejection.status.includes('已选中'));
+
+    // If the reader stays, permission denial still offers exact manual copying.
+    await browser.evaluate(`getSelection().removeAllRanges();document.querySelector('.hextra-code-copy-btn').focus()`);
+    await browser.key('Enter','Enter',13);
+    await browser.evaluate(`window.__rejectCopy(new DOMException('Permission denied','NotAllowedError'))`);
+    await browser.pause(100);
+    const manual=await browser.evaluate(`(()=>{
+      const pre=document.querySelector('.content pre'),code=pre.querySelector('code'),button=document.querySelector('.hextra-code-copy-btn');
+      return {focused:document.activeElement===pre,exact:getSelection().toString()===code.textContent,
+        busy:button.hasAttribute('aria-busy'),unavailable:button.hasAttribute('aria-disabled'),
+        status:document.querySelector('.blog-code-copy-status').textContent};
+    })()`);
+    report.permissionFallback=manual;
+    assert(manual.focused&&manual.exact&&!manual.busy&&!manual.unavailable&&manual.status.includes('已选中'),JSON.stringify(manual));
+
+    // Reading or assistive selection can change without moving DOM focus.
+    await browser.evaluate(`getSelection().removeAllRanges();document.querySelector('.hextra-code-copy-btn').focus()`);
+    await browser.key('Enter','Enter',13);
+    await browser.evaluate(`(()=>{const range=document.createRange();range.selectNodeContents(document.querySelector('.content p'));
+      getSelection().removeAllRanges();getSelection().addRange(range);window.__newSelection=getSelection().toString();
+      window.__rejectCopy(new DOMException('Permission denied','NotAllowedError'));})()`);
+    await browser.pause(100);
+    assert(await browser.evaluate(`document.activeElement===document.querySelector('.hextra-code-copy-btn')&&getSelection().toString()===window.__newSelection`));
+    report.changedSelectionPreserved=true;
+
+    // A permission failure in a background tab must not select hidden content.
+    await browser.evaluate(`getSelection().removeAllRanges();document.querySelector('.hextra-code-copy-btn').focus()`);
+    await browser.key('Enter','Enter',13);
+    const otherTab=await connect(port);
+    try{
+      assert(await browser.evaluate('!document.hasFocus()'));
+      await browser.evaluate(`window.__rejectCopy(new DOMException('Permission denied','NotAllowedError'))`);
+      await browser.pause(100);
+      assert(await browser.evaluate(`getSelection().rangeCount===0&&document.activeElement===document.querySelector('.hextra-code-copy-btn')`));
+      report.backgroundFailurePreserved=true;
+    }finally{await otherTab.close();await browser.cdp('Page.bringToFront')}
+
+    // The unavailable-API fallback also works for a short, non-scrolling block.
+    await browser.viewport(1440);await browser.navigate(base+'/posts/process/pid/');
+    await browser.evaluate(`(()=>{Object.defineProperty(navigator,'clipboard',{configurable:true,value:undefined});
+      getSelection().removeAllRanges();document.querySelector('.hextra-code-copy-btn').focus();})()`);
+    const shortBlock=await browser.evaluate(`(()=>{const p=document.querySelector('.content pre');return p.scrollWidth<=p.clientWidth&&p.scrollHeight<=p.clientHeight})()`);
+    assert(shortBlock);
+    await browser.key('Enter','Enter',13);await browser.pause(200);
+    const unavailable=await browser.evaluate(`(()=>{const p=document.querySelector('.content pre');return {
+      focused:document.activeElement===p,exact:getSelection().toString()===p.querySelector('code').textContent};})()`);
+    assert(unavailable.focused&&unavailable.exact,JSON.stringify(unavailable));report.unavailableClipboard=unavailable;
+    await browser.key('Tab','Tab',9);await browser.pause(150);
+    assert(await browser.evaluate(`!document.querySelector('.content pre').hasAttribute('tabindex')`));
+    report.shortBlockFocusCleanup=true;
     assert.equal(browser.exceptions.length,0,JSON.stringify(browser.exceptions));
     console.log(JSON.stringify({layouts:report.layouts.length,keyboardCopy:true,pendingTab:true,controlledDisclosure:true,exceptions:0},null,2));
   }finally{
