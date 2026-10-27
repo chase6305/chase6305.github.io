@@ -1,0 +1,113 @@
+{
+  "reviewed_on": "2026-10-27",
+  "article": "content/posts/ai/morphmimic/index.md",
+  "source": {
+    "project": "https://lzyang2000.github.io/morphmimic/",
+    "paper": "https://lzyang2000.github.io/morphmimic/static/morphmimic.pdf",
+    "paper_pages": 9,
+    "pdf_sha256": "b4259b6c9f569a477a65775b9fc264351ec3eb45212d13ec9eb391274f790467",
+    "pdf_metadata_created": "2026-10-25; not treated as a formal publication date",
+    "repository": "https://github.com/lzyang2000/morphmimic",
+    "commit": "aa40fe46a7fa995ba7a7354ad065a2c8ad64a302",
+    "files_sha256": {
+      "README.md": "28fc6fbf1d2773364bbb8b13821b1b28d34750d92194384174b57a7f6b57a67e",
+      "src/morphmimic/constants.py": "81aa1339e620a7a9bcf241db78025fc10e9126e83adbabf729dd1b35e501fc58",
+      "src/morphmimic/robots/spec.py": "96606c4c3bfc6bb57bcce2481519918319a959bd5352637083f431ea7e681e1a",
+      "src/morphmimic/robots/morphology.py": "30daba9a831bc7383f2627a0bd5e0923a33c0da26d96e4c607b5694dcd9bd3b4",
+      "src/morphmimic/model/policy.py": "6ad2d87651a320d5c7ab8a057eaa963323f1eff0c50505fd15c4c89cdef9875b",
+      "src/morphmimic/model/world_model.py": "fa529db818cdb942294285e80ce72526dc2067e2cc4c3feaedc656280c8915ed",
+      "src/morphmimic/model/keypoints.py": "364e6f5565fa643d546f05fb5471506c8436cd8739ecb50d849e6da7e52c3a31",
+      "src/morphmimic/model/rewards_torch.py": "1e8f84fb1310d2ec43325966ac6242beffdaf670fb1b0280e2fa9177edbdf7a2",
+      "src/morphmimic/train/distributed.py": "30423357374f3fb6e543a7ab227477df93f319ca031a8d3b5ba848b4850e97a7",
+      "src/morphmimic/train/trainer.py": "82519fcb992471eee910dcacf7f962a1e02174e4f7b32cd9d763105220993c67",
+      "deploy/run.py": "7b15639d1b8e0f4298ae57ae60a157448e5923982f2fb4b7ba08760a6243fa45"
+    },
+    "browser_demo_metadata": {
+      "url": "https://lzyang2000.github.io/morphmimic/demo/live/robots.json",
+      "run": "unified_v2",
+      "iteration": 76000,
+      "reported_policy_bytes": 55274363,
+      "reported_policy_sha256": "081af6210d0ba3a6b3f5773532957d27d25d46c1e0a86a5b1c5e74fb15d1b243",
+      "note": "Metadata fetched; 55MB policy was not downloaded or executed."
+    }
+  },
+  "coverage": [
+    "Canonical joint position versus delta transforms; native head joints stay outside policy",
+    "PD action scale and fixed-state proportional torque interpretation",
+    "125 morphology features versus 33 per-episode context features",
+    "Position-free targets, IMU attitude feedback, privileged critic translation inputs, drift limitation",
+    "240 world state, 268 local features and 472-input residual model",
+    "FiLM, shared encoder/decoder, detached cross-robot latent mean",
+    "Five-point SE(3) targets, masks, clean-reference training, frozen decoder and separate critic",
+    "Per-robot statistics and replay; averaged gradients before clipping",
+    "Table I six returns, survival, normalization denominator and common training-library intersection",
+    "Shared WM/Policy ablations and limits of component attribution",
+    "Single-G1 transfer, sensor-frame intervention, and trained-versus-unseen body distinction",
+    "40k paper versus 76k demo, GPU-hours, G1 hardware and teleoperation labels"
+  ],
+  "verified_numerical_record": "content/posts/ai/morphmimic/assets/contracts-results.json",
+  "illustration_provenance": "docs/image-generation/morphmimic-20261027.json",
+  "borrowed_figure": {
+    "asset": "content/posts/ai/morphmimic/assets/five-point-tracking.jpg",
+    "source": "https://lzyang2000.github.io/morphmimic/static/images/fig3.jpg",
+    "paper_figure": 3,
+    "sha256": "e3971a6a706f89d4c9e8e89070f6aff3bf08d5f359696ce8d1c27cb7c092e612"
+  },
+  "source_discrepancies": [
+    {
+      "item": "Hardware teleoperation interface",
+      "paper": "Section IV-E says five-point",
+      "project_page": "Current hardware teleoperation label says full-motion",
+      "treatment": "Explicitly disclosed in the article; no inferred interface-specific hardware claim."
+    },
+    {
+      "item": "Five-point survival prose",
+      "paper": "Section IV-D says specialist loses 67 clips on G1; Table I gives specialist full-motion 99.797% and five-point 99.849%, the opposite direction.",
+      "treatment": "Article explicitly identifies the Table I/prose direction mismatch and uses the table values."
+    },
+    {
+      "item": "Policy normalizer defaults",
+      "paper": "Robot-specific state, observation and goal normalization statistics.",
+      "pinned_code": "TrainCfg.pool_norms=True pools observation/goal/keypoint normalizers; state normalization remains local. ADDED_CFG_DEFAULTS treats older checkpoints without the field as False.",
+      "treatment": "Article Section 9.1 distinguishes the report configuration from current defaults and explains --no-pool-norms and checkpoint compatibility."
+    }
+  ],
+  "validation": {
+    "contracts_check": "passed",
+    "figure_generator_check": "passed",
+    "draft_layout_review": "passed: Hugo server -D, 24 layouts at 320/390/768/1440, three themes, 100/200% text, contrast, images, captions, formulas, focus and keyboard table scrolling",
+    "production_validation": {
+      "status": "passed",
+      "artifact": "/tmp/chase-round2-production-spacing-validation-20261027.json",
+      "warnings": 0
+    },
+    "draft_inventory_and_snippets": "passed: 94 records, strict math, Python and structured snippets",
+    "all_image_viewers": "passed: 1248 cases across 312 images, 64 articles and six image formats",
+    "source_tensor_contracts": {
+      "script": "scripts/check_morphmimic_source.py",
+      "result": "/tmp/chase-morphmimic-source-tensor-verified-20261027.json",
+      "status": "passed",
+      "details": {
+        "commit": "aa40fe46a7fa995ba7a7354ad065a2c8ad64a302",
+        "torch": "2.13.0+cu130",
+        "device": "cpu",
+        "translator_roundtrip_and_limits": true,
+        "tensor_dimensions": true,
+        "zero_film_equals_concatenation": true,
+        "frozen_decoder_passes_keypoint_gradients": true,
+        "local_alignment_loss": 0.05000000000000003,
+        "local_alignment_gradient": [
+          [
+            -0.40000000000000013,
+            0.2
+          ]
+        ],
+        "simulated_gather_pair_distance": 0.29814239699997197,
+        "current_pool_norms": true,
+        "legacy_pool_norms": false,
+        "limits": "Tiny random networks and mocked gather; no task registration, checkpoint, simulator, GPU or robot."
+      }
+    },
+    "normalization_default_note_preview": "passed in 24 live draft-server layouts including 200% text"
+  }
+}

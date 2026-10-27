@@ -136,7 +136,6 @@ params:
 
   imageZoom:
     enable: true
-    js: "vendor/medium-zoom/medium-zoom.min.js"
 
 markup:
   goldmark:

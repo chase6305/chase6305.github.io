@@ -1,7 +1,7 @@
 ---
 title: '无锁队列：SPSC 内存序、背压与机器人数据新鲜度'
 date: 2025-04-01
-lastmod: 2026-09-30
+lastmod: 2026-10-27
 draft: false
 tags: ["Lock-Free Queue", "Concurrency", "C++"]
 categories: ["编程开发"]
@@ -15,7 +15,7 @@ comments: false
 description: "区分线程安全、无锁与实时性，解释 SPSC 的 acquire/release 发布关系，再用离散事件实验比较积压、丢弃策略和机器人状态的数据年龄。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "线程、原子操作与生产者消费者模型"
-reading_focus: "确认单生产者单消费者前提，先验证顺序与收尾，再分析内存序和吞吐。"
+reading_focus: "先用四槽位推演核对满空与绕回，再检查发布内存序、线程收尾和数据新鲜度。"
 related_posts:
   - "/posts/cpp/smart-pointer"
   - "/posts/dialout/dh"
@@ -165,6 +165,23 @@ g++ -std=c++17 -O2 -Wall -Wextra -pthread spsc_queue.cpp -o spsc_queue
 ```
 
 预期输出 `Consumed 100000 values; sum = 4999950000`。示例用自旋加 `yield` 演示重试；真实应用应根据延迟、CPU 占用和丢帧策略设计等待方式。
+
+### 3.1 四个槽位，为什么只能放三条记录 {#ring-capacity}
+
+取 `Slots = 4`，用 `head` 标记下一条待读记录，`tail` 标记下一处可写位置。下面按单线程顺序手算边界；它用于核对索引规则，不模拟线程调度。
+
+| 操作后 | `head / tail` | 尚未取出的记录 |
+| --- | --- | --- |
+| 初始化 | `0 / 0` | 空 |
+| 依次写入 10、20、30 | `0 / 3` | 10、20、30 |
+| 尝试写入 40，返回 `false` | `0 / 3` | 10、20、30 |
+| 取出 10 | `1 / 3` | 20、30 |
+| 再次写入 40，成功 | `1 / 0` | 20、30、40 |
+| 依次取出 20、30、40 | `0 / 0` | 空 |
+
+第三行的候选下标是 `(3 + 1) % 4 = 0`，与 `head` 相等，因此判满；这次调用在检查处返回，索引与待读记录均不改变。第五行中 `tail` 绕回 0，但 `head` 为 1，队列仍然是满的。**下标变小不代表队列变空，只有 `head == tail` 才表示空。**
+
+`try_push` 返回 `false` 时没有接收这条记录，重试或丢弃由调用方决定；`try_pop` 返回 `false` 时也没有写入输出参数。不要把输出参数的旧值当成本次新读到的数据。最小配置 `Slots = 2` 的有效容量只有 1，适合强制测试“空 → 满 → 空”和频繁绕回。
 
 ## 4. 为什么需要 acquire/release
 

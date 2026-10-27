@@ -1,0 +1,179 @@
+{
+  "dimensions": {
+    "proprioception": 93,
+    "history": 930,
+    "full_goal": 670,
+    "five_point": 465,
+    "morphology": 125,
+    "decoder_input": 1087,
+    "world_model_input": 472
+  },
+  "canonical_example": {
+    "native": [
+      0.5,
+      -0.2,
+      0.9,
+      1.7
+    ],
+    "canonical": [
+      -0.8,
+      0.3,
+      -0.09999999999999998
+    ],
+    "restored": [
+      0.5,
+      -0.2,
+      0.9,
+      1.7
+    ]
+  },
+  "action_examples": [
+    {
+      "kp": 100,
+      "effort_limit": 50,
+      "sign": -1,
+      "default_radians": 0.2,
+      "action": 0.4,
+      "scale": 0.125,
+      "target_radians": 0.15,
+      "proportional_torque_change_nm": -5.0
+    },
+    {
+      "kp": 200,
+      "effort_limit": 80,
+      "sign": 1,
+      "default_radians": -0.1,
+      "action": 0.4,
+      "scale": 0.1,
+      "target_radians": -0.06,
+      "proportional_torque_change_nm": 8.0
+    }
+  ],
+  "alignment": {
+    "latents": [
+      [
+        0.2,
+        0.1
+      ],
+      [
+        0.6,
+        -0.1
+      ],
+      [
+        0.4,
+        0.0
+      ]
+    ],
+    "center": [
+      0.4000000000000001,
+      0.0
+    ],
+    "per_robot_losses": [
+      0.05000000000000003,
+      0.04999999999999996,
+      3.0814879110195774e-33
+    ],
+    "local_gradients_fixed_center": [
+      [
+        -0.40000000000000013,
+        0.2
+      ],
+      [
+        0.3999999999999998,
+        -0.2
+      ],
+      [
+        -1.1102230246251565e-16,
+        0.0
+      ]
+    ],
+    "finite_difference_max_error": 1.1502465646628934e-11
+  },
+  "time_seconds": {
+    "control_interval": 0.02,
+    "preview_first_to_last": 0.18,
+    "model_fitting": 0.16,
+    "imagination": 0.64
+  },
+  "early_termination_example": {
+    "clip_frames": 101,
+    "executed_transitions": 20,
+    "reward_per_transition": 0.09,
+    "maximum_reward_per_transition": 0.1,
+    "full_clip_normalized_return": 0.18,
+    "executed_step_average_fraction": 0.9
+  },
+  "reported_comparisons": [
+    {
+      "robot": "G1",
+      "interface": "full-motion",
+      "specialist_return": 0.9306,
+      "unified_return": 0.9358,
+      "return_difference": 0.0052,
+      "specialist_survival_percent": 99.797,
+      "unified_survival_percent": 99.747,
+      "survival_difference_pp": -0.05,
+      "within_tolerance": true
+    },
+    {
+      "robot": "X2 Ultra",
+      "interface": "full-motion",
+      "specialist_return": 0.9253,
+      "unified_return": 0.9304,
+      "return_difference": 0.0051,
+      "specialist_survival_percent": 99.818,
+      "unified_survival_percent": 99.891,
+      "survival_difference_pp": 0.073,
+      "within_tolerance": true
+    },
+    {
+      "robot": "T2",
+      "interface": "full-motion",
+      "specialist_return": 0.9448,
+      "unified_return": 0.9398,
+      "return_difference": -0.005,
+      "specialist_survival_percent": 99.86,
+      "unified_survival_percent": 99.886,
+      "survival_difference_pp": 0.026,
+      "within_tolerance": true
+    },
+    {
+      "robot": "G1",
+      "interface": "five-point",
+      "specialist_return": 0.8807,
+      "unified_return": 0.8626,
+      "return_difference": -0.0181,
+      "specialist_survival_percent": 99.849,
+      "unified_survival_percent": 99.729,
+      "survival_difference_pp": -0.12,
+      "within_tolerance": true
+    },
+    {
+      "robot": "X2 Ultra",
+      "interface": "five-point",
+      "specialist_return": 0.8689,
+      "unified_return": 0.8774,
+      "return_difference": 0.0085,
+      "specialist_survival_percent": 99.841,
+      "unified_survival_percent": 99.88,
+      "survival_difference_pp": 0.039,
+      "within_tolerance": true
+    },
+    {
+      "robot": "T2",
+      "interface": "five-point",
+      "specialist_return": 0.9014,
+      "unified_return": 0.889,
+      "return_difference": -0.0124,
+      "specialist_survival_percent": 99.857,
+      "unified_survival_percent": 99.852,
+      "survival_difference_pp": -0.005,
+      "within_tolerance": true
+    }
+  ],
+  "gpu_hours": {
+    "unified": 16.3,
+    "specialists_total": 13.9,
+    "relative_increase_percent": 17.266187050359715
+  }
+}

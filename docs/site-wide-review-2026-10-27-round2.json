@@ -1,0 +1,190 @@
+{
+  "started_at_utc": "2026-10-27T08:52:45Z",
+  "planned_until_utc": "2026-10-27T12:52:45Z",
+  "baseline_commit": "f43f02869b236c30a46bd13cb0f9b28251fdf44b",
+  "scope": "Second four-hour site-wide improvement requested by the user; preserve URLs, dates and draft states.",
+  "baseline_actions": {
+    "id": 40476149018,
+    "conclusion": "success"
+  },
+  "findings": [
+    {
+      "id": "slow-original-blocks-image-zoom",
+      "status": "fixed; controlled browser checks passed, full-site regression in progress",
+      "evidence": "Previous round live diagnostic: the 1,063,236-byte original WebP took 9.09 seconds to download; the viewer emitted open but no opened event while waiting, and deferred its transform and close handling."
+    },
+    {
+      "id": "spsc-boundary-explanation",
+      "status": "improved and verified",
+      "evidence": "Added a four-slot trace that distinguishes the reserved slot, wraparound, full/empty states and output preservation. Extracted source passes boundary checks plus 12 threaded runs across Slots=2,3,4,64."
+    },
+    {
+      "id": "code-focus-after-text-resize",
+      "status": "fixed and verified",
+      "evidence": "At 200% root text size, the first SuperMimic code block changed from fitting to horizontally overflowing while tabindex remained absent. ResizeObserver, disclosure toggles and font completion now schedule batched measurements. The existing asynchronous copy focus behavior passed without changing it."
+    },
+    {
+      "id": "code-inner-overflow-after-text-spacing",
+      "status": "fixed; all 1890 full-site reflow combinations passed",
+      "evidence": "The stronger full-site code focus check found 3 spacing combinations on CUDA Warp (768/1440) and Open3D (1440). A capped pre kept its outer dimensions while inner text overflow changed. Observing article layout changes now catches this; the 12-case code suite passed."
+    },
+    {
+      "id": "search-opening-frame-steals-focus",
+      "status": "fixed; delayed-frame regression, 12 search layouts and 165 accessibility layouts passed",
+      "evidence": "A controlled delayed requestAnimationFrame on open deterministically moved focus from an already chosen search result back to the input. Opening now focuses/selects synchronously; no deferred callback can reclaim focus.",
+      "before_artifact": "/tmp/chase-round2-search-frame-before-20261027.log"
+    }
+  ],
+  "rounds": [
+    {
+      "change": "Replace blocking image zoom with a progressive native dialog and keep native original links.",
+      "checked_at_utc": "2026-10-27T10:15:23Z",
+      "checks": {
+        "viewer_layouts": 15,
+        "full_accessibility_layouts": 165,
+        "delayed_original_escape": true,
+        "original_failure_retry": true,
+        "english_small_image_backdrop": true,
+        "unsupported_dialog_fallback": true,
+        "short_viewport_200_percent_text": true,
+        "printing_during_download": true,
+        "image_fixture_modes": 5,
+        "download_packagers": 8,
+        "impedance_regression": {
+          "samples": 251,
+          "invalid_api_cases": 20,
+          "invalid_csv_cases": 10,
+          "nonfinite_metric_cases": 18
+        }
+      },
+      "artifacts": [
+        "/tmp/chase-round2-viewer-extended-check-20261027/results.json",
+        "/tmp/chase-round2-accessibility-final-20261027/results.json",
+        "/tmp/chase-round2-image-fixtures-20261027.log",
+        "/tmp/chase-round2-download-audit-20261027.json",
+        "/tmp/chase-round2-impedance-20261027.log"
+      ]
+    },
+    {
+      "change": "Add a worked SPSC boundary trace and small-capacity concurrency coverage.",
+      "checks": {
+        "full_article_examples": "passed",
+        "loopback_tcp_udp": "passed",
+        "modbus": "passed",
+        "spsc_boundary_and_12_threaded_runs": "passed",
+        "toc_fixtures": "passed"
+      },
+      "environment": "Existing dedicated pin Conda environment; no package or system changes.",
+      "artifacts": [
+        "/tmp/chase-round2-examples-20261027.log",
+        "/tmp/chase-round2-toc-20261027.log"
+      ]
+    },
+    {
+      "change": "Full-site browser and extracted-example review.",
+      "checks": {
+        "contrast_layouts": 297,
+        "contrast_text_samples": 244944,
+        "print_layouts": 558,
+        "printed_text_samples": 446184,
+        "chapter_navigation_cases": 372,
+        "chapter_runtime_exceptions": 0,
+        "downloaded_experiments": "all four package groups passed"
+      },
+      "artifacts": [
+        "/tmp/chase-round2-readability-all-20261027/results.json",
+        "/tmp/chase-round2-print-all-20261027/results.json",
+        "/tmp/chase-round2-reading-all-20261027/results.json",
+        "/tmp/chase-round2-extracted-downloads-20261027.json"
+      ]
+    },
+    {
+      "change": "Extend image coverage, code resizing checks and add MorphMimic on user request.",
+      "checks": {
+        "reflow_layouts": 1872,
+        "reflow_failures": 0,
+        "all_article_image_viewer_cases": 1248,
+        "article_images": 312,
+        "articles_with_images": 64,
+        "image_formats": [
+          "gif",
+          "jpeg",
+          "jpg",
+          "png",
+          "svg",
+          "webp"
+        ],
+        "code_reading_layouts": 9,
+        "controlled_code_disclosure": true,
+        "keyboard_copy_and_pending_tab": true,
+        "morphmimic_draft_layouts": 24,
+        "morphmimic_keyboard_table_scroll": true
+      },
+      "artifacts": [
+        "/tmp/chase-round2-reflow-all-20261027/results.json",
+        "/tmp/chase-round2-all-image-viewers-20261027/results.json",
+        "/tmp/chase-round2-code-disclosure-verified-20261027/results.json",
+        "/tmp/chase-morphmimic-preview-check-20261027/results.json"
+      ]
+    },
+    {
+      "change": "Complete MorphMimic source fidelity checks and broaden code reflow validation.",
+      "checks": {
+        "code_reading_layouts": 12,
+        "code_controlled_disclosure": true,
+        "morphmimic_source_tensor_checks": "passed on CPU with tiny random networks and mocked cross-rank gather",
+        "standard_library_contracts_system_python": "passed",
+        "latest_production_validation": "passed: 94 inventory/91 published/573 blocks/475 acceptance checks/53 sharing images/186 published tags"
+      },
+      "artifacts": [
+        "/tmp/chase-round2-code-spacing-verified-20261027/results.json",
+        "/tmp/chase-morphmimic-source-tensor-verified-20261027.json",
+        "/tmp/chase-round2-production-spacing-validation-20261027.json"
+      ]
+    },
+    {
+      "change": "Complete reflow coverage and fix the search opening focus race.",
+      "checks": {
+        "reflow_layouts": 1890,
+        "reflow_failures": 0,
+        "blog_articles": 94,
+        "blog_failures": 0,
+        "search_layouts": 12,
+        "search_opening_frame_preserves_focus": true,
+        "morphmimic_search_and_fullwidth_query": true,
+        "accessibility_layouts": 165,
+        "production_discovery_articles": 91
+      },
+      "artifacts": [
+        "/tmp/chase-round2-verified-reflow-20261027/results.json",
+        "/tmp/chase-round2-verified-blog-20261027/results.json",
+        "/tmp/chase-round2-focus-search-20261027/results.json",
+        "/tmp/chase-round2-focus-accessibility-20261027/results.json",
+        "/tmp/chase-round2-focus-discovery-20261027/results.json"
+      ]
+    },
+    {
+      "change": "Final publication checks before initial upload.",
+      "checks": {
+        "print_layouts": 564,
+        "print_text_samples": 448686,
+        "contrast_layouts": 300,
+        "contrast_text_samples": 246441,
+        "print_disclosure_and_native_canvas_cases": 18,
+        "failures": 0,
+        "runtime_exceptions": 0
+      },
+      "artifacts": [
+        "/tmp/chase-round2-focus-print-20261027/results.json",
+        "/tmp/chase-round2-focus-readability-20261027/results.json",
+        "/tmp/chase-round2-final-validation-20261027.json",
+        "/tmp/chase-round2-final-assets-20261027.json"
+      ]
+    }
+  ],
+  "release": {
+    "production_directory": "/tmp/chase-round2-final-production-20261027",
+    "local_preview": "http://127.0.0.1:13175/",
+    "status": "local validation complete; committing and uploading"
+  }
+}

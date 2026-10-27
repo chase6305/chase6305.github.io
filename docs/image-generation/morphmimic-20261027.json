@@ -1,0 +1,20 @@
+{
+  "created_on": "2026-10-27",
+  "article": "content/posts/ai/morphmimic/index.md",
+  "tool": "built-in image_gen",
+  "asset": "content/posts/ai/morphmimic/assets/shared-architecture.webp",
+  "reference_images": [
+    "content/posts/ai/transformer-attention/assets/training-lifecycle.webp",
+    "content/posts/ai/transformer-attention/assets/transformer-block-overview.webp",
+    "content/posts/ai/transformer-attention/assets/training-vs-kv-cache-inference.webp"
+  ],
+  "prompt": "Use case: scientific-educational. Asset type: wide technical article architecture diagram for MorphMimic. Input reference images only provide visual style; do not copy their subject or labels. White background, thin rounded outlines, restrained pastel blue/purple/orange/green fills, crisp dark sans-serif text, ample spacing, clean straight arrows. Landscape about 3:2. Title: \"MorphMimic: shared weights, local robot data\".\nAccurate structure, with exactly two separate panels:\nLEFT panel header \"Training\". Three independent blue columns labelled \"G1\", \"X2 Ultra\", \"T2\". In EACH column include a small box labelled \"Simulator + replay\" and one labelled \"Local statistics\". Beneath the three columns one broad shared purple box labelled \"Shared world model\", with an input arrow from each replay column. A small orange box \"Morphology m\" connects only to the world model. Beneath that a green box \"32-step imagination\" with one downward arrow from the world model. Small caption inside panel \"Fit model, then improve policy\". Do not draw a direct connection from this training panel to robot actuation or claim the world model runs on hardware.\nRIGHT panel header \"Control\". Top-left blue box \"Full-motion targets\" feeds a purple box \"Shared encoder E\". Below it another blue box \"Five-point targets\" feeds a separate purple box \"Encoder E_kp\". The two encoder arrows converge to a small pale-purple box \"32-D command z\", with a short note \"Choose one interface\". This z feeds a larger green box \"Shared decoder D\". A separate orange box \"Morphology m\" feeds only decoder D, labelled \"FiLM + input\". A blue box \"IMU + joint history\" also feeds only decoder D. Decoder D points downward to an orange box \"Robot action map + PD\", which points to three small schematic humanoid icons labelled \"G1 / X2 Ultra / T2\". A bottom note in this panel \"Robot-specific normalizers and action constants\".\nUse a thin vertical divider separating Training from Control. Keep all arrows unambiguous; no arrows between two encoders; no arrows from world model to inference actions; do not put numerical evaluation results. Diagrams are conceptual; only use the exact short English labels above.",
+  "correction_prompt": "Edit this technical diagram with exactly two corrections and preserve everything else (all other labels, arrows, positions, colors, layout and white background): 1) In the blue 'Five-point targets' box on the right Control panel, the five blue target circles must be pelvis, left wrist, right wrist, left ankle, right ankle. Remove the blue target circle on the head completely, leave the head unmarked, and add that target circle at the central pelvis/hip joint between torso and legs. Keep the other four target circles on the wrists and ankles. There must be exactly five circles, no head target. 2) Correct the label in the purple encoder below 'Shared encoder E' from 'Encoder E,kp' to exactly 'Encoder E_kp' (plain underscore is fine). Change nothing else.",
+  "selected_output": "/home/ubuntu/.codex/generated_images/01a16246-f113-7133-b053-2b55e6769409/exec-7ec5e3bb-a689-4e58-b937-397332f8438b.png",
+  "review": [
+    "Corrected five target locations to pelvis, wrists and ankles; removed the head target.",
+    "Corrected encoder label to E_kp.",
+    "Verified encoder alternatives, decoder morphology/proprioception inputs, per-robot action constants, and training-only world model.",
+    "The figure omits critics, goal normalizers, gradient synchronization and the collection feedback loop, as described in its caption."
+  ]
+}

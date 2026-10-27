@@ -91,6 +91,49 @@ int main() {
 """
             run([compile_cpp(directory, "astar_random", extra)])
             results["astar_random_cases"] = 400
+    source = blocks("queue/index.md", "cpp")[0].split("int main()", 1)[0]
+    source += r"""
+template <std::size_t Slots>
+void stress_spsc() {
+    SpscQueue<int, Slots> queue;
+    constexpr int count = 20000;
+    std::thread producer([&] {
+        for (int i = 0; i < count; ++i) {
+            while (!queue.try_push(i)) std::this_thread::yield();
+            if (i % 17 == 0) std::this_thread::yield();
+        }
+    });
+    std::thread consumer([&] {
+        for (int i = 0; i < count; ++i) {
+            int value = -1;
+            while (!queue.try_pop(value)) std::this_thread::yield();
+            assert(value == i);
+            if (i % 31 == 0) std::this_thread::yield();
+        }
+    });
+    producer.join(); consumer.join();
+    int untouched = -7;
+    assert(!queue.try_pop(untouched) && untouched == -7);
+}
+int main() {
+    SpscQueue<int, 4> queue;
+    int value = -7;
+    assert(!queue.try_pop(value) && value == -7);
+    for (int item : {10, 20, 30}) assert(queue.try_push(item));
+    assert(!queue.try_push(40));
+    assert(queue.try_pop(value) && value == 10);
+    assert(queue.try_push(40));
+    for (int expected : {20, 30, 40}) {
+        assert(queue.try_pop(value) && value == expected);
+    }
+    assert(!queue.try_pop(value) && value == 40);
+    for (int trial = 0; trial < 3; ++trial) {
+        stress_spsc<2>(); stress_spsc<3>(); stress_spsc<4>(); stress_spsc<64>();
+    }
+    std::cout << "capacity/wraparound/output preservation and 12 threaded runs passed";
+}
+"""
+    results["spsc_small_capacity"] = run([compile_cpp(directory, "spsc_boundaries", source)])
     std_programs = [code for code in blocks("cpp/std/index.md", "cpp")
                     if "int main(" in code]
     for index, source in enumerate(std_programs):

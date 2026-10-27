@@ -66,6 +66,7 @@ jobs:
           node scripts/test_llm_budget.cjs
           node scripts/test_rrsi_selection_lab.cjs
           node scripts/test_v2d_height_lab.cjs
+          python3 -B content/posts/ai/morphmimic/morphmimic_contracts.py --check
           python3 -B scripts/test_blog_toc.py
           python3 -B scripts/test_blog_images.py
           python3 -B scripts/test_site_assets.py --public public

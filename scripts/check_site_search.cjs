@@ -30,13 +30,16 @@ const output = process.argv[4] || '/tmp/chase-site-search';
     await browser.navigate(base + '/posts/');
     const savedTheme = await browser.evaluate(`localStorage.getItem('color-theme')`);
     const api = await browser.evaluate(`(async()=>{
-      const result={};for(const query of ['C++','A*','Cosmos','Ｃｏｓｍｏｓ','四元数','关节','C++ zzxxyy','不存在的随机词zzxxyy','+++'])result[query]=await window.hextraSearch.search(query);
+      const result={};for(const query of ['C++','A*','Cosmos','Ｃｏｓｍｏｓ','MorphMimic','ＭｏｒｐｈＭｉｍｉｃ','形态 描述','四元数','关节','C++ zzxxyy','不存在的随机词zzxxyy','+++'])result[query]=await window.hextraSearch.search(query);
       return result;
     })()`);
     assert(api['C++'].length && api['C++'].slice(0, 3).every(g => g.title.includes('C++')));
     assert(api['A*'].length >= 2 && api['A*'].slice(0, 2).every(g => g.title.includes('A*')));
     assert(!api['A*'].some(g => g.title.includes('Adam') || g.route.includes('distributed-training-memory')));
     assert.deepEqual(api.Cosmos.map(g => g.route), api['Ｃｏｓｍｏｓ'].map(g => g.route));
+    assert.equal(api.MorphMimic[0].route, '/posts/ai/morphmimic/');
+    assert.deepEqual(api.MorphMimic.map(g => g.route), api['ＭｏｒｐｈＭｉｍｉｃ'].map(g => g.route));
+    assert(api['形态 描述'].some(g => g.route === '/posts/ai/morphmimic/'));
     assert(api['四元数'][0].matches.some(m => m.title.includes('四元数')));
     assert(api['关节'][0].title.includes('关节'));
     for (const text of ['C++ zzxxyy', '不存在的随机词zzxxyy', '+++']) assert.deepEqual(api[text], []);
@@ -45,6 +48,20 @@ const output = process.argv[4] || '/tmp/chase-site-search';
     }
     report.querySemantics = 'technical punctuation, NFKC, CJK, all terms and title/chapter ranking passed';
     report.queries = Object.fromEntries(Object.entries(api).map(([q, groups]) => [q, groups.slice(0, 3).map(g => g.route)]));
+
+    // An opening-frame callback must not reclaim focus after a result is chosen.
+    await browser.evaluate(`(()=>{
+      const frame=requestAnimationFrame;window.__heldSearchFrame=null;
+      window.requestAnimationFrame=callback=>{window.__heldSearchFrame=callback;return 0};
+      document.querySelector('[data-search-open]').click();window.requestAnimationFrame=frame;
+    })()`);
+    await query('MorphMimic');
+    await browser.evaluate(`window.__chosenSearchResult=document.querySelector('#hextra-search-results a[role=option]');window.__chosenSearchResult.focus()`);
+    assert(await browser.evaluate('document.activeElement===window.__chosenSearchResult'));
+    await browser.evaluate('window.__heldSearchFrame?.(performance.now())');
+    assert(await browser.evaluate('document.activeElement===window.__chosenSearchResult'), 'Opening frame stole result focus');
+    report.openingFramePreservesFocus=true;
+    await browser.key('Escape','Escape',27);await wait(`!document.getElementById('hextra-search-dialog').open`);
 
     for (const width of [320, 390, 768, 1440]) for (const theme of ['light', 'dark', 'warm']) {
       await browser.viewport(width);

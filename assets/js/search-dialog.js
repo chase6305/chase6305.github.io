@@ -148,12 +148,10 @@
     if (dialog.open) return;
     dialog.showModal();
     input.setAttribute('aria-expanded', 'true');
-    // showModal autofocuses the first focusable element, but be explicit.
-    // Select existing query so typing immediately replaces it.
-    requestAnimationFrame(() => {
-      input.focus();
-      input.select();
-    });
+    // Focus in this activation; a later frame can steal focus from a result.
+    // Select the existing query so typing immediately replaces it.
+    input.focus();
+    input.select();
     if (window.hextraSearch) window.hextraSearch.preload().catch(() => {});
   }
 

@@ -50,10 +50,11 @@ styles['text-200-spacing'] = styles['text-200'] + styles.spacing;
           return {viewport,scrollWidth:document.documentElement.scrollWidth,nav:bounds(nav),
             offset:parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hextra-navbar-height')),
             controls,overflow:document.documentElement.scrollWidth>viewport+1,
-            tableFocusIssues:[...document.querySelectorAll('.content table')].filter(t=>t.clientWidth>0&&t.scrollWidth>t.clientWidth+1&&t.tabIndex!==0).length};
+            tableFocusIssues:[...document.querySelectorAll('.content table')].filter(t=>t.clientWidth>0&&t.scrollWidth>t.clientWidth+1&&t.tabIndex!==0).length,
+            codeFocusIssues:[...document.querySelectorAll('.hextra-code-block pre,.highlight pre')].filter(p=>p.clientWidth>0&&(p.scrollWidth>p.clientWidth+1||p.scrollHeight>p.clientHeight+1)&&p.tabIndex!==0).length};
         })()`);
         const passed = !state.overflow && state.controls.every(c => c.left >= -1 && c.right <= state.viewport + 1 && c.width >= 39.5 && c.height >= 39.5)
-          && (!scripts || (Math.abs(state.nav.height - state.offset) <= 1 && state.tableFocusIssues === 0));
+          && (!scripts || (Math.abs(state.nav.height - state.offset) <= 1 && state.tableFocusIssues === 0 && state.codeFocusIssues === 0));
         report.layouts.push({route, width, scripts, mode, passed, ...state});
         if (route === '/' && width === 320 && scripts && mode === 'text-200') await browser.screenshot(path.join(output, 'home-text-200.png'));
       }

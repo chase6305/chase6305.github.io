@@ -73,19 +73,27 @@ def main():
         assert (ROOT / 'themes/hextra' / override['upstream']).is_file(), override
 
     checked = set()
+    viewer_scripts = set()
     for html in public.rglob('index.html'):
         for href, integrity in Assets(html.read_text()).links:
             parts = urlsplit(href)
             assert not parts.scheme and not parts.netloc, f'External script/style: {html}: {href}'
             target = public / unquote(parts.path).lstrip('/')
             assert target.is_file(), f'Missing script/style: {html}: {href}'
+            assert 'medium-zoom' not in href, f'Retired image dependency is still loaded: {href}'
+            if '/js/image-viewer' in href:
+                assert integrity, 'Image viewer must have integrity metadata'
+                viewer_scripts.add(href)
             if integrity and (href, integrity) not in checked:
                 for token in integrity.split():
                     algorithm, expected = token.split('-', 1)
                     actual = base64.b64encode(hashlib.new(algorithm, target.read_bytes()).digest()).decode()
                     assert actual == expected, f'Invalid integrity: {href}'
                 checked.add((href, integrity))
+    assert len(viewer_scripts) == 1, 'Expected one shared native image-viewer asset'
     print(json.dumps({'pinned_packages': len(manifest), 'pinned_files': pinned_files,
+                      'active_pinned_packages': sum(item.get('runtime', True) for item in manifest),
+                      'native_image_viewers': len(viewer_scripts),
                       'theme_overrides': len(overrides['overrides']),
                       'local_math_fonts': len(font_paths), 'verified_integrity_assets': len(checked)}, indent=2))
 

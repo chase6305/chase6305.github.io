@@ -27,7 +27,8 @@
         "Clear stale options while a query is pending and reject stale completions",
         "Normalize query highlighting and bound input length",
         "Deactivate stale options immediately when the input is cleared",
-        "Highlight each normalized query term independently"
+        "Highlight each normalized query term independently",
+        "Focus and select synchronously on open so a deferred frame cannot steal result focus"
       ]
     },
     {
@@ -43,6 +44,22 @@
       "changes": [
         "Include the shared canonical blog and learning path in both language search indexes",
         "Retain language-specific pages, exclusion rules and glossary handling"
+      ]
+    },
+    {
+      "upstream": "assets/js/core/code-copy.js",
+      "local": "assets/js/core/code-copy.js",
+      "changes": [
+        "Recheck code overflow after font loading, text sizing and disclosure changes with batched measurements",
+        "Keep the existing exact-copy and manual-selection fallback behavior"
+      ]
+    },
+    {
+      "upstream": "layouts/_partials/scripts/medium-zoom.html",
+      "local": "layouts/_partials/scripts/medium-zoom.html",
+      "changes": [
+        "Use the existing theme hook to load a repository-owned progressive native image viewer",
+        "Retain the archived vendor source and license without loading Medium Zoom at runtime"
       ]
     }
   ],

@@ -172,7 +172,7 @@ let browserSocket;
   await screenshot("mobile-illustration");
   await evaluate("document.querySelector('.content img').click()");
   await sleep(400);
-  const zoom = await evaluate("!!document.querySelector('.medium-zoom-image--opened')");
+  const zoom = await evaluate("!!document.querySelector('[data-image-viewer][open]')");
   await cdp("Input.dispatchKeyEvent", {type:"keyDown", key:"Escape", code:"Escape", windowsVirtualKeyCode:27});
   await cdp("Input.dispatchKeyEvent", {type:"keyUp", key:"Escape", code:"Escape", windowsVirtualKeyCode:27});
   await sleep(400);

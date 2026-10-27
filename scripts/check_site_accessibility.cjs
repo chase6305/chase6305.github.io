@@ -216,28 +216,29 @@ async function main() {
     assert((await evaluate("window.hextraSearch.search('逆运动学')")).length > 0);
     await evaluate("document.querySelector('.article-figure img').scrollIntoView({block:'center'});document.querySelector('.article-figure img').click()");
     await delay(450);
-    assert(await evaluate("!!document.querySelector('.medium-zoom-image--opened')"));
+    assert(await evaluate("!!document.querySelector('[data-image-viewer][open]')"));
     await key('Escape', 'Escape', 27);
     await delay(400);
     await evaluate("document.querySelector('.post-image-link').focus()");
     await key('Enter', 'Enter', 13);
     await delay(450);
-    assert(await evaluate("!!document.querySelector('.medium-zoom-image--opened')"));
+    assert(await evaluate("!!document.querySelector('[data-image-viewer][open]')"));
     await key('Escape', 'Escape', 27);
     await delay(400);
-    assert(await evaluate("!document.querySelector('.medium-zoom-image--opened') && document.activeElement.classList.contains('post-image-link')"));
+    assert(await evaluate("!document.querySelector('[data-image-viewer][open]') && document.activeElement.classList.contains('post-image-link')"));
     await key('Enter', 'Enter', 13);
     await delay(450);
     await key('Tab', 'Tab', 9);
-    await delay(400);
-    assert(await evaluate("!document.querySelector('.medium-zoom-image--opened') && document.activeElement.classList.contains('post-image-link')"));
+    assert(await evaluate("document.querySelector('[data-image-viewer][open]').contains(document.activeElement)"));
+    await key('Escape', 'Escape', 27);
+    assert(await evaluate("!document.querySelector('[data-image-viewer][open]') && document.activeElement.classList.contains('post-image-link')"));
     await cdp('Emulation.setEmulatedMedia', {features: [{name: 'prefers-reduced-motion', value: 'reduce'}]});
     await key('Enter', 'Enter', 13);
     await delay(150);
-    assert(await evaluate("!!document.querySelector('.medium-zoom-image--opened')"));
+    assert(await evaluate("!!document.querySelector('[data-image-viewer][open]')"));
     await key('Escape', 'Escape', 27);
     await delay(150);
-    assert(await evaluate("!document.querySelector('.medium-zoom-image--opened')"));
+    assert(await evaluate("!document.querySelector('[data-image-viewer][open]')"));
     // A compressed responsive candidate should not replace the original when
     // the reader explicitly opens a dense diagram at full resolution.
     await navigate('/posts/ai/vla-world-model-data/');
@@ -245,8 +246,6 @@ async function main() {
       const image=[...document.querySelectorAll('.post-image-link img')].find(i=>new URL(i.src).pathname.endsWith('.png'));
       image.loading='eager';await image.decode();image.scrollIntoView({block:'center'});
       image.closest('a').focus();
-      window.__originalResolutionOpened=false;
-      image.addEventListener('medium-zoom:opened',()=>{window.__originalResolutionOpened=true},{once:true});
       return {original:image.src,normalSource:image.currentSrc,explicitSource:new URL(image.dataset.zoomSrc,location.href).href};
     })()`);
     assert.equal(zoomSource.explicitSource, zoomSource.original);
@@ -255,7 +254,7 @@ async function main() {
     await key('Enter', 'Enter', 13);
     let originalOpened = false;
     for (let attempt=0;attempt<100;attempt++) {
-      originalOpened=await evaluate(`window.__originalResolutionOpened && [...document.querySelectorAll('.medium-zoom-image--opened')].some(i=>!i.hasAttribute('srcset')&&i.currentSrc===${JSON.stringify(zoomSource.original)}&&i.complete&&i.naturalWidth>0)`);
+      originalOpened=await evaluate(`document.querySelector('[data-image-viewer][open]')?.dataset.state==='ready' && document.querySelector('[data-image-viewer] img')?.currentSrc===${JSON.stringify(zoomSource.original)}`);
       if(originalOpened)break;
       await delay(50);
     }
@@ -263,7 +262,7 @@ async function main() {
     await key('Escape', 'Escape', 27);
     let zoomRestored = false;
     for (let attempt=0;attempt<40;attempt++) {
-      zoomRestored=await evaluate("!document.querySelector('.medium-zoom-image--opened') && document.activeElement.classList.contains('post-image-link')");
+      zoomRestored=await evaluate("!document.querySelector('[data-image-viewer][open]') && document.activeElement.classList.contains('post-image-link')");
       if(zoomRestored)break;
       await delay(50);
     }

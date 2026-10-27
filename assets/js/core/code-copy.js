@@ -25,26 +25,34 @@ document.addEventListener('DOMContentLoaded', function () {
     return svg;
   }
 
-  // Make scrollable code blocks focusable for keyboard users.
+  // Recheck after text zoom, font loading and opening collapsed examples.
+  const codeBlocks = [...document.querySelectorAll('.hextra-code-block pre, .highlight pre')];
   const updateScrollableCodeBlocks = () => {
-    document.querySelectorAll('.hextra-code-block pre, .highlight pre').forEach(function (pre) {
-      if (pre.scrollWidth > pre.clientWidth || pre.scrollHeight > pre.clientHeight) {
-        pre.setAttribute('tabindex', '0');
-      } else {
-        pre.removeAttribute('tabindex');
-      }
+    const measurements = codeBlocks.map(pre => ({
+      pre, overflowing: pre.clientWidth > 0 &&
+        (pre.scrollWidth > pre.clientWidth || pre.scrollHeight > pre.clientHeight)
+    }));
+    measurements.forEach(({pre, overflowing}) => {
+      if (overflowing && pre.tabIndex !== 0) pre.setAttribute('tabindex', '0');
+      else if (!overflowing && pre.hasAttribute('tabindex')) pre.removeAttribute('tabindex');
     });
   };
-
-  updateScrollableCodeBlocks();
-
   let resizeRaf;
-  window.addEventListener('resize', () => {
-    if (resizeRaf) {
-      cancelAnimationFrame(resizeRaf);
-    }
+  const scheduleCodeCheck = () => {
+    cancelAnimationFrame(resizeRaf);
     resizeRaf = requestAnimationFrame(updateScrollableCodeBlocks);
-  });
+  };
+  updateScrollableCodeBlocks();
+  window.addEventListener('resize', scheduleCodeCheck);
+  document.addEventListener('toggle', scheduleCodeCheck, true);
+  document.fonts?.ready.then(scheduleCodeCheck);
+  if (typeof ResizeObserver !== 'undefined') {
+    const observer = new ResizeObserver(scheduleCodeCheck);
+    codeBlocks.forEach(pre => observer.observe(pre));
+    // User text spacing can change inner overflow while a capped pre keeps its size.
+    const content = document.querySelector('.content');
+    if (content) observer.observe(content);
+  }
 
   document.querySelectorAll('.hextra-code-copy-btn').forEach(function (button) {
     // Add copy and success icons

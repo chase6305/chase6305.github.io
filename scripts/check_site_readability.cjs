@@ -114,21 +114,14 @@ const captureOnly = process.argv.includes('--capture-only');
       const image=document.querySelector('.post-image-link img');
       image.loading='eager';await image.decode();await document.fonts.ready;
       image.scrollIntoView({block:'center'});
-      window.__printZoomOpened=false;
-      image.addEventListener('medium-zoom:opened',()=>{window.__printZoomOpened=true},{once:true});
     })()`);
     await browser.evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
     await browser.evaluate(`const link=document.querySelector('.post-image-link');link.focus({preventScroll:true});link.click()`);
-    // An original diagram can be much larger than its responsive preview.
-    for (let attempt=0;attempt<600;attempt++) {
-      if(await browser.evaluate('window.__printZoomOpened'))break;
-      await browser.pause(50);
-    }
-    assert(await browser.evaluate('window.__printZoomOpened'));
+    assert(await browser.evaluate(`document.querySelector('[data-image-viewer]').open`));
     await browser.cdp('Emulation.setEmulatedMedia', {media: 'print'});
     const zoomPrint = await browser.evaluate(`({
       originalVisible:getComputedStyle(document.querySelector('.post-image-link img')).visibility==='visible',
-      overlayHidden:[...document.querySelectorAll('.medium-zoom-overlay,.medium-zoom-image--opened')].every(e=>getComputedStyle(e).visibility==='hidden'&&getComputedStyle(e).position==='fixed')
+      overlayHidden:getComputedStyle(document.querySelector('[data-image-viewer]')).display==='none'
     })`);
     assert(zoomPrint.originalVisible && zoomPrint.overlayHidden);
     const zoomPDF=await browser.cdp('Page.printToPDF', {printBackground:true,paperWidth:8.27,paperHeight:11.69,
@@ -140,13 +133,12 @@ const captureOnly = process.argv.includes('--capture-only');
     await browser.key('Escape', 'Escape', 27);
     let zoomRestored=false;
     for (let attempt=0;attempt<40;attempt++) {
-      zoomRestored=await browser.evaluate(`!document.querySelector('.medium-zoom-image--opened') && document.activeElement.classList.contains('post-image-link')`);
+      zoomRestored=await browser.evaluate(`!document.querySelector('[data-image-viewer][open]') && document.activeElement.classList.contains('post-image-link')`);
       if(zoomRestored)break;
       await browser.pause(50);
     }
     report.zoomAfterPrint=await browser.evaluate(`({
-      clones:document.querySelectorAll('.medium-zoom-image--opened').length,
-      overlays:document.querySelectorAll('.medium-zoom-overlay').length,
+      openViewers:document.querySelectorAll('[data-image-viewer][open]').length,
       activeElement:document.activeElement.outerHTML.slice(0,300)
     })`);
     assert(zoomRestored,JSON.stringify(report.zoomAfterPrint));

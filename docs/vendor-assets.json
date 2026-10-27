@@ -143,6 +143,8 @@
         "path": "static/licenses/medium-zoom.txt",
         "sha256": "166ba718b70c6278cce9c9758396e25e35c7f1a940d39b2c8eeaceed18cc03fb"
       }
-    ]
+    ],
+    "runtime": false,
+    "usage": "Archived with its original version, hashes and license for earlier site revisions. The current native image viewer does not load this dependency."
   }
 ]
