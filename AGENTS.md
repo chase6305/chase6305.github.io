@@ -10,7 +10,9 @@ This repository is a Hugo site currently using the Hextra theme, as configured i
 - `hugo server -D` starts a local preview and includes draft posts.
 - `hugo --minify` performs the production build used by GitHub Actions.
 - `hugo --minify --baseURL "http://localhost/"` is useful for checking production-style output locally.
-- `./deploy.sh` builds and pushes `public/` to `gh-pages`; use it only when intentionally performing a manual deployment. Normal pushes to `main` trigger GitHub Actions.
+- `./deploy.sh ["commit message"]` builds and validates a fresh temporary production directory, then updates `gh-pages` without force-pushing. It leaves local `public/` untouched. Use it only when intentionally performing a manual deployment; normal pushes to `main` trigger GitHub Actions. `HUGO_BIN` selects a Hugo executable and `DEPLOY_REMOTE` can override the source repository's origin.
+
+For manual deployment behavior, run `python3 -B scripts/test_deploy.py`. It uses disposable source fixtures and local bare Git remotes to check fresh output, branch history, unchanged builds, ignored assets and failure propagation; it does not deploy to GitHub.
 
 Treat a clean Hugo production build as the minimum validation for every change, and inspect changed pages in the local server. `scripts/validate_blog.py` checks site output and snippet syntax; `scripts/test_blog_filter.cjs` checks article filtering. Topic-specific example checks live in `scripts/test_blog_*.py` and article bundles. Run the checks relevant to changed code; optional robotics and ML dependencies should be installed in a separate environment. Browser checks use an existing loopback Chrome CDP endpoint and should run serially because keyboard focus is shared.
 

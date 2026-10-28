@@ -122,6 +122,14 @@
       "evidence": "All three looping GIFs remain animated in native pages under reduce, including without scripts; the image viewer also loads the GIF.",
       "after": "/tmp/chase-sixhour-image-motion-ready-browser-20261028/results.json",
       "scope": "Native static picture selection for reduce/print; retain original GIF URLs, pixels and metadata. Viewer handles live preference changes without focus changes or stale completion."
+    },
+    {
+      "id": "manual-deployment-reuses-stale-output-and-masks-push-failure",
+      "status": "fixed; 11 isolated regressions and full Hugo/local-remote exercise passed",
+      "before": "/tmp/chase-sixhour-manual-deploy-before-20261028.json",
+      "evidence": "A local bare-remote reproduction publishes cached old-draft.html; a rejecting pre-receive hook still yields exit0 and a completed message.",
+      "after": "/tmp/chase-sixhour-manual-deploy-final-tests-20261028.log",
+      "real_exercise": "/tmp/chase-sixhour-manual-deploy-real-20261028.json"
     }
   ],
   "checks": [
@@ -663,6 +671,61 @@
       "artifact": "/tmp/chase-sixhour-final-code-reading-20261028/results.json",
       "layouts": 12,
       "pending_focus_and_disclosure": true
+    },
+    {
+      "name": "final image-wrapper reflow and article print",
+      "status": "passed",
+      "artifacts": [
+        "/tmp/chase-sixhour-image-motion-final-reflow-20261028/results.json",
+        "/tmp/chase-sixhour-image-motion-final-print-20261028/results.json"
+      ],
+      "reflow_layouts": 1890,
+      "print_layouts": 564,
+      "print_text_samples": 451818
+    },
+    {
+      "name": "post-motion interactive semantics and navigation",
+      "status": "passed",
+      "artifacts": [
+        "/tmp/chase-sixhour-image-motion-interactive-20261028/results.json",
+        "/tmp/chase-sixhour-image-motion-semantics-manual-20261028.json",
+        "/tmp/chase-sixhour-image-motion-accessibility-20261028/results.json"
+      ],
+      "interactive_cases": 63,
+      "manual_closed_popup_nodes": 287,
+      "navigation_cases": 165
+    },
+    {
+      "name": "Open3D complete numeric scripts at article baseline",
+      "status": "passed",
+      "artifacts": [
+        "/tmp/chase-sixhour-open3d-pipeline-20261028.log",
+        "/tmp/chase-sixhour-open3d-icp-verification-20261028.log",
+        "/tmp/chase-sixhour-open3d-icp-observability-20261028.log",
+        "/tmp/chase-sixhour-open3d-colored-icp-20261028.log",
+        "/tmp/chase-sixhour-open3d-voxel-centroid-20261028.log",
+        "/tmp/chase-sixhour-open3d-preservation-20261028.json"
+      ],
+      "environment": "Existing coacd environment, Open3D0.19.0/NumPy2.2.6, read-only with CPU thread limits",
+      "plots_inspected": 2,
+      "published_reports_match": 2
+    },
+    {
+      "name": "manual deployment build, history and failure regressions",
+      "status": "passed",
+      "artifacts": [
+        "/tmp/chase-sixhour-manual-deploy-final-tests-20261028.log",
+        "/tmp/chase-sixhour-manual-deploy-final-py313-tests-20261028.log",
+        "/tmp/chase-sixhour-manual-deploy-real-20261028.json"
+      ],
+      "test_methods": 11,
+      "python_versions": [
+        "3.10",
+        "3.13"
+      ],
+      "local_protocol_only": true,
+      "real_site_files_byte_identical": 2080,
+      "github_manual_deployment_performed": false
     }
   ],
   "releases": [
@@ -809,6 +872,20 @@
       "pyside6": "6.8.3; offscreen, no native display coverage",
       "meshcat": "0.3.2; recording sink, no network server",
       "ui_venv": "/tmp/chase-sixhour-ui-examples-venv-20261028"
+    },
+    "open3d": {
+      "version": "0.19.0",
+      "numpy": "2.2.6",
+      "scripts": 5,
+      "published_reports_match": 2,
+      "pipeline_points": [
+        656,
+        654,
+        191,
+        188
+      ],
+      "plots_inspected": 2,
+      "limit": "Synthetic CPU data, no sensor benchmark, GUI, robot or downloads."
     }
   },
   "external_reference_audit": {
@@ -849,6 +926,13 @@
       "doi_titles_match": 4,
       "remaining_access_inconclusive": 10,
       "limit": "DOI registration and matching titles establish citation identity, not full-text accessibility."
+    },
+    "final_delta": {
+      "artifact": "/tmp/chase-sixhour-final-reference-delta-20261028.json",
+      "current_unique_urls": 811,
+      "new_urls": 1,
+      "added_reference_check": "/tmp/chase-sixhour-final-reference-added-20261028.json",
+      "removed_original_urls": 0
     }
   },
   "phase4": {
@@ -1096,7 +1180,7 @@
     "live_failures": 0
   },
   "phase12": {
-    "status": "all local checks passed; preparing release",
+    "status": "deployed and verified",
     "production": "/tmp/chase-sixhour-image-motion-ready-production-20261028",
     "validation": "/tmp/chase-sixhour-image-motion-ready-validation-20261028.json",
     "assets": "/tmp/chase-sixhour-image-motion-ready-assets-20261028.json",
@@ -1110,6 +1194,33 @@
     "limit": "Browser behavior verified with the dedicated local Chromium endpoint; no cross-browser claim.",
     "static_modal_semantics": "/tmp/chase-sixhour-image-motion-semantics-20261028.json",
     "navigation_print": "/tmp/chase-sixhour-image-motion-navigation-print-20261028/results.json",
-    "code_reading": "/tmp/chase-sixhour-final-code-reading-20261028/results.json"
+    "code_reading": "/tmp/chase-sixhour-final-code-reading-20261028/results.json",
+    "deployment": {
+      "id": 40650744091,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "da46454c506695b1b91140a5d0fd46622f983474",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40650744091",
+      "updated_at": "2026-10-28T07:36:31Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-da46454c5066-20261028.json",
+      "verified_at_utc": "2026-10-28T07:40:26.599713+00:00"
+    },
+    "live_urls": 365,
+    "live_failures": 0
+  },
+  "phase13": {
+    "status": "all local checks passed; preparing release",
+    "production": "/tmp/chase-sixhour-manual-deploy-production-20261028",
+    "validation": "/tmp/chase-sixhour-manual-deploy-validation-20261028.json",
+    "assets": "/tmp/chase-sixhour-manual-deploy-assets-20261028.json",
+    "scope": "Fresh private build and temporary gh-pages checkout, validated before remote access, fast-forward publication, strict failure exits; existing public/ untouched.",
+    "workflow_change": "Run eleven stdlib/local-Git deployment regressions in the existing validation step.",
+    "tests": "/tmp/chase-sixhour-manual-deploy-final-tests-20261028.log",
+    "py313_tests": "/tmp/chase-sixhour-manual-deploy-final-py313-tests-20261028.log",
+    "real_exercise": "/tmp/chase-sixhour-manual-deploy-real-20261028.json",
+    "manual_github_push": false
   }
 }
