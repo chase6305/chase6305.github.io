@@ -47,12 +47,17 @@
 {{- $width := 0 -}}
 {{- $height := 0 -}}
 {{- $intrinsicWidth := 0 -}}
+{{- $still := "" -}}
 {{- $srcset := slice -}}
 {{- if and $resource (eq $resource.ResourceType "image") -}}
   {{- if in (slice "jpeg" "png" "webp" "gif") $resource.MediaType.SubType -}}
     {{- $width = $resource.Width -}}
     {{- $height = $resource.Height -}}
     {{- $dimensions = printf "width=%q height=%q" (string $resource.Width) (string $resource.Height) -}}
+    {{- if eq $resource.MediaType.SubType "gif" -}}
+      {{- $poster := $resource.Process "png" -}}
+      {{- $still = $poster.RelPermalink -}}
+    {{- end -}}
     {{- if in (slice "jpeg" "png" "webp") $resource.MediaType.SubType -}}
       {{- range slice 480 960 1440 -}}
         {{- if lt . $resource.Width -}}
@@ -154,12 +159,14 @@
 {{- with .Title -}}
   <figure>
     {{ if $enableImageZoom }}<a class="post-image-link" href="{{ $dest | safeURL }}" target="_blank" rel="noopener" aria-label="{{ $zoomLabel }}：{{ $alt }}"{{ with $linkStyle }} style="{{ . | safeCSS }}"{{ end }}>{{ end }}
-    <img src="{{ $dest | safeURL }}" title="{{ . }}" alt="{{ $alt }}" {{ $dimensions | safeHTMLAttr }} {{ $attributes | safeHTMLAttr }} decoding="async"{{ if gt (len $srcset) 1 }} srcset="{{ delimit $srcset ", " | safeHTMLAttr }}" sizes="{{ $sizes }}"{{ end }}{{ if $enableImageZoom }} data-zoomable{{ if gt (len $srcset) 1 }} data-zoom-src="{{ $dest | safeURL }}"{{ end }}{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }} />
+    {{ if $still }}<picture><source media="print, (prefers-reduced-motion: reduce)" srcset="{{ $still }}">{{ end }}
+    <img src="{{ $dest | safeURL }}" title="{{ . }}" alt="{{ $alt }}" {{ $dimensions | safeHTMLAttr }} {{ $attributes | safeHTMLAttr }} decoding="async"{{ if gt (len $srcset) 1 }} srcset="{{ delimit $srcset ", " | safeHTMLAttr }}" sizes="{{ $sizes }}"{{ end }}{{ if $enableImageZoom }} data-zoomable{{ with $still }} data-zoom-still="{{ . }}"{{ end }}{{ if gt (len $srcset) 1 }} data-zoom-src="{{ $dest | safeURL }}"{{ end }}{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }} />{{ if $still }}</picture>{{ end }}
     {{ if $enableImageZoom }}</a>{{ end }}
     <figcaption>{{ . }}</figcaption>
   </figure>
 {{- else -}}
   {{ if $enableImageZoom }}<a class="post-image-link" href="{{ $dest | safeURL }}" target="_blank" rel="noopener" aria-label="{{ $zoomLabel }}：{{ $alt }}"{{ with $linkStyle }} style="{{ . | safeCSS }}"{{ end }}>{{ end }}
-  <img src="{{ $dest | safeURL }}" alt="{{ $alt }}" {{ $dimensions | safeHTMLAttr }} {{ $attributes | safeHTMLAttr }} decoding="async"{{ if gt (len $srcset) 1 }} srcset="{{ delimit $srcset ", " | safeHTMLAttr }}" sizes="{{ $sizes }}"{{ end }}{{ if $enableImageZoom }} data-zoomable{{ if gt (len $srcset) 1 }} data-zoom-src="{{ $dest | safeURL }}"{{ end }}{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }} />
+  {{ if $still }}<picture><source media="print, (prefers-reduced-motion: reduce)" srcset="{{ $still }}">{{ end }}
+  <img src="{{ $dest | safeURL }}" alt="{{ $alt }}" {{ $dimensions | safeHTMLAttr }} {{ $attributes | safeHTMLAttr }} decoding="async"{{ if gt (len $srcset) 1 }} srcset="{{ delimit $srcset ", " | safeHTMLAttr }}" sizes="{{ $sizes }}"{{ end }}{{ if $enableImageZoom }} data-zoomable{{ with $still }} data-zoom-still="{{ . }}"{{ end }}{{ if gt (len $srcset) 1 }} data-zoom-src="{{ $dest | safeURL }}"{{ end }}{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }} />{{ if $still }}</picture>{{ end }}
   {{ if $enableImageZoom }}</a>{{ end }}
 {{- end -}}

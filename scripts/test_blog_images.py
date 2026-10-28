@@ -30,6 +30,8 @@ class Images(HTMLParser):
         self.images = {}
         self.meta = {}
         self.zoom_links = []
+        self.sources = []
+        self.picture_depth = 0
         self.link_depth = 0
         self.feed(source)
 
@@ -44,6 +46,12 @@ class Images(HTMLParser):
             item = dict(attrs)
             if "post-image-link" in item.get("class", "").split():
                 self.zoom_links.append(item)
+        if tag == "picture":
+            self.picture_depth += 1
+            assert self.picture_depth == 1, "nested picture elements"
+        if tag == "source":
+            assert self.picture_depth == 1
+            self.sources.append(dict(attrs))
         if tag == "img":
             keys = [key for key, _ in attrs]
             assert len(keys) == len(set(keys)), ("duplicate attribute", attrs)
@@ -53,6 +61,8 @@ class Images(HTMLParser):
     def handle_endtag(self, tag):
         if tag == "a":
             self.link_depth -= 1
+        if tag == "picture":
+            self.picture_depth -= 1
 
 
 def main():
@@ -70,6 +80,7 @@ def main():
             bundle.mkdir(parents=True)
             shutil.copyfile(ROOT / "content/orca-avatar-64.webp", bundle / "small.webp")
             (bundle / "wide.png").write_bytes(wide_png())
+            shutil.copyfile(ROOT / "content/posts/ai/gymnasium/1/LunarLander.gif", bundle / "animation.gif")
             (bundle / "points.svg").write_text(
                 '<svg xmlns="http://www.w3.org/2000/svg" width="72pt" height="36pt" '
                 'viewBox="0 0 72 36"><rect width="72" height="36"/></svg>')
@@ -90,7 +101,9 @@ def main():
                 '![unknown](https://example.com/unknown.webp)\n\n'
                 '[![linked](small.webp)](https://example.com/paper)\n')
             with (bundle / "index.md").open("a") as stream:
-                stream.write('\n![responsive](wide.png)\n')
+                stream.write('\n![responsive](wide.png)\n\n![motion](animation.gif \"Motion preview\")\n')
+                stream.write('\n<figure class=\"article-figure\">\n'
+                             '{{< post-image src=\"animation.gif\" alt=\"motion-bare\" >}}\n</figure>\n')
         subprocess.run([args.hugo, "--minify", "-D", "--source", str(ROOT),
                         "--contentDir", str(content), "--destination", str(work / "public")],
                        check=True, capture_output=True, text=True)
@@ -106,10 +119,27 @@ def main():
                 assert parsed.meta["og:image:alt"] == "raster"
                 assert parsed.meta["twitter:image:alt"] == "raster"
             images = parsed.images
-            assert len(parsed.zoom_links) == (7 if zoom else 0)
+            assert len(parsed.zoom_links) == (9 if zoom else 0)
             assert all(link.get("target") == "_blank" and link.get("aria-label") for link in parsed.zoom_links)
             assert {link["href"] for link in parsed.zoom_links} == ({images[name]["src"] for name in
-                ("raster", "points", "ratio", "scientific", "explicit", "unknown", "responsive")} if zoom else set())
+                ("raster", "points", "ratio", "scientific", "explicit", "unknown", "responsive", "motion", "motion-bare")} if zoom else set())
+            assert len(parsed.sources) == 2 and parsed.picture_depth == 0
+            assert parsed.sources[0] == parsed.sources[1]
+            source = parsed.sources[0]
+            assert source["media"] == "print, (prefers-reduced-motion: reduce)"
+            assert source["srcset"].endswith(".png")
+            poster = work / "public" / source["srcset"].lstrip("/")
+            data = poster.read_bytes()
+            assert data.startswith(b"\x89PNG\r\n\x1a\n")
+            assert struct.unpack(">II", data[16:24]) == (600, 400)
+            offset, chunks = 8, []
+            while offset < len(data):
+                length = struct.unpack(">I", data[offset:offset+4])[0]
+                chunks.append(data[offset+4:offset+8])
+                offset += length+12
+            assert b"acTL" not in chunks, "Animated poster"
+            assert images["motion"]["src"].endswith("/animation.gif")
+            assert (images["motion"].get("data-zoom-still") == source["srcset"]) == zoom
             assert images["responsive"]["src"].endswith("/wide.png")
             candidates = [part.strip().split() for part in images["responsive"]["srcset"].split(",")]
             assert all(url.endswith(".webp") for url, _ in candidates)
@@ -123,7 +153,7 @@ def main():
             assert images["raster"]["height"] == "64"
             assert "width" not in images["unknown"]
             assert "aspect-ratio" not in images["unknown"].get("style", "")
-            for name in ("raster", "points", "ratio", "scientific", "explicit"):
+            for name in ("raster", "points", "ratio", "scientific", "explicit", "motion", "motion-bare"):
                 assert int(images[name]["width"]) > 0
                 assert int(images[name]["height"]) > 0
                 style = images[name].get("style", "")
@@ -134,9 +164,10 @@ def main():
                 assert "125.5/50.2" in images["ratio"]["style"].replace(" ", "")
                 assert "125/50.2" in images["scientific"]["style"].replace(" ", "")
                 assert "240px" in images["explicit"]["style"]
-    print(json.dumps({"page_modes": len(fixtures), "images_per_mode": 8,
+    print(json.dumps({"page_modes": len(fixtures), "images_per_mode": 10,
                       "full_width_png_webp_and_original_links": "passed",
                       "responsive_zoom_uses_original": "passed",
+                      "gif_static_picture_and_original_link": "passed",
                       "svg_points_fractional_scientific_multiline_viewbox": "passed",
                       "small_image_cap_and_opt_out": "passed",
                       "native_zoom_links_and_author_links": "passed"}, indent=2))

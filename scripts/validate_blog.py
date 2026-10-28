@@ -135,6 +135,7 @@ class Page(HTMLParser):
             self.links.append(attrs["src"])
         if tag == "img":
             self.images.append(attrs)
+        if tag in ("img", "source"):
             for candidate in attrs.get("srcset", "").split(","):
                 if candidate.strip():
                     self.links.append(candidate.strip().split()[0])

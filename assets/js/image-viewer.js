@@ -7,6 +7,7 @@
       return !link || link.classList.contains('post-image-link');
     });
     if (!eligible.length) return;
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     const dialog = document.createElement('dialog');
     dialog.id = 'post-image-viewer';
@@ -48,17 +49,22 @@
     const messagesFor = chinese => chinese ? {
       title: '图片查看', original: '打开原图', close: '关闭',
       loading: '正在加载清晰原图…', ready: '清晰原图已显示。',
+      stillLoading: '正在加载静态预览…', stillReady: '已显示静态预览；可通过“打开原图”查看动画。',
+      stillError: '静态预览暂时无法加载。可以关闭后重试，或在新窗口打开原图。',
       error: '原图暂时无法加载。可以关闭后重试，或在新窗口打开原图。'
     } : {
       title: 'Image viewer', original: 'Open original', close: 'Close',
       loading: 'Loading the full-resolution image…', ready: 'Full-resolution image displayed.',
+      stillLoading: 'Loading the static preview…', stillReady: 'Static preview displayed. Open original to view the animation.',
+      stillError: 'The static preview could not load. Close and retry, or open the original in a new tab.',
       error: 'The original could not load. Close and retry, or open it in a new tab.'
     };
     const setState = (record, state) => {
       if (current !== record) return;
       dialog.dataset.state = state;
       stage.setAttribute('aria-busy', state === 'loading' ? 'true' : 'false');
-      status.textContent = record.messages[state];
+      const key = record.static ? 'still' + state[0].toUpperCase() + state.slice(1) : state;
+      status.textContent = record.messages[key];
     };
     const release = record => {
       if (record.loader) {
@@ -114,11 +120,7 @@
       const messages = messagesFor(language.toLowerCase().startsWith('zh'));
       const original = new URL(source.dataset.zoomSrc || opener?.href || source.src, document.baseURI).href;
       const preview = source.currentSrc || source.src;
-      const image = new Image();
-      image.className = 'post-image-viewer__image';
-      image.alt = source.alt;
-      image.decoding = 'async';
-      image.fetchPriority = 'high';
+      const still = source.dataset.zoomStill ? new URL(source.dataset.zoomStill, document.baseURI).href : '';
       const width = Number(source.getAttribute('width')) || source.naturalWidth || 1024;
       const height = Number(source.getAttribute('height')) || source.naturalHeight || 768;
       dialog.style.setProperty('--image-viewer-width', width + 'px');
@@ -128,41 +130,62 @@
       originalLink.href = original;
       closeButton.textContent = messages.close;
       dialog.lang = language;
-      const record = {image, opener, messages, loader: null};
+      const record = {opener, messages, still, loader: null, revision: 0};
       current = record;
-      image.addEventListener('load', () => {
-        if (current === record) dialog.dataset.previewReady = 'true';
-      });
-      image.addEventListener('error', () => { if (!record.loader) setState(record, 'error'); });
-      dialog.dataset.previewReady = 'false';
-      image.src = preview;
-      stage.replaceChildren(image);
+      record.render = () => {
+        const revision = ++record.revision;
+        const active = () => current === record && record.revision === revision;
+        if (record.loader) {
+          record.loader.src = '';
+          record.loader = null;
+        }
+        record.static = Boolean(still && motionQuery.matches);
+        const target = record.static ? still : original;
+        const shownPreview = record.static ? still : (source.currentSrc || preview);
+        const image = new Image();
+        image.className = 'post-image-viewer__image';
+        image.alt = source.alt;
+        image.decoding = 'async';
+        image.fetchPriority = 'high';
+        image.addEventListener('load', () => { if (active()) dialog.dataset.previewReady = 'true'; });
+        image.addEventListener('error', () => { if (active() && !record.loader) setState(record, 'error'); });
+        dialog.dataset.previewReady = 'false';
+        // Replace the element so an old animated frame cannot remain painted
+        // while a newly requested static preview is still decoding.
+        image.src = shownPreview;
+        stage.replaceChildren(image);
+        setState(record, 'loading');
+        if (new URL(shownPreview, document.baseURI).href === target) {
+          image.decode().then(() => { if (active()) setState(record, 'ready'); },
+            () => { if (active()) setState(record, 'error'); });
+          return;
+        }
+        const loader = new Image();
+        loader.decoding = 'async';
+        loader.fetchPriority = 'low';
+        record.loader = loader;
+        loader.src = target;
+        loader.decode().then(() => {
+          if (!active()) return;
+          record.loader = null;
+          image.src = target;
+          return image.decode().then(() => { if (active()) setState(record, 'ready'); },
+            () => { if (active()) setState(record, 'error'); });
+        }).catch(() => {
+          if (!active()) return;
+          record.loader = null;
+          setState(record, 'error');
+        });
+      };
+      record.render();
       savedOverflow = document.documentElement.style.overflow;
       document.documentElement.style.overflow = 'hidden';
-      setState(record, 'loading');
       dialog.showModal();
       closeButton.focus({preventScroll: true});
-
-      if (new URL(preview, document.baseURI).href === original) {
-        image.decode().then(() => setState(record, 'ready'), () => setState(record, 'error'));
-        return;
-      }
-      const loader = new Image();
-      loader.decoding = 'async';
-      loader.fetchPriority = 'low';
-      record.loader = loader;
-      loader.src = original;
-      loader.decode().then(() => {
-        if (current !== record) return;
-        record.loader = null;
-        image.src = original;
-        return image.decode().then(() => setState(record, 'ready'), () => setState(record, 'error'));
-      }).catch(() => {
-        if (current !== record) return;
-        record.loader = null;
-        setState(record, 'error');
-      });
     };
+    motionQuery.addEventListener('change', () => {
+      if (current?.still) current.render();
+    });
     eligible.forEach(image => {
       const link = image.closest('.post-image-link');
       const trigger = link || image;

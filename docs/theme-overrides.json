@@ -72,7 +72,8 @@
       "local": "layouts/_partials/scripts/medium-zoom.html",
       "changes": [
         "Use the existing theme hook to load a repository-owned progressive native image viewer",
-        "Retain the archived vendor source and license without loading Medium Zoom at runtime"
+        "Retain the archived vendor source and license without loading Medium Zoom at runtime",
+        "Keep GIF originals available while native pictures and the viewer respect reduced-motion preferences and use static print previews"
       ]
     },
     {

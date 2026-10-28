@@ -93,6 +93,10 @@ def core():
     expect_error(ValueError, list, code_blocks("```python\nx=1"))
     assert list(code_blocks("  ~~~python\n  x = 1\n  ~~~")) == [("python", "x = 1\n", 1)]
     assert Page('<a id="same"></a><h2 id="same"></h2>').duplicate_ids == {"same"}
+    picture = Page('<picture><source srcset="/still.png 1x, /still-2.png 2x">'
+                   '<img src="/motion.gif" alt="motion"></picture><source src="/demo.webm">')
+    assert picture.links == ["/still.png", "/still-2.png", "/motion.gif", "/demo.webm"]
+    assert len(picture.images) == 1
     figure_labels = ('<span class="article-figure__number">图 1</span>'
                      '<span class="article-figure__number">图<span>1</span></span>')
     assert Page(figure_labels).duplicate_figure_labels == {"图1"}

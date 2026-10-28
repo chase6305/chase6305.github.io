@@ -114,6 +114,14 @@
       "native_cases": 24,
       "definition_pairs": 276,
       "text_preservation": "/tmp/chase-sixhour-lab-pagination-text-preservation-20261028.json"
+    },
+    {
+      "id": "article-gif-ignores-reduced-motion",
+      "status": "fixed; all targeted and broad local checks passed",
+      "before": "/tmp/chase-sixhour-image-motion-before-20261028.json",
+      "evidence": "All three looping GIFs remain animated in native pages under reduce, including without scripts; the image viewer also loads the GIF.",
+      "after": "/tmp/chase-sixhour-image-motion-ready-browser-20261028/results.json",
+      "scope": "Native static picture selection for reduce/print; retain original GIF URLs, pixels and metadata. Viewer handles live preference changes without focus changes or stale completion."
     }
   ],
   "checks": [
@@ -565,6 +573,96 @@
       "definition_pairs": 276,
       "broader_cases": 72,
       "text_preserved": true
+    },
+    {
+      "name": "final all-page native semantics and scroll access",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-final-semantics-native-20261028/results.json",
+      "cases": 638,
+      "violations": 0,
+      "incomplete": 0
+    },
+    {
+      "name": "static GIF image fixtures",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-image-motion-ready-fixtures-20261028.log",
+      "page_modes": 5,
+      "images_per_mode": 10
+    },
+    {
+      "name": "animation preferences, transitions and native print",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-image-motion-ready-browser-20261028/results.json",
+      "layouts": 72,
+      "focus_preserving_transitions": 6,
+      "reduced_gif_requests": 0,
+      "english_status": true,
+      "delayed_original_cancelled": true,
+      "native_pdfs": 3
+    },
+    {
+      "name": "full-image viewer integration",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-image-motion-all-viewers-20261028/results.json",
+      "layouts": 1248,
+      "articles": 64
+    },
+    {
+      "name": "all-article and numbered-figure reading integration",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-image-motion-reading-20261028/results.json",
+      "cases": 912,
+      "figure_cases": 536
+    },
+    {
+      "name": "final normal/forced-color focus outlines",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-final-focus-20261028/results.json",
+      "outlines": 540
+    },
+    {
+      "name": "static frame and warm/cold native PDF pixels",
+      "status": "passed",
+      "artifacts": [
+        "/tmp/chase-sixhour-image-motion-pixels-20261028.json",
+        "/tmp/chase-sixhour-image-motion-pdf-pixels-20261028.json",
+        "/tmp/chase-sixhour-cold-print-poster-20261028.json",
+        "/tmp/chase-sixhour-cold-print-poster-frame-20261028.json"
+      ],
+      "scope": "Exact decoded RGBA bytes for three PNGs; native PDF RGB images match the original first frames. Cold delayed-poster PDF still contains first-frame pixels."
+    },
+    {
+      "name": "source/srcset links reject missing posters",
+      "status": "passed",
+      "artifacts": [
+        "/tmp/chase-sixhour-image-motion-validator-core-20261028.log",
+        "/tmp/chase-sixhour-image-motion-missing-poster-20261028.json"
+      ],
+      "fault_fixture": "Move one generated poster in the disposable production directory; validator rejects missing source, then restores it in finally."
+    },
+    {
+      "name": "static image modal semantics and no-dialog fallback",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-image-motion-semantics-20261028.json",
+      "modal_cases": 6,
+      "fallback_cases": 3,
+      "violations": 0,
+      "incomplete": 0
+    },
+    {
+      "name": "final viewer/navigation print integration",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-image-motion-navigation-print-20261028/results.json",
+      "menu_cases": 60,
+      "stack_cases": 12,
+      "native_pdfs": 18
+    },
+    {
+      "name": "final code overflow and asynchronous keyboard copy",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-final-code-reading-20261028/results.json",
+      "layouts": 12,
+      "pending_focus_and_disclosure": true
     }
   ],
   "releases": [
@@ -968,7 +1066,7 @@
     "live_failures": 0
   },
   "phase11": {
-    "status": "all local checks passed; preparing release",
+    "status": "deployed and verified",
     "production": "/tmp/chase-sixhour-lab-cards-production-20261028",
     "validation": "/tmp/chase-sixhour-lab-cards-validation-20261028.json",
     "assets": "/tmp/chase-sixhour-lab-cards-assets-20261028.json",
@@ -980,6 +1078,38 @@
     "definition_pairs": 276,
     "all_pdfs_tagged": true,
     "text_preserved": true,
-    "test_setup": "Use empty CDP media override for native printing; match mixed-font runs by spatial adjacency rather than PDF stream order."
+    "test_setup": "Use empty CDP media override for native printing; match mixed-font runs by spatial adjacency rather than PDF stream order.",
+    "deployment": {
+      "id": 40647087358,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "49a1f3a2bedce473b883475ca130f456f23362ef",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40647087358",
+      "updated_at": "2026-10-28T07:01:38Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-49a1f3a2bedc-20261028.json",
+      "verified_at_utc": "2026-10-28T07:03:13.703464+00:00"
+    },
+    "live_urls": 362,
+    "live_failures": 0
+  },
+  "phase12": {
+    "status": "all local checks passed; preparing release",
+    "production": "/tmp/chase-sixhour-image-motion-ready-production-20261028",
+    "validation": "/tmp/chase-sixhour-image-motion-ready-validation-20261028.json",
+    "assets": "/tmp/chase-sixhour-image-motion-ready-assets-20261028.json",
+    "browser": "/tmp/chase-sixhour-image-motion-ready-browser-20261028/results.json",
+    "image_fixtures": "/tmp/chase-sixhour-image-motion-ready-fixtures-20261028.log",
+    "pixel_checks": "/tmp/chase-sixhour-image-motion-pixels-20261028.json",
+    "scope": "Respect reduced motion and static print previews for existing GIFs; preserve original images and native original links.",
+    "hugo_version": "0.165.0",
+    "source": "https://gohugo.io/methods/resource/process/",
+    "cold_print": "/tmp/chase-sixhour-cold-print-poster-20261028.json",
+    "limit": "Browser behavior verified with the dedicated local Chromium endpoint; no cross-browser claim.",
+    "static_modal_semantics": "/tmp/chase-sixhour-image-motion-semantics-20261028.json",
+    "navigation_print": "/tmp/chase-sixhour-image-motion-navigation-print-20261028/results.json",
+    "code_reading": "/tmp/chase-sixhour-final-code-reading-20261028/results.json"
   }
 }

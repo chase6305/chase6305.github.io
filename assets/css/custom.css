@@ -193,7 +193,9 @@ body {
 }
 
 .content .article-figure > img,
-.content .article-figure > .post-image-link > img {
+.content .article-figure > picture > img,
+.content .article-figure > .post-image-link > img,
+.content .article-figure > .post-image-link > picture > img {
   display: block;
   width: auto;
   max-width: 100%;
