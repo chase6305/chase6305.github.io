@@ -44,6 +44,7 @@
 
     let current = null;
     let savedOverflow = '';
+    let printFocus = null;
     const messagesFor = chinese => chinese ? {
       title: '图片查看', original: '打开原图', close: '关闭',
       loading: '正在加载清晰原图…', ready: '清晰原图已显示。',
@@ -107,6 +108,7 @@
     stage.addEventListener('click', event => { if (event.target.tagName === 'IMG') close(); });
 
     const open = (source, opener) => {
+      printFocus = null;
       if (current) close();
       const language = source.closest('[lang]')?.getAttribute('lang') || document.documentElement.lang;
       const messages = messagesFor(language.toLowerCase().startsWith('zh'));
@@ -175,8 +177,35 @@
       });
     });
     // Print the article itself; a pending original cannot block the print flow.
-    window.addEventListener('beforeprint', close);
-    window.matchMedia('print').addEventListener('change', event => { if (event.matches) close(); });
+    const printQuery = window.matchMedia('print');
+    const preparePrint = () => {
+      if (!current) return;
+      const target = current.opener;
+      close();
+      // Another modal can prevent close() from restoring the article link.
+      printFocus = { target, afterClose: document.activeElement };
+    };
+    const restorePrintFocus = () => {
+      if (printQuery.matches || !printFocus) return;
+      const record = printFocus;
+      printFocus = null;
+      const target = record.target;
+      if (!dialog.open && document.hasFocus() && target?.isConnected
+        && target.getClientRects().length && getComputedStyle(target).visibility !== 'hidden'
+        && !target.closest('[inert]')
+        && (document.activeElement === record.afterClose || document.activeElement === document.body)) {
+        target.focus({ preventScroll: true });
+      }
+    };
+    window.addEventListener('beforeprint', preparePrint);
+    window.addEventListener('afterprint', restorePrintFocus);
+    printQuery.addEventListener('change', event => {
+      if (event.matches) preparePrint();
+      else restorePrintFocus();
+    });
+    const cancelPrintFocus = () => { printFocus = null; };
+    document.addEventListener('pointerdown', cancelPrintFocus, true);
+    document.addEventListener('keydown', cancelPrintFocus, true);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialize, {once: true});
   else initialize();

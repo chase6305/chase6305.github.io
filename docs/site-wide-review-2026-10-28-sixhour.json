@@ -61,15 +61,19 @@
     },
     {
       "id": "mobile-menu-print-hides-content-semantics",
-      "status": "reproduced; next batch",
+      "status": "fixed; all targeted and broad local regressions passed",
       "before": "/tmp/chase-sixhour-overlay-combinations-before-20261028/results.json",
-      "evidence": "With the mobile menu open, the printed article retains inert. Native 29-page PDF changes from Tagged=yes to Tagged=no; print AX headings change from 46 to zero."
+      "evidence": "With the mobile menu open, the printed article retains inert. Native 29-page PDF changes from Tagged=yes to Tagged=no; print AX headings change from 46 to zero.",
+      "after": "/tmp/chase-sixhour-navigation-print-release-20261028/results.json",
+      "native_pdfs": "/tmp/chase-sixhour-phase5-native-pdf-check-20261028.json"
     },
     {
       "id": "stacked-image-search-print-focus",
-      "status": "reproduced; next batch",
+      "status": "fixed; all targeted and broad local regressions passed",
       "before": "/tmp/chase-sixhour-overlay-combinations-before-20261028/results.json",
-      "evidence": "Open image viewer then Ctrl+K search; native printing closes both dialogs but leaves focus on body rather than the original article image link."
+      "evidence": "Open image viewer then Ctrl+K search; native printing closes both dialogs but leaves focus on body rather than the original article image link.",
+      "after": "/tmp/chase-sixhour-navigation-print-release-20261028/results.json",
+      "native_pdfs": "/tmp/chase-sixhour-phase5-native-pdf-check-20261028.json"
     }
   ],
   "checks": [
@@ -311,6 +315,61 @@
       "name": "Final search readiness semantics",
       "status": "passed",
       "artifact": "/tmp/chase-sixhour-search-ready-semantics-20261028/results.json"
+    },
+    {
+      "name": "Additional Python progress/workspace snippets",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-python-20261028.log"
+    },
+    {
+      "name": "Pinned OpenCV hand-eye/zero calibration",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-calibration-pinned-20261028.log"
+    },
+    {
+      "name": "Synthetic asymmetric circle-grid ordering",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-circle-grid-20261028.log"
+    },
+    {
+      "name": "Overlay printing regression: viewer",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase5-viewer-20261028/results.json"
+    },
+    {
+      "name": "Overlay printing regression: accessibility",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase5-accessibility-20261028/results.json"
+    },
+    {
+      "name": "Overlay printing regression: search-print",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase5-search-print-20261028/results.json"
+    },
+    {
+      "name": "Overlay printing regression: article-viewers",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase5-article-viewers-20261028/results.json"
+    },
+    {
+      "name": "Overlay printing regression: print",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase5-print-20261028/results.json"
+    },
+    {
+      "name": "Overlay printing regression: print-forced",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase5-print-forced-20261028/results.json"
+    },
+    {
+      "name": "Overlay printing regression: semantics-interactive",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase5-semantics-interactive-20261028/results.json"
+    },
+    {
+      "name": "Overlay printing regression: readability",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase5-readability-20261028/results.json"
     }
   ],
   "releases": [
@@ -440,7 +499,16 @@
     "diffusion_figure_inspected": true,
     "trajectory_relative_tolerance": 1e-09,
     "trajectory_absolute_tolerance": 1e-10,
-    "optional_trajectory_environment": "/tmp/chase-sixhour-trajectory-venv-20261028"
+    "optional_trajectory_environment": "/tmp/chase-sixhour-trajectory-venv-20261028",
+    "calibration": {
+      "environment": "/tmp/chase-sixhour-trajectory-venv-20261028",
+      "opencv": "4.13.0.92",
+      "numpy": "2.2.6",
+      "handeye_holdout": 6,
+      "zero_holdout": 10,
+      "circle_grid_points": 44,
+      "unmodified_default_environment": "OpenCV5 lacks calibrateHandEye; the article capability guard rejects it as documented."
+    }
   },
   "external_reference_audit": {
     "inventory": "/tmp/chase-sixhour-external-inventory-20261028.json",
@@ -463,7 +531,7 @@
     "followup": "Underactuated Robotics trajectory page opens in the separate web reader despite direct TLS failure; other access failures remain inconclusive. Preserve existing citations."
   },
   "phase4": {
-    "status": "all checks passed; ready to publish",
+    "status": "deployed and verified",
     "production": "/tmp/chase-sixhour-search-ready-production-20261028",
     "validation": "/tmp/chase-sixhour-phase4-ready-validation-20261028.json",
     "assets": "/tmp/chase-sixhour-phase4-ready-assets-20261028.json",
@@ -481,6 +549,43 @@
       "finding": "Only closed-popup aria-controls checks; all visible DOM ID references resolve, opened states checked independently. No full WCAG claim."
     },
     "guard_preservation": "/tmp/chase-sixhour-phase4-guard-preservation-20261028.json",
-    "final_interactive_incomplete_nodes": 297
+    "final_interactive_incomplete_nodes": 297,
+    "deployment": {
+      "id": 40635632914,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "a4f0866089120976c4697b563a257530dea5b4af",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40635632914",
+      "updated_at": "2026-10-28T05:06:19Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-a4f086608912-20261028.json",
+      "verified_at_utc": "2026-10-28T05:07:54.056575+00:00"
+    },
+    "live_urls": 361,
+    "live_failures": 0
+  },
+  "phase5": {
+    "status": "all local checks passed; preparing release",
+    "production": "/tmp/chase-sixhour-phase5-final-production-20261028",
+    "validation": "/tmp/chase-sixhour-phase5-final-validation-20261028.json",
+    "assets": "/tmp/chase-sixhour-phase5-final-assets-20261028.json",
+    "menu_cases": 60,
+    "stack_cases": 12,
+    "tagged_native_pdfs": 18,
+    "native_pdf_check": "/tmp/chase-sixhour-phase5-native-pdf-check-20261028.json",
+    "native_text_preservation": "/tmp/chase-sixhour-phase5-native-text-preservation-20261028.json",
+    "article_image_cases": 1248,
+    "image_articles": 64,
+    "article_print_cases": 564,
+    "article_print_forced_cases": 564,
+    "contrast_layouts": 300,
+    "contrast_text_samples": 247986,
+    "readability_print_cases": 18,
+    "native_navigation": "/tmp/chase-sixhour-navigation-print-release-20261028/results.json",
+    "final_parity": "/tmp/chase-sixhour-phase5-final-parity-20261028.json",
+    "menu_reopen": true,
+    "viewer_reopen": true
   }
 }

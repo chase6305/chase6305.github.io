@@ -1,3 +1,5 @@
+// Copyright (c) 2023 Xin; MIT. Hextra 38d18a5 mobile menu override.
+// License: /licenses/hextra.txt
 // Hamburger menu for mobile navigation
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -6,6 +8,16 @@ document.addEventListener('DOMContentLoaded', function () {
   const mobileQuery = window.matchMedia('(max-width: 767px)');
   if (!menu || !sidebarContainer) return;
   const background = document.querySelectorAll('#content, .hextra-footer');
+  const printQuery = window.matchMedia('print');
+  let printFocus = null;
+  let lastNavigationFocus = null;
+
+  // Print CSS can blur a hidden sidebar before its media-change event arrives.
+  // Keep the last deliberate navigation focus across that body-focus fallback.
+  document.addEventListener('focusin', event => {
+    if (sidebarContainer.contains(event.target) || event.target === menu) lastNavigationFocus = event.target;
+    else if (event.target !== document.body && !event.target.closest('#hextra-search-dialog')) lastNavigationFocus = null;
+  });
 
   function isMenuOpen() {
     return menu.querySelector('svg').classList.contains('open');
@@ -36,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function toggleMenu(options = {}) {
     const { focusOnOpen = true, restoreFocusOnClose = true } = options;
+    printFocus = null;
 
     // Toggle the hamburger menu
     menu.querySelector('svg').classList.toggle('open');
@@ -70,6 +83,41 @@ document.addEventListener('DOMContentLoaded', function () {
     // which opens the software keyboard immediately.
     toggleMenu({ focusOnOpen: e.detail === 0 });
   });
+
+  // A print snapshot must expose the article to PDF tagging as well as paint it.
+  // Leaving the mobile overlay open keeps the article inert even when print CSS
+  // hides the navigation. Close it synchronously and release the body scroll lock.
+  const preparePrint = () => {
+    if (!isMenuOpen()) return;
+    const active = document.activeElement;
+    const fromNavigation = active === menu || sidebarContainer.contains(active)
+      || (lastNavigationFocus && (active === document.body || active.closest('#hextra-search-dialog')));
+    toggleMenu({ restoreFocusOnClose: false });
+    if (fromNavigation) printFocus = { afterClose: document.activeElement };
+  };
+  const restorePrintFocus = () => {
+    if (printQuery.matches || !printFocus) return;
+    const record = printFocus;
+    printFocus = null;
+    if (!isMenuOpen() && document.hasFocus() && menu.getClientRects().length
+      && getComputedStyle(menu).visibility !== 'hidden'
+      && (document.activeElement === record.afterClose || document.activeElement === document.body)) {
+      menu.focus({ preventScroll: true });
+    }
+  };
+  window.addEventListener('beforeprint', preparePrint);
+  window.addEventListener('afterprint', restorePrintFocus);
+  printQuery.addEventListener('change', event => {
+    if (event.matches) preparePrint();
+    else restorePrintFocus();
+  });
+  const cancelPrintFocus = () => { printFocus = null; };
+  document.addEventListener('pointerdown', event => {
+    cancelPrintFocus();
+    if (!sidebarContainer.contains(event.target) && !menu.contains(event.target)
+      && !event.target.closest('#hextra-search-dialog')) lastNavigationFocus = null;
+  }, true);
+  document.addEventListener('keydown', cancelPrintFocus, true);
 
   // Close menu on Escape key (mobile only)
   document.addEventListener('keydown', (e) => {
