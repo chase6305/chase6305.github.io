@@ -22,6 +22,16 @@
       "after": "/tmp/chase-sixhour-search-print-focus-20261028/results.json",
       "edge_cases": "/tmp/chase-sixhour-search-print-edges-verified-20261028/results.json",
       "focus_before": "/tmp/chase-sixhour-print-focus-probe-20261028.log"
+    },
+    {
+      "id": "narrow-explanatory-table-columns",
+      "status": "fixed; 216 table cases and 912 article/figure cases passed",
+      "before": "/tmp/chase-sixhour-table-width-scan-20261028.json",
+      "after": "/tmp/chase-sixhour-table-width-after-20261028.json",
+      "table_data_preservation": "/tmp/chase-sixhour-table-data-preservation-20261028.json",
+      "all_tables_compared": 599,
+      "source_edits": "/tmp/chase-sixhour-readable-table-edits-20261028.json",
+      "targeted_checks": "/tmp/chase-sixhour-readable-tables-20261028/results.json"
     }
   ],
   "checks": [
@@ -79,19 +89,77 @@
       "status": "passed",
       "layouts": 165,
       "artifact": "/tmp/chase-sixhour-phase1-accessibility-20261028/results.json"
+    },
+    {
+      "name": "readable tables with and without scripts",
+      "status": "passed",
+      "cases": 216,
+      "artifact": "/tmp/chase-sixhour-readable-tables-20261028/results.json"
+    },
+    {
+      "name": "all articles and numbered figures",
+      "status": "passed",
+      "cases": 912,
+      "figures": 536,
+      "artifact": "/tmp/chase-sixhour-phase2-reading-20261028/results.json"
     }
   ],
-  "releases": [],
+  "releases": [
+    {
+      "phase": 1,
+      "id": 40627073797,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "4075865748acfad5c80aa4fc6574053bc317337a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40627073797",
+      "updated_at": "2026-10-28T03:35:16Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-4075865748ac-20261028.json",
+      "verified_at_utc": "2026-10-28T03:36:19.310033+00:00",
+      "live_urls": 360,
+      "live_failures": 0
+    }
+  ],
   "phase1": {
-    "status": "local checks passed; ready for release",
+    "status": "deployed and verified",
     "production": "/tmp/chase-sixhour-phase1-production-20261028",
     "validation": "/tmp/chase-sixhour-phase1-validation-20261028.json",
-    "assets": "/tmp/chase-sixhour-phase1-assets-20261028.json"
+    "assets": "/tmp/chase-sixhour-phase1-assets-20261028.json",
+    "deployment": {
+      "id": 40627073797,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "4075865748acfad5c80aa4fc6574053bc317337a",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40627073797",
+      "updated_at": "2026-10-28T03:35:16Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-4075865748ac-20261028.json",
+      "verified_at_utc": "2026-10-28T03:36:19.310033+00:00"
+    },
+    "live_urls": 360,
+    "live_failures": 0,
+    "stable_contracts": "/tmp/chase-sixhour-phase1-stable-contracts-20261028.json"
   },
   "table_diagnostic": {
-    "status": "nine candidates awaiting visual review",
+    "status": "all nine candidates visually confirmed; new readable class applied",
     "articles": 94,
     "tables": 599,
     "artifact": "/tmp/chase-sixhour-table-width-scan-20261028.json"
+  },
+  "phase2": {
+    "status": "local verification passed",
+    "production": "/tmp/chase-sixhour-phase2-production-20261028",
+    "validation": "/tmp/chase-sixhour-phase2-validation-20261028.json",
+    "assets": "/tmp/chase-sixhour-phase2-assets-20261028.json",
+    "table_cases": 216,
+    "reading_cases": 912,
+    "figure_cases": 536,
+    "tables_compared": 599,
+    "reading": "/tmp/chase-sixhour-phase2-reading-20261028/results.json",
+    "stable_contracts": "/tmp/chase-sixhour-phase2-stable-contracts-20261028.json"
   }
 }

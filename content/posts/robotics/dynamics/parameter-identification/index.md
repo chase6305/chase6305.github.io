@@ -888,6 +888,7 @@ SaveCandidate("result.json", candidate, sha256("raw.csv"));
 | [BIRDy](https://github.com/TUM-ICS/BIRDy) | 比较不同辨识算法 | MATLAB 研究框架，覆盖 LS、TLS、IV、滤波与在线方法 |
 | [SymPyBotics](https://github.com/cdsousa/SymPyBotics) | 学习和生成符号回归模型 | 可生成动力学项和带摩擦的回归矩阵 |
 | [SYMORO Python 3](https://github.com/xu-yang16/symoro-python3) | 符号模型与基参数研究 | 适合理解 identification model 和最小参数结构 |
+{.table-readable}
 
 对当前 `RobotServer`，推荐继续以 Pinocchio 回归器作为模型后端，以 `robot_identification` 承担数据、求解、诊断和 artifact 管理。若后续扩展人形或浮动基数据契约，再重点借鉴 FloBaRoID；若加入物理约束求解器，可参考 SDP 或 log-Cholesky 路线，但保持其为可选后端。
 

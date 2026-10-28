@@ -406,6 +406,7 @@ chosen 与 rejected 的分数可以同时下降，只要差值改善，DPO loss 
 | Completion length / 截断率 | 生成长度与预算限制 | 成功率、成本、正常 EOS 结束比例 |
 | Reward std / 零方差组比例 | 同题样本是否有奖励差异 | 组大小、全对／全错的比例 |
 | Rollout tokens/s 与训练 tokens/s | 采样及更新各自的瓶颈 | 奖励器、reference、通信与总墙钟时间 |
+{.table-readable}
 
 KL 惩罚可能从 reward 中扣除，也可能作为独立项加入 loss，不能假定所有日志里的 `reward` 都已经包含它。例如 TRL v0.24.0 的 PPO 区分原始 score、非 score 奖励项和 RLHF reward；同版 GRPO 将 KL 项写入目标，且默认 `beta=0` 时不启用该项。比较日志前，应先确认算法、配置和字段公式。[PPO 指标口径](https://huggingface.co/docs/trl/v0.24.0/ppo_trainer)、[GRPO 目标与默认配置](https://huggingface.co/docs/trl/v0.24.0/grpo_trainer)
 
@@ -521,6 +522,7 @@ $B_b$ 为第 $b$ 桶题目，桶内平均正确率与平均置信度越接近，
 | [GPQA](https://arxiv.org/abs/2311.12022) | 较难的专业领域问答 | 对应子集的选择题准确率与推理预算 |
 | [HumanEval](https://arxiv.org/abs/2107.03374) | 代码功能正确性 | 指定测试条件下的 pass@k |
 | [IFEval](https://arxiv.org/abs/2311.07911) | 可验证的指令约束 | instruction / prompt 与 strict / loose 的组合 |
+{.table-readable}
 
 这些是不同任务的例子，不是完整能力清单。公开题集存在训练污染或反复调参的风险，应结合版本固定、近重复检查、领域留出集和新增私有测试。报告“在什么数据与协议上改善”，比笼统声称“智能提升多少”更准确。
 

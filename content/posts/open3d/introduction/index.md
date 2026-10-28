@@ -2,7 +2,7 @@
 title: "Open3D 点云与网格指南：空间索引、滤波、配准与重建"
 math: true
 date: 2025-03-04
-lastmod: 2026-10-27
+lastmod: 2026-10-28
 draft: false
 tags: ["Open3D", "Point Cloud", "3D Vision"]
 categories: ["三维视觉"]
@@ -1298,6 +1298,7 @@ python colored_icp_check.py --output colored-icp-results.json --plot colored-icp
 | 点到平面 ICP | 同一平面的几何 | 58.31 mm | 4.58° |
 | Colored ICP，全部点改为同一种颜色 | 几何，颜色没有空间变化 | 58.31 mm | 4.58° |
 | Colored ICP，保留二维变化纹理 | 几何与颜色变化 | 小于 0.00001 mm | 小于 0.00001° |
+{.table-readable}
 
 <figure class="article-figure">
   {{< post-image src="assets/colored-icp-comparison.png" alt="同一合成平面下，点到平面和纯色配准均保留约 58.31 毫米与 4.58 度误差，有纹理的彩色配准恢复已知变换" >}}

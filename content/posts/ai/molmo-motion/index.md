@@ -1,7 +1,7 @@
 ---
 title: "MolmoMotion 详解：从三维点轨迹预测到机器人运动先验"
 date: 2026-09-25T03:14:26+08:00
-lastmod: 2026-10-27
+lastmod: 2026-10-28
 draft: false
 tags: ["MolmoMotion", "Motion Forecasting", "World Model", "Robotics", "Flow Matching", "Paper Notes"]
 categories: ["人工智能"]
@@ -282,6 +282,7 @@ $\tilde p$ 是原始三维点，$w$ 是可信度，$\Delta$ 取 1、3、5 帧。
 | Stereo4D | 70K | 第三视角、室外与形变主体 | 是 |
 | MolmoSpaces | 185K | 模拟机器人操作 | 否；用于下游实验 |
 | DROID | 27K | 真实机器人视频 | 否；用于下游实验 |
+{.table-readable}
 
 这些近似数的总和与“约一百万”名称属于规模描述，不能据此反推一次训练恰好访问了多少独立样本。一个运动切片还可能贡献不同起点的窗口，实际采样受混合权重和训练步数影响。
 

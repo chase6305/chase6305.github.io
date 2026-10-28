@@ -1,7 +1,7 @@
 ---
 title: "LeRobot 与 ACT 详解：从机器人示教数据到动作分块、训练与部署"
 date: 2026-09-16
-lastmod: 2026-09-30
+lastmod: 2026-10-28
 draft: false
 tags: ["LeRobot", "ACT", "Imitation Learning", "Transformer", "Embodied AI"]
 categories: ["人工智能", "机器人"]
@@ -829,6 +829,7 @@ lerobot-rollout \
 | 部署推理 | 权重、策略配置、前后处理器及统计量 | 在机器人上运行已有策略 |
 | 从已有权重开始新实验 | 权重及合适的配置，重新定义训练过程 | 新实验，可使用新的数据与优化设置 |
 | 恢复中断训练 | 上述模型信息、步数、优化器、随机数状态；如有则包括调度器 | 从 checkpoint 接续原实验 |
+{.table-readable}
 
 仅把 `--policy.path` 指向一个模型，不等于完整恢复优化器的动量和训练进度。本文版本可通过 checkpoint 中的训练配置恢复：
 
