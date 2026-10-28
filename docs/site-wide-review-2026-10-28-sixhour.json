@@ -104,6 +104,16 @@
       "evidence": "Enter opens language options while focus remains on the trigger; Escape then leaves aria-expanded=true.",
       "after": "/tmp/chase-sixhour-language-menu-20261028/results.json",
       "source": "https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/"
+    },
+    {
+      "id": "lab-print-splits-definition-label-and-value",
+      "status": "fixed; 24 native PDFs and 72 broader print cases passed",
+      "before": "/tmp/chase-sixhour-lab-pagination-baseline-final-20261028/results.json",
+      "evidence": "A4 SuperMimic return labels end on page1 while their -1 values begin on page2; at enlarged root text, other SuperMimic and multiview cards split. Native baseline has 9 failing layouts.",
+      "after": "/tmp/chase-sixhour-lab-pagination-final-20261028/results.json",
+      "native_cases": 24,
+      "definition_pairs": 276,
+      "text_preservation": "/tmp/chase-sixhour-lab-pagination-text-preservation-20261028.json"
     }
   ],
   "checks": [
@@ -533,6 +543,28 @@
       "production_articles": 91,
       "draft_inclusive_articles": 94,
       "setup_note": "Initial command omitted the fresh directory and read a stale draft public/. Explicit fresh roots pass both intended inventories."
+    },
+    {
+      "name": "final draft-inclusive all-page semantics",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-final-semantics-20261028/results.json",
+      "cases": 638,
+      "manual_review": "/tmp/chase-sixhour-final-semantics-manual-20261028.json",
+      "incomplete_nodes": 2502,
+      "manual_finding": "Only closed-popup association checks, all DOM IDs resolve; no full WCAG claim."
+    },
+    {
+      "name": "standalone lab native pagination and complete print regression",
+      "status": "passed",
+      "artifacts": [
+        "/tmp/chase-sixhour-lab-pagination-final-20261028/results.json",
+        "/tmp/chase-sixhour-lab-cards-print-20261028/results.json",
+        "/tmp/chase-sixhour-lab-pagination-text-preservation-20261028.json"
+      ],
+      "native_cases": 24,
+      "definition_pairs": 276,
+      "broader_cases": 72,
+      "text_preserved": true
     }
   ],
   "releases": [
@@ -911,13 +943,43 @@
     "live_failures": 0
   },
   "phase10": {
-    "status": "all local checks passed; preparing release",
+    "status": "deployed and verified",
     "production": "/tmp/chase-sixhour-reading-path-ready-production-20261028",
     "validation": "/tmp/chase-sixhour-reading-path-ready-validation-20261028.json",
     "assets": "/tmp/chase-sixhour-reading-path-ready-assets-20261028.json",
     "reading_cases": 48,
     "reading": "/tmp/chase-sixhour-reading-path-ready-20261028/results.json",
     "stable_contracts": "/tmp/chase-sixhour-reading-path-stable-contracts-20261028.json",
-    "scope": "Add reverse SuperMimic→MorphMimic reading links and describe the cross-body branch in the existing embodied learning path; retain all old neighbors and anchors."
+    "scope": "Add reverse SuperMimic→MorphMimic reading links and describe the cross-body branch in the existing embodied learning path; retain all old neighbors and anchors.",
+    "deployment": {
+      "id": 40645684660,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "947663e0c0a7e193f6ec1dd85dc998ebbbb0d241",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40645684660",
+      "updated_at": "2026-10-28T06:48:52Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-947663e0c0a7-20261028.json",
+      "verified_at_utc": "2026-10-28T06:50:16.257648+00:00"
+    },
+    "live_urls": 362,
+    "live_failures": 0
+  },
+  "phase11": {
+    "status": "all local checks passed; preparing release",
+    "production": "/tmp/chase-sixhour-lab-cards-production-20261028",
+    "validation": "/tmp/chase-sixhour-lab-cards-validation-20261028.json",
+    "assets": "/tmp/chase-sixhour-lab-cards-assets-20261028.json",
+    "scope": "Print-only break avoidance for compact lab metric/coordinate cards; keep every label and value together, with no screen or calculation changes.",
+    "pagination": "/tmp/chase-sixhour-lab-pagination-final-20261028/results.json",
+    "broader_print": "/tmp/chase-sixhour-lab-cards-print-20261028/results.json",
+    "baseline_failures": 9,
+    "native_cases": 24,
+    "definition_pairs": 276,
+    "all_pdfs_tagged": true,
+    "text_preserved": true,
+    "test_setup": "Use empty CDP media override for native printing; match mixed-font runs by spatial adjacency rather than PDF stream order."
   }
 }

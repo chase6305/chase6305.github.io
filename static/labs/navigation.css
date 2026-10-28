@@ -65,6 +65,7 @@
   :root :is(fieldset, .result, .assumptions, details) { margin: 12pt 0; padding: 10pt; }
   details::details-content { content-visibility: visible; }
   figure { break-inside: avoid; }
+  .metrics > div, .coordinates > div { break-inside: avoid; }
   svg { max-height: 170mm; }
   svg text { fill: #111 !important; }
   :root pre, :root pre code {
