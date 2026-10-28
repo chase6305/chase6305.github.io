@@ -440,6 +440,99 @@
       "name": "Final reading position regression readability",
       "status": "passed",
       "artifact": "/tmp/chase-sixhour-phase8-ready-readability-20261028/results.json"
+    },
+    {
+      "name": "RL policy gradients and squashed density",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-rl-contracts-20261028.log"
+    },
+    {
+      "name": "CasADi free and constrained optimum",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-casadi-contracts-20261028.log"
+    },
+    {
+      "name": "Open3D KDTree and octree numeric interfaces",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-open3d-contracts-20261028.log"
+    },
+    {
+      "name": "Warp vector/matrix/atomics/integration/autodiff on CPU",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-warp-contracts-20261028.log"
+    },
+    {
+      "name": "Qt offscreen regeneration/timer cleanup and offline MeshCat transport",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-ui-contracts-20261028.log"
+    },
+    {
+      "name": "test_supermimic_gradient_lab",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-test_supermimic_gradient_lab-20261028.log"
+    },
+    {
+      "name": "test_multiview_geometry_lab",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-test_multiview_geometry_lab-20261028.log"
+    },
+    {
+      "name": "test_rrsi_selection_lab",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-test_rrsi_selection_lab-20261028.log"
+    },
+    {
+      "name": "test_v2d_height_lab",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-test_v2d_height_lab-20261028.log"
+    },
+    {
+      "name": "test_llm_budget",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-test_llm_budget-20261028.log"
+    },
+    {
+      "name": "final integrated text sizing and spacing",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-final-reflow-20261028/results.json",
+      "layouts": 1890,
+      "failures": 0,
+      "source_preview": "/tmp/chase-sixhour-phase9-final-drafts-20261028"
+    },
+    {
+      "name": "final all-article chapter activation",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-final-chapters-20261028/results.json",
+      "articles": 94,
+      "activations": 9288
+    },
+    {
+      "name": "PyTorch IK and first/second FK derivatives",
+      "status": "passed",
+      "artifacts": [
+        "/tmp/chase-sixhour-pytorch-kinematics-20261028.log",
+        "/tmp/chase-sixhour-pytorch-gradients-20261028.json",
+        "/tmp/chase-sixhour-pytorch-gradient-preservation-20261028.json"
+      ],
+      "published_report_matches": true
+    },
+    {
+      "name": "SuperMimic forward reading and learning paths",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-reading-path-ready-20261028/results.json",
+      "cases": 48,
+      "keyboard_navigation": true
+    },
+    {
+      "name": "fresh production/draft filter inventories",
+      "status": "passed",
+      "artifacts": [
+        "/tmp/chase-sixhour-reading-path-filter-production-20261028.log",
+        "/tmp/chase-sixhour-reading-path-filter-drafts-20261028.log"
+      ],
+      "production_articles": 91,
+      "draft_inclusive_articles": 94,
+      "setup_note": "Initial command omitted the fresh directory and read a stale draft public/. Explicit fresh roots pass both intended inventories."
     }
   ],
   "releases": [
@@ -578,6 +671,14 @@
       "zero_holdout": 10,
       "circle_grid_points": 44,
       "unmodified_default_environment": "OpenCV5 lacks calibrateHandEye; the article capability guard rejects it as documented."
+    },
+    "additional_environments": {
+      "casadi": "3.7.2",
+      "open3d": "0.20.0",
+      "warp": "1.17.0; CPU kernels only, CUDA hidden",
+      "pyside6": "6.8.3; offscreen, no native display coverage",
+      "meshcat": "0.3.2; recording sink, no network server",
+      "ui_venv": "/tmp/chase-sixhour-ui-examples-venv-20261028"
     }
   },
   "external_reference_audit": {
@@ -606,6 +707,18 @@
       "normal_responses": 295,
       "confirmed_missing": 0,
       "limit": "Connectivity only; content correctness is reviewed separately."
+    },
+    "reader_followup": {
+      "confirmed_accessible": [
+        "https://underactuated.mit.edu/trajopt.html",
+        "https://www.mathworks.com/help/signal/ref/hampel.html",
+        "https://www.mathworks.com/help/dsp/ref/dsp.rlsfilter-system-object.html",
+        "https://www.mathworks.com/help/dsp/ref/dsp.lmsfilter-system-object.html"
+      ],
+      "doi_registration": "/tmp/chase-sixhour-doi-registration-20261028.json",
+      "doi_titles_match": 4,
+      "remaining_access_inconclusive": 10,
+      "limit": "DOI registration and matching titles establish citation identity, not full-text accessibility."
     }
   },
   "phase4": {
@@ -771,7 +884,7 @@
     "live_failures": 0
   },
   "phase9": {
-    "status": "all local checks passed; preparing release",
+    "status": "deployed and verified",
     "production": "/tmp/chase-sixhour-phase9-final-production-20261028",
     "validation": "/tmp/chase-sixhour-phase9-validation-20261028.json",
     "assets": "/tmp/chase-sixhour-phase9-assets-20261028.json",
@@ -780,6 +893,31 @@
     "caption_keyboard_links": 24,
     "inner_region_report": "/tmp/chase-sixhour-inner-scroll-before-20261028.json",
     "inner_regions_preserved": 6,
-    "filter_import_guard": "/tmp/chase-sixhour-filter-import-guard-20261028.log"
+    "filter_import_guard": "/tmp/chase-sixhour-filter-import-guard-20261028.log",
+    "deployment": {
+      "id": 40643513272,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "fe1f602a6ceb7f713e8086dd2fe2f53194586dca",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40643513272",
+      "updated_at": "2026-10-28T06:27:24Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-fe1f602a6ceb-20261028.json",
+      "verified_at_utc": "2026-10-28T06:28:48.559550+00:00"
+    },
+    "live_urls": 362,
+    "live_failures": 0
+  },
+  "phase10": {
+    "status": "all local checks passed; preparing release",
+    "production": "/tmp/chase-sixhour-reading-path-ready-production-20261028",
+    "validation": "/tmp/chase-sixhour-reading-path-ready-validation-20261028.json",
+    "assets": "/tmp/chase-sixhour-reading-path-ready-assets-20261028.json",
+    "reading_cases": 48,
+    "reading": "/tmp/chase-sixhour-reading-path-ready-20261028/results.json",
+    "stable_contracts": "/tmp/chase-sixhour-reading-path-stable-contracts-20261028.json",
+    "scope": "Add reverse SuperMimic→MorphMimic reading links and describe the cross-body branch in the existing embodied learning path; retain all old neighbors and anchors."
   }
 }

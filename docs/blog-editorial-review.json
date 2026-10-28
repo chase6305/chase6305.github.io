@@ -2101,7 +2101,8 @@
         74,
         68,
         75,
-        39
+        39,
+        93
       ],
       "path": "content/posts/ai/supermimic/index.md",
       "draft": false,
@@ -2109,7 +2110,8 @@
         "/posts/ai/light-loco-parkour",
         "/posts/ai/ppo-dpo-grpo",
         "/posts/ai/vla-world-model-data",
-        "/posts/planner/to_mpc_wbc"
+        "/posts/planner/to_mpc_wbc",
+        "/posts/ai/morphmimic"
       ],
       "image_decision": "三张方法图解释训练闭环、8／32 步时域及训练／真机接口；四张论文原图保留实验曲线和真机序列。两步手算与交互实验对照完整 BPTT、detach 和预测相同但梯度相反的替代模型，提供可下载复算的输入与结果。",
       "image": "assets/training-cycle.webp",
@@ -2133,7 +2135,7 @@
         "交互实验中三种预设的初始轨迹相同，为什么更新后回报不同？",
         "Critic 拟合时，需要继续对生成监督目标的 actor 和世界模型求导吗？"
       ],
-      "reviewed_on": "2026-10-23"
+      "reviewed_on": "2026-10-28"
     },
     {
       "id": 92,

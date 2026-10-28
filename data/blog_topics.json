@@ -68,7 +68,7 @@
   {
     "id": "embodied-ai",
     "title": "具身策略与机器人学习",
-    "description": "从示教数据与 ACT 进入 VLA，理解行为提示、视频到仿真数据、实时执行、分层协调、全模态世界模型，以及人形全身控制与可微动力学训练。",
+    "description": "从示教数据与 ACT 进入 VLA，理解行为提示、视频到仿真数据、实时执行、分层协调、全模态世界模型，以及人形全身控制、可微动力学训练与跨身体网络共享。",
     "posts": [
       "posts/ai/lerobot-act/index.md",
       "posts/ai/behavior-prompting/index.md",

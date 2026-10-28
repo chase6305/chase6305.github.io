@@ -1,7 +1,7 @@
 ---
 title: "SuperMimic 论文详解：用可微世界模型训练全身控制"
 date: 2026-10-22
-lastmod: 2026-10-23
+lastmod: 2026-10-28
 draft: false
 tags: ["SuperMimic", "Humanoid", "Whole-Body Control", "World Model", "Reinforcement Learning", "Imitation Learning", "Automatic Differentiation", "Paper Notes"]
 categories: ["人工智能"]
@@ -20,6 +20,7 @@ related_posts:
   - "/posts/ai/ppo-dpo-grpo"
   - "/posts/ai/vla-world-model-data"
   - "/posts/planner/to_mpc_wbc"
+  - "/posts/ai/morphmimic"
 ---
 
 让人形机器人跟随一段跑步动作，与让同一个策略覆盖十几万段舞蹈、跳跃、翻滚动作，是两种不同规模的问题。已有方法可以为每段动作训练专家再蒸馏，也可以直接用大量 GPU 训练通用跟踪器。动作越多，仿真采样和策略优化的成本越突出。
@@ -733,6 +734,8 @@ SuperMimic 展示了一条可部署的人形控制训练路线：用普通刚体
 
 对机器人学习的启发是：扩大动作库时，值得单独分析哪些知识属于任务变化，哪些属于共享身体动力学。SuperMimic 的结果说明，在这组平地全身跟踪任务中，复用后者并直接利用其导数，可以大幅降低训练预算。
 
+继续阅读 [MorphMimic](../morphmimic/) 时，可以把问题从“同一种身体覆盖更多动作”推进到“不同身体怎样共享网络”。按[项目说明](https://lzyang2000.github.io/morphmimic/)，MorphMimic 在 SuperMimic 的独立实现上增加统一关节布局、形态条件与本机动作映射。三机联合训练检验的是参与训练的身体能否共享模型和策略；SuperMimic 的动作库覆盖率与这种跨身体共享，应分别按各自的评估协议理解。
+
 ## 阅读自测与验收
 
 先尝试回答，再展开答案核对。
@@ -785,6 +788,7 @@ SuperMimic 展示了一条可部署的人形控制训练路线：用普通刚体
 - [SuperMimic 论文 v1](https://arxiv.org/abs/2610.28480v1)：方法见 Sections 3、4；观测与奖励见 Appendix A，网络与训练设置见 C、D，过滤和评估见 E、F，速度接口见 G。
 - [SuperMimic 项目页](https://supermimic.github.io/)：真机视频、模型预测对照及浏览器策略演示。
 - [BONES-SEED 数据集](https://huggingface.co/datasets/bones-studio/seed)：论文使用其中公开的 G1 重定向动作并进一步筛选。
+- [MorphMimic 详解](../morphmimic/)：沿统一关节、形态条件与动作接口，继续分析三种机器人共享世界模型和策略的条件。
 - [Light-Loco-Parkour 深度解析](../light-loco-parkour/)：比较地形参考、多技能衔接和视觉部署。
 - [PPO、DPO 与 GRPO](../ppo-dpo-grpo/)：补充策略梯度、优势与优化目标的基础。
 - [TO、MPC 与 WBC 的分工](../../planner/to_mpc_wbc/)：对照学习型跟踪器与规划／控制层的职责。
