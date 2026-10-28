@@ -22,6 +22,9 @@ class PID:
     last_output: float = field(default=0.0, init=False)
 
     def __post_init__(self):
+        self._validate_settings()
+
+    def _validate_settings(self):
         if (not all(isfinite(v) for v in (self.kp, self.ki, self.kd,
                                          self.limit, self.tau))
                 or self.limit <= 0 or self.tau < 0
@@ -37,6 +40,9 @@ class PID:
         self.filtered_dy = self.last_raw = self.last_output = 0.0
 
     def update(self, target, measured, dt):
+        # Settings are mutable: validate them again before computing or
+        # committing this sample, including limits changed after construction.
+        self._validate_settings()
         if not all(isfinite(v) for v in (target, measured, dt)) or dt <= 0:
             raise ValueError("inputs must be finite and dt positive")
         if (not isfinite(self.integral) or not isfinite(self.filtered_dy)

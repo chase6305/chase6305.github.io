@@ -32,6 +32,8 @@ For image viewer changes, run `node scripts/check_image_viewer.cjs <fresh-public
 
 For search changes, run `node scripts/test_site_search.cjs` and `node scripts/check_site_search.cjs <baseURL> <CDP-port> <output-directory>`. Both language entrances share the canonical blog collection; verify the Chinese home cards and search as well as the default-language pages. Keep theme override provenance and its published license in `docs/theme-overrides.json` in sync with theme upgrades.
 
+For printing with search open, run `node scripts/check_search_print.cjs <baseURL> <CDP-port> <output-directory>` serially. It covers ready/pending/dismissing queries, reduced motion, both language entrances and immediate reopening; inspect its native PDFs. Printing must capture the page without a modal or backdrop, preserve the query and return focus to the opener.
+
 For text sizing, spacing or sticky navigation changes, run `node scripts/check_site_reflow.cjs <baseURL> <CDP-port> <output-directory> --all-articles` against a draft-inclusive build. It checks 200% root text sizing, increased text spacing and their combination with and without JavaScript, plus actual arrow-key scrolling of enlarged tables. `node scripts/check_site_readability.cjs <baseURL> <CDP-port> <output-directory> --all-articles` checks text and placeholder contrast, print disclosure restoration and native canvas PDF colors. These browser suites also run serially.
 
 For code-copy or code-block changes, run `node scripts/check_code_reading.cjs <baseURL> <CDP-port> <output-directory>` to check overflow focus after text sizing and disclosure changes, exact asynchronous keyboard copying and focus after tabbing away.
@@ -49,6 +51,8 @@ For independent semantic rules, install the test-only engine outside the reposit
 For portable C++17, CMake, Modbus protocol and loopback TCP/UDP examples, run `python3 -B scripts/test_blog_examples.py --only cpp cmake modbus network`. These groups use temporary build directories, a simulated serial port and loopback-only sockets; they do not require NumPy, Matplotlib or Pinocchio. The optional `python` group still needs its robotics/plotting environment.
 
 For the tqdm article, run `python -B scripts/test_tqdm_examples.py` in a dedicated environment with `tqdm`. CI installs the wheel pinned by version and hash in `scripts/requirements-progress.txt`; the checks execute published snippets on one-shot iterators, failures, non-TTY streams, partial byte chunks and optimized Python.
+
+For the PID controller example, run `python3 -B scripts/test_pid_examples.py`. It uses only the standard library and checks parameter changes, invalid settings, state preservation, derivative/reset behavior and output bounds. Keep the integral state in output units when gains change; numerical validation does not guarantee bumpless transfer.
 
 ## Coding Style & Naming Conventions
 

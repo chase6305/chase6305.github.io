@@ -34,7 +34,8 @@
         "Derive chapter option names from their rendered title and excerpt instead of a separately concatenated label",
         "Remove unsupported redundant naming from generic breadcrumb containers",
         "Allow global search shortcuts from buttons while preserving input, select, textarea and contenteditable editing",
-        "Keep each chapter option associated with its article title through aria-describedby"
+        "Keep each chapter option associated with its article title through aria-describedby",
+        "Dismiss search synchronously before printing, cancel stale animation work, and restore focus after screen styles return unless the reader has moved or switched tabs"
       ]
     },
     {

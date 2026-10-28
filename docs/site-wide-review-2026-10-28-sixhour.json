@@ -1,0 +1,97 @@
+{
+  "started_at_utc": "2026-10-28T02:59:13Z",
+  "planned_until_utc": "2026-10-28T08:59:13Z",
+  "baseline_commit": "6073f8c346149638987c8a6b1882ac9fe58636bd",
+  "scope": "Six-hour site and article maintenance; preserve existing public contracts and publish verified changes.",
+  "baseline_validation": "/tmp/chase-sixhour-baseline-validation-20261028.json",
+  "findings": [
+    {
+      "id": "pid-settings-mutation-bypasses-validation",
+      "status": "fixed; six stdlib regressions passed on Python3.10/3.13",
+      "before": "/tmp/chase-sixhour-pid-mutation-before-20261028.json",
+      "evidence": "Changing limit to NaN after construction returns NaN and advances controller state; negative limits and nonboolean anti_windup are accepted, and tau=-dt raises ZeroDivisionError.",
+      "after": "/tmp/chase-sixhour-pid-tests-after-20261028.log",
+      "before_test": "/tmp/chase-sixhour-pid-tests-before-20261028.log"
+    },
+    {
+      "id": "search-dialog-overlays-printed-article",
+      "status": "fixed; 72 state combinations and independent native/focus/background cases passed",
+      "before": "/tmp/chase-sixhour-modal-print-before-20261028.json",
+      "native_pdf": "/tmp/chase-sixhour-modal-print-before-20261028.pdf",
+      "evidence": "Printing with the search dialog open exports the modal and gray backdrop on top of the article; native PDF first page visibly obscures text.",
+      "after": "/tmp/chase-sixhour-search-print-focus-20261028/results.json",
+      "edge_cases": "/tmp/chase-sixhour-search-print-edges-verified-20261028/results.json",
+      "focus_before": "/tmp/chase-sixhour-print-focus-probe-20261028.log"
+    }
+  ],
+  "checks": [
+    {
+      "name": "baseline core snippets and validator regression",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-baseline-core-20261028.log"
+    },
+    {
+      "name": "baseline search",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-baseline-search-20261028/results.json"
+    },
+    {
+      "name": "PID config, state rollback and valid retuning",
+      "status": "passed",
+      "test_methods": 6,
+      "invalid_settings_per_constructor_and_update": 22,
+      "random_valid_updates": 1000,
+      "python_versions": [
+        "3.10",
+        "3.13"
+      ],
+      "artifacts": [
+        "/tmp/chase-sixhour-pid-tests-after-20261028.log",
+        "/tmp/chase-sixhour-pid-tests-py313-20261028.log"
+      ]
+    },
+    {
+      "name": "PID exact-ZOH published experiment",
+      "status": "passed; complete JSON unchanged",
+      "artifact": "/tmp/chase-sixhour-pid-experiment-preservation-20261028.json"
+    },
+    {
+      "name": "search while printing",
+      "status": "passed",
+      "matrix_cases": 72,
+      "pdfs": 7,
+      "native_print": true,
+      "later_focus_preserved": true,
+      "pointer_input_preserved": true,
+      "background_tab_preserved": true,
+      "artifacts": [
+        "/tmp/chase-sixhour-search-print-focus-20261028/results.json",
+        "/tmp/chase-sixhour-search-print-edges-verified-20261028/results.json"
+      ]
+    },
+    {
+      "name": "existing search UI after print changes",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase1-search-20261028/results.json"
+    },
+    {
+      "name": "site navigation and accessibility",
+      "status": "passed",
+      "layouts": 165,
+      "artifact": "/tmp/chase-sixhour-phase1-accessibility-20261028/results.json"
+    }
+  ],
+  "releases": [],
+  "phase1": {
+    "status": "local checks passed; ready for release",
+    "production": "/tmp/chase-sixhour-phase1-production-20261028",
+    "validation": "/tmp/chase-sixhour-phase1-validation-20261028.json",
+    "assets": "/tmp/chase-sixhour-phase1-assets-20261028.json"
+  },
+  "table_diagnostic": {
+    "status": "nine candidates awaiting visual review",
+    "articles": 94,
+    "tables": 599,
+    "artifact": "/tmp/chase-sixhour-table-width-scan-20261028.json"
+  }
+}

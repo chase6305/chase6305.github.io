@@ -26,6 +26,8 @@
   let closeTimer = null;
   let collapseTimer = null;
   let searchRequest = 0;
+  let opener = null;
+  let printFocus = null;
 
   document.addEventListener('DOMContentLoaded', init);
 
@@ -83,6 +85,38 @@
       e.preventDefault();
       closeDialog();
     });
+
+    // Printing must capture the page, with no modal or backdrop above it.
+    // Skip dismissal animations: the print snapshot may happen immediately.
+    const printQuery = window.matchMedia('print');
+    const preparePrint = () => {
+      if (!dialog.open) return;
+      const target = opener;
+      closeDialog({ immediate: true });
+      printFocus = { target, afterClose: document.activeElement };
+    };
+    const restorePrintFocus = () => {
+      if (printQuery.matches || !printFocus) return;
+      const record = printFocus;
+      printFocus = null;
+      const target = record.target;
+      if (!dialog.open && document.hasFocus() && target?.isConnected
+        && target.getClientRects().length && getComputedStyle(target).visibility !== 'hidden'
+        && (document.activeElement === record.afterClose || document.activeElement === document.body)) {
+        target.focus({ preventScroll: true });
+      }
+    };
+    window.addEventListener('beforeprint', preparePrint);
+    window.addEventListener('afterprint', restorePrintFocus);
+    printQuery.addEventListener('change', event => {
+      if (event.matches) preparePrint();
+      else restorePrintFocus();
+    });
+    // A hidden print-time navigation control cannot receive focus. Restore it
+    // after screen styles return, unless the reader has already moved on.
+    const cancelPrintFocus = () => { printFocus = null; };
+    document.addEventListener('pointerdown', cancelPrintFocus, true);
+    document.addEventListener('keydown', cancelPrintFocus, true);
 
     // Delegate result clicks so we can close the dialog on navigation.
     resultsEl.addEventListener('click', (e) => {
@@ -150,6 +184,8 @@
       return;
     }
     if (dialog.open) return;
+    printFocus = null;
+    opener = document.activeElement;
     dialog.showModal();
     input.setAttribute('aria-expanded', 'true');
     // Focus in this activation; a later frame can steal focus from a result.
@@ -171,13 +207,15 @@
     delete dialog.dataset.state;
   }
 
-  function closeDialog() {
-    if (!dialog.open || dialog.dataset.state === 'closing') return;
+  function closeDialog({ immediate = false } = {}) {
+    if (!dialog.open || (!immediate && dialog.dataset.state === 'closing')) return;
     cancelCollapse();
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reducedMotion) {
+    if (immediate || reducedMotion) {
+      cancelClose();
       dialog.close();
+      input.setAttribute('aria-expanded', 'false');
       return;
     }
 
