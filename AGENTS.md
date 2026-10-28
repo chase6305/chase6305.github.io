@@ -40,6 +40,8 @@ For printing with search open, run `node scripts/check_search_print.cjs <baseURL
 
 For printing from mobile navigation or overlapping image/search dialogs, run `node scripts/check_navigation_print.cjs <baseURL> <CDP-port> <output-directory>` serially. Print must release the menu's inert background and scroll lock, retain tagged PDF structure, and restore a usable opener without overriding later reader input or another active tab.
 
+For print position restoration, run `node scripts/check_print_position.cjs <baseURL> <CDP-port> <output-directory>` serially. It repeats native PDF export near the end of long articles in all themes and checks later keyboard, pointer, wheel, touch, focus, chapter, size and font changes. Old reading positions must not override a new reader action or activate another tab.
+
 For text sizing, spacing or sticky navigation changes, run `node scripts/check_site_reflow.cjs <baseURL> <CDP-port> <output-directory> --all-articles` against a draft-inclusive build. It checks 200% root text sizing, increased text spacing and their combination with and without JavaScript, plus actual arrow-key scrolling of enlarged tables. `node scripts/check_site_readability.cjs <baseURL> <CDP-port> <output-directory> --all-articles` checks text and placeholder contrast, print disclosure restoration and native canvas PDF colors. These browser suites also run serially.
 
 For code-copy or code-block changes, run `node scripts/check_code_reading.cjs <baseURL> <CDP-port> <output-directory>` to check overflow focus after text sizing and disclosure changes, exact asynchronous keyboard copying and focus after tabbing away.

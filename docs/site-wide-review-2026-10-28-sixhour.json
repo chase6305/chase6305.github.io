@@ -90,11 +90,12 @@
     },
     {
       "id": "mobile-dark-native-print-position",
-      "status": "confirmed in the baseline; restoring retained reading position is the next batch",
+      "status": "fixed; 36 native cases, media roundtrip, input and broad print checks passed",
       "before": "/tmp/chase-sixhour-native-reading-state-20261028/results.json",
       "evidence": "After native PDF export, several mobile dark-theme cases retain the chapter focus but change scrollY by thousands of pixels. Verify persistence and baseline before choosing a fix.",
       "baseline": "/tmp/chase-sixhour-print-position-old-timing-20261028.json",
-      "timing": "/tmp/chase-sixhour-print-position-timing-20261028.json"
+      "timing": "/tmp/chase-sixhour-print-position-timing-20261028.json",
+      "after": "/tmp/chase-sixhour-print-position-ready-20261028/results.json"
     },
     {
       "id": "language-menu-enter-escape",
@@ -414,6 +415,31 @@
       "name": "Language menu regression search",
       "status": "passed",
       "artifact": "/tmp/chase-sixhour-phase7-search-20261028/results.json"
+    },
+    {
+      "name": "Pinocchio Jacobian article and independent finite differences",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-jacobian-20261028.log"
+    },
+    {
+      "name": "Final reading position regression navigation-print",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase8-ready-navigation-print-20261028/results.json"
+    },
+    {
+      "name": "Final reading position regression search-print",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase8-ready-search-print-20261028/results.json"
+    },
+    {
+      "name": "Final reading position regression print",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase8-ready-print-20261028/results.json"
+    },
+    {
+      "name": "Final reading position regression readability",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase8-ready-readability-20261028/results.json"
     }
   ],
   "releases": [
@@ -678,7 +704,7 @@
     "live_failures": 0
   },
   "phase7": {
-    "status": "all checks passed; preparing release",
+    "status": "deployed and verified",
     "production": "/tmp/chase-sixhour-phase7-production-20261028",
     "validation": "/tmp/chase-sixhour-phase7-validation-20261028.json",
     "assets": "/tmp/chase-sixhour-phase7-assets-20261028.json",
@@ -687,6 +713,38 @@
     "nested_cases": 12,
     "navigation_cases": 165,
     "semantic_cases": 63,
-    "search_layouts": 12
+    "search_layouts": 12,
+    "deployment": {
+      "id": 40640157469,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "d5b982e5e5a1009a3013829219031cc257a50eec",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40640157469",
+      "updated_at": "2026-10-28T05:53:12Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-d5b982e5e5a1-20261028.json",
+      "verified_at_utc": "2026-10-28T05:54:27.926209+00:00"
+    },
+    "live_urls": 362,
+    "live_failures": 0
+  },
+  "phase8": {
+    "status": "all release checks passed",
+    "production": "/tmp/chase-sixhour-phase8-ready-production-20261028",
+    "validation": "/tmp/chase-sixhour-phase8-ready-validation-20261028.json",
+    "assets": "/tmp/chase-sixhour-phase8-ready-assets-20261028.json",
+    "native_cases": 36,
+    "input_cases": 9,
+    "native_report": "/tmp/chase-sixhour-print-position-ready-20261028/results.json",
+    "input_report": "/tmp/chase-sixhour-print-position-focus-edges-20261028/results.json",
+    "before_focus_guard": "/tmp/chase-sixhour-print-position-edges-20261028/results.json",
+    "navigation_print": "/tmp/chase-sixhour-phase8-ready-navigation-print-20261028/results.json",
+    "print_media_before": "/tmp/chase-sixhour-print-media-roundtrip-before-20261028.json",
+    "search_print": "/tmp/chase-sixhour-phase8-ready-search-print-20261028/results.json",
+    "article_print": "/tmp/chase-sixhour-phase8-ready-print-20261028/results.json",
+    "readability": "/tmp/chase-sixhour-phase8-ready-readability-20261028/results.json",
+    "print_media_round_trip": true
   }
 }
