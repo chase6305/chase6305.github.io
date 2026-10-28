@@ -90,15 +90,19 @@
     },
     {
       "id": "mobile-dark-native-print-position",
-      "status": "reproduced; baseline and event-order checks running",
+      "status": "confirmed in the baseline; restoring retained reading position is the next batch",
       "before": "/tmp/chase-sixhour-native-reading-state-20261028/results.json",
-      "evidence": "After native PDF export, several mobile dark-theme cases retain the chapter focus but change scrollY by thousands of pixels. Verify persistence and baseline before choosing a fix."
+      "evidence": "After native PDF export, several mobile dark-theme cases retain the chapter focus but change scrollY by thousands of pixels. Verify persistence and baseline before choosing a fix.",
+      "baseline": "/tmp/chase-sixhour-print-position-old-timing-20261028.json",
+      "timing": "/tmp/chase-sixhour-print-position-timing-20261028.json"
     },
     {
       "id": "language-menu-enter-escape",
-      "status": "reproduced; next interaction batch",
+      "status": "fixed; 108 keyboard, 12 nested and broader checks passed",
       "before": "/tmp/chase-sixhour-native-reading-state-20261028/results.json",
-      "evidence": "Enter opens language options while focus remains on the trigger; Escape then leaves aria-expanded=true."
+      "evidence": "Enter opens language options while focus remains on the trigger; Escape then leaves aria-expanded=true.",
+      "after": "/tmp/chase-sixhour-language-menu-20261028/results.json",
+      "source": "https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/"
     }
   ],
   "checks": [
@@ -395,6 +399,21 @@
       "name": "Overlay printing regression: readability",
       "status": "passed",
       "artifact": "/tmp/chase-sixhour-phase5-readability-20261028/results.json"
+    },
+    {
+      "name": "Language menu regression accessibility",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase7-accessibility-20261028/results.json"
+    },
+    {
+      "name": "Language menu regression semantics",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase7-semantics-20261028/results.json"
+    },
+    {
+      "name": "Language menu regression search",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase7-search-20261028/results.json"
     }
   ],
   "releases": [
@@ -629,7 +648,7 @@
     "live_failures": 0
   },
   "phase6": {
-    "status": "all release checks passed",
+    "status": "deployed and verified",
     "production": "/tmp/chase-sixhour-phase6-production-20261028",
     "validation": "/tmp/chase-sixhour-phase6-validation-20261028.json",
     "assets": "/tmp/chase-sixhour-phase6-assets-20261028.json",
@@ -641,6 +660,33 @@
     "reading": "/tmp/chase-sixhour-phase6-reading-20261028/results.json",
     "native_pdf_cases": 12,
     "native_pdf": "/tmp/chase-sixhour-native-reading-state-20261028/results.json",
-    "stable_contracts": "/tmp/chase-sixhour-phase6-stable-contracts-20261028.json"
+    "stable_contracts": "/tmp/chase-sixhour-phase6-stable-contracts-20261028.json",
+    "deployment": {
+      "id": 40639243310,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "0a9a86f68291301d5dc1b03b9525e761e1ef3c6c",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40639243310",
+      "updated_at": "2026-10-28T05:43:51Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-0a9a86f68291-20261028.json",
+      "verified_at_utc": "2026-10-28T05:45:25.192190+00:00"
+    },
+    "live_urls": 362,
+    "live_failures": 0
+  },
+  "phase7": {
+    "status": "all checks passed; preparing release",
+    "production": "/tmp/chase-sixhour-phase7-production-20261028",
+    "validation": "/tmp/chase-sixhour-phase7-validation-20261028.json",
+    "assets": "/tmp/chase-sixhour-phase7-assets-20261028.json",
+    "language_menu": "/tmp/chase-sixhour-language-menu-20261028/results.json",
+    "keyboard_cases": 108,
+    "nested_cases": 12,
+    "navigation_cases": 165,
+    "semantic_cases": 63,
+    "search_layouts": 12
   }
 }

@@ -117,6 +117,17 @@
         "Release scroll locking and restore the menu entry after print only when the reader has retained focus",
         "Track navigation focus before print styles hide the sidebar, including search opened from the sidebar"
       ]
+    },
+    {
+      "upstream": "assets/js/core/lang.js",
+      "local": "assets/js/core/lang.js",
+      "changes": [
+        "Focus the first language option for native Enter/Space activation while preserving pointer focus",
+        "Close the language menu on Escape from its trigger and keep enclosing mobile navigation open",
+        "Dismiss an open language menu on Escape after focus moves elsewhere without reclaiming reader focus",
+        "Respect an active dialog as the current Escape owner",
+        "Close other language menus before opening another instance"
+      ]
     }
   ],
   "maintenance": "When upgrading the theme, compare these overrides with their upstream versions and rerun site assets, image fixtures, the search unit test and the full browser regressions.",
