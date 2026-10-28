@@ -152,14 +152,15 @@ const routes = publicRoot ? [...htmlFiles(publicRoot)]
           assert.equal(label.label,label.text+' '+label.hint);assert.equal(label.hint,platform==='MacIntel'?'⌘K':'CTRL K');
           assert.equal(label.shortcuts,'Control+k Meta+k');
           await b.cdp('Page.bringToFront');
-          await b.evaluate(`document.querySelector('.hextra-search-trigger').focus()`);
+          assert.equal(await b.evaluate(`document.querySelector('.hextra-theme-toggle').tagName`),'BUTTON');
+          await b.evaluate(`document.querySelector('.hextra-theme-toggle').focus()`);
           const modifiers=platform==='MacIntel'?4:2;
           await b.cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'k',code:'KeyK',windowsVirtualKeyCode:75,modifiers});
           await b.cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'k',code:'KeyK',windowsVirtualKeyCode:75});
           await waitFor(`document.querySelector('#hextra-search-dialog').open`);
           await b.key('Escape','Escape',27);
           await waitFor(`!document.querySelector('#hextra-search-dialog').open`);
-          await b.evaluate(`document.querySelector('.hextra-search-trigger').focus()`);
+          await b.evaluate(`document.querySelector('.hextra-theme-toggle').focus()`);
           await b.key('/','Slash',191);
           await waitFor(`document.querySelector('#hextra-search-dialog').open`);
           await b.key('Escape','Escape',27);

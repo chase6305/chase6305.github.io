@@ -43,7 +43,7 @@
         </div>
         <button type="button" class="blog-filter__reset" data-blog-reset>清除筛选</button>
       </div>
-      <p id="blog-filter-help">筛选覆盖全部 {{ len $pages }} 篇，不限当前页；多个关键词同时匹配。查找正文内容请用导航栏搜索。</p>
+      <p id="blog-filter-help">筛选覆盖全部 {{ len $pages }} 篇，不限当前页；多个关键词同时匹配。<span data-search-full-help hidden>查找正文内容请用导航栏搜索。</span></p>
       <p class="blog-filter__status" data-blog-filter-status role="status" aria-live="polite" aria-atomic="true">当前第 {{ $paginator.PageNumber }} / {{ $paginator.TotalPages }} 页，按发布日期排列。</p>
     </form>
     <script type="application/json" id="blog-filter-data">{{ partial "blog/filter-data.html" $pages | jsonify | safeJS }}</script>

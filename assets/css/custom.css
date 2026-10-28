@@ -1730,6 +1730,8 @@ article main#content > .content {
 .hextra-search-trigger-kbd { color: var(--chase-muted); }
 .hextra-search-trigger:hover { color: var(--chase-text); }
 .hextra-search-trigger-icon { opacity: 1; }
+.hextra-search-trigger-kbd[hidden],
+.hextra-search-dialog:not([open]) { display: none; }
 .hextra-search-empty { color: var(--chase-muted); }
 .hextra-search-input { min-width: 0; width: 100%; }
 .hextra-search-input::placeholder { color: var(--chase-muted); opacity: 1; }

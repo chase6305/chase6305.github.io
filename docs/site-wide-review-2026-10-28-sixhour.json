@@ -46,6 +46,30 @@
         "https://docs.python.org/3.13/library/queue.html#queue.Queue.shutdown",
         "https://docs.python.org/3.13/library/threading.html#threading.Thread.join"
       ]
+    },
+    {
+      "id": "search-entry-native-fallback",
+      "status": "fixed; both label/icon entries pass 60 cases each",
+      "before": "/tmp/chase-sixhour-search-fallback-before-20261028.json",
+      "evidence": "With scripts disabled the trigger button cannot navigate; removing showModal produces a TypeError. Use a native canonical index link and add dialog semantics only after successful feature detection.",
+      "after": "/tmp/chase-sixhour-search-ready-fallback-20261028/results.json",
+      "fallback_cases": 60,
+      "modified_clicks": 5,
+      "icon_cases": 60,
+      "icon_after": "/tmp/chase-sixhour-search-ready-icon-fallback-20261028/results.json",
+      "engine_before": "/tmp/chase-sixhour-overlay-combinations-before-20261028/results.json"
+    },
+    {
+      "id": "mobile-menu-print-hides-content-semantics",
+      "status": "reproduced; next batch",
+      "before": "/tmp/chase-sixhour-overlay-combinations-before-20261028/results.json",
+      "evidence": "With the mobile menu open, the printed article retains inert. Native 29-page PDF changes from Tagged=yes to Tagged=no; print AX headings change from 46 to zero."
+    },
+    {
+      "id": "stacked-image-search-print-focus",
+      "status": "reproduced; next batch",
+      "before": "/tmp/chase-sixhour-overlay-combinations-before-20261028/results.json",
+      "evidence": "Open image viewer then Ctrl+K search; native printing closes both dialogs but leaves focus on body rather than the original article image link."
     }
   ],
   "checks": [
@@ -142,6 +166,151 @@
       "articles": 94,
       "activations": 9288,
       "artifact": "/tmp/chase-sixhour-queue-all-chapters-20261028/results.json"
+    },
+    {
+      "name": "Portable C++17/CMake/Modbus/loopback examples",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-portable-examples-20261028.log"
+    },
+    {
+      "name": "LLM metrics numerical contracts",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-metrics-20261028.log"
+    },
+    {
+      "name": "Model grounding and token-budget examples",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-model-examples-20261028.log"
+    },
+    {
+      "name": "Impedance log analysis",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-impedance-20261028.log"
+    },
+    {
+      "name": "MorphMimic standalone contracts",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-morph-contracts-20261028.log"
+    },
+    {
+      "name": "Pinned MorphMimic CPU tensor source interfaces",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-morph-source-20261028.log"
+    },
+    {
+      "name": "Cosmos token/mask/time contracts",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-cosmos-token-20261028.log"
+    },
+    {
+      "name": "Cosmos evaluation aggregation",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-cosmos-evaluation-20261028.log"
+    },
+    {
+      "name": "Attention outputs/gradients and diffusion smoke",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-torch-examples-20261028.log"
+    },
+    {
+      "name": "Full 3000-step CPU diffusion example",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-diffusion-full-20261028.log"
+    },
+    {
+      "name": "Trajectory results match published JSON",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-trajectory-preservation-20261028.json"
+    },
+    {
+      "name": "Offset-frame inverse/forward dynamics wrench sign",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-external-wrench-20261028.json"
+    },
+    {
+      "name": "Trajectory inline snippets",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-trajectory-inline-20261028.log"
+    },
+    {
+      "name": "Robot filtering contracts and synthetic trace",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-filters-20261028.log"
+    },
+    {
+      "name": "Dynamic null-space projection",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-nullspace-20261028.log"
+    },
+    {
+      "name": "Static stiffness and held-position gain scheduling",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-stiffness-20261028.log"
+    },
+    {
+      "name": "Published filter/null-space/stiffness statistics preserved",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-control-preservation-20261028.json"
+    },
+    {
+      "name": "Search native fallback",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-search-fallback-20261028/results.json"
+    },
+    {
+      "name": "Search UI regression",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase4-search-20261028/results.json"
+    },
+    {
+      "name": "Navigation and themes",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase4-accessibility-20261028/results.json"
+    },
+    {
+      "name": "Search printing",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase4-search-print-20261028/results.json"
+    },
+    {
+      "name": "All-article text resizing and spacing",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase4-reflow-20261028/results.json"
+    },
+    {
+      "name": "Keyboard outline contrast",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase4-focus-20261028/results.json"
+    },
+    {
+      "name": "Interactive semantic rules",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase4-semantics-interactive-20261028/results.json"
+    },
+    {
+      "name": "All-page semantics-all",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase4-semantics-all-20261028/results.json"
+    },
+    {
+      "name": "All-page semantics-native",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-phase4-semantics-native-20261028/results.json"
+    },
+    {
+      "name": "Final search readiness search",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-search-ready-search-20261028/results.json"
+    },
+    {
+      "name": "Final search readiness print",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-search-ready-print-20261028/results.json"
+    },
+    {
+      "name": "Final search readiness semantics",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-search-ready-semantics-20261028/results.json"
     }
   ],
   "releases": [
@@ -234,7 +403,7 @@
     "live_failures": 0
   },
   "phase3": {
-    "status": "all local checks passed; preparing production release",
+    "status": "deployed and verified",
     "production": "/tmp/chase-sixhour-phase3-production-20261028",
     "validation": "/tmp/chase-sixhour-phase3-validation-20261028.json",
     "assets": "/tmp/chase-sixhour-phase3-assets-20261028.json",
@@ -242,6 +411,76 @@
     "targeted_reading_cases": 24,
     "original_examples": "/tmp/chase-sixhour-queue-original-preservation-20261028.json",
     "all_chapters": "/tmp/chase-sixhour-queue-all-chapters-20261028/results.json",
-    "all_chapter_activations": 9288
+    "all_chapter_activations": 9288,
+    "deployment": {
+      "id": 40632161641,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "81971aec0955c9c1061c2b3a4d3ec37312a4f6c3",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40632161641",
+      "updated_at": "2026-10-28T04:28:52Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-81971aec0955-20261028.json",
+      "verified_at_utc": "2026-10-28T04:30:55.702085+00:00"
+    },
+    "live_urls": 361,
+    "live_failures": 0
+  },
+  "scientific_review": {
+    "papers": [
+      "/home/ubuntu/Documents/SuperMimic.pdf",
+      "/home/ubuntu/Documents/cosmos3.pdf"
+    ],
+    "morphmimic_commit": "aa40fe46a7fa995ba7a7354ad065a2c8ad64a302",
+    "scope": "Existing illustrative and isolated interfaces; no simulator training, checkpoint evaluation or hardware results inferred.",
+    "diffusion_full_steps": 3000,
+    "diffusion_samples": 4000,
+    "diffusion_figure_inspected": true,
+    "trajectory_relative_tolerance": 1e-09,
+    "trajectory_absolute_tolerance": 1e-10,
+    "optional_trajectory_environment": "/tmp/chase-sixhour-trajectory-venv-20261028"
+  },
+  "external_reference_audit": {
+    "inventory": "/tmp/chase-sixhour-external-inventory-20261028.json",
+    "results": "/tmp/chase-sixhour-external-audit-20261028.json",
+    "summary": {
+      "checked": 515,
+      "normal": 501,
+      "not_confirmed": 14,
+      "confirmed_404_or_410": 0,
+      "statuses": {
+        "206": 396,
+        "200": 105,
+        "403": 6,
+        "202": 2,
+        "None": 4,
+        "500": 2
+      },
+      "limit": "Connectivity only; redirects, challenge pages and source correctness need separate review."
+    },
+    "followup": "Underactuated Robotics trajectory page opens in the separate web reader despite direct TLS failure; other access failures remain inconclusive. Preserve existing citations."
+  },
+  "phase4": {
+    "status": "all checks passed; ready to publish",
+    "production": "/tmp/chase-sixhour-search-ready-production-20261028",
+    "validation": "/tmp/chase-sixhour-phase4-ready-validation-20261028.json",
+    "assets": "/tmp/chase-sixhour-phase4-ready-assets-20261028.json",
+    "reflow_cases": 1890,
+    "outline_cases": 540,
+    "stable_contracts": "/tmp/chase-sixhour-phase4-stable-contracts-20261028.json",
+    "semantic_manual_review": "/tmp/chase-sixhour-phase4-semantics-manual-20261028.json",
+    "semantic_script_cases": 622,
+    "semantic_native_cases": 622,
+    "semantic_interactive_cases": 63,
+    "semantic_incomplete_review": {
+      "scripts": 2454,
+      "native": 0,
+      "interactive": 277,
+      "finding": "Only closed-popup aria-controls checks; all visible DOM ID references resolve, opened states checked independently. No full WCAG claim."
+    },
+    "guard_preservation": "/tmp/chase-sixhour-phase4-guard-preservation-20261028.json",
+    "final_interactive_incomplete_nodes": 297
   }
 }

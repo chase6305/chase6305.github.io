@@ -33,7 +33,8 @@
 
   function init() {
     dialog = document.getElementById('hextra-search-dialog');
-    if (!dialog) return;
+    if (!dialog || !window.HTMLDialogElement?.prototype.showModal
+      || typeof dialog.showModal !== 'function' || !window.hextraSearch) return;
 
     input = dialog.querySelector('.hextra-search-input');
     input.maxLength = 120;
@@ -42,6 +43,19 @@
     statusEl = dialog.querySelector('.hextra-search-status');
     viewportEl = dialog.querySelector('[data-search-viewport]');
     innerEl = dialog.querySelector('[data-search-inner]');
+
+    document.querySelectorAll('[data-search-open]').forEach(trigger => {
+      trigger.setAttribute('aria-haspopup', 'dialog');
+      trigger.setAttribute('aria-controls', dialog.id);
+      trigger.setAttribute('aria-keyshortcuts', 'Control+k Meta+k');
+      const hint = trigger.querySelector('.hextra-search-trigger-kbd');
+      if (hint) {
+        hint.hidden = false;
+        const label = trigger.querySelector('.hextra-search-trigger-label');
+        trigger.setAttribute('aria-label', `${label.textContent} ${hint.textContent}`);
+      }
+    });
+    document.querySelectorAll('[data-search-full-help]').forEach(help => { help.hidden = false; });
 
     if (isMac) {
       document.querySelectorAll('.hextra-search-trigger-kbd').forEach(el => {
@@ -58,7 +72,11 @@
     }
 
     document.querySelectorAll('[data-search-open]').forEach(btn => {
-      btn.addEventListener('click', () => openDialog());
+      btn.addEventListener('click', event => {
+        if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        openDialog();
+      });
     });
 
     const closeBtn = dialog.querySelector('[data-search-close]');

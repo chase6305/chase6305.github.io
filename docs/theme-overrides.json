@@ -35,7 +35,11 @@
         "Remove unsupported redundant naming from generic breadcrumb containers",
         "Allow global search shortcuts from buttons while preserving input, select, textarea and contenteditable editing",
         "Keep each chapter option associated with its article title through aria-describedby",
-        "Dismiss search synchronously before printing, cancel stale animation work, and restore focus after screen styles return unless the reader has moved or switched tabs"
+        "Dismiss search synchronously before printing, cancel stale animation work, and restore focus after screen styles return unless the reader has moved or switched tabs",
+        "Feature-detect native dialog support before enhancing search links",
+        "Intercept only plain primary clicks and preserve modified native link activation",
+        "Show full-text help only after the search UI is available",
+        "Keep the native link when the search data-plane script failed to load"
       ]
     },
     {
@@ -76,7 +80,9 @@
       "local": "layouts/_partials/components/search-trigger.html",
       "changes": [
         "Expose Control+k and Meta+k through aria-keyshortcuts",
-        "Include the visible search label and shortcut hint in the accessible name"
+        "Include the visible search label and shortcut hint in the accessible name",
+        "Provide a native canonical article-index link before JavaScript enhancement",
+        "Hide shortcut hints and modal ARIA until the dialog API and UI initialization are available"
       ]
     },
     {
