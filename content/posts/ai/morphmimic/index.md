@@ -1,7 +1,7 @@
 ---
 title: "MorphMimic 详解：跨人形机器人的世界模型与策略共享"
 date: 2026-10-27
-lastmod: 2026-10-27
+lastmod: 2026-10-28
 draft: false
 tags: ["MorphMimic", "Humanoid", "Whole-Body Control", "World Model", "Imitation Learning", "Cross-Embodiment", "Paper Notes"]
 categories: ["人工智能"]
@@ -52,8 +52,8 @@ MorphMimic 进一步问：不同机器人能否共享这种动力学知识与跟
 因此，方法不是简单地把三份数据拼起来，而是同时使用**语义映射、物理描述和按机器人保留的统计量**。其整体结构见图 1。
 
 <figure class="article-figure" id="fig-morphmimic-sharing">
-  {{< post-image src="assets/shared-architecture.webp" alt="MorphMimic 的训练与控制结构：各机器人保留仿真回放和本地统计，共享形态条件世界模型；完整动作或五点目标编码成 32 维命令，与本体历史及形态一起进入共享解码器，再经本机动作映射和 PD 执行" >}}
-  <figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">训练时跨机器人共享网络参数，控制时选择一种目标编码接口。世界模型用于训练中的想象滚动；部署执行路径使用编码器、解码器和本机控制常量。图中省略目标归一化、critic、回报计算、梯度同步和返回模拟器的数据采集闭环；左右两部分不是同时部署的两级控制器。</span></figcaption>
+  {{< post-image src="assets/shared-architecture.webp" alt="MorphMimic 的训练与控制结构：报告配置下，各机器人保留仿真回放和本地统计，共享形态条件世界模型；完整动作或五点目标编码成 32 维命令，与本体历史及形态一起进入共享解码器，再经本机动作映射和 PD 执行" >}}
+  <figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">训练时跨机器人共享网络参数，控制时选择一种目标编码接口。世界模型用于训练中的想象滚动；部署执行路径使用编码器、解码器和本机控制常量。图中本机统计对应报告配置；代码当前默认的策略统计池化见<a href="#training">训练配置说明</a>。图中省略目标归一化、critic、回报计算、梯度同步和返回模拟器的数据采集闭环；左右两部分不是同时部署的两级控制器。</span></figcaption>
 </figure>
 
 ## 2. 先统一关节语义，再保留本机执行方式 {#canonical}

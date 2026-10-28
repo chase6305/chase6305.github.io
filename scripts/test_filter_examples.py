@@ -3,11 +3,14 @@
 import importlib.util
 import math
 from pathlib import Path
+import sys
 import unittest
 
 import numpy as np
 from scipy.spatial.transform import Rotation
 
+# Imported example files live in published page bundles.
+sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location(
     "blog_filters", ROOT / "content/posts/robotics/control/robot-filters/robot_filters_lab.py")

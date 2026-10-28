@@ -598,7 +598,15 @@
       },
       "limit": "Connectivity only; redirects, challenge pages and source correctness need separate review."
     },
-    "followup": "Underactuated Robotics trajectory page opens in the separate web reader despite direct TLS failure; other access failures remain inconclusive. Preserve existing citations."
+    "followup": "Underactuated Robotics trajectory page opens in the separate web reader despite direct TLS failure; other access failures remain inconclusive. Preserve existing citations.",
+    "github": {
+      "inventory": "/tmp/chase-sixhour-github-reference-inventory-20261028.json",
+      "results": "/tmp/chase-sixhour-github-reference-audit-20261028.json",
+      "checked": 295,
+      "normal_responses": 295,
+      "confirmed_missing": 0,
+      "limit": "Connectivity only; content correctness is reviewed separately."
+    }
   },
   "phase4": {
     "status": "deployed and verified",
@@ -731,7 +739,7 @@
     "live_failures": 0
   },
   "phase8": {
-    "status": "all release checks passed",
+    "status": "deployed and verified",
     "production": "/tmp/chase-sixhour-phase8-ready-production-20261028",
     "validation": "/tmp/chase-sixhour-phase8-ready-validation-20261028.json",
     "assets": "/tmp/chase-sixhour-phase8-ready-assets-20261028.json",
@@ -745,6 +753,33 @@
     "search_print": "/tmp/chase-sixhour-phase8-ready-search-print-20261028/results.json",
     "article_print": "/tmp/chase-sixhour-phase8-ready-print-20261028/results.json",
     "readability": "/tmp/chase-sixhour-phase8-ready-readability-20261028/results.json",
-    "print_media_round_trip": true
+    "print_media_round_trip": true,
+    "deployment": {
+      "id": 40642634402,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "0da5c8095b5f4da3e1eea088908893fa79d6b525",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40642634402",
+      "updated_at": "2026-10-28T06:18:28Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-0da5c8095b5f-20261028.json",
+      "verified_at_utc": "2026-10-28T06:20:08.547735+00:00"
+    },
+    "live_urls": 362,
+    "live_failures": 0
+  },
+  "phase9": {
+    "status": "all local checks passed; preparing release",
+    "production": "/tmp/chase-sixhour-phase9-final-production-20261028",
+    "validation": "/tmp/chase-sixhour-phase9-validation-20261028.json",
+    "assets": "/tmp/chase-sixhour-phase9-assets-20261028.json",
+    "caption_cases": 24,
+    "caption_report": "/tmp/chase-sixhour-morph-caption-20261028/results.json",
+    "caption_keyboard_links": 24,
+    "inner_region_report": "/tmp/chase-sixhour-inner-scroll-before-20261028.json",
+    "inner_regions_preserved": 6,
+    "filter_import_guard": "/tmp/chase-sixhour-filter-import-guard-20261028.log"
   }
 }
