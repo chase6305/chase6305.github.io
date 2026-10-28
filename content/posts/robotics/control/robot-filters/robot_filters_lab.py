@@ -46,19 +46,24 @@ class WeightedAverage:
         return float(np.dot(w, self.q) / w.sum())
 
 
+def _validate_one_euro_parameters(min_cutoff, beta, derivative_cutoff):
+    if (not np.isfinite([min_cutoff, beta, derivative_cutoff]).all()
+            or min(min_cutoff, derivative_cutoff) <= 0 or beta < 0):
+        raise ValueError("invalid One Euro parameters")
+
+
 class OneEuro:
     """Scalar variant using innovation against the previous filtered value.
 
     Timestamps must increase strictly. Gaps/resets belong to the caller.
     """
     def __init__(self, min_cutoff=1.0, beta=4.0, derivative_cutoff=1.0):
-        if (not np.isfinite([min_cutoff, beta, derivative_cutoff]).all()
-                or min(min_cutoff, derivative_cutoff) <= 0 or beta < 0):
-            raise ValueError("invalid One Euro parameters")
+        _validate_one_euro_parameters(min_cutoff, beta, derivative_cutoff)
         self.minimum, self.beta, self.dc = min_cutoff, beta, derivative_cutoff
         self.t, self.y, self.d = None, None, 0.0
 
     def update(self, timestamp, value):
+        _validate_one_euro_parameters(self.minimum, self.beta, self.dc)
         if not np.isfinite([timestamp, value]).all():
             raise ValueError("timestamp/value must be finite")
         if self.t is None:
@@ -82,11 +87,12 @@ class RotationOneEuro:
     low-pass adapts the gain. Geometry is handled by SO(3) Log/Exp.
     """
     def __init__(self, min_cutoff=1.0, beta=0.3, derivative_cutoff=1.0):
-        OneEuro(min_cutoff, beta, derivative_cutoff)  # parameter validation
+        _validate_one_euro_parameters(min_cutoff, beta, derivative_cutoff)
         self.minimum, self.beta, self.dc = min_cutoff, beta, derivative_cutoff
         self.t, self.r, self.speed = None, None, 0.0
 
     def update(self, timestamp, xyzw):
+        _validate_one_euro_parameters(self.minimum, self.beta, self.dc)
         q = np.asarray(xyzw, dtype=float)
         if (q.shape != (4,) or not np.isfinite(q).all()
                 or not np.isfinite(timestamp) or np.linalg.norm(q) < 1e-12):

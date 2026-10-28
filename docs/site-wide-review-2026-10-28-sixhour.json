@@ -74,6 +74,31 @@
       "evidence": "Open image viewer then Ctrl+K search; native printing closes both dialogs but leaves focus on body rather than the original article image link.",
       "after": "/tmp/chase-sixhour-navigation-print-release-20261028/results.json",
       "native_pdfs": "/tmp/chase-sixhour-phase5-native-pdf-check-20261028.json"
+    },
+    {
+      "id": "one-euro-mutated-configuration-history",
+      "status": "fixed; Python3.10/3.13, full experiment and article checks passed",
+      "before": "/tmp/chase-sixhour-filter-retuning-before-20261028.json",
+      "before_tests": "/tmp/chase-sixhour-filter-contracts-before-20261028.log",
+      "evidence": "Both scalar and rotation variants accept a negative minimum before the first update; a negative beta can be accepted after initialization. 33 mutation subcases fail before the change.",
+      "after": "/tmp/chase-sixhour-filter-contracts-after-20261028.log",
+      "test_methods": 5,
+      "mutated_invalid_calls": 56,
+      "valid_retuning_updates_per_variant": 1000,
+      "ci_tests": "/tmp/chase-sixhour-filter-ci-tests-20261028.log",
+      "published_statistics": "/tmp/chase-sixhour-filter-retuning-statistics-20261028.json"
+    },
+    {
+      "id": "mobile-dark-native-print-position",
+      "status": "reproduced; baseline and event-order checks running",
+      "before": "/tmp/chase-sixhour-native-reading-state-20261028/results.json",
+      "evidence": "After native PDF export, several mobile dark-theme cases retain the chapter focus but change scrollY by thousands of pixels. Verify persistence and baseline before choosing a fix."
+    },
+    {
+      "id": "language-menu-enter-escape",
+      "status": "reproduced; next interaction batch",
+      "before": "/tmp/chase-sixhour-native-reading-state-20261028/results.json",
+      "evidence": "Enter opens language options while focus remains on the trigger; Escape then leaves aria-expanded=true."
     }
   ],
   "checks": [
@@ -567,7 +592,7 @@
     "live_failures": 0
   },
   "phase5": {
-    "status": "all local checks passed; preparing release",
+    "status": "deployed and verified",
     "production": "/tmp/chase-sixhour-phase5-final-production-20261028",
     "validation": "/tmp/chase-sixhour-phase5-final-validation-20261028.json",
     "assets": "/tmp/chase-sixhour-phase5-final-assets-20261028.json",
@@ -586,6 +611,36 @@
     "native_navigation": "/tmp/chase-sixhour-navigation-print-release-20261028/results.json",
     "final_parity": "/tmp/chase-sixhour-phase5-final-parity-20261028.json",
     "menu_reopen": true,
-    "viewer_reopen": true
+    "viewer_reopen": true,
+    "deployment": {
+      "id": 40638033919,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "a72aebbebfac4c9da7db7a9520e2f4f7bfca4a99",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40638033919",
+      "updated_at": "2026-10-28T05:29:40Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-a72aebbebfac-20261028.json",
+      "verified_at_utc": "2026-10-28T05:31:04.841527+00:00"
+    },
+    "live_urls": 361,
+    "live_failures": 0
+  },
+  "phase6": {
+    "status": "all release checks passed",
+    "production": "/tmp/chase-sixhour-phase6-production-20261028",
+    "validation": "/tmp/chase-sixhour-phase6-validation-20261028.json",
+    "assets": "/tmp/chase-sixhour-phase6-assets-20261028.json",
+    "ci_environment": "/tmp/chase-sixhour-filter-ci-venv-20261028",
+    "ci_dependencies": "/tmp/chase-sixhour-filter-ci-dependencies-20261028.json",
+    "workflow_change": "Add isolated hash-pinned NumPy/SciPy filter contract checks after Python3.13 setup.",
+    "statistics_byte_identical": true,
+    "reading_cases": 48,
+    "reading": "/tmp/chase-sixhour-phase6-reading-20261028/results.json",
+    "native_pdf_cases": 12,
+    "native_pdf": "/tmp/chase-sixhour-native-reading-state-20261028/results.json",
+    "stable_contracts": "/tmp/chase-sixhour-phase6-stable-contracts-20261028.json"
   }
 }

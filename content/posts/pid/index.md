@@ -146,7 +146,7 @@ $$
 \dot I=K_i e+\frac{u_{\mathrm{applied}}-u_{\mathrm{raw}}}{T_t},\qquad T_t>0.
 $$
 
-该式比较的两个输出必须位于同一位置、采用相同单位；$T_t$ 是跟踪时间常数。它与“把积分值裁剪到某个上下限”是不同策略，也需要结合实际执行器与采样周期验证。关于这些结构的推导，可从[《Feedback Systems》的 PID 章节入口](https://fbswiki.org/wiki/index.php/PID_Control)继续阅读。
+该式比较的两个输出必须位于同一位置、采用相同单位；$T_t$ 是跟踪时间常数。它与“把积分值裁剪到某个上下限”是不同策略，也需要结合实际执行器与采样周期验证。关于这些结构的推导，可从[《Feedback Systems》的 PID 章节入口](https://fbswiki.org/wiki/index.php/PID_Control)继续阅读；作者的 [PID 课程与阅读目录](https://murray.cds.caltech.edu/CDS_101/110_-_PID_Control)还整理了饱和、抗积分饱和及控制器实现材料。
 
 ## 5. 常见误解
 

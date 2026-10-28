@@ -1,7 +1,7 @@
 ---
 title: "机器人滤波方法详解：从 Butterworth、One Euro 到位姿平滑与状态估计"
 date: 2026-09-25T03:14:26+08:00
-lastmod: 2026-10-27
+lastmod: 2026-10-28
 draft: false
 tags: ["Robotics", "Signal Processing", "Butterworth", "One Euro Filter", "Mass Spring Damper", "Weighted Moving Average", "Pose Filter", "Kalman Filter", "Teleoperation"]
 categories: ["机器人技术"]
@@ -793,6 +793,8 @@ python -B robot_filters_lab.py --output-dir filter-lab-output
 
 不加 `--output-dir` 时只运行公式与边界检查；加上它会绘制五组曲线，并写出信号、指标与参数扫描 JSON。本文使用 Python 3.10、NumPy 2.2.6、SciPy 1.15.0、Matplotlib 3.10.9 运行。脚本不连接机器人、不下载模型。
 
+标量与旋转 One Euro 的最低截止频率、导数截止频率都必须为正，速度增益 β 必须非负，三者都要有限。随文实现会在首次采样及之后每次更新前检查这些设置。在同一采样线程中修改 `minimum`、`beta` 或 `dc` 后，非法配置会被拒绝，时间戳、历史输出和变化率状态保持原值；恢复合法参数后可以继续采样。合法调参仍会保留过去的滤波状态，是否重置状态或平滑改变参数，应结合任务的连续性要求设计。
+
 ### 13.1 固定参数下，谁更稳、谁更慢
 
 信号以 200 Hz 采样，先静止、再以 0.2 m/s 匀速移动、保持，然后平滑返回；测量叠加标准差 6 mm 的高斯噪声和幅值 3 mm 的 20 Hz 正弦干扰，随机种子固定为 20260925。
@@ -906,6 +908,7 @@ python -B feedback_filter.py --output-dir feedback-results
 - **Butterworth 的通带平坦是否表示零延迟？** 不是，幅值与相位是不同性质。
 - **相同四点权重在任何采样率下都一样吗？** 不是，物理时间窗与延迟随更新率变化。
 - **One Euro 换成毫米输入还能直接沿用原来的 β 吗？** 不能，速度数值与参数单位必须同步换算。
+- 在首次采样前或已有历史后，把 One Euro 的最低截止频率改为负数，确认更新拒绝且历史保持；恢复合法参数后继续，并核对输出。
 - **四元数逐分量平均后归一化是否总是正确？** 不是，符号等价、最短弧与旋转几何必须处理。
 - **质量–弹簧–阻尼目标平滑是否自动保证速度与 jerk 上限？** 不保证，硬约束需要单独设计。
 - **离线零相位曲线是否可以证明在线控制同样无延迟？** 不可以，两者可用的信息不同。
