@@ -726,6 +726,44 @@
       "local_protocol_only": true,
       "real_site_files_byte_identical": 2080,
       "github_manual_deployment_performed": false
+    },
+    {
+      "name": "latest complete draft-inclusive semantic audit with and without scripts",
+      "status": "passed",
+      "artifacts": [
+        "/tmp/chase-sixhour-final-allpage-semantics-20261028/results.json",
+        "/tmp/chase-sixhour-final-allpage-native-20261028/results.json"
+      ],
+      "manual_review": "/tmp/chase-sixhour-final-allpage-manual-20261028.json",
+      "cases_per_mode": 638,
+      "native_incomplete": 0,
+      "script_incomplete": 2502,
+      "finding": "Only closed-popup association manual checks; all visible DOM references resolve."
+    },
+    {
+      "name": "live production search behavior",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-live-search-20261028/results.json",
+      "layouts": 12,
+      "ime_editing_retry_and_stale_responses": true
+    },
+    {
+      "name": "live reduced-motion article image viewing",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-live-image-smoke-20261028.json",
+      "cases": 6,
+      "gif_requests": 0,
+      "keyboard_focus_restored": true
+    },
+    {
+      "name": "final fresh production acceptance",
+      "status": "passed",
+      "artifacts": [
+        "/tmp/chase-sixhour-final-validation-20261028.json",
+        "/tmp/chase-sixhour-final-assets-20261028.json",
+        "/tmp/chase-sixhour-final-filter-20261028.log",
+        "/tmp/chase-sixhour-final-artifact-parity-20261028.json"
+      ]
     }
   ],
   "releases": [
@@ -759,6 +797,182 @@
       "live_audit": "/tmp/chase-sixhour-production-http-026b7478945f-20261028.json",
       "verified_at_utc": "2026-10-28T04:06:37.086986+00:00",
       "live_urls": 360,
+      "live_failures": 0
+    },
+    {
+      "phase": 3,
+      "id": 40632161641,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "81971aec0955c9c1061c2b3a4d3ec37312a4f6c3",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40632161641",
+      "updated_at": "2026-10-28T04:28:52Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-81971aec0955-20261028.json",
+      "verified_at_utc": "2026-10-28T04:30:55.702085+00:00",
+      "live_urls": 361,
+      "live_failures": 0
+    },
+    {
+      "phase": 4,
+      "id": 40635632914,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "a4f0866089120976c4697b563a257530dea5b4af",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40635632914",
+      "updated_at": "2026-10-28T05:06:19Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-a4f086608912-20261028.json",
+      "verified_at_utc": "2026-10-28T05:07:54.056575+00:00",
+      "live_urls": 361,
+      "live_failures": 0
+    },
+    {
+      "phase": 5,
+      "id": 40638033919,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "a72aebbebfac4c9da7db7a9520e2f4f7bfca4a99",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40638033919",
+      "updated_at": "2026-10-28T05:29:40Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-a72aebbebfac-20261028.json",
+      "verified_at_utc": "2026-10-28T05:31:04.841527+00:00",
+      "live_urls": 361,
+      "live_failures": 0
+    },
+    {
+      "phase": 6,
+      "id": 40639243310,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "0a9a86f68291301d5dc1b03b9525e761e1ef3c6c",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40639243310",
+      "updated_at": "2026-10-28T05:43:51Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-0a9a86f68291-20261028.json",
+      "verified_at_utc": "2026-10-28T05:45:25.192190+00:00",
+      "live_urls": 362,
+      "live_failures": 0
+    },
+    {
+      "phase": 7,
+      "id": 40640157469,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "d5b982e5e5a1009a3013829219031cc257a50eec",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40640157469",
+      "updated_at": "2026-10-28T05:53:12Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-d5b982e5e5a1-20261028.json",
+      "verified_at_utc": "2026-10-28T05:54:27.926209+00:00",
+      "live_urls": 362,
+      "live_failures": 0
+    },
+    {
+      "phase": 8,
+      "id": 40642634402,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "0da5c8095b5f4da3e1eea088908893fa79d6b525",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40642634402",
+      "updated_at": "2026-10-28T06:18:28Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-0da5c8095b5f-20261028.json",
+      "verified_at_utc": "2026-10-28T06:20:08.547735+00:00",
+      "live_urls": 362,
+      "live_failures": 0
+    },
+    {
+      "phase": 9,
+      "id": 40643513272,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "fe1f602a6ceb7f713e8086dd2fe2f53194586dca",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40643513272",
+      "updated_at": "2026-10-28T06:27:24Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-fe1f602a6ceb-20261028.json",
+      "verified_at_utc": "2026-10-28T06:28:48.559550+00:00",
+      "live_urls": 362,
+      "live_failures": 0
+    },
+    {
+      "phase": 10,
+      "id": 40645684660,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "947663e0c0a7e193f6ec1dd85dc998ebbbb0d241",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40645684660",
+      "updated_at": "2026-10-28T06:48:52Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-947663e0c0a7-20261028.json",
+      "verified_at_utc": "2026-10-28T06:50:16.257648+00:00",
+      "live_urls": 362,
+      "live_failures": 0
+    },
+    {
+      "phase": 11,
+      "id": 40647087358,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "49a1f3a2bedce473b883475ca130f456f23362ef",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40647087358",
+      "updated_at": "2026-10-28T07:01:38Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-49a1f3a2bedc-20261028.json",
+      "verified_at_utc": "2026-10-28T07:03:13.703464+00:00",
+      "live_urls": 362,
+      "live_failures": 0
+    },
+    {
+      "phase": 12,
+      "id": 40650744091,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "da46454c506695b1b91140a5d0fd46622f983474",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40650744091",
+      "updated_at": "2026-10-28T07:36:31Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-da46454c5066-20261028.json",
+      "verified_at_utc": "2026-10-28T07:40:26.599713+00:00",
+      "live_urls": 365,
+      "live_failures": 0
+    },
+    {
+      "phase": 13,
+      "id": 40656245968,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "a1e139c65d2e0d48dbe642712bc0e83fba8f192e",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40656245968",
+      "updated_at": "2026-10-28T08:25:52Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-a1e139c65d2e-20261028.json",
+      "verified_at_utc": "2026-10-28T08:27:41.152980+00:00",
+      "live_urls": 365,
       "live_failures": 0
     }
   ],
@@ -1212,7 +1426,7 @@
     "live_failures": 0
   },
   "phase13": {
-    "status": "all local checks passed; preparing release",
+    "status": "deployed and verified",
     "production": "/tmp/chase-sixhour-manual-deploy-production-20261028",
     "validation": "/tmp/chase-sixhour-manual-deploy-validation-20261028.json",
     "assets": "/tmp/chase-sixhour-manual-deploy-assets-20261028.json",
@@ -1221,6 +1435,83 @@
     "tests": "/tmp/chase-sixhour-manual-deploy-final-tests-20261028.log",
     "py313_tests": "/tmp/chase-sixhour-manual-deploy-final-py313-tests-20261028.log",
     "real_exercise": "/tmp/chase-sixhour-manual-deploy-real-20261028.json",
-    "manual_github_push": false
+    "manual_github_push": false,
+    "deployment": {
+      "id": 40656245968,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "a1e139c65d2e0d48dbe642712bc0e83fba8f192e",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40656245968",
+      "updated_at": "2026-10-28T08:25:52Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-a1e139c65d2e-20261028.json",
+      "verified_at_utc": "2026-10-28T08:27:41.152980+00:00"
+    },
+    "live_urls": 365,
+    "live_failures": 0
+  },
+  "final_review": {
+    "status": "all local and live acceptance checks passed",
+    "last_functional_commit": "a1e139c65d2e0d48dbe642712bc0e83fba8f192e",
+    "articles": 94,
+    "published": 91,
+    "drafts": 3,
+    "edited_article_markdown_files": 14,
+    "topic_paths": 11,
+    "active_tags": 186,
+    "contracts": "/tmp/chase-sixhour-final-contracts-20261028.json",
+    "site_files": 2080,
+    "live_urls": 365,
+    "source_dates_and_existing_anchors_preserved": true,
+    "new_anchor": "queue/worker-failure",
+    "theme_versions_unchanged": true,
+    "external_urls": 811,
+    "external_access_inconclusive": 10,
+    "limits": [
+      "Synthetic/CPU/source-interface tests do not establish model training or real-robot performance.",
+      "Independent semantic audit excludes contrast, which has separate checks; closed popup associations are reviewed separately.",
+      "External source accessibility remains inconclusive for ten automated/reader access failures."
+    ],
+    "recorded_at_utc": "2026-10-28T08:46:01.356050+00:00",
+    "final_semantics": {
+      "final-allpage-semantics": {
+        "artifact": "/tmp/chase-sixhour-final-allpage-semantics-20261028/results.json",
+        "summary": {
+          "cases": 638,
+          "failingCases": 0,
+          "incompleteNodes": 2502,
+          "exceptions": 0
+        },
+        "manual_rules": {
+          "aria-valid-attr-value": 2502
+        },
+        "missing_ids": []
+      },
+      "final-allpage-native": {
+        "artifact": "/tmp/chase-sixhour-final-allpage-native-20261028/results.json",
+        "summary": {
+          "cases": 638,
+          "failingCases": 0,
+          "incompleteNodes": 0,
+          "exceptions": 0
+        },
+        "manual_rules": {},
+        "missing_ids": []
+      }
+    },
+    "all_releases_successful": true,
+    "production": "/tmp/chase-sixhour-final-production-20261028",
+    "strict_validation": "/tmp/chase-sixhour-final-validation-20261028.json",
+    "asset_validation": "/tmp/chase-sixhour-final-assets-20261028.json",
+    "live_search": "/tmp/chase-sixhour-live-search-20261028/results.json",
+    "live_image_viewing": "/tmp/chase-sixhour-live-image-smoke-20261028.json",
+    "site_files_byte_identical": 2080,
+    "code_blocks": 576,
+    "acceptance_checks": 483,
+    "local_references": 28982,
+    "html_pages": 313,
+    "published_bytecode_files": 0
   }
 }
