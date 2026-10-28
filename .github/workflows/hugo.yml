@@ -87,6 +87,8 @@ jobs:
           "$progress_env/bin/python" -m pip install --disable-pip-version-check \
             --only-binary=:all: --require-hashes -r scripts/requirements-progress.txt
           "$progress_env/bin/python" -B scripts/test_tqdm_examples.py
+      - name: Test bounded queue shutdown examples
+        run: python -B scripts/test_queue_examples.py
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

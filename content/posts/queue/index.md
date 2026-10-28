@@ -1,21 +1,21 @@
 ---
 title: '无锁队列：SPSC 内存序、背压与机器人数据新鲜度'
 date: 2025-04-01
-lastmod: 2026-10-27
+lastmod: 2026-10-28
 draft: false
-tags: ["Lock-Free Queue", "Concurrency", "C++"]
+tags: ["Lock-Free Queue", "Concurrency", "C++", "Python"]
 categories: ["编程开发"]
 authors: ["chase"]
 images: ["assets/spsc-publication.webp"]
-summary: "区分线程安全、无锁与实时性，解释 SPSC 的 acquire/release 发布关系，再用离散事件实验比较积压、丢弃策略和机器人状态的数据年龄。"
+summary: "区分线程安全、无锁与实时性，解释 SPSC 发布内存序和 Python 任务失败收尾，再用离散事件实验比较积压、丢弃策略与数据年龄。"
 showToc: true
 TocOpen: true
 hidemeta: false
 comments: false
-description: "区分线程安全、无锁与实时性，解释 SPSC 的 acquire/release 发布关系，再用离散事件实验比较积压、丢弃策略和机器人状态的数据年龄。"
+description: "区分线程安全、无锁与实时性，解释 SPSC 发布内存序和 Python 任务失败收尾，再用离散事件实验比较积压、丢弃策略与数据年龄。"
 contentLanguage: "zh-CN"
 reading_prerequisites: "线程、原子操作与生产者消费者模型"
-reading_focus: "先用四槽位推演核对满空与绕回，再检查发布内存序、线程收尾和数据新鲜度。"
+reading_focus: "先用四槽位推演核对满空与绕回，再检查发布内存序、失败收尾和数据新鲜度；队列记账完成与任务成功分别验收。"
 related_posts:
   - "/posts/cpp/smart-pointer"
   - "/posts/dialout/dh"
@@ -78,6 +78,37 @@ if __name__ == "__main__":
 ```
 
 预期按顺序输出 `0` 到 `9`，随后两个线程正常退出。`maxsize` 限制积压任务数；队列满时，生产者阻塞形成背压。多个消费者通常需要分别接收到结束标记。
+
+### 2.1 消费者失败以后，谁来结束等待 {#worker-failure}
+
+上面的结束标记展示正常流程。如果处理某项时抛出异常，消费者可能在收到 `STOP` 前退出，剩余项仍未处理；`task_done()` 的 `finally` 只负责当前这一项。此时生产者可能堵在满队列上，主线程也可能一直等待 `tasks.join()`。线程里的异常需要另外回传，`join()` 本身不会把它交给调用方。
+
+Python 3.13 新增 `Queue.shutdown()`：正常关闭禁止继续入队，让消费者读完积压；`immediate=True` 会丢弃仍在队列中的项并唤醒等待者。丢弃后 `join()` 返回不代表这些任务已执行。[Python 3.13 队列关闭文档](https://docs.python.org/3.13/library/queue.html#queue.Queue.shutdown)
+
+[bounded_tasks.py](bounded_tasks.py) 给出单生产者、单工作线程的有限批次实现，要求 **Python 3.13+**，仅使用标准库：
+
+```python
+from bounded_tasks import run_tasks
+
+print(run_tasks(range(10), lambda value: value * value, capacity=2))
+```
+
+将下载文件放在当前目录，也可以直接检查正常与故障路径：
+
+```bash
+python3.13 -B bounded_tasks.py
+python3.13 -B bounded_tasks.py --fail-at 3
+```
+
+正常命令输出 `[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]`；故障命令应在主线程报告任务 3 的异常并返回非零退出状态。实现按三条路径收尾：
+
+- 输入读完后正常关闭队列，处理已接受的任务，再等待工作线程退出。
+- 工作函数失败后取消积压，唤醒正在等待入队的生产者；等待线程退出后重新抛出原异常。
+- 输入迭代器失败时取消积压并保留输入异常；若两侧同时失败，本例优先报告生产者异常。
+
+每次成功 `get()` 仍恰好对应一次 `task_done()`，失败记录与队列计数分开维护。关闭队列不会打断正在执行的处理函数，本例仍等待它返回；已执行的副作用也不会撤销。[线程等待语义](https://docs.python.org/3.13/library/threading.html#threading.Thread.join)
+
+`capacity` 只限制排队数量，正在执行的一项与返回结果列表另占内存；因此这里处理有限输入，不能据此宣称整条无限数据流内存有界。前面的结束标记示例保留，兼容不提供 `shutdown()` 的 Python 版本。
 
 ## 3. C++17：有界 SPSC 环形队列
 
@@ -252,3 +283,4 @@ ROS 2 的 `history/depth` 控制历史样本数量，`lifespan` 描述消息有�
 
 - 用很小的环形容量强制频繁绕回，检查满/空状态、顺序和总数；大容量下偶然成功不足以覆盖索引复用。
 - 严格保持单生产者、单消费者约束，测试结束时等待线程退出；无锁进展条件不是实时截止时间保证。
+- 让消费者在队列已满时抛出异常，确认等待者能够退出、调用方收到失败；区分已处理、取消积压与仍在执行的任务。

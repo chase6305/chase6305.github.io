@@ -54,6 +54,8 @@ For the tqdm article, run `python -B scripts/test_tqdm_examples.py` in a dedicat
 
 For the PID controller example, run `python3 -B scripts/test_pid_examples.py`. It uses only the standard library and checks parameter changes, invalid settings, state preservation, derivative/reset behavior and output bounds. Keep the integral state in output units when gains change; numerical validation does not guarantee bumpless transfer.
 
+For Python queue shutdown examples, run `python -B scripts/test_queue_examples.py` with Python 3.13+. It runs each concurrency scenario in a disposable process with a timeout, including blocked producers, empty readers, task/iterator errors and in-flight work. Queue cancellation is separate from successful task completion; preserve the older sentinel example and published C++/freshness results.
+
 ## Coding Style & Naming Conventions
 
 Use two-space indentation in YAML and preserve the existing front matter format. Write Markdown with descriptive headings and fenced code blocks that specify a language. Keep post bundles lowercase and topic-oriented; use hyphens for multiword names, for example `content/posts/python/new-feature/index.md`. Store post-specific media beside `index.md` and reference it relatively. Put theme customizations in repository-owned overrides rather than changing the submodule.

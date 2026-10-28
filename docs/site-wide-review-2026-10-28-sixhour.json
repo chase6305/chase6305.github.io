@@ -32,6 +32,20 @@
       "all_tables_compared": 599,
       "source_edits": "/tmp/chase-sixhour-readable-table-edits-20261028.json",
       "targeted_checks": "/tmp/chase-sixhour-readable-tables-20261028/results.json"
+    },
+    {
+      "id": "task-queue-error-reporting-and-cancellation",
+      "status": "failure boundary reproduced; separate Python3.13+ example integrated",
+      "before": "/tmp/chase-sixhour-queue-worker-failure-before-20261028.json",
+      "evidence": "Injecting a task-processing exception into the original normal-flow sentinel example leaves the main thread waiting. Keep that compatible example and add explicit cancellation/error reporting.",
+      "tests": "/tmp/chase-sixhour-queue-py313-tests-20261028.log",
+      "isolated_tests": "/tmp/chase-sixhour-queue-isolated-tests-20261028.log",
+      "test_methods": 9,
+      "preserved_original_examples": "/tmp/chase-sixhour-queue-original-preservation-20261028.json",
+      "sources": [
+        "https://docs.python.org/3.13/library/queue.html#queue.Queue.shutdown",
+        "https://docs.python.org/3.13/library/threading.html#threading.Thread.join"
+      ]
     }
   ],
   "checks": [
@@ -102,6 +116,32 @@
       "cases": 912,
       "figures": 536,
       "artifact": "/tmp/chase-sixhour-phase2-reading-20261028/results.json"
+    },
+    {
+      "name": "bounded queue shutdown and business failure paths",
+      "status": "passed",
+      "tests": 9,
+      "python": "3.13.5",
+      "isolated_environment": true,
+      "per_case_process_timeout_seconds": 10
+    },
+    {
+      "name": "queue chapter with native fallback",
+      "status": "passed",
+      "cases": 24,
+      "artifact": "/tmp/chase-sixhour-queue-reading-20261028/results.json"
+    },
+    {
+      "name": "updated chapter fixtures",
+      "status": "passed",
+      "artifact": "/tmp/chase-sixhour-queue-toc-fixtures-20261028.log"
+    },
+    {
+      "name": "every article chapter activation",
+      "status": "passed",
+      "articles": 94,
+      "activations": 9288,
+      "artifact": "/tmp/chase-sixhour-queue-all-chapters-20261028/results.json"
     }
   ],
   "releases": [
@@ -118,6 +158,22 @@
       "live_audit_exit": 0,
       "live_audit": "/tmp/chase-sixhour-production-http-4075865748ac-20261028.json",
       "verified_at_utc": "2026-10-28T03:36:19.310033+00:00",
+      "live_urls": 360,
+      "live_failures": 0
+    },
+    {
+      "phase": 2,
+      "id": 40629914545,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "026b7478945ffb459d24f47a528be1bced50c7c1",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40629914545",
+      "updated_at": "2026-10-28T04:05:12Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-026b7478945f-20261028.json",
+      "verified_at_utc": "2026-10-28T04:06:37.086986+00:00",
       "live_urls": 360,
       "live_failures": 0
     }
@@ -151,7 +207,7 @@
     "artifact": "/tmp/chase-sixhour-table-width-scan-20261028.json"
   },
   "phase2": {
-    "status": "local verification passed",
+    "status": "deployed and verified",
     "production": "/tmp/chase-sixhour-phase2-production-20261028",
     "validation": "/tmp/chase-sixhour-phase2-validation-20261028.json",
     "assets": "/tmp/chase-sixhour-phase2-assets-20261028.json",
@@ -160,6 +216,32 @@
     "figure_cases": 536,
     "tables_compared": 599,
     "reading": "/tmp/chase-sixhour-phase2-reading-20261028/results.json",
-    "stable_contracts": "/tmp/chase-sixhour-phase2-stable-contracts-20261028.json"
+    "stable_contracts": "/tmp/chase-sixhour-phase2-stable-contracts-20261028.json",
+    "deployment": {
+      "id": 40629914545,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "026b7478945ffb459d24f47a528be1bced50c7c1",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40629914545",
+      "updated_at": "2026-10-28T04:05:12Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-026b7478945f-20261028.json",
+      "verified_at_utc": "2026-10-28T04:06:37.086986+00:00"
+    },
+    "live_urls": 360,
+    "live_failures": 0
+  },
+  "phase3": {
+    "status": "all local checks passed; preparing production release",
+    "production": "/tmp/chase-sixhour-phase3-production-20261028",
+    "validation": "/tmp/chase-sixhour-phase3-validation-20261028.json",
+    "assets": "/tmp/chase-sixhour-phase3-assets-20261028.json",
+    "queue_tests": 9,
+    "targeted_reading_cases": 24,
+    "original_examples": "/tmp/chase-sixhour-queue-original-preservation-20261028.json",
+    "all_chapters": "/tmp/chase-sixhour-queue-all-chapters-20261028/results.json",
+    "all_chapter_activations": 9288
   }
 }

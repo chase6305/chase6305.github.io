@@ -1,7 +1,7 @@
 ---
 title: 'C++ TCP 通信：消息边界、完整读写与截止时间'
 date: 2021-08-08
-lastmod: 2026-09-30
+lastmod: 2026-10-28
 draft: false
 tags: ["C++", "TCP", "Network Programming"]
 categories: ["系统与工具"]
@@ -206,6 +206,8 @@ g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic -pthread tcp_deadline.cpp -o tcp_dea
 一个任务协议可以分别定义 `accepted`、`running`、`completed`、`failed`，并携带会话标识和命令序号。连接在响应返回前断开时，动作可能已经执行；带机械副作用的命令不能仅因“没收到 ACK”就盲目重发。需要由服务端按命令标识查询或去重，并写清去重记录的保存范围与过期行为。
 
 状态流和任务流也应区别处理：旧关节状态可能需要丢弃，已接受的顺序任务则不能任意跳过。队列容量与数据年龄的关系可继续读[无锁队列中的背压与新鲜度]({{< relref "/posts/queue" >}})。
+
+任务进入服务端队列后，工作线程的失败也要回到协议状态。进程内的队列计数归零不能替代业务结果；[消费者异常与队列关闭]({{< relref "/posts/queue" >}}#worker-failure)展示了如何唤醒等待者并回传异常。对外仍应据实际执行结果报告 `completed` 或 `failed`，保留会话和命令标识供后续查询。
 
 ## 从示例走向实际服务
 

@@ -561,7 +561,8 @@
         "/posts/queue"
       ],
       "image_decision": "补充长度前缀、跨帧接收块与整帧截止时间图；逐字节核对消息重组",
-      "image": null
+      "image": null,
+      "reviewed_on": "2026-10-28"
     },
     {
       "id": 31,
@@ -841,9 +842,9 @@
     },
     {
       "id": 46,
-      "summary": "区分线程安全、无锁与实时性，解释 SPSC 的 acquire/release 发布关系，再用离散事件实验比较积压、丢弃策略和机器人状态的数据年龄。",
+      "summary": "区分线程安全、无锁与实时性，解释 SPSC 发布内存序和 Python 任务失败收尾，再用离散事件实验比较积压、丢弃策略与数据年龄。",
       "prerequisites": "线程、原子操作与生产者消费者模型",
-      "focus": "先用四槽位推演核对满空与绕回，再检查发布内存序、线程收尾和数据新鲜度。",
+      "focus": "先用四槽位推演核对满空与绕回，再检查发布内存序、失败收尾和数据新鲜度；队列记账完成与任务成功分别验收。",
       "related": [
         17,
         21
@@ -855,7 +856,9 @@
         "/posts/dialout/dh"
       ],
       "image_decision": "保留 SPSC 发布关系图，补充队列策略的离散事件数据年龄比较图",
-      "image": "content/posts/queue/assets/spsc-publication.webp"
+      "image": "content/posts/queue/assets/spsc-publication.webp",
+      "description": "区分线程安全、无锁与实时性，解释 SPSC 发布内存序和 Python 任务失败收尾，再用离散事件实验比较积压、丢弃策略与数据年龄。",
+      "reviewed_on": "2026-10-28"
     },
     {
       "id": 47,
