@@ -147,7 +147,7 @@
     },
     {
       "id": "embedded-lab-data-retry",
-      "status": "validated; ready for release",
+      "status": "published in7b72281; CI and374 live URLs verified",
       "before": "/tmp/chase-sixhour-lab-retry-before-20261029.json",
       "scope": "Filter and Jev widgets retain static content after initial data failures; add explicit reload, one pending request, timeout recovery and no reader focus movement.",
       "initial_smoke": "both widgets recover via Enter; focused ready control remains until Tab moves to method/group",
@@ -179,7 +179,7 @@
     },
     {
       "id": "act-endpoint-weight-overflow",
-      "status": "fixed; Python and browser checks passed; release pending",
+      "status": "published in9fb0256; CI and375 live URLs verified",
       "before": "/tmp/chase-sixhour-act-weights-before-20261029.json",
       "scope": "Choose the maximum-weight endpoint before multiplying finite coefficients; preserve the normalized weighting formula and published examples.",
       "python_versions": [
@@ -200,7 +200,7 @@
     },
     {
       "id": "morphmimic-mapping-configuration",
-      "status": "validated; ready for release",
+      "status": "published in9fb0256; CI and375 live URLs verified",
       "before": "/tmp/chase-sixhour-morph-mapping-before-20261029.json",
       "scope": "Reject mismatched mapping lengths, duplicate/out-of-range native indices, invalid direction signs and incomplete inverse positions; preserve unmapped defaults. These are checks for the article example, not changes to author training code.",
       "test_methods": 10,
@@ -292,6 +292,36 @@
         "failures": 0,
         "bytes": 34309746
       }
+    },
+    {
+      "id": 40820512464,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "7b722810807a54cae5170aa2d8a0703ced96c421",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40820512464",
+      "updated_at": "2026-10-29T05:00:51Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-7b722810807a-20261029.json",
+      "verified_at_utc": "2026-10-29T05:19:25.367742+00:00",
+      "network_rechecks": 1,
+      "commit": "7b722810807a54cae5170aa2d8a0703ced96c421"
+    },
+    {
+      "id": 40822873790,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "9fb025615d6eb85de13531bd4395da0963ce298f",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40822873790",
+      "updated_at": "2026-10-29T05:25:31Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-9fb025615d6e-20261029.json",
+      "verified_at_utc": "2026-10-29T05:37:34.869371+00:00",
+      "network_rechecks": 7,
+      "commit": "9fb025615d6eb85de13531bd4395da0963ce298f"
     }
   ],
   "scientific_rechecks": [
@@ -385,5 +415,33 @@
     "audit": "/tmp/chase-sixhour-external-links-audit-20261029.json",
     "rechecks": "/tmp/chase-sixhour-external-links-rechecks-20261029.json",
     "editorial_decision": "Retain authoritative references. Do not treat access restrictions or transient TLS failures as missing sources; PID book hosts returned 500 and alternative static hosts could not be freshly verified."
+  },
+  "article_focus": {
+    "requested_at_utc": "2026-10-29T05:12:03Z",
+    "dedicated_until_utc": "2026-10-29T06:12:03Z",
+    "status": "validated; ready for release; dedicated review continues until06:12UTC",
+    "article": "content/posts/planner/task-and-motion-planning/index.md",
+    "source": "/home/ubuntu/Documents/Integrated Task and Motion Planning.pdf",
+    "source_sha256": "1c887d8a6d45ee1531a8b9c298ce3b13f7a7dc8239d910e0434a350fe3043a2f",
+    "source_pages": 30,
+    "version": "arXiv:2010.01083v1",
+    "figures": 3,
+    "standard_library_examples": "tamp_constraints.py",
+    "checks": "Python3.10/3.13/optimized outputs identical; 500 independent geometry distance checks; strict draft and TOC validation passed",
+    "production": "/tmp/chase-tamp-production-20261029",
+    "production_validation": "/tmp/chase-tamp-production-20261029.log",
+    "toc": "/tmp/chase-tamp-toc-20261029.log",
+    "chapter_activations": 184,
+    "chapter_checks": "/tmp/chase-tamp-chapters-20261029/results.json",
+    "image_viewer_cases": 12,
+    "image_viewers": "/tmp/chase-tamp-image-viewers-20261029/results.json",
+    "print_layouts": 6,
+    "browser_screen_and_native_pdf_cases": 30,
+    "semantic_layouts": 24,
+    "semantic_violations": 0,
+    "semantic_closed_popup_incomplete_nodes": 36,
+    "semantic_open_dialogs_checked": 3,
+    "semantic": "/tmp/chase-tamp-semantics-20261029.json",
+    "diagram_provenance": "docs/image-generation/tamp-20261029.json"
   }
 }

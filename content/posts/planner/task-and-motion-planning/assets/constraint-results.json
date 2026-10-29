@@ -1,0 +1,231 @@
+{
+  "constructed_example_only": true,
+  "scope": "Refine a given carrying stage; no blocker relocation, arm IK, dynamics or hardware.",
+  "units": "m",
+  "opening_width_m": 1.0,
+  "blocker_radius_m": 0.4,
+  "parking_m": {
+    "near": [
+      0.0,
+      0.05
+    ],
+    "far": [
+      1.0,
+      1.0
+    ]
+  },
+  "grasp_envelope_radius_m": {
+    "wide": 0.6,
+    "narrow": 0.25
+  },
+  "without_reuse": {
+    "choices": [
+      {
+        "parking": "near",
+        "grasp": "wide",
+        "status": "infeasible",
+        "reason": "door_width_certificate",
+        "crossing_intervals_m": []
+      },
+      {
+        "parking": "near",
+        "grasp": "narrow",
+        "status": "infeasible",
+        "reason": "crossing_obstruction_certificate",
+        "crossing_intervals_m": []
+      },
+      {
+        "parking": "far",
+        "grasp": "wide",
+        "status": "infeasible",
+        "reason": "door_width_certificate",
+        "crossing_intervals_m": []
+      },
+      {
+        "parking": "far",
+        "grasp": "narrow",
+        "status": "feasible",
+        "reason": "verified_segments",
+        "crossing_intervals_m": [
+          [
+            -0.249999999,
+            0.249999999
+          ]
+        ],
+        "crossing_height_m": 0.0,
+        "path_m": [
+          [
+            -2.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ]
+        ],
+        "valid": true,
+        "wall_centerline_clearance_m": 0.5,
+        "blocker_centerline_clearance_m": 1.0
+      }
+    ],
+    "refinement_calls": 4,
+    "verified_choices": [
+      [
+        "far",
+        "narrow"
+      ]
+    ]
+  },
+  "with_reuse": {
+    "choices": [
+      {
+        "parking": "near",
+        "grasp": "wide",
+        "status": "infeasible",
+        "reason": "door_width_certificate",
+        "crossing_intervals_m": []
+      },
+      {
+        "parking": "near",
+        "grasp": "narrow",
+        "status": "infeasible",
+        "reason": "crossing_obstruction_certificate",
+        "crossing_intervals_m": []
+      },
+      {
+        "parking": "far",
+        "grasp": "wide",
+        "status": "pruned",
+        "reason": "reused_door_width_certificate"
+      },
+      {
+        "parking": "far",
+        "grasp": "narrow",
+        "status": "feasible",
+        "reason": "verified_segments",
+        "crossing_intervals_m": [
+          [
+            -0.249999999,
+            0.249999999
+          ]
+        ],
+        "crossing_height_m": 0.0,
+        "path_m": [
+          [
+            -2.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ]
+        ],
+        "valid": true,
+        "wall_centerline_clearance_m": 0.5,
+        "blocker_centerline_clearance_m": 1.0
+      }
+    ],
+    "refinement_calls": 3,
+    "verified_choices": [
+      [
+        "far",
+        "narrow"
+      ]
+    ]
+  },
+  "failed_candidate_is_not_infeasibility": {
+    "parking_m": [
+      1.0,
+      0.0
+    ],
+    "candidate": {
+      "status": "unknown",
+      "reason": "candidate_path_collision",
+      "crossing_intervals_m": [
+        [
+          -0.249999999,
+          0.249999999
+        ]
+      ],
+      "crossing_height_m": 0.0,
+      "path_m": [
+        [
+          -2.0,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          2.0,
+          0.0
+        ]
+      ],
+      "valid": false,
+      "wall_centerline_clearance_m": 0.5,
+      "blocker_centerline_clearance_m": 0.0
+    },
+    "alternative_path_m": [
+      [
+        -2.0,
+        0.0
+      ],
+      [
+        -1.0,
+        0.0
+      ],
+      [
+        0.3,
+        0.0
+      ],
+      [
+        0.3,
+        1.0
+      ],
+      [
+        2.0,
+        1.0
+      ],
+      [
+        2.0,
+        0.0
+      ]
+    ],
+    "alternative_checks": {
+      "valid": true,
+      "wall_centerline_clearance_m": 0.3,
+      "blocker_centerline_clearance_m": 0.7
+    }
+  },
+  "factorized_state_count": {
+    "domain_sizes": [
+      4,
+      5,
+      5,
+      3,
+      2
+    ],
+    "cartesian_product": 600
+  }
+}

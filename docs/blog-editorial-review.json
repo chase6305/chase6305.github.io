@@ -2225,6 +2225,44 @@
         "论文与项目页的硬件遥操作接口标注是否一致？",
         "重算形态向量缩放范围会不会改变旧机器人输入？"
       ]
+    },
+    {
+      "id": 94,
+      "added_on": "2026-10-29",
+      "reviewed_on": "2026-10-29",
+      "summary": "围绕 Garrett 等人的综述，解释任务骨架、连续模式参数、运动路径与混合约束，比较采样、优化及搜索交织，并用可复算的门洞搬运例子区分几何不可行证据与求解失败。",
+      "prerequisites": "机器人位姿、正逆运动学与图搜索；不要求掌握某个 TAMP 软件库",
+      "focus": "先分清动作顺序、模式参数和运动路径，再判断约束如何求解、失败能排除什么，以及何时必须回到另一条任务骨架。",
+      "related": [
+        39,
+        12,
+        52,
+        81
+      ],
+      "path": "content/posts/planner/task-and-motion-planning/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/planner/to_mpc_wbc",
+        "/posts/casadi",
+        "/posts/robotics/kinematics/pinocchio",
+        "/posts/ai/jev-decision-layer"
+      ],
+      "image_decision": "两张概念图区分细化反馈和附着关系切换；确定性门洞图来自同一组构造几何参数。标准库脚本核对必要条件证据、整段路径、信息复用与未知状态。",
+      "image": "assets/tamp-refinement.webp",
+      "acceptance_checks": [
+        "TAMP 除了动作顺序与运动路径，还必须选择什么？",
+        "downward refinement property 在一般操作场景中为何不可靠？",
+        "transit 与 transfer 的模式参数有什么不同？",
+        "找到一个 IK 解，是否已经证明抓取动作可执行？",
+        "为什么在整个大空间均匀采样难以满足精确抓取约束？",
+        "联合满足与先骨架后细化是同一个分类轴吗？",
+        "当前有限样本对应的离散问题无解，能推出连续问题无解吗？",
+        "超时与不可行证据可以写入同一种永久剪枝规则吗？",
+        "门洞例子里，宽抓法证据能否用于另一种放置？",
+        "一条直线碰撞，能否排除所有绕行路径？",
+        "物体布局改变后，为何不能直接复用旧碰撞缓存？",
+        "规划几何成功与真机任务成功之间还差哪些条件？"
+      ]
     }
   ]
 }

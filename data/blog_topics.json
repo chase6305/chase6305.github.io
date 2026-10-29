@@ -17,10 +17,11 @@
   {
     "id": "planning-control",
     "title": "规划、轨迹与控制",
-    "description": "先区分几何路径和时间轨迹，再理解跟踪控制、动力学与全身控制的边界。",
+    "description": "从几何路径与任务-运动联合规划，到时间参数化、优化与跟踪控制，理解各层的可行性条件与接口边界。",
     "posts": [
       "posts/ai/algorithms/Astar/Astar-introduction/index.md",
       "posts/ai/algorithms/Astar/Astar-cpp/index.md",
+      "posts/planner/task-and-motion-planning/index.md",
       "posts/casadi/index.md",
       "posts/trajectory/toppra/index.md",
       "posts/trajectory/ruckig/index.md",

@@ -1,0 +1,38 @@
+{
+  "tool": "built-in image_gen",
+  "prompts": "docs/image-generation/tamp-20261029.md",
+  "assets": [
+    {
+      "asset": "content/posts/planner/task-and-motion-planning/assets/tamp-refinement.webp",
+      "original": "/home/ubuntu/.codex/generated_images/01a16246-f113-7133-b053-2b55e6769409/exec-2562b330-c0ae-493f-a80e-d5dfd241d7d9.png",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "sha256": "541bf8d066a041fb1e9f8c86897bff92894df22968f215d950f09530e36fd104",
+      "review": "Labels, attachment direction and feedback arrows inspected; final transfer panel includes subsequent lifting. Only format conversion applied."
+    },
+    {
+      "asset": "content/posts/planner/task-and-motion-planning/assets/mode-switch.webp",
+      "original": "/home/ubuntu/.codex/generated_images/01a16246-f113-7133-b053-2b55e6769409/exec-106625e6-e4f3-409d-b502-d5a760f7e8a7.png",
+      "dimensions": [
+        1958,
+        803
+      ],
+      "sha256": "f9372ed349805fbef797bdeabb6f293af17d7e28acda175c74c5cf2f80e71ddb",
+      "review": "Labels, attachment direction and feedback arrows inspected; final transfer panel includes subsequent lifting. Only format conversion applied."
+    }
+  ],
+  "numerical_figure": {
+    "asset": "content/posts/planner/task-and-motion-planning/assets/doorway-refinement.png",
+    "generator": "content/posts/planner/task-and-motion-planning/make_figures.py",
+    "engine": "Matplotlib 3.10.9",
+    "dimensions": [
+      2016,
+      784
+    ],
+    "sha256": "6e7969a52ce445e8e927a386fd5a53c39297277a0cb5a9a7281c3be6fad141e3",
+    "data_sha256": "56c290303f22782686af4590f66e2969773d91b6b6bf59791b7da0afbf16858a",
+    "scope": "Constructed exact 2D geometry, not measured robot performance."
+  }
+}

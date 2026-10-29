@@ -1,6 +1,6 @@
 - name: Robotics & Control
   nameZh: 机器人与控制
-  tags: [Robotics, Kinematics, Inverse Kinematics, D-H Parameters, Calibration, Kinematic Calibration, Hand-Eye Calibration, Robot Zeroing, CCTag, Circle Grid, Fiducial Markers, OpenCV, Motion Planning, Path Planning, A*, 3D Grid, MPC, Whole-Body Control, PID, Robot Control, Trajectory Generation, Trajectory Optimization, Ruckig, TOPP-RA, Pink, Pinocchio, Workspace Analysis, Monte Carlo, Robot Gripper, CasADi, Optimization, Automatic Differentiation, 机器人, Control, Dynamics, Impedance Control, Jacobian, Parameter Identification, RLS, ELMP]
+  tags: [Robotics, Kinematics, Inverse Kinematics, D-H Parameters, Calibration, Kinematic Calibration, Hand-Eye Calibration, Robot Zeroing, CCTag, Circle Grid, Fiducial Markers, OpenCV, TAMP, Motion Planning, Path Planning, A*, 3D Grid, MPC, Whole-Body Control, PID, Robot Control, Trajectory Generation, Trajectory Optimization, Ruckig, TOPP-RA, Pink, Pinocchio, Workspace Analysis, Monte Carlo, Robot Gripper, CasADi, Optimization, Automatic Differentiation, 机器人, Control, Dynamics, Impedance Control, Jacobian, Parameter Identification, RLS, ELMP]
 - name: State Estimation & Filtering
   nameZh: 状态估计与滤波
   tags: [Signal Processing, Kalman Filter, EKF, Butterworth, One Euro Filter, Pose Filter, Mass Spring Damper, Weighted Moving Average]

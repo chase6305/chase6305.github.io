@@ -68,6 +68,8 @@ For the tqdm article, run `python -B scripts/test_tqdm_examples.py` in a dedicat
 
 For ACT temporal weights, run `python3 -B scripts/test_act_examples.py`. It executes both the published snippet and downloadable helper, checking endpoint limits, weighting direction and random means against a high-precision decimal calculation; no model or robotics dependencies are needed.
 
+For the TAMP article, run `python3 -B content/posts/planner/task-and-motion-planning/tamp_constraints.py --check`. This standard-library refinement subproblem checks continuous segment distances, scoped infeasibility evidence and failed-candidate recovery; it does not verify blocker relocation, arm IK or hardware. Its optional `make_figures.py` requires Matplotlib and uses the same constructed geometry.
+
 For One Euro configuration changes, run `python -B scripts/test_filter_examples.py` in a separate NumPy/SciPy environment. It checks constructor/update consistency, rejected updates before and after initialization, history recovery and valid scalar/rotation retuning. CI uses isolated CPython 3.13 Linux x86_64 wheels pinned by version and hash in `scripts/requirements-filters.txt`; keep experiment statistics stable when valid-data behavior is unchanged.
 
 For the Light-Loco-Parkour scalar phase example, run `python3 -B scripts/test_parkour_examples.py`. It uses only the standard library and checks saturated positions, sharp transitions, finite ordered triggers, one-shot trigger iterators and preserved published weights. Keep its scalar validation separate from the fixed third-party source probes.
