@@ -322,6 +322,21 @@
       "verified_at_utc": "2026-10-29T05:37:34.869371+00:00",
       "network_rechecks": 7,
       "commit": "9fb025615d6eb85de13531bd4395da0963ce298f"
+    },
+    {
+      "id": 40826222719,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "1dc2eaf6d676f519865dd8f69882fd0851f3dde5",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40826222719",
+      "updated_at": "2026-10-29T05:59:45Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-1dc2eaf6d676-20261029.json",
+      "verified_at_utc": "2026-10-29T06:11:39.015378+00:00",
+      "network_rechecks": 18,
+      "commit": "1dc2eaf6d676f519865dd8f69882fd0851f3dde5"
     }
   ],
   "scientific_rechecks": [
@@ -419,7 +434,7 @@
   "article_focus": {
     "requested_at_utc": "2026-10-29T05:12:03Z",
     "dedicated_until_utc": "2026-10-29T06:12:03Z",
-    "status": "validated; ready for release; dedicated review continues until06:12UTC",
+    "status": "completed; published and verified after one hour",
     "article": "content/posts/planner/task-and-motion-planning/index.md",
     "source": "/home/ubuntu/Documents/Integrated Task and Motion Planning.pdf",
     "source_sha256": "1c887d8a6d45ee1531a8b9c298ce3b13f7a7dc8239d910e0434a350fe3043a2f",
@@ -442,6 +457,79 @@
     "semantic_closed_popup_incomplete_nodes": 36,
     "semantic_open_dialogs_checked": 3,
     "semantic": "/tmp/chase-tamp-semantics-20261029.json",
-    "diagram_provenance": "docs/image-generation/tamp-20261029.json"
+    "diagram_provenance": "docs/image-generation/tamp-20261029.json",
+    "completed_at_utc": "2026-10-29T06:12:07Z",
+    "dedicated_seconds": 3604,
+    "release_commit": "1dc2eaf6d676f519865dd8f69882fd0851f3dde5",
+    "critical_live_urls": 12,
+    "full_live_urls": 384,
+    "full_live_failures": 0,
+    "full_reading_cases": 928,
+    "full_figure_cases": 548,
+    "full_reading": "/tmp/chase-tamp-full-reading-20261029/results.json",
+    "live_audit": "/tmp/chase-sixhour-production-http-1dc2eaf6d676-20261029.json",
+    "final_native_a4": "/tmp/chase-tamp-final-native-print-20261029.json",
+    "enhancement": {
+      "requested": "More paper figures, flowcharts, pseudocode and runnable Python with readable presentation",
+      "figures_total": 8,
+      "paper_figures": [
+        1,
+        9,
+        10,
+        11
+      ],
+      "source_pages": [
+        3,
+        16,
+        17,
+        19
+      ],
+      "conceptual_flowchart": "assets/search-feedback.webp",
+      "program": "tamp_search.py",
+      "download": "tamp-lab.zip",
+      "python_versions": [
+        "3.10",
+        "3.13"
+      ],
+      "optimized_mode": "passed; reference output identical",
+      "cache_calls": {
+        "off": 6,
+        "on": 3,
+        "same_witness": true
+      },
+      "unknown_revisit": "one attempt unknown; second constructed path verified",
+      "browser": {
+        "viewer_cases": 32,
+        "chapter_activations": 188,
+        "screen_layouts": 24,
+        "open_dialog_semantics": 8,
+        "violations": 0,
+        "print_layouts": 6,
+        "print_text_samples": 3522,
+        "native_tagged_pdfs": 6,
+        "pdf_pages": 24,
+        "code_reading_layouts": 6,
+        "keyboard_copy": true
+      },
+      "validation": {
+        "posts": 95,
+        "published": 92,
+        "acceptance_checks": 499,
+        "code_blocks": 587,
+        "html_pages": 316,
+        "local_references": 31847,
+        "errors": 0
+      },
+      "evidence": "/tmp/chase-tamp-expanded-production-20261029.log",
+      "native_pdf_visual_pages": [
+        3,
+        8,
+        10,
+        11,
+        14,
+        16
+      ],
+      "provenance": "docs/image-generation/tamp-20261029.json"
+    }
   }
 }

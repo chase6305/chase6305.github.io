@@ -1,0 +1,337 @@
+{
+  "scope": "Constructed carrying-stage search, not full robot planning.",
+  "blocked_without_cache": {
+    "status": "carry_witness_found",
+    "refinement_calls": 6,
+    "trace": [
+      {
+        "skeleton": "direct",
+        "parking_m": [
+          0.0,
+          0.05
+        ],
+        "grasp": "wide",
+        "attempt": 1,
+        "status": "infeasible",
+        "reason": "door_width_certificate"
+      },
+      {
+        "skeleton": "direct",
+        "parking_m": [
+          0.0,
+          0.05
+        ],
+        "grasp": "narrow",
+        "attempt": 1,
+        "status": "infeasible",
+        "reason": "crossing_obstruction_certificate"
+      },
+      {
+        "skeleton": "relocate-near",
+        "parking_m": [
+          0.0,
+          0.05
+        ],
+        "grasp": "wide",
+        "attempt": 1,
+        "status": "infeasible",
+        "reason": "door_width_certificate"
+      },
+      {
+        "skeleton": "relocate-near",
+        "parking_m": [
+          0.0,
+          0.05
+        ],
+        "grasp": "narrow",
+        "attempt": 1,
+        "status": "infeasible",
+        "reason": "crossing_obstruction_certificate"
+      },
+      {
+        "skeleton": "relocate-far",
+        "parking_m": [
+          1.0,
+          1.0
+        ],
+        "grasp": "wide",
+        "attempt": 1,
+        "status": "infeasible",
+        "reason": "door_width_certificate"
+      },
+      {
+        "skeleton": "relocate-far",
+        "parking_m": [
+          1.0,
+          1.0
+        ],
+        "grasp": "narrow",
+        "attempt": 1,
+        "status": "feasible",
+        "reason": "verified_segments"
+      }
+    ],
+    "skeleton": "relocate-far",
+    "grasp": "narrow",
+    "abstract_actions": [
+      "relocate blocker",
+      "pick target",
+      "carry target",
+      "place target"
+    ],
+    "carry_path_m": [
+      [
+        -2.0,
+        0.0
+      ],
+      [
+        -1.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0
+      ],
+      [
+        2.0,
+        0.0
+      ]
+    ],
+    "carry_checks": {
+      "valid": true,
+      "wall_centerline_clearance_m": 0.5,
+      "blocker_centerline_clearance_m": 1.0
+    },
+    "unverified": [
+      "blocker relocation",
+      "arm IK",
+      "pick/place",
+      "dynamics",
+      "hardware execution"
+    ]
+  },
+  "blocked_with_cache": {
+    "status": "carry_witness_found",
+    "refinement_calls": 3,
+    "trace": [
+      {
+        "skeleton": "direct",
+        "parking_m": [
+          0.0,
+          0.05
+        ],
+        "grasp": "wide",
+        "attempt": 1,
+        "status": "infeasible",
+        "reason": "door_width_certificate"
+      },
+      {
+        "skeleton": "direct",
+        "parking_m": [
+          0.0,
+          0.05
+        ],
+        "grasp": "narrow",
+        "attempt": 1,
+        "status": "infeasible",
+        "reason": "crossing_obstruction_certificate"
+      },
+      {
+        "skeleton": "relocate-near",
+        "parking_m": [
+          0.0,
+          0.05
+        ],
+        "grasp": "wide",
+        "attempt": 1,
+        "status": "pruned",
+        "reason": "cached_proof"
+      },
+      {
+        "skeleton": "relocate-near",
+        "parking_m": [
+          0.0,
+          0.05
+        ],
+        "grasp": "narrow",
+        "attempt": 1,
+        "status": "pruned",
+        "reason": "cached_proof"
+      },
+      {
+        "skeleton": "relocate-far",
+        "parking_m": [
+          1.0,
+          1.0
+        ],
+        "grasp": "wide",
+        "attempt": 1,
+        "status": "pruned",
+        "reason": "cached_proof"
+      },
+      {
+        "skeleton": "relocate-far",
+        "parking_m": [
+          1.0,
+          1.0
+        ],
+        "grasp": "narrow",
+        "attempt": 1,
+        "status": "feasible",
+        "reason": "verified_segments"
+      }
+    ],
+    "skeleton": "relocate-far",
+    "grasp": "narrow",
+    "abstract_actions": [
+      "relocate blocker",
+      "pick target",
+      "carry target",
+      "place target"
+    ],
+    "carry_path_m": [
+      [
+        -2.0,
+        0.0
+      ],
+      [
+        -1.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0
+      ],
+      [
+        2.0,
+        0.0
+      ]
+    ],
+    "carry_checks": {
+      "valid": true,
+      "wall_centerline_clearance_m": 0.5,
+      "blocker_centerline_clearance_m": 1.0
+    },
+    "unverified": [
+      "blocker relocation",
+      "arm IK",
+      "pick/place",
+      "dynamics",
+      "hardware execution"
+    ]
+  },
+  "detour_with_one_attempt": {
+    "status": "unknown",
+    "refinement_calls": 2,
+    "trace": [
+      {
+        "skeleton": "direct",
+        "parking_m": [
+          1.0,
+          0.0
+        ],
+        "grasp": "wide",
+        "attempt": 1,
+        "status": "infeasible",
+        "reason": "door_width_certificate"
+      },
+      {
+        "skeleton": "direct",
+        "parking_m": [
+          1.0,
+          0.0
+        ],
+        "grasp": "narrow",
+        "attempt": 1,
+        "status": "unknown",
+        "reason": "candidate_path_collision"
+      }
+    ],
+    "unresolved_candidates": 1,
+    "scope": "Only these finite skeleton/parking/grasp candidates; no global robot infeasibility claim."
+  },
+  "detour_with_revisit": {
+    "status": "carry_witness_found",
+    "refinement_calls": 3,
+    "trace": [
+      {
+        "skeleton": "direct",
+        "parking_m": [
+          1.0,
+          0.0
+        ],
+        "grasp": "wide",
+        "attempt": 1,
+        "status": "infeasible",
+        "reason": "door_width_certificate"
+      },
+      {
+        "skeleton": "direct",
+        "parking_m": [
+          1.0,
+          0.0
+        ],
+        "grasp": "narrow",
+        "attempt": 1,
+        "status": "unknown",
+        "reason": "candidate_path_collision"
+      },
+      {
+        "skeleton": "direct",
+        "parking_m": [
+          1.0,
+          0.0
+        ],
+        "grasp": "narrow",
+        "attempt": 2,
+        "status": "feasible",
+        "reason": "verified_detour"
+      }
+    ],
+    "skeleton": "direct",
+    "grasp": "narrow",
+    "abstract_actions": [
+      "pick target",
+      "carry target",
+      "place target"
+    ],
+    "carry_path_m": [
+      [
+        -2.0,
+        0.0
+      ],
+      [
+        -1.0,
+        0.0
+      ],
+      [
+        0.3,
+        0.0
+      ],
+      [
+        0.3,
+        1.0
+      ],
+      [
+        2.0,
+        1.0
+      ],
+      [
+        2.0,
+        0.0
+      ]
+    ],
+    "carry_checks": {
+      "valid": true,
+      "wall_centerline_clearance_m": 0.3,
+      "blocker_centerline_clearance_m": 0.7
+    },
+    "unverified": [
+      "blocker relocation",
+      "arm IK",
+      "pick/place",
+      "dynamics",
+      "hardware execution"
+    ]
+  }
+}

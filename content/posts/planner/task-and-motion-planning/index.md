@@ -6,8 +6,8 @@ draft: false
 tags: ["TAMP", "Motion Planning", "Robotics", "Optimization", "Paper Notes"]
 categories: ["机器人", "规划与控制"]
 authors: ["chase"]
-summary: "围绕 Garrett 等人的综述，解释任务骨架、连续模式参数、运动路径与混合约束，比较采样、优化及搜索交织，并用可复算的门洞搬运例子区分几何不可行证据与求解失败。"
-description: "围绕 Garrett 等人的综述，解释任务骨架、连续模式参数、运动路径与混合约束，比较采样、优化及搜索交织，并用可复算的门洞搬运例子区分几何不可行证据与求解失败。"
+summary: "结合 Garrett 等人的综述原图，详解任务骨架、模式切换、混合约束、条件采样与搜索调度；通过流程图、伪代码和可运行 Python，核对门洞搬运、证据缓存与 unknown 重访。"
+description: "结合 Garrett 等人的综述原图，详解任务骨架、模式切换、混合约束、条件采样与搜索调度；通过流程图、伪代码和可运行 Python，核对门洞搬运、证据缓存与 unknown 重访。"
 contentLanguage: "zh-CN"
 math: true
 toc: true
@@ -36,6 +36,7 @@ related_posts:
 | 一个抓取动作到底包含哪些连续条件？ | [动作模型](#action-model)、[固定骨架的约束网络](#hybrid-csp) |
 | 优化、条件采样和符号搜索如何合作？ | [参数求解](#constraint-solving)、[搜索时序](#search-schedules) |
 | IK 或 RRT 失败后能否直接剪枝？ | [失败反馈](#feedback)、[可复算例子](#constraint-lab) |
+| 想先看流程，再运行一个小例子？ | [论文的两种搜索流程](#paper-search-orders)、[伪代码与 Python 外层搜索](#search-lab) |
 | 怎样把规划接到真实机器人系统？ | [工程接口](#engineering)、[评估](#evaluation)、[扩展](#extensions) |
 {.table-readable}
 
@@ -62,6 +63,13 @@ TAMP 中需要区分三类决定：
 
 “把三个物体都放进盒子”在忽略尺寸的符号模型中可能成立，盒子却装不下；“从架子抓出锅，再放到炉头”也可能需要两种互不兼容的抓法，且场景没有重新抓取的支撑面。因而先找任务骨架仍然是合理策略，但必须允许几何层影响后续搜索。[论文 §3.3.1，pp. 19–20](https://arxiv.org/pdf/2010.01083v1#page=19)
 
+<figure class="article-figure" id="fig-tamp-paper-relocation">
+  {{< post-image src="assets/paper-blocker-relocation.webp" alt="论文的四帧机器人操作：先抓起并移走遮挡蓝杯的绿块，再拿起蓝杯，最后将杯中内容物倒入碗里" >}}
+  <figcaption><span class="article-figure__number">图 2</span><span class="article-figure__text">移开障碍物本身成为任务动作。来源：Garrett 等，Integrated Task and Motion Planning，原 Figure 1，PDF p. 3；按从左到右、从上到下阅读。原文的目标是把蓝杯中的内容物倒入白碗，绿块阻挡了可达抓法。</span></figcaption>
+</figure>
+
+读这组[论文原图](https://arxiv.org/pdf/2010.01083v1#page=3)时，可以顺着四步看：**抓绿块 → 放开绿块 → 抓蓝杯 → 倒入碗中**。绿块没有出现在最终目标里，却必须被操作；这正是“几何条件改变任务顺序”的直观例子。图中动作帧展示完成过程，不提供规划耗时或统计成功率。
+
 ## 2. 先看清综述的基本假设 {#scope}
 
 主体讨论采用以下范围：动作确定、世界状态完全已知，机器人与物体是形状已知的刚体运动学机构，机器人满足完整约束意义下的 holonomic 假设，目标用终态要求表达。它覆盖抓放、重排、可移动障碍物中的导航等任务。[论文 §1.2，pp. 4–5](https://arxiv.org/pdf/2010.01083v1#page=4)
@@ -86,6 +94,8 @@ $$
 
 这里的路径参数 $u$ 不必是物理时间。速度、加速度和力矩限制是否满足，要看后续是否引入了时间参数化与动力学。若障碍物布局固定，这就是常见的配置空间路径问题。
 
+论文提到的采样运动规划**概率完备性**也要带条件理解：在相应鲁棒可行性、采样覆盖及算法条件下，存在解时，持续计算仍找不到解的概率趋向零。它不提供某个有限时刻必然成功的保证，更不意味着超时即可证明无解。TAMP 的多条骨架与参数分支还需要各自的覆盖和公平调度条件。
+
 ### 3.2 抓起物体会改变可行空间
 
 TAMP 需要考虑整个世界配置 $w$：机器人配置、物体姿态、机构状态，以及哪些物体附着在什么身体上。一个模式 $\sigma$ 给出当前固定的运动约束，其可行集合记为：
@@ -101,7 +111,7 @@ $$
 
 <figure class="article-figure" id="fig-tamp-mode-switch">
   {{< post-image src="assets/mode-switch.webp" alt="抓取前物体相对世界的放置位姿固定；抓取切换时满足同一接触构型；抓取后物体相对手的抓取变换固定，随后才随手提升" >}}
-  <figcaption><span class="article-figure__number">图 2</span><span class="article-figure__text">抓取改变附着关系与约束。模式切换瞬间，机器人和物体的世界配置连续；右侧包含切换之后的提升运动。关系图只画出物体的固定关系，省略机器人关节和其他环境身体。</span></figcaption>
+  <figcaption><span class="article-figure__number">图 3</span><span class="article-figure__text">抓取改变附着关系与约束。模式切换瞬间，机器人和物体的世界配置连续；右侧包含切换之后的提升运动。关系图只画出物体的固定关系，省略机器人关节和其他环境身体。</span></figcaption>
 </figure>
 
 ### 3.3 切换必须发生在两个模式的交集中
@@ -205,6 +215,17 @@ $$
 
 找到某个局部约束的解，只得到一个可复用片段。完整方案还必须满足动作前提、所有连续约束、状态转移和最终目标。
 
+<figure class="article-figure" id="fig-tamp-paper-constraints">
+  {{< post-image src="assets/paper-constraint-network.webp" alt="论文的约束网络：圆节点表示构型、放置、抓法和路径；矩形节点表示运动、运动学、抓取、稳定、炉灶位置及无碰约束，连线给出共享参数" >}}
+  <figcaption><span class="article-figure__number">图 4</span><span class="article-figure__text">固定骨架的约束网络。来源：Garrett 等，原 Figure 9，PDF p. 16。圆形是参数，矩形是约束；连线表示约束关联哪些参数，没有指定求解方向。原图使用下标记录动作步骤，与上面的简化骨架编号不同。</span></figcaption>
+</figure>
+
+这张[原图](https://arxiv.org/pdf/2010.01083v1#page=16)可以分三遍读：
+
+1. **先认参数。** 灰色 $q_0,p_0$ 是初始构型和放置，$g_2$ 是抓法，$q_1,q_3$ 是切换构型，$p_4$ 是最终放置，$\tau_1,\tau_3$ 是两段路径。
+2. **再看共享。** 两个 `Kin[A]` 都连接同一抓法 $g_2$，所以抓取端和放置端不能各自随便选择一套抓法。
+3. **最后看路径条件。** `Motion` 关联端点与路径，`CFree` 还关联对应的环境或物体参数。连上一个节点不等于整个网络已满足。
+
 ## 6. 连续参数怎样求解 {#constraint-solving}
 
 ### 6.1 联合满足：把约束放进同一个优化问题
@@ -238,6 +259,13 @@ CollisionTest(tau, world, holding) -> True / False
 
 这里把一个求解器称作 sampler，不要求它只靠随机数工作：解析 IK、优化器和确定性枚举也可以承担条件生成角色。重要的是输入输出和所认证的约束。
 
+<figure class="article-figure" id="fig-tamp-paper-sampling">
+  {{< post-image src="assets/paper-sampling-network.webp" alt="论文将同一约束网络定向为采样网络：从炉灶区域生成最终放置、从抓取生成器得到抓法，再结合已知放置求 IK，随后生成路径并进行碰撞测试" >}}
+  <figcaption><span class="article-figure__number">图 5</span><span class="article-figure__text">为约束安排输入和输出。来源：Garrett 等，原 Figure 10，PDF p. 17。参数指向生成器表示输入，生成器指向参数表示输出；无新参数输出的碰撞节点只做测试。它表达参数生成依赖，不是机器人物理动作的因果图。</span></figcaption>
+</figure>
+
+对照[这张原图](https://arxiv.org/pdf/2010.01083v1#page=17)，沿一条链读即可：**目标炉灶区域 → 放置 $p_4$；允许抓法 → $g_2$；$(p_4,g_2)$ → IK 构型 $q_3$；再与 $q_1$ 一起生成持物路径 $\tau_3$**。同时，初始放置 $p_0$ 与相同抓法 $g_2$ 生成抓取构型 $q_1$。箭头选定的是一种生成顺序，同一个 `Kin` 关系也可能采用其他输入／输出划分。
+
 ### 6.3 “第一组局部可行参数”仍可能走不通
 
 一个 IK 解可能位于无法从当前状态到达的连通分支；一种稳定放置可能把下一步路径堵住。因此条件生成器不能只永远返回一个偏好的结果。为了支持相关的完备性论证，通常需要适当的覆盖、重访和时间分配条件。
@@ -264,6 +292,14 @@ CollisionTest(tau, world, holding) -> True / False
 ### 7.2 先满足也不等于一次离散化就结束
 
 先采样一组放置和构型，将已知可行关系交给任务搜索，可以复用成熟的离散规划技术。不过当前样本不足，可能只是漏掉了一种关键抓法。离散问题无解后，仍需要扩充样本，而不是把有限样本集的无解结论推广到连续世界。
+
+<span id="paper-search-orders"></span>
+<figure class="article-figure" id="fig-tamp-paper-search-orders">
+  {{< post-image src="assets/paper-search-orders.webp" alt="论文的两种搜索流程：上图先搜索动作骨架，再联合求解其混合约束；下图先生成约束样本，再用已有样本搜索方案，两者未成功时均回到下一轮搜索" >}}
+  <figcaption><span class="article-figure__number">图 6</span><span class="article-figure__text">两种代表性控制流程。来源：Garrett 等，原 Figure 11，PDF p. 19。上图先骨架再联合满足，下图先逐项生成值再搜索；它没有画出全部交织策略。上图的失败回边应结合正文理解，求解器超时本身不是不可行证明。</span></figcaption>
+</figure>
+
+读[这张流程图](https://arxiv.org/pdf/2010.01083v1#page=19)时，先找每轮新增什么：上图新增**动作骨架**，下图新增**参数值及满足关系**。再看失败后回哪里：前者继续组织骨架细化，后者增加样本后重做离散搜索。只看两个图的最终 `Return Plan`，会漏掉它们计算资源分配上的差别。
 
 ### 7.3 交织搜索要同时处理“尽早失败”与“延迟昂贵检查”
 
@@ -310,6 +346,13 @@ CollisionTest(tau, world, holding) -> True / False
 
 这张表是对求解接口的整理，而不是声称论文规定了某个 API。综述反复强调：常见采样器和局部优化器不能一般性地证明无解。论文还讨论了暂存反例、持续继续求解并在找到解后撤回反例的策略；如果实现只有永久黑名单，就失去了这一重要条件。
 
+<figure class="article-figure" id="fig-tamp-search-feedback">
+  {{< post-image src="assets/search-feedback.webp" alt="有限候选队列的细化流程：已有适用证据则跳过；成功则验证搬运路径并返回见证；已证不可行则缓存对应范围的证据；未知则保留并在预算允许时再次尝试，预算耗尽仍报告未解决" >}}
+  <figcaption><span class="article-figure__number">图 7</span><span class="article-figure__text">后文 Python 示例采用的三状态调度。不可行证据可以进入缓存，unknown 保留为未解决并按预算重访；预算耗尽时报告未解决候选。绿色分支只返回已核验的搬运段见证，抓放与阻挡物搬移仍是抽象动作。</span></figcaption>
+</figure>
+
+用文字记这张图的分支就足够：**有见证就核验，有证明才剪枝，没有结论就保留**。[第 9.5 节](#search-lab)把这个规则写成伪代码和可直接运行的 Python。
+
 ## 9. 可复算：门洞、抓法与阻挡物放置 {#constraint-lab}
 
 下面构造一个二维**搬运段细化子问题**，把前面的依赖关系变成可核对数字。给定动作骨架已经安排了移走阻挡物，再搬运目标；本例只核对后一个搬运段，**不生成阻挡物搬移轨迹，也不求机械臂 IK、动力学或真机指令**。
@@ -345,7 +388,7 @@ far 与窄抓法可以取 $h=0$，沿水平路径搬运。中心线到墙体的�
 
 <figure class="article-figure" id="fig-tamp-doorway">
   {{< post-image src="assets/doorway-refinement.png" alt="同一个一米门洞与半径零点二五米的搬运包络：阻挡物放在门洞内时不存在通过高度；移至坐标一米、一米后，水平中心线与墙和阻挡物均保持足够间距" >}}
-  <figcaption><span class="article-figure__number">图 3</span><span class="article-figure__text">同一窄抓法下，两种放置改变搬运可行性。坐标与半径采用本节的二维构造值，墙在图外继续延伸；虚线是被拒绝的候选路径，实线是经整段距离检查的路径。包络替代了真实机械臂及持物几何，不能据此判断具体机器人的通过能力。</span></figcaption>
+  <figcaption><span class="article-figure__number">图 8</span><span class="article-figure__text">同一窄抓法下，两种放置改变搬运可行性。坐标与半径采用本节的二维构造值，墙在图外继续延伸；虚线是被拒绝的候选路径，实线是经整段距离检查的路径。包络替代了真实机械臂及持物几何，不能据此判断具体机器人的通过能力。</span></figcaption>
 </figure>
 
 | 阻挡物放置 | 抓法包络半径 | 结果与理由 |
@@ -382,13 +425,81 @@ python3 -B tamp_constraints.py --output constraint-results.json
 
 [参考输出](assets/constraint-results.json)保存四组结果、复用后的调用记录，以及直线失败但绕行成功的对照。自检还用 500 组固定种子线段，对解析点到线段距离、线段到墙体距离和独立密集采样界进行比较，并覆盖线段穿过墙体、零长度线段和端点均安全但内部碰撞等情况。
 
-[绘图脚本](make_figures.py)另外需要 Matplotlib；它读取相同常量绘制图 3。示例没有声称实现一个完整 TAMP 系统，也没有复现综述引用算法的实验成绩。
+[绘图脚本](make_figures.py)另外需要 Matplotlib；它读取相同常量绘制门洞图。示例没有声称实现一个完整 TAMP 系统，也没有复现综述引用算法的实验成绩。
 
-将两个 Python 文件放在同一目录，安装好 Matplotlib 后可重画图 3：
+将 `tamp_constraints.py` 和 `make_figures.py` 放在同一目录，安装好 Matplotlib 后可重画门洞图：
 
 ```bash
 python3 -B make_figures.py --output-dir figures
 ```
+
+### 9.5 从伪代码到可运行的外层搜索 {#search-lab}
+
+上一份脚本细化的是给定搬运阶段。[tamp_search.py](tamp_search.py)再加一层有限搜索：先试直接搬运，再试先把阻挡物放到 near 或 far；每条骨架分别尝试宽、窄两种包络。`relocate-near` 保留了原来的阻挡位置，故意形成重复几何上下文，用来观察证据复用。
+
+**先读控制流程：**
+
+```text
+把候选骨架与参数放入队列
+循环取出一个候选：
+  已有对当前上下文有效的不可行证据 → 跳过
+  本轮细化预算耗尽 → 保留未处理候选，返回 unknown
+  调用细化器
+    feasible   → 再核验整段搬运路径，返回见证
+    infeasible → 缓存证据及其依赖条件
+    unknown    → 有剩余尝试次数则排到队尾，否则记为未解决
+队列结束：
+  仍有未解决候选 → unknown
+  所有有限候选均有证据排除 → 仅报告该候选集合不可行
+```
+
+Python 的核心对应关系如下；它省略缓存与输出字段，便于先看清调度，完整实现见下载文件：
+
+```python
+from collections import deque
+
+def schedule(candidates, refine, next_attempt):
+    queue = deque(candidates)
+    unresolved = []
+    while queue:
+        candidate = queue.popleft()
+        result = refine(candidate)
+        if result["status"] == "feasible":
+            return result
+        if result["status"] == "unknown":
+            retry = next_attempt(candidate)
+            if retry is None:
+                unresolved.append(candidate)
+            else:
+                queue.append(retry)
+    return {"status": "unknown" if unresolved else "finite_candidates_infeasible"}
+```
+
+这个短函数只要求传入细化器与重试策略；**完整脚本额外检查整段见证、调用预算和缓存依赖**，且只把带几何证据的 `infeasible` 记入缓存。`unknown` 从不进入永久黑名单。排回队尾能让其他候选先获得机会，但这份有限示例本身不提供一般 TAMP 的完备性保证。
+
+**直接运行完整例子：**下载 [tamp-lab.zip](tamp-lab.zip)，解压后进入该目录；包含两份 Python 文件、说明和参考 JSON，不需要安装第三方包。
+
+```bash
+python3 -B tamp_constraints.py --check
+python3 -B tamp_search.py --check
+python3 -B tamp_search.py --output my-search-results.json
+```
+
+也可以分别下载 [tamp_constraints.py](tamp_constraints.py) 与 [tamp_search.py](tamp_search.py)，放在同一目录运行。输出包含以下四组实验，以及每次尝试的 `skeleton / grasp / attempt / status / reason`：
+
+| 场景与设置 | 细化调用 | 最终返回 | 读结果时看什么 |
+| --- | ---: | --- | --- |
+| 门洞被挡，不复用证据 | 6 | 搬运段见证 | 最终选择 relocate-far 与 narrow |
+| 相同场景，复用证据 | 3 | 相同搬运段见证 | 两次宽包络和一次重复 near 几何被剪掉 |
+| 门后有障碍，每个分支只试一次 | 2 | unknown | 窄包络的第一条直线碰撞，但没有无解证明 |
+| 相同门后障碍，允许重访 | 3 | 搬运段见证 | 状态依次为 infeasible、unknown、feasible |
+{.table-readable}
+
+这些是固定候选的构造计数，不能用来宣称某种 TAMP 求解器加速一倍。前两行也比上一节的四组合枚举多了一条“直接搬运”骨架，因此调用数的分母不同。
+
+**重点核对两处代码：** `context_key()` 保存门洞、阻挡物半径、数值余量、起终点、放置与包络；`width_key()` 只保存宽度证据实际依赖的门洞、余量与包络。更换放置可以复用宽度证据，更换门洞则必须重验。第二次路径尝试使用本节已经给出的绕行折线，并对每段重新计算距离，不是一个通用 RRT 实现。
+
+[完整参考输出](assets/search-results.json)保留所有调用记录。自检比较开关缓存后的见证、限制预算时的 unknown、门洞变宽后的证据失效，以及重访后找到绕行的状态序列。返回字段 `unverified` 明确列出尚未验证的抓放、阻挡物搬移、机械臂 IK、动力学和执行条件；读者可以据此逐个替换真实机器人模块，而不会把局部搬运见证当成整套机器人方案。
 
 ## 10. 从论文框架到可维护的软件接口 {#engineering}
 
@@ -408,16 +519,7 @@ python3 -B make_figures.py --output-dir figures
 
 ### 10.3 预算耗尽后保留继续搜索的可能
 
-```text
-取出一个待处理的骨架或参数分支
-在本轮预算内尝试细化
-  有完整见证：核验并返回，或加入可复用数据库
-  有适用范围明确的不可行证据：记录对应约束反例
-  尚未得到结论：保留分支，之后以合适预算重访
-继续调度其他分支
-```
-
-这段流程只表达调度原则，未给出一个新的完备性定理。采样覆盖、骨架枚举、公平调度和约束求解器能力，仍然共同决定算法能够保证什么。
+可以直接对照[第 9.5 节的队列伪代码与运行记录](#search-lab)：一个局部求解器用完本轮预算之后，外层调度器保留其搜索状态、已生成样本与未解决标记，再给其他分支机会。实际实现还要设计预算如何增长、样本如何持久化及何时重访。采样覆盖、骨架枚举、公平调度和约束求解器能力，共同决定算法能够保证什么。
 
 ### 10.4 规划成功后还需要执行监测
 
@@ -485,9 +587,11 @@ python3 -B make_figures.py --output-dir figures
 10. 一条直线碰撞，能否排除所有绕行路径？
 11. 物体布局改变后，为何不能直接复用旧碰撞缓存？
 12. 规划几何成功与真机任务成功之间还差哪些条件？
+13. 约束网络与条件采样网络的连线含义有何不同？
+14. 为什么外层示例的两种缓存键包含不同字段？
 
 <details id="tamp-self-check-answers">
-<summary>展开 12 题答案</summary>
+<summary>展开 14 题答案</summary>
 
 1. 连续模式参数，包括抓取、放置、切换构型及其约束关系。
 2. 符号模型可能忽略尺寸、可达性、抓法兼容性和重新抓取条件。
@@ -501,6 +605,8 @@ python3 -B make_figures.py --output-dir figures
 10. 不能；脚本给出直线失败而折线绕行成功的对照。
 11. 碰撞关系依赖障碍物布局和附着几何，必须保留对应上下文或使缓存失效。
 12. 感知与模型误差、接触是否建立、跟踪控制、动态可行性、环境变化及恢复逻辑等。
+13. 约束网络的无向连线只表示参数参与约束；采样网络的有向边明确参数是生成器的输入还是输出，不代表物理动作的因果顺序。
+14. 完整几何证据依赖放置、起终点与全部相关模型量；门洞宽度证据与阻挡物放置无关，但仍依赖门洞、包络和余量。缓存键按证据的实际依赖确定。
 
 </details>
 
@@ -511,4 +617,4 @@ python3 -B make_figures.py --output-dir figures
 - [论文 §2](https://arxiv.org/pdf/2010.01083v1#page=5)：运动规划、多模式运动规划与任务规划的基础。
 - [论文 §3](https://arxiv.org/pdf/2010.01083v1#page=12)：混合约束、参数满足、搜索时序与信息共享；Table 1 在 p. 23。
 - [论文 §4](https://arxiv.org/pdf/2010.01083v1#page=22)：动力学、不确定性与学习扩展。
-- [随文约束脚本](tamp_constraints.py)、[参考结果](assets/constraint-results.json)与[绘图脚本](make_figures.py)：仅复算本页构造的子问题。
+- [完整示例下载](tamp-lab.zip)、[约束脚本](tamp_constraints.py)、[外层搜索](tamp_search.py)、[约束结果](assets/constraint-results.json)与[搜索记录](assets/search-results.json)：复算本页构造的子问题；[绘图脚本](make_figures.py)另需 Matplotlib。

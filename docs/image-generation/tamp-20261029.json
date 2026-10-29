@@ -21,6 +21,16 @@
       ],
       "sha256": "f9372ed349805fbef797bdeabb6f293af17d7e28acda175c74c5cf2f80e71ddb",
       "review": "Labels, attachment direction and feedback arrows inspected; final transfer panel includes subsequent lifting. Only format conversion applied."
+    },
+    {
+      "asset": "content/posts/planner/task-and-motion-planning/assets/search-feedback.webp",
+      "original": "/home/ubuntu/.codex/generated_images/01a16246-f113-7133-b053-2b55e6769409/exec-1bddcb05-673f-47f2-9114-34457f7fcbf4.png",
+      "dimensions": [
+        1578,
+        997
+      ],
+      "sha256": "b4a6809de6766c37c006d2c4118868015b583f9223348eafaf7b23894173a75c",
+      "review": "All labels and three branch routes inspected. Unknown returns for another attempt only while budget remains; no unknown-to-proof connection."
     }
   ],
   "numerical_figure": {
@@ -34,5 +44,70 @@
     "sha256": "6e7969a52ce445e8e927a386fd5a53c39297277a0cb5a9a7281c3be6fad141e3",
     "data_sha256": "56c290303f22782686af4590f66e2969773d91b6b6bf59791b7da0afbf16858a",
     "scope": "Constructed exact 2D geometry, not measured robot performance."
+  },
+  "paper_figures": {
+    "source_pdf": "/home/ubuntu/Documents/Integrated Task and Motion Planning.pdf",
+    "source_sha256": "1c887d8a6d45ee1531a8b9c298ce3b13f7a7dc8239d910e0434a350fe3043a2f",
+    "source_url": "https://arxiv.org/pdf/2010.01083v1",
+    "figures": [
+      {
+        "asset": "content/posts/planner/task-and-motion-planning/assets/paper-constraint-network.webp",
+        "pdf_page": 16,
+        "crop_at_110_dpi": [
+          295,
+          149,
+          455,
+          130
+        ],
+        "render_dpi": 220,
+        "dimensions": [
+          910,
+          260
+        ],
+        "sha256": "81371ad70fd60ba51faca39cdcfe624ec41594e83a1790c40481c6b9a305f07a"
+      },
+      {
+        "asset": "content/posts/planner/task-and-motion-planning/assets/paper-sampling-network.webp",
+        "pdf_page": 17,
+        "crop_at_110_dpi": [
+          180,
+          579,
+          470,
+          177
+        ],
+        "render_dpi": 220,
+        "dimensions": [
+          940,
+          354
+        ],
+        "sha256": "ebfa2e3ca825e0c8fe6e47542ccb247fd1e81a2e6add0d17e1d9018d812fe80a"
+      },
+      {
+        "asset": "content/posts/planner/task-and-motion-planning/assets/paper-search-orders.webp",
+        "pdf_page": 19,
+        "crop_at_110_dpi": [
+          195,
+          250,
+          435,
+          195
+        ],
+        "render_dpi": 220,
+        "dimensions": [
+          870,
+          390
+        ],
+        "sha256": "30ae225987df775a41d5baa464e4aabc2c6ec97c76d17b976afda8bbcc25c68a"
+      },
+      {
+        "asset": "content/posts/planner/task-and-motion-planning/assets/paper-blocker-relocation.webp",
+        "pdf_page": 3,
+        "extraction": "pdfimages original embedded RGB image",
+        "dimensions": [
+          1046,
+          590
+        ],
+        "sha256": "735c6ebbf1e94313a7acd44990aaadb5fcfbd8df1ef2cda086069ba322a2b4a9"
+      }
+    ]
   }
 }
