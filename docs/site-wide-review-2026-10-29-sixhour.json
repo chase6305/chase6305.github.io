@@ -194,7 +194,27 @@
       "browser": "/tmp/chase-sixhour-act-browser-20261029/results.json",
       "code_reading": "/tmp/chase-sixhour-act-code-reading-20261029/results.json",
       "native_pdfs": 6,
-      "production_validation": "/tmp/chase-sixhour-act-build-20261029.log"
+      "production_validation": "/tmp/chase-sixhour-act-build-20261029.log",
+      "code_arrow_cases": 4,
+      "code_arrows": "/tmp/chase-sixhour-act-code-arrows-20261029.json"
+    },
+    {
+      "id": "morphmimic-mapping-configuration",
+      "status": "validated; ready for release",
+      "before": "/tmp/chase-sixhour-morph-mapping-before-20261029.json",
+      "scope": "Reject mismatched mapping lengths, duplicate/out-of-range native indices, invalid direction signs and incomplete inverse positions; preserve unmapped defaults. These are checks for the article example, not changes to author training code.",
+      "test_methods": 10,
+      "random_subset_roundtrips": 500,
+      "python_versions": [
+        "3.10",
+        "3.13"
+      ],
+      "published_record": "passes existing per-field comparison, unchanged asset",
+      "production_validation": "/tmp/chase-sixhour-morph-mapping-build-20261029.log",
+      "browser_cases": 30,
+      "browser": "/tmp/chase-sixhour-morph-mapping-browser-20261029/results.json",
+      "native_pdfs": 6,
+      "native_print": "/tmp/chase-sixhour-morph-mapping-native-print-20261029.json"
     }
   ],
   "releases": [
@@ -342,5 +362,28 @@
       "site_files_unchanged": 2082,
       "status": "fixed; clean validation and corrected Pages release passed"
     }
-  ]
+  ],
+  "external_reference_review": {
+    "inventory_urls": 901,
+    "initial_counts": {
+      "200": 878,
+      "connection_failure": 10,
+      "403": 10,
+      "202": 1,
+      "500": 2
+    },
+    "rechecked_urls": 23,
+    "retry_counts": {
+      "206": 7,
+      "403": 10,
+      "connection_failure": 3,
+      "202": 1,
+      "500": 2
+    },
+    "confirmed_404_or_410": 0,
+    "inventory": "/tmp/chase-sixhour-external-links-inventory-20261029.json",
+    "audit": "/tmp/chase-sixhour-external-links-audit-20261029.json",
+    "rechecks": "/tmp/chase-sixhour-external-links-rechecks-20261029.json",
+    "editorial_decision": "Retain authoritative references. Do not treat access restrictions or transient TLS failures as missing sources; PID book hosts returned 500 and alternative static hosts could not be freshly verified."
+  }
 }

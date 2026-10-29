@@ -20,16 +20,53 @@ TABLE_I = [
 ]
 
 
+def finite_vector(values, label):
+    """Finite, real scalar coordinates for this standard-library example."""
+    try:
+        values = tuple(values)
+        valid = all(type(value) in (int, float) and math.isfinite(value) for value in values)
+    except (TypeError, ValueError, OverflowError) as error:
+        raise ValueError(f'{label} must contain finite real numbers') from error
+    if not valid:
+        raise ValueError(f'{label} must contain finite real numbers')
+    return values
+
+
+def validate_mapping(permutation, signs, offsets, native_size):
+    """One distinct native joint per canonical slot; signs are exactly +/-1."""
+    try:
+        permutation = tuple(permutation)
+    except TypeError as error:
+        raise ValueError('permutation must contain native joint indices') from error
+    signs = finite_vector(signs, 'signs')
+    offsets = finite_vector(offsets, 'offsets')
+    if not permutation or not (len(permutation) == len(signs) == len(offsets)):
+        raise ValueError('permutation, signs and offsets need matching nonempty lengths')
+    if (any(type(index) is not int or not 0 <= index < native_size for index in permutation)
+            or len(set(permutation)) != len(permutation)):
+        raise ValueError('native joint indices must be distinct integers within bounds')
+    if any(sign not in (-1, 1) for sign in signs):
+        raise ValueError('each direction must be -1 or +1')
+    return permutation, signs, offsets
+
+
 def canonical_position(native, permutation, signs, offsets):
-    return [sign * (native[index] - offset)
-            for index, sign, offset in zip(permutation, signs, offsets)]
+    native = finite_vector(native, 'native positions')
+    permutation, signs, offsets = validate_mapping(permutation, signs, offsets, len(native))
+    converted = (sign * (native[index] - offset)
+                 for index, sign, offset in zip(permutation, signs, offsets))
+    return list(finite_vector(converted, 'mapped positions'))
 
 
 def native_position(canonical, permutation, signs, offsets, default):
-    result = list(default)
+    canonical = finite_vector(canonical, 'canonical positions')
+    result = list(finite_vector(default, 'native defaults'))
+    permutation, signs, offsets = validate_mapping(permutation, signs, offsets, len(result))
+    if len(canonical) != len(permutation):
+        raise ValueError('one canonical position is required per mapped joint')
     for value, index, sign, offset in zip(canonical, permutation, signs, offsets):
         result[index] = sign * value + offset
-    return result
+    return list(finite_vector(result, 'restored positions'))
 
 
 def compare_record(expected, actual, path='$'):
