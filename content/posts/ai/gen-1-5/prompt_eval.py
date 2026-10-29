@@ -4,6 +4,8 @@ import math
 
 
 def context_budget(window, prompts, live, trajectory_hz):
+    """Consume a finite iterable of prompt durations once, including generators."""
+    prompts = tuple(prompts)
     values = [window, live, trajectory_hz, *prompts]
     if any(not math.isfinite(x) or x < 0 for x in values) or window <= 0 or trajectory_hz <= 0:
         raise ValueError('Use finite nonnegative durations and positive window/rate')
@@ -28,6 +30,8 @@ def wilson(successes, trials, z=1.959963984540054):
 
 
 def summarize(tasks):
+    """Aggregate a finite iterable of (successes, trials) pairs."""
+    tasks = tuple(tasks)
     if not tasks:
         raise ValueError('At least one task is required')
     for successes, trials in tasks:

@@ -1,0 +1,45 @@
+{
+  "started_at_utc": "2026-10-29T02:31:49Z",
+  "planned_until_utc": "2026-10-29T08:31:49Z",
+  "baseline_commit": "8c87f85c6727bc23fd1f67d9e8726855bbd304b9",
+  "status": "in progress",
+  "baseline": {
+    "production": "/tmp/chase-sixhour-baseline-production-20261029",
+    "drafts": "/tmp/chase-sixhour-baseline-drafts-20261029",
+    "reviewed_posts": 94,
+    "published_posts": 91,
+    "strict_validation_errors": 0,
+    "local_references_checked": 28982,
+    "reading": {
+      "cases": 912,
+      "figure_cases": 536,
+      "exceptions": 0,
+      "evidence": "/tmp/chase-sixhour-baseline-reading-20261029/results.json"
+    }
+  },
+  "findings": [
+    {
+      "id": "gen-context-and-task-iterators",
+      "status": "fixed; Python3.10 and3.13 tests and extracted ZIP checks passed",
+      "evidence": "context_budget(30, iter([6,8]), 12, 100) reports used=12 instead of26; summarize(iter([(9,10),(10,20)])) raises TypeError after consumption.",
+      "scope": "Materialize finite batches before validation and repeated aggregation; preserve existing list results and reference statistics.",
+      "before": "/tmp/chase-sixhour-gen-iterators-before-20261029.json",
+      "randomized_parity": "/tmp/chase-sixhour-gen-iterators-randomized-20261029.json",
+      "test_methods": 7,
+      "extracted_bundle": "/tmp/chase-sixhour-gen-iterables-extracted-20261029.log",
+      "production_validation": "/tmp/chase-sixhour-gen-ready-validation-20261029.json"
+    }
+  ],
+  "releases": [],
+  "scientific_rechecks": [
+    {
+      "article": "rl",
+      "experiments": [
+        "20-seed cliff comparison",
+        "100000-trial maximization bias"
+      ],
+      "reference_json": "all values identical",
+      "model_or_hardware_execution": false
+    }
+  ]
+}

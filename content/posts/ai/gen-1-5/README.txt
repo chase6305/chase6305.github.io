@@ -9,6 +9,8 @@ GEN-1.5 阅读配套统计练习
 
 程序打印 JSON。assets/example-results.json 为文章使用的参考结果。
 四项练习：窗口预算、任务等权/试验等权平均、Wilson 区间、配对结果。
+context_budget 的 prompts 和 summarize 的 tasks 接受列表、元组及有限生成器。
+函数会在内存中保存整批输入，校验后再汇总；不要传入无限数据流。
 自拟结果应包括：
   used_seconds=26，free_seconds=4，nominal_action_samples=2600
   macro=0.7，micro=19/30
