@@ -123,7 +123,7 @@
     },
     {
       "id": "workspace-radial-cdf-support",
-      "status": "mathematics, page and production checks complete; release pending",
+      "status": "CDF/math/page passed; duplicate acceptance registration corrected; clean validation step passed; republishing",
       "before": "/tmp/chase-sixhour-workspace-cdf-before-20261029.json",
       "before_tests": "/tmp/chase-sixhour-workspace-cdf-tests-before-20261029.log",
       "evidence": "The helper squares negative query thresholds: F(-2)=1 andF(-1)=0.403013, instead of0. Queries near1e308 also overflow before clipping. The article formula was correctly restricted to the annulus; extend the helper to the full CDF.",
@@ -238,5 +238,19 @@
     "archives": 10,
     "source_members": "all match",
     "rewrites": 0
-  }
+  },
+  "ci_corrections": [
+    {
+      "commit": "da8fdb9f725ff50e2b4d8dc65588b47f06bf463d",
+      "run": 40815403426,
+      "failure": "Duplicate acceptance source for workspace article after adding a second inventory copy",
+      "cause": "The old article already owns its checks in docs/blog-second-pass.json; editor added a duplicate to the newer inventory. A local recheck had not been inspected before release.",
+      "fix": "Update existing second-pass record and remove duplicate editorial-review field; keep validation strict.",
+      "evidence": "/tmp/chase-sixhour-cdf-ci-build-20261029.log",
+      "local_validation": "complete failed CI step passed in clean tracked checkout",
+      "local_log": "/tmp/chase-sixhour-cdf-clean-validation-step-ready-20261029.log",
+      "artifact_parity": "/tmp/chase-sixhour-cdf-metadata-artifact-parity-20261029.json",
+      "site_files_unchanged": 2082
+    }
+  ]
 }

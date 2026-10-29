@@ -101,6 +101,8 @@ Check explanatory tables at 320 pixels wide. If long sentences collapse into nea
 
 When adding an article, update `data/blog_topics.json` and `docs/blog-editorial-review.json` so the learning path, neighboring-post links, filter inventory, and acceptance checks include it. Preserve existing records and follow the metadata format used by recent additions.
 
+Older articles may keep their acceptance checks in `docs/blog-second-pass.json`. Update that existing record when revising them; do not add a second copy to `docs/blog-editorial-review.json`. The validator rejects duplicate acceptance sources.
+
 When adding tags, assign each exact tag spelling to one field in `data/tag_groups.yaml`. Keep existing tag URLs stable; the public tag index should contain every active tag exactly once, with no unclassified group or empty sections.
 
 Before submitting, run `hugo --minify` and confirm there are no broken shortcode, front matter, or template errors. For layout or CSS changes, check desktop and narrow mobile widths, light and dark themes, navigation, code blocks, and image loading. Verify new drafts with `hugo server -D` before changing `draft` to `false`.
