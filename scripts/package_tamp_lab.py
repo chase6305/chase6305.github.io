@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BUNDLE = ROOT / "content/posts/planner/task-and-motion-planning"
 ARCHIVE = BUNDLE / "tamp-lab.zip"
 FILES = ("README.txt", "tamp_constraints.py", "tamp_search.py",
-         "assets/constraint-results.json", "assets/search-results.json")
+         "assets/constraint-results.json", "assets/search-results.json", "assets/grid-results.json")
 
 
 def main():
@@ -45,6 +45,22 @@ def main():
                 expected = Path(directory, "assets", reference).read_bytes()
                 if result.stdout != expected:
                     raise SystemExit(f"Reference output mismatch: {source}")
+            output = Path(directory, "summary-output.json")
+            short = subprocess.run([sys.executable, "-B", "tamp_search.py", "--check",
+                "--summary", "--output", str(output)], cwd=directory,
+                check=True, capture_output=True, timeout=60)
+            expected = Path(directory, "assets/search-results.json").read_bytes()
+            if output.read_bytes() != expected or len(short.stdout) >= len(expected):
+                raise SystemExit("Console summary changed or replaced the full saved result")
+            for state in (b"infeasible", b"unknown", b"feasible"):
+                if state not in short.stdout:
+                    raise SystemExit("Console summary omitted a refinement state")
+            grid = subprocess.run([sys.executable, "-B", "-c",
+                "import json; from tamp_search import grid_motion; "
+                "print(json.dumps(grid_motion((1., 0.), .25), indent=2, allow_nan=False))"],
+                cwd=directory, check=True, capture_output=True, timeout=60)
+            if grid.stdout != Path(directory, "assets/grid-results.json").read_bytes():
+                raise SystemExit("Extracted A* output differs from published grid result")
     print("TAMP archive matches source" + ("; extracted examples passed" if args.test else ""))
 
 

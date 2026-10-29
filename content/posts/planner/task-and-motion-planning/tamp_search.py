@@ -7,10 +7,15 @@ This script illustrates scheduling and scoped proofs, not a full robot planner.
 import argparse
 from collections import deque
 from dataclasses import dataclass
+import heapq
 import json
+import math
 from pathlib import Path
 
 import tamp_constraints as geometry
+
+GRID_STEP = .2
+GRID_BOUNDS = (-10, 10, -6, 6)  # Integer indices: x=-2..2 m, y=-1.2..1.2 m.
 
 
 @dataclass(frozen=True)
@@ -43,17 +48,63 @@ def candidates(initial_parking, allow_relocation):
                  for name, parked in modes for grasp in geometry.GRASPS)
 
 
+def grid_motion(parked, radius, max_expansions=1000):
+    """A* on a finite 8-neighbor grid; grid failure never proves continuous failure."""
+    parked = tuple(parked)
+    if len(parked) != 2 or not all(math.isfinite(value) for value in parked):
+        raise ValueError("parked must contain two finite coordinates")
+    if not math.isfinite(radius) or radius < 0:
+        raise ValueError("radius must be finite and nonnegative")
+    if type(max_expansions) is not int or max_expansions < 0:
+        raise ValueError("max_expansions must be a nonnegative integer")
+    start, goal = (-10, 0), (10, 0)
+    point = lambda node: (node[0] * GRID_STEP, node[1] * GRID_STEP)
+    if not all(geometry.verify_path([point(n), point(n)], radius, parked)["valid"]
+               for n in (start, goal)):
+        return {"status": "unknown", "reason": "grid_endpoint_collision", "expanded_nodes": 0}
+    frontier = [(math.dist(point(start), point(goal)), 0., start)]
+    costs, parents, expanded = {start: 0.}, {}, 0
+    while frontier:
+        _, cost, node = heapq.heappop(frontier)
+        if cost != costs[node]:
+            continue  # An older, more expensive entry for this node.
+        if node == goal:
+            nodes = [goal]
+            while nodes[-1] != start:
+                nodes.append(parents[nodes[-1]])
+            path = [point(n) for n in reversed(nodes)]
+            checks = geometry.verify_path(path, radius, parked)
+            if not checks["valid"]:
+                raise RuntimeError("Grid search produced an invalid path")
+            return {"status": "feasible", "reason": "verified_grid_path", "path_m": path,
+                    "path_length_m": cost, "expanded_nodes": expanded, **checks}
+        if expanded >= max_expansions:
+            return {"status": "unknown", "reason": "grid_budget_exhausted", "expanded_nodes": expanded}
+        expanded += 1
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                if dx == dy == 0:
+                    continue
+                nxt = (node[0] + dx, node[1] + dy)
+                if not (GRID_BOUNDS[0] <= nxt[0] <= GRID_BOUNDS[1]
+                        and GRID_BOUNDS[2] <= nxt[1] <= GRID_BOUNDS[3]):
+                    continue
+                edge = [point(node), point(nxt)]
+                if not geometry.verify_path(edge, radius, parked)["valid"]:
+                    continue
+                new_cost = cost + math.dist(*edge)
+                if new_cost < costs.get(nxt, math.inf):
+                    costs[nxt], parents[nxt] = new_cost, node
+                    estimate = new_cost + math.dist(point(nxt), point(goal))
+                    heapq.heappush(frontier, (estimate, new_cost, nxt))
+    return {"status": "unknown", "reason": "finite_grid_exhausted", "expanded_nodes": expanded}
+
+
 def refine_one(candidate):
     if candidate.attempt == 0:
         return geometry.refine(candidate.parking,
                                geometry.GRASPS[candidate.grasp])
-    # A second, explicitly constructed candidate, not a general path planner.
-    path = [(-2., 0.), (-1., 0.), (.3, 0.), (.3, 1.), (2., 1.), (2., 0.)]
-    checks = geometry.verify_path(path, geometry.GRASPS[candidate.grasp],
-                                  candidate.parking)
-    return {"status": "feasible" if checks["valid"] else "unknown",
-            "reason": "verified_detour" if checks["valid"] else "detour_collision",
-            "path_m": path, **checks}
+    return grid_motion(candidate.parking, geometry.GRASPS[candidate.grasp])
 
 
 def search(initial_parking=(0., .05), allow_relocation=True, reuse=True,
@@ -116,6 +167,21 @@ def demo():
             "detour_with_revisit": search((1., 0.), False)}
 
 
+def summary(result):
+    """Short console view; the full JSON keeps the complete geometry and trace."""
+    lines = ["Constructed carrying-stage example (not a complete robot plan)",
+             "Case                         Calls  Result"]
+    for name, case in result.items():
+        if name != "scope":
+            lines.append(f"{name:<29}{case['refinement_calls']:>5}  {case['status']}")
+    lines += ["", "Detour revisit trace:"]
+    for row in result["detour_with_revisit"]["trace"]:
+        lines.append(f"  {row['grasp']:<6} attempt {row['attempt']}: "
+                     f"{row['status']:<10} {row['reason']}")
+    lines += ["", "Only the carrying path is verified; see JSON for unverified components."]
+    return "\n".join(lines) + "\n"
+
+
 def self_check():
     result = demo()
     uncached, cached = result["blocked_without_cache"], result["blocked_with_cache"]
@@ -158,6 +224,7 @@ def self_check():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--summary", action="store_true", help="Print a short trace instead of full JSON")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     result = self_check() if args.check else demo()
@@ -165,4 +232,4 @@ if __name__ == "__main__":
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(text, encoding="utf-8")
-    print(text, end="")
+    print(summary(result) if args.summary else text, end="")

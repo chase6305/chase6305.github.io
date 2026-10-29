@@ -1,6 +1,6 @@
 {
   "started_at_utc": "2026-10-29T02:31:49Z",
-  "planned_until_utc": "2026-10-29T08:31:49Z",
+  "planned_until_utc": "2026-10-29T08:32:10Z",
   "baseline_commit": "8c87f85c6727bc23fd1f67d9e8726855bbd304b9",
   "status": "in progress",
   "baseline": {
@@ -406,6 +406,14 @@
       "artifact_parity": "/tmp/chase-sixhour-cdf-metadata-artifact-parity-20261029.json",
       "site_files_unchanged": 2082,
       "status": "fixed; clean validation and corrected Pages release passed"
+    },
+    {
+      "commit": "8fa7dbd2ecdb608c7ed9e90355da40857cafcac1",
+      "run": 40831434559,
+      "failure": "TAMP packaging script referenced by workflow but omitted from staged commit",
+      "fix_commit": "42e9addac3e621531156e5bb7e6b96fe2bf28855",
+      "fix": "Commit the already-tested scripts/package_tamp_lab.py; retain source/archive checks",
+      "status": "fixed; corrective Pages workflow 40831626943 succeeded, live byte audit in progress"
     }
   ],
   "external_reference_review": {
@@ -530,6 +538,89 @@
         16
       ],
       "provenance": "docs/image-generation/tamp-20261029.json"
+    },
+    "grid_extension": {
+      "figures_total": 9,
+      "program": "tamp_search.grid_motion",
+      "algorithm": "finite 8-neighbor A*; whole-segment collision checks",
+      "grid_spacing_m": 0.2,
+      "grid_center_bounds_m": {
+        "x": [
+          -2,
+          2
+        ],
+        "y": [
+          -1.2,
+          1.2
+        ]
+      },
+      "nodes": 273,
+      "path_length_m": 4.662741699796952,
+      "expanded_nodes": 114,
+      "minimum_wall_centerline_distance_m": 0.35355339059327373,
+      "minimum_blocker_centerline_distance_m": 0.7071067811865476,
+      "motion_failure_status": "unknown",
+      "regression_methods": 6,
+      "independent_dijkstra_cases": 15,
+      "python_versions": [
+        "3.10",
+        "3.13"
+      ],
+      "archive_source_members": 6,
+      "summary_mode": "short console output; full JSON preserved with --output",
+      "original_doorway_figure": "regenerated pixels identical; original file preserved",
+      "figure_provenance": "docs/image-generation/tamp-20261029.json",
+      "strict_build": "/tmp/chase-tamp-grid-production-20261029.log",
+      "browser": "/tmp/chase-tamp-grid-browser-20261029.log",
+      "browser_checks": {
+        "image_viewer_cases": 36,
+        "chapter_activations": 192,
+        "screen_layouts": 24,
+        "open_dialog_semantics": 9,
+        "axe_violations": 0,
+        "closed_popup_incomplete_nodes": 108,
+        "incomplete_triage": "Only aria-controls for closed image popup; referenced dialog exists, nine open dialogs independently passed",
+        "print_layouts": 6,
+        "print_text_samples": 3948,
+        "native_tagged_a4_pdfs": 6,
+        "pdf_pages": 25,
+        "visually_reviewed_grid_figure_page": 20,
+        "code_reading_layouts": 6,
+        "keyboard_copy": true,
+        "runtime_exceptions": 0
+      },
+      "strict_validation": {
+        "posts": 95,
+        "published_posts": 92,
+        "html_pages": 316,
+        "code_blocks": 588,
+        "acceptance_checks": 499,
+        "local_references": 31858,
+        "errors": 0,
+        "log": "/tmp/chase-sixhour-release-production-20261029.log"
+      }
     }
+  },
+  "release_verifier": {
+    "script": "scripts/check_site_release.py",
+    "documentation": "docs/release-verification.md",
+    "local_test_methods": 12,
+    "python_versions": [
+      "3.10",
+      "3.13"
+    ],
+    "loopback_inventory": 577,
+    "loopback_failures": 0,
+    "expected_404": 5,
+    "evidence": "/tmp/chase-tamp-release-checker-loopback-20261029.json",
+    "new_production_artifact_parity": 2120,
+    "scope": "Read-only immutable inventory and HTTP bytes; separate from CI status and browser semantics"
+  },
+  "final_article_contracts": {
+    "baseline_old_articles": 94,
+    "new_articles": 1,
+    "old_dates_draft_states_ids": "all preserved",
+    "tamp_first_publication_ids": "all preserved",
+    "evidence": "/tmp/chase-sixhour-final-article-contracts-20261029.json"
   }
 }

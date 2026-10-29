@@ -109,5 +109,17 @@
         "sha256": "735c6ebbf1e94313a7acd44990aaadb5fcfbd8df1ef2cda086069ba322a2b4a9"
       }
     ]
+  },
+  "grid_figure": {
+    "asset": "content/posts/planner/task-and-motion-planning/assets/grid-detour.png",
+    "generator": "content/posts/planner/task-and-motion-planning/make_figures.py",
+    "engine": "Matplotlib 3.10.9",
+    "dimensions": [
+      1728,
+      992
+    ],
+    "sha256": "f154ab6d6c10198fe69d017459ba09f42fac7163b03bbd427206d93f41928091",
+    "data_sha256": "71b6a0722aa12c825add06391f539903e77f664c988798316ccd0417a620da83",
+    "scope": "Actual finite-grid A* output for the constructed carrying-stage geometry; not robot benchmark data."
   }
 }

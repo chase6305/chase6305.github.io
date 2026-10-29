@@ -425,9 +425,9 @@ python3 -B tamp_constraints.py --output constraint-results.json
 
 [参考输出](assets/constraint-results.json)保存四组结果、复用后的调用记录，以及直线失败但绕行成功的对照。自检还用 500 组固定种子线段，对解析点到线段距离、线段到墙体距离和独立密集采样界进行比较，并覆盖线段穿过墙体、零长度线段和端点均安全但内部碰撞等情况。
 
-[绘图脚本](make_figures.py)另外需要 Matplotlib；它读取相同常量绘制门洞图。示例没有声称实现一个完整 TAMP 系统，也没有复现综述引用算法的实验成绩。
+[绘图脚本](make_figures.py)另外需要 Matplotlib；它读取相同常量绘制门洞图，并运行后文的有限网格 A* 绘制绕行图。示例没有声称实现一个完整 TAMP 系统，也没有复现综述引用算法的实验成绩。
 
-将 `tamp_constraints.py` 和 `make_figures.py` 放在同一目录，安装好 Matplotlib 后可重画门洞图：
+将 `tamp_constraints.py`、`tamp_search.py` 和 `make_figures.py` 放在同一目录，安装好 Matplotlib 后可重画两张几何图：
 
 ```bash
 python3 -B make_figures.py --output-dir figures
@@ -481,11 +481,13 @@ def schedule(candidates, refine, next_attempt):
 
 ```bash
 python3 -B tamp_constraints.py --check
-python3 -B tamp_search.py --check
+python3 -B tamp_search.py --check --summary
 python3 -B tamp_search.py --output my-search-results.json
 ```
 
 也可以分别下载 [tamp_constraints.py](tamp_constraints.py) 与 [tamp_search.py](tamp_search.py)，放在同一目录运行。输出包含以下四组实验，以及每次尝试的 `skeleton / grasp / attempt / status / reason`：
+
+`--summary` 先显示简短结果表和三步重访记录；去掉它可以查看完整 JSON，`--output` 始终保存完整记录。这样可以先读搜索过程，再按需检查坐标与几何间距。
 
 | 场景与设置 | 细化调用 | 最终返回 | 读结果时看什么 |
 | --- | ---: | --- | --- |
@@ -497,9 +499,39 @@ python3 -B tamp_search.py --output my-search-results.json
 
 这些是固定候选的构造计数，不能用来宣称某种 TAMP 求解器加速一倍。前两行也比上一节的四组合枚举多了一条“直接搬运”骨架，因此调用数的分母不同。
 
-**重点核对两处代码：** `context_key()` 保存门洞、阻挡物半径、数值余量、起终点、放置与包络；`width_key()` 只保存宽度证据实际依赖的门洞、余量与包络。更换放置可以复用宽度证据，更换门洞则必须重验。第二次路径尝试使用本节已经给出的绕行折线，并对每段重新计算距离，不是一个通用 RRT 实现。
+**重点核对两处代码：** `context_key()` 保存门洞、阻挡物半径、数值余量、起终点、放置与包络；`width_key()` 只保存宽度证据实际依赖的门洞、余量与包络。更换放置可以复用宽度证据，更换门洞则必须重验。
 
-[完整参考输出](assets/search-results.json)保留所有调用记录。自检比较开关缓存后的见证、限制预算时的 unknown、门洞变宽后的证据失效，以及重访后找到绕行的状态序列。返回字段 `unverified` 明确列出尚未验证的抓放、阻挡物搬移、机械臂 IK、动力学和执行条件；读者可以据此逐个替换真实机器人模块，而不会把局部搬运见证当成整套机器人方案。
+### 9.6 用实际 A* 搜索生成第二条路线 {#grid-motion}
+
+第一次细化先试由穿门高度得到的简单折线；如果没有结论，重访时调用 `grid_motion()`，在二维网格上实际搜索，而不是预先写好第二条路径：
+
+- 网格分辨率为 **0.2 m**，中心坐标限定在 $x\in[-2,2]$ m、$y\in[-1.2,1.2]$ m，共 273 个节点；起终点与前面一致。
+- 每个节点最多有八个邻居，边代价与启发函数都采用欧氏距离；启发函数不会高估剩余路径长度。
+- 扩展邻居前，对**整条边**检查圆盘与墙、阻挡物的距离。允许斜向边不等于允许“抄近角”穿过障碍物。
+- 到达终点后回溯出折线，再整体核验；耗尽网格或展开预算时返回 `unknown`。
+
+可在同目录的 Python 会话直接调用：
+
+```python
+from tamp_search import grid_motion
+
+result = grid_motion(parked=(1.0, 0.0), radius=0.25)
+print(result["status"], result["expanded_nodes"])
+if result["status"] == "feasible":
+    print(result["path_m"])
+    print(result["path_length_m"])
+```
+
+它求解的是**这张有限图上的路径问题**。网格外或节点之间可能存在它没有表示的连续路径，所以网格无路不能升级为几何无解证明。前文第 9.3 节的手工折线仍用于说明反例；程序搜索出的路线可以不同，只要通过同一几何核验即可。这个边界也解释了为什么外层只缓存解析门洞／阻挡证据，不缓存 A* 的 unknown。
+
+<figure class="article-figure" id="fig-tamp-grid-detour">
+  {{< post-image src="assets/grid-detour.png" alt="门后坐标一米零米处有阻挡物，最初的水平路线穿过它；实际 A* 搜索出的绿色折线先穿过门洞，再从阻挡物下方绕行，所有边均通过整段距离检查" >}}
+  <figcaption><span class="article-figure__number">图 9</span><span class="article-figure__text">实际运行 A* 得到的搬运路径。灰点只标出通过碰撞判定的网格中心，不表示相邻点一定能直连；绿色边均另行核验。橙色虚线圆的 0.65 m 是两圆盘半径之和。网格限制的是中心坐标，墙在图外仍延伸，所有数值仍为本页构造场景。</span></figcaption>
+</figure>
+
+默认运行得到路径长约 **4.662742 m**，展开 114 个节点；路径中心线到墙和阻挡物中心的最小距离分别约为 0.353553 m 与 0.707107 m，满足 0.25 m 与 0.65 m 的严格间距要求。[数值与路径记录](assets/grid-results.json)可以直接核对；[绘图脚本](make_figures.py)根据这次搜索结果作图。这些数值只描述当前网格和固定搜索顺序，不能推广为机器人规划性能。
+
+[完整参考输出](assets/search-results.json)保留所有外层调用记录。自检比较开关缓存后的见证、限制预算时的 unknown、门洞变宽后的证据失效，以及重访后找到绕行的状态序列。返回字段 `unverified` 明确列出尚未验证的抓放、阻挡物搬移、机械臂 IK、动力学和执行条件；读者可以据此逐个替换真实机器人模块，而不会把局部搬运见证当成整套机器人方案。
 
 ## 10. 从论文框架到可维护的软件接口 {#engineering}
 

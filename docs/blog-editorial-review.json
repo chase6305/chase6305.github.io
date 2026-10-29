@@ -2247,7 +2247,7 @@
         "/posts/robotics/kinematics/pinocchio",
         "/posts/ai/jev-decision-layer"
       ],
-      "image_decision": "四组论文原图分别解释挡块重排、约束网络、条件采样网络和两种搜索流程；三张概念图与确定性门洞图连接建模和代码。标准库脚本、伪代码和完整 ZIP 核对整段几何、作用范围明确的证据缓存与 unknown 重访。",
+      "image_decision": "四组论文原图解释挡块重排、约束网络、条件采样和搜索流程；三张概念图与两张确定性几何图连接建模和代码。标准库外层搜索、实际有限网格 A*、伪代码和完整 ZIP 核对整段几何、证据缓存与 unknown 重访。",
       "image": "assets/tamp-refinement.webp",
       "acceptance_checks": [
         "TAMP 除了动作顺序与运动路径，还必须选择什么？",
