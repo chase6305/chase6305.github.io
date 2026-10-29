@@ -76,6 +76,35 @@ function inspectOutline(selector) {
         }
       }
     }
+    // The native menu is deliberately absent after enhancement. Inspect its
+    // painted summary/link outlines in the original no-script document too.
+    await browser.cdp('Emulation.setScriptExecutionDisabled', {value: true});
+    for (const mode of modes) {
+      await browser.cdp('Emulation.setEmulatedMedia', {features: mode === 'normal' ? [] : [
+        {name: 'forced-colors', value: 'active'},
+        {name: 'prefers-color-scheme', value: mode === 'forced-dark' ? 'dark' : 'light'}
+      ]});
+      for (const width of [320, 768, 1440]) {
+        await browser.viewport(width);
+        for (const route of ['/', '/zh-cn/']) {
+          await browser.navigate(base+route);
+          for (const theme of ['light', 'dark', 'warm']) {
+            await browser.evaluate(`document.documentElement.classList.remove('dark','warm');
+              document.documentElement.classList.add(${JSON.stringify(theme)});
+              document.querySelector('.native-navigation').open=true`);
+            await browser.key('Tab', 'Tab', 9);
+            for (const selector of ['.native-navigation summary', '.native-navigation__links a', '.native-navigation__languages a']) {
+              await browser.evaluate(`document.querySelector(${JSON.stringify(selector)}).focus()`);
+              const state = await browser.evaluate('('+inspectOutline.toString()+')('+JSON.stringify(selector)+')');
+              const passed = state.focused && state.visible && state.outlineWidth > 0 && state.outlineStyle !== 'none'
+                && state.ratio >= 3 && state.insideViewport;
+              report.outlines.push({route, width, theme, mode, selector, scripts: false, passed, ...state});
+            }
+          }
+        }
+      }
+    }
+    await browser.cdp('Emulation.setScriptExecutionDisabled', {value: false});
     report.summary = {outlines: report.outlines.length, failures: report.outlines.filter(row => !row.passed).length,
       gradientCasesForVisualReview: report.outlines.filter(row => row.gradients.length).length, exceptions: browser.exceptions.length};
     console.log(JSON.stringify({...report.summary, failedOutlines: report.outlines.filter(row => !row.passed)

@@ -1,0 +1,33 @@
+{{- $page := . -}}
+{{- $zh := eq site.Language.Lang "zh-cn" -}}
+{{- $items := slice -}}
+{{- range site.Menus.main -}}
+  {{- if .HasChildren -}}
+    {{- range .Children -}}{{- $items = $items | append . -}}{{- end -}}
+  {{- else if or .URL .PageRef -}}
+    {{- $items = $items | append . -}}
+  {{- end -}}
+{{- end -}}
+<details class="native-navigation">
+  <summary>{{ if $zh }}浏览{{ else }}Browse{{ end }}</summary>
+  <div class="native-navigation__links">
+    <ul>
+      {{- range $items -}}
+        {{- $link := .URL -}}
+        {{- with .PageRef -}}
+          {{- $link = relLangURL (strings.TrimPrefix "/" .) -}}
+        {{- end -}}
+        {{- $external := strings.HasPrefix $link "http" -}}
+        <li><a href="{{ $link }}"{{ if $external }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ or (T .Identifier) .Name }}</a></li>
+      {{- end -}}
+    </ul>
+    {{- if hugo.IsMultilingual -}}
+      <ul class="native-navigation__languages" aria-label="{{ if $zh }}语言{{ else }}Languages{{ end }}">
+        {{- range partial "utils/hugo-compat/sites.html" . -}}
+          {{- $link := partial "utils/lang-link" (dict "lang" .Language.Lang "context" $page) -}}
+          <li><a href="{{ $link }}" lang="{{ .Language.Lang }}" hreflang="{{ .Language.Lang }}">{{ partial "utils/hugo-compat/language-label.html" .Language }}</a></li>
+        {{- end -}}
+      </ul>
+    {{- end -}}
+  </div>
+</details>

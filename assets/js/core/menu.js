@@ -160,4 +160,18 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   });
+
+  // Keep native navigation usable until this menu is initialized. A reader may
+  // already have opened it while a slow core script was loading; do not hide
+  // their current disclosure or focused link when enhancement finishes.
+  const nativeNavigation = document.querySelector('.native-navigation');
+  const navigation = menu.closest('.hextra-nav-container');
+  const finishEnhancement = () => {
+    if (nativeNavigation?.open || nativeNavigation?.contains(document.activeElement)) return;
+    navigation.dataset.navigationReady = 'true';
+  };
+  nativeNavigation?.addEventListener('toggle', finishEnhancement);
+  nativeNavigation?.addEventListener('focusout', () => queueMicrotask(finishEnhancement));
+  document.documentElement.dataset.mobileMenuReady = 'true';
+  finishEnhancement();
 });

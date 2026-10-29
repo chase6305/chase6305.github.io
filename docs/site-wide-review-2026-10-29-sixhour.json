@@ -27,10 +27,90 @@
       "randomized_parity": "/tmp/chase-sixhour-gen-iterators-randomized-20261029.json",
       "test_methods": 7,
       "extracted_bundle": "/tmp/chase-sixhour-gen-iterables-extracted-20261029.log",
-      "production_validation": "/tmp/chase-sixhour-gen-ready-validation-20261029.json"
+      "production_validation": "/tmp/chase-sixhour-gen-ready-validation-20261029.json",
+      "browser": "/tmp/chase-sixhour-gen-preview-20261029.json"
+    },
+    {
+      "id": "parkour-scalar-phase-overflow",
+      "status": "fixed; Python3.10/3.13, original numerical/SVG outputs and production validation passed",
+      "before": "/tmp/chase-sixhour-parkour-phase-before-20261029.log",
+      "after": "/tmp/chase-sixhour-parkour-phase-after-20261029.log",
+      "evidence": "phase_weights(-200) raises OverflowError instead of saturating at the first prior. Nonfinite positions and temperatures are also accepted.",
+      "tests": 5,
+      "random_partition_cases": 1000,
+      "published_math": "unchanged within 1e-14 relative and 1e-15 absolute",
+      "svg_figures": "all four byte-identical to generator"
+    },
+    {
+      "id": "native-site-navigation-unavailable",
+      "status": "fixed; production validation and browser checks passed; release pending",
+      "before": "/tmp/chase-sixhour-native-nav-before-20261029.png",
+      "evidence": "At320px with scripts disabled, the sidebar is offscreen and the hamburger has no native action; only home, search/index and GitHub links are visible in the navbar.",
+      "after": "/tmp/chase-sixhour-native-nav-after-20261029.png",
+      "scope": "Configured site/language links in native details; hide inactive script controls until menu initialization; preserve an already-open or focused fallback during late enhancement.",
+      "browser": {
+        "cases": 114,
+        "result": "/tmp/chase-sixhour-native-nav-full-20261029/results.json",
+        "delayed_core_cases": 6,
+        "focus_outlines": 702,
+        "focus_failures": 0,
+        "reflow_layouts": 1890,
+        "reflow_failures": 0,
+        "short_before": "/tmp/chase-sixhour-native-nav-short-before-20261029.json",
+        "short_after": "/tmp/chase-sixhour-native-nav-short-final-20261029/results.json",
+        "final_cases": 162,
+        "final_result": "/tmp/chase-sixhour-native-nav-final-fallback-20261029/results.json",
+        "short_screen_cases": 48,
+        "final_reading_cases": 912,
+        "final_figure_cases": 536,
+        "final_reading_exceptions": 0,
+        "final_reading": "/tmp/chase-sixhour-native-nav-final-reading-20261029/results.json",
+        "native_arrow_scroll_cases": 2,
+        "native_arrow_evidence": "/tmp/chase-sixhour-native-nav-final-arrows-20261029/results.json",
+        "navigation_print": {
+          "menu_cases": 60,
+          "stack_cases": 12,
+          "native_pdfs": 18,
+          "exceptions": 0
+        },
+        "language": {
+          "cases": 108,
+          "nested_cases": 12,
+          "exceptions": 0
+        }
+      },
+      "native_semantics": {
+        "cases": 638,
+        "violations": 0,
+        "incomplete_nodes": 0,
+        "exceptions": 0,
+        "evidence": "/tmp/chase-sixhour-native-nav-native-semantics-20261029/results.json"
+      },
+      "old_contracts": "/tmp/chase-sixhour-navigation-contracts-20261029.json",
+      "production_validation": "/tmp/chase-sixhour-navigation-final-validation-20261029.json"
     }
   ],
-  "releases": [],
+  "releases": [
+    {
+      "id": 40808466610,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "46d600c32009658d1678a74d23feb1b11c88ad01",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40808466610",
+      "updated_at": "2026-10-29T02:51:11Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-46d600c32009-20261029.json",
+      "verified_at_utc": "2026-10-29T02:58:17.969453+00:00",
+      "network_rechecks": 2,
+      "summary": {
+        "urls": 371,
+        "failures": 0,
+        "bytes": 34048413
+      }
+    }
+  ],
   "scientific_rechecks": [
     {
       "article": "rl",
@@ -40,6 +120,44 @@
       ],
       "reference_json": "all values identical",
       "model_or_hardware_execution": false
+    },
+    {
+      "article": "llm-training-metrics",
+      "experiment": "20000-resample row/group bootstrap",
+      "reference_json": "all fields identical"
+    },
+    {
+      "article": "parameter-identification",
+      "experiment": "2500 AR(1) noise trials and exact covariance",
+      "reference_json": "all fields identical"
+    },
+    {
+      "article": "gymnasium/1",
+      "environment": {
+        "gymnasium": "1.3.0",
+        "moviepy": "2.2.1",
+        "numpy": "2.2.6",
+        "box2d": "2.3.10"
+      },
+      "published_programs": 2,
+      "default_steps": 1000,
+      "identical_seeded_repeat": true,
+      "three_step_truncations": 333,
+      "exception_close": "passed",
+      "video": {
+        "size": [
+          600,
+          400
+        ],
+        "frames": 124,
+        "decoded_distinct_frames": 124,
+        "codec": "h264"
+      },
+      "evidence": "/tmp/chase-sixhour-gym-results-20261029.json",
+      "official_references": [
+        "https://gymnasium.farama.org/api/wrappers/misc_wrappers/",
+        "https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/"
+      ]
     }
   ]
 }

@@ -116,7 +116,8 @@
         "Trap mobile overlay focus while preserving separate search dialog navigation",
         "Close the overlay synchronously before printing so article content remains available to tagged PDF output",
         "Release scroll locking and restore the menu entry after print only when the reader has retained focus",
-        "Track navigation focus before print styles hide the sidebar, including search opened from the sidebar"
+        "Track navigation focus before print styles hide the sidebar, including search opened from the sidebar",
+        "Reveal enhanced navigation only after initialization, retaining an open or focused native fallback until the reader leaves it"
       ]
     },
     {
@@ -128,6 +129,13 @@
         "Dismiss an open language menu on Escape after focus moves elsewhere without reclaiming reader focus",
         "Respect an active dialog as the current Escape owner",
         "Close other language menus before opening another instance"
+      ]
+    },
+    {
+      "upstream": "layouts/_partials/navbar.html",
+      "local": "layouts/_partials/navbar.html",
+      "changes": [
+        "Render a native disclosure with configured navigation and language links before mobile menu enhancement or when core scripts are unavailable"
       ]
     }
   ],

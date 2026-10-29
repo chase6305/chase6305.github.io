@@ -26,6 +26,8 @@ For navigation, appearance or image zoom changes, run `node scripts/check_site_a
 
 For language-menu changes, run `node scripts/check_language_menu.cjs <baseURL> <CDP-port> <output-directory>` serially. Enter/Space should focus the first option; Escape closes the inner menu before the mobile drawer, while a modal dialog retains Escape ownership. Preserve pointer activation, later reader focus and a single open language menu.
 
+For native site-navigation changes, run `node scripts/check_navigation_fallback.cjs <loopback-baseURL> <CDP-port> <output-directory>` serially. It checks navigation and language destinations with scripts disabled or the core script blocked, keyboard order at 100%/200% text sizing, offscreen mobile sidebar focus and controlled late core loading. Retain an already-open or focused native disclosure until the reader leaves it; do not hide the current keyboard target during enhancement.
+
 For native reading without page scripts, run `python3 -B scripts/test_blog_fallback.py --hugo /path/to/hugo`. Display formulas and Markdown tables start with a keyboard tab stop; page scripts remove fitting regions after layout. Use `task-check` for disabled checklist items so their inline content is an implicit label in the original HTML. Include descriptive prose alongside math symbols, which may be omitted from a control's computed name. Keep the Hugo table-hook version and Apache license provenance in `docs/render-overrides.json` aligned with the workflow; preserve MathML, table attributes and alignment.
 
 For table or formula overflow behavior, run `node scripts/check_overflow_focus.cjs <baseURL> <CDP-port> <output-directory>` and `node scripts/check_blog_math.cjs <baseURL> <CDP-port> <output-directory>`. Reflow must preserve an active region's focus, hide obsolete scroll hints immediately, remove a fitting region's temporary tab stop after blur, and restore keyboard access if it overflows again.
@@ -63,6 +65,8 @@ For portable C++17, CMake, Modbus protocol and loopback TCP/UDP examples, run `p
 For the tqdm article, run `python -B scripts/test_tqdm_examples.py` in a dedicated environment with `tqdm`. CI installs the wheel pinned by version and hash in `scripts/requirements-progress.txt`; the checks execute published snippets on one-shot iterators, failures, non-TTY streams, partial byte chunks and optimized Python.
 
 For One Euro configuration changes, run `python -B scripts/test_filter_examples.py` in a separate NumPy/SciPy environment. It checks constructor/update consistency, rejected updates before and after initialization, history recovery and valid scalar/rotation retuning. CI uses isolated CPython 3.13 Linux x86_64 wheels pinned by version and hash in `scripts/requirements-filters.txt`; keep experiment statistics stable when valid-data behavior is unchanged.
+
+For the Light-Loco-Parkour scalar phase example, run `python3 -B scripts/test_parkour_examples.py`. It uses only the standard library and checks saturated positions, sharp transitions, finite ordered triggers, one-shot trigger iterators and preserved published weights. Keep its scalar validation separate from the fixed third-party source probes.
 
 For the PID controller example, run `python3 -B scripts/test_pid_examples.py`. It uses only the standard library and checks parameter changes, invalid settings, state preservation, derivative/reset behavior and output bounds. Keep the integral state in output units when gains change; numerical validation does not guarantee bumpless transfer.
 
