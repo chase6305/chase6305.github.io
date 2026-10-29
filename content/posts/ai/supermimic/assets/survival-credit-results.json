@@ -1,0 +1,147 @@
+{
+  "scope": "constructed scalar functions; not a trained SuperMimic model",
+  "assumptions": "s0=0; a0=a1=theta; s_next=s+2a; r(s)=1-(s-1)^2; d(s)=sigmoid(5*(s-.6)); V(s)=1.2-(s-.8)^2; H=2; fixed dynamics/reward/termination/critic parameters",
+  "full": {
+    "theta": 0.1,
+    "gamma": 0.9,
+    "stop_survival": false,
+    "stop_value": false,
+    "states": [
+      0.0,
+      0.2,
+      0.4
+    ],
+    "rewards": [
+      0.3599999999999999,
+      0.64
+    ],
+    "termination_probabilities": [
+      0.11920292202211757,
+      0.26894142136999516
+    ],
+    "survival_weights": [
+      1.0,
+      0.8807970779778824,
+      0.6439142598879722
+    ],
+    "critic_values": [
+      0.5599999999999998,
+      0.8399999999999999,
+      1.04
+    ],
+    "objective": 1.4097724894448882,
+    "gradient_paths": {
+      "reward_state": 7.005043376864452,
+      "survival": -4.1690155261353965,
+      "tail_state": 1.6690257616296245
+    },
+    "gradient": 4.50505361235868,
+    "finite_difference_full": 4.5050536124913165,
+    "lambda_targets_095": [
+      1.3905779945202077,
+      1.3242708295976846
+    ],
+    "lambda_targets_1": [
+      1.4097724894448882,
+      1.3242708295976846
+    ]
+  },
+  "detach_survival": {
+    "theta": 0.1,
+    "gamma": 0.9,
+    "stop_survival": true,
+    "stop_value": false,
+    "states": [
+      0.0,
+      0.2,
+      0.4
+    ],
+    "rewards": [
+      0.3599999999999999,
+      0.64
+    ],
+    "termination_probabilities": [
+      0.11920292202211757,
+      0.26894142136999516
+    ],
+    "survival_weights": [
+      1.0,
+      0.8807970779778824,
+      0.6439142598879722
+    ],
+    "critic_values": [
+      0.5599999999999998,
+      0.8399999999999999,
+      1.04
+    ],
+    "objective": 1.4097724894448882,
+    "gradient_paths": {
+      "reward_state": 7.005043376864452,
+      "survival": 0.0,
+      "tail_state": 1.6690257616296245
+    },
+    "gradient": 8.674069138494076,
+    "finite_difference_full": 4.5050536124913165,
+    "lambda_targets_095": [
+      1.3905779945202077,
+      1.3242708295976846
+    ],
+    "lambda_targets_1": [
+      1.4097724894448882,
+      1.3242708295976846
+    ]
+  },
+  "detach_value": {
+    "theta": 0.1,
+    "gamma": 0.9,
+    "stop_survival": false,
+    "stop_value": true,
+    "states": [
+      0.0,
+      0.2,
+      0.4
+    ],
+    "rewards": [
+      0.3599999999999999,
+      0.64
+    ],
+    "termination_probabilities": [
+      0.11920292202211757,
+      0.26894142136999516
+    ],
+    "survival_weights": [
+      1.0,
+      0.8807970779778824,
+      0.6439142598879722
+    ],
+    "critic_values": [
+      0.5599999999999998,
+      0.8399999999999999,
+      1.04
+    ],
+    "objective": 1.4097724894448882,
+    "gradient_paths": {
+      "reward_state": 7.005043376864452,
+      "survival": -4.1690155261353965,
+      "tail_state": 0.0
+    },
+    "gradient": 2.8360278507290557,
+    "finite_difference_full": 4.5050536124913165,
+    "lambda_targets_095": [
+      1.3905779945202077,
+      1.3242708295976846
+    ],
+    "lambda_targets_1": [
+      1.4097724894448882,
+      1.3242708295976846
+    ]
+  },
+  "checks": {
+    "random_trajectories": 500,
+    "finite_difference": "passed",
+    "lambda_0_and_1": "passed",
+    "terminal_reward_index": "passed",
+    "detach_preserves_forward": "passed",
+    "invalid_inputs": "rejected"
+  }
+}

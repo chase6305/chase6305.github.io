@@ -32,7 +32,7 @@
     },
     {
       "id": "parkour-scalar-phase-overflow",
-      "status": "fixed; Python3.10/3.13, original numerical/SVG outputs and production validation passed",
+      "status": "fixed and published in252d86e",
       "before": "/tmp/chase-sixhour-parkour-phase-before-20261029.log",
       "after": "/tmp/chase-sixhour-parkour-phase-after-20261029.log",
       "evidence": "phase_weights(-200) raises OverflowError instead of saturating at the first prior. Nonfinite positions and temperatures are also accepted.",
@@ -43,7 +43,7 @@
     },
     {
       "id": "native-site-navigation-unavailable",
-      "status": "fixed; production validation and browser checks passed; release pending",
+      "status": "fixed and published; CI and371 live URLs matched",
       "before": "/tmp/chase-sixhour-native-nav-before-20261029.png",
       "evidence": "At320px with scripts disabled, the sidebar is offscreen and the hamburger has no native action; only home, search/index and GitHub links are visible in the navbar.",
       "after": "/tmp/chase-sixhour-native-nav-after-20261029.png",
@@ -87,7 +87,39 @@
         "evidence": "/tmp/chase-sixhour-native-nav-native-semantics-20261029/results.json"
       },
       "old_contracts": "/tmp/chase-sixhour-navigation-contracts-20261029.json",
-      "production_validation": "/tmp/chase-sixhour-navigation-final-validation-20261029.json"
+      "production_validation": "/tmp/chase-sixhour-navigation-final-validation-20261029.json",
+      "interactive_semantics": {
+        "cases": 63,
+        "violations": 0,
+        "incomplete_nodes": 277,
+        "triage": "all closed popup aria-controls; IDs resolve; open states audited separately",
+        "evidence": "/tmp/chase-sixhour-native-nav-interactive-triage-20261029.json"
+      }
+    },
+    {
+      "id": "supermimic-survival-and-critic-gradient-example",
+      "status": "complete; mathematics, TOC, production, mobile/desktop and native PDF checks passed",
+      "scope": "Independent scalar functions with fixed coefficients; forward return equal under gradient stopping; no learned world model, simulator or performance reproduction.",
+      "analytic_gradient": 4.50505361235868,
+      "detach_survival_gradient": 8.674069138494076,
+      "detach_critic_input_gradient": 2.8360278507290557,
+      "self_check_trajectories": 500,
+      "independent_torch_cases": 800,
+      "maximum_gradient_error": 1.4210854715202004e-14,
+      "torch_evidence": "/tmp/chase-sixhour-survival-credit-torch-20261029.json",
+      "python_versions": [
+        "3.10",
+        "3.13"
+      ],
+      "optimized_mode": "passed",
+      "original_interactive_experiment": "preserved",
+      "new_heading_id": "survival-credit",
+      "browser_cases": 30,
+      "native_pdfs": 6,
+      "browser": "/tmp/chase-sixhour-survival-browser-20261029/results.json",
+      "public_contracts": "/tmp/chase-sixhour-survival-public-contracts-20261029.json",
+      "pdf_text": "/tmp/chase-sixhour-survival-pdf-text-20261029.json",
+      "production": "/tmp/chase-sixhour-survival-final-production-20261029"
     }
   ],
   "releases": [
@@ -108,6 +140,24 @@
         "urls": 371,
         "failures": 0,
         "bytes": 34048413
+      }
+    },
+    {
+      "id": 40812972004,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "252d86e3664e78d735500fcbfd75568570a19cb7",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40812972004",
+      "updated_at": "2026-10-29T03:38:54Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-252d86e3664e-20261029.json",
+      "verified_at_utc": "2026-10-29T03:43:28.199108+00:00",
+      "summary": {
+        "urls": 371,
+        "failures": 0,
+        "bytes": 34257281
       }
     }
   ],
@@ -159,5 +209,10 @@
         "https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/"
       ]
     }
-  ]
+  ],
+  "archive_recheck": {
+    "archives": 10,
+    "source_members": "all match",
+    "rewrites": 0
+  }
 }
