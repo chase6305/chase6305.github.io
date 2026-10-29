@@ -27,6 +27,7 @@
 .jev-routing-lab__form select, .jev-routing-lab button { padding: .45rem .6rem; border: 1px solid var(--routing-border); border-radius: 6px; color: var(--routing-text); background: var(--routing-bg); font: inherit; }
 .jev-routing-lab__form select, .jev-routing-lab button { min-height: 44px; }
 .jev-routing-lab button { cursor: pointer; text-align: left; }
+.jev-routing-lab [data-lab-retry] { max-width: 100%; border-color: var(--chase-muted); }
 .jev-routing-lab :focus-visible { outline: 2px solid #4388c9; outline-offset: 3px; }
 .jev-routing-lab__metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; margin: 1rem 0; }
 .jev-routing-lab__metrics > div { padding: .7rem; border: 1px solid var(--routing-border); border-radius: 8px; font-size: .82rem; }

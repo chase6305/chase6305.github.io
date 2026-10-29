@@ -1,13 +1,14 @@
 {{- $id := printf "jev-routing-lab-%d" .Ordinal -}}
 {{- $css := resources.Get "css/jev-routing-lab.css" | minify | fingerprint -}}
-{{- $js := resources.Get "js/jev-routing-lab.js" | minify | fingerprint -}}
+{{- $js := slice (resources.Get "js/lab-data-loader.js") (resources.Get "js/jev-routing-lab.js") | resources.Concat "js/jev-routing-lab-bundle.js" | minify | fingerprint -}}
 {{- $records := .Page.Resources.Get "assets/routing-fixtures.json" | fingerprint -}}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 <section class="jev-routing-lab" data-jev-routing-lab data-records="{{ $records.RelPermalink }}" aria-label="置信度路由算例">
   <p class="jev-routing-lab__title"><strong>动手调：多少判断交给上层？</strong></p>
   <p>使用 200 条固定合成记录，分数与标签由程序构造，均非 Jev 实测。每次先支付 1 单位选择器费用，被拒绝的判断再支付上层费用。</p>
   <noscript><p>交互需要 JavaScript；文中的表格、下方曲线和可下载脚本提供相同的静态算例。</p></noscript>
-  <p data-routing-status role="status" hidden>正在读取合成记录…</p>
+  <p id="{{ $id }}-status" data-routing-status role="status" hidden>正在读取合成记录…</p>
+  <button type="button" data-lab-retry aria-describedby="{{ $id }}-status" hidden>重新载入合成记录</button>
   <div data-routing-interactive hidden>
     <form class="jev-routing-lab__form">
       <label for="{{ $id }}-group">记录分组

@@ -123,7 +123,7 @@
     },
     {
       "id": "workspace-radial-cdf-support",
-      "status": "CDF/math/page passed; duplicate acceptance registration corrected; clean validation step passed; republishing",
+      "status": "fixed and published via3d5f081;374 live URLs matched",
       "before": "/tmp/chase-sixhour-workspace-cdf-before-20261029.json",
       "before_tests": "/tmp/chase-sixhour-workspace-cdf-tests-before-20261029.log",
       "evidence": "The helper squares negative query thresholds: F(-2)=1 andF(-1)=0.403013, instead of0. Queries near1e308 also overflow before clipping. The article formula was correctly restricted to the annulus; extend the helper to the full CDF.",
@@ -144,6 +144,38 @@
       },
       "pdf_text": "/tmp/chase-sixhour-workspace-pdf-text-20261029.json",
       "production": "/tmp/chase-sixhour-workspace-cdf-production-20261029"
+    },
+    {
+      "id": "embedded-lab-data-retry",
+      "status": "validated; ready for release",
+      "before": "/tmp/chase-sixhour-lab-retry-before-20261029.json",
+      "scope": "Filter and Jev widgets retain static content after initial data failures; add explicit reload, one pending request, timeout recovery and no reader focus movement.",
+      "initial_smoke": "both widgets recover via Enter; focused ready control remains until Tab moves to method/group",
+      "controlled_browser_cases": 89,
+      "controlled_browser": "/tmp/chase-sixhour-lab-loading-final-20261029/results.json",
+      "routing_parity": 909,
+      "filter_color_layouts": 270,
+      "scientific_functions_unchanged": "/tmp/chase-sixhour-lab-retry-calculation-parity-20261029.json",
+      "extra_edges": "/tmp/chase-sixhour-lab-loading-edges-20261029.json",
+      "extra_edge_cases": 17,
+      "activation_failure_before": "/tmp/chase-sixhour-lab-activation-focus-before-20261029.json",
+      "activation_focus_fix": "Keep the focused setup-failure entry until blur; never reinstall a partial interface.",
+      "production_validation": "/tmp/chase-sixhour-lab-retry-final-production-20261029.log",
+      "print": "/tmp/chase-sixhour-lab-retry-print-20261029/results.json",
+      "semantic_cases": 8,
+      "semantic_violations": 0,
+      "semantic_incomplete": 0,
+      "semantics": "/tmp/chase-sixhour-lab-retry-semantics-20261029.json",
+      "print_layouts": 564,
+      "print_failures": 0,
+      "native_print_visual_review": {
+        "filter_page": 33,
+        "routing_page": 20,
+        "tagged": true
+      },
+      "reflow_layouts": 1890,
+      "reflow_failures": 0,
+      "reflow": "/tmp/chase-sixhour-lab-retry-reflow-20261029/results.json"
     }
   ],
   "releases": [
@@ -182,6 +214,44 @@
         "urls": 371,
         "failures": 0,
         "bytes": 34257281
+      }
+    },
+    {
+      "id": 40814094949,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "906f2020b7b655d338fd598012cd219a4f41839d",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40814094949",
+      "updated_at": "2026-10-29T03:52:04Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-906f2020b7b6-20261029.json",
+      "verified_at_utc": "2026-10-29T04:02:27.089374+00:00",
+      "network_rechecks": 1,
+      "summary": {
+        "urls": 373,
+        "failures": 0,
+        "bytes": 34301626
+      }
+    },
+    {
+      "id": 40817260874,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "3d5f081d2875bfddc1293ba888f24543a5dc8641",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40817260874",
+      "updated_at": "2026-10-29T04:25:40Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-3d5f081d2875-20261029.json",
+      "verified_at_utc": "2026-10-29T04:36:06.187405+00:00",
+      "network_rechecks": 5,
+      "summary": {
+        "urls": 374,
+        "failures": 0,
+        "bytes": 34309746
       }
     }
   ],
@@ -250,7 +320,8 @@
       "local_validation": "complete failed CI step passed in clean tracked checkout",
       "local_log": "/tmp/chase-sixhour-cdf-clean-validation-step-ready-20261029.log",
       "artifact_parity": "/tmp/chase-sixhour-cdf-metadata-artifact-parity-20261029.json",
-      "site_files_unchanged": 2082
+      "site_files_unchanged": 2082,
+      "status": "fixed; clean validation and corrected Pages release passed"
     }
   ]
 }

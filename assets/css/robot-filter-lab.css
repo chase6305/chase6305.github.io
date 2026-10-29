@@ -24,7 +24,8 @@
 .robot-filter-lab__form input, .robot-filter-lab__form select { display: block; width: 100%; margin-top: .45rem; accent-color: #427ebb; }
 .robot-filter-lab__form select { padding: .4rem .5rem; border: 1px solid var(--filter-border); border-radius: 6px; color: var(--filter-text); background: var(--filter-bg); font: inherit; }
 .robot-filter-lab__views { display: flex; flex-wrap: wrap; gap: .4rem; margin: .7rem 0; }
-.robot-filter-lab__views button { padding: .38rem .6rem; border: 1px solid var(--filter-border); border-radius: 6px; color: var(--filter-text); background: transparent; font: inherit; font-size: .85rem; cursor: pointer; }
+.robot-filter-lab__views button, .robot-filter-lab__retry { padding: .38rem .6rem; border: 1px solid var(--filter-border); border-radius: 6px; color: var(--filter-text); background: transparent; font: inherit; font-size: .85rem; cursor: pointer; }
+.robot-filter-lab__retry { min-height: 44px; max-width: 100%; border-color: var(--chase-muted); }
 .robot-filter-lab__views button[aria-pressed="true"] { border-color: #397cbd; background: #dceafb; color: #1c426b; }
 .dark .robot-filter-lab__views button[aria-pressed="true"] { background: #244567; color: #e7f2ff; }
 .robot-filter-lab :focus-visible { outline: 2px solid #4489ca; outline-offset: 3px; }

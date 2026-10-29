@@ -1,13 +1,14 @@
 {{- $id := printf "robot-filter-lab-%d" .Ordinal -}}
 {{- $css := resources.Get "css/robot-filter-lab.css" | minify | fingerprint -}}
-{{- $js := resources.Get "js/robot-filter-lab.js" | minify | fingerprint -}}
+{{- $js := slice (resources.Get "js/lab-data-loader.js") (resources.Get "js/robot-filter-lab.js") | resources.Concat "js/robot-filter-lab-bundle.js" | minify | fingerprint -}}
 {{- $signal := .Page.Resources.Get "assets/filter-signal.json" -}}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 <section class="robot-filter-lab" data-robot-filter-lab data-signal="{{ $signal.RelPermalink }}" aria-label="机器人滤波参数实验">
   <p class="robot-filter-lab__title"><strong>动手调：抖动与跟随</strong></p>
   <p>同一段 200 Hz 合成位置记录，改变算法与参数，观察静止片段和运动开始。位置单位为米，图上换算为毫米。</p>
   <noscript><p>交互实验需要 JavaScript；下方曲线和 Python 脚本提供完整的静态结果。</p></noscript>
-  <p data-filter-status role="status" hidden>正在读取实验信号…</p>
+  <p id="{{ $id }}-status" data-filter-status role="status" hidden>正在读取实验信号…</p>
+  <button type="button" class="robot-filter-lab__retry" data-lab-retry aria-describedby="{{ $id }}-status" hidden>重新载入实验信号</button>
   <div data-filter-interactive hidden>
     <form class="robot-filter-lab__form">
       <label for="{{ $id }}-method">方法

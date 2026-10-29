@@ -144,40 +144,43 @@
     canvas.setAttribute("aria-label",`合成位置曲线，${lo} 至 ${hi} 秒。静止标准差 ${result.jitter.toFixed(3)} 毫米，匀速等效滞后 ${result.lag.toFixed(3)} 毫秒。`);
   }
 
-  async function mount(element) {
+  function mount(element) {
     if (element.dataset.ready) return; element.dataset.ready="true";
     const status=element.querySelector("[data-filter-status]");status.hidden=false;
-    try {
-      const response=await fetch(element.dataset.signal);if(!response.ok)throw new Error("Signal unavailable");
-      const data=await response.json();validateData(data);
-      const form=element.querySelector("form"), canvas=element.querySelector("canvas");
-      const error=element.querySelector("[data-filter-error]");let result,view="all";
-      function update(){
-        const values={};for(const input of form.elements)if(input.name)values[input.name]=input.name==="method"?input.value:Number(input.value);
-        for(const label of element.querySelectorAll("[data-parameter]")){
-          const name=label.dataset.parameter;
-          label.hidden=(name==="frequency"&&values.method==="wma")||(name==="beta"&&values.method!=="oneEuro")||(name==="window"&&values.method!=="wma")||(name==="damping"&&values.method!=="msd");
+    return globalThis.ChaseLabDataLoader.mount({
+      element, status, retry:element.querySelector('[data-lab-retry]'), url:element.dataset.signal,
+      validate:validateData, loadingMessage:'正在读取实验信号…',
+      failureMessage:'交互信号暂时无法载入，请使用下方静态曲线或下载脚本。',
+      activate(data) {
+        const form=element.querySelector("form"), canvas=element.querySelector("canvas");
+        const error=element.querySelector("[data-filter-error]");let result,view="all";
+        function update(){
+          const values={};for(const input of form.elements)if(input.name)values[input.name]=input.name==="method"?input.value:Number(input.value);
+          for(const label of element.querySelectorAll("[data-parameter]")){
+            const name=label.dataset.parameter;
+            label.hidden=(name==="frequency"&&values.method==="wma")||(name==="beta"&&values.method!=="oneEuro")||(name==="window"&&values.method!=="wma")||(name==="damping"&&values.method!=="msd");
+          }
+          element.querySelector("[data-frequency-label]").textContent=values.method==="msd"?"自然频率（Hz）":values.method==="oneEuro"?"最低截止频率（Hz）":"截止参数（Hz）";
+          for(const output of element.querySelectorAll("[data-control]")){const key=output.dataset.control;output.textContent=values[key].toFixed(key==="window"?0:key==="damping"?2:1);}
+          try{
+            result=calculate(data,values);error.hidden=true;
+            for(const name of ["jitter","lag","rmse"])element.querySelector(`[data-metric="${name}"]`).textContent=result[name].toFixed(3)+(name==="lag"?" ms":" mm");
+            element.querySelector("[data-filter-note]").textContent=notes[values.method];draw(canvas,data,result,view);
+          }catch(_){result=null;error.hidden=false;error.textContent="参数无效，请恢复示例参数后重试。";for(const output of element.querySelectorAll("[data-metric]"))output.textContent="—";const ctx=canvas.getContext("2d");ctx?.clearRect(0,0,canvas.width,canvas.height);canvas.setAttribute("aria-label","参数无效，当前没有可用的滤波曲线。");}
         }
-        element.querySelector("[data-frequency-label]").textContent=values.method==="msd"?"自然频率（Hz）":values.method==="oneEuro"?"最低截止频率（Hz）":"截止参数（Hz）";
-        for(const output of element.querySelectorAll("[data-control]")){const key=output.dataset.control;output.textContent=values[key].toFixed(key==="window"?0:key==="damping"?2:1);}
-        try{
-          result=calculate(data,values);error.hidden=true;
-          for(const name of ["jitter","lag","rmse"])element.querySelector(`[data-metric="${name}"]`).textContent=result[name].toFixed(3)+(name==="lag"?" ms":" mm");
-          element.querySelector("[data-filter-note]").textContent=notes[values.method];draw(canvas,data,result,view);
-        }catch(_){result=null;error.hidden=false;error.textContent="参数无效，请恢复示例参数后重试。";for(const output of element.querySelectorAll("[data-metric]"))output.textContent="—";const ctx=canvas.getContext("2d");ctx?.clearRect(0,0,canvas.width,canvas.height);canvas.setAttribute("aria-label","参数无效，当前没有可用的滤波曲线。");}
+        form.addEventListener("submit",event=>event.preventDefault());form.addEventListener("input",event=>{if(event.target.name==="method")form.elements.frequency.value=methodFrequency[event.target.value];update()});
+        for(const button of element.querySelectorAll("[data-view]"))button.addEventListener("click",()=>{view=button.dataset.view;element.querySelectorAll("[data-view]").forEach(b=>b.setAttribute("aria-pressed",String(b===button)));if(result)draw(canvas,data,result,view)});
+        element.querySelector("[data-filter-reset]").addEventListener("click",()=>{for(const [key,value] of Object.entries(defaults))form.elements.namedItem(key).value=value;update()});
+        const redraw=()=>{if(result)draw(canvas,data,result,view)};
+        new ResizeObserver(redraw).observe(canvas);new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:["class"]});
+        window.matchMedia("print").addEventListener("change",redraw);
+        window.matchMedia("(forced-colors: active)").addEventListener("change",redraw);
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",redraw);
+        window.addEventListener("beforeprint",()=>{if(result)draw(canvas,data,result,view,true)});
+        window.addEventListener("afterprint",redraw);
+        element.querySelector("[data-filter-interactive]").hidden=false;update();
       }
-      form.addEventListener("submit",event=>event.preventDefault());form.addEventListener("input",event=>{if(event.target.name==="method")form.elements.frequency.value=methodFrequency[event.target.value];update()});
-      for(const button of element.querySelectorAll("[data-view]"))button.addEventListener("click",()=>{view=button.dataset.view;element.querySelectorAll("[data-view]").forEach(b=>b.setAttribute("aria-pressed",String(b===button)));if(result)draw(canvas,data,result,view)});
-      element.querySelector("[data-filter-reset]").addEventListener("click",()=>{for(const [key,value] of Object.entries(defaults))form.elements.namedItem(key).value=value;update()});
-      const redraw=()=>{if(result)draw(canvas,data,result,view)};
-      new ResizeObserver(redraw).observe(canvas);new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:["class"]});
-      window.matchMedia("print").addEventListener("change",redraw);
-      window.matchMedia("(forced-colors: active)").addEventListener("change",redraw);
-      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",redraw);
-      window.addEventListener("beforeprint",()=>{if(result)draw(canvas,data,result,view,true)});
-      window.addEventListener("afterprint",redraw);
-      element.querySelector("[data-filter-interactive]").hidden=false;status.hidden=true;update();
-    }catch(_){status.textContent="交互信号暂时无法载入，请使用下方静态曲线或下载脚本。";}
+    });
   }
   if(typeof module!=="undefined"&&module.exports)module.exports={calculate,msdTransition,defaults};
   if(typeof document!=="undefined"){
