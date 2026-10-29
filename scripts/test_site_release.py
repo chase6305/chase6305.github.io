@@ -82,6 +82,38 @@ class InventoryTests(unittest.TestCase):
         expanded = {row.route for row in self.inventory(images=True, include=["data.bin"])}
         self.assertTrue({"/project/figure.PNG", "/project/data.bin"} <= expanded)
 
+    def test_linked_config_ui_feed_and_extensionless_downloads(self):
+        names = ["example.yaml", "robot-dialog.ui", "posts/index.xml", "LICENSE", "extra.bin"]
+        for name in names:
+            self.write(name, b"download")
+        self.write("index.html", "".join(f'<a href="{name}">download</a>' for name in names).encode())
+        routes = {row.route for row in self.inventory()}
+        self.assertTrue({"/project/" + name for name in names} <= routes)
+        (self.public / "extra.bin").unlink()
+        with self.assertRaisesRegex(ValueError, "Linked download missing"):
+            self.inventory()
+
+    def test_browser_icons_manifest_and_shared_search_indexes(self):
+        self.write("favicon.ico", b"light icon")
+        self.write("favicon-dark.ico", b"dark icon")
+        self.write("touch.png", b"touch icon")
+        self.write("site.webmanifest", b"{}")
+        self.write("en.search-data.min.abc.json", b"[]")
+        self.write("zh-cn.search-data.min.def.json", b"[]")
+        self.write("assets/widget-data.abc.json", b"[]")
+        self.write("index.html", b'<link rel><link rel="ICON" href="favicon.ico?v=2" '
+                   b'data-favicon-dark="favicon-dark.ico?v=2">'
+                   b'<link rel="apple-touch-icon" href="touch.png">'
+                   b'<link rel="manifest" href="site.webmanifest">')
+        routes = {row.route for row in self.inventory()}
+        expected = {"favicon.ico", "favicon-dark.ico", "touch.png", "site.webmanifest",
+                    "en.search-data.min.abc.json", "zh-cn.search-data.min.def.json",
+                    "assets/widget-data.abc.json"}
+        self.assertTrue({"/project/" + name for name in expected} <= routes)
+        (self.public / "favicon-dark.ico").unlink()
+        with self.assertRaisesRegex(ValueError, "Linked download missing"):
+            self.inventory()
+
     def test_outside_paths_and_conflicting_fixture(self):
         outside = self.root / "outside.py"
         outside.write_bytes(b"outside")

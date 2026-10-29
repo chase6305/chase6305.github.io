@@ -24,8 +24,7 @@ from urllib.parse import quote, unquote, urljoin, urlsplit
 from urllib.request import build_opener, HTTPRedirectHandler, Request
 
 ROOT = Path(__file__).resolve().parents[1]
-DOWNLOADS = {'.py', '.cpp', '.h', '.txt', '.json', '.zip', '.csv', '.urdf', '.cmake'}
-IMAGES = {'.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.avif'}
+IMAGES = {'.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.avif', '.ico'}
 
 
 @dataclass(frozen=True)
@@ -40,12 +39,18 @@ class References(HTMLParser):
     def __init__(self, source):
         super().__init__()
         self.urls = []
+        self.browser_assets = []
         self.feed(source)
 
     def handle_starttag(self, tag, pairs):
         attrs = dict(pairs)
         if tag == 'a' and attrs.get('href'):
             self.urls.append(attrs['href'])
+        if tag == 'link' and set((attrs.get('rel') or '').lower().split()) & {
+                'icon', 'apple-touch-icon', 'mask-icon', 'manifest'}:
+            for name in ('href', 'data-favicon-light', 'data-favicon-dark'):
+                if attrs.get(name):
+                    self.browser_assets.append(attrs[name])
 
 
 def commit_metadata(repository, revision):
@@ -102,12 +107,13 @@ def inventory(public, base, metadata, *, images=False, include=()):
     for file in sorted(public.rglob('*')):
         if not file.is_file():
             continue
-        if file.suffix.lower() in {'.html', '.js', '.css', '.woff2'} or (images and file.suffix.lower() in IMAGES):
+        if file.suffix.lower() in {'.html', '.js', '.css', '.json', '.woff2'} or (images and file.suffix.lower() in IMAGES):
             add(file)
         if file.suffix.lower() == '.html':
             relative = file.relative_to(public).as_posix()
             page_url = urljoin(base, quote(relative, safe='/+-._'))
-            for reference in References(file.read_text(encoding='utf-8')).urls:
+            references = References(file.read_text(encoding='utf-8'))
+            for reference in references.urls + references.browser_assets:
                 parts = urlsplit(urljoin(page_url, reference))
                 site = urlsplit(base)
                 if (parts.scheme, parts.netloc) != (site.scheme, site.netloc):
@@ -117,7 +123,15 @@ def inventory(public, base, metadata, *, images=False, include=()):
                 if not path.startswith(prefix):
                     continue
                 local = (public/path[len(prefix):]).resolve()
-                if local.suffix.lower() in DOWNLOADS:
+                suffix = local.suffix.lower()
+                # Page routes are inventoried above. Other linked files may
+                # be YAML, Qt UI, a feed or extensionless; do not guess a
+                # download's type from a fixed extension allowlist.
+                if path.endswith('/') or local.is_dir() or suffix == '.html':
+                    continue
+                if suffix in IMAGES and not images and reference not in references.browser_assets:
+                    continue
+                if local.is_file() or suffix:
                     if not local.is_relative_to(public) or not local.is_file():
                         raise ValueError('Linked download missing: '+path)
                     add(local)
