@@ -293,7 +293,7 @@ CollisionTest(tau, world, holding) -> True / False
 
 先采样一组放置和构型，将已知可行关系交给任务搜索，可以复用成熟的离散规划技术。不过当前样本不足，可能只是漏掉了一种关键抓法。离散问题无解后，仍需要扩充样本，而不是把有限样本集的无解结论推广到连续世界。
 
-<span id="paper-search-orders"></span>
+<span id="paper-search-orders" style="scroll-margin-top: calc(var(--hextra-navbar-height) + 1.5rem)"></span>
 <figure class="article-figure" id="fig-tamp-paper-search-orders">
   {{< post-image src="assets/paper-search-orders.webp" alt="论文的两种搜索流程：上图先搜索动作骨架，再联合求解其混合约束；下图先生成约束样本，再用已有样本搜索方案，两者未成功时均回到下一轮搜索" >}}
   <figcaption><span class="article-figure__number">图 6</span><span class="article-figure__text">两种代表性控制流程。来源：Garrett 等，原 Figure 11，PDF p. 19。上图先骨架再联合满足，下图先逐项生成值再搜索；它没有画出全部交织策略。上图的失败回边应结合正文理解，求解器超时本身不是不可行证明。</span></figcaption>
