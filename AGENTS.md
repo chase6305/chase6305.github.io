@@ -66,6 +66,8 @@ For portable C++17, CMake, Modbus protocol and loopback TCP/UDP examples, run `p
 
 For the tqdm article, run `python -B scripts/test_tqdm_examples.py` in a dedicated environment with `tqdm`. CI installs the wheel pinned by version and hash in `scripts/requirements-progress.txt`; the checks execute published snippets on one-shot iterators, failures, non-TTY streams, partial byte chunks and optimized Python.
 
+For ACT temporal weights, run `python3 -B scripts/test_act_examples.py`. It executes both the published snippet and downloadable helper, checking endpoint limits, weighting direction and random means against a high-precision decimal calculation; no model or robotics dependencies are needed.
+
 For One Euro configuration changes, run `python -B scripts/test_filter_examples.py` in a separate NumPy/SciPy environment. It checks constructor/update consistency, rejected updates before and after initialization, history recovery and valid scalar/rotation retuning. CI uses isolated CPython 3.13 Linux x86_64 wheels pinned by version and hash in `scripts/requirements-filters.txt`; keep experiment statistics stable when valid-data behavior is unchanged.
 
 For the Light-Loco-Parkour scalar phase example, run `python3 -B scripts/test_parkour_examples.py`. It uses only the standard library and checks saturated positions, sharp transitions, finite ordered triggers, one-shot trigger iterators and preserved published weights. Keep its scalar validation separate from the fixed third-party source probes.

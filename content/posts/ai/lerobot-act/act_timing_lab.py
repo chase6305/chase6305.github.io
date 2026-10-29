@@ -16,10 +16,13 @@ def predict(start, length):
 
 
 def weighted_average(values, coefficient):
-    # Inputs are ordered oldest to newest. Shift exponents for stability.
-    logits = [-coefficient * i for i in range(len(values))]
-    maximum = max(logits)
-    weights = [math.exp(value - maximum) for value in logits]
+    """Nonempty finite scalar predictions, ordered oldest to newest."""
+    if not values:
+        raise ValueError("at least one prediction is required")
+    # Choose the largest-logit endpoint before multiplication can overflow.
+    # Every exponent is nonpositive and the endpoint always has weight one.
+    anchor = 0 if coefficient >= 0 else len(values) - 1
+    weights = [math.exp(-coefficient * (i - anchor)) for i in range(len(values))]
     return sum(w * value for w, value in zip(weights, values)) / sum(weights)
 
 

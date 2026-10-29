@@ -1,7 +1,7 @@
 ---
 title: "LeRobot 与 ACT 详解：从机器人示教数据到动作分块、训练与部署"
 date: 2026-09-16
-lastmod: 2026-10-28
+lastmod: 2026-10-29
 draft: false
 tags: ["LeRobot", "ACT", "Imitation Learning", "Transformer", "Embodied AI"]
 categories: ["人工智能", "机器人"]
@@ -494,7 +494,10 @@ $$
 import math
 
 def ensemble(oldest_to_newest, coefficient):
-    weights = [math.exp(-coefficient * i)
+    if not oldest_to_newest:
+        raise ValueError("at least one prediction is required")
+    anchor = 0 if coefficient >= 0 else len(oldest_to_newest) - 1
+    weights = [math.exp(-coefficient * (i - anchor))
                for i in range(len(oldest_to_newest))]
     return sum(w * a for w, a in zip(weights, oldest_to_newest)) / sum(weights)
 
@@ -505,6 +508,8 @@ for coefficient in (0.0, 0.5, -0.5):
 ```
 
 结果为 `0.5000`、`0.4040`、`0.5960`。正系数向较旧的 `0.2` 偏移，负系数向较新的 `0.8` 偏移。这里故意用绝对值较大的系数，让差异更明显。
+
+代码将最大权重所在的端点设为 `anchor`，使所有指数不大于零。每个权重都除以同一个正数，归一化后的平均不变，但不会先生成一个溢出的正指数。对同一组有限候选，系数趋向正无穷时取最旧预测，趋向负无穷时取最新预测；这只是加权公式的极限，不是推荐的部署参数。下载脚本也使用这一写法，命令行系数要求为有限数。
 
 完整的[动作时序小实验](act_timing_lab.py)还演示了队列重预测、episode 尾部的 masked L1，不同有效长度在 batch 损失中的权重，以及同步推理的周期预算。下载到本地后运行：
 

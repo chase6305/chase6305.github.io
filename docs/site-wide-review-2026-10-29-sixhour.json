@@ -176,6 +176,25 @@
       "reflow_layouts": 1890,
       "reflow_failures": 0,
       "reflow": "/tmp/chase-sixhour-lab-retry-reflow-20261029/results.json"
+    },
+    {
+      "id": "act-endpoint-weight-overflow",
+      "status": "fixed; Python and browser checks passed; release pending",
+      "before": "/tmp/chase-sixhour-act-weights-before-20261029.json",
+      "scope": "Choose the maximum-weight endpoint before multiplying finite coefficients; preserve the normalized weighting formula and published examples.",
+      "python_versions": [
+        "3.10",
+        "3.13"
+      ],
+      "test_methods": 4,
+      "decimal_random_cases": 500,
+      "original_cli_outputs_unchanged": 6,
+      "stdout_parity": "/tmp/chase-sixhour-act-stdout-parity-20261029.json",
+      "browser_cases": 30,
+      "browser": "/tmp/chase-sixhour-act-browser-20261029/results.json",
+      "code_reading": "/tmp/chase-sixhour-act-code-reading-20261029/results.json",
+      "native_pdfs": 6,
+      "production_validation": "/tmp/chase-sixhour-act-build-20261029.log"
     }
   ],
   "releases": [
