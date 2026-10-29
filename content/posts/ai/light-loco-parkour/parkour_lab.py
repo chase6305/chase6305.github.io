@@ -23,9 +23,27 @@ def reward_memory(excess, dt=0.02, tau=0.06):
 
 
 def phase_weights(position, triggers=(1., 2.), inverse_temperature=4.):
-    if inverse_temperature <= 0 or any(a >= b for a, b in zip(triggers, triggers[1:])):
-        raise ValueError('use increasing triggers and a positive inverse temperature')
-    sigmoid = lambda value: 1. / (1. + math.exp(-value))
+    """Finite scalar position, ordered triggers, and a positive inverse temperature."""
+    def finite(value):
+        try:
+            return type(value) in (int, float) and math.isfinite(value)
+        except OverflowError:
+            return False
+
+    triggers = tuple(triggers)
+    if (not finite(position) or not finite(inverse_temperature)
+            or inverse_temperature <= 0 or not all(finite(p) for p in triggers)
+            or any(a >= b for a, b in zip(triggers, triggers[1:]))):
+        raise ValueError('use finite scalars, increasing triggers and a positive inverse temperature')
+
+    def sigmoid(value):
+        # Both branches exponentiate a nonpositive value, including saturated
+        # limits when a finite position/temperature product overflows to infinity.
+        if value >= 0:
+            return 1. / (1. + math.exp(-value))
+        exponential = math.exp(value)
+        return exponential / (1. + exponential)
+
     switches = [1., *(sigmoid(inverse_temperature*(position-p)) for p in triggers), 0.]
     return [a-b for a, b in zip(switches, switches[1:])]
 

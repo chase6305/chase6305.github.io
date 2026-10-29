@@ -1,7 +1,7 @@
 ---
 title: "Light-Loco-Parkour 深度解析：从地形配对参考、多技能蒸馏到自主衔接与深度视觉控制"
 date: 2026-09-12
-lastmod: 2026-10-27
+lastmod: 2026-10-29
 draft: false
 tags: ["Light-Loco-Parkour", "Humanoid", "Locomotion", "Reinforcement Learning", "Distillation", "Paper Notes"]
 categories: ["人工智能"]
@@ -295,7 +295,7 @@ $$
 
 触发位置有序且 $\beta>0$ 时，各权重非负且和为 1。代码里的 `handoff_temperature` 对应这里的乘数 $\beta$，数值越大切换越陡；它更接近通常所说的逆温度。[`phase_weights`](https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/light_loco_parkour/light_loco_parkour.py#L1515)
 
-![三个训练先验的平滑权重随位置变化，在触发位置一和二附近交接并保持总和为一](assets/phase-prior.svg "图 4：固定源码平滑权重公式的教学曲线，触发位置为 1、2，逆温度乘数为 4。它展示奖励权重，不表示线上切换三个 actor。")
+![三个训练先验的平滑权重随位置变化，在触发位置一和二附近交接并保持总和为一](assets/phase-prior.svg "图 4：固定源码平滑权重公式的曲线，触发位置为 1、2，逆温度乘数为 4。它展示奖励权重，不表示线上切换三个 actor。")
 
 平滑混合是这个实现提供的选项，不应当作原论文必然使用的配置。还有三个具体接口要注意：
 
@@ -610,6 +610,8 @@ python3 parkour_lab.py
 ```
 
 程序验证奖励累积、终止／截断的 GAE 差异、严格触发边界、平滑权重、分组标准化、蒸馏权重 reduction，以及 Beta 区间变换的密度和熵。输出末尾 `passed: true` 表示教学检查通过；[本次输出](teaching-results.json)可供逐项对照。
+
+其中 `phase_weights` 接受有限位置、严格递增的有限触发点和正的有限逆温度；触发点也可来自有限生成器。sigmoid 按输入符号选用等价公式，避免位置远离交接区或逆温度很大时计算正指数而溢出。例如位置 −200、默认触发点与逆温度得到 `[1, 0, 0]`，位置 200 得到 `[0, 0, 1]`，分别落在两端先验。该处理属于本文配套标量函数，固定第三方源码的测试仍由下一节独立执行。
 
 如需重建四张 SVG，再将 [make_figures.py](make_figures.py) 下载到同一目录：
 
