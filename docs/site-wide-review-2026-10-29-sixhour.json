@@ -120,6 +120,30 @@
       "public_contracts": "/tmp/chase-sixhour-survival-public-contracts-20261029.json",
       "pdf_text": "/tmp/chase-sixhour-survival-pdf-text-20261029.json",
       "production": "/tmp/chase-sixhour-survival-final-production-20261029"
+    },
+    {
+      "id": "workspace-radial-cdf-support",
+      "status": "mathematics, page and production checks complete; release pending",
+      "before": "/tmp/chase-sixhour-workspace-cdf-before-20261029.json",
+      "before_tests": "/tmp/chase-sixhour-workspace-cdf-tests-before-20261029.log",
+      "evidence": "The helper squares negative query thresholds: F(-2)=1 andF(-1)=0.403013, instead of0. Queries near1e308 also overflow before clipping. The article formula was correctly restricted to the annulus; extend the helper to the full CDF.",
+      "after_tests": "/tmp/chase-sixhour-workspace-cdf-tests-after-20261029.log",
+      "isolated_tests": "/tmp/chase-sixhour-workspace-cdf-isolated-20261029.log",
+      "preservation": "/tmp/chase-sixhour-workspace-cdf-preservation-20261029.json",
+      "test_methods": 5,
+      "forward_quadrature_angles_per_pair": 131072,
+      "positive_link_pairs": 4,
+      "reference_json_exact": true,
+      "reference_plot_pixels_exact": true,
+      "original_plot_preserved": true,
+      "ci": "reuse isolated NumPy environment; no new dependency",
+      "browser": {
+        "cases": 30,
+        "native_pdfs": 6,
+        "evidence": "/tmp/chase-sixhour-workspace-browser-20261029/results.json"
+      },
+      "pdf_text": "/tmp/chase-sixhour-workspace-pdf-text-20261029.json",
+      "production": "/tmp/chase-sixhour-workspace-cdf-production-20261029"
     }
   ],
   "releases": [

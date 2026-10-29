@@ -1,7 +1,7 @@
 ---
 title: 蒙特卡罗估计机器人位置工作空间：采样、覆盖与灵巧度
 date: 2025-02-27
-lastmod: 2026-09-30
+lastmod: 2026-10-29
 draft: false
 tags: ["Robotics", "Workspace Analysis", "Monte Carlo"]
 categories: ["机器人技术"]
@@ -127,7 +127,9 @@ $$
 F_{\mathrm{joint}}(r)=1-\frac1\pi\arccos\left(\frac{r^2-L_1^2-L_2^2}{2L_1L_2}\right).
 $$
 
-相反，如果在解析圆环内按面积均匀采样，则：
+完整 CDF 还包括区间两侧：阈值不大于内半径时为 0，达到外半径时为 1。负阈值虽然不是距离样本，仍可用于查询累积概率，此时 $P(R\le r)=0$；不能先把负数平方，再把它当作相应正半径的概率。配套函数在平方之前截取阈值的有效区间，并显式处理两端，避免负阈值和极大查询值改变概率含义。
+
+相反，如果在解析圆环内按面积均匀采样，则在同一区间内：
 
 $$
 F_{\mathrm{area}}(r)=\frac{r^2-r_{\min}^2}{r_{\max}^2-r_{\min}^2},\qquad
@@ -163,9 +165,12 @@ python workspace_sampling.py --output-dir workspace-sampling
 
 脚本写出图像与 JSON 结果，检查半径边界，并将经验 CDF 与解析 CDF 比较。当前运行的最大差约为 0.00833。[本次结果文件](assets/workspace-sampling.json)记录种子、样本数和区间占比，可用于核对复现结果。
 
+单独导入 `joint_radial_cdf` 只需要 NumPy；Matplotlib 在运行绘图入口时才加载。对默认连杆，`joint_radial_cdf(-1)` 返回 0，`joint_radial_cdf(1.6)` 返回 1，数组输入保留原形状。
+
 最终报告至少分开三项：**可达集合的估计边界、指定分辨率下的采样覆盖、选定任务 Jacobian 的局部运动能力**。这三项回答不同问题，不应压缩成一个“点云密度分数”。
 
 ## 阅读自测与验收
 
 - 用两连杆平面模型的已知内外半径检查采样结果，区分采样覆盖范围与解析可达集合。
 - 改变采样数和 seed，观察边界是否稳定；随机未采到的区域不一定不可达，凸包内部也不一定全部可达。
+- 查询负半径阈值时，CDF 为什么应为 0？它与相应正半径的查询有什么区别？

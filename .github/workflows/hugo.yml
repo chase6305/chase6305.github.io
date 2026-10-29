@@ -94,13 +94,14 @@ jobs:
           "$progress_env/bin/python" -B scripts/test_tqdm_examples.py
       - name: Test bounded queue shutdown examples
         run: python -B scripts/test_queue_examples.py
-      - name: Test filter configuration and history contracts
+      - name: Test filter and workspace numerical contracts
         run: |
           filter_env="${RUNNER_TEMP}/filter-example-tests"
           python -m venv "$filter_env"
           "$filter_env/bin/python" -m pip install --disable-pip-version-check \
             --only-binary=:all: --require-hashes -r scripts/requirements-filters.txt
           "$filter_env/bin/python" -B scripts/test_filter_examples.py
+          "$filter_env/bin/python" -B scripts/test_workspace_examples.py
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

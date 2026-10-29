@@ -1039,7 +1039,13 @@
         "/posts/robotics/kinematics/pinocchio"
       ],
       "image_decision": "增加能与正文逐项核对的流程或数值结果，保留数据、脚本和来源。",
-      "image": "content/posts/robotics/workspace/whole-workspace/assets/workspace-sampling.png"
+      "image": "content/posts/robotics/workspace/whole-workspace/assets/workspace-sampling.png",
+      "acceptance_checks": [
+        "用两连杆平面模型的已知内外半径检查采样结果，区分采样覆盖范围与解析可达集合。",
+        "改变采样数和 seed，观察边界是否稳定；随机未采到的区域不一定不可达，凸包内部也不一定全部可达。",
+        "查询负半径阈值时，CDF 为什么应为 0？它与相应正半径的查询有什么区别？"
+      ],
+      "reviewed_on": "2026-10-29"
     },
     {
       "id": 57,

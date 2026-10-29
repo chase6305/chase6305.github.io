@@ -1,27 +1,35 @@
 """Compare joint-uniform and area-uniform samples for a planar 2R annulus.
 
-Python 3.10+, NumPy and Matplotlib. No joint limits, obstacles or orientation
-constraints. The area sampler describes this analytic annulus only.
+Python 3.10+, NumPy; Matplotlib only for the command-line plot. No joint limits,
+obstacles or orientation constraints. The area sampler is this analytic annulus.
 """
 import argparse
 import json
 from pathlib import Path
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import numpy as np
 
 
 def joint_radial_cdf(radius, l1=1.0, l2=0.6):
-    cosine = (np.asarray(radius) ** 2 - l1**2 - l2**2) / (2 * l1 * l2)
-    return 1 - np.arccos(np.clip(cosine, -1, 1)) / np.pi
+    """CDF at real radius thresholds, for positive planar link lengths."""
+    radius = np.asarray(radius)
+    inner, outer = abs(l1-l2), l1+l2
+    # Clip the radius before squaring: a negative threshold has probability
+    # zero, and a huge query must not overflow before reaching a support bound.
+    bounded = np.clip(radius, inner, outer)
+    cosine = (bounded**2 - l1**2 - l2**2) / (2*l1*l2)
+    inside = 1 - np.arccos(np.clip(cosine, -1, 1)) / np.pi
+    result = np.where(radius <= inner, 0., np.where(radius >= outer, 1., inside))
+    return result[()]  # Preserve scalar results and arbitrary input array shapes.
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, default=Path("workspace-sampling"))
     args = parser.parse_args()
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
     rng = np.random.default_rng(42)
     count = 20000
     l1, l2 = 1.0, 0.6
