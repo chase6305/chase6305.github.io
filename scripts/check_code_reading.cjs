@@ -15,7 +15,7 @@ const output = process.argv[4] || '/tmp/chase-code-reading';
     index,horizontal:p.scrollWidth>p.clientWidth+1,vertical:p.scrollHeight>p.clientHeight+1,tabIndex:p.getAttribute('tabindex')})))`);
   try{
     await browser.viewport(1440);
-    for(const route of ['/posts/python/tqdm/','/posts/ai/supermimic/','/posts/cpp/gcc/']){
+    for(const route of ['/posts/python/tqdm/','/posts/ai/supermimic/','/posts/cpp/gcc/','/posts/ai/pion-muon-vla-rlvr/']){
       await browser.navigate(base+route);await browser.evaluate('document.fonts.ready');
       const before=await inspect();
       for(const size of ['200%','100%']){

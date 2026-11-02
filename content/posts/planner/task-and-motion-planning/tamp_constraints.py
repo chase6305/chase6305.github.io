@@ -4,6 +4,8 @@ Standard library, metres. A carried disk must cross a wall opening after a
 blocker has been parked. The two parking choices and two grasp envelopes are
 finite; the crossing height is continuous. Blocker relocation and arm IK are
 assumed by the skeleton and are NOT verified here. Contact counts as collision.
+Infeasibility concerns this exact disk model. If a disk only encloses a real
+shape, disk collision/infeasibility does not prove real-shape infeasibility.
 """
 import argparse
 import json
@@ -18,20 +20,74 @@ GRASPS = {"wide": .6, "narrow": .25}
 EPS = 1e-9
 
 
-def point_segment_distance(point, start, end):
+def finite_scalar(value, name):
+    try:
+        valid = type(value) in (int, float) and math.isfinite(value)
+    except OverflowError:
+        valid = False
+    if not valid:
+        raise ValueError(f"{name} must be a finite real number")
+    return value
+
+
+def finite_point(values):
+    try:
+        point = tuple(values)
+    except TypeError as error:
+        raise ValueError("A point needs two finite coordinates") from error
+    if len(point) != 2:
+        raise ValueError("A point needs two finite coordinates")
+    return tuple(float(finite_scalar(value, "Point coordinate")) for value in point)
+
+
+def validate_scene(parked, radius):
+    """Malformed geometry is an input error, never a feasibility result."""
+    parked = finite_point(parked)
+    radius = finite_scalar(radius, "Carried radius")
+    opening = finite_scalar(HALF_OPENING, "Half opening")
+    blocker = finite_scalar(BLOCKER_RADIUS, "Blocker radius")
+    tolerance = finite_scalar(EPS, "Clearance tolerance")
+    if radius < 0 or opening <= 0 or blocker < 0 or tolerance < 0:
+        raise ValueError("Opening must be positive; radii and clearance tolerance must be nonnegative")
+    return parked, radius
+
+
+def segment_vector(start, end):
+    """Reject arithmetic range loss before it can become a geometric witness."""
     dx, dy = end[0] - start[0], end[1] - start[1]
     length_squared = dx * dx + dy * dy
+    finite_scalar(length_squared, "Squared segment length")
+    if length_squared == 0 and (dx != 0 or dy != 0):
+        raise ValueError("Segment geometry exceeds supported floating-point range")
+    return dx, dy, length_squared
+
+
+def point_segment_distance(point, start, end):
+    point, start, end = (finite_point(value) for value in (point, start, end))
+    dx, dy, length_squared = segment_vector(start, end)
     if length_squared == 0:
-        return math.dist(point, start)
-    t = max(0., min(1., ((point[0]-start[0])*dx + (point[1]-start[1])*dy) / length_squared))
-    return math.dist(point, (start[0]+t*dx, start[1]+t*dy))
+        distance = math.dist(point, start)
+    else:
+        projection = (point[0]-start[0])*dx + (point[1]-start[1])*dy
+        finite_scalar(projection, "Point projection")
+        t = max(0., min(1., projection / length_squared))
+        distance = math.dist(point, (start[0]+t*dx, start[1]+t*dy))
+    if not math.isfinite(distance):
+        raise ValueError("Point distance exceeds supported floating-point range")
+    return distance
 
 
 def segment_wall_ray_distance(start, end, sign):
     """Exact segment distance to x=0, sign*y >= HALF_OPENING (two wall rays)."""
+    start, end = finite_point(start), finite_point(end)
+    if type(sign) is not int or sign not in (-1, 1):
+        raise ValueError("Wall-ray sign must be -1 or 1")
+    if finite_scalar(HALF_OPENING, "Half opening") <= 0:
+        raise ValueError("Half opening must be positive")
+    dx, dy, _ = segment_vector(start, end)
     if start[0] != end[0]:
-        t = -start[0] / (end[0]-start[0])
-        if 0 <= t <= 1 and sign*(start[1]+t*(end[1]-start[1])) >= HALF_OPENING:
+        t = -start[0] / dx
+        if 0 <= t <= 1 and sign*(start[1]+t*dy) >= HALF_OPENING:
             return 0.
     elif start[0] == 0 and max(sign*start[1], sign*end[1]) >= HALF_OPENING:
         return 0.
@@ -43,6 +99,11 @@ def segment_wall_ray_distance(start, end, sign):
 
 def verify_path(path, radius, parked):
     """Check whole straight segments, rather than just their endpoints."""
+    parked, radius = validate_scene(parked, radius)
+    try:
+        path = tuple(finite_point(point) for point in path)
+    except TypeError as error:
+        raise ValueError("A path needs a sequence of finite 2D points") from error
     if len(path) < 2:
         raise ValueError("A path requires at least two points")
     segments = list(zip(path, path[1:]))
@@ -57,6 +118,7 @@ def verify_path(path, radius, parked):
 
 def crossing_intervals(radius, parked):
     """Necessary crossing heights; empty intervals give a geometric certificate."""
+    parked, radius = validate_scene(parked, radius)
     margin = HALF_OPENING-radius-EPS
     if margin <= 0:
         return [], "door_width_certificate"

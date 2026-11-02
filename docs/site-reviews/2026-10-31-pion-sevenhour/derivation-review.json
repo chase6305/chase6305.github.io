@@ -1,0 +1,61 @@
+{
+  "paper_sha256": "2016d07cca61aaa9be936f5a5a701ff033a89e6022f03a9795f639c4d1a2428f",
+  "version": "arXiv2605.19282v1",
+  "reviewed_sections": [
+    "AppendixF, algorithms2/3",
+    "AppendixG, PropositionG.1 and RemarkG.2",
+    "AppendixH, TablesA1/A2/A3",
+    "AppendixK, TablesA5/A6 and FigureA1"
+  ],
+  "checks": [
+    {
+      "topic": "normalization placement",
+      "finding": "One pre-normalization before the five polynomial iterations; per-head mode normalizes each head separately. Article equations/flow and helper implementations agree."
+    },
+    {
+      "topic": "momentum and implementation scope",
+      "finding": "Paper pseudocode uses unnormalized momentum; the article separately explains the fixed EMA/Nesterov code and preserves epsilon/scale caveats."
+    },
+    {
+      "topic": "Q/K norm interpretation",
+      "finding": "AppendixG fixes normalized shape and uses standard attention. Article qualifies the temperature argument and separately accounts for Qwen3 QK-Norm."
+    },
+    {
+      "topic": "V/O norm interpretation",
+      "finding": "AppendixG gives spectral-norm bounds, not exact output magnitudes. Article states scale bounds and does not claim guaranteed preservation of pretrained weight norms."
+    },
+    {
+      "topic": "per-head layout",
+      "finding": "Paper mathematical weights and PyTorch Linear weights use transposed layout conventions. Article explicitly uses output-by-input, withQ/K/V row blocks andO column blocks."
+    },
+    {
+      "topic": "RMS domain",
+      "finding": "Dimension-scaled gradient RMS formula concerns a two-dimensional unsharded matrix and excludes decoupled weight decay. Flat identity reduction uses all r-squared coordinates."
+    },
+    {
+      "topic": "VLA budgets",
+      "finding": "A1 assigns1500Object/15000other VLA-Adapter steps and4000Object/10000other VLANeXt steps, each8A6000. Article preserves suite-specific budgets and does not equate them with the separate4500step diagnosis."
+    },
+    {
+      "topic": "RLVR sample budgets",
+      "finding": "A2 specifies128prompts x8rollouts forMATH and1024x5forGSM8K, with80/40training steps and2H100. Article arithmetic and per-task scope agree."
+    },
+    {
+      "topic": "real-robot denominator",
+      "finding": "A3 specifies200teleoperated demonstrations,20000steps,30trials per optimizer/task andat most300control steps. Article rounded-rate inference77/90 and85.6% is labeled as inference, not raw log data."
+    },
+    {
+      "topic": "VLA head-mode average",
+      "finding": "A5 default97.25 andper-head96.85; Goal favorsper-head97.4vs97.2. Article preserves this exception and limits the scratch-head explanation to the tested architecture."
+    },
+    {
+      "topic": "report discrepancy",
+      "finding": "A6allAdamW43.6 differs fromA5/main32.2 at nominal1500Object steps. Article explicitly retains both and does not invent a cause or combine them as matched measurements."
+    },
+    {
+      "topic": "SVD timing",
+      "finding": "FigureA1 exact-SVDLRMuon1500step timing and mainFigure1 4500step diagnosis are separate. Article attributes roughly15x overhead to the measured exact-SVD implementation, not every low-rank method."
+    }
+  ],
+  "scope": "Source/derivation review; no claim of model training reproduction."
+}

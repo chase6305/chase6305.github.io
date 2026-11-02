@@ -64,6 +64,8 @@ jobs:
           node scripts/test_multiview_geometry_lab.cjs
           node scripts/test_supermimic_gradient_lab.cjs
           node scripts/test_llm_budget.cjs
+          node scripts/test_identification_timing.cjs
+          node scripts/test_pion_spectrum.cjs
           node scripts/test_rrsi_selection_lab.cjs
           node scripts/test_v2d_height_lab.cjs
           python3 -B content/posts/ai/morphmimic/morphmimic_contracts.py --check
@@ -72,12 +74,19 @@ jobs:
           python3 -B scripts/test_blog_images.py
           python3 -B scripts/test_blog_fallback.py
           python3 -B scripts/test_pid_examples.py
+          python3 -B scripts/test_blog_round5.py
+          python3 -B scripts/test_llm_metrics.py
+          python3 -B scripts/package_llm_metrics_lab.py --check
           python3 -B scripts/test_parkour_examples.py
           python3 -B scripts/test_act_examples.py
+          python3 -B scripts/test_pion_examples.py
+          python3 -B scripts/package_pion_lab.py --check --test
           python3 -B content/posts/planner/task-and-motion-planning/tamp_constraints.py --check
           python3 -B content/posts/planner/task-and-motion-planning/tamp_search.py --check
           python3 -B scripts/test_tamp_examples.py
           python3 -B scripts/package_tamp_lab.py --check --test
+          python3 -B scripts/package_parameter_identification.py --check
+          python3 -B content/posts/robotics/dynamics/parameter-identification/timing_counterexample.py --check
           python3 -B content/posts/ai/supermimic/survival_credit.py --check
           python3 -B -m unittest discover -s content/posts/ai/gen-1-5 -p test_prompt_eval.py -v
           python3 -B scripts/package_gspo_gen_labs.py --check
@@ -87,6 +96,20 @@ jobs:
       - name: Test portable C++ and loopback examples
         run: |
           python3 -B scripts/test_blog_examples.py --only cpp cmake modbus network
+      - name: Set up Python for offline identification examples
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: '3.12'
+      - name: Test identification and Pion numerical examples
+        run: |
+          identification_env="${RUNNER_TEMP}/identification-example-tests"
+          python -m venv "$identification_env"
+          "$identification_env/bin/python" -m pip install --disable-pip-version-check \
+            --only-binary=:all: --require-hashes -r scripts/requirements-identification.txt
+          "$identification_env/bin/python" -B scripts/test_parameter_identification.py
+          "$identification_env/bin/python" -B scripts/package_parameter_identification.py --check --test
+          "$identification_env/bin/python" -B scripts/test_pion_examples.py --numpy
+          "$identification_env/bin/python" -B scripts/package_pion_lab.py --check --test --numpy
       - name: Set up Python for executable progress examples
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:

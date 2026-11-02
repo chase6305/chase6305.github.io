@@ -9,8 +9,9 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 BUNDLE = ROOT / "content/posts/planner/task-and-motion-planning"
 ARCHIVE = BUNDLE / "tamp-lab.zip"
-FILES = ("README.txt", "tamp_constraints.py", "tamp_search.py",
-         "assets/constraint-results.json", "assets/search-results.json", "assets/grid-results.json")
+FILES = ("README.txt", "tamp_constraints.py", "tamp_search.py", "tamp_kinematics.py",
+         "assets/constraint-results.json", "assets/search-results.json", "assets/grid-results.json",
+         "assets/grasp-results.json", "assets/grid-resolution-results.json")
 
 
 def main():
@@ -39,7 +40,8 @@ def main():
             with zipfile.ZipFile(ARCHIVE) as archive:
                 archive.extractall(directory)
             for source, reference in (("tamp_constraints.py", "constraint-results.json"),
-                                      ("tamp_search.py", "search-results.json")):
+                                      ("tamp_search.py", "search-results.json"),
+                                      ("tamp_kinematics.py", "grasp-results.json")):
                 result = subprocess.run([sys.executable, "-B", source, "--check"],
                     cwd=directory, check=True, capture_output=True, timeout=60)
                 expected = Path(directory, "assets", reference).read_bytes()
@@ -61,6 +63,20 @@ def main():
                 cwd=directory, check=True, capture_output=True, timeout=60)
             if grid.stdout != Path(directory, "assets/grid-results.json").read_bytes():
                 raise SystemExit("Extracted A* output differs from published grid result")
+            resolutions = subprocess.run([sys.executable, "-B", "tamp_search.py", "--resolutions",
+                "--summary", "--output", str(output)], cwd=directory,
+                check=True, capture_output=True, timeout=60)
+            if output.read_bytes() != Path(directory, "assets/grid-resolution-results.json").read_bytes():
+                raise SystemExit("Grid-resolution output differs from the published reference")
+            if b"unknown" not in resolutions.stdout or b"feasible" not in resolutions.stdout:
+                raise SystemExit("Grid-resolution summary omitted a result state")
+            kin_summary = subprocess.run([sys.executable, "-B", "tamp_kinematics.py", "--check",
+                "--summary", "--output", str(output)], cwd=directory,
+                check=True, capture_output=True, timeout=60)
+            if output.read_bytes() != Path(directory, "assets/grasp-results.json").read_bytes():
+                raise SystemExit("Kinematics summary replaced or changed the saved full result")
+            if b"Direct shared grasps: none" not in kin_summary.stdout:
+                raise SystemExit("Kinematics summary omitted the incompatible grasp result")
     print("TAMP archive matches source" + ("; extracted examples passed" if args.test else ""))
 
 

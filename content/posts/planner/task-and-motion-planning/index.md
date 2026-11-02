@@ -1,20 +1,20 @@
 ---
 title: "TAMP 详解：任务与运动联合规划的建模、约束与搜索"
 date: 2026-10-29
-lastmod: 2026-10-29
+lastmod: 2026-10-30
 draft: false
 tags: ["TAMP", "Motion Planning", "Robotics", "Optimization", "Paper Notes"]
 categories: ["机器人", "规划与控制"]
 authors: ["chase"]
-summary: "结合 Garrett 等人的综述原图，详解任务骨架、模式切换、混合约束、条件采样与搜索调度；通过流程图、伪代码和可运行 Python，核对门洞搬运、证据缓存与 unknown 重访。"
-description: "结合 Garrett 等人的综述原图，详解任务骨架、模式切换、混合约束、条件采样与搜索调度；通过流程图、伪代码和可运行 Python，核对门洞搬运、证据缓存与 unknown 重访。"
+summary: "结合综述原图拆解任务骨架、模式切换、混合约束与搜索；用门洞搬运和解析平面臂，复算几何证据、unknown 重访、共享抓法与中间重抓。"
+description: "结合综述原图拆解任务骨架、模式切换、混合约束与搜索；用门洞搬运和解析平面臂，复算几何证据、unknown 重访、共享抓法与中间重抓。"
 contentLanguage: "zh-CN"
 math: true
 toc: true
-images: ["assets/tamp-refinement.webp"]
+images: ["assets/tamp-refinement-v2.png"]
 imageZoom: true
 reading_prerequisites: "机器人位姿、正逆运动学与图搜索；不要求掌握某个 TAMP 软件库"
-reading_focus: "先分清动作顺序、模式参数和运动路径，再判断约束如何求解、失败能排除什么，以及何时必须回到另一条任务骨架。"
+reading_focus: "先分清动作顺序、连续选择和运动路径，再判断约束如何求解、失败能排除什么，以及何时必须回到另一条任务骨架。"
 related_posts:
   - "/posts/planner/to_mpc_wbc"
   - "/posts/casadi"
@@ -34,8 +34,9 @@ related_posts:
 | --- | --- |
 | 为什么任务规划之后再调用一次运动规划还不够？ | [三类相互依赖的选择](#three-decisions)、[模式与切换](#modes) |
 | 一个抓取动作到底包含哪些连续条件？ | [动作模型](#action-model)、[固定骨架的约束网络](#hybrid-csp) |
+| 抓取和放置各有 IK，为什么仍可能搬不过去？ | [共享抓法的量词](#shared-grasp)、[平面臂与重新抓取算例](#kinematics-lab) |
 | 优化、条件采样和符号搜索如何合作？ | [参数求解](#constraint-solving)、[搜索时序](#search-schedules) |
-| IK 或 RRT 失败后能否直接剪枝？ | [失败反馈](#feedback)、[可复算例子](#constraint-lab) |
+| IK 或 RRT 失败后能否直接剪枝？ | [失败反馈](#feedback)、[几何反例](#constraint-lab)、[网格分辨率对照](#grid-resolution) |
 | 想先看流程，再运行一个小例子？ | [论文的两种搜索流程](#paper-search-orders)、[伪代码与 Python 外层搜索](#search-lab) |
 | 怎样把规划接到真实机器人系统？ | [工程接口](#engineering)、[评估](#evaluation)、[扩展](#extensions) |
 {.table-readable}
@@ -47,14 +48,14 @@ related_posts:
 TAMP 中需要区分三类决定：
 
 1. **动作顺序与对象选择。** 先移动水壶还是直接拿锅？是否需要中间放置和重新抓取？
-2. **模式参数。** 水壶放哪里，锅用什么抓法，抓取和放置分别采用哪些关节构型？
+2. **连续选择。** 水壶放哪里，锅用什么抓法，抓取和放置分别采用哪些关节构型？这里既有放置和抓法等模式参数，也有切换构型。
 3. **模式内的运动路径。** 在当前物体布局与持物关系下，怎样从一个构型连续到达下一个构型？
 
 第二类尤其容易被略过。即使把符号顺序与路径规划器都实现好了，抓取、放置和 IK 之间仍有一组实值选择需要联合协调。反过来，只把所有物体的位置加入一台“大机器人”的配置向量也不够：机器人不能凭空改变远处物体的位置，必须先到达并建立合适的接触。[论文 §1–1.1，pp. 2–4](https://arxiv.org/pdf/2010.01083v1#page=2)
 
 <figure class="article-figure" id="fig-tamp-refinement">
-  {{< post-image src="assets/tamp-refinement.webp" alt="一种 TAMP 细化循环：动作顺序进入放置、抓取和 IK 参数选择，再验证各模式内运动路径；几何反馈可以触发更换参数或更换动作骨架，完整验证后返回方案" >}}
-  <figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">三类选择与回退关系。图中采用先提出骨架再细化的一种流程；后文还会介绍先生成参数以及交织搜索。虚线表示继续搜索的反馈，不表示一次求解失败就证明原骨架不可能实现。</span></figcaption>
+  {{< post-image src="assets/tamp-refinement-v2.png" alt="一种 TAMP 细化循环：动作顺序进入放置、抓取和 IK 参数选择，再验证各模式内运动路径；几何反馈可以触发更换参数或更换动作骨架，完整验证后返回方案" >}}
+  <figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">三类选择与回退关系，IK 在其中用于选择切换构型。图中采用先提出骨架再细化的一种流程；后文还会介绍先生成参数以及交织搜索。虚线表示继续搜索的反馈，不表示一次求解失败就证明原骨架不可能实现。</span></figcaption>
 </figure>
 
 ### 1.1 “任务层成功”为什么不保证“运动层成功”
@@ -98,7 +99,7 @@ $$
 
 ### 3.2 抓起物体会改变可行空间
 
-TAMP 需要考虑整个世界配置 $w$：机器人配置、物体姿态、机构状态，以及哪些物体附着在什么身体上。一个模式 $\sigma$ 给出当前固定的运动约束，其可行集合记为：
+多模式系统可以用 $(w,\sigma)$ 表示：$w$ 汇总机器人配置、物体姿态与机构配置，$\sigma$ 指定附着关系及当前固定的模式参数。一个模式 $\sigma$ 给出当前的运动约束，其可行集合记为：
 
 $$
 \mathcal W_\sigma
@@ -108,6 +109,8 @@ $$
 空手时，一个杯子相对桌面的位姿固定；抓起之后，杯子相对手的抓取变换固定。此后移动机械臂会带着杯子一起运动，碰撞检查也必须包含杯子。
 
 论文把空手运动称为 **transit**，持物运动称为 **transfer**。模式族可以按“当前拿着哪个物体”划分，但一个族内部仍有连续参数，例如抓取位姿和其余物体的固定放置位姿。因此 TAMP 并不是只在一个有限的持物状态图上搜索。[论文 §2.2，pp. 5–9](https://arxiv.org/pdf/2010.01083v1#page=5)
+
+具体地说，`holding=A` 只选中了“拿着 A”的**模式族**；固定抓法 $g_A$ 与其余物体放置 $p_B,p_C,\ldots$ 后，才确定一个具体模式。关节配置 $q$ 仍能在该模式的可行集合内连续变化。**换抓法、移动其他物体和沿当前模式运动，是不同的搜索决定。**
 
 <figure class="article-figure" id="fig-tamp-mode-switch">
   {{< post-image src="assets/mode-switch.webp" alt="抓取前物体相对世界的放置位姿固定；抓取切换时满足同一接触构型；抓取后物体相对手的抓取变换固定，随后才随手提升" >}}
@@ -123,6 +126,8 @@ w_*\in\mathcal W_\sigma\cap\mathcal W_{\sigma'}.
 $$
 
 抓取时，这通常意味着手到达与物体及抓法一致的接触位姿。IK 正是在寻找这样的切换构型，而不是为整个搬运任务提供可行性证明。找到一个 IK 解后，机器人可能仍无法从当前构型无碰地走到它。
+
+交集描述几何上能否衔接；具体的 `pick`／`place` 还必须满足动作前提、允许抓法与支撑条件。碰撞模型也要明确哪些手—物体接触属于预期抓取接触，否则“禁止一切接触”会与抓取条件本身冲突。
 
 ### 3.4 为什么直接在大空间随机采样会失效
 
@@ -176,11 +181,36 @@ $$
 
 给定 $p,g$ 后，可把 IK 目标写成 $\operatorname{FK}(q)=pg^{-1}$。这里采用了明确的变换方向；若某个软件把 grasp 存成 $\,{}^OT_H$，就必须先转换约定，不能照抄乘法顺序。
 
+后面的[平面臂算例](#kinematics-lab)直接按这个乘法方向计算，并把每个 IK 结果重新代入 $\operatorname{FK}(q)g=p$ 检查位置与角度残差。
+
 ### 4.4 路径是辅助参数，也受持物关系影响
 
 `moveF(q, τ, q')` 和 `moveH[A](g, q, τ, q')` 都需要端点连通与整段无碰。后者还要检查持物后的几何包络与其他物体。路径 $\tau$ 不一定成为任务状态变量：它可以只是证明某次状态转移可执行的辅助参数。
 
 仅检查路径端点不够；两个端点都不碰，连线中间仍可能穿过物体。轨迹优化中检查了有限个节点，也不自动证明节点间的插值无碰。
+
+### 4.5 用四个动作核对状态怎样变化 {#state-trace}
+
+把“从初始放置 $p_0$ 搬到炉灶放置 $p_1$”展开一次，能看清状态与参数的分工。设起始状态为空手、机器人在 $q_0$、物体 A 在 $p_0$；暂不考虑其他可移动物体：
+
+| 已完成的动作 | holding | atRob | at[A] 的含义 |
+| --- | --- | --- | --- |
+| 初态 | None | $q_0$ | 世界位姿 $p_0$ |
+| `moveF(q0, τ1, q1)` | None | $q_1$ | 仍是 $p_0$ |
+| `pick[A](q1, p0, g)` | A | $q_1$ | 改为相对手的抓法 $g$ |
+| `moveH[A](g, q1, τ2, q2)` | A | $q_2$ | 仍是同一个 $g$ |
+| `place[A](q2, p1, g)` | None | $q_2$ | 改为世界位姿 $p_1$ |
+{.table-readable}
+
+持物移动期间，`at[A]` 保存的 $g$ 不变，但物体的世界位姿随 $\operatorname{FK}(q)g$ 改变。`pick`／`place` 切换的是附着表示，物体不能在切换瞬间跳到另一个世界位姿；两端的 `Kin` 约束正是保证这种一致性。
+
+目标还要单独检查。这个例子要求 `holding=None`，且物体 A 的最终放置满足炉灶目标条件：
+
+$$
+\operatorname{OnStove}[A](p_1)
+$$
+
+仅找到一处稳定放置并不够。如果目标还要求 `cooked[A]=True`，动作骨架也必须包含相应的烹饪动作，几何求解器不会自行补出这个任务效果。[论文动作模型与解的形式，pp. 13–14](https://arxiv.org/pdf/2010.01083v1#page=13)
 
 ## 5. 固定骨架之后，是混合约束满足问题 {#hybrid-csp}
 
@@ -193,7 +223,7 @@ moveH[A](g, q1, tau2, q2)
 place[A](q2, p1, g)
 ```
 
-其中 $q_0,p_0$ 已知，需要决定 $q_1,g,\tau_1,q_2,p_1,\tau_2$。抓取与放置共享同一个 $g$，两个运动段共享切换端点，这些关联使参数不能各自随意选取。
+其中 $q_0,p_0$ 已知，需要决定 $q_1$、$g$、$\tau_1$、$q_2$、$p_1$ 和 $\tau_2$。抓取与放置共享同一个 $g$，两个运动段共享切换端点，这些关联使参数不能各自随意选取。
 
 记全部待定参数为 $z$，固定骨架 $\pi$ 引出约束集合 $\mathcal C(\pi)$，细化问题可写成：
 
@@ -225,6 +255,28 @@ $$
 1. **先认参数。** 灰色 $q_0,p_0$ 是初始构型和放置，$g_2$ 是抓法，$q_1,q_3$ 是切换构型，$p_4$ 是最终放置，$\tau_1,\tau_3$ 是两段路径。
 2. **再看共享。** 两个 `Kin[A]` 都连接同一抓法 $g_2$，所以抓取端和放置端不能各自随便选择一套抓法。
 3. **最后看路径条件。** `Motion` 关联端点与路径，`CFree` 还关联对应的环境或物体参数。连上一个节点不等于整个网络已满足。
+
+### 5.1 共享变量决定“各自有解”能否拼成一组解 {#shared-grasp}
+
+固定初始、目标放置 $p_0,p_1$，暂时只看运动学。记在某处存在 IK 解的允许抓法为：
+
+$$
+\mathcal G_{\mathrm{IK}}(p)
+=\{g\in\mathcal G\mid\exists q:\operatorname{Kin}(q,p,g)\}.
+$$
+
+不重新抓取的搬运，需要**同一个** $g$ 同时适用于两端，因此至少要求：
+
+$$
+\mathcal G_{\mathrm{IK}}(p_0)\cap
+\mathcal G_{\mathrm{IK}}(p_1)\ne\varnothing.
+$$
+
+分别检查两个集合非空仍可能出错：抓取端只支持 $g_a$，放置端只支持 $g_b$，而 $g_a\ne g_b$ 时，两次 IK 各自成功，却没有一组共享参数。逻辑区别在于**先选一个抓法同时满足两个约束**，与**每个约束独立选择抓法**不同。
+
+这也是约束网络值得显式画出来的原因。若保持同一抓法确实无解，可以改放置、换允许抓法，或增加“中间放下—换抓法—再搬运”的动作骨架；新骨架也会引入新的支撑、空手移动与碰撞条件。[第 9.7 节](#kinematics-lab)用解析平面臂给出两端各有解、共享抓法却为空的数值例子。
+
+若集合只来自有限采样或局部 IK 的本轮结果，交集为空首先说明**当前已生成的值无法拼接**。只有覆盖范围与不可行证据足够明确时，才可进一步排除相应问题。
 
 ## 6. 连续参数怎样求解 {#constraint-solving}
 
@@ -265,6 +317,8 @@ CollisionTest(tau, world, holding) -> True / False
 </figure>
 
 对照[这张原图](https://arxiv.org/pdf/2010.01083v1#page=17)，沿一条链读即可：**目标炉灶区域 → 放置 $p_4$；允许抓法 → $g_2$；$(p_4,g_2)$ → IK 构型 $q_3$；再与 $q_1$ 一起生成持物路径 $\tau_3$**。同时，初始放置 $p_0$ 与相同抓法 $g_2$ 生成抓取构型 $q_1$。箭头选定的是一种生成顺序，同一个 `Kin` 关系也可能采用其他输入／输出划分。
+
+在一张具体的采样网络里，每个自由参数由一个生成器产生，其他节点消费并检查同一个值；已知的初值则直接作为输入。两个 IK 节点都消费 $g_2$，并不是各自产生一个独立抓法。若把两个不同生成器的结果组合起来，也要先检查它们在共享参数上是否一致。
 
 ### 6.3 “第一组局部可行参数”仍可能走不通
 
@@ -346,6 +400,8 @@ CollisionTest(tau, world, holding) -> True / False
 
 这张表是对求解接口的整理，而不是声称论文规定了某个 API。综述反复强调：常见采样器和局部优化器不能一般性地证明无解。论文还讨论了暂存反例、持续继续求解并在找到解后撤回反例的策略；如果实现只有永久黑名单，就失去了这一重要条件。
 
+三种状态都以输入满足接口约定为前提。负半径、非有限坐标或无效的场景尺寸属于输入错误，应在几何计算前拒绝；不能把它们包装成可行见证，也不能作为不可行证据写入缓存。后面的下载脚本对这些情况抛出 `ValueError`，与合法问题尚未解出的 `unknown` 区分。
+
 <figure class="article-figure" id="fig-tamp-search-feedback">
   {{< post-image src="assets/search-feedback.webp" alt="有限候选队列的细化流程：已有适用证据则跳过；成功则验证搬运路径并返回见证；已证不可行则缓存对应范围的证据；未知则保留并在预算允许时再次尝试，预算耗尽仍报告未解决" >}}
   <figcaption><span class="article-figure__number">图 7</span><span class="article-figure__text">后文 Python 示例采用的三状态调度。不可行证据可以进入缓存，unknown 保留为未解决并按预算重访；预算耗尽时报告未解决候选。绿色分支只返回已核验的搬运段见证，抓放与阻挡物搬移仍是抽象动作。</span></figcaption>
@@ -363,6 +419,10 @@ CollisionTest(tau, world, holding) -> True / False
 - far：$(1,1)$ m，移到路径一侧。
 
 这些半径和位姿仅定义本例，不是论文机器人参数或抓取性能数据。模式内路径从 $(-2,0)$ 到 $(2,0)$，接触按碰撞处理，脚本使用 $10^{-9}$ m 数值余量。
+
+**后面的不可行证据只属于这套圆盘模型。** 如果圆盘只是实际形状的保守外包络，它无碰可以为始终包含在其中的形状提供保守碰撞结论；圆盘过不了门，却不能据此排除真实形状通过姿态选择穿门的可能。
+
+仅看门洞，长 1.18 m、宽 0.10 m 的矩形可以被半径 0.60 m 的圆盘包住；矩形长边沿 x 轴时，横向宽度只有 0.10 m，可穿过 1 m 门洞，而这个外包络圆盘无法通过。真实机器人的运动学和整条运动仍需另验。
 
 ### 9.1 先推出任何可行路径都必须满足的条件
 
@@ -427,7 +487,7 @@ python3 -B tamp_constraints.py --output constraint-results.json
 
 [绘图脚本](make_figures.py)另外需要 Matplotlib；它读取相同常量绘制门洞图，并运行后文的有限网格 A* 绘制绕行图。示例没有声称实现一个完整 TAMP 系统，也没有复现综述引用算法的实验成绩。
 
-将 `tamp_constraints.py`、`tamp_search.py` 和 `make_figures.py` 放在同一目录，安装好 Matplotlib 后可重画两张几何图：
+将 `tamp_constraints.py`、`tamp_search.py`、`tamp_kinematics.py` 和 `make_figures.py` 放在同一目录，安装好 Matplotlib 后可重画三张几何与运动学图：
 
 ```bash
 python3 -B make_figures.py --output-dir figures
@@ -453,17 +513,25 @@ python3 -B make_figures.py --output-dir figures
   所有有限候选均有证据排除 → 仅报告该候选集合不可行
 ```
 
-Python 的核心对应关系如下；它省略缓存与输出字段，便于先看清调度，完整实现见下载文件：
+下面的 Python 只保留调度与状态校验，消费细化器已经分类的结果；几何核验、证据检查和缓存见下载文件中的完整实现：
 
 ```python
 from collections import deque
 
-def schedule(candidates, refine, next_attempt):
+def schedule(candidates, refine, next_attempt, max_calls=20):
+    if type(max_calls) is not int or max_calls < 0:
+        raise ValueError("max_calls must be a nonnegative integer")
     queue = deque(candidates)
     unresolved = []
-    while queue:
+    calls = 0
+    while queue and calls < max_calls:
         candidate = queue.popleft()
         result = refine(candidate)
+        calls += 1
+        if not isinstance(result, dict) or result.get("status") not in {
+            "feasible", "infeasible", "unknown"
+        }:
+            raise ValueError("refine must return one of the three declared states")
         if result["status"] == "feasible":
             return result
         if result["status"] == "unknown":
@@ -472,12 +540,17 @@ def schedule(candidates, refine, next_attempt):
                 unresolved.append(candidate)
             else:
                 queue.append(retry)
-    return {"status": "unknown" if unresolved else "finite_candidates_infeasible"}
+    return {
+        "status": "unknown" if queue or unresolved else "finite_candidates_infeasible",
+        "pending": len(queue) + len(unresolved),
+    }
 ```
 
-这个短函数只要求传入细化器与重试策略；**完整脚本额外检查整段见证、调用预算和缓存依赖**，且只把带几何证据的 `infeasible` 记入缓存。`unknown` 从不进入永久黑名单。排回队尾能让其他候选先获得机会，但这份有限示例本身不提供一般 TAMP 的完备性保证。
+这个短函数传入细化器、重试策略和调用预算；`pending` 是未解决数量。拼写错误的状态会被拒绝，预算耗尽时只要队列尚有内容就返回 `unknown`。**完整脚本额外检查路径端点、整段无碰、不可行证据和缓存依赖**，且只把核对过的几何证据记入缓存。`unknown` 从不进入永久黑名单。排回队尾能让其他候选先获得机会，但这份有限示例本身不提供一般 TAMP 的完备性保证。
 
-**直接运行完整例子：**下载 [tamp-lab.zip](tamp-lab.zip)，解压后进入该目录；包含两份 Python 文件、说明和参考 JSON，不需要安装第三方包。
+端点检查不可省略：从 $(-2,0)$ 到 $(-1,0)$ 的线段可以完全无碰，却根本没有搬到指定的 $(2,0)$。`CFree` 通过，只回答“这一段是否安全”；`Motion` 还必须核对是否连接本次动作要求的起终点。返回的 `feasible` 标签本身不替代这两类检查。
+
+**直接运行完整例子：**下载 [tamp-lab.zip](tamp-lab.zip)，解压后进入该目录；包含几何、外层搜索、平面臂三份 Python 文件、说明和参考 JSON，不需要安装第三方包。
 
 ```bash
 python3 -B tamp_constraints.py --check
@@ -505,7 +578,7 @@ python3 -B tamp_search.py --output my-search-results.json
 
 第一次细化先试由穿门高度得到的简单折线；如果没有结论，重访时调用 `grid_motion()`，在二维网格上实际搜索，而不是预先写好第二条路径：
 
-- 网格分辨率为 **0.2 m**，中心坐标限定在 $x\in[-2,2]$ m、$y\in[-1.2,1.2]$ m，共 273 个节点；起终点与前面一致。
+- 网格分辨率为 **0.2 m**，中心坐标限定在 $x\in[-2,2]$ m、$y\in[-1.2,1.2]$ m，共 273 个候选格点；起终点与前面一致。
 - 每个节点最多有八个邻居，边代价与启发函数都采用欧氏距离；启发函数不会高估剩余路径长度。
 - 扩展邻居前，对**整条边**检查圆盘与墙、阻挡物的距离。允许斜向边不等于允许“抄近角”穿过障碍物。
 - 到达终点后回溯出折线，再整体核验；耗尽网格或展开预算时返回 `unknown`。
@@ -531,7 +604,117 @@ if result["status"] == "feasible":
 
 默认运行得到路径长约 **4.662742 m**，展开 114 个节点；路径中心线到墙和阻挡物中心的最小距离分别约为 0.353553 m 与 0.707107 m，满足 0.25 m 与 0.65 m 的严格间距要求。[数值与路径记录](assets/grid-results.json)可以直接核对；[绘图脚本](make_figures.py)根据这次搜索结果作图。这些数值只描述当前网格和固定搜索顺序，不能推广为机器人规划性能。
 
+#### 改变网格分辨率，观察 unknown {#grid-resolution}
+
+保持门洞、阻挡物、圆盘包络、物理搜索范围和整段碰撞判定不变，只改变网格间距：
+
+```bash
+python3 -B tamp_search.py --resolutions --summary
+```
+
+间距与路径长的单位均为米；格点总数包含未通过碰撞检查的中心，“展开”是本次搜索实际展开的节点数量。
+
+| 间距 | 格点 | 展开 | 返回 | 路径长 |
+| ---: | ---: | ---: | --- | ---: |
+| 2 | 3 | 2 | unknown | — |
+| 1 | 15 | 7 | feasible | 4.828427 |
+| 0.4 | 77 | 32 | feasible | 4.662742 |
+| 0.2 | 273 | 114 | feasible | 4.662742 |
+| 0.1 | 1025 | 395 | feasible | 4.579899 |
+{style="white-space: nowrap;"}
+
+2 m 网格只有 $y=0$ 一行，无法绕开门后阻挡物；这张图含三个节点，可达前沿耗尽后返回 `unknown`。同一连续场景存在前文的有效折线，其他四张图也找到了通过核验的路径，因此这个失败不能作为连续空间无解的证据。
+
+各行路径长是**对应八邻接有限图上的最短路**，不是连续空间最优值。更细网格增加了可表达的路线，也增加了本例展开的节点；不同间距的节点集合未必互相包含，不能据此断言路径长度总会随分辨率单调改善。这里的展开数也不等同于运行时间。
+
+[完整分辨率记录](assets/grid-resolution-results.json)包含各行的路径坐标、间距和检查结果。直接调用时可用 `grid_motion(..., step=0.1)`；默认仍是 0.2 m。这个实现要求间距能使固定起终点落在节点上；不满足要求的间距（例如 0.3 m）属于输入错误，抛出 `ValueError`，不会被当作几何 `infeasible`。每行展开预算均为 1000；降低预算造成的中止仍是 `unknown`。
+
 [完整参考输出](assets/search-results.json)保留所有外层调用记录。自检比较开关缓存后的见证、限制预算时的 unknown、门洞变宽后的证据失效，以及重访后找到绕行的状态序列。返回字段 `unverified` 明确列出尚未验证的抓放、阻挡物搬移、机械臂 IK、动力学和执行条件；读者可以据此逐个替换真实机器人模块，而不会把局部搬运见证当成整套机器人方案。
+
+### 9.7 解析平面臂：两端各有 IK，共享抓法却为空 {#kinematics-lab}
+
+门洞例子把机器人折合为圆盘，适合核对 `CFree` 与证据作用范围。再看一个独立的 **`Kin` 端点约束例子**，说明第 5.1 节的共享变量为什么会改变任务骨架。
+
+采用三关节平面臂，连杆长为 $(1,1,0.25)$ m，三个转动关节均不设限位。物体与手的位姿记为 $(x,y,\theta)\in SE(2)$，长度用米、角度用弧度。只允许两种相对抓法，两个框架原点重合，方向相差半圈：
+
+$$
+\begin{aligned}
+g_{\mathrm{front}}&=(0,0,0),\\
+g_{\mathrm{back}}&=(0,0,\pi).
+\end{aligned}
+$$
+
+它们是本例声明的有限允许集合。给定物体放置 $p$ 与 $g$，先求手目标 $H=pg^{-1}$。若手目标为 $(x_H,y_H,\phi)$，前两根连杆需要到达的腕点是：
+
+$$
+\begin{aligned}
+u&=x_H-0.25\cos\phi,\\
+v&=y_H-0.25\sin\phi.
+\end{aligned}
+$$
+
+前两根连杆的总长只有 2 m，因此 $\sqrt{u^2+v^2}>2$ 就给出这个姿态的运动学不可达条件。物体中心本身在 2 m 处，并不意味着任意朝向都能到达。
+
+| 物体放置 $(x,y,\theta)$ | front 的 IK 数 | back 的 IK 数 |
+| --- | ---: | ---: |
+| left：$(-2,0,0)$ | 0 | 2 |
+| middle：$(0,1,0)$ | 2 | 2 |
+| right：$(2,0,0)$ | 2 | 0 |
+{style="break-inside: avoid;"}
+
+例如，left 加 front 要求腕点在 $(-2.25,0)$，超出 2 m；left 加 back 要求腕点在 $(-1.75,0)$，存在两支解析 IK。right 的情况相反。脚本对每一组返回的关节值重新做 FK，分别检查位置残差不超过 $10^{-10}$ m、角度残差不超过 $10^{-10}$ rad。
+
+<figure class="article-figure" id="fig-tamp-shared-grasp-ik">
+  {{< post-image src="assets/shared-grasp-ik.png" alt="三列为左侧、中间和右侧物体放置，两行为 front 与 back 抓法。左侧仅 back 有两支 IK，右侧仅 front 有两支 IK，中间两种抓法均有 IK。虚线圆是前两连杆的两米腕点可达圆，叉号标出超界腕点；图中只核对静态端点运动学" >}}
+  <figcaption><span class="article-figure__number">图 10</span><span class="article-figure__text">由解析 IK 和 FK 计算的六组端点条件。实线与虚线表示两支关节解，箭头表示要求的手坐标系 x 轴；浅蓝圆是前两连杆的腕点范围，不是整条机械臂的碰撞自由空间。此图没有生成连接路径，也没有检查自碰撞、物体碰撞或支撑稳定性。</span></figcaption>
+</figure>
+
+直接从 left 搬到 right，抓取端只能选 back，放置端只能选 front；**各自存在 IK，交集却为空**。保持同一抓法的直接骨架，无法满足本例两端的 `Kin` 条件。
+
+若增加 middle 作为中间放置，端点约束可拆成两段：
+
+```text
+pick(left, back) -> transfer(back) -> place(middle, back)
+                 -> moveF -> pick(middle, front)
+                 -> transfer(front) -> place(right, front)
+```
+
+第一段共享 back，第二段共享 front；抓法在放下并释放之后改变。**这只消除了两端运动学的矛盾**，完整方案还要验证 middle 的支撑条件、两段持物路径、重新抓取前的空手移动与接近／退出动作。将两个端点 IK 直接线性插值，也不能替代这些检查。
+
+下载 [tamp_kinematics.py](tamp_kinematics.py) 单独运行，或直接使用上述 ZIP：
+
+```bash
+python3 -B tamp_kinematics.py --check --summary
+python3 -B tamp_kinematics.py --output my-grasp-results.json
+```
+
+[参考输出](assets/grasp-results.json)保存六组 IK、腕点半径、物体位姿残差及两段共享抓法。它与圆盘例子检查不同的约束，不能把两份输出拼接成一个已验证的机器人计划。`--check` 另用 500 组固定种子关节值与非零抓取平移，核对 FK 构造的目标仍有 IK 见证。
+
+<details>
+<summary>展开三关节平面臂的解析 IK</summary>
+
+令前两连杆长为 $l_1,l_2$。腕点 $(u,v)$ 给出第二关节的余弦：
+
+$$
+\begin{aligned}
+c_2&=\frac{u^2+v^2-l_1^2-l_2^2}{2l_1l_2},\\
+q_2&=\pm\arccos(c_2).
+\end{aligned}
+$$
+
+对每个分支继续求：
+
+$$
+\begin{aligned}
+q_1&=\operatorname{atan2}(v,u)\\
+&\quad-\operatorname{atan2}(l_2\sin q_2,l_1+l_2\cos q_2),\\
+q_3&=\operatorname{wrap}(\phi-q_1-q_2).
+\end{aligned}
+$$
+
+脚本先做腕点范围检查，再处理浮点边界并验证 FK 残差。这里的三个放置均不在奇异处，表中两个解对应两支肘部姿态；完全折叠的零半径腕点还可能有连续解族，脚本只返回代表解，不枚举该解族。真实机器人的关节限位、工具安装和三维抓取模型需要另外接入。
+
+</details>
 
 ## 10. 从论文框架到可维护的软件接口 {#engineering}
 
@@ -551,7 +734,7 @@ if result["status"] == "feasible":
 
 ### 10.3 预算耗尽后保留继续搜索的可能
 
-可以直接对照[第 9.5 节的队列伪代码与运行记录](#search-lab)：一个局部求解器用完本轮预算之后，外层调度器保留其搜索状态、已生成样本与未解决标记，再给其他分支机会。实际实现还要设计预算如何增长、样本如何持久化及何时重访。采样覆盖、骨架枚举、公平调度和约束求解器能力，共同决定算法能够保证什么。
+可以直接对照[第 9.5 节的队列伪代码与运行记录](#search-lab)：一条候选没有结论时先排回队尾，让其他分支获得机会。示例会保留未解决标记并报告数量，但每次调用 `search()` 都重新开始，尚未实现跨调用恢复。长期运行的调度器还应保存局部求解器状态、已生成样本、待处理候选和有效证据，再设计预算增长及重访时机。采样覆盖、骨架枚举、公平调度和约束求解器能力，共同决定算法能够保证什么。
 
 ### 10.4 规划成功后还需要执行监测
 
@@ -621,24 +804,30 @@ if result["status"] == "feasible":
 12. 规划几何成功与真机任务成功之间还差哪些条件？
 13. 约束网络与条件采样网络的连线含义有何不同？
 14. 为什么外层示例的两种缓存键包含不同字段？
+15. 两端分别有 IK，为什么仍可能没有保持同一抓法的搬运方案？
+16. 平面臂增加中间放置后，已经得到完整的无碰计划了吗？
+17. 从起点出发的一段无碰路径，为什么仍可能不满足搬运动作？
 
 <details id="tamp-self-check-answers">
-<summary>展开 14 题答案</summary>
+<summary>展开 17 题答案</summary>
 
-1. 连续模式参数，包括抓取、放置、切换构型及其约束关系。
+1. 抓取、放置等模式参数，以及切换构型；这些值还需满足共享约束。
 2. 符号模型可能忽略尺寸、可达性、抓法兼容性和重新抓取条件。
 3. transit 固定物体的世界放置；transfer 还固定所持物体相对手的抓法及其他物体的放置。
 4. 没有；还要到达该构型，并满足碰撞、稳定抓取和后续状态条件。
 5. 在连续密度的环境采样下，低维等式约束集合通常具有零概率，需要利用结构。
 6. 不是；一个描述约束如何求解，另一个描述骨架搜索与参数求解如何调度。
-7. 不能；可能只是当前样本遗漏了关键的连续值。
+7. 不能；可能只是当前样本遗漏了关键的连续值。[分辨率实验](#grid-resolution)中，2 m 网格耗尽仍为 unknown，其他网格在同一连续场景找到了有效路径。
 8. 不能；unknown 应保留合适的重访机会，不可行反例必须有证据及明确作用范围。
-9. 在门洞与抓法包络不变时可以，因为该宽度证据不依赖放置；换门或换包络需要重验。
+9. 在本例圆盘模型的门洞与包络不变时可以，因为宽度证据不依赖放置；换门或换包络需要重验。若圆盘仅为真实形状的外包络，其失败不能直接剪去真实几何问题。
 10. 不能；脚本给出直线失败而折线绕行成功的对照。
 11. 碰撞关系依赖障碍物布局和附着几何，必须保留对应上下文或使缓存失效。
 12. 感知与模型误差、接触是否建立、跟踪控制、动态可行性、环境变化及恢复逻辑等。
 13. 约束网络的无向连线只表示参数参与约束；采样网络的有向边明确参数是生成器的输入还是输出，不代表物理动作的因果顺序。
 14. 完整几何证据依赖放置、起终点与全部相关模型量；门洞宽度证据与阻挡物放置无关，但仍依赖门洞、包络和余量。缓存键按证据的实际依赖确定。
+15. 两端的 IK 可能依赖不同抓法；直接骨架要求同一个抓法同时进入两端的可行集合。有限样本的交集为空仍要与完整约束无解区分。
+16. 没有；只找到了两段各自共享抓法的端点 IK，还缺少支撑、抓取接触、空手与持物路径、碰撞及执行条件验证。
+17. 它可能没有连接指定终点，例如始终停留在墙左侧；要同时核对 `Motion` 的端点／连续性与 `CFree` 的整段无碰。
 
 </details>
 
@@ -649,4 +838,4 @@ if result["status"] == "feasible":
 - [论文 §2](https://arxiv.org/pdf/2010.01083v1#page=5)：运动规划、多模式运动规划与任务规划的基础。
 - [论文 §3](https://arxiv.org/pdf/2010.01083v1#page=12)：混合约束、参数满足、搜索时序与信息共享；Table 1 在 p. 23。
 - [论文 §4](https://arxiv.org/pdf/2010.01083v1#page=22)：动力学、不确定性与学习扩展。
-- [完整示例下载](tamp-lab.zip)、[约束脚本](tamp_constraints.py)、[外层搜索](tamp_search.py)、[约束结果](assets/constraint-results.json)与[搜索记录](assets/search-results.json)：复算本页构造的子问题；[绘图脚本](make_figures.py)另需 Matplotlib。
+- [完整示例下载](tamp-lab.zip)、[约束脚本](tamp_constraints.py)、[外层搜索](tamp_search.py)与[平面臂约束](tamp_kinematics.py)：复算本页构造的子问题；[绘图脚本](make_figures.py)另需 Matplotlib。参考数值分别见[门洞约束](assets/constraint-results.json)、[搜索记录](assets/search-results.json)和[共享抓法](assets/grasp-results.json)。

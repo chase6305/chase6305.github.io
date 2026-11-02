@@ -1,0 +1,154 @@
+{
+  "construction": "A 2x2 gradient flattened to four coordinates; independent Rademacher +/-0.5 noise, fixed mean and seed2026.",
+  "scope": "Constructed statistics only. No model, GRPO rollout, optimizer or training is run. Independence and fixed-checkpoint assumptions are not verified by the estimator.",
+  "definition": "SNR of one observation unit: squared norm of its population mean divided by trace covariance. The repetition count estimates this quantity; it does not redefine the observation as their average.",
+  "correction": "sample_mean_power - sample_trace_variance / observations has unbiased expectation under iid finite-second-moment assumptions. Its ratio with the random variance estimate is not generally unbiased.",
+  "cases": [
+    {
+      "name": "single_observation",
+      "independent_base_gradients_per_observation": 1,
+      "population_mean": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "population_trace_variance": 1.0,
+      "population_snr": 1.0,
+      "estimate": {
+        "observations": 256,
+        "coordinates": 4,
+        "mean": [
+          1.0078125,
+          0.0,
+          0.05078125,
+          0.03125
+        ],
+        "sample_mean_power": 1.0192413330078125,
+        "sample_trace_variance": 1.0002910539215686,
+        "mean_noise_correction": 0.003907386929381127,
+        "corrected_signal_power_signed": 1.0153339460784314,
+        "naive_ratio": 1.0189447651380572,
+        "corrected_ratio_signed": 1.0150385151380574,
+        "sample_variance_zero": false,
+        "corrected_power_negative": false
+      }
+    },
+    {
+      "name": "average_of_eight_independent",
+      "independent_base_gradients_per_observation": 8,
+      "population_mean": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "population_trace_variance": 0.125,
+      "population_snr": 8.0,
+      "estimate": {
+        "observations": 256,
+        "coordinates": 4,
+        "mean": [
+          0.9873046875,
+          -0.02294921875,
+          -0.0009765625,
+          -0.00830078125
+        ],
+        "sample_mean_power": 0.9753670692443848,
+        "sample_trace_variance": 0.13012168734681373,
+        "mean_noise_correction": 0.0005082878411984911,
+        "corrected_signal_power_signed": 0.9748587814031863,
+        "naive_ratio": 7.495807110499082,
+        "corrected_ratio_signed": 7.491900860499082,
+        "sample_variance_zero": false,
+        "corrected_power_negative": false
+      }
+    },
+    {
+      "name": "zero_mean",
+      "independent_base_gradients_per_observation": 1,
+      "population_mean": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "population_trace_variance": 1.0,
+      "population_snr": 0.0,
+      "estimate": {
+        "observations": 256,
+        "coordinates": 4,
+        "mean": [
+          0.0078125,
+          0.0,
+          0.05078125,
+          0.03125
+        ],
+        "sample_mean_power": 0.0036163330078125,
+        "sample_trace_variance": 1.0002910539215686,
+        "mean_noise_correction": 0.003907386929381127,
+        "corrected_signal_power_signed": -0.0002910539215686273,
+        "naive_ratio": 0.0036152807661679353,
+        "corrected_ratio_signed": -0.00029096923383206463,
+        "sample_variance_zero": false,
+        "corrected_power_negative": true
+      }
+    }
+  ],
+  "edge_cases": {
+    "balanced_two_observations": {
+      "observations": 2,
+      "coordinates": 4,
+      "mean": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sample_mean_power": 0.0,
+      "sample_trace_variance": 2.0,
+      "mean_noise_correction": 1.0,
+      "corrected_signal_power_signed": -1.0,
+      "naive_ratio": 0.0,
+      "corrected_ratio_signed": -0.5,
+      "sample_variance_zero": false,
+      "corrected_power_negative": true
+    },
+    "identical_two_observations": {
+      "observations": 2,
+      "coordinates": 4,
+      "mean": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sample_mean_power": 1.0,
+      "sample_trace_variance": 0.0,
+      "mean_noise_correction": 0.0,
+      "corrected_signal_power_signed": 1.0,
+      "naive_ratio": null,
+      "corrected_ratio_signed": null,
+      "sample_variance_zero": true,
+      "corrected_power_negative": false
+    },
+    "all_zero": {
+      "observations": 2,
+      "coordinates": 4,
+      "mean": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sample_mean_power": 0.0,
+      "sample_trace_variance": 0.0,
+      "mean_noise_correction": 0.0,
+      "corrected_signal_power_signed": 0.0,
+      "naive_ratio": null,
+      "corrected_ratio_signed": null,
+      "sample_variance_zero": true,
+      "corrected_power_negative": false
+    }
+  }
+}

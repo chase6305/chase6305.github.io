@@ -1,0 +1,24 @@
+{
+  "initial_files": 173,
+  "missing": [],
+  "changed_initial_files": [
+    "docs/blog-editorial-review.json",
+    "assets/css/pion-spectrum.css",
+    "content/posts/ai/pion-muon-vla-rlvr/README.txt",
+    "content/posts/ai/pion-muon-vla-rlvr/index.md",
+    "content/posts/ai/pion-muon-vla-rlvr/make_figures.py",
+    "content/posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip",
+    "scripts/package_pion_lab.py",
+    "scripts/test_pion_examples.py"
+  ],
+  "modified_acceptance_ids": [
+    95
+  ],
+  "acceptance_questions": 25,
+  "extra_clean_scope": [
+    "assets/css/custom.css",
+    "scripts/check_blog_print.cjs",
+    "scripts/lib/browser.cjs"
+  ],
+  "scope": "All other initial dirty files remain byte-identical; no prior review or audit files changed."
+}

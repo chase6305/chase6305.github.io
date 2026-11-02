@@ -1,0 +1,62 @@
+{
+  "status": "complete",
+  "source_article_sha256": "568865d58aed4f8d876fb7e644251c0db261f6f5fdf19cad4be008e07bd074e7",
+  "scope": "Final prose/formula/caption cross-check against supplied PDF and already pinned-source evidence. No new model measurements or test claims.",
+  "sections": [
+    {
+      "chapters": "1–2",
+      "checked_at_utc": "2026-11-01T23:37:10.021432+00:00",
+      "decision": "accepted",
+      "notes": "Compact SVD excludes zero directions; actual finite-step Muon differs from ideal polar factor. Effective rank uses singular amplitudes. Scalar-output hidden-gradient eigenvalues and EMA rank sequence agree with the construction. Figure 2 separates action-only optimizer comparison, module averages and broken time axis."
+    },
+    {
+      "chapters": "3",
+      "checked_at_utc": "2026-11-01T23:37:10.021443+00:00",
+      "decision": "accepted",
+      "notes": "Independent observation unit, finite-sample correction and common-mean covariance identity are consistent. GRPO task signal, conditional sampling, total variance and proposal cost are distinct; Bernoulli zero residual does not claim the paper residual-dominant approximation."
+    },
+    {
+      "chapters": "4–5",
+      "checked_at_utc": "2026-11-01T23:37:10.021444+00:00",
+      "decision": "accepted",
+      "notes": "Matrix/scalar polynomial identity, feasible coefficient interval, derivative factors and unstable suppression fixed point agree algebraically. Five-step schedules and threshold-count bounds do not assert hard rank truncation. Figure 3 caption distinguishes actual Muon response from ideal sign and measured training outcomes."
+    },
+    {
+      "chapters": "6–8",
+      "checked_at_utc": "2026-11-01T23:39:11.434933+00:00",
+      "decision": "accepted",
+      "notes": "Four-direction spectra keep original ordering; positive exact Pion coefficients do not imply hard rank truncation. Alignment uses known fixed signals, not training success or stochastic SNR. Q/K/V output-row versus O input-column splits, GQA counts, Qwen3 QK-Norm and actual head dimensions are distinct. Independent block normalization need not preserve amplitude ratios. Module routing and mismatched reported AdamW baselines remain qualified."
+    },
+    {
+      "chapters": "9–11.3",
+      "checked_at_utc": "2026-11-01T23:41:01.485425+00:00",
+      "decision": "accepted",
+      "notes": "VLA table arithmetic uses percentage points and preserves separate training budgets. Real-robot 77/90 inference is labeled and not generalized beyond three tasks. RLVR eight-setting scope, rollout counts and low-pass ablation are distinct. Standard-library/NumPy examples, official code entry, default promotion counts, class-specific scaling and launcher-versus-paper budgets retain explicit scope. Four-dimensional flattening and stride qualifications agree with the pinned-source audits."
+    },
+    {
+      "chapters": "11.4–11.5, numerical core",
+      "checked_at_utc": "2026-11-01T23:42:38.987097+00:00",
+      "decision": "accepted",
+      "notes": "Fixed epsilon breaks amplitude invariance; BF16 changes cannot be attributed solely to epsilon. EMA/Nesterov formulas match lerp order. The two-dimensional RMS formula excludes decay; flat full-rank matrices can keep entropy rank while their coefficient decays. Five suppression compositions have leading exponent 243 and coefficient (5/2)^121. Representation limits and CPU observation thresholds are not cross-device guarantees."
+    },
+    {
+      "chapters": "11.5, asynchronous communication disclosures",
+      "checked_at_utc": "2026-11-01T23:45:26.079189+00:00",
+      "decision": "accepted",
+      "notes": "Zero-gradient, missing-gradient and padding cases preserve different state conventions. Controlled timing is distinguished from natural backend observations. Candidate mutation is explicit; source files are preserved. Replica equality and independent update correctness are both required, with prior GPU observations kept separate from this window."
+    },
+    {
+      "chapters": "12–14 and 28 self-check answers",
+      "checked_at_utc": "2026-11-01T23:45:26.079198+00:00",
+      "decision": "accepted",
+      "notes": "Logging advice distinguishes raw gradients, momentum, Nesterov input and local/full matrices. FAQs preserve soft filtering, precision, memory and elapsed-time limits. All 28 answers agree with their linked explanations and constructed examples. Figure sources, primary version and pinned commit remain attributed."
+    },
+    {
+      "chapters": "Downloaded helper API contracts",
+      "checked_at_utc": "2026-11-01T23:50:52.705119+00:00",
+      "decision": "accepted",
+      "notes": "The Bernoulli helper bounds iterable consumption and group size, distinguishes limiting probabilities from realized logits, isolates Decimal state and serializes undefined ratios as null. Correlation formulas use exact Fraction values without allocating repeated samples. Hidden-gradient certificates match the differentiable ReLU construction; EMA uses immutable rational values. This is source inspection, not an additional runtime-test count."
+    }
+  ],
+  "completed_at_utc": "2026-11-01T23:50:52.705128+00:00"
+}

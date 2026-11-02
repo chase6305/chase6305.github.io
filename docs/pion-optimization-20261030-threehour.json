@@ -1,0 +1,522 @@
+{
+  "started_at_utc": "2026-10-30T10:27:42Z",
+  "planned_end_at_utc": "2026-10-30T13:27:42Z",
+  "finished_at_utc": "2026-10-30T13:29:24.474546+00:00",
+  "status": "complete",
+  "scope": "Optimize Pion article, numerical examples, explanatory experiments and accessibility for the full requested three-hour window.",
+  "initial_dirty_files": 100,
+  "initial_snapshot": "/tmp/chase-pion-threehour-20261030/initial-manifest.json",
+  "changes": [
+    {
+      "topic": "Explicit epsilon and arbitrary-amplitude spectrum",
+      "implementation": "Stable Frobenius normalization handles finite large and tiny inputs without norm overflow; erank accepts unnormalized nonnegative spectra; optional epsilon separates normalization scale from precision."
+    },
+    {
+      "topic": "Independent head counterexample",
+      "implementation": "Constructed diagonal gradient with 10:1 head amplitude ratio; whole-matrix Pion nearly suppresses the second head while per-head normalization yields equal output block norms. No claim of preserving weight-norm ratios."
+    },
+    {
+      "topic": "Official parameter routing and stopping conditions",
+      "implementation": "Pinned VLA parameter-name exclusions, proprio projector O routing, RL projection head axes and three GSM8K scripts; separated total_epochs=15 from the paper 40-step budget."
+    },
+    {
+      "topic": "Numerical precision",
+      "implementation": "Hash-gated official PyTorch CPU BF16 probe distinguishes epsilon=0 Float64, epsilon=1e-7 Float64 and official BF16 helper; checked underflow without claiming GPU agreement."
+    },
+    {
+      "topic": "Interactive explanation",
+      "implementation": "Four raw amplitudes, six fixed-budget schedules, optional epsilon, four presets, original/output erank and output norms; selectable table plus three labeled SVG curves. Native default results survive blocked scripts and failed initial SVG setup."
+    },
+    {
+      "topic": "Conceptual flow",
+      "implementation": "New whole-matrix/per-head update-flow figure; per-block five-step label checked against source and diagram arrows."
+    },
+    {
+      "topic": "Frobenius budget",
+      "implementation": "Derived count of output coefficients >=0.5 from the normalized squared-sum budget; sharp equal-spectrum and randomized checks distinguish amplitude count from mathematical rank."
+    },
+    {
+      "topic": "Native PDF chart width",
+      "implementation": "Reproduced mobile-origin native PDF axis span125.156pt vs414.656pt after fix. beforeprint can run before print media; draw in a624px coordinate system shared with CSS and force screen geometry redraw after print. No focus movement."
+    },
+    {
+      "topic": "Strict tiny-tail arithmetic",
+      "implementation": "Decimal and JavaScript oracle checks now use minimal-subnormal absolute tolerance; a zero in place of a tiny normal coefficient no longer passes. Diagonal NumPy head comparison also requires relative agreement."
+    },
+    {
+      "topic": "Printed coefficient cells",
+      "implementation": "Measured a scientific coefficient extending1.95px beyond a fixed-layout cell at200% root text. Print uses automatic column allocation and normal wrapping; emulated checks now use actual A4/Letter content widths and inspect every text range within its padded cell."
+    },
+    {
+      "topic": "Labeled clean-signal comparison",
+      "implementation": "Same known rank-one diagonal signal with weak-tail or dominant fixed perturbation; Pion improves alignment in the first and suppresses true weak signal in the second. Standard-library script, saved JSON, independent90-digit cosine check and ZIP included. Not statistical SNR or training accuracy."
+    },
+    {
+      "topic": "Scientific-number wrapping",
+      "implementation": "At320px/200% text a coefficient split e-minus from its exponent digits. Dynamic and static numbers now permit a soft break before a nonbreaking exponent; text/selection strings are unchanged. New long diagonal expressions use native display formula scrollers."
+    },
+    {
+      "topic": "Large-text A4 formulas",
+      "implementation": "A200% whole-article print check found four compound display formulas wider than716CSSpx (up to1130.6). Split compactSVD, flow-matching targets/loss, entropy-rank definitions and spectral identities into equivalent shorter lines; preserved font size, notation meaning and MathML."
+    },
+    {
+      "topic": "Printed plot grouping",
+      "implementation": "Keep axis labels with the following SVG and legend; final PDF text-coordinate/content checks verify all14 native cases keep both axes and legend on the curve page."
+    }
+  ],
+  "verification": [
+    {
+      "suite": "Scalar and NumPy source after epsilon addition",
+      "tests": 13,
+      "result": "pass",
+      "scope": "Independent Decimal normalization and SVD polynomial comparison including epsilon."
+    },
+    {
+      "suite": "Production v3 strict validator",
+      "reviewed_posts": 96,
+      "acceptance_checks": 529,
+      "local_references_checked": 33056,
+      "errors": 0,
+      "python_fragment_warnings": 0,
+      "unrendered_math_warnings": 0
+    },
+    {
+      "suite": "Behavior v3",
+      "interactions": 60,
+      "semanticStates": 30,
+      "fallbacks": 4,
+      "actualTabOutlines": 360,
+      "exceptions": 0
+    },
+    {
+      "suite": "Native print v4",
+      "a4_ordinary": 16,
+      "a4_forced": 12,
+      "letter": 2,
+      "exceptions": 0,
+      "result": "pass",
+      "scope": "Result label/value pairs, axes font size, tagged PDFs, values and actual control focus after print."
+    },
+    {
+      "suite": "Deterministic plot reproduction",
+      "result": "byte-identical",
+      "sha256": "cd84865af3c93a13a59d7b500958c02911f0b54cf7be126063d33018313bd7c2"
+    },
+    {
+      "suite": "Whole article v5",
+      "layouts": 48,
+      "chapterActivations": 80,
+      "actualArrowScrolls": 138,
+      "nativePdfs": 4,
+      "exceptions": 0
+    },
+    {
+      "suite": "Image deep links and viewer v5",
+      "deepLinks": 24,
+      "numberedFigureLinks": 20,
+      "viewerCases": 20,
+      "runtimeExceptions": 0
+    },
+    {
+      "suite": "Native print without emulated print media v7",
+      "pdfs": 14,
+      "screenWidths": [
+        320,
+        1440
+      ],
+      "rootTextPercent": [
+        100,
+        200
+      ],
+      "themes": [
+        "light",
+        "dark",
+        "warm"
+      ],
+      "paper": [
+        "A4",
+        "Letter"
+      ],
+      "chartAxisMinimumPt": 396.5,
+      "focusInputsGeometryPreserved": true,
+      "exceptions": 0
+    },
+    {
+      "suite": "Behavior v8 with later SVG failures",
+      "interactions": 60,
+      "keyboardCases": 48,
+      "nativeTableScrolls": 3,
+      "semanticStates": 30,
+      "fallbacks": 10,
+      "actualTabOutlines": 360,
+      "exceptions": 0,
+      "scope": "Includes initial blocked/SVG failure and controlled later input/resize/native-print SVG failure with current numbers preserved and recovery."
+    },
+    {
+      "suite": "Touch interaction v11",
+      "contexts": 12,
+      "generatedTaps": 72,
+      "verifiedResultStates": 60,
+      "horizontalVerticalGesturePairs": 12,
+      "viewportWidths": [
+        320,
+        390
+      ],
+      "rootTextPercent": [
+        100,
+        200
+      ],
+      "themes": [
+        "light",
+        "dark",
+        "warm"
+      ],
+      "inputMethod": "Input.dispatchTouchEvent",
+      "exceptions": 0,
+      "scope": "Chrome emulation, not physical-device testing."
+    },
+    {
+      "suite": "Production final strict validation",
+      "result": "pass",
+      "reviewed_posts": 96,
+      "acceptance_checks": 530,
+      "html_pages": 319,
+      "local_references_checked": 32392,
+      "errors": 0,
+      "syntax_warnings": 0,
+      "math_warnings": 0
+    },
+    {
+      "suite": "Production render equivalence",
+      "result": "pass",
+      "files": [
+        {
+          "file": "posts/ai/pion-muon-vla-rlvr/index.html",
+          "same": true,
+          "sha256": "2225e3d67b11ec8cd469475f66916e486abfc4541b32bc45af5524791777e3a3"
+        },
+        {
+          "file": "js/pion-spectrum.min.a3bb8e3ed389c277b86aa31c37fb9dc2f5dc57c3913253205ce79e47d7944a9c.js",
+          "same": true,
+          "sha256": "a3bb8e3ed389c277b86aa31c37fb9dc2f5dc57c3913253205ce79e47d7944a9c"
+        },
+        {
+          "file": "css/pion-spectrum.min.f7b34aa6ddcc29325067a591b1e92f67020822bac2fbd7ff7b41dd5b6da3895f.css",
+          "same": true,
+          "sha256": "f7b34aa6ddcc29325067a591b1e92f67020822bac2fbd7ff7b41dd5b6da3895f"
+        }
+      ],
+      "scope": "Final clean build has exactly the reviewed article HTML and conditional JS/CSS bytes; bytecode was removed before the final fresh build."
+    },
+    {
+      "suite": "Official RL optimizer CPU structural probe",
+      "cases": 11,
+      "maximum_absolute_error": 0.0,
+      "shapeFallbacks": 2,
+      "result": "pass",
+      "scope": "Signed and zero rank-one head blocks, GQA-like head counts and actual optimizer scale5 defaults. Not GPU/FSDP/model training."
+    },
+    {
+      "suite": "Native print reading position after stable layout",
+      "nativeCases": 24,
+      "readerActions": 9,
+      "offscreenFocusedControlCases": 12,
+      "printMediaRoundTrip": true,
+      "immediateReprint": true,
+      "backgroundTab": true,
+      "exceptions": 0,
+      "scope": "100%/200% root text;320/1440px;3themes. Initial font/image/overflow layout is settled before measuring the baseline."
+    }
+  ],
+  "pending": [],
+  "final_verification": {
+    "production": {
+      "reviewed_posts": 96,
+      "learning_paths": 11,
+      "acceptance_checks": 530,
+      "blog_posting_schemas": 93,
+      "sharing_images": 55,
+      "shared_search_indexes": 2,
+      "classified_tags": 189,
+      "code_blocks": 604,
+      "syntax_checked_by_language": {
+        "bash": 242,
+        "json": 8,
+        "jsonc": 6,
+        "python": 211,
+        "sh": 10,
+        "xml": 1
+      },
+      "html_pages": 319,
+      "local_references_checked": 32392,
+      "collection_pages_checked": 305,
+      "filter_indexes_checked": 10,
+      "errors": [],
+      "python_fragment_warnings": [],
+      "unrendered_math_warnings": []
+    },
+    "source_tests": {
+      "standard_library": 10,
+      "with_numpy": 13,
+      "python": [
+        "3.10.12",
+        "3.11.15",
+        "3.12.14"
+      ],
+      "numpy": [
+        "1.26.4",
+        "2.2.6"
+      ],
+      "archive_members": 11,
+      "extracted_archive_pass": true
+    },
+    "javascript": {
+      "metamorphicCases": 900,
+      "pythonOracles": 124,
+      "invalidCases": 23,
+      "flatAmplitudeAndRank": true,
+      "zeroAndEpsilon": true
+    },
+    "browser": {
+      "reading_layouts": 60,
+      "whole_article_layouts": 48,
+      "chapter_activations": 82,
+      "arrow_scroll_checks": 158,
+      "numeric_interactions": 60,
+      "keyboard_cases": 48,
+      "scientific_number_wraps": 3,
+      "semantic_states": 30,
+      "fallback_recovery_cases": 10,
+      "painted_focus_cases": 360,
+      "touch_contexts": 12,
+      "touch_taps": 72,
+      "verified_touch_result_states": 60,
+      "touch_gesture_pairs": 12,
+      "figure_deep_link_cases": 20,
+      "all_reading_deep_links": 24,
+      "image_viewer_cases": 20,
+      "interactive_semantic_cases": 17,
+      "status_value_snapshots": 2,
+      "shared_search_entry_contexts": 4,
+      "search_queries": 12,
+      "search_keyboard_clickthroughs": 4,
+      "runtime_exceptions": 0
+    },
+    "print": {
+      "lab_ordinary": 16,
+      "lab_forced": 12,
+      "lab_letter": 2,
+      "lab_native_screen_entry": 14,
+      "large_text_geometry": 6,
+      "large_forced_text_geometry": 6,
+      "native_reading_position": 24,
+      "reader_action_cancellations": 9,
+      "offscreen_focused_control_positions": 12,
+      "whole_article_native_pdfs": 4,
+      "all_pass": true,
+      "final_pagination_native_pdfs": 14,
+      "axes_curve_legend_same_page": true
+    },
+    "preservation": {
+      "initial_files": 100,
+      "intentionally_changed": [
+        ".github/workflows/hugo.yml",
+        "AGENTS.md",
+        "docs/blog-editorial-review.json",
+        "content/posts/ai/pion-muon-vla-rlvr/README.txt",
+        "content/posts/ai/pion-muon-vla-rlvr/assets/spectral-reference.json",
+        "content/posts/ai/pion-muon-vla-rlvr/index.md",
+        "content/posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip",
+        "content/posts/ai/pion-muon-vla-rlvr/pion_matrix.py",
+        "content/posts/ai/pion-muon-vla-rlvr/pion_spectral.py",
+        "docs/image-generation/pion-20261030.json",
+        "scripts/package_pion_lab.py",
+        "scripts/test_pion_examples.py"
+      ],
+      "unchanged_initial_files": 88,
+      "publication_fields": {
+        "date": "2026-10-30",
+        "lastmod": "2026-10-30",
+        "draft": "false"
+      },
+      "no_content_bytecode": true,
+      "served_zip_sha256": "0414cf38cee04ed29c2552a4868868df0f04d3065b2a2d95d0c003164d53c448"
+    },
+    "structure": {
+      "preserved_old_ids": 49,
+      "removed": [],
+      "new": [
+        "fig-pion-update-flow",
+        "interactive-spectrum",
+        "numeric-precision",
+        "per-head-counterexample",
+        "pion-spectrum-lab",
+        "pion-spectrum-lab-epsilon",
+        "pion-spectrum-lab-input-help",
+        "pion-spectrum-lab-kp",
+        "pion-spectrum-lab-sigma-0",
+        "pion-spectrum-lab-sigma-1",
+        "pion-spectrum-lab-sigma-2",
+        "pion-spectrum-lab-sigma-3",
+        "pion-spectrum-lab-title",
+        "signal-alignment"
+      ],
+      "component_sha256": "c9272e80386716820279577ac56042fe6ba8cc9bdf8cc02c97dfca39ed462a96",
+      "unchanged_component_from_reviewed_build": true,
+      "article_html_sha256": "4d59c80ce52d71ff7407185871c180368d328d10312637d1a0475ea0097ba8a5"
+    },
+    "evidence_directory": "docs/site-reviews/2026-10-30-pion-threehour",
+    "scopes": [
+      "Pure scalar and NumPy examples; no VLA/RLVR training or hardware reproduced.",
+      "Official BF16 CPU helper and11 small unsharded optimizer cases do not validate GPU/FSDP training.",
+      "Chrome touch emulation and accessibility-tree/axe checks do not replace physical-device or audible screen-reader testing.",
+      "The final print-only CSS pagination rules were rechecked in14 native A4/Letter PDFs; axis labels, curve and legend stay on one page. The reviewed component markup and JavaScript remain unchanged."
+    ],
+    "site_assets": {
+      "pinned_packages": 3,
+      "pinned_files": 29,
+      "active_pinned_packages": 2,
+      "native_image_viewers": 1,
+      "theme_overrides": 13,
+      "core_renderer_overrides": 1,
+      "local_math_fonts": 20,
+      "verified_integrity_assets": 25
+    },
+    "final_build": "/tmp/chase-pion-threehour-20261030/production-ready"
+  },
+  "source_sha256": {
+    ".github/workflows/hugo.yml": {
+      "sha256": "363d153fd4ab6bc3fd57f90c88f403b78f68c472a2d7fb1a5fe3a90bd8633dbd",
+      "bytes": 6320
+    },
+    "AGENTS.md": {
+      "sha256": "78d1f767a381b96ee4e4480334ed71b29ffaa13bfc549cdd1a877ca0e141a811",
+      "bytes": 29167
+    },
+    "assets/css/pion-spectrum.css": {
+      "sha256": "a6d103aad9712f59d6f9912698885e72a3bbc350b0ac16668d45d812ea93e0d0",
+      "bytes": 6469
+    },
+    "assets/js/pion-spectrum.js": {
+      "sha256": "46ef76d2bc1f3895aeb675ce508da2d0d50b3ba150eaf2ffe56c2df582b5bf6f",
+      "bytes": 12491
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/README.txt": {
+      "sha256": "26bc30521780920a24268066d8059dc705d58e3eae9f0f50fe375e2075675d47",
+      "bytes": 4136
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/assets/alignment-reference.json": {
+      "sha256": "deaa97cc3dd763e06e6ab7a14ded121fd1de99ebc237c1ccc4958a7b5411f5dc",
+      "bytes": 2057
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/assets/official-precision.json": {
+      "sha256": "e26b3a91fd6cdf5356b1168ea0ae03b741c40bf28252daea4fc54822a0229527",
+      "bytes": 1762
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/assets/paper-module-rank.png": {
+      "sha256": "fa917e1e52adbed9b0c152986344667f9b19e1cd58e3cfe89c492d43e06c68ff",
+      "bytes": 61049
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/assets/paper-per-head.png": {
+      "sha256": "c1ef4859dea5740d0fd55a9700dfbd48b71f76055392642ee33c8a3ec4492655",
+      "bytes": 56876
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/assets/paper-rlvr.png": {
+      "sha256": "fec2833727c0b020d9b04003e568d6071ee2baa920aa6bde0371b63a596a7b27",
+      "bytes": 99798
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/assets/per-head-reference.json": {
+      "sha256": "3392f6d6ed71435adffa27e4d7f122c05fff08c42b803471009c80a66b983c9c",
+      "bytes": 643
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/assets/spectral-polynomials.png": {
+      "sha256": "cd84865af3c93a13a59d7b500958c02911f0b54cf7be126063d33018313bd7c2",
+      "bytes": 450424
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/assets/spectral-reference.json": {
+      "sha256": "98f3e20a6eae8f6fddd987787cd6d7d844525ada08e48624c3a2a7392cb9823e",
+      "bytes": 2289
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/assets/update-flow.webp": {
+      "sha256": "efe1fed01a5060e257a7d8c97a2954127203011f962386eb9f2fe23a63798b46",
+      "bytes": 1053908
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/index.md": {
+      "sha256": "5b8a64c67923cf03d76891e62f32fdaab43a240349501dbf529f95b8f6e948fa",
+      "bytes": 51152
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/make_figures.py": {
+      "sha256": "5945ce251e731fff632859c02e7fb8950da2e012650dfeb9d744511417384a73",
+      "bytes": 3604
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip": {
+      "sha256": "0414cf38cee04ed29c2552a4868868df0f04d3065b2a2d95d0c003164d53c448",
+      "bytes": 17365
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/pion_alignment.py": {
+      "sha256": "1391eacddf39376f7fdb9f4ba5be376e8dcc3dcb4c1f71c0d24609a1815cbfc0",
+      "bytes": 1714
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/pion_matrix.py": {
+      "sha256": "2f8bfd999af5150e4c05f66ee93f134d32148b2be9377325aa8c36af0b46332f",
+      "bytes": 3804
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/pion_spectral.py": {
+      "sha256": "5db8f5ca9300bd5f9f77efd48e7238b779d5c3d165bed4c50b0d1f589e71ca75",
+      "bytes": 7262
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/probe_official_pion.py": {
+      "sha256": "eccd7b833789e647c052071818f5a6447c00fd51237c9fe87b2f05b68c431b97",
+      "bytes": 2286
+    },
+    "docs/blog-editorial-review.json": {
+      "sha256": "b96de2ce2bf68bbbdcb280c591df2a9fc3bcb8702f0ceeb9a2f79fef57f1db31",
+      "bytes": 125759
+    },
+    "docs/image-generation/pion-20261030.json": {
+      "sha256": "1452be2ff4fff9573823b8367dd21abe404a29590d8941bca3951551c86038bf",
+      "bytes": 5108
+    },
+    "docs/image-generation/pion-flow-20261030.json": {
+      "sha256": "c36a38c2f26cfb8b13d7072d45820d751f6a9163e1526b39547337d7e659451c",
+      "bytes": 3741
+    },
+    "docs/pion-source-audit-20261030.json": {
+      "sha256": "6ca05ab8b9ab0ed791a9626dc9afd25338f0e570ac8576a217a331def90b33f7",
+      "bytes": 8856
+    },
+    "docs/site-reviews/2026-10-30-pion-threehour/probe_official_head_axes.py": {
+      "sha256": "53467a1c69ad80cadf2b55ab0fdb292c4574a13be2f17b806e098037aa241c17",
+      "bytes": 3031
+    },
+    "layouts/_shortcodes/pion-spectrum.html": {
+      "sha256": "90affdb19501566676d121a714fac652c9dc547b59d22083a1d2af447bffca04",
+      "bytes": 5764
+    },
+    "layouts/partials/pion-number.html": {
+      "sha256": "03937615a1e488267b4b2543f248cbae568dd22f5c70400fcda68aae2b90ccfb",
+      "bytes": 248
+    },
+    "scripts/check_pion_spectrum.cjs": {
+      "sha256": "77a903b001428ecf65c9dea0de30c6d5c47afc4f9d0b4820115c1a6e16d4aa2b",
+      "bytes": 25193
+    },
+    "scripts/check_pion_touch.cjs": {
+      "sha256": "9524a3e65f1b7580075fde1ed52214813f588396280d04da45b46448b51d3ed8",
+      "bytes": 5666
+    },
+    "scripts/package_pion_lab.py": {
+      "sha256": "52ba3ebf483b6e620c0c45c9871a456cf9ab3c4a449e24b8db5806a0f4d8b54b",
+      "bytes": 3489
+    },
+    "scripts/test_pion_examples.py": {
+      "sha256": "911b6ee1de1c6ccefb612677f08da39b98ad89cf41fb002e51f5065fdfced840",
+      "bytes": 12472
+    },
+    "scripts/test_pion_spectrum.cjs": {
+      "sha256": "0eb988f5534d43cb000c3731c6d83db4dba87163aa71e4aed12a07f43c46fad3",
+      "bytes": 3816
+    }
+  },
+  "elapsed_seconds": 10902.474546
+}

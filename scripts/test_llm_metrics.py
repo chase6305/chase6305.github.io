@@ -3,6 +3,8 @@
 import itertools
 import json
 import math
+import random
+from fractions import Fraction
 import subprocess
 import sys
 import tempfile
@@ -36,6 +38,43 @@ class MetricsArticleTests(unittest.TestCase):
                      ([math.nan], [1]), ([math.inf], [1]), ([-1], [1]), ([1], [1.5])]:
             with self.assertRaises(ValueError):
                 metrics.weighted_nll(*args)
+
+    def test_pass_at_k_exact_arithmetic_and_probability_limits(self):
+        rng = random.Random(20261029)
+        for _ in range(500):
+            n = rng.randrange(1, 401)
+            c, k = rng.randrange(n + 1), rng.randrange(1, n + 1)
+            denominator = math.comb(n, k)
+            numerator = math.comb(n - c, k) if n - c >= k else 0
+            expected = float(Fraction(denominator - numerator, denominator))
+            actual = metrics.pass_at_k(n, c, k)
+            self.assertTrue(math.isclose(actual, expected, rel_tol=2e-14, abs_tol=0), (n, c, k))
+            self.assertGreaterEqual(actual, 0)
+            self.assertLessEqual(actual, 1)
+        # These are arithmetic stress inputs, not claimed evaluation budgets.
+        for n in (10**18, 10**100, 10**300):
+            for k in (1, 3, 100, n // 2, n - 1, n):
+                self.assertTrue(math.isclose(metrics.pass_at_k(n, 1, k), k / n, rel_tol=2e-15))
+            for c in (0, 1, 3, n // 2, n - 1, n):
+                self.assertTrue(math.isclose(metrics.pass_at_k(n, c, 1), c / n, rel_tol=2e-15))
+        # Two successes: exact rational complement avoids the same cancellation
+        # as the implementation under test and needs no enormous binomial.
+        for n, k in ((10**18, 1), (10**18, 7), (10**6, 500000)):
+            failure = Fraction((n - k) * (n - k - 1), n * (n - 1))
+            self.assertTrue(math.isclose(metrics.pass_at_k(n, 2, k), float(1 - failure), rel_tol=2e-15))
+
+    def test_pass_at_k_monotonicity_and_product_duality(self):
+        for n in (1, 2, 10, 31, 100):
+            for c in range(n + 1):
+                values = [metrics.pass_at_k(n, c, k) for k in range(1, n + 1)]
+                self.assertEqual(values, sorted(values))
+                if c:
+                    for k, value in enumerate(values, 1):
+                        self.assertEqual(value, metrics.pass_at_k(n, k, c))
+        for values in ((True, 0, 1), (1, False, 1), (1, 1, True),
+                       (10, -1, 2), (10, 1, 0), (10, 1, 11)):
+            with self.assertRaises(ValueError):
+                metrics.pass_at_k(*values)
 
     def test_wilson_reference_values_and_symmetry(self):
         # Independent reference values from scipy.stats.binomtest(...).proportion_ci(method='wilson').

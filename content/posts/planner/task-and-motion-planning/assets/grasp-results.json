@@ -1,0 +1,239 @@
+{
+  "scope": "Constructed endpoint-kinematics constraints, not a verified robot plan.",
+  "lengths_m": [
+    1.0,
+    1.0,
+    0.25
+  ],
+  "position_tolerance_m": 1e-10,
+  "angle_tolerance_rad": 1e-10,
+  "joint_model": "Three unrestricted revolute joints; singular IK families are not enumerated.",
+  "grasp_convention": "g = hand_T_object; world_T_object = FK(q) g",
+  "grasps": {
+    "front": {
+      "x": 0.0,
+      "y": 0.0,
+      "yaw": 0.0
+    },
+    "back": {
+      "x": 0.0,
+      "y": 0.0,
+      "yaw": 3.141592653589793
+    }
+  },
+  "placements": {
+    "left": {
+      "x": -2.0,
+      "y": 0.0,
+      "yaw": 0.0
+    },
+    "middle": {
+      "x": 0.0,
+      "y": 1.0,
+      "yaw": 0.0
+    },
+    "right": {
+      "x": 2.0,
+      "y": 0.0,
+      "yaw": 0.0
+    }
+  },
+  "endpoint_witnesses": {
+    "left": {
+      "front": {
+        "hand_target": {
+          "x": -2.0,
+          "y": 0.0,
+          "yaw": 0.0
+        },
+        "wrist_radius_m": 2.25,
+        "solutions_rad": [],
+        "object_pose_residuals": []
+      },
+      "back": {
+        "hand_target": {
+          "x": -2.0,
+          "y": 0.0,
+          "yaw": -3.141592653589793
+        },
+        "wrist_radius_m": 1.75,
+        "solutions_rad": [
+          [
+            2.636232143305636,
+            1.0107210205683146,
+            -0.5053605102841567
+          ],
+          [
+            -2.636232143305636,
+            -1.0107210205683146,
+            0.5053605102841567
+          ]
+        ],
+        "object_pose_residuals": [
+          {
+            "position_m": 6.785949072853666e-16,
+            "angle_rad": 8.881784197001252e-16
+          },
+          {
+            "position_m": 6.785949072853666e-16,
+            "angle_rad": 8.881784197001252e-16
+          }
+        ]
+      }
+    },
+    "middle": {
+      "front": {
+        "hand_target": {
+          "x": 0.0,
+          "y": 1.0,
+          "yaw": 0.0
+        },
+        "wrist_radius_m": 1.0307764064044151,
+        "solutions_rad": [
+          [
+            0.7864392527541659,
+            2.0586714743351897,
+            -2.845110727089356
+          ],
+          [
+            2.845110727089356,
+            -2.0586714743351897,
+            -0.7864392527541662
+          ]
+        ],
+        "object_pose_residuals": [
+          {
+            "position_m": 3.510833468576701e-16,
+            "angle_rad": 2.220446049250313e-16
+          },
+          {
+            "position_m": 3.1401849173675503e-16,
+            "angle_rad": 0.0
+          }
+        ]
+      },
+      "back": {
+        "hand_target": {
+          "x": 0.0,
+          "y": 1.0,
+          "yaw": -3.141592653589793
+        },
+        "wrist_radius_m": 1.0307764064044151,
+        "solutions_rad": [
+          [
+            0.2964819265004377,
+            2.0586714743351897,
+            0.7864392527541657
+          ],
+          [
+            2.3551534008356274,
+            -2.0586714743351897,
+            2.8451107270893554
+          ]
+        ],
+        "object_pose_residuals": [
+          {
+            "position_m": 2.482534153247273e-16,
+            "angle_rad": 0.0
+          },
+          {
+            "position_m": 2.482534153247273e-16,
+            "angle_rad": 0.0
+          }
+        ]
+      }
+    },
+    "right": {
+      "front": {
+        "hand_target": {
+          "x": 2.0,
+          "y": 0.0,
+          "yaw": 0.0
+        },
+        "wrist_radius_m": 1.75,
+        "solutions_rad": [
+          [
+            -0.5053605102841573,
+            1.0107210205683146,
+            -0.5053605102841573
+          ],
+          [
+            0.5053605102841573,
+            -1.0107210205683146,
+            0.5053605102841573
+          ]
+        ],
+        "object_pose_residuals": [
+          {
+            "position_m": 0.0,
+            "angle_rad": 0.0
+          },
+          {
+            "position_m": 0.0,
+            "angle_rad": 0.0
+          }
+        ]
+      },
+      "back": {
+        "hand_target": {
+          "x": 2.0,
+          "y": 0.0,
+          "yaw": -3.141592653589793
+        },
+        "wrist_radius_m": 2.25,
+        "solutions_rad": [],
+        "object_pose_residuals": []
+      }
+    }
+  },
+  "direct_shared_grasps": [],
+  "via_middle_shared_grasps": {
+    "left_to_middle": [
+      "back"
+    ],
+    "middle_to_right": [
+      "front"
+    ]
+  },
+  "regrasp_endpoint_stages": [
+    {
+      "from": "left",
+      "to": "middle",
+      "shared_grasp": "back",
+      "pickup_q_rad": [
+        2.636232143305636,
+        1.0107210205683146,
+        -0.5053605102841567
+      ],
+      "placement_q_rad": [
+        0.2964819265004377,
+        2.0586714743351897,
+        0.7864392527541657
+      ]
+    },
+    {
+      "from": "middle",
+      "to": "right",
+      "shared_grasp": "front",
+      "pickup_q_rad": [
+        0.7864392527541659,
+        2.0586714743351897,
+        -2.845110727089356
+      ],
+      "placement_q_rad": [
+        -0.5053605102841573,
+        1.0107210205683146,
+        -0.5053605102841573
+      ]
+    }
+  ],
+  "unverified": [
+    "collision",
+    "connecting paths",
+    "support and grasp stability",
+    "approach and retreat",
+    "joint limits",
+    "dynamics",
+    "hardware"
+  ]
+}

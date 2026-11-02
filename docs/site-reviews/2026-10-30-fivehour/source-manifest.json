@@ -1,0 +1,154 @@
+{
+  ".github/workflows/hugo.yml": {
+    "sha256": "0e988ddcbfaa502a8f99cf8e9d3e150e362332ed94efafc1cd9d286f83df6cbc",
+    "bytes": 6159
+  },
+  "AGENTS.md": {
+    "sha256": "1abc1da4715b955bf49ea4446379bd56dfa004f92755fa97501ef849fba7129c",
+    "bytes": 26920
+  },
+  "content/posts/planner/task-and-motion-planning/README.txt": {
+    "sha256": "4b1e3d608722acbfe4f47677d004aaece3e9d0c9d39fb54eec7f1801a1b3381b",
+    "bytes": 4521
+  },
+  "content/posts/planner/task-and-motion-planning/assets/grid-results.json": {
+    "sha256": "7630ba6108697ca8da002486f552ffbd86cfdce1923507d90972d614bf2ed8d5",
+    "bytes": 1233
+  },
+  "content/posts/planner/task-and-motion-planning/index.md": {
+    "sha256": "0beba972e123f5f5a7ba42184251c37ec44d88cf502308bf878cd756ae02aeaa",
+    "bytes": 64941
+  },
+  "content/posts/planner/task-and-motion-planning/tamp-lab.zip": {
+    "sha256": "e79757f5e505e6c11a1bf1a1a53b0ddf1fbded8b1d1b1f1b14e3a3f45ba159a4",
+    "bytes": 18747
+  },
+  "content/posts/planner/task-and-motion-planning/tamp_constraints.py": {
+    "sha256": "4962d5950bf057251dce4e947be42615c22d412599050d9e0e962d7e9b2ae242",
+    "bytes": 11554
+  },
+  "content/posts/planner/task-and-motion-planning/tamp_search.py": {
+    "sha256": "6acaa6eb71969d51baaa67ba9f3d6a64f3ab051a8670710cac09c6b25cf6e639",
+    "bytes": 15033
+  },
+  "content/posts/robotics/dynamics/parameter-identification/index.md": {
+    "sha256": "cdd689e552a81c8d47eae173e1d9306b47b8b24f0b42d6be97477818e7718e35",
+    "bytes": 98577
+  },
+  "docs/blog-editorial-review.json": {
+    "sha256": "4c7409f3c3473649cf34d7c56f443ddee24433b62cfedc22c3bd9c3d19076956",
+    "bytes": 122658
+  },
+  "docs/blog-second-pass.json": {
+    "sha256": "276dbeae13cf9b6af0c41e9d6729edbeafc596ccea30dd80da5d1df983d0e40b",
+    "bytes": 30261
+  },
+  "docs/image-generation/tamp-20261029.json": {
+    "sha256": "b02216bf221984347c86be6f373bee679b9a9520be2ba64e56984ec5b0728361",
+    "bytes": 7609
+  },
+  "scripts/check_site_reflow.cjs": {
+    "sha256": "8830f36dad71e801915a3e892c8bcc110f1495af3ca4b5522a6a006030f3c3af",
+    "bytes": 7835
+  },
+  "scripts/package_tamp_lab.py": {
+    "sha256": "c369195c2295de484d59e0a32e67a765777b2ee0fcd5d352423d300aa4ad4886",
+    "bytes": 4996
+  },
+  "scripts/test_tamp_examples.py": {
+    "sha256": "06211d8b285bab4b77f48b3f54fbcbea48f90ec850cb280f757683cc842a3e6b",
+    "bytes": 19716
+  },
+  "assets/css/identification-timing.css": {
+    "sha256": "8ac787c4501401629c13daa4999eb824125bc1c41729c265971083dfbc5f9801",
+    "bytes": 6130
+  },
+  "assets/js/identification-timing.js": {
+    "sha256": "171164d030ec1b1950a81f463c98b21500fbd1354943123c7c35b3aaeaee231a",
+    "bytes": 11453
+  },
+  "content/posts/planner/task-and-motion-planning/assets/grid-resolution-results.json": {
+    "sha256": "86ffba172c718973ed8ff148c7f0ef4fe8e082bd0d1607b3204cbedb7ac0438d",
+    "bytes": 6771
+  },
+  "content/posts/robotics/dynamics/parameter-identification/README.txt": {
+    "sha256": "2c06f15bc59ee7b95c377609dc2d9b63951bd64d5c61ca0e1c468ba386554527",
+    "bytes": 10441
+  },
+  "content/posts/robotics/dynamics/parameter-identification/assets/drake-reference.json": {
+    "sha256": "a25aa435c255ea4afe09bb4b3cd072f66afe3b3ad386018c70459593afe0d417",
+    "bytes": 2106
+  },
+  "content/posts/robotics/dynamics/parameter-identification/assets/identification-held-out.png": {
+    "sha256": "a80adc057d33e5367243d2a53890ec3f0eabfab47ad09a710cbc947e2dc7e8d3",
+    "bytes": 202834
+  },
+  "content/posts/robotics/dynamics/parameter-identification/assets/pinocchio-reference.json": {
+    "sha256": "435df9e2464774b4d128f480c584962ae18c35954c0f0655863fee4bbd62a2ca",
+    "bytes": 4346
+  },
+  "content/posts/robotics/dynamics/parameter-identification/assets/preprocessing-study.json": {
+    "sha256": "b054e960d7ff4afe6d2f2d7182c81da8b7f068a2b69cf29453c4e451da6b952a",
+    "bytes": 3719
+  },
+  "content/posts/robotics/dynamics/parameter-identification/assets/timing-reference.json": {
+    "sha256": "8bb1d9ef14089faecd001436e20917afa585adb3ae05aad1cc8de430bd9e53c3",
+    "bytes": 674
+  },
+  "content/posts/robotics/dynamics/parameter-identification/drake_identification.py": {
+    "sha256": "895fad412edb466c2219eefc8aac5613363e1a6248eb291021f5dac44f90c047",
+    "bytes": 11919
+  },
+  "content/posts/robotics/dynamics/parameter-identification/identification_common.py": {
+    "sha256": "e7e209b7a35b8a8b3b3d47668d05afe13b0bbd11ccb6361c7131d982d49257c8",
+    "bytes": 8429
+  },
+  "content/posts/robotics/dynamics/parameter-identification/parameter-identification-lab.zip": {
+    "sha256": "d04ca6b2df47f4d8a6e2770d96f6762b6e8fb45ead298a028349f5703ec6abe3",
+    "bytes": 228889
+  },
+  "content/posts/robotics/dynamics/parameter-identification/pinocchio_identification.py": {
+    "sha256": "81df393c7052663d1dd2f2d9feafd78669b951c17200bbb858c37c9054769e48",
+    "bytes": 12107
+  },
+  "content/posts/robotics/dynamics/parameter-identification/preprocess_identification.py": {
+    "sha256": "cc017bc0043849156627c6402e790eb9c8724ac27b1d8959f6c6602ea7e7ba03",
+    "bytes": 10071
+  },
+  "content/posts/robotics/dynamics/parameter-identification/preprocessing_study.py": {
+    "sha256": "d838c3aee75be8b11a43cb03ff8b65849a7a229c2d48a4a49e46e37d52b4bce4",
+    "bytes": 5552
+  },
+  "content/posts/robotics/dynamics/parameter-identification/timing_counterexample.py": {
+    "sha256": "95602dc50052ef6c823bb539415953eeab9689d0603f18883393436d06afedab",
+    "bytes": 5282
+  },
+  "docs/image-generation/parameter-identification-20261029.json": {
+    "sha256": "d0ee56a26e85bc3d3ea9f1dd505980985b660ebb13a65abf49574d09b44361e4",
+    "bytes": 1882
+  },
+  "docs/parameter-identification-timing-review-20261030.json": {
+    "sha256": "659589ab7467834e4546b994ab54fac1c5037f6be26bfbd694ae410c001f4041",
+    "bytes": 2660
+  },
+  "layouts/_shortcodes/identification-timing.html": {
+    "sha256": "060de0031eb11724ce8aec49aba4144fd1cac9a6b49fdaeeadc7d292825c3eaf",
+    "bytes": 5130
+  },
+  "scripts/check_identification_timing.cjs": {
+    "sha256": "78a3e847bac46ff45c282895a9550f1790d13a3918708eeb25d7ee73b368f9d3",
+    "bytes": 19687
+  },
+  "scripts/package_parameter_identification.py": {
+    "sha256": "16d308b15771a09b40df90eb19fd45114138975ce0c0e34f915c487f808bf10b",
+    "bytes": 5400
+  },
+  "scripts/test_identification_timing.cjs": {
+    "sha256": "9565698bf1fd5d6b684403d8d21e870ce70313780a57a204624d4214774c3104",
+    "bytes": 4398
+  },
+  "scripts/test_parameter_identification.py": {
+    "sha256": "94034555d01fe0ab60d0bcf36f9a5800263d3b18f7e03731bacf1b270426e01e",
+    "bytes": 42994
+  }
+}

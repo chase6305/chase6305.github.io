@@ -1,0 +1,26 @@
+{
+  "created_on": "2026-10-30",
+  "method": "built-in image_gen, followed by lossless WebP format conversion",
+  "skill": "/home/ubuntu/.codex/skills/.system/imagegen/SKILL.md",
+  "article": "content/posts/ai/pion-muon-vla-rlvr/index.md",
+  "asset": "content/posts/ai/pion-muon-vla-rlvr/assets/update-flow.webp",
+  "sha256": "efe1fed01a5060e257a7d8c97a2954127203011f962386eb9f2fe23a63798b46",
+  "dimensions": [
+    1691,
+    930
+  ],
+  "bytes": 1053908,
+  "generated_source": "/home/ubuntu/.codex/generated_images/01a187b4-0b96-71f1-a3fa-173629598f77/exec-6307ad20-87bb-409e-bb97-0906675b89cc.png",
+  "prompt": "Use case: scientific-educational. Asset type: a clean technical overview diagram for a Chinese article explaining Pion, a spectral optimizer. Create a brand-new wide landscape infographic, approximately 2000 by 1100, on an opaque white background. Thin rounded outlines, restrained pastel blue, purple, orange and green fills, dark navy arrows, generous spacing, large crisp sans-serif English labels. Exact title: 'Pion update flow'. This is an optimizer TRAINING update, not a robot execution flow and not temporal frequency filtering. At far left show 'Gradient' leading to 'Momentum'. From Momentum fork into TWO ALTERNATIVE routes inside a grouping area clearly labeled 'Choose one route'. Top route label 'Whole matrix'; show a single matrix icon, then left-to-right boxes 'Normalize', 'Promotion (kp)', 'Suppression (5-kp)', 'Update weights'. Bottom route label 'Per-head blocks'; show splitting into three symbolic head blocks, then boxes 'Normalize each head', 'Promotion (kp)', 'Suppression (5-kp)', 'Merge heads', 'Update weights'. Each bottom polynomial box operates independently on every head, with no mixing arrows between heads. Label this bottom middle area 'Same polynomial, independent blocks'. Make every arrow direction unambiguous, strictly from gradient to momentum to chosen grouping to normalization to promotion to suppression to optional merge to weight update. Top example tag: 'VLA action matrices'. Bottom example tag: 'RLVR attention projections'. These tags are use cases, not numerical claims. Small footer: '5 polynomial steps in total'. Do not draw charts, numerical spectra, success rates, robots, frequency waves, gradient feedback loops, or arrows from suppression back to promotion. Do not add other text. Keep all labels legible and inside their boxes. Preserve full whitespace margins.",
+  "edit_prompt": "Edit this image with exactly one text change. Replace the bottom footer '5 polynomial steps in total' with '5 polynomial steps per block'. Preserve every other word, all arrows, the two alternative routes, every head block, all shapes, outlines, colors, layout, title, opaque white background and canvas dimensions. The new footer must remain centered, large and entirely inside its existing rounded blue footer box. Do not otherwise redraw or add elements.",
+  "visual_review": [
+    "All arrows run from gradient to momentum, grouping, normalization, promotion, suppression, optional merge and weight update.",
+    "The two routes are alternatives; each head is independently normalized and filtered.",
+    "The five-step budget is per block, not summed across heads.",
+    "Three drawn blocks are symbolic; actual Q/K/V/O head layouts and counts are specified in article prose.",
+    "No numerical spectrum or benchmark result is claimed in this overview.",
+    "Production page image loaded and zoomed at desktop/mobile widths in light/dark themes; all caption text and five numbered figure anchors checked.",
+    "Native A4 figure and lab pages inspected at100% and200% root text."
+  ],
+  "status": "source-size scientific review and production/browser integration accepted"
+}

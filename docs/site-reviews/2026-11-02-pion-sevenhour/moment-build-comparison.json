@@ -1,0 +1,87 @@
+{
+  "files_before": 2233,
+  "files_after": 2233,
+  "files_with_updated_search_fingerprint_references": 312,
+  "changed_after_normalizing_search_urls_and_integrities": [
+    "categories/\u4eba\u5de5\u667a\u80fd/index.xml",
+    "posts/ai/pion-muon-vla-rlvr/index.html",
+    "tags/grpo/index.xml",
+    "tags/muon/index.xml",
+    "tags/paper-notes/index.xml",
+    "tags/pion/index.xml",
+    "tags/rlvr/index.xml",
+    "tags/vla/index.xml"
+  ],
+  "search_json_differences": [
+    {
+      "language": "en",
+      "entry": "/posts/ai/pion-muon-vla-rlvr/",
+      "differences": [
+        {
+          "field": "//posts/ai/pion-muon-vla-rlvr//data/32-\u5168\u5bf9\u6216\u5168\u9519\u7684\u7ec4\u4e3a\u4f55\u6ca1\u6709\u4f18\u52bf\u4fe1\u53f7#3.2 \u5168\u5bf9\u6216\u5168\u9519\u7684\u7ec4\u4e3a\u4f55\u6ca1\u6709\u4f18\u52bf\u4fe1\u53f7",
+          "whitespace_only": true,
+          "character_count_delta": 1
+        }
+      ]
+    },
+    {
+      "language": "zh-cn",
+      "entry": "/posts/ai/pion-muon-vla-rlvr/",
+      "differences": [
+        {
+          "field": "//posts/ai/pion-muon-vla-rlvr//data/32-\u5168\u5bf9\u6216\u5168\u9519\u7684\u7ec4\u4e3a\u4f55\u6ca1\u6709\u4f18\u52bf\u4fe1\u53f7#3.2 \u5168\u5bf9\u6216\u5168\u9519\u7684\u7ec4\u4e3a\u4f55\u6ca1\u6709\u4f18\u52bf\u4fe1\u53f7",
+          "whitespace_only": true,
+          "character_count_delta": 1
+        }
+      ]
+    }
+  ],
+  "search_script_comparison": [
+    {
+      "language": "en",
+      "changed_only_data_url": true
+    },
+    {
+      "language": "zh-cn",
+      "changed_only_data_url": true
+    }
+  ],
+  "rss_feed_comparison": [
+    {
+      "file": "categories/\u4eba\u5de5\u667a\u80fd/index.xml",
+      "changed_item": "Pion",
+      "changed_only_wrapper": true
+    },
+    {
+      "file": "tags/grpo/index.xml",
+      "changed_item": "Pion",
+      "changed_only_wrapper": true
+    },
+    {
+      "file": "tags/muon/index.xml",
+      "changed_item": "Pion",
+      "changed_only_wrapper": true
+    },
+    {
+      "file": "tags/paper-notes/index.xml",
+      "changed_item": "Pion",
+      "changed_only_wrapper": true
+    },
+    {
+      "file": "tags/pion/index.xml",
+      "changed_item": "Pion",
+      "changed_only_wrapper": true
+    },
+    {
+      "file": "tags/rlvr/index.xml",
+      "changed_item": "Pion",
+      "changed_only_wrapper": true
+    },
+    {
+      "file": "tags/vla/index.xml",
+      "changed_item": "Pion",
+      "changed_only_wrapper": true
+    }
+  ],
+  "scope": "Only article markup changes beyond search resource URLs and integrity. A block boundary adds a separating space to the Pion search entry; search data and loader fingerprints update mechanically. No shared source changed."
+}

@@ -76,6 +76,9 @@ async function connect(port = 9226) {
   await cdp('Page.enable');
   await cdp('Runtime.enable');
   await cdp('Network.enable');
+  // A reused loopback origin may serve a different fresh build. Inspect its
+  // current bytes; cache-specific scenarios can explicitly enable caching.
+  await cdp('Network.setCacheDisabled', {cacheDisabled: true});
   await cdp('Page.bringToFront');
   return {cdp, evaluate, navigate, viewport, screenshot, key, close, exceptions, requests, pause};
 }

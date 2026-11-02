@@ -1,0 +1,30 @@
+{
+  "before": {
+    "containerWidth": 214,
+    "scrollWidth": 236,
+    "tag": {
+      "text": "#Paper Notes",
+      "left": 1268.96875,
+      "right": 1420.875,
+      "width": 151.90625,
+      "height": 32,
+      "whiteSpace": "nowrap"
+    },
+    "right": 1425,
+    "bodyOverflow": false
+  },
+  "after": {
+    "containerWidth": 214,
+    "scrollWidth": 214,
+    "tag": {
+      "text": "#Paper Notes",
+      "left": 1268.96875,
+      "right": 1367,
+      "width": 98.03125,
+      "height": 64,
+      "whiteSpace": "normal"
+    },
+    "right": 1425,
+    "bodyOverflow": false
+  }
+}

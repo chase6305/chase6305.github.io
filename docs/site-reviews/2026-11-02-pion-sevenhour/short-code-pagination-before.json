@@ -1,0 +1,259 @@
+{
+  "scope": "Check selected shell commands and a short Python unit stay on one PDF page.",
+  "pdfs": 5,
+  "cases": 30,
+  "shell_cases": 25,
+  "python_cases": 5,
+  "failures": [
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "command": "candidate_python",
+      "unit_type": "python",
+      "start_page": 39,
+      "end_page": 40,
+      "same_page": false
+    }
+  ],
+  "rows": [
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "command": "flat",
+      "unit_type": "shell",
+      "start_page": 37,
+      "end_page": 37,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "command": "buffers_gloo",
+      "unit_type": "shell",
+      "start_page": 39,
+      "end_page": 39,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "command": "buffers_nccl",
+      "unit_type": "shell",
+      "start_page": 39,
+      "end_page": 39,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "command": "padding_two",
+      "unit_type": "shell",
+      "start_page": 40,
+      "end_page": 40,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "command": "padding_three",
+      "unit_type": "shell",
+      "start_page": 40,
+      "end_page": 40,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "command": "candidate_python",
+      "unit_type": "python",
+      "start_page": 39,
+      "end_page": 40,
+      "same_page": false
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "command": "flat",
+      "unit_type": "shell",
+      "start_page": 98,
+      "end_page": 98,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "command": "buffers_gloo",
+      "unit_type": "shell",
+      "start_page": 103,
+      "end_page": 103,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "command": "buffers_nccl",
+      "unit_type": "shell",
+      "start_page": 103,
+      "end_page": 103,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "command": "padding_two",
+      "unit_type": "shell",
+      "start_page": 107,
+      "end_page": 107,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "command": "padding_three",
+      "unit_type": "shell",
+      "start_page": 107,
+      "end_page": 107,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "command": "candidate_python",
+      "unit_type": "python",
+      "start_page": 106,
+      "end_page": 106,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "command": "flat",
+      "unit_type": "shell",
+      "start_page": 36,
+      "end_page": 36,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "command": "buffers_gloo",
+      "unit_type": "shell",
+      "start_page": 38,
+      "end_page": 38,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "command": "buffers_nccl",
+      "unit_type": "shell",
+      "start_page": 38,
+      "end_page": 38,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "command": "padding_two",
+      "unit_type": "shell",
+      "start_page": 39,
+      "end_page": 39,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "command": "padding_three",
+      "unit_type": "shell",
+      "start_page": 39,
+      "end_page": 39,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "command": "candidate_python",
+      "unit_type": "python",
+      "start_page": 39,
+      "end_page": 39,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "command": "flat",
+      "unit_type": "shell",
+      "start_page": 96,
+      "end_page": 96,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "command": "buffers_gloo",
+      "unit_type": "shell",
+      "start_page": 101,
+      "end_page": 101,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "command": "buffers_nccl",
+      "unit_type": "shell",
+      "start_page": 101,
+      "end_page": 101,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "command": "padding_two",
+      "unit_type": "shell",
+      "start_page": 105,
+      "end_page": 105,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "command": "padding_three",
+      "unit_type": "shell",
+      "start_page": 105,
+      "end_page": 105,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "command": "candidate_python",
+      "unit_type": "python",
+      "start_page": 104,
+      "end_page": 104,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "command": "flat",
+      "unit_type": "shell",
+      "start_page": 101,
+      "end_page": 101,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "command": "buffers_gloo",
+      "unit_type": "shell",
+      "start_page": 107,
+      "end_page": 107,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "command": "buffers_nccl",
+      "unit_type": "shell",
+      "start_page": 107,
+      "end_page": 107,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "command": "padding_two",
+      "unit_type": "shell",
+      "start_page": 110,
+      "end_page": 110,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "command": "padding_three",
+      "unit_type": "shell",
+      "start_page": 110,
+      "end_page": 110,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "command": "candidate_python",
+      "unit_type": "python",
+      "start_page": 110,
+      "end_page": 110,
+      "same_page": true
+    }
+  ]
+}

@@ -28,7 +28,18 @@ def pass_at_k(n, c, k):
     """HumanEval-style per-task estimator; candidates use one sampling protocol."""
     if any(type(x) is not int for x in (n, c, k)) or not (0 <= c <= n and 1 <= k <= n):
         raise ValueError("Require 0 <= c <= n and 1 <= k <= n")
-    return 1.0 - (math.comb(n - c, k) / math.comb(n, k) if n - c >= k else 0.0)
+    if c == 0:
+        return 0.0
+    if n - c < k:
+        return 1.0
+    # The failure probability can be expanded over either k draws or c
+    # successful positions. Use the shorter product and accumulate its log.
+    # -expm1(log_failure) keeps a small positive result when failure is near 1.
+    count, excluded = min(c, k), max(c, k)
+    if excluded / (n - count + 1) == 1.0:
+        return 1.0  # A failure factor rounds to zero; pass rounds to one.
+    log_failure = math.fsum(math.log1p(-excluded / (n - index)) for index in range(count))
+    return -math.expm1(log_failure)
 
 
 def percentile(sorted_values, q):

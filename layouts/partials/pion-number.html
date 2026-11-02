@@ -1,0 +1,7 @@
+{{- $formatted := printf "%.6g" . -}}
+{{- $parts := split $formatted "e" -}}
+{{- if eq (len $parts) 2 -}}
+  {{- index $parts 0 -}}<wbr><span class="pion-spectrum__exponent">e{{ index $parts 1 }}</span>
+{{- else -}}
+  {{- $formatted -}}
+{{- end -}}

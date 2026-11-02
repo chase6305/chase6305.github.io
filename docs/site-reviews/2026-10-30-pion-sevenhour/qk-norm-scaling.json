@@ -1,0 +1,318 @@
+{
+  "scope": "Constructed one-head activations and three keys; fixed nonuniform learned RMS weights. Only the original Qwen3RMSNorm class runs on CPU. No model, attention module, RoPE, mask, GQA, dropout or training.",
+  "source_url": "https://raw.githubusercontent.com/huggingface/transformers/v4.51.3/src/transformers/models/qwen3/modeling_qwen3.py",
+  "source_sha256": "704c914530530a1acb0b443add1f520404e3ac2c28c0ab7e16f80f86cfe8ccb2",
+  "source_class_lines": [
+    62,
+    79
+  ],
+  "torch": "2.8.0+cu128",
+  "input_and_weight_dtype": "float64",
+  "official_internal_normalization_dtype": "float32",
+  "decimal_precision": 80,
+  "query": [
+    1.0,
+    2.0,
+    -1.0,
+    3.0
+  ],
+  "keys": [
+    [
+      1.0,
+      0.0,
+      2.0,
+      -1.0
+    ],
+    [
+      -2.0,
+      1.0,
+      0.5,
+      2.0
+    ],
+    [
+      0.5,
+      -1.0,
+      -2.0,
+      1.0
+    ]
+  ],
+  "q_norm_weight": [
+    1.0,
+    0.5,
+    1.25,
+    -0.75
+  ],
+  "k_norm_weight": [
+    0.8,
+    1.2,
+    -0.5,
+    1.5
+  ],
+  "cases": [
+    {
+      "epsilon": 0.0,
+      "q_scale": 1.0,
+      "k_scale": 1.0,
+      "decimal_reference_probabilities": [
+        0.8307711821930863,
+        0.08290713612984212,
+        0.08632168167707158
+      ],
+      "official_class_probabilities": [
+        0.8307711809981703,
+        0.08290713795800035,
+        0.08632168104382942
+      ],
+      "reference_probability_change_from_unit_scale": 0.0,
+      "official_vs_reference_max_norm_error": 5.0213268210086426e-08,
+      "official_vs_reference_max_probability_error": 1.8281582359058746e-09
+    },
+    {
+      "epsilon": 0.0,
+      "q_scale": 0.01,
+      "k_scale": 0.01,
+      "decimal_reference_probabilities": [
+        0.8307711821930863,
+        0.08290713612984212,
+        0.08632168167707158
+      ],
+      "official_class_probabilities": [
+        0.830771136384899,
+        0.08290715276115639,
+        0.08632171085394467
+      ],
+      "reference_probability_change_from_unit_scale": 0.0,
+      "official_vs_reference_max_norm_error": 1.4597877173727625e-07,
+      "official_vs_reference_max_probability_error": 4.5808187354445806e-08
+    },
+    {
+      "epsilon": 0.0,
+      "q_scale": 0.1,
+      "k_scale": 10.0,
+      "decimal_reference_probabilities": [
+        0.8307711821930863,
+        0.08290713612984212,
+        0.08632168167707158
+      ],
+      "official_class_probabilities": [
+        0.8307711750108078,
+        0.08290713736048916,
+        0.08632168762870307
+      ],
+      "reference_probability_change_from_unit_scale": 0.0,
+      "official_vs_reference_max_norm_error": 7.152557368605983e-08,
+      "official_vs_reference_max_probability_error": 7.18227854967779e-09
+    },
+    {
+      "epsilon": 0.0,
+      "q_scale": 10.0,
+      "k_scale": 0.1,
+      "decimal_reference_probabilities": [
+        0.8307711821930863,
+        0.08290713612984212,
+        0.08632168167707158
+      ],
+      "official_class_probabilities": [
+        0.8307711843867219,
+        0.08290714274244287,
+        0.0863216728708353
+      ],
+      "reference_probability_change_from_unit_scale": 0.0,
+      "official_vs_reference_max_norm_error": 2.290272025362583e-07,
+      "official_vs_reference_max_probability_error": 8.806236281855284e-09
+    },
+    {
+      "epsilon": 0.0,
+      "q_scale": 10.0,
+      "k_scale": 10.0,
+      "decimal_reference_probabilities": [
+        0.8307711821930863,
+        0.08290713612984212,
+        0.08632168167707158
+      ],
+      "official_class_probabilities": [
+        0.8307711856471425,
+        0.08290713414406443,
+        0.08632168020879305
+      ],
+      "reference_probability_change_from_unit_scale": 0.0,
+      "official_vs_reference_max_norm_error": 7.152557368605983e-08,
+      "official_vs_reference_max_probability_error": 3.4540561522078406e-09
+    },
+    {
+      "epsilon": 0.0,
+      "q_scale": 1e-06,
+      "k_scale": 1e-06,
+      "decimal_reference_probabilities": [
+        0.8307711821930863,
+        0.08290713612984212,
+        0.08632168167707158
+      ],
+      "official_class_probabilities": [
+        0.8307711633794936,
+        0.0829071480505547,
+        0.08632168856995165
+      ],
+      "reference_probability_change_from_unit_scale": 0.0,
+      "official_vs_reference_max_norm_error": 5.657180457419031e-08,
+      "official_vs_reference_max_probability_error": 1.881359268374183e-08
+    },
+    {
+      "epsilon": 0.0,
+      "q_scale": 1000.0,
+      "k_scale": 0.001,
+      "decimal_reference_probabilities": [
+        0.8307711821930863,
+        0.08290713612984212,
+        0.08632168167707158
+      ],
+      "official_class_probabilities": [
+        0.8307711573921311,
+        0.0829071474530434,
+        0.0863216951548255
+      ],
+      "reference_probability_change_from_unit_scale": 0.0,
+      "official_vs_reference_max_norm_error": 7.152557368605983e-08,
+      "official_vs_reference_max_probability_error": 2.480095517842784e-08
+    },
+    {
+      "epsilon": 1e-06,
+      "q_scale": 1.0,
+      "k_scale": 1.0,
+      "decimal_reference_probabilities": [
+        0.8307710427758341,
+        0.0829072001103106,
+        0.08632175711385527
+      ],
+      "official_class_probabilities": [
+        0.8307710497278876,
+        0.08290719797333765,
+        0.08632175229877473
+      ],
+      "reference_probability_change_from_unit_scale": 0.0,
+      "official_vs_reference_max_norm_error": 4.425334054758423e-08,
+      "official_vs_reference_max_probability_error": 6.952053488440413e-09
+    },
+    {
+      "epsilon": 1e-06,
+      "q_scale": 0.01,
+      "k_scale": 0.01,
+      "decimal_reference_probabilities": [
+        0.8293790434523278,
+        0.0835460294345002,
+        0.08707492711317201
+      ],
+      "official_class_probabilities": [
+        0.8293790422763114,
+        0.08354603012159548,
+        0.08707492760209319
+      ],
+      "reference_probability_change_from_unit_scale": 0.00139199932350631,
+      "official_vs_reference_max_norm_error": 6.715454192729453e-08,
+      "official_vs_reference_max_probability_error": 1.1760163953766778e-09
+    },
+    {
+      "epsilon": 1e-06,
+      "q_scale": 0.1,
+      "k_scale": 10.0,
+      "decimal_reference_probabilities": [
+        0.8307668997357577,
+        0.08290925686682356,
+        0.0863238433974188
+      ],
+      "official_class_probabilities": [
+        0.8307669037584189,
+        0.08290925328274969,
+        0.08632384295883147
+      ],
+      "reference_probability_change_from_unit_scale": 4.143040076454163e-06,
+      "official_vs_reference_max_norm_error": 6.768557381242601e-08,
+      "official_vs_reference_max_probability_error": 4.0226612041394105e-09
+    },
+    {
+      "epsilon": 1e-06,
+      "q_scale": 10.0,
+      "k_scale": 0.1,
+      "decimal_reference_probabilities": [
+        0.8307615217973815,
+        0.08291141396149969,
+        0.08632706424111881
+      ],
+      "official_class_probabilities": [
+        0.8307615336475376,
+        0.0829114106886006,
+        0.08632705566386187
+      ],
+      "reference_probability_change_from_unit_scale": 9.52097845263733e-06,
+      "official_vs_reference_max_norm_error": 8.103241211365741e-08,
+      "official_vs_reference_max_probability_error": 1.1850156078629936e-08
+    },
+    {
+      "epsilon": 1e-06,
+      "q_scale": 10.0,
+      "k_scale": 10.0,
+      "decimal_reference_probabilities": [
+        0.8307711807989135,
+        0.08290713676964691,
+        0.08632168243143949
+      ],
+      "official_class_probabilities": [
+        0.8307711856471425,
+        0.08290713414406443,
+        0.08632168020879305
+      ],
+      "reference_probability_change_from_unit_scale": 1.3802307941013225e-07,
+      "official_vs_reference_max_norm_error": 6.877295732898858e-08,
+      "official_vs_reference_max_probability_error": 4.8482289294327074e-09
+    },
+    {
+      "epsilon": 1e-06,
+      "q_scale": 1e-06,
+      "k_scale": 1e-06,
+      "decimal_reference_probabilities": [
+        0.3333346173587995,
+        0.33333257361302,
+        0.3333328090281806
+      ],
+      "official_class_probabilities": [
+        0.3333346173588083,
+        0.3333325736129841,
+        0.3333328090282076
+      ],
+      "reference_probability_change_from_unit_scale": 0.49743642541703464,
+      "official_vs_reference_max_norm_error": 1.1877668293358568e-10,
+      "official_vs_reference_max_probability_error": 3.5915714846623814e-14
+    },
+    {
+      "epsilon": 1e-06,
+      "q_scale": 1000.0,
+      "k_scale": 0.001,
+      "decimal_reference_probabilities": [
+        0.752900310523009,
+        0.11768711091433205,
+        0.12941257856265895
+      ],
+      "official_class_probabilities": [
+        0.7529003043389417,
+        0.11768711234244301,
+        0.12941258331861535
+      ],
+      "reference_probability_change_from_unit_scale": 0.07787073225282515,
+      "official_vs_reference_max_norm_error": 1.0639502856513161e-07,
+      "official_vs_reference_max_probability_error": 6.184067258274695e-09
+    }
+  ],
+  "raw_attention_control": {
+    "unit_scale": [
+      0.006285143121358682,
+      0.7264637708332182,
+      0.2672510860454231
+    ],
+    "q_and_k_scaled_by_ten": [
+      5.130044069889206e-207,
+      1.0,
+      3.720075976020836e-44
+    ]
+  },
+  "interpretation": "Positive scale cancels in the epsilon-zero mathematical normalization with fixed learned weights. Fixed positive epsilon breaks exact cancellation at small activation scale, and official FP32 arithmetic has rounding even at epsilon zero. This does not measure a pretrained model or establish a training effect."
+}

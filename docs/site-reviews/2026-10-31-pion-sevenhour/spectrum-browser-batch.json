@@ -1,0 +1,133 @@
+{
+  "source_delivery": "immutable no-store builds; default CDP HTTP cache disabled",
+  "cdp": 9236,
+  "production": "http://127.0.0.1:13419",
+  "preview": "http://127.0.0.1:13421",
+  "suites": [
+    {
+      "name": "spectrum-details",
+      "started_utc": "2026-10-31T06:04:05.288785+00:00",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-10-31-pion-sevenhour/check_details.cjs",
+        "http://127.0.0.1:13419",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/spectrum-details"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 32.725,
+      "finished_utc": "2026-10-31T06:04:38.014129+00:00"
+    },
+    {
+      "name": "spectrum-images",
+      "started_utc": "2026-10-31T06:04:38.014490+00:00",
+      "command": [
+        "node",
+        "/tmp/chase-pion-sevenhour-20261031/check-pion-images.cjs",
+        "http://127.0.0.1:13419",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/spectrum-images"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 3.322,
+      "finished_utc": "2026-10-31T06:04:41.336814+00:00"
+    },
+    {
+      "name": "spectrum-reading",
+      "started_utc": "2026-10-31T06:04:41.337139+00:00",
+      "command": [
+        "node",
+        "/tmp/chase-pion-sevenhour-20261031/check-pion-reading.cjs",
+        "http://127.0.0.1:13419",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/spectrum-reading",
+        "--figures"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 13.791,
+      "finished_utc": "2026-10-31T06:04:55.128396+00:00"
+    },
+    {
+      "name": "spectrum-print-large",
+      "started_utc": "2026-10-31T06:04:55.128760+00:00",
+      "command": [
+        "node",
+        "/tmp/chase-pion-sevenhour-20261031/check-pion-print-large.cjs",
+        "http://127.0.0.1:13419",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/spectrum-print-large",
+        "--large-text"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 2.722,
+      "finished_utc": "2026-10-31T06:04:57.850495+00:00"
+    },
+    {
+      "name": "spectrum-print-large-forced",
+      "started_utc": "2026-10-31T06:04:57.850883+00:00",
+      "command": [
+        "node",
+        "/tmp/chase-pion-sevenhour-20261031/check-pion-print-large.cjs",
+        "http://127.0.0.1:13419",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/spectrum-print-large-forced",
+        "--large-text",
+        "--forced-colors"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 2.521,
+      "finished_utc": "2026-10-31T06:05:00.371638+00:00"
+    },
+    {
+      "name": "spectrum-native-pdf",
+      "started_utc": "2026-10-31T06:05:00.371972+00:00",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-10-31-pion-sevenhour/export_reading.cjs",
+        "http://127.0.0.1:13419",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/pdf-spectrum"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 17.497,
+      "finished_utc": "2026-10-31T06:05:17.868628+00:00"
+    },
+    {
+      "name": "spectrum-semantics",
+      "started_utc": "2026-10-31T06:05:17.869003+00:00",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-10-31-pion-sevenhour/check_semantics.cjs",
+        "http://127.0.0.1:13419",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/spectrum-semantics",
+        "/tmp/chase-opt-20261029-fivehour/a11y/node_modules/axe-core/axe.min.js"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 19.804,
+      "finished_utc": "2026-10-31T06:05:37.672789+00:00"
+    },
+    {
+      "name": "spectrum-copies",
+      "started_utc": "2026-10-31T06:05:37.673186+00:00",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-10-31-pion-sevenhour/check_copies.cjs",
+        "http://127.0.0.1:13419",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/spectrum-copies"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 6.276,
+      "finished_utc": "2026-10-31T06:05:43.949501+00:00"
+    }
+  ]
+}

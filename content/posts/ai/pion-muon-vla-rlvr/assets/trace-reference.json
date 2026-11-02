@@ -1,0 +1,72 @@
+{
+  "1": {
+    "sigma": 0.35,
+    "promotion_steps": 1,
+    "suppression_steps": 4,
+    "muon_five_steps": 1.0747898728093197,
+    "pion_five_steps": 6.707314563682684e-06,
+    "trace": {
+      "input_is_normalized": true,
+      "promotion_steps": 1,
+      "suppression_steps": 4,
+      "pion_stages": [
+        "promotion",
+        "suppression",
+        "suppression",
+        "suppression",
+        "suppression"
+      ],
+      "pion": [
+        0.35,
+        0.6046258203124999,
+        0.431380090130993,
+        0.17828007479317073,
+        0.0138958887456339,
+        6.707314563682684e-06
+      ],
+      "muon": [
+        0.35,
+        1.01151669390625,
+        0.6934918259684663,
+        1.1220210604847827,
+        0.732504344438614,
+        1.0747898728093197
+      ]
+    }
+  },
+  "2": {
+    "sigma": 0.35,
+    "promotion_steps": 2,
+    "suppression_steps": 3,
+    "muon_five_steps": 1.0747898728093197,
+    "pion_five_steps": 0.988759980755003,
+    "trace": {
+      "input_is_normalized": true,
+      "promotion_steps": 2,
+      "suppression_steps": 3,
+      "pion_stages": [
+        "promotion",
+        "promotion",
+        "suppression",
+        "suppression",
+        "suppression"
+      ],
+      "pion": [
+        0.35,
+        0.6046258203124999,
+        0.8876818269868108,
+        0.9219296099285544,
+        0.9599613143957717,
+        0.988759980755003
+      ],
+      "muon": [
+        0.35,
+        1.01151669390625,
+        0.6934918259684663,
+        1.1220210604847827,
+        0.732504344438614,
+        1.0747898728093197
+      ]
+    }
+  }
+}

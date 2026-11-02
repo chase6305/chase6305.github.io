@@ -1,12 +1,63 @@
 """Plot the constructed doorway geometry; Matplotlib, no robot dependencies."""
 import argparse
+import math
 from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
+from matplotlib.lines import Line2D
 from tamp_constraints import BLOCKER_RADIUS, GRASPS, HALF_OPENING, PARKING, refine, verify_path
 from tamp_search import GRID_BOUNDS, GRID_STEP, grid_motion
+from tamp_kinematics import GRASPS as KIN_GRASPS, PLACEMENTS, LINKS, demo as kinematics_demo, joint_positions
+
+
+def kinematics_figure(output):
+    result = kinematics_demo()
+    with plt.rc_context({"font.size": 14, "axes.spines.top": False, "axes.spines.right": False}):
+        fig, axes = plt.subplots(2, 3, figsize=(12.6, 10.2))
+        fig.subplots_adjust(left=.06, right=.98, top=.85, bottom=.14, hspace=.55, wspace=.28)
+        for row, grasp in enumerate(KIN_GRASPS):
+            for column, (name, placement) in enumerate(PLACEMENTS.items()):
+                axis = axes[row, column]
+                record = result["endpoint_witnesses"][name][grasp]
+                solutions = record["solutions_rad"]
+                axis.add_patch(Circle((0., 0.), LINKS[0] + LINKS[1],
+                    facecolor="#f3f7fd", edgecolor="#9bb4d1", linewidth=1.1, linestyle="--"))
+                for index, q in enumerate(solutions):
+                    points = joint_positions(q)
+                    axis.plot(*zip(*points), marker="o", markersize=5,
+                        color="#356d9c" if index == 0 else "#8363a6",
+                        linestyle="-" if index == 0 else "--", linewidth=2.6 if index == 0 else 1.7,
+                        label="IK branch 1" if index == 0 else "IK branch 2")
+                target = record["hand_target"]
+                wrist = (target["x"] - LINKS[2] * math.cos(target["yaw"]),
+                         target["y"] - LINKS[2] * math.sin(target["yaw"]))
+                axis.scatter(*wrist, marker="x" if not solutions else "s", s=70,
+                    color="#a34d37" if not solutions else "#405d76", zorder=6, label="Required wrist")
+                axis.scatter(0., 0., marker="^", s=75, color="#334155", zorder=7)
+                axis.scatter(placement.x, placement.y, facecolors="#f9dfbc", edgecolors="#9d6125",
+                    s=110, linewidths=1.5, zorder=7, label="Object / hand origin")
+                axis.annotate("", (target["x"] + .4 * math.cos(target["yaw"]),
+                    target["y"] + .4 * math.sin(target["yaw"])),
+                    (target["x"], target["y"]), arrowprops={"arrowstyle": "->", "color": "#9d6125", "lw": 1.8})
+                status = "IK: 2 verified branches" if solutions else "No IK: wrist beyond 2 m"
+                axis.set_title(f"{name.capitalize()} | {grasp} grasp\n{status}", fontsize=14,
+                    color="#245a40" if solutions else "#8f4632")
+                axis.text(.03, .04, f"Required wrist radius: {record['wrist_radius_m']:.3f} m",
+                    transform=axis.transAxes, fontsize=14,
+                    bbox={"boxstyle": "round,pad=0.3", "facecolor": "white", "edgecolor": "#c4ced8"})
+                axis.set(xlim=(-2.6, 2.6), ylim=(-2.35, 2.35), xlabel="x [m]", ylabel="y [m]")
+                axis.set_aspect("equal")
+                axis.grid(alpha=.12)
+        handles, labels = axes[0, 1].get_legend_handles_labels()
+        handles.append(Line2D([], [], marker="x", color="#a34d37", linestyle="none", markersize=7))
+        labels.append("Unreachable wrist")
+        fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(.5, .01), ncols=3, fontsize=14)
+        fig.suptitle("One grasp must work at both endpoints | Planar 3R: 1 + 1 + 0.25 m\n"
+            "Dashed circle: wrist reach of the first two links. Arrows: required hand x-axis. Endpoint IK only.", fontsize=14)
+        fig.savefig(output / "shared-grasp-ik.png", dpi=160, facecolor="white")
+        plt.close(fig)
 
 
 def grid_figure(output):
@@ -77,6 +128,7 @@ def main():
     fig.savefig(args.output_dir/"doorway-refinement.png", dpi=160)
     plt.close(fig)
     grid_figure(args.output_dir)
+    kinematics_figure(args.output_dir)
 
 
 if __name__ == "__main__":

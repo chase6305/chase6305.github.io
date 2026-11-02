@@ -1,0 +1,192 @@
+{
+  "pdf_sha256": "2016d07cca61aaa9be936f5a5a701ff033a89e6022f03a9795f639c4d1a2428f",
+  "article_sha256": "330c8c056989d58bd844592ad0698eb99b724a9aea44457ac7b85bafe7f5c684",
+  "table_row_checks": 16,
+  "checks": [
+    {
+      "table": "A5",
+      "page": 38,
+      "row": "AdamW",
+      "values": [
+        "32.2",
+        "97.0",
+        "89.2",
+        "69.6",
+        "72.00"
+      ]
+    },
+    {
+      "table": "A5",
+      "page": 38,
+      "row": "Muon",
+      "values": [
+        "97.0",
+        "99.0",
+        "95.8",
+        "88.0",
+        "94.95"
+      ]
+    },
+    {
+      "table": "A5",
+      "page": 38,
+      "row": "Pion (default)",
+      "values": [
+        "100.0",
+        "99.4",
+        "97.2",
+        "92.4",
+        "97.25"
+      ]
+    },
+    {
+      "table": "1",
+      "page": 8,
+      "row": "AdamW",
+      "average_values": [
+        "79.45",
+        "64.57"
+      ]
+    },
+    {
+      "table": "1",
+      "page": 8,
+      "row": "Muon",
+      "average_values": [
+        "93.65",
+        "72.34"
+      ]
+    },
+    {
+      "table": "1",
+      "page": 8,
+      "row": "Pion (Ours)",
+      "average_values": [
+        "96.35",
+        "75.93"
+      ]
+    },
+    {
+      "table": "1",
+      "page": 8,
+      "columns": [
+        "Language",
+        "Noise",
+        "Robot"
+      ],
+      "muon": [
+        "77.53",
+        "69.98",
+        "57.36"
+      ],
+      "pion": [
+        "86.93",
+        "76.09",
+        "63.18"
+      ]
+    },
+    {
+      "table": "3",
+      "page": 9,
+      "row": "AdamW",
+      "values": [
+        "40.0",
+        "33.3",
+        "20.0",
+        "31.1"
+      ]
+    },
+    {
+      "table": "3",
+      "page": 9,
+      "row": "Muon",
+      "values": [
+        "56.7",
+        "33.3",
+        "26.7",
+        "38.9"
+      ]
+    },
+    {
+      "table": "3",
+      "page": 9,
+      "row": "Pion (Ours)",
+      "values": [
+        "93.3",
+        "83.3",
+        "80.0",
+        "85.6"
+      ]
+    },
+    {
+      "tables": [
+        "3",
+        "A3"
+      ],
+      "pages": [
+        9,
+        28
+      ],
+      "trials_per_task": 30,
+      "inferred_pion_counts": [
+        28,
+        25,
+        24
+      ],
+      "interpretation": "Unique counts implied by reported rounded rates and trial denominator; not raw log validation."
+    },
+    {
+      "table": "A2",
+      "page": 27,
+      "row": "Max prompt / response length",
+      "values": [
+        1024,
+        3000,
+        512,
+        1024
+      ]
+    },
+    {
+      "table": "A2",
+      "page": 27,
+      "row": "Train batch (prompts)",
+      "values": [
+        128,
+        1024
+      ]
+    },
+    {
+      "table": "A2",
+      "page": 27,
+      "row": "Rollout group size n",
+      "values": [
+        8,
+        5
+      ]
+    },
+    {
+      "table": "A2",
+      "page": 27,
+      "row": "Total training steps",
+      "values": [
+        80,
+        40
+      ]
+    },
+    {
+      "tables": [
+        "A5",
+        "A6"
+      ],
+      "pages": [
+        38,
+        39
+      ],
+      "preserved_distinct_baselines": [
+        "43.6",
+        "32.2"
+      ]
+    }
+  ],
+  "scope": "Fixed-PDF table transcription and arithmetic only; no raw logs, uncertainty estimates, training reproduction or causal conclusions."
+}

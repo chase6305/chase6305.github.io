@@ -1,0 +1,117 @@
+{
+  "source_image_sha256": "d4de6e8ce1518baee6c48c03ad501e101e740e928abe0735b47c8671eaaa6a66",
+  "source_pixels": [
+    2240,
+    1920
+  ],
+  "cases": 5,
+  "failures": 0,
+  "rows": [
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "image_pages": [
+        14
+      ],
+      "caption_token_pages": [
+        [
+          14
+        ],
+        [
+          14
+        ],
+        [
+          14
+        ]
+      ],
+      "together_pages": [
+        14
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "image_pages": [
+        38
+      ],
+      "caption_token_pages": [
+        [
+          38
+        ],
+        [
+          38
+        ],
+        [
+          38
+        ]
+      ],
+      "together_pages": [
+        38
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "image_pages": [
+        14
+      ],
+      "caption_token_pages": [
+        [
+          14
+        ],
+        [
+          14
+        ],
+        [
+          14
+        ]
+      ],
+      "together_pages": [
+        14
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "image_pages": [
+        38
+      ],
+      "caption_token_pages": [
+        [
+          38
+        ],
+        [
+          38
+        ],
+        [
+          38
+        ]
+      ],
+      "together_pages": [
+        38
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "image_pages": [
+        39
+      ],
+      "caption_token_pages": [
+        [
+          39
+        ],
+        [
+          39
+        ],
+        [
+          39
+        ]
+      ],
+      "together_pages": [
+        39
+      ],
+      "passed": true
+    }
+  ],
+  "scope": "Published Figure3 aspect in colored PDF image objects and full caption bounds on actual text pages; not a general image-quality audit."
+}

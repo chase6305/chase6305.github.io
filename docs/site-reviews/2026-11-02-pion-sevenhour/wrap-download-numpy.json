@@ -1,0 +1,92 @@
+{
+  "checked_at_utc": "2026-11-01T21:24:57.517095+00:00",
+  "url": "http://127.0.0.1:13539/posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip",
+  "sha256": "cfb2f7a0f2fb65135411a7b363ecf521506a2ae941d0ee18f320c9b5a8b7606e",
+  "bytes": 105687,
+  "headers": {
+    "Server": "SimpleHTTP/0.6 Python/3.10.0",
+    "Date": "Sun, 01 Nov 2026 21:24:52 GMT",
+    "Content-type": "application/zip",
+    "Content-Length": "105687",
+    "Last-Modified": "Sun, 01 Nov 2026 21:21:32 GMT",
+    "Cache-Control": "no-store, max-age=0"
+  },
+  "members": [
+    "README.txt",
+    "pion_spectral.py",
+    "pion_matrix.py",
+    "make_figures.py",
+    "probe_official_pion.py",
+    "pion_alignment.py",
+    "pion_step.py",
+    "probe_official_steps.py",
+    "probe_official_vla_buffers.py",
+    "assets/vla-buffer-reference.json",
+    "probe_official_vla_padding.py",
+    "assets/vla-padding-reference.json",
+    "flat_spectrum.py",
+    "make_rank_figures.py",
+    "pion_snr.py",
+    "assets/snr-reference.json",
+    "snr_correlated_groups.py",
+    "assets/snr-correlated-groups-reference.json",
+    "grpo_group_signal.py",
+    "assets/grpo-group-signal-reference.json",
+    "vla_gradient_rank.py",
+    "assets/vla-gradient-rank-reference.json",
+    "assets/flat-spectrum-reference.json",
+    "assets/flat-spectrum-bf16-reference.json",
+    "assets/step-reference.json",
+    "assets/official-steps.json",
+    "assets/spectral-reference.json",
+    "assets/alignment-reference.json",
+    "assets/trace-reference.json",
+    "assets/per-head-reference.json",
+    "assets/official-precision.json",
+    "check_examples.py"
+  ],
+  "member_count": 32,
+  "temporary_directory": "/tmp/chase-pion-sevenhour-20261102/pion 读者 ucmt8ysz/中文 空格目录",
+  "temporary_directory_removed": true,
+  "command": [
+    "/tmp/chase-pion-sevenhour-20261031/plot-env/bin/python",
+    "-B",
+    "check_examples.py",
+    "--numpy"
+  ],
+  "test_methods": 35,
+  "numpy_checks": true,
+  "references": {
+    "pion_spectral.py": {
+      "matches_saved_reference": true,
+      "output_sha256": "98f3e20a6eae8f6fddd987787cd6d7d844525ada08e48624c3a2a7392cb9823e"
+    },
+    "pion_alignment.py": {
+      "matches_saved_reference": true,
+      "output_sha256": "deaa97cc3dd763e06e6ab7a14ded121fd1de99ebc237c1ccc4958a7b5411f5dc"
+    },
+    "pion_snr.py": {
+      "matches_saved_reference": true,
+      "output_sha256": "4ec1fe9e17e391a3d6c07a4948ebefa8bbb299bc8fb08ac607c9e5e97a5423e5"
+    },
+    "snr_correlated_groups.py": {
+      "matches_saved_reference": true,
+      "output_sha256": "a8d65521c8c7aa673d9d446e3fb7cfb69870b99b6e44c12cf8ff9d4fc0ea4c2d"
+    },
+    "grpo_group_signal.py": {
+      "matches_saved_reference": true,
+      "output_sha256": "f402988222a315183bee6617118d4c4426534a9856eefd22e4b39864b5857779"
+    },
+    "vla_gradient_rank.py": {
+      "matches_saved_reference": true,
+      "output_sha256": "ad6b94f009d986d881a44ed91dd53288cff46ea6f5900bc34dd1ceed9abd16d0"
+    },
+    "flat_spectrum.py": {
+      "matches_saved_reference": true,
+      "output_sha256": "2b4329f18893aa567ae8d76039ad35ba40947456cdc167cf0026627d33a2e04e"
+    }
+  },
+  "bytecode_files": 0,
+  "download_matches_current_source": true,
+  "pip_installations": 0
+}

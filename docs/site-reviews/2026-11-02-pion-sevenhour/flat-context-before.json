@@ -1,0 +1,32 @@
+{
+  "canonical": {
+    "promotion_steps": 0,
+    "suppression_steps": 5,
+    "normalized_input_float64": 0.35355339059327373,
+    "coefficient_decimal": "4.064959833988651558464975105575484801551729975876807285184614236787849950768565005853368745124521574E-65",
+    "log10_coefficient_decimal": -64.39094374132779,
+    "coefficient_float64": 4.0649598339885415e-65,
+    "float64_underflowed": false,
+    "float64_entropy_rank": 8
+  },
+  "cases": [
+    {
+      "mode": "round_floor",
+      "matches_canonical": false,
+      "coefficient": "4.064959833988651558464975105575484801551729975876807285184614236787849950768565005853368745124520933E-65",
+      "caller_preserved": true
+    },
+    {
+      "mode": "inexact_trap",
+      "error": "Inexact",
+      "message": "[<class 'decimal.Inexact'>]",
+      "caller_preserved": true
+    },
+    {
+      "mode": "narrow_exponent",
+      "matches_canonical": false,
+      "coefficient": "4.064959833988651558464975105575484801551729975876807285E-65",
+      "caller_preserved": true
+    }
+  ]
+}

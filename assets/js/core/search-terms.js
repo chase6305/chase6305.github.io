@@ -1,4 +1,4 @@
-// Shared encoder for the browser search indexes and their offline regression.
+// Shared search encoding and page-field options for browser and offline checks.
 (function (root, factory) {
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
@@ -23,5 +23,12 @@
     }
     return terms;
   }
-  return {normalize, queryTerms, encode};
+  function pageIndexFields() {
+    // Chapter appends must share a content bucket. With multiple buckets, the
+    // pinned library can repeat a page ID and lose matches in AND queries.
+    // Titles/headings keep their positional scores; section previews are
+    // indexed separately with their existing scoring.
+    return ['title', 'headings', {field: 'content', resolution: 1}];
+  }
+  return {normalize, queryTerms, encode, pageIndexFields};
 });

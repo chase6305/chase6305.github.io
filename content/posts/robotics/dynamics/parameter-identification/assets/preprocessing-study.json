@@ -1,0 +1,93 @@
+{
+  "data_kind": "constructed_same_geometry_inertia_mismatch",
+  "numpy": "2.2.6",
+  "pinocchio": "4.1.0",
+  "algorithm_sha256": "d838c3aee75be8b11a43cb03ff8b65849a7a229c2d48a4a49e46e37d52b4bce4",
+  "helper_sha256": "e7e209b7a35b8a8b3b3d47668d05afe13b0bbd11ccb6361c7131d982d49257c8",
+  "preprocessor_sha256": "cc017bc0043849156627c6402e790eb9c8724ac27b1d8959f6c6602ea7e7ba03",
+  "dynamics_script_sha256": "81df393c7052663d1dd2f2d9feafd78669b951c17200bbb858c37c9054769e48",
+  "urdf_sha256": "2e446861b1c2b080ba22c6939d633fcff2a596953c62d7f1d8fe6b4255c7414c",
+  "position_noise_std_rad": 1e-05,
+  "position_noise_seeds": [
+    20261104,
+    20261105
+  ],
+  "torque_noise_std_nm": 0.02,
+  "torque_noise_seeds": [
+    20261029,
+    20261030
+  ],
+  "known_torque_delay_s": 0.0,
+  "common_support": {
+    "train": {
+      "samples": 321,
+      "scalar_equations": 642,
+      "first_time_s": 0.8,
+      "last_time_s": 7.2
+    },
+    "validation": {
+      "samples": 221,
+      "scalar_equations": 442,
+      "first_time_s": 0.9333333333333333,
+      "last_time_s": 6.066666666666667
+    }
+  },
+  "results": [
+    {
+      "window_samples": 11,
+      "polynomial_degree": 5,
+      "train_window_span_s": 0.20000000000000062,
+      "validation_window_span_s": 0.23333333333333384,
+      "retained_rank": 6,
+      "validation_acceleration_rmse_rad_s2": 0.004766766753179663,
+      "validation_acceleration_noiseless_position_rmse_rad_s2": 2.564944399478184e-05,
+      "validation_measured_torque_rmse_nm": 0.02118621814254346,
+      "validation_noise_free_torque_rmse_nm": 0.004417159135109472
+    },
+    {
+      "window_samples": 21,
+      "polynomial_degree": 3,
+      "train_window_span_s": 0.40000000000000036,
+      "validation_window_span_s": 0.46666666666666723,
+      "retained_rank": 6,
+      "validation_acceleration_rmse_rad_s2": 0.036818687616107175,
+      "validation_acceleration_noiseless_position_rmse_rad_s2": 0.036813677654047014,
+      "validation_measured_torque_rmse_nm": 0.021129239135324718,
+      "validation_noise_free_torque_rmse_nm": 0.003998259218879713
+    },
+    {
+      "window_samples": 21,
+      "polynomial_degree": 5,
+      "train_window_span_s": 0.40000000000000036,
+      "validation_window_span_s": 0.46666666666666723,
+      "retained_rank": 6,
+      "validation_acceleration_rmse_rad_s2": 0.0009917911789698497,
+      "validation_acceleration_noiseless_position_rmse_rad_s2": 0.0003889168627582161,
+      "validation_measured_torque_rmse_nm": 0.02115180796357247,
+      "validation_noise_free_torque_rmse_nm": 0.003685965192841814
+    },
+    {
+      "window_samples": 41,
+      "polynomial_degree": 5,
+      "train_window_span_s": 0.8000000000000007,
+      "validation_window_span_s": 0.9333333333333336,
+      "retained_rank": 6,
+      "validation_acceleration_rmse_rad_s2": 0.0056063530204814496,
+      "validation_acceleration_noiseless_position_rmse_rad_s2": 0.005600145891554505,
+      "validation_measured_torque_rmse_nm": 0.02107466961744681,
+      "validation_noise_free_torque_rmse_nm": 0.0035135933425948086
+    },
+    {
+      "window_samples": 81,
+      "polynomial_degree": 5,
+      "train_window_span_s": 1.6000000000000005,
+      "validation_window_span_s": 1.8666666666666671,
+      "retained_rank": 6,
+      "validation_acceleration_rmse_rad_s2": 0.07168466325653212,
+      "validation_acceleration_noiseless_position_rmse_rad_s2": 0.07168122711544407,
+      "validation_measured_torque_rmse_nm": 0.021571757337041433,
+      "validation_noise_free_torque_rmse_nm": 0.006657695659712637
+    }
+  ],
+  "scope": "Fixed window comparison on shared times, not automatic selection. Analytic truth is diagnostic only; validation never enters fitting. No measured robot accuracy."
+}

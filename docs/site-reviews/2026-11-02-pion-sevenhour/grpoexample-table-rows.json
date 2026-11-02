@@ -1,0 +1,728 @@
+{
+  "pdfs": 5,
+  "cases": 60,
+  "failures": 0,
+  "rows": [
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "row": "copy1",
+      "expected": "1 4 1.000000 1",
+      "matches": [
+        {
+          "page": 11,
+          "line": "                     1                         4                    1.000000                1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "row": "copy2",
+      "expected": "2 8 1.142857 1",
+      "matches": [
+        {
+          "page": 11,
+          "line": "                     2                         8                    1.142857                1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "row": "copy8",
+      "expected": "8 32 1.225806 1",
+      "matches": [
+        {
+          "page": 11,
+          "line": "                     8                        32                    1.225806                1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "row": "copy32",
+      "expected": "32 128 1.244094 1",
+      "matches": [
+        {
+          "page": 11,
+          "line": "                    32                        128                   1.244094                1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "row": "grpo001",
+      "expected": "0.01 0.077255 0.083432 309.959421 12.944095",
+      "matches": [
+        {
+          "page": 13,
+          "line": "              0.01            0.077255                   0.083432            309.959421            12.944095"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "row": "grpo010",
+      "expected": "0.10 0.569533 1.258836 45.535177 1.755825",
+      "matches": [
+        {
+          "page": 13,
+          "line": "              0.10            0.569533                   1.258836             45.535177             1.755825"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "row": "grpo050",
+      "expected": "0.50 0.992188 60.901986 117.937799 1.007874",
+      "matches": [
+        {
+          "page": 13,
+          "line": "              0.50            0.992188                  60.901986            117.937799             1.007874"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "row": "ema1",
+      "expected": "1 (0.5, 0, 0) 1",
+      "matches": [
+        {
+          "page": 7,
+          "line": "                             1   (0.5, 0, 0)                                      1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "row": "ema2",
+      "expected": "2 (0.25, 0.5, 0) 2",
+      "matches": [
+        {
+          "page": 7,
+          "line": "                             2   (0.25, 0.5, 0)                                   2"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "row": "ema3",
+      "expected": "3 (0.125, 0.25, 0.5) 3",
+      "matches": [
+        {
+          "page": 7,
+          "line": "                             3   (0.125, 0.25, 0.5)                               3"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "row": "hidden",
+      "expected": "隐藏矩阵 W 8×8 8",
+      "matches": [
+        {
+          "page": 7,
+          "line": "隐藏矩阵 W                           8×8                                              8"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "row": "head",
+      "expected": "标量输出头 1×8 1",
+      "matches": [
+        {
+          "page": 7,
+          "line": "标量输出头                            1×8                                              1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "row": "copy1",
+      "expected": "1 4 1.000000 1",
+      "matches": [
+        {
+          "page": 29,
+          "line": "          1        4        1.000000            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "row": "copy2",
+      "expected": "2 8 1.142857 1",
+      "matches": [
+        {
+          "page": 29,
+          "line": "          2        8        1.142857            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "row": "copy8",
+      "expected": "8 32 1.225806 1",
+      "matches": [
+        {
+          "page": 29,
+          "line": "          8       32        1.225806            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "row": "copy32",
+      "expected": "32 128 1.244094 1",
+      "matches": [
+        {
+          "page": 29,
+          "line": "         32       128       1.244094            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "row": "grpo001",
+      "expected": "0.01 0.077255 0.083432 309.959421 12.944095",
+      "matches": [
+        {
+          "page": 34,
+          "line": "     0.01       0.077255       0.083432        309.959421      12.944095"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "row": "grpo010",
+      "expected": "0.10 0.569533 1.258836 45.535177 1.755825",
+      "matches": [
+        {
+          "page": 34,
+          "line": "     0.10       0.569533       1.258836         45.535177       1.755825"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "row": "grpo050",
+      "expected": "0.50 0.992188 60.901986 117.937799 1.007874",
+      "matches": [
+        {
+          "page": 35,
+          "line": "      0.50        0.992188              60.901986        117.937799                1.007874"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "row": "ema1",
+      "expected": "1 (0.5, 0, 0) 1",
+      "matches": [
+        {
+          "page": 18,
+          "line": "                          1     (0.5, 0, 0)                   1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "row": "ema2",
+      "expected": "2 (0.25, 0.5, 0) 2",
+      "matches": [
+        {
+          "page": 18,
+          "line": "                          2     (0.25, 0.5, 0)                2"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "row": "ema3",
+      "expected": "3 (0.125, 0.25, 0.5) 3",
+      "matches": [
+        {
+          "page": 18,
+          "line": "                          3     (0.125, 0.25, 0.5)            3"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "row": "hidden",
+      "expected": "隐藏矩阵 W 8×8 8",
+      "matches": [
+        {
+          "page": 17,
+          "line": "隐藏矩阵 W                8×8                            8"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "row": "head",
+      "expected": "标量输出头 1×8 1",
+      "matches": [
+        {
+          "page": 17,
+          "line": "标量输出头                 1×8                            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "row": "copy1",
+      "expected": "1 4 1.000000 1",
+      "matches": [
+        {
+          "page": 11,
+          "line": "                     1                         4                    1.000000                1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "row": "copy2",
+      "expected": "2 8 1.142857 1",
+      "matches": [
+        {
+          "page": 11,
+          "line": "                     2                         8                    1.142857                1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "row": "copy8",
+      "expected": "8 32 1.225806 1",
+      "matches": [
+        {
+          "page": 11,
+          "line": "                     8                        32                    1.225806                1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "row": "copy32",
+      "expected": "32 128 1.244094 1",
+      "matches": [
+        {
+          "page": 11,
+          "line": "                    32                        128                   1.244094                1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "row": "grpo001",
+      "expected": "0.01 0.077255 0.083432 309.959421 12.944095",
+      "matches": [
+        {
+          "page": 13,
+          "line": "              0.01            0.077255                   0.083432            309.959421            12.944095"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "row": "grpo010",
+      "expected": "0.10 0.569533 1.258836 45.535177 1.755825",
+      "matches": [
+        {
+          "page": 13,
+          "line": "              0.10            0.569533                   1.258836             45.535177             1.755825"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "row": "grpo050",
+      "expected": "0.50 0.992188 60.901986 117.937799 1.007874",
+      "matches": [
+        {
+          "page": 13,
+          "line": "              0.50            0.992188                  60.901986            117.937799             1.007874"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "row": "ema1",
+      "expected": "1 (0.5, 0, 0) 1",
+      "matches": [
+        {
+          "page": 7,
+          "line": "                             1   (0.5, 0, 0)                                      1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "row": "ema2",
+      "expected": "2 (0.25, 0.5, 0) 2",
+      "matches": [
+        {
+          "page": 7,
+          "line": "                             2   (0.25, 0.5, 0)                                   2"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "row": "ema3",
+      "expected": "3 (0.125, 0.25, 0.5) 3",
+      "matches": [
+        {
+          "page": 7,
+          "line": "                             3   (0.125, 0.25, 0.5)                               3"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "row": "hidden",
+      "expected": "隐藏矩阵 W 8×8 8",
+      "matches": [
+        {
+          "page": 7,
+          "line": "隐藏矩阵 W                           8×8                                              8"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "row": "head",
+      "expected": "标量输出头 1×8 1",
+      "matches": [
+        {
+          "page": 7,
+          "line": "标量输出头                            1×8                                              1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "row": "copy1",
+      "expected": "1 4 1.000000 1",
+      "matches": [
+        {
+          "page": 29,
+          "line": "          1        4        1.000000            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "row": "copy2",
+      "expected": "2 8 1.142857 1",
+      "matches": [
+        {
+          "page": 29,
+          "line": "          2        8        1.142857            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "row": "copy8",
+      "expected": "8 32 1.225806 1",
+      "matches": [
+        {
+          "page": 29,
+          "line": "          8       32        1.225806            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "row": "copy32",
+      "expected": "32 128 1.244094 1",
+      "matches": [
+        {
+          "page": 29,
+          "line": "         32       128       1.244094            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "row": "grpo001",
+      "expected": "0.01 0.077255 0.083432 309.959421 12.944095",
+      "matches": [
+        {
+          "page": 34,
+          "line": "     0.01       0.077255       0.083432        309.959421      12.944095"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "row": "grpo010",
+      "expected": "0.10 0.569533 1.258836 45.535177 1.755825",
+      "matches": [
+        {
+          "page": 34,
+          "line": "     0.10       0.569533       1.258836         45.535177       1.755825"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "row": "grpo050",
+      "expected": "0.50 0.992188 60.901986 117.937799 1.007874",
+      "matches": [
+        {
+          "page": 35,
+          "line": "      0.50        0.992188              60.901986        117.937799                1.007874"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "row": "ema1",
+      "expected": "1 (0.5, 0, 0) 1",
+      "matches": [
+        {
+          "page": 18,
+          "line": "                          1     (0.5, 0, 0)                   1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "row": "ema2",
+      "expected": "2 (0.25, 0.5, 0) 2",
+      "matches": [
+        {
+          "page": 18,
+          "line": "                          2     (0.25, 0.5, 0)                2"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "row": "ema3",
+      "expected": "3 (0.125, 0.25, 0.5) 3",
+      "matches": [
+        {
+          "page": 18,
+          "line": "                          3     (0.125, 0.25, 0.5)            3"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "row": "hidden",
+      "expected": "隐藏矩阵 W 8×8 8",
+      "matches": [
+        {
+          "page": 17,
+          "line": "隐藏矩阵 W                8×8                            8"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "row": "head",
+      "expected": "标量输出头 1×8 1",
+      "matches": [
+        {
+          "page": 17,
+          "line": "标量输出头                 1×8                            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "row": "copy1",
+      "expected": "1 4 1.000000 1",
+      "matches": [
+        {
+          "page": 30,
+          "line": "          1        4        1.000000            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "row": "copy2",
+      "expected": "2 8 1.142857 1",
+      "matches": [
+        {
+          "page": 30,
+          "line": "          2        8        1.142857            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "row": "copy8",
+      "expected": "8 32 1.225806 1",
+      "matches": [
+        {
+          "page": 30,
+          "line": "          8       32        1.225806            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "row": "copy32",
+      "expected": "32 128 1.244094 1",
+      "matches": [
+        {
+          "page": 30,
+          "line": "         32       128       1.244094            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "row": "grpo001",
+      "expected": "0.01 0.077255 0.083432 309.959421 12.944095",
+      "matches": [
+        {
+          "page": 35,
+          "line": "     0.01       0.077255         0.083432           309.959421      12.944095"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "row": "grpo010",
+      "expected": "0.10 0.569533 1.258836 45.535177 1.755825",
+      "matches": [
+        {
+          "page": 36,
+          "line": "      0.10        0.569533               1.258836          45.535177              1.755825"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "row": "grpo050",
+      "expected": "0.50 0.992188 60.901986 117.937799 1.007874",
+      "matches": [
+        {
+          "page": 36,
+          "line": "      0.50        0.992188              60.901986         117.937799              1.007874"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "row": "ema1",
+      "expected": "1 (0.5, 0, 0) 1",
+      "matches": [
+        {
+          "page": 18,
+          "line": "                1   (0.5, 0, 0)            1"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "row": "ema2",
+      "expected": "2 (0.25, 0.5, 0) 2",
+      "matches": [
+        {
+          "page": 18,
+          "line": "                2   (0.25, 0.5, 0)         2"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "row": "ema3",
+      "expected": "3 (0.125, 0.25, 0.5) 3",
+      "matches": [
+        {
+          "page": 18,
+          "line": "                3   (0.125, 0.25, 0.5)     3"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "row": "hidden",
+      "expected": "隐藏矩阵 W 8×8 8",
+      "matches": [
+        {
+          "page": 18,
+          "line": "隐藏矩阵 W              8×8                    8"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "row": "head",
+      "expected": "标量输出头 1×8 1",
+      "matches": [
+        {
+          "page": 18,
+          "line": "标量输出头               1×8                    1"
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "scope": "Twelve fixed new rows: label/values must occur together on one actual PDF text line. This is not a complete table, typography or visual audit."
+}

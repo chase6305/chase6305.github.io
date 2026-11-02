@@ -1,0 +1,50 @@
+{
+  "scope": "Check the two-response GRPO example and its final value share a PDF page.",
+  "cases": 5,
+  "failures": [
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "example_start_page": 32,
+      "final_value_page": 33,
+      "same_page": false
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "example_start_page": 32,
+      "final_value_page": 33,
+      "same_page": false
+    }
+  ],
+  "rows": [
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "example_start_page": 12,
+      "final_value_page": 12,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "example_start_page": 32,
+      "final_value_page": 33,
+      "same_page": false
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "example_start_page": 12,
+      "final_value_page": 12,
+      "same_page": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "example_start_page": 32,
+      "final_value_page": 33,
+      "same_page": false
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "example_start_page": 34,
+      "final_value_page": 34,
+      "same_page": true
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "dpi": 160,
+  "layout_frozen": true,
+  "canvas": [
+    2240.0,
+    1920.0
+  ],
+  "legend_labels": [
+    [
+      "Identity",
+      "Muon: 5 NS steps",
+      "Pion: 1 promotion + 4 suppression"
+    ],
+    [
+      "Identity",
+      "Promotion: one step",
+      "Suppression: one step",
+      "Fixed point: sqrt(2/3) = 0.8165"
+    ],
+    [
+      "0 promotion + 5 suppression",
+      "1 promotion + 4 suppression",
+      "2 promotion + 3 suppression",
+      "3 promotion + 2 suppression",
+      "4 promotion + 1 suppression",
+      "5 promotion + 0 suppression"
+    ],
+    [
+      "Normalized input",
+      "Muon: 5 steps",
+      "Pion: 1 + 4"
+    ]
+  ],
+  "legend_boxes": [
+    [
+      167.9033111111111,
+      1030.8702715296884,
+      696.8750000000001,
+      159.0
+    ],
+    [
+      1302.5518862575955,
+      981.2036048630217,
+      635.5,
+      208.66666666666663
+    ],
+    [
+      167.9033111111111,
+      3.040655048716019,
+      604.8750000000001,
+      308.0
+    ],
+    [
+      1302.5518862575955,
+      152.04065504871602,
+      405.625,
+      159.0
+    ]
+  ],
+  "data_boxes": [
+    [
+      6.667200000000001,
+      1219.8713381963553,
+      1092.0170248535155,
+      587.3270618036449
+    ],
+    [
+      1141.3157751464842,
+      1219.8713381963553,
+      1092.017024853516,
+      587.3270618036449
+    ],
+    [
+      6.667200000000001,
+      382.64172171538263,
+      1092.0170248535155,
+      587.3270618036456
+    ],
+    [
+      1121.0842248535155,
+      341.04172171538266,
+      1082.1860751464847,
+      628.9270618036455
+    ]
+  ],
+  "legend_overlap": false,
+  "plot_line_counts": [
+    3,
+    4,
+    7,
+    3
+  ],
+  "clipped_markers": [
+    [],
+    [],
+    [
+      [
+        3.0,
+        1e-12
+      ],
+      [
+        4.0,
+        1e-12
+      ]
+    ]
+  ],
+  "python": "3.10.0",
+  "numpy": "1.26.4",
+  "matplotlib": "3.10.9",
+  "sha256": "d4de6e8ce1518baee6c48c03ad501e101e740e928abe0735b47c8671eaaa6a66",
+  "matches_clean_cp312_asset_bytes": true
+}

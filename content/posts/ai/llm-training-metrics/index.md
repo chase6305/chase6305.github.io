@@ -1,7 +1,7 @@
 ---
 title: "大语言模型训练与指标详解：参数、权重、预训练、后训练与消融实验"
 date: 2026-09-17
-lastmod: 2026-10-28
+lastmod: 2026-10-29
 draft: false
 tags: ["LLM", "Pretraining", "Post-training", "Evaluation", "Ablation"]
 categories: ["人工智能"]
@@ -464,6 +464,20 @@ $$
 
 若真实单次成功概率 $p$ 已知，独立尝试 $k$ 次的成功概率是 $1-(1-p)^k$。但把有限样本的 $c/n$ 直接代入，并不等于上面的组合数估计器；本例直接代入会得到 48.8%，与 53.33% 不同。论文报告应注明使用的估计方法，不能把两种计算混写。
 
+<details>
+<summary>计算这个估计量时，如何避免巨大组合数和浮点消减？</summary>
+
+在 $c>0$ 且 $n-c\ge k$ 时，令 $m=\min(c,k)$、$M=\max(c,k)$，无通过概率可以等价地写成：
+
+$$
+q=\prod_{i=0}^{m-1}\left(1-\frac{M}{n-i}\right),
+\qquad \widehat{\mathrm{pass@}k}=1-q.
+$$
+
+这利用了从 $n$ 个位置中选择 $k$ 个、避开 $c$ 个成功位置的对称性，乘积只需 $\min(c,k)$ 项。下载脚本通过 `log1p` 累加这些因子的对数，再用 `-expm1(log_q)` 计算结果，避免 $q$ 接近 1 时直接相减丢失小概率。`c=0` 返回 0，`n-c<k` 返回 1；`k=1` 的结果应与 `c/n` 一致。它计算的仍是同一个有限候选池估计量，不改变采样协议或增加评估证据。
+
+</details>
+
 <figure class="article-figure" id="fig-candidate-selection">
   {{< post-image src="assets/llm-candidates-selection.png" alt="同一候选池分为两条路径：离线逐个评估候选是否至少有一个通过；另一条先按规则选出一个答案，再评估最终答案，隐藏评估标签不提供给选择器" >}}
   <figcaption><span class="article-figure__number">图 7</span><span class="article-figure__text">左侧观察候选覆盖，右侧观察最终交付。同一候选池含有正确答案，并不保证选择器能找到它；离线隐藏测试与推理时允许使用的验证器要区分。</span></figcaption>
@@ -874,5 +888,6 @@ python -B paired_eval.py \
 7. **为什么 Qwen2.5-7B 的 BF16 载荷不是恰好 14 GB？** 具体配置有 7,615,616,512 个参数，7B 是规模标签。
 8. **0/100 次失败能证明没有风险吗？** 不能；还要考虑抽样区间、分布覆盖与评估误差。
 9. **脚本计算正确意味着大模型训练已经复现吗？** 不意味着；它只验证文中算例和指标计算。
+10. **pass@k 的三个边界如何核对？** `c=0` 时为 0，`k=1` 时为 `c/n`，`n-c<k` 时为 1；数值实现应避免巨大组合数和接近 1 的概率相减。
 
 进一步阅读可按问题选择：[Transformer 与注意力](../transformer-attention/)补充模型结构，[分布式训练与显存](../distributed-training-memory/)展开资源管理，[PPO、DPO 与 GRPO](../ppo-dpo-grpo/)推导后训练优化目标。正文链接中的版本用于界定指标口径；实际实验应记录自己使用的实现版本。

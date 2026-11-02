@@ -1,0 +1,18 @@
+{
+  "initial_files": 302,
+  "missing": [],
+  "changed_initial_files": [
+    "docs/blog-editorial-review.json",
+    "content/posts/ai/pion-muon-vla-rlvr/README.txt",
+    "content/posts/ai/pion-muon-vla-rlvr/flat_spectrum.py",
+    "content/posts/ai/pion-muon-vla-rlvr/index.md",
+    "content/posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip",
+    "scripts/package_pion_lab.py",
+    "scripts/test_pion_examples.py"
+  ],
+  "other_initial_files_byte_unchanged": 295,
+  "modified_acceptance_ids": [
+    95
+  ],
+  "scope": "No other initial dirty files changed; completed audit/review files remain byte-identical."
+}

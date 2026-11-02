@@ -1,0 +1,35 @@
+{
+  "created_on": "2026-10-31",
+  "article": "content/posts/ai/pion-muon-vla-rlvr/index.md",
+  "figure": 3,
+  "method": "Deterministic Matplotlib 3.10.9 scalar-map plot",
+  "change": "Legends and suppression fixed-point label are outside data panels. All six promotion schedules0 through5 are drawn. Layout is checked and frozen at160dpi before saving.",
+  "scope": "Same polynomial coefficients,1501-point input grid and constructed diagonal-spectrum reference; no training measurements. Down triangles still mark display-only clipping below1e-12.",
+  "old_image_preserved": {
+    "path": "content/posts/ai/pion-muon-vla-rlvr/assets/spectral-polynomials.png",
+    "sha256": "cd84865af3c93a13a59d7b500958c02911f0b54cf7be126063d33018313bd7c2"
+  },
+  "geometry_checks": [
+    "Legend boxes do not intersect any data-panel tight bounding box including titles/ticks/axis labels",
+    "Legend boxes stay inside the canvas",
+    "Checked layout and saved image use the same160dpi and fixed axes positions"
+  ],
+  "files": [
+    {
+      "path": "content/posts/ai/pion-muon-vla-rlvr/make_figures.py",
+      "sha256": "f8d2d2fde0d25abefc9201a7a16a8de9772c0c3e090cce59fd4c93ed0337e0b7"
+    },
+    {
+      "path": "content/posts/ai/pion-muon-vla-rlvr/pion_spectral.py",
+      "sha256": "917fe49d4e9d37c750d95425245c74145f8bc01be2124926ec7d576596ff40ed"
+    },
+    {
+      "path": "content/posts/ai/pion-muon-vla-rlvr/assets/spectral-polynomials-v2.png",
+      "sha256": "d4de6e8ce1518baee6c48c03ad501e101e740e928abe0735b47c8671eaaa6a66"
+    },
+    {
+      "path": "content/posts/ai/pion-muon-vla-rlvr/assets/spectral-reference.json",
+      "sha256": "98f3e20a6eae8f6fddd987787cd6d7d844525ada08e48624c3a2a7392cb9823e"
+    }
+  ]
+}

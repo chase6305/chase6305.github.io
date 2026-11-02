@@ -91,5 +91,13 @@
   "expanded_nodes": 114,
   "valid": true,
   "wall_centerline_clearance_m": 0.35355339059327373,
-  "blocker_centerline_clearance_m": 0.7071067811865476
+  "blocker_centerline_clearance_m": 0.7071067811865476,
+  "grid_step_m": 0.2,
+  "grid_bounds_m": [
+    -2.0,
+    2.0,
+    -1.2,
+    1.2
+  ],
+  "grid_node_count": 273
 }

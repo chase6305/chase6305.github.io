@@ -1,0 +1,71 @@
+{
+  "backend": "Drake",
+  "drake": "1.58.0",
+  "numpy": "2.2.6",
+  "algorithm_sha256": "895fad412edb466c2219eefc8aac5613363e1a6248eb291021f5dac44f90c047",
+  "helper_sha256": "e7e209b7a35b8a8b3b3d47668d05afe13b0bbd11ccb6361c7131d982d49257c8",
+  "data_kind": "synthetic_joint_torque",
+  "urdf_sha256": "23eddb800a2be4856da1d154accd3eb901aab7c89e853095caa95cc19098acf1",
+  "joint_names": [
+    "joint1"
+  ],
+  "gravity_m_s2": [
+    0.0,
+    0.0,
+    -9.81
+  ],
+  "symbolic_inverse_dynamics": "(9.81 * (m * ell * sin(q)) + (m * pow(ell, 2) * a) + (m * k * a) + (b * v))",
+  "lumped_parameter_expressions": [
+    "((m * pow(ell, 2)) + (m * k))",
+    "b",
+    "(m * ell)"
+  ],
+  "lumped_parameter_names": [
+    "A = J_com_yy + m*ell^2",
+    "b",
+    "h = m*ell"
+  ],
+  "lumped_parameter_units": [
+    "kg*m^2",
+    "N*m*s/rad",
+    "kg*m"
+  ],
+  "lumped_parameter_estimates": [
+    0.6701977868838604,
+    0.08236662107883481,
+    1.0001815419288775
+  ],
+  "train_samples": 401,
+  "validation_samples": 301,
+  "regressor_shape": [
+    401,
+    3
+  ],
+  "retained_rank": 3,
+  "training_column_l2_norms": [
+    24.678692585857895,
+    13.896981231271736,
+    92.33985089004618
+  ],
+  "svd_relative_cutoff": 1e-10,
+  "retained_scaled_condition": 2.6217730772311483,
+  "scaled_singular_values": [
+    1.321363121739234,
+    0.9999937704734035,
+    0.5039959915732769
+  ],
+  "validation_unseen_scaled_direction_fraction": 4.45669608629955e-16,
+  "train_measured_rmse_nm": 0.02008070494929113,
+  "validation_measured_rmse_nm": 0.019780130626026127,
+  "physical_parameters_uniquely_identified": false,
+  "interpretation": "Three lumped coefficients do not uniquely identify unknown m, ell, J_com_yy and b.",
+  "lumped_parameter_truth": [
+    0.67,
+    0.08,
+    1.0
+  ],
+  "symbolic_numeric_inverse_dynamics_max_error_nm": 8.881784197001252e-16,
+  "decomposition_max_error_nm": 8.881784197001252e-16,
+  "validation_noise_free_rmse_nm": 0.0021871927309749443,
+  "scope": "Bundled-URDF numerical inverse dynamics with explicit viscous damping, analytic motion derivatives and IID torque noise; not robot measurements."
+}

@@ -1,0 +1,116 @@
+{
+  "cases": [
+    {
+      "width": 320,
+      "theme": "light",
+      "id": "fig-pion-spectral-maps",
+      "file": "/tmp/chase-pion-sevenhour-20261031/final-screen/fig-pion-spectral-maps-320-light.png",
+      "bodyOverflow": false,
+      "imageLoaded": true,
+      "captionWithinFigure": true,
+      "textWithinCaption": true,
+      "captionScroll": false,
+      "caption": "图 3由论文公式 (3)、(7)、(8) 直接计算。A 中 Muon 曲线为实际五步多项式，不是理想矩阵 sign；B 的虚线标记单步抑制固定点；C 固定总步数为 5，列出全部六种调度；D 使用下文构造谱，对低于 10⁻¹² 的系数仅在显示时截到图底并标倒三角，完整值仍保存在数值记录。这四个面板不表示训练成功率。"
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "id": "fig-pion-flat-rms",
+      "file": "/tmp/chase-pion-sevenhour-20261031/final-screen/fig-pion-flat-rms-320-light.png",
+      "bodyOverflow": false,
+      "imageLoaded": true,
+      "captionWithinFigure": true,
+      "textWithinCaption": true,
+      "captionScroll": false,
+      "caption": "图 6完整单位矩阵的五步响应。Pion 曲线用 100 位 Decimal，Muon 用 Float64；两条水平线标出 BF16 与 Float64 格式最小正数，仅作表示范围参考。"
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "id": "fig-pion-spectral-maps",
+      "file": "/tmp/chase-pion-sevenhour-20261031/final-screen/fig-pion-spectral-maps-320-dark.png",
+      "bodyOverflow": false,
+      "imageLoaded": true,
+      "captionWithinFigure": true,
+      "textWithinCaption": true,
+      "captionScroll": false,
+      "caption": "图 3由论文公式 (3)、(7)、(8) 直接计算。A 中 Muon 曲线为实际五步多项式，不是理想矩阵 sign；B 的虚线标记单步抑制固定点；C 固定总步数为 5，列出全部六种调度；D 使用下文构造谱，对低于 10⁻¹² 的系数仅在显示时截到图底并标倒三角，完整值仍保存在数值记录。这四个面板不表示训练成功率。"
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "id": "fig-pion-flat-rms",
+      "file": "/tmp/chase-pion-sevenhour-20261031/final-screen/fig-pion-flat-rms-320-dark.png",
+      "bodyOverflow": false,
+      "imageLoaded": true,
+      "captionWithinFigure": true,
+      "textWithinCaption": true,
+      "captionScroll": false,
+      "caption": "图 6完整单位矩阵的五步响应。Pion 曲线用 100 位 Decimal，Muon 用 Float64；两条水平线标出 BF16 与 Float64 格式最小正数，仅作表示范围参考。"
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "id": "fig-pion-spectral-maps",
+      "file": "/tmp/chase-pion-sevenhour-20261031/final-screen/fig-pion-spectral-maps-1440-light.png",
+      "bodyOverflow": false,
+      "imageLoaded": true,
+      "captionWithinFigure": true,
+      "textWithinCaption": true,
+      "captionScroll": false,
+      "caption": "图 3由论文公式 (3)、(7)、(8) 直接计算。A 中 Muon 曲线为实际五步多项式，不是理想矩阵 sign；B 的虚线标记单步抑制固定点；C 固定总步数为 5，列出全部六种调度；D 使用下文构造谱，对低于 10⁻¹² 的系数仅在显示时截到图底并标倒三角，完整值仍保存在数值记录。这四个面板不表示训练成功率。"
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "id": "fig-pion-flat-rms",
+      "file": "/tmp/chase-pion-sevenhour-20261031/final-screen/fig-pion-flat-rms-1440-light.png",
+      "bodyOverflow": false,
+      "imageLoaded": true,
+      "captionWithinFigure": true,
+      "textWithinCaption": true,
+      "captionScroll": false,
+      "caption": "图 6完整单位矩阵的五步响应。Pion 曲线用 100 位 Decimal，Muon 用 Float64；两条水平线标出 BF16 与 Float64 格式最小正数，仅作表示范围参考。"
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "id": "fig-pion-spectral-maps",
+      "file": "/tmp/chase-pion-sevenhour-20261031/final-screen/fig-pion-spectral-maps-1440-dark.png",
+      "bodyOverflow": false,
+      "imageLoaded": true,
+      "captionWithinFigure": true,
+      "textWithinCaption": true,
+      "captionScroll": false,
+      "caption": "图 3由论文公式 (3)、(7)、(8) 直接计算。A 中 Muon 曲线为实际五步多项式，不是理想矩阵 sign；B 的虚线标记单步抑制固定点；C 固定总步数为 5，列出全部六种调度；D 使用下文构造谱，对低于 10⁻¹² 的系数仅在显示时截到图底并标倒三角，完整值仍保存在数值记录。这四个面板不表示训练成功率。"
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "id": "fig-pion-flat-rms",
+      "file": "/tmp/chase-pion-sevenhour-20261031/final-screen/fig-pion-flat-rms-1440-dark.png",
+      "bodyOverflow": false,
+      "imageLoaded": true,
+      "captionWithinFigure": true,
+      "textWithinCaption": true,
+      "captionScroll": false,
+      "caption": "图 6完整单位矩阵的五步响应。Pion 曲线用 100 位 Decimal，Muon 用 Float64；两条水平线标出 BF16 与 Float64 格式最小正数，仅作表示范围参考。"
+    }
+  ],
+  "exceptions": [],
+  "directly_viewed_screenshots": [
+    "fig-pion-spectral-maps-320-dark.png",
+    "fig-pion-flat-rms-320-light.png",
+    "fig-pion-spectral-maps-1440-light.png"
+  ],
+  "screenshot_sha256": {
+    "fig-pion-spectral-maps-1440-dark.png": "56ade0f4d7a9e3fabda1d843bc4927e01a9678d75bffdc6eea11007215a7527c",
+    "fig-pion-spectral-maps-320-dark.png": "7ae796954edeedb2770034e1f3d08c8cf47fc6cdd7eba83c71a952de87bf57ea",
+    "fig-pion-spectral-maps-1440-light.png": "68f21f44efe2703894f532490be7908c4f26866b46aca135b80d04285aaeb1ee",
+    "fig-pion-flat-rms-320-light.png": "4ec3af8696d044d1f755514c1b43e52f20238f736c4881d4d0feb46bfec512da",
+    "fig-pion-flat-rms-1440-light.png": "972e8ba708c179b71d1384ba8df18ccc022e1dfc3175e27a0c2abb01900c09cb",
+    "fig-pion-flat-rms-320-dark.png": "1b9663dc7d0ed5f8caf09ed745f985d61d11ea761e0996d18c16fd2f02982ad9",
+    "fig-pion-flat-rms-1440-dark.png": "02b22c83d5a0a2a1eb83e9d4b3508fdf7ebf4c6397c12e30e8c908e82bc968d4",
+    "fig-pion-spectral-maps-320-light.png": "4a58e1f5daf3ee1fc000b49316c77ff0131655a8e121c130a1e3dd42d4f5a6c9"
+  }
+}

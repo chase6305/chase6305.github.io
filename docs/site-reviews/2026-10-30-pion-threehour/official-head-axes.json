@@ -1,0 +1,210 @@
+{
+  "scope": "Small unsharded CPU gradients and a single optimizer step; not model/GPU/FSDP training",
+  "official_commit": "87965014b360bde604632cba0aa12e423c6c63c6",
+  "official_file_sha256": "15c1331453ef3db4b565a514d1e43f74692e2e910eb8cb939894d54371dd402d",
+  "torch": "2.8.0+cu128",
+  "numpy": "1.26.4",
+  "device": "cpu",
+  "parameter_dtype": "float64",
+  "official_internal_dtype": "bfloat16",
+  "lr": 1.0,
+  "weight_decay": 0.0,
+  "momentum": 0.0,
+  "nesterov": false,
+  "promotion_steps": 1,
+  "suppression_steps": 4,
+  "cases": [
+    {
+      "case": "amplitude_ratio",
+      "shape": [
+        12,
+        8
+      ],
+      "axis": 0,
+      "heads": 3,
+      "amplitudes": [
+        8.0,
+        2.0,
+        0.5
+      ],
+      "fallback": false,
+      "scale": 14.142135623730951,
+      "nonzero_count": 3,
+      "maximum_absolute_error": 0.0
+    },
+    {
+      "case": "signed",
+      "shape": [
+        12,
+        8
+      ],
+      "axis": 0,
+      "heads": 3,
+      "amplitudes": [
+        -8.0,
+        2.0,
+        -0.5
+      ],
+      "fallback": false,
+      "scale": 14.142135623730951,
+      "nonzero_count": 3,
+      "maximum_absolute_error": 0.0
+    },
+    {
+      "case": "zero_head",
+      "shape": [
+        12,
+        8
+      ],
+      "axis": 0,
+      "heads": 3,
+      "amplitudes": [
+        8.0,
+        0.0,
+        0.5
+      ],
+      "fallback": false,
+      "scale": 14.142135623730951,
+      "nonzero_count": 2,
+      "maximum_absolute_error": 0.0
+    },
+    {
+      "case": "all_zero",
+      "shape": [
+        12,
+        8
+      ],
+      "axis": 0,
+      "heads": 3,
+      "amplitudes": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "fallback": false,
+      "scale": 14.142135623730951,
+      "nonzero_count": 0,
+      "maximum_absolute_error": 0.0
+    },
+    {
+      "case": "incompatible_head_fallback",
+      "shape": [
+        12,
+        8
+      ],
+      "axis": 0,
+      "heads": 5,
+      "amplitudes": [
+        8.0
+      ],
+      "fallback": true,
+      "scale": 17.32050807568877,
+      "nonzero_count": 1,
+      "maximum_absolute_error": 0.0
+    },
+    {
+      "case": "amplitude_ratio",
+      "shape": [
+        8,
+        12
+      ],
+      "axis": 1,
+      "heads": 3,
+      "amplitudes": [
+        8.0,
+        2.0,
+        0.5
+      ],
+      "fallback": false,
+      "scale": 14.142135623730951,
+      "nonzero_count": 3,
+      "maximum_absolute_error": 0.0
+    },
+    {
+      "case": "signed",
+      "shape": [
+        8,
+        12
+      ],
+      "axis": 1,
+      "heads": 3,
+      "amplitudes": [
+        -8.0,
+        2.0,
+        -0.5
+      ],
+      "fallback": false,
+      "scale": 14.142135623730951,
+      "nonzero_count": 3,
+      "maximum_absolute_error": 0.0
+    },
+    {
+      "case": "zero_head",
+      "shape": [
+        8,
+        12
+      ],
+      "axis": 1,
+      "heads": 3,
+      "amplitudes": [
+        8.0,
+        0.0,
+        0.5
+      ],
+      "fallback": false,
+      "scale": 14.142135623730951,
+      "nonzero_count": 2,
+      "maximum_absolute_error": 0.0
+    },
+    {
+      "case": "all_zero",
+      "shape": [
+        8,
+        12
+      ],
+      "axis": 1,
+      "heads": 3,
+      "amplitudes": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "fallback": false,
+      "scale": 14.142135623730951,
+      "nonzero_count": 0,
+      "maximum_absolute_error": 0.0
+    },
+    {
+      "case": "incompatible_head_fallback",
+      "shape": [
+        8,
+        12
+      ],
+      "axis": 1,
+      "heads": 5,
+      "amplitudes": [
+        8.0
+      ],
+      "fallback": true,
+      "scale": 17.32050807568877,
+      "nonzero_count": 1,
+      "maximum_absolute_error": 0.0
+    },
+    {
+      "case": "KV_single_head",
+      "shape": [
+        4,
+        8
+      ],
+      "axis": 0,
+      "heads": 1,
+      "amplitudes": [
+        2.0
+      ],
+      "fallback": false,
+      "scale": 14.142135623730951,
+      "nonzero_count": 1,
+      "maximum_absolute_error": 0.0
+    }
+  ]
+}

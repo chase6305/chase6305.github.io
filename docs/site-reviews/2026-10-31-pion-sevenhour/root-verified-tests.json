@@ -1,0 +1,13 @@
+{
+  "python": "3.10.0",
+  "executable": "/home/ubuntu/miniconda3/envs/dp/bin/python3",
+  "numpy": "1.26.4",
+  "command": [
+    "/home/ubuntu/miniconda3/envs/dp/bin/python3",
+    "-B",
+    "scripts/test_pion_examples.py",
+    "--numpy"
+  ],
+  "exit_code": 0,
+  "tests": 24
+}

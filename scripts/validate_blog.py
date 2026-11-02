@@ -16,6 +16,14 @@ from urllib.parse import unquote, urljoin, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def image_dimension_matches(value, attribute):
+    """Compare JSON numbers with HTML dimensions, including minified 2e3."""
+    try:
+        return type(value) in (int, float) and value == int(attribute)
+    except (TypeError, ValueError):
+        return False
+
+
 def code_blocks(text):
     """Yield language, content, and opening line for fenced code (including lists)."""
     fence = None
@@ -380,8 +388,8 @@ def main():
                     if any(page.meta.get(key) != [value] for key, value in expected_meta.items()):
                         errors.append(f"Inconsistent sharing image metadata: {route}")
                     if (schema_image.get("url") != cover
-                            or str(schema_image.get("width")) != image["width"]
-                            or str(schema_image.get("height")) != image["height"]
+                            or not image_dimension_matches(schema_image.get("width"), image["width"])
+                            or not image_dimension_matches(schema_image.get("height"), image["height"])
                             or schema_image.get("caption") != image.get("alt")):
                         errors.append(f"Inconsistent BlogPosting image: {route}")
                     sharing_image_count += 1

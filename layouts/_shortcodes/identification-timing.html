@@ -1,0 +1,54 @@
+{{- $id := .Get "id" | default (printf "identification-timing-%d" .Ordinal) -}}
+{{- $css := resources.Get "css/identification-timing.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/identification-timing.js" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section id="{{ $id }}" class="identification-timing" data-identification-timing aria-labelledby="{{ $id }}-title">
+  <p id="{{ $id }}-title" class="identification-timing__title"><strong>动手看：延迟如何被错误参数吸收</strong></p>
+  <p>移动单轴系统 F = m·a + b·v，真值 m = 2 kg、b = 0.4 N·s/m，位移幅值 0.03 m。位置、速度、加速度和力均由解析函数构造，没有测量噪声。</p>
+  <p data-static-result>默认反例：训练 0.7 Hz、验证 1.1 Hz、力通道滞后 20 ms。估计质量约 1.98428 kg、阻尼约 1.17123 N·s/m；训练残差接近零。验证中，相对同样滞后的记录力 RMSE 约 0.16561 N，相对已对齐参考力约 0.11428 N。可直接用正文公式或下载的 timing_counterexample.py 复算。</p>
+  <div data-interactive hidden>
+    <div class="identification-timing__presets" role="group" aria-label="复现延迟反例">
+      <button type="button" data-preset="delayed">复现 20 ms 滞后</button>
+      <button type="button" data-preset="aligned">用已知延迟对齐</button>
+    </div>
+    <form class="identification-timing__form" novalidate aria-label="延迟与频率设置">
+      <div class="identification-timing__fields">
+        <label for="{{ $id }}-delay">力通道延迟（ms）
+          <input id="{{ $id }}-delay" name="delayMs" type="number" min="-50" max="50" step="any" value="20" required inputmode="decimal" aria-describedby="{{ $id }}-delay-help">
+        </label>
+        <label for="{{ $id }}-train">训练频率（Hz）
+          <input id="{{ $id }}-train" name="trainHz" type="number" min="0.1" max="2" step="any" value="0.7" required inputmode="decimal">
+        </label>
+        <label for="{{ $id }}-validation">验证频率（Hz）
+          <input id="{{ $id }}-validation" name="validationHz" type="number" min="0.1" max="2" step="any" value="1.1" required inputmode="decimal">
+        </label>
+      </div>
+      <p id="{{ $id }}-delay-help" class="identification-timing__detail">正值表示力记录滞后状态，负值表示超前。训练、验证分别为 400、300 点，均按 100 Hz 采样；验证数据不参与拟合。</p>
+      <label class="identification-timing__checkbox" for="{{ $id }}-correct">
+        <input id="{{ $id }}-correct" name="correctTrainingDelay" type="checkbox">
+        按已知延迟对齐训练力
+      </label>
+    </form>
+    <p data-error class="identification-timing__error" role="alert" hidden></p>
+    <dl class="identification-timing__results" aria-live="polite" aria-atomic="true">
+      <div><dt>质量估计（kg）</dt><dd><output data-value="mass" aria-label="质量估计，千克"></output></dd></div>
+      <div><dt>阻尼估计（N·s/m）</dt><dd><output data-value="damping" aria-label="阻尼估计，牛秒每米"></output></dd></div>
+      <div><dt>训练力残差 RMSE（N）</dt><dd><output data-value="trainRmse" aria-label="训练力残差均方根，牛"></output></dd></div>
+      <div><dt>验证：对滞后记录 RMSE（N）</dt><dd><output data-value="validationLoggedRmse" aria-label="验证预测对滞后记录的误差均方根，牛"></output></dd></div>
+      <div><dt>验证：对齐参考 RMSE（N）</dt><dd><output data-value="validationReferenceRmse" aria-label="验证预测对已对齐参考的误差均方根，牛"></output></dd></div>
+    </dl>
+    <div data-chart class="identification-timing__plot">
+      <p class="identification-timing__axis">验证轨迹的力 F（N）</p>
+      <svg role="img" aria-label="独立验证轨迹中的对齐参考力、滞后记录力与模型预测力；误差数值见前面的结果"></svg>
+      <p class="identification-timing__axis identification-timing__axis--time">时间 t（s）</p>
+      <div class="identification-timing__legend" role="group" aria-label="曲线图例">
+        <span><i class="identification-timing__key identification-timing__key--reference" aria-hidden="true"></i>对齐参考（实线）</span>
+        <span><i class="identification-timing__key identification-timing__key--logged" aria-hidden="true"></i>带延迟记录（点线）</span>
+        <span><i class="identification-timing__key identification-timing__key--prediction" aria-hidden="true"></i>模型预测（虚线）</span>
+      </div>
+    </div>
+    <p data-note class="identification-timing__detail"></p>
+  </div>
+  <p class="identification-timing__limits">这里对解析力函数计算 t + Δ，完整时间域已知；没有对有限日志插值或做端点外推。两种验证误差对应不同的力通道，不能互换。真实数据应使用第 10.3 节的预处理入口，并检查独立时间对齐、噪声和窗口偏差。</p>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

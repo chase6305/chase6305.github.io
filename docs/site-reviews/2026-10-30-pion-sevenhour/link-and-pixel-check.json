@@ -1,0 +1,32 @@
+{
+  "at_utc": "2026-10-30T21:17:27.711553+00:00",
+  "only_content_change": "Corrected a source URL fragment from web-extracted to raw-file line numbers.",
+  "exact_pixel_matches_to_reviewed_predecessor": 255,
+  "pdf_link_annotations": [
+    {
+      "pdf": "pion-native-false-100-warm.pdf",
+      "sha256": "64a2c3f9777ab855dfac1406d04b63d91898ec7a5a5b04c0d33081a1808b04cb",
+      "corrected_source_link_annotations": 2,
+      "obsolete_source_link_annotations": 0
+    },
+    {
+      "pdf": "pion-native-false-200-warm.pdf",
+      "sha256": "cc7608dfd7b1a3125dc6a4c25d531082b022d11b4278851089cc779c77769b9c",
+      "corrected_source_link_annotations": 2,
+      "obsolete_source_link_annotations": 0
+    },
+    {
+      "pdf": "pion-native-true-100-light.pdf",
+      "sha256": "93cf7602d8cae710e8f6af864f44d360cec349b55874316532dfd2c42a32ba5f",
+      "corrected_source_link_annotations": 2,
+      "obsolete_source_link_annotations": 0
+    },
+    {
+      "pdf": "pion-native-true-200-dark.pdf",
+      "sha256": "3c526a0ea299901dc5b4bec63dcaad8677b402e43d8243398216d05932f568e3",
+      "corrected_source_link_annotations": 2,
+      "obsolete_source_link_annotations": 0
+    }
+  ],
+  "predecessor_source_checkpoint_sha256": "0653b8f98d160badcb8c3b8f1f2564a4c2e77bbb6e6fa207c6811353977a67bd"
+}

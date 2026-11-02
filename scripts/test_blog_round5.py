@@ -5,6 +5,7 @@ import csv
 import importlib.util
 import json
 import math
+import random
 import subprocess
 import sys
 import tempfile
@@ -29,7 +30,7 @@ def rejected(function, *args):
 
 def main():
     acceptance = analysis.load_acceptance(BUNDLE / "impedance_acceptance_example.json")
-    api_cases = csv_cases = metric_cases = 0
+    api_cases = csv_cases = metric_cases = timing_cases = 0
     with tempfile.TemporaryDirectory(prefix="chase-blog-round5-impedance-") as folder:
         directory = Path(folder)
         subprocess.run([sys.executable, str(BUNDLE / "impedance_1d.py")],
@@ -39,6 +40,59 @@ def main():
         metrics = analysis.analyze(rows, .5, 1.5)
         assert abs(metrics["estimated_stiffness_n_m"] - 1000) < 1
         assert not analysis.acceptance_failures(metrics, acceptance)
+        intervals = [b["time_s"] - a["time_s"] for a, b in zip(rows, rows[1:])]
+        assert metrics["sample_period_min_s"] == min(intervals)
+        assert metrics["sample_period_max_s"] == max(intervals)
+
+        # The endpoints and sample count stay fixed. The old mean-only check
+        # accepted both an isolated long gap and a very short catch-up interval.
+        delayed = copy.deepcopy(rows)
+        delayed[20]["time_s"] += .009
+        delayed_metrics = analysis.analyze(delayed, .5, 1.5)
+        assert delayed_metrics["sample_period_mean_s"] == metrics["sample_period_mean_s"]
+        failures = analysis.acceptance_failures(delayed_metrics, acceptance)
+        assert len(failures) == 2 and all("_relative_deviation" in x for x in failures)
+        legacy = dict(acceptance)
+        del legacy["max_sample_period_relative_deviation"]
+        assert not analysis.acceptance_failures(delayed_metrics, legacy)
+        timing_cases += 1
+
+        # Compare checking the two extremes against checking every interval.
+        rng = random.Random(20261029)
+        expected = acceptance["expected_sample_period_s"]
+        tolerance = acceptance["max_sample_period_relative_deviation"]
+        for index in range(300):
+            amplitude = (.01, .04, .06, .9)[index % 4]
+            periods = [expected * rng.uniform(1 - amplitude, 1 + amplitude) for _ in range(40)]
+            probe = dict(metrics, sample_period_min_s=min(periods), sample_period_max_s=max(periods))
+            got = analysis.acceptance_failures(probe, acceptance)
+            assert bool(got) == any(abs(period / expected - 1) > tolerance for period in periods)
+            timing_cases += 1
+        for field in ("sample_period_min_s", "sample_period_max_s"):
+            # Each extreme is independently enforced, including NaN/Inf.
+            for value in (0., .001, .019, math.nan, math.inf, -math.inf):
+                assert analysis.acceptance_failures(dict(metrics, **{field: value}), acceptance)
+                timing_cases += 1
+        for sign in (-1, 1):
+            value = expected * (1 + sign * tolerance)
+            probe = dict(metrics, sample_period_min_s=value, sample_period_max_s=value)
+            assert not analysis.acceptance_failures(probe, acceptance)
+            outside = math.nextafter(value, 0 if sign < 0 else math.inf)
+            probe = dict(metrics, sample_period_min_s=outside, sample_period_max_s=outside)
+            assert analysis.acceptance_failures(probe, acceptance)
+            timing_cases += 1
+
+        acceptance_path = directory / "acceptance.json"
+        for value in (-.01, math.nan, math.inf, -math.inf, True, "0.05", None):
+            acceptance_path.write_text(json.dumps(dict(acceptance, max_sample_period_relative_deviation=value)))
+            rejected(analysis.load_acceptance, acceptance_path)
+            timing_cases += 1
+        acceptance_path.write_text(json.dumps(legacy))
+        assert analysis.load_acceptance(acceptance_path) == legacy
+
+        for on, off in ((True, 1.5), (.5, True), (math.nan, 1.5), (.5, math.inf)):
+            rejected(analysis.analyze, rows, on, off)
+            api_cases += 1
         for field in ("time_s", "force_n", "position_m"):
             for value in (float("nan"), float("inf"), -float("inf"), None, True):
                 bad = copy.deepcopy(rows)
@@ -82,6 +136,15 @@ def main():
                 cwd=directory, capture_output=True, text=True, timeout=10)
         normal = cli(path)
         assert normal.returncode == 0 and "PASS:" in normal.stdout
+        delayed_path = directory / "delayed.csv"
+        with delayed_path.open("w", newline="") as stream:
+            writer = csv.DictWriter(stream, fieldnames=["time_s", "force_n", "position_m"])
+            writer.writeheader()
+            writer.writerows(delayed)
+        timing_failure = cli(delayed_path)
+        assert timing_failure.returncode == 1 and "PASS:" not in timing_failure.stdout
+        assert "sample_period_min_s_relative_deviation" in timing_failure.stdout
+        assert "sample_period_max_s_relative_deviation" in timing_failure.stdout
         corrupt = copy.deepcopy(rows)
         corrupt[70]["position_m"] = math.nan
         with bad_path.open("w", newline="") as stream:
@@ -93,6 +156,7 @@ def main():
     print(json.dumps({"valid_samples":len(rows), "estimated_stiffness_n_m":metrics["estimated_stiffness_n_m"],
         "invalid_api_cases":api_cases, "invalid_csv_cases":csv_cases,
         "nonfinite_metric_cases":metric_cases, "cli_valid_and_invalid":"passed",
+        "record_interval_cases":timing_cases,
         "hardware":"not used"}, ensure_ascii=False, indent=2))
 
 

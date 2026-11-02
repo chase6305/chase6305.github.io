@@ -1,0 +1,20 @@
+{
+  "source_html_sha256": "1535e0490513e52859dce45f0a959c19b619e3502ed9afcaaf45872eeaa7410a",
+  "selected_rasters": 245,
+  "unique_raster_sha256": 211,
+  "required_rows": 153,
+  "required_accepted": 153,
+  "required_pending": 0,
+  "required_review_types": {
+    "pixel_identical_inherited": 70,
+    "direct_visual": 83
+  },
+  "all_selected_reviewed_rows": 153,
+  "all_selected_review_types": {
+    "pixel_identical_inherited": 70,
+    "unreviewed": 92,
+    "direct_visual": 83
+  },
+  "geometric_edge_ink": 0,
+  "scope": "Visual review of the complete standard A4 export plus selected large-text new-content and changed-pagination spans. All245selected pages have separate geometric checks; unselected manual spans are not claimed visually reviewed. Exact PNG matches may inherit a pass."
+}

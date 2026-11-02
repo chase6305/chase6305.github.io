@@ -1,0 +1,91 @@
+{
+  "scope": "Pinned VLA routing and 4D-layout audit; CPU allocation and communication fixture.\n\nNo model, GPU, distributed backend or training data is loaded. Two one-parameter\noptimizer calls use the unchanged source class, with CUDA buffer allocations\nredirected to CPU and all_gather replaced by a synchronous one-rank copy.\n",
+  "torch": "2.8.0+cpu",
+  "device": "cpu",
+  "source_sha256": {
+    "optimizer": "8e7ca8d6f40ebc4fb066acb15387e618d515896cca5d1eb0ad234e5310e9157e",
+    "routing": "0cb8c1453e8d9d60690d0cbc3bef99e48430f0f27bfafbdb5542737229d6c74b"
+  },
+  "source_modified": false,
+  "optimizer_steps": 2,
+  "buffer_allocation_adaptations": [
+    "CUDA buffer redirected to CPU",
+    "CUDA buffer redirected to CPU"
+  ],
+  "communication_calls": 2,
+  "routes": [
+    {
+      "name": "vla.vision_backbone.patch_embed.proj.weight",
+      "ndim": 4,
+      "force_adamw_aux": false,
+      "modality": "V"
+    },
+    {
+      "name": "vla.vision_backbone.linear.weight",
+      "ndim": 2,
+      "force_adamw_aux": false,
+      "modality": "V"
+    },
+    {
+      "name": "vla.language_model.embed_tokens.weight",
+      "ndim": 2,
+      "force_adamw_aux": true,
+      "modality": "L"
+    },
+    {
+      "name": "action_head.fc2.weight",
+      "ndim": 2,
+      "force_adamw_aux": true,
+      "modality": "A"
+    },
+    {
+      "name": "proprio_projector.weight",
+      "ndim": 2,
+      "force_adamw_aux": false,
+      "modality": "O"
+    },
+    {
+      "name": "vla.vision_backbone.linear.bias",
+      "ndim": 1,
+      "force_adamw_aux": true,
+      "modality": "V"
+    }
+  ],
+  "cases": [
+    {
+      "parameter_shape": [
+        2,
+        3,
+        5,
+        7
+      ],
+      "spectral_matrix_shape": [
+        2,
+        105
+      ],
+      "source_scale_dimension": 7,
+      "source_scale_factor": 0.5291502622129182,
+      "first_coordinate_decrement": 0.005291502622129185,
+      "expected_decrement": 0.0052915026221291815,
+      "flattened_matrix_scale_dimension": 105,
+      "other_coordinates_changed": 0
+    },
+    {
+      "parameter_shape": [
+        2,
+        105
+      ],
+      "spectral_matrix_shape": [
+        2,
+        105
+      ],
+      "source_scale_dimension": 105,
+      "source_scale_factor": 2.04939015319192,
+      "first_coordinate_decrement": 0.020493901531919212,
+      "expected_decrement": 0.020493901531919198,
+      "flattened_matrix_scale_dimension": 105,
+      "other_coordinates_changed": 0
+    }
+  ],
+  "interpretation": "The2Dscaleformula is correct for2Dparameters. The fixed VLA class flattens4Dgradients but reads its update scale from the original parameter last two dimensions. This is a source behavior audit, not a recommendation to alter that scale and not distributed or hardware validation."
+}

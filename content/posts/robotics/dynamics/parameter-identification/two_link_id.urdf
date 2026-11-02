@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<robot name="two_link_identification">
+  <link name="base"/>
+  <link name="link1">
+    <inertial>
+      <origin xyz="0.3 0 0" rpy="0 0 0"/>
+      <mass value="1.2"/>
+      <inertia ixx="0.00054" ixy="0" ixz="0" iyy="0.03627" iyz="0" izz="0.03627"/>
+    </inertial>
+  </link>
+  <joint name="joint1" type="revolute">
+    <parent link="base"/><child link="link1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/><axis xyz="0 1 0"/>
+    <limit lower="-2.5" upper="2.5" effort="50" velocity="4"/>
+  </joint>
+  <link name="link2">
+    <inertial>
+      <origin xyz="0.225 0 0" rpy="0 0 0"/>
+      <mass value="0.8"/>
+      <inertia ixx="0.00036" ixy="0" ixz="0" iyy="0.01368" iyz="0" izz="0.01368"/>
+    </inertial>
+  </link>
+  <joint name="joint2" type="revolute">
+    <parent link="link1"/><child link="link2"/>
+    <origin xyz="0.6 0 0" rpy="0 0 0"/><axis xyz="0 1 0"/>
+    <limit lower="-2.5" upper="2.5" effort="50" velocity="4"/>
+  </joint>
+</robot>

@@ -1,0 +1,3967 @@
+{
+  "scope": "CPU allocation adaptation and completion replays; optional one-rank Gloo and unwrapped CUDA/NCCL. Tiny parameters only; no model or multi-rank training.",
+  "official_commit": "87965014b360bde604632cba0aa12e423c6c63c6",
+  "official_source_sha256": "8e7ca8d6f40ebc4fb066acb15387e618d515896cca5d1eb0ad234e5310e9157e",
+  "torch": "2.8.0+cu128",
+  "devices": [
+    "cpu",
+    "cuda:0"
+  ],
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 5090 D v2",
+    "cuda": "12.8",
+    "nccl": [
+      2,
+      27,
+      3
+    ],
+    "repeats": 5
+  },
+  "parameter_dtype": "float64",
+  "internal_dtype": "bfloat16",
+  "source_modified": false,
+  "adaptations": {
+    "cpu_replay": "Redirect CUDA receive-buffer allocation to CPU and replay explicit completion order",
+    "gloo": "Redirect buffer to CPU and flatten output through a storage-sharing view",
+    "nccl": "No source, allocator or collective wrapper modifications"
+  },
+  "settings": {
+    "lr": 0.01,
+    "weight_decay": 0.1,
+    "momentum": 0.5,
+    "nesterov": false,
+    "promotion_steps": 1,
+    "ns_steps": 5,
+    "scale_factor": 0.2
+  },
+  "cases": [
+    {
+      "completion": "immediate_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "immediate_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.00282842712474618,
+        0.0
+      ],
+      "matches_independent_updates": false
+    },
+    {
+      "completion": "immediate_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "immediate_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "immediate_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "immediate_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "immediate_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "immediate_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "wait_completion_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "wait_completion_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.00282842712474618
+      ],
+      "matches_independent_updates": false
+    },
+    {
+      "completion": "wait_completion_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "wait_completion_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "wait_completion_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "wait_completion_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "wait_completion_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "wait_completion_replay",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "gloo",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "gloo",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.00282842712474618
+      ],
+      "matches_independent_updates": false
+    },
+    {
+      "completion": "gloo",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "gloo",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "gloo",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "gloo",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "gloo",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "gloo",
+      "device": "cpu",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.00282842712474618,
+        0.0
+      ],
+      "matches_independent_updates": false
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 0,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 0,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 1,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 1,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.00282842712474618,
+        0.0
+      ],
+      "matches_independent_updates": false
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 1,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 1,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 1,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 1,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 1,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 1,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 2,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 2,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.00282842712474618,
+        0.0
+      ],
+      "matches_independent_updates": false
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 2,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 2,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 2,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 2,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 2,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 2,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 3,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 3,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.00282842712474618,
+        0.0
+      ],
+      "matches_independent_updates": false
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 3,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 3,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 3,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 3,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 3,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 3,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 4,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 4,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.00282842712474618,
+        0.0
+      ],
+      "matches_independent_updates": false
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 4,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 4,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": true,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 4,
+      "gradients": [
+        "nonzero",
+        "zero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 4,
+      "gradients": [
+        "nonzero",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.9961715728752538,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 4,
+      "gradients": [
+        "none",
+        "nonzero"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.9955358983848622,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    },
+    {
+      "completion": "nccl",
+      "device": "cuda:0",
+      "repeat": 4,
+      "gradients": [
+        "none",
+        "none"
+      ],
+      "same_numel_group": false,
+      "expected_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "actual_weights": [
+        [
+          [
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999
+          ]
+        ],
+        [
+          [
+            0.999,
+            0.999,
+            0.999
+          ],
+          [
+            0.999,
+            0.999,
+            0.999
+          ]
+        ]
+      ],
+      "max_weight_differences": [
+        0.0,
+        0.0
+      ],
+      "matches_independent_updates": true
+    }
+  ],
+  "summary": {
+    "cases": 64,
+    "controls": 56,
+    "independent_update_mismatches": 8,
+    "by_completion": {
+      "gloo": {
+        "cases": 8,
+        "independent_update_mismatches": 1
+      },
+      "immediate_replay": {
+        "cases": 8,
+        "independent_update_mismatches": 1
+      },
+      "nccl": {
+        "cases": 40,
+        "independent_update_mismatches": 5
+      },
+      "wait_completion_replay": {
+        "cases": 8,
+        "independent_update_mismatches": 1
+      }
+    }
+  },
+  "interpretation": "A missing gradient aliases the receive buffer before the preceding collective is waited and consumed. Completion order can lose the preceding update or reuse it for the missing parameter. Real backend outcomes describe this device, software and these tiny matrices, not every training run."
+}

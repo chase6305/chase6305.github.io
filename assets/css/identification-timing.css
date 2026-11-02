@@ -1,0 +1,100 @@
+.identification-timing {
+  --timing-reference: var(--chase-text);
+  --timing-prediction: #24629c;
+  --timing-logged: #9a520b;
+  border: 1px solid var(--chase-border);
+  border-radius: 1rem;
+  background: var(--chase-surface);
+  color: var(--chase-text);
+  padding: 1.1rem;
+  margin-block: 1.75rem;
+  scroll-margin-top: 6rem;
+}
+.dark .identification-timing { --timing-prediction: #8cbef8; --timing-logged: #ffbc72; }
+.identification-timing [hidden] { display: none !important; }
+.content .identification-timing p { margin-block: .6rem; }
+.identification-timing__title { font-size: 1.1rem; }
+.identification-timing__presets { display: flex; flex-wrap: wrap; gap: .6rem; margin-block: 1rem; }
+.identification-timing button {
+  border: 1px solid var(--chase-border);
+  border-radius: .5rem;
+  color: var(--chase-accent);
+  background: var(--chase-surface-strong);
+  font: inherit;
+  padding: .5rem .7rem;
+  cursor: pointer;
+}
+.identification-timing__fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
+.identification-timing label { display: flex; flex-direction: column; gap: .3rem; min-width: 0; font-size: .88rem; }
+.identification-timing input[type="number"] {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--chase-border);
+  border-radius: .45rem;
+  background: var(--chase-surface-strong);
+  color: var(--chase-text);
+  padding: .5rem;
+  font: inherit;
+  font-size: 1rem;
+}
+.identification-timing label.identification-timing__checkbox { flex-direction: row; align-items: start; gap: .6rem; margin-block: .8rem; padding-block: .3rem; }
+.identification-timing input[type="checkbox"] { flex-shrink: 0; width: 1.1em; height: 1.1em; margin-top: .2em; accent-color: var(--chase-accent); }
+.identification-timing :is(input, button):focus-visible { outline: 2px solid var(--chase-accent); outline-offset: 3px; }
+.identification-timing [aria-invalid="true"] { border-color: #b83c36; }
+.content .identification-timing__error { color: var(--chase-text); border-left: 3px solid #b83c36; padding-left: .6rem; font-weight: 600; }
+.identification-timing__results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; margin-block: 1rem; }
+.identification-timing__results > div { padding: .65rem; border: 1px solid var(--chase-border); border-radius: .5rem; background: var(--chase-surface-strong); min-width: 0; }
+.content .identification-timing__results dt { margin: 0; font-size: .85rem; color: var(--chase-muted); }
+.content .identification-timing__results dd { margin: .3rem 0 0; padding: 0; }
+.identification-timing output { display: block; font-size: 1.05rem; font-weight: 650; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.identification-timing__plot { border-top: 1px solid var(--chase-border); padding-top: .5rem; }
+.identification-timing svg { display: block; width: 100%; overflow: visible; font: .8rem sans-serif; color: var(--chase-text); }
+.identification-timing svg text { fill: currentColor; }
+.identification-timing__grid { stroke: var(--chase-border); stroke-width: 1; }
+.identification-timing__curve { fill: none; stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; }
+.identification-timing__curve--reference { stroke: var(--timing-reference); }
+.identification-timing__curve--logged { stroke: var(--timing-logged); stroke-dasharray: 2 5; }
+.identification-timing__curve--prediction { stroke: var(--timing-prediction); stroke-dasharray: 10 5; }
+.identification-timing__axis { font-size: .8rem; }
+.identification-timing__axis--time { text-align: right; }
+.identification-timing__legend { display: flex; flex-wrap: wrap; gap: .4rem 1rem; font-size: .8rem; }
+.identification-timing__legend > span { display: inline-flex; align-items: center; gap: .4rem; }
+.identification-timing__key { display: inline-block; width: 1.7rem; height: 0; border-top: 3px solid; flex-shrink: 0; }
+.identification-timing__key--reference { border-color: var(--timing-reference); }
+.identification-timing__key--logged { border-color: var(--timing-logged); border-top-style: dotted; }
+.identification-timing__key--prediction { border-color: var(--timing-prediction); border-top-style: dashed; }
+.identification-timing__detail, .identification-timing__limits { font-size: .85rem; }
+.identification-timing__limits { border-top: 1px solid var(--chase-border); padding-top: .65rem; }
+@media (max-width: 600px) {
+  .identification-timing { padding: .8rem; }
+  .identification-timing__fields, .identification-timing__results { grid-template-columns: 1fr; }
+}
+@media (forced-colors: active) {
+  .identification-timing, .dark .identification-timing { --timing-reference: CanvasText; --timing-prediction: CanvasText; --timing-logged: CanvasText; }
+}
+@media print {
+  .identification-timing, .dark .identification-timing {
+    --timing-reference: #202020;
+    --timing-prediction: #1f4f88;
+    --timing-logged: #8c4511;
+    --chase-text: #202020;
+    --chase-muted: #333333;
+    --chase-border: #777777;
+    color: #202020;
+    background: white;
+    border-color: #777777;
+    forced-color-adjust: none;
+  }
+  .identification-timing__presets { break-inside: avoid; }
+  .identification-timing__plot { max-width: 6.5in; margin-inline: auto; }
+  .identification-timing button, .identification-timing input[type="number"], .identification-timing__results > div { color: #202020; background: white; border-color: #777777; }
+  .identification-timing :is(input, button):focus { outline: none; box-shadow: none; }
+  .identification-timing input { caret-color: transparent; }
+  .identification-timing input[type="number"] { appearance: none; }
+  .identification-timing input[type="number"]::-webkit-inner-spin-button,
+  .identification-timing input[type="number"]::-webkit-outer-spin-button { appearance: none; display: none; margin: 0; }
+  .identification-timing__fields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .identification-timing__results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .identification-timing__results > div, .identification-timing label, .identification-timing__plot { break-inside: avoid; }
+}

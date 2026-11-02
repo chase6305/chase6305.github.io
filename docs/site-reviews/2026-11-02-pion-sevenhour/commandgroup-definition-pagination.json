@@ -1,0 +1,63 @@
+{
+  "pdfs": 5,
+  "cases": 5,
+  "failures": 0,
+  "rows": [
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "sha256": "7ca7e649347f7db05902776fc80ef02cea6b75466b207b76584fe8ae0e4a2701",
+      "definition_pages": [
+        13
+      ],
+      "formula_pages": [
+        13
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "sha256": "0a545424fc1413985c40d16dafe47b0035f723899b8ad658c206fb348fea7234",
+      "definition_pages": [
+        35
+      ],
+      "formula_pages": [
+        35
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "sha256": "4aab74a8166d9dffb4c5e17a0e0e0cf52b78d204f26d7e8c9491e600b14e2044",
+      "definition_pages": [
+        13
+      ],
+      "formula_pages": [
+        13
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "sha256": "46e52e99ec55c8c71fafa81d9f1bf2a246405341d859d04d1e85e28a2d179577",
+      "definition_pages": [
+        35
+      ],
+      "formula_pages": [
+        35
+      ],
+      "passed": true
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "sha256": "8e67fcb259a570d14207201f73374e3b43a512f26d2bdd76e5e737d5d51a711d",
+      "definition_pages": [
+        36
+      ],
+      "formula_pages": [
+        36
+      ],
+      "passed": true
+    }
+  ],
+  "scope": "Actual PDF text page positions; no inference from CSS rules."
+}

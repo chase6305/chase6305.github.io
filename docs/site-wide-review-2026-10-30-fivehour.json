@@ -1,0 +1,728 @@
+{
+  "started_at_utc": "2026-10-30T02:33:51Z",
+  "planned_end_at_utc": "2026-10-30T07:33:51Z",
+  "status": "complete",
+  "baseline_revision": "1c9f299b9afdefe8127facbb9518c4adab5a4094",
+  "initial_dirty_files": 53,
+  "initial_snapshot": "/tmp/chase-opt-20261030-fivehour/initial-manifest.json",
+  "scope": "Continue the previous article/site optimization, prioritizing parameter-identification and TAMP usefulness and correctness.",
+  "changes": [
+    {
+      "topic": "TAMP geometry input contract",
+      "before": "Negative radius and infinite blocker coordinates could return valid; search(infinite blocker) returned carry_witness_found.",
+      "after": "Reject nonfinite/malformed points, negative radii/tolerance, invalid opening and wall-ray direction before a witness or certificate. Preserve valid examples and reject invalid search input before scheduling.",
+      "tests": 17,
+      "reference_outputs": "unchanged"
+    },
+    {
+      "topic": "Interactive identification timing counterexample",
+      "implementation": "Five result cards and a responsive SVG chart compare the fitted physical coefficients, training residual, delayed validation log and aligned reference. Two-column QR in browser; independent analytic Python oracle, no data fetch or extra runtime dependency.",
+      "default_reference_rmse_n": 0.11428275596923788,
+      "default_logged_rmse_n": 0.1656119059028343,
+      "scope": "Analytic noiseless translating mass, not sampled interpolation accuracy or hardware."
+    },
+    {
+      "topic": "Pinocchio root-frame gravity",
+      "implementation": "Optional --gravity GX GY GZ; finite 3-vector; copied into the model and recorded in existing output. Default experiment unchanged.",
+      "oracle": "300 static two-link states under three gravity vectors against an independent potential-energy gradient; CLI save checked."
+    },
+    {
+      "topic": "CSV schema before export",
+      "before": "Empty joint names accepted; a one-joint header could be written with two-joint data rows.",
+      "implementation": "Normalize and validate joint names; validate each signal shape, finiteness and monotonic times before opening a new output. Keep valid 1D single-joint inputs. Preprocessing records shared-helper hashes."
+    },
+    {
+      "topic": "Long inline formulas",
+      "implementation": "Keep gravity-vector and damping symbols in math; place units in wrapping prose, fixing 320px / 200 percent text / added-spacing overflow."
+    },
+    {
+      "topic": "RMSE contract and numerical range",
+      "before": {
+        "same_samples_broadcasted_rmse": 0.7071067811865476,
+        "residual_scale_1e_minus_200": "0",
+        "residual_scale_1e_200": "infinity"
+      },
+      "after": "Reject empty, nonfinite, complex or mismatched sample shapes; use scaled residuals so squaring does not erase small or overflow large representable results. Reject unrepresentable residuals explicitly.",
+      "oracle": "70-digit Decimal square root at residual scales 1e-200 and 1e200; ordinary two-dimensional aggregate and broadcast counterexample."
+    },
+    {
+      "topic": "Candidate metadata example",
+      "implementation": "Use 23924 scalar equations for 11962 two-joint samples and condition number 1 for a single nonzero column; clarify fixed nominal inertia checks and independent validation provenance."
+    },
+    {
+      "topic": "Native SVG print labels",
+      "finding": "Native pagination can shrink a viewBox generated in a wide print viewport.",
+      "implementation": "Printed plot constrained to 6.5 inches; 24 native A4 and 2 Letter PDFs verify actual axis word heights at approximately 10.7 and 21.4 points, label/value pagination and focus restoration."
+    },
+    {
+      "topic": "Pinocchio regressor scope",
+      "implementation": "Document and test the separate armature term in RNEA; model friction/damping fields do not automatically enter RNEA in v4.1.0. Reports record omitted torque terms and nominal armature.",
+      "oracle": "50 random states compare rigid-body regressor and RNEA with independently added armature acceleration."
+    },
+    {
+      "topic": "TAMP grid resolution",
+      "implementation": "Optional step preserves fixed physical domain, endpoints and continuous edge checks; five-resolution CLI and complete reference paths. Coarse exhaustion is unknown, with an independently checked continuous detour.",
+      "results": [
+        {
+          "step_m": 2,
+          "nodes": 3,
+          "expanded": 2,
+          "status": "unknown"
+        },
+        {
+          "step_m": 1,
+          "nodes": 15,
+          "expanded": 7,
+          "length_m": 4.828427
+        },
+        {
+          "step_m": 0.4,
+          "nodes": 77,
+          "expanded": 32,
+          "length_m": 4.662742
+        },
+        {
+          "step_m": 0.2,
+          "nodes": 273,
+          "expanded": 114,
+          "length_m": 4.662742
+        },
+        {
+          "step_m": 0.1,
+          "nodes": 1025,
+          "expanded": 395,
+          "length_m": 4.579899
+        }
+      ],
+      "oracle": "Independent exhaustive shortest paths for additional resolutions; 20 source tests and extracted archive."
+    },
+    {
+      "topic": "Stable regression column norms",
+      "before": "Direct squared-norm overflow rejected finite large regressors as having no observable direction; underflow treated finite small columns as zero.",
+      "after": "hypot accumulation preserves column scaling. Reject complex inputs and unrepresentable norms/parameters. Four extreme unit combinations recover independently specified coefficients and predictions.",
+      "scale_range": [
+        1e-200,
+        1e+200
+      ]
+    },
+    {
+      "topic": "FAQ motion derivatives",
+      "implementation": "Align the FAQ with the measured-motion contract: analytic command derivatives are not measured robot motion."
+    },
+    {
+      "topic": "TAMP finite geometry arithmetic",
+      "before": "A segment from -1e160 to +1e160 crossing the blocker returned valid because squared lengths and projection overflowed.",
+      "after": "Reject unrepresentable differences, squared lengths, projections and distances before geometric results. Normal constructed references unchanged.",
+      "tests": 21
+    },
+    {
+      "topic": "CSV encoding and real-valued export",
+      "implementation": "Accept UTF-8 BOM on input and reject complex-valued exports before opening files; preserve ordinary UTF-8 numeric contracts."
+    },
+    {
+      "topic": "Fixed preprocessing window comparison",
+      "implementation": "Five settings use the same central 321 training and 221 separate validation timestamps. Compare acceleration, measured torque and noise-free torque errors; an additional noiseless-position calculation isolates smoothing bias. No automatic window tuning.",
+      "scope": "Same constructed two-link model and noise seeds; analytic truth never enters regression."
+    },
+    {
+      "topic": "Native-print preset focus",
+      "finding": "Hiding preset buttons in print media blurred the active button. Earlier print checks focused a numeric input and did not expose it.",
+      "implementation": "Keep experiment controls visible in print with explicit black-on-white button styles; no focus-restoration JavaScript added. Native tests now rotate over both presets, all three number fields and the checkbox."
+    },
+    {
+      "topic": "Result provenance",
+      "implementation": "Both backends record algorithm and common-helper hashes in addition to model/input hashes and versions. Archive checks compare provenance as well as numeric references."
+    },
+    {
+      "topic": "Conditioning and excitation strength",
+      "implementation": "Keep original training-column norms separate from zero-safe division scales. Explain that fixed-frequency single-axis amplitude scaling preserves column-normalized rank/condition while parameter standard deviations change inversely with amplitude.",
+      "numerical_probe": {
+        "amplitude_scale": 0.01,
+        "rank_before_after": [
+          2,
+          2
+        ],
+        "scaled_condition_before_after": [
+          1.0425917976593662,
+          1.0425917976593664
+        ],
+        "parameter_std_ratios": [
+          100.00000000000003,
+          99.99999999999999
+        ]
+      }
+    },
+    {
+      "topic": "TAMP enlarged inline mathematics",
+      "finding": "Additional 200-percent text plus root letter/word-spacing stress exposed two existing unbreakable inline formulas (OnStove goal and six-variable list), producing 359px page width at a 320px device layout.",
+      "implementation": "Display the goal predicate in a native scrollable formula and split the variable list into separately wrapping inline formulas. Preserve mathematical meaning and anchors."
+    },
+    {
+      "topic": "TAMP witness input normalization",
+      "implementation": "Use the geometry point validator for returned witnesses, consistently rejecting huge integers, booleans and nonnumeric coordinates before endpoint/segment checks. Default JSON references unchanged."
+    },
+    {
+      "topic": "First-reader route",
+      "implementation": "Move the five-library comparison and both independent quickstarts to the first reading-guide item. Synchronize existing acceptance entries with column norms and common-time window comparisons."
+    },
+    {
+      "topic": "Compact TAMP numerical table",
+      "finding": "Default intrinsic column compression made the original small numeric-table headers nearly vertical at 320px.",
+      "implementation": "Shorten the headers, explain units/counts in adjacent prose and retain compact no-wrap cells with native horizontal scrolling; avoid broad comparison-table widths."
+    },
+    {
+      "topic": "Native print editing decorations",
+      "finding": "Manual native PDF inspection showed an active text caret and browser focus/spinner decorations in the captured control.",
+      "implementation": "Print-only styles hide caret, outline/shadow and number spinners without removing controls or changing DOM focus. Checked state and values stay printable."
+    },
+    {
+      "topic": "Approximation direction in TAMP evidence",
+      "implementation": "Explicitly scope certificates to the exact disk model. A 1.18m by 0.10m rectangle fits a 1m doorway when aligned, although its 0.60m enclosing disk cannot; enclosing radius checked as 0.5921148537m. Collision-free outer volumes provide conservative collision checks, while outer-volume failure alone does not certify real-shape infeasibility."
+    },
+    {
+      "topic": "Independent TAMP distance oracle",
+      "implementation": "70-digit Decimal convex minimization independently checks 195 point/segment and segment/wall-ray distances, plus three strict-contact cases. The source suite now contains 22 tests."
+    }
+  ],
+  "finished_at_utc": "2026-10-30T09:28:43Z",
+  "pending": [],
+  "test_infrastructure": [
+    {
+      "at_utc": "2026-10-30T06:02:40Z",
+      "event": "CDP 9236 connection refused after the previous dedicated Chrome process ended. First full-v15 run timed out before recording any screen cases.",
+      "action": "Started a new isolated chrome-final profile on the same port; browser reported Chrome/155.0.8059.84. Rerun uses timing-full-final-v15; interrupted run not counted as successful verification."
+    },
+    {
+      "at_utc": "2026-10-30T07:06:00Z",
+      "event": "Manual review exposed a temporary screenshot setup mismatch: removing dark class left color-scheme:dark, producing white native table text on a light canvas.",
+      "action": "Verified native theme buttons update both properties correctly. Corrected the timing checker and temporary table checks; repeated all timing modes and new-table layouts. No product theme change was required."
+    }
+  ],
+  "content_frozen_at_utc": "2026-10-30T06:15:18Z",
+  "final_production_directory": "/tmp/chase-opt-20261030-fivehour/production-v6",
+  "verification_history": [
+    {
+      "suite": "Timing arithmetic",
+      "random_closed_form_oracles": 500,
+      "invalid_inputs": 43,
+      "independent_python_cases": 6
+    },
+    {
+      "suite": "Parameter-identification source",
+      "tests": 22,
+      "result": "pass"
+    },
+    {
+      "suite": "Identification source and extracted archive",
+      "tests": 24,
+      "archive_skips": 2,
+      "scope": "The two published-snippet checks require the article and are skipped only in the extracted archive."
+    },
+    {
+      "suite": "Timing reading",
+      "screens": 40,
+      "interactive_states": 18,
+      "semantic_states": 18,
+      "violations": 0,
+      "runtime_exceptions": 0
+    },
+    {
+      "suite": "Timing native A4",
+      "ordinary_pdfs": 12,
+      "forced_color_pdfs": 12,
+      "result_cards": "Every rendered label/value pair stays on a page",
+      "print_colors": "Same verified palette in light, dark and warm themes; forced light/dark system colors do not alter print curves."
+    },
+    {
+      "suite": "Timing native Letter",
+      "pdfs": 2,
+      "root_text_sizes": [
+        100,
+        200
+      ],
+      "printed_cards": "all five label/value pairs kept together",
+      "focus_restoration": true,
+      "runtime_exceptions": 0
+    },
+    {
+      "suite": "Actual keyboard input",
+      "partial_minus": "invalid intermediate numeric value clears outputs and chart; focus retained",
+      "completed_negative": "-20 ms entered via CDP keys, negative damping reported",
+      "space_on_checkbox": "applies known-lag correction; aligned validation error below 1e-10",
+      "runtime_exceptions": 0
+    },
+    {
+      "suite": "Identification source after metric fix",
+      "tests": 25,
+      "result": "pass",
+      "figure_png": "byte-identical to the existing per-joint reference plot"
+    },
+    {
+      "suite": "All-article text reflow",
+      "snapshot": "timing-review-v5",
+      "layouts": 1908,
+      "failures": 0,
+      "runtime_exceptions": 0,
+      "source_report": "/tmp/chase-opt-20261030-fivehour/reflow-v5-fixed-url/results.json",
+      "includes": "320/768/1440px, 200% text, spacing and both combined, scripts enabled/disabled; table keyboard scrolling and native menus"
+    },
+    {
+      "suite": "Identification after stable column norms",
+      "tests": 27,
+      "result": "pass",
+      "source_report": "/tmp/chase-opt-20261030-fivehour/logs/identification-norm-tests.log"
+    },
+    {
+      "suite": "Chapter focus",
+      "posts": 95,
+      "chapter_activations": 9528,
+      "layouts": 36,
+      "modifier_cases": 5,
+      "legacy_anchor": true,
+      "fragment_history": true,
+      "runtime_exceptions": 0,
+      "source_report": "/tmp/chase-opt-20261030-fivehour/chapters-v7/results.json"
+    },
+    {
+      "suite": "All-article readability",
+      "contrast_layouts": 303,
+      "text_samples": 252930,
+      "print_layouts": 18,
+      "failures": 0,
+      "runtime_exceptions": 0,
+      "source_report": "/tmp/chase-opt-20261030-fivehour/readability-v6/results.json"
+    },
+    {
+      "suite": "Whole-site semantic structure",
+      "snapshot": "review-v8",
+      "cases": 661,
+      "failing_cases": 0,
+      "runtime_exceptions": 0,
+      "incomplete_nodes": 2585,
+      "manual_review": "2583 closed-popup aria-controls checks resolve to existing IDs (independent ID-reference check passed); two legend generic-div naming cases were corrected with role=group. The final component rerun has zero violations and zero incomplete rules.",
+      "source_report": "/tmp/chase-opt-20261030-fivehour/semantics-v8/results.json"
+    },
+    {
+      "suite": "Native no-script semantics",
+      "snapshot": "review-v10",
+      "cases": 644,
+      "failing_cases": 0,
+      "incomplete_nodes": 0,
+      "runtime_exceptions": 0,
+      "source_report": "/tmp/chase-opt-20261030-fivehour/native-semantics-v10/results.json"
+    },
+    {
+      "suite": "Whole-site print geometry",
+      "snapshot": "review-v8",
+      "layouts": 570,
+      "text_samples": 461214,
+      "failures": 0,
+      "runtime_exceptions": 0,
+      "source_report": "/tmp/chase-opt-20261030-fivehour/print-v8/results.json"
+    },
+    {
+      "suite": "Timing native-print controls after fix",
+      "ordinary_pdfs": 12,
+      "forced_color_pdfs": 12,
+      "focused_controls": [
+        "delayed preset",
+        "aligned preset",
+        "delayMs",
+        "trainHz",
+        "validationHz",
+        "correctTrainingDelay"
+      ],
+      "focus_preserved": true,
+      "runtime_exceptions": 0,
+      "reports": [
+        "/tmp/chase-opt-20261030-fivehour/timing-all-control-print-v11/results.json",
+        "/tmp/chase-opt-20261030-fivehour/timing-all-control-forced-print-v11/results.json"
+      ]
+    },
+    {
+      "suite": "Timing fallback and painted outlines",
+      "fallback_layouts": 4,
+      "actual_tab_outlines": 216,
+      "component_semantic_cases": 3,
+      "violations": 0,
+      "incomplete_nodes": 0,
+      "runtime_exceptions": 0,
+      "source_report": "/tmp/chase-opt-20261030-fivehour/timing-behavior-v9/results.json"
+    },
+    {
+      "suite": "Extracted identification lab after window and norm additions",
+      "tests": 28,
+      "archive_skips": 2,
+      "result": "pass",
+      "report": "/tmp/chase-opt-20261030-fivehour/logs/archive-window-study-tests.log"
+    },
+    {
+      "suite": "Forced-color whole-site print",
+      "snapshot": "review-v12",
+      "layouts": 570,
+      "text_samples": 461496,
+      "failures": 0,
+      "runtime_exceptions": 0,
+      "report": "/tmp/chase-opt-20261030-fivehour/forced-print-v12/results.json"
+    },
+    {
+      "suite": "Current independent dependency groups",
+      "pinocchio_only_tests": 9,
+      "common_without_pinocchio_tests": 12,
+      "result": "pass"
+    },
+    {
+      "suite": "All-article reading and numbered figure stability",
+      "snapshot": "review-v12",
+      "cases": 972,
+      "figure_cases": 592,
+      "failures": 0,
+      "runtime_exceptions": 0,
+      "report": "/tmp/chase-opt-20261030-fivehour/reading-figures-v12/results.json"
+    },
+    {
+      "suite": "New study tables and math",
+      "snapshot": "review-v13",
+      "table_layouts": 96,
+      "actual_keyboard_scrolls": 60,
+      "math_layouts": 4,
+      "runtime_exceptions": 0,
+      "includes": "320/1440px, 100/200-percent font, root letter/word-spacing stress, three themes, scripts enabled/disabled; HTML values compared with saved numerical references.",
+      "report": "/tmp/chase-opt-20261030-fivehour/new-sections-v13/results.json"
+    },
+    {
+      "suite": "Numerical illustration reproduction",
+      "byte_identical": [
+        "doorway-refinement.png",
+        "grid-detour.png",
+        "shared-grasp-ik.png",
+        "identification-held-out.png"
+      ],
+      "result": "pass"
+    },
+    {
+      "suite": "Fractional lag with irregular timestamps",
+      "implementation": "Independent linear-force oracle now covers positive/negative fractional sample delays and irregular times, alongside polynomial motion derivatives.",
+      "common_tests": 12,
+      "result": "pass",
+      "report": "/tmp/chase-opt-20261030-fivehour/logs/common-fractional-irregular-delay.log"
+    },
+    {
+      "suite": "Nondefault native print states",
+      "snapshot": "review-v13",
+      "ordinary_a4_pdfs": 12,
+      "forced_color_a4_pdfs": 12,
+      "states": [
+        "delayed",
+        "aligned",
+        "negative",
+        "invalid",
+        "static no-script"
+      ],
+      "current_values_and_outputs_preserved": true,
+      "invalid_chart_absent": true,
+      "manual_review": "Checked aligned checkbox and m=2,b=0.4 in native PDF; invalid input prints dashes and no previous curve. Final native exports and visual inspection verify the print-decoration revision."
+    },
+    {
+      "suite": "Complete timing component final rerun",
+      "snapshot": "review-v15",
+      "screens": 40,
+      "interactive_states": 18,
+      "semantic_cases": 21,
+      "fallback_cases": 4,
+      "actual_tab_outline_checks": 216,
+      "ordinary_native_pdfs": 12,
+      "runtime_exceptions": 0,
+      "incomplete_component_semantic_rules": 0,
+      "report": "/tmp/chase-opt-20261030-fivehour/timing-full-final-v15/results.json",
+      "includes": "Current print-only caret, outline/shadow and spinner suppression; current data and DOM focus retained."
+    },
+    {
+      "suite": "Final fresh production validation",
+      "reviewed_posts": 95,
+      "published_posts": 92,
+      "acceptance_checks": 509,
+      "local_references": 31932,
+      "errors": 0,
+      "python_fragment_warnings": 0,
+      "unrendered_math_warnings": 0,
+      "strict_math": true,
+      "report": "/tmp/chase-opt-20261030-fivehour/logs/production-v6-validate.log"
+    },
+    {
+      "suite": "Final pinned assets",
+      "pinned_files": 29,
+      "local_math_fonts": 20,
+      "verified_integrity_assets": 23,
+      "result": "pass"
+    },
+    {
+      "suite": "Final filter and search units",
+      "published_articles": 92,
+      "drafts_in_filter": 0,
+      "topics": 11,
+      "result": "pass"
+    },
+    {
+      "suite": "Final source and extracted examples",
+      "identification_source_tests": 28,
+      "identification_archive_tests": 28,
+      "archive_skips": 2,
+      "tamp_tests": 21,
+      "finest_grid_oracle_step_m": 0.1,
+      "result": "pass"
+    },
+    {
+      "suite": "Final timing print styles",
+      "forced_color_native_pdfs": 12,
+      "letter_pdfs": 2,
+      "current_values_preserved": true,
+      "focus_preserved": true,
+      "caret_and_outline_hidden_only_in_print": true,
+      "runtime_exceptions": 0
+    },
+    {
+      "suite": "Bundle output fidelity",
+      "source_data_and_download_files": 31,
+      "all_bytes_match": true,
+      "publication_date_and_draft_fields": "preserved against initial article backups"
+    },
+    {
+      "suite": "Code and math overflow regressions",
+      "code_layouts": 12,
+      "code_keyboard_copy": true,
+      "pending_tab_preserved": true,
+      "overflow_focus_cases": 18,
+      "math_collapsed_equation": true,
+      "runtime_exceptions": 0
+    },
+    {
+      "suite": "Final complete all-article reflow",
+      "snapshot": "review-v17",
+      "layouts": 1908,
+      "failures": 0,
+      "runtime_exceptions": 0,
+      "report": "/tmp/chase-opt-20261030-fivehour/reflow-final-v17/results.json"
+    },
+    {
+      "suite": "Initial rendered anchor preservation",
+      "method": "Copy the content tree into an isolated temporary directory, restore the two initial Markdown files, render with the current unchanged heading pipeline, compare all heading/figure IDs with final production HTML.",
+      "tamp_initial_headings_preserved": 52,
+      "identification_initial_headings_preserved": 66,
+      "figure_anchors_preserved": 17,
+      "missing_other_initial_ids": 0,
+      "new_headings": [
+        "grid-resolution",
+        "preprocess-window-study",
+        "scaled-condition-excitation"
+      ],
+      "report": "/tmp/chase-opt-20261030-fivehour/anchor-preservation.json"
+    },
+    {
+      "suite": "Quickstarts in the inherited shell",
+      "pinocchio_only_environment": {
+        "retained_rank": 6,
+        "validation_rmse_nm": 0.020198444666117404
+      },
+      "drake_only_environment": {
+        "retained_rank": 3,
+        "validation_rmse_nm": 0.019780130626026127
+      },
+      "result": "pass; no environment-variable reset needed in this workspace"
+    },
+    {
+      "suite": "Final complete print geometry",
+      "snapshot": "review-v17",
+      "ordinary_layouts": 570,
+      "forced_color_layouts": 570,
+      "text_samples_per_mode": 461538,
+      "failures": 0,
+      "runtime_exceptions": 0,
+      "reports": [
+        "/tmp/chase-opt-20261030-fivehour/print-final-v17/results.json",
+        "/tmp/chase-opt-20261030-fivehour/forced-print-final-v17/results.json"
+      ]
+    },
+    {
+      "suite": "Final native print visual inspection",
+      "snapshot": "review-v15",
+      "checked_box": true,
+      "current_parameters": [
+        2,
+        0.4
+      ],
+      "no_caret_or_native_spinner_or_focus_ink": true,
+      "report_image": "/tmp/chase-opt-20261030-fivehour/timing-final-clean-print.png"
+    }
+  ],
+  "final_verification": {
+    "production": {
+      "reviewed_posts": 95,
+      "learning_paths": 11,
+      "acceptance_checks": 509,
+      "blog_posting_schemas": 92,
+      "sharing_images": 54,
+      "shared_search_indexes": 2,
+      "classified_tags": 187,
+      "code_blocks": 599,
+      "syntax_checked_by_language": {
+        "bash": 238,
+        "json": 8,
+        "jsonc": 6,
+        "python": 210,
+        "sh": 10,
+        "xml": 1
+      },
+      "html_pages": 316,
+      "local_references_checked": 31932,
+      "collection_pages_checked": 302,
+      "filter_indexes_checked": 10,
+      "errors": [],
+      "python_fragment_warnings": [],
+      "unrendered_math_warnings": []
+    },
+    "source_examples": {
+      "parameter_identification_tests": 28,
+      "tamp_tests": 22,
+      "tamp_python_versions": [
+        "3.10",
+        "3.11",
+        "3.12"
+      ],
+      "tamp_independent_decimal_distances": 195,
+      "tamp_independent_contact_cases": 3,
+      "identification_python_version": "3.12.14",
+      "pinocchio_version": "4.1.0",
+      "drake_version": "1.58.0"
+    },
+    "download_examples": {
+      "identification_archive_tests": 28,
+      "article_only_skips": 2,
+      "identification_members": 19,
+      "tamp_members": 9,
+      "linux_wheel_lock_identical_to_ci": true
+    },
+    "timing_arithmetic": {
+      "browser_random_closed_form_cases": 500,
+      "browser_invalid_inputs": 43,
+      "independent_python_comparisons": 6,
+      "stdlib_random_runs": 600
+    },
+    "timing_component": {
+      "screens": 40,
+      "interactiveStates": 18,
+      "semantics": 21,
+      "fallbacks": 4,
+      "outlines": 216,
+      "pdfs": 12,
+      "exceptions": 0
+    },
+    "timing_component_semantics": {
+      "violations": 0,
+      "incomplete": 0
+    },
+    "timing_native_print": {
+      "ordinary_a4": 12,
+      "forced_colors_a4": 12,
+      "letter": 2,
+      "focus_preserved_for_all_explicitly_focused_controls": true,
+      "all_result_label_value_pairs_kept_together": true,
+      "current_inputs_and_outputs_preserved": true,
+      "caret_outline_and_spinner_absent_in_manual_print_inspection": true
+    },
+    "new_table_layouts": {
+      "tableLayouts": 96,
+      "keyboardScrolls": 60,
+      "mathLayouts": 4,
+      "exceptions": 0
+    },
+    "final_theme_setup": "Root class and CSS color-scheme synchronized; native theme buttons independently checked. Earlier class-only temporary captures were superseded.",
+    "changed_article_reading": {
+      "cases": 76,
+      "figure_cases": 68,
+      "failures": 0,
+      "runtime_exceptions": 0
+    },
+    "changed_article_image_viewers": {
+      "cases": 68,
+      "articles": 2,
+      "formats": [
+        "png",
+        "webp"
+      ],
+      "runtimeExceptions": 0
+    },
+    "all_article_reflow": {
+      "layouts": 1908,
+      "failures": 0,
+      "runtimeExceptions": 0
+    },
+    "all_article_print": {
+      "layouts": 570,
+      "failures": 0,
+      "textSamples": 461538,
+      "runtimeExceptions": 0
+    },
+    "all_article_forced_color_print": {
+      "layouts": 570,
+      "failures": 0,
+      "textSamples": 461538,
+      "runtimeExceptions": 0
+    },
+    "anchor_preservation": [
+      {
+        "route": "posts/planner/task-and-motion-planning/",
+        "initial_headings": 52,
+        "preserved_headings": 52,
+        "missing_headings": [],
+        "new_headings": [
+          "grid-resolution"
+        ],
+        "initial_figures": 10,
+        "missing_figures": [],
+        "missing_other_ids": []
+      },
+      {
+        "route": "posts/robotics/dynamics/parameter-identification/",
+        "initial_headings": 66,
+        "preserved_headings": 66,
+        "missing_headings": [],
+        "new_headings": [
+          "preprocess-window-study",
+          "scaled-condition-excitation"
+        ],
+        "initial_figures": 7,
+        "missing_figures": [],
+        "missing_other_ids": []
+      }
+    ],
+    "article_publication_dates_draft_states_and_urls": "preserved",
+    "published_bundle_files_identical_to_source": 31,
+    "pinned_assets": {
+      "files": 29,
+      "math_fonts": 20,
+      "integrity_assets": 23
+    }
+  },
+  "evidence_directory": "docs/site-reviews/2026-10-30-fivehour",
+  "source_manifest": "docs/site-reviews/2026-10-30-fivehour/source-manifest.json",
+  "primary_source_review": {
+    "reviewed_on": "2026-10-30",
+    "libraries": [
+      "https://github.com/stack-of-tasks/pinocchio/blob/v4.1.0/include/pinocchio/src/algorithm/rnea.hxx",
+      "https://underactuated.csail.mit.edu/sysid.html",
+      "https://drake.mit.edu/",
+      "https://rbdl.github.io/",
+      "https://petercorke.github.io/robotics-toolbox-python/arm_dh.html",
+      "https://gbionics.github.io/idyntree/group__iDynTreeModel.html"
+    ],
+    "research_projects": [
+      "https://github.com/lbr-stack/dynamic_parameter_identification",
+      "https://github.com/kjyv/FloBaRoID",
+      "https://github.com/ShahramKhorshidi/legged_robot_system_identification",
+      "https://github.com/TUM-ICS/BIRDy"
+    ],
+    "finding": "The comparison remains consistent with the primary documentation. The old ShahramKhorshidi/system_identification link redirects to legged_robot_system_identification; physical-consistency solver descriptions remain supported."
+  },
+  "elapsed_seconds": 24892
+}

@@ -1,0 +1,330 @@
+{
+  "pdfs": [
+    {
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "palette": {
+        "theme": "light",
+        "nativeControl": true,
+        "className": "light",
+        "colorScheme": "light",
+        "configuredColorScheme": "light",
+        "forcedColors": false
+      },
+      "file": "/tmp/chase-pion-sevenhour-20261102/pdf-grpoexample/pion-true-100-light-a4.pdf",
+      "pages": 46,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "beforeprintStyles": [
+        {
+          "outline": "auto",
+          "shadow": "none",
+          "print": false
+        }
+      ],
+      "sourceCheck": {
+        "prose": {
+          "same": true,
+          "expectedCount": 305,
+          "actualCount": 305
+        },
+        "headings": {
+          "same": true,
+          "expectedCount": 51,
+          "actualCount": 51
+        },
+        "formulas": {
+          "same": true,
+          "expectedCount": 265,
+          "actualCount": 265
+        },
+        "code": {
+          "same": true,
+          "expectedCount": 16,
+          "actualCount": 16
+        },
+        "figures": {
+          "same": true,
+          "expectedCount": 6,
+          "actualCount": 6
+        },
+        "styles": {
+          "same": true,
+          "expectedCount": 3,
+          "actualCount": 3
+        },
+        "entries": {
+          "same": true,
+          "expectedCount": 7,
+          "actualCount": 7
+        }
+      },
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "scripts": true,
+      "size": 200,
+      "theme": "dark",
+      "paper": "a4",
+      "palette": {
+        "theme": "dark",
+        "nativeControl": true,
+        "className": "dark",
+        "colorScheme": "dark",
+        "configuredColorScheme": "dark",
+        "forcedColors": false
+      },
+      "file": "/tmp/chase-pion-sevenhour-20261102/pdf-grpoexample/pion-true-200-dark-a4.pdf",
+      "pages": 126,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "beforeprintStyles": [
+        {
+          "outline": "auto",
+          "shadow": "none",
+          "print": false
+        }
+      ],
+      "sourceCheck": {
+        "prose": {
+          "same": true,
+          "expectedCount": 305,
+          "actualCount": 305
+        },
+        "headings": {
+          "same": true,
+          "expectedCount": 51,
+          "actualCount": 51
+        },
+        "formulas": {
+          "same": true,
+          "expectedCount": 265,
+          "actualCount": 265
+        },
+        "code": {
+          "same": true,
+          "expectedCount": 16,
+          "actualCount": 16
+        },
+        "figures": {
+          "same": true,
+          "expectedCount": 6,
+          "actualCount": 6
+        },
+        "styles": {
+          "same": true,
+          "expectedCount": 3,
+          "actualCount": 3
+        },
+        "entries": {
+          "same": true,
+          "expectedCount": 7,
+          "actualCount": 7
+        }
+      },
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "scripts": false,
+      "size": 100,
+      "theme": "warm",
+      "paper": "a4",
+      "palette": {
+        "theme": "warm",
+        "nativeControl": false,
+        "className": "light warm",
+        "colorScheme": "light",
+        "configuredColorScheme": "light",
+        "forcedColors": false
+      },
+      "file": "/tmp/chase-pion-sevenhour-20261102/pdf-grpoexample/pion-false-100-warm-a4.pdf",
+      "pages": 45,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "beforeprintStyles": [],
+      "sourceCheck": {
+        "prose": {
+          "same": true,
+          "expectedCount": 305,
+          "actualCount": 305
+        },
+        "headings": {
+          "same": true,
+          "expectedCount": 51,
+          "actualCount": 51
+        },
+        "formulas": {
+          "same": true,
+          "expectedCount": 265,
+          "actualCount": 265
+        },
+        "code": {
+          "same": true,
+          "expectedCount": 16,
+          "actualCount": 16
+        },
+        "figures": {
+          "same": true,
+          "expectedCount": 6,
+          "actualCount": 6
+        },
+        "styles": {
+          "same": true,
+          "expectedCount": 3,
+          "actualCount": 3
+        },
+        "entries": {
+          "same": true,
+          "expectedCount": 7,
+          "actualCount": 7
+        }
+      },
+      "scriptExecutionDisabledEntireCase": true
+    },
+    {
+      "scripts": false,
+      "size": 200,
+      "theme": "warm",
+      "paper": "a4",
+      "palette": {
+        "theme": "warm",
+        "nativeControl": false,
+        "className": "light warm",
+        "colorScheme": "light",
+        "configuredColorScheme": "light",
+        "forcedColors": false
+      },
+      "file": "/tmp/chase-pion-sevenhour-20261102/pdf-grpoexample/pion-false-200-warm-a4.pdf",
+      "pages": 124,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "beforeprintStyles": [],
+      "sourceCheck": {
+        "prose": {
+          "same": true,
+          "expectedCount": 305,
+          "actualCount": 305
+        },
+        "headings": {
+          "same": true,
+          "expectedCount": 51,
+          "actualCount": 51
+        },
+        "formulas": {
+          "same": true,
+          "expectedCount": 265,
+          "actualCount": 265
+        },
+        "code": {
+          "same": true,
+          "expectedCount": 16,
+          "actualCount": 16
+        },
+        "figures": {
+          "same": true,
+          "expectedCount": 6,
+          "actualCount": 6
+        },
+        "styles": {
+          "same": true,
+          "expectedCount": 3,
+          "actualCount": 3
+        },
+        "entries": {
+          "same": true,
+          "expectedCount": 7,
+          "actualCount": 7
+        }
+      },
+      "scriptExecutionDisabledEntireCase": true
+    },
+    {
+      "scripts": true,
+      "size": 200,
+      "theme": "light",
+      "paper": "letter",
+      "palette": {
+        "theme": "light",
+        "nativeControl": true,
+        "className": "light",
+        "colorScheme": "light",
+        "configuredColorScheme": "light",
+        "forcedColors": false
+      },
+      "file": "/tmp/chase-pion-sevenhour-20261102/pdf-grpoexample/pion-true-200-light-letter.pdf",
+      "pages": 131,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "beforeprintStyles": [
+        {
+          "outline": "auto",
+          "shadow": "none",
+          "print": false
+        }
+      ],
+      "sourceCheck": {
+        "prose": {
+          "same": true,
+          "expectedCount": 305,
+          "actualCount": 305
+        },
+        "headings": {
+          "same": true,
+          "expectedCount": 51,
+          "actualCount": 51
+        },
+        "formulas": {
+          "same": true,
+          "expectedCount": 265,
+          "actualCount": 265
+        },
+        "code": {
+          "same": true,
+          "expectedCount": 16,
+          "actualCount": 16
+        },
+        "figures": {
+          "same": true,
+          "expectedCount": 6,
+          "actualCount": 6
+        },
+        "styles": {
+          "same": true,
+          "expectedCount": 3,
+          "actualCount": 3
+        },
+        "entries": {
+          "same": true,
+          "expectedCount": 7,
+          "actualCount": 7
+        }
+      },
+      "scriptExecutionDisabledEntireCase": false
+    }
+  ],
+  "exceptions": [],
+  "sourceHtmlSha256": "1535e0490513e52859dce45f0a959c19b619e3502ed9afcaaf45872eeaa7410a",
+  "cacheControl": "no-store, max-age=0"
+}

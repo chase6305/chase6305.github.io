@@ -1,0 +1,157 @@
+{
+  "scope": "Pinned VLA helper input mutation on small CPU tensors; not distributed execution or a model training test",
+  "official_sha256": "8e7ca8d6f40ebc4fb066acb15387e618d515896cca5d1eb0ad234e5310e9157e",
+  "torch": "2.8.0+cu128",
+  "rows": [
+    {
+      "dtype": "torch.float32",
+      "helper": "fast_newtonschulz",
+      "input_preserved": true,
+      "before": [
+        [
+          0.800000011920929,
+          0.0
+        ],
+        [
+          0.0,
+          0.20000000298023224
+        ]
+      ],
+      "after": [
+        [
+          0.800000011920929,
+          0.0
+        ],
+        [
+          0.0,
+          0.20000000298023224
+        ]
+      ]
+    },
+    {
+      "dtype": "torch.float32",
+      "helper": "high_pass_ns",
+      "input_preserved": true,
+      "before": [
+        [
+          0.800000011920929,
+          0.0
+        ],
+        [
+          0.0,
+          0.20000000298023224
+        ]
+      ],
+      "after": [
+        [
+          0.800000011920929,
+          0.0
+        ],
+        [
+          0.0,
+          0.20000000298023224
+        ]
+      ]
+    },
+    {
+      "dtype": "torch.float64",
+      "helper": "fast_newtonschulz",
+      "input_preserved": true,
+      "before": [
+        [
+          0.8,
+          0.0
+        ],
+        [
+          0.0,
+          0.2
+        ]
+      ],
+      "after": [
+        [
+          0.8,
+          0.0
+        ],
+        [
+          0.0,
+          0.2
+        ]
+      ]
+    },
+    {
+      "dtype": "torch.float64",
+      "helper": "high_pass_ns",
+      "input_preserved": true,
+      "before": [
+        [
+          0.8,
+          0.0
+        ],
+        [
+          0.0,
+          0.2
+        ]
+      ],
+      "after": [
+        [
+          0.8,
+          0.0
+        ],
+        [
+          0.0,
+          0.2
+        ]
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "helper": "fast_newtonschulz",
+      "input_preserved": false,
+      "before": [
+        [
+          0.80078125,
+          0.0
+        ],
+        [
+          0.0,
+          0.2001953125
+        ]
+      ],
+      "after": [
+        [
+          0.97265625,
+          0.0
+        ],
+        [
+          0.0,
+          0.2431640625
+        ]
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "helper": "high_pass_ns",
+      "input_preserved": true,
+      "before": [
+        [
+          0.80078125,
+          0.0
+        ],
+        [
+          0.0,
+          0.2001953125
+        ]
+      ],
+      "after": [
+        [
+          0.80078125,
+          0.0
+        ],
+        [
+          0.0,
+          0.2001953125
+        ]
+      ]
+    }
+  ]
+}

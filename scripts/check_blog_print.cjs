@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // A4 print geometry, complete disclosures and screen-state restoration.
 // Run serially with other CDP checks. --drafts requires a draft-inclusive build.
+// Add --large-text to inspect 200% root text, including formula clipping.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -10,6 +11,7 @@ const base = process.argv[2] || 'http://127.0.0.1:13147';
 const port = Number(process.argv[3] || 9226);
 const output = process.argv[4] || '/tmp/chase-blog-print';
 const drafts = process.argv.includes('--drafts');
+const fontSize = process.argv.includes('--large-text') ? 200 : 100;
 const features = process.argv.includes('--forced-colors') ? [
   {name: 'forced-colors', value: 'active'}, {name: 'prefers-color-scheme', value: 'dark'}
 ] : [];
@@ -19,8 +21,10 @@ const posts = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/blog-edit
 (async () => {
   fs.mkdirSync(output, {recursive: true});
   const browser = await connect(port);
-  const report = {layouts: [], exceptions: browser.exceptions, forcedColors: features.length > 0};
+  const report = {layouts: [], exceptions: browser.exceptions, forcedColors: features.length > 0, fontSize};
   try {
+    // Compare screen outlines within the same palette before and after print.
+    await browser.cdp('Emulation.setEmulatedMedia', {media: '', features});
     // A4 with 0.4-inch side margins leaves about 717 CSS pixels.
     await browser.viewport(716);
     for (const scripts of [true, false]) {
@@ -28,10 +32,20 @@ const posts = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/blog-edit
       for (const post of posts) {
         const route = '/' + post.path.replace(/^content\//, '').replace(/\/index\.md$|\.md$/, '').toLowerCase() + '/';
         await browser.navigate(base + route);
+        await browser.evaluate(`document.documentElement.style.fontSize='${fontSize}%'`);
         await browser.evaluate('document.fonts.ready');
         const original = await browser.evaluate(`[...document.querySelectorAll('.content details:not(.blog-mobile-toc)')].map(d=>d.open)`);
+        const focusTarget = await browser.evaluate(`(() => {
+          const candidates=[...document.querySelectorAll('.content details:not(.blog-mobile-toc)>summary,.content a[href]')];
+          window.__printFocusTarget=candidates.find(e=>e.checkVisibility()&&!e.closest('.blog-mobile-toc,.blog-related,.blog-topic-nav'));
+          __printFocusTarget?.focus();
+          return !!__printFocusTarget&&document.activeElement===__printFocusTarget;
+        })()`);
+        assert(focusTarget, 'No focusable reading target: '+route);
         for (const theme of ['light', 'dark', 'warm']) {
           await browser.evaluate(`document.documentElement.classList.remove('dark','warm');${theme === 'light' ? '' : `document.documentElement.classList.add('${theme}')`}`);
+          const screenOutline = await browser.evaluate('getComputedStyle(__printFocusTarget).outline');
+          const screenMarkers = await browser.evaluate(`[...document.querySelectorAll('.content details>summary')].map(e=>getComputedStyle(e).listStyleType)`);
           await browser.cdp('Emulation.setEmulatedMedia', {media: 'print', features});
           await browser.pause(60);
           const state = await browser.evaluate(`(() => {
@@ -50,7 +64,12 @@ const posts = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/blog-edit
             const paper=getComputedStyle(document.body).backgroundColor==='rgb(255, 255, 255)'
               &&getComputedStyle(document.documentElement).backgroundColor==='rgb(255, 255, 255)'
               &&getComputedStyle(document.documentElement).colorScheme==='light';
-            return {math,code,tables,hiddenDetails,surfaces,paper};
+            const focusStyle=getComputedStyle(__printFocusTarget);
+            const focusInk=focusStyle.outlineStyle!=='none'||focusStyle.boxShadow!=='none';
+            const closedPrintMarkers=[...document.querySelectorAll('.content details>summary')].filter(e=>{
+              const s=getComputedStyle(e);return s.display==='list-item'&&s.listStyleType==='disclosure-closed';
+            }).length;
+            return {math,code,tables,hiddenDetails,surfaces,paper,focusInk,closedPrintMarkers};
           })()`);
           const text = await browser.evaluate('(' + contrastAudit.toString() + ')(".content")');
           await browser.cdp('Emulation.setEmulatedMedia', {media: '', features});
@@ -61,8 +80,11 @@ const posts = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/blog-edit
             restored = await browser.evaluate(`[...document.querySelectorAll('.content details:not(.blog-mobile-toc)')].map(d=>d.open)`);
           } while (JSON.stringify(restored) !== JSON.stringify(original) && Date.now() - restoreStarted < 2000);
           const stateRestored = JSON.stringify(restored) === JSON.stringify(original);
-          const passed = state.paper && !state.math.length && !state.code && !state.tables && !state.hiddenDetails && !state.surfaces && !text.issues.length && stateRestored;
-          report.layouts.push({route, scripts, theme, passed, stateRestored, restoreWaitMs: Date.now() - restoreStarted,
+          const focusRestored = await browser.evaluate('document.activeElement===__printFocusTarget');
+          const outlineRestored = await browser.evaluate('getComputedStyle(__printFocusTarget).outline') === screenOutline;
+          const markersRestored = JSON.stringify(await browser.evaluate(`[...document.querySelectorAll('.content details>summary')].map(e=>getComputedStyle(e).listStyleType)`)) === JSON.stringify(screenMarkers);
+          const passed = state.paper && !state.math.length && !state.code && !state.tables && !state.hiddenDetails && !state.surfaces && !state.focusInk && !state.closedPrintMarkers && !text.issues.length && stateRestored && focusRestored && outlineRestored && markersRestored;
+          report.layouts.push({route, scripts, theme, passed, stateRestored, focusRestored, outlineRestored, markersRestored, restoreWaitMs: Date.now() - restoreStarted,
             ...state, textSamples: text.checked, contrastIssues: text.issues});
         }
       }

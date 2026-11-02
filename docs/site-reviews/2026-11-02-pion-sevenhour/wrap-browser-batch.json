@@ -1,0 +1,126 @@
+[
+  {
+    "name": "wrap-copies",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/check_copies.cjs",
+      "http://127.0.0.1:13539",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/wrap-copies",
+      "/tmp/chase-pion-sevenhour-20261102/source-wrap.md"
+    ],
+    "started_utc": "2026-11-01T21:22:14.496495+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "68b2d17e37adc01af7a2d2ecd82e7bc9c880d52485dec8873c7637b6711147d6",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 8.832,
+    "finished_utc": "2026-11-01T21:22:23.328366+00:00"
+  },
+  {
+    "name": "wrap-code-reading",
+    "command": [
+      "node",
+      "scripts/check_code_reading.cjs",
+      "http://127.0.0.1:13539",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/wrap-code-reading"
+    ],
+    "started_utc": "2026-11-01T21:22:23.331933+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "800d11625d60c20264ac815e9c3031cfd4b05cac7e315218b6b978b8d1ce2a0e",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 7.38,
+    "finished_utc": "2026-11-01T21:22:30.712405+00:00"
+  },
+  {
+    "name": "wrap-print-all",
+    "command": [
+      "node",
+      "scripts/check_blog_print.cjs",
+      "http://127.0.0.1:13541",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/wrap-print-all",
+      "--drafts"
+    ],
+    "started_utc": "2026-11-01T21:22:30.716464+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "d3c7f16aa76deaf33725387f317ff8fabbfb05dc6c392dbc6bf4a5ad393f7e28",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 131.685,
+    "finished_utc": "2026-11-01T21:24:42.401856+00:00"
+  },
+  {
+    "name": "wrap-print-large",
+    "command": [
+      "node",
+      "/tmp/chase-pion-sevenhour-20261102/check-pion-print.cjs",
+      "http://127.0.0.1:13539",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/wrap-print-large",
+      "--large-text"
+    ],
+    "started_utc": "2026-11-01T21:24:42.405746+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "e165be4af4cca1dafd5ab91e76e642b659eff5946e7aea808edc22907520131c",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 3.621,
+    "finished_utc": "2026-11-01T21:24:46.026928+00:00"
+  },
+  {
+    "name": "wrap-print-large-forced",
+    "command": [
+      "node",
+      "/tmp/chase-pion-sevenhour-20261102/check-pion-print.cjs",
+      "http://127.0.0.1:13539",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/wrap-print-large-forced",
+      "--large-text",
+      "--forced-colors"
+    ],
+    "started_utc": "2026-11-01T21:24:46.030832+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "e165be4af4cca1dafd5ab91e76e642b659eff5946e7aea808edc22907520131c",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 3.722,
+    "finished_utc": "2026-11-01T21:24:49.753331+00:00"
+  },
+  {
+    "name": "wrap-content-search",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/check_new_content_search.cjs",
+      "http://127.0.0.1:13539",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/wrap-content-search"
+    ],
+    "started_utc": "2026-11-01T21:24:49.757269+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "83af1f5a8f82f91cb4799a0992bf9f6e93cd4ccc4ffe1734625a8651b4b1a90b",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 7.637,
+    "finished_utc": "2026-11-01T21:24:57.394252+00:00"
+  },
+  {
+    "name": "wrap-native-pdf",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/export_reading.cjs",
+      "http://127.0.0.1:13539",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/pdf-wrap"
+    ],
+    "started_utc": "2026-11-01T21:24:57.398397+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "f8125a6f236dc04b44e2dd3c41df2a64f074dc256da259615dbc352438aad9e7",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 21.306,
+    "finished_utc": "2026-11-01T21:25:18.704588+00:00"
+  }
+]

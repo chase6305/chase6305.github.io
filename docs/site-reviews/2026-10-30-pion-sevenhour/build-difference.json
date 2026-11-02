@@ -1,0 +1,18 @@
+{
+  "changed_files": [
+    "categories/人工智能/index.xml",
+    "posts/ai/pion-muon-vla-rlvr/index.html",
+    "tags/grpo/index.xml",
+    "tags/muon/index.xml",
+    "tags/paper-notes/index.xml",
+    "tags/pion/index.xml",
+    "tags/rlvr/index.xml",
+    "tags/vla/index.xml"
+  ],
+  "added_files": [],
+  "deleted_files": [],
+  "other_identical_files": 2205,
+  "article_difference": "Only the Qwen3 source URL fragment changed in articleHTML and seven related RSS feeds; all other bytes match.",
+  "old_html_sha256": "14fce63f8f7e30bb76e56b23abf8e425be6627fa5d3dedab8ecb2442cc0f1119",
+  "current_html_sha256": "19a01a3bcd86d9df465f4896cdd66e261d0dd990faad795e4c7ec71c8599f077"
+}

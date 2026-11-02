@@ -1,0 +1,72 @@
+{{- $id := .Get "id" | default (printf "pion-spectrum-%d" .Ordinal) -}}
+{{- $reference := (.Page.Resources.Get "assets/spectral-reference.json").Content | transform.Unmarshal -}}
+{{- $default := $reference.interactive_default -}}
+{{- $css := resources.Get "css/pion-spectrum.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/pion-spectrum.js" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section id="{{ $id }}" class="pion-spectrum" data-pion-spectrum aria-labelledby="{{ $id }}-title">
+  <p id="{{ $id }}-title" class="pion-spectrum__title"><strong>动手看：谱形状与更新幅度</strong></p>
+  <p class="pion-spectrum__detail">输入四个方向的原始幅度，先归一化，再计算五步 Muon 与 Pion。这里使用双精度标量计算，不模拟 BF16、训练噪声或任务成功率。</p>
+  <p data-static>默认例子为 0.8、0.4、0.2、0.02，一次提升加四次抑制，ε 为零。下表与结果可直接由下载包复算；脚本不可用时保留这组默认数值。</p>
+  <div data-controls hidden>
+    <div class="pion-spectrum__presets" role="group" aria-label="选择构造谱">
+      <button type="button" data-preset="concentrated">集中谱 · 1+4</button>
+      <button type="button" data-preset="flat">平坦谱 · 0+5</button>
+      <button type="button" data-preset="tiny">微小幅值 + ε</button>
+      <button type="button" data-preset="zero">全零输入</button>
+    </div>
+    <form novalidate aria-label="原始谱与高通调度">
+      <fieldset>
+        <legend>原始奇异方向幅度</legend>
+        <div class="pion-spectrum__fields">
+          {{- range $index, $value := $default.raw -}}
+          <label for="{{ $id }}-sigma-{{ $index }}">方向 {{ add $index 1 }}
+            <input id="{{ $id }}-sigma-{{ $index }}" name="sigma{{ $index }}" type="number" min="0" max="10000" step="any" value="{{ $value }}" required inputmode="decimal" aria-describedby="{{ $id }}-input-help">
+          </label>
+          {{- end -}}
+        </div>
+      </fieldset>
+      <p id="{{ $id }}-input-help" class="pion-spectrum__detail">每项为 0 到 10000 的有限非负数，保留输入方向顺序；允许全零。不需要提前把平方和调成 1。</p>
+      <div class="pion-spectrum__settings">
+        <label for="{{ $id }}-kp">提升次数
+          <select id="{{ $id }}-kp" name="promotionSteps">
+            {{- range seq 0 5 -}}<option value="{{ . }}"{{ if eq . 1 }} selected{{ end }}>{{ . }} 提升 + {{ sub 5 . }} 抑制</option>{{- end -}}
+          </select>
+        </label>
+        <label for="{{ $id }}-epsilon" class="pion-spectrum__checkbox">
+          <input id="{{ $id }}-epsilon" name="includeEpsilon" type="checkbox">
+          分母加入 ε = 10⁻⁷
+        </label>
+      </div>
+    </form>
+  </div>
+  <p data-error class="pion-spectrum__error" role="alert" hidden></p>
+  <dl class="pion-spectrum__results" aria-live="polite" aria-atomic="true">
+    <div><dt>原始输入有效秩</dt><dd><output data-value="input_erank" aria-label="原始输入的熵有效秩">{{ partial "pion-number.html" $default.input_erank }}</output></dd></div>
+    <div><dt>Pion 输出有效秩</dt><dd><output data-value="pion_erank" aria-label="Pion 输出的熵有效秩">{{ partial "pion-number.html" $default.pion_erank }}</output></dd></div>
+    <div><dt>Muon 输出范数</dt><dd><output data-value="muon_norm" aria-label="Muon 谱变换输出的 Frobenius 范数">{{ partial "pion-number.html" $default.muon_norm }}</output></dd></div>
+    <div><dt>Pion 输出范数</dt><dd><output data-value="pion_norm" aria-label="Pion 谱变换输出的 Frobenius 范数">{{ partial "pion-number.html" $default.pion_norm }}</output></dd></div>
+  </dl>
+  <table class="pion-spectrum__table" tabindex="0" aria-label="四个方向的归一化与谱响应系数">
+    <caption>逐方向比较</caption>
+    <thead><tr><th scope="col">原方向</th><th scope="col">归一化输入</th><th scope="col">Muon 系数</th><th scope="col">Pion 系数</th></tr></thead>
+    <tbody>
+      {{- range $index, $value := $default.raw -}}
+      <tr><th scope="row">{{ add $index 1 }}</th><td data-series="normalized">{{ partial "pion-number.html" (index $default.normalized $index) }}</td><td data-series="muon">{{ partial "pion-number.html" (index $default.muon $index) }}</td><td data-series="pion">{{ partial "pion-number.html" (index $default.pion $index) }}</td></tr>
+      {{- end -}}
+    </tbody>
+  </table>
+  <div data-chart class="pion-spectrum__plot" hidden>
+    <p class="pion-spectrum__axis">输出系数</p>
+    <svg role="img" aria-label="恒等、五步 Muon 与所选 Pion 的响应曲线，标记来自当前四个归一化输入；完整数值见结果表"></svg>
+    <p class="pion-spectrum__axis pion-spectrum__axis--input">归一化奇异值</p>
+    <div class="pion-spectrum__legend" role="group" aria-label="曲线图例">
+      <span><i class="pion-spectrum__key pion-spectrum__key--identity" aria-hidden="true"></i>恒等（点线）</span>
+      <span><i class="pion-spectrum__key pion-spectrum__key--muon" aria-hidden="true"></i>Muon（虚线、方点）</span>
+      <span><i class="pion-spectrum__key" aria-hidden="true"></i>Pion（实线、圆点）</span>
+    </div>
+    <p class="pion-spectrum__detail">曲线表示所选多项式，标记表示当前归一化输入。曲线的横轴不是原始幅度，也不是时间频率。</p>
+  </div>
+  <p data-note class="pion-spectrum__detail">有效秩描述谱形状，输出范数描述幅度。这里不含学习率、尺寸缩放或真实训练过程。</p>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

@@ -1,0 +1,185 @@
+{
+  "construction": "B independent scalar gradients G=1+Z with iid equiprobable signs Z; n identical copies of each group.",
+  "scope": "Analytic expectations for this constructed distribution, not training measurements or a model of GRPO dependence. Grouping requires known independent sampling units.",
+  "population_mean": 1,
+  "population_trace_variance": 1,
+  "population_snr_per_independent_group": 1,
+  "cases": [
+    {
+      "independent_groups": 4,
+      "copies_per_group": 1,
+      "recorded_rows": 4,
+      "true_signal_power": 1,
+      "marginal_variance_per_row": 1,
+      "variance_of_sample_mean": 0.25,
+      "expectations": {
+        "sample_mean_power": {
+          "exact": "5/4",
+          "float": 1.25
+        },
+        "row_sample_variance": {
+          "exact": "1",
+          "float": 1.0
+        },
+        "row_iid_corrected_signal_power": {
+          "exact": "1",
+          "float": 1.0
+        },
+        "row_iid_correction_bias": {
+          "exact": "0",
+          "float": 0.0
+        },
+        "independent_group_sample_variance": {
+          "exact": "1",
+          "float": 1.0
+        },
+        "independent_group_corrected_signal_power": {
+          "exact": "1",
+          "float": 1.0
+        }
+      }
+    },
+    {
+      "independent_groups": 4,
+      "copies_per_group": 2,
+      "recorded_rows": 8,
+      "true_signal_power": 1,
+      "marginal_variance_per_row": 1,
+      "variance_of_sample_mean": 0.25,
+      "expectations": {
+        "sample_mean_power": {
+          "exact": "5/4",
+          "float": 1.25
+        },
+        "row_sample_variance": {
+          "exact": "6/7",
+          "float": 0.8571428571428571
+        },
+        "row_iid_corrected_signal_power": {
+          "exact": "8/7",
+          "float": 1.1428571428571428
+        },
+        "row_iid_correction_bias": {
+          "exact": "1/7",
+          "float": 0.14285714285714285
+        },
+        "independent_group_sample_variance": {
+          "exact": "1",
+          "float": 1.0
+        },
+        "independent_group_corrected_signal_power": {
+          "exact": "1",
+          "float": 1.0
+        }
+      }
+    },
+    {
+      "independent_groups": 4,
+      "copies_per_group": 8,
+      "recorded_rows": 32,
+      "true_signal_power": 1,
+      "marginal_variance_per_row": 1,
+      "variance_of_sample_mean": 0.25,
+      "expectations": {
+        "sample_mean_power": {
+          "exact": "5/4",
+          "float": 1.25
+        },
+        "row_sample_variance": {
+          "exact": "24/31",
+          "float": 0.7741935483870968
+        },
+        "row_iid_corrected_signal_power": {
+          "exact": "38/31",
+          "float": 1.2258064516129032
+        },
+        "row_iid_correction_bias": {
+          "exact": "7/31",
+          "float": 0.22580645161290322
+        },
+        "independent_group_sample_variance": {
+          "exact": "1",
+          "float": 1.0
+        },
+        "independent_group_corrected_signal_power": {
+          "exact": "1",
+          "float": 1.0
+        }
+      }
+    },
+    {
+      "independent_groups": 4,
+      "copies_per_group": 32,
+      "recorded_rows": 128,
+      "true_signal_power": 1,
+      "marginal_variance_per_row": 1,
+      "variance_of_sample_mean": 0.25,
+      "expectations": {
+        "sample_mean_power": {
+          "exact": "5/4",
+          "float": 1.25
+        },
+        "row_sample_variance": {
+          "exact": "96/127",
+          "float": 0.7559055118110236
+        },
+        "row_iid_corrected_signal_power": {
+          "exact": "158/127",
+          "float": 1.2440944881889764
+        },
+        "row_iid_correction_bias": {
+          "exact": "31/127",
+          "float": 0.2440944881889764
+        },
+        "independent_group_sample_variance": {
+          "exact": "1",
+          "float": 1.0
+        },
+        "independent_group_corrected_signal_power": {
+          "exact": "1",
+          "float": 1.0
+        }
+      }
+    }
+  ],
+  "finite_example": {
+    "group_gradients": [
+      0.0,
+      0.0,
+      2.0,
+      2.0
+    ],
+    "copies_per_group": 8,
+    "row_based": {
+      "observations": 32,
+      "coordinates": 1,
+      "mean": [
+        1.0
+      ],
+      "sample_mean_power": 1.0,
+      "sample_trace_variance": 1.032258064516129,
+      "mean_noise_correction": 0.03225806451612903,
+      "corrected_signal_power_signed": 0.967741935483871,
+      "naive_ratio": 0.96875,
+      "corrected_ratio_signed": 0.9375,
+      "sample_variance_zero": false,
+      "corrected_power_negative": false
+    },
+    "independent_group_based": {
+      "observations": 4,
+      "coordinates": 1,
+      "mean": [
+        1.0
+      ],
+      "sample_mean_power": 1.0,
+      "sample_trace_variance": 1.3333333333333333,
+      "mean_noise_correction": 0.3333333333333333,
+      "corrected_signal_power_signed": 0.6666666666666667,
+      "naive_ratio": 0.75,
+      "corrected_ratio_signed": 0.5000000000000001,
+      "sample_variance_zero": false,
+      "corrected_power_negative": false
+    }
+  },
+  "interpretation": "Expectations are over all independent group draws. A single corrected power can fall above or below the true power. Copies leave the sample mean and its true uncertainty unchanged. Averaging estimated SNR ratios is not asserted to be unbiased."
+}

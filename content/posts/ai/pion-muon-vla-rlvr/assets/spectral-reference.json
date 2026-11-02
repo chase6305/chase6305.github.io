@@ -1,0 +1,105 @@
+{
+  "paper": "arXiv:2605.19282v1",
+  "scope": "Deterministic scalar arithmetic, not model training or noise identification",
+  "steps": 5,
+  "suppression_unstable_fixed_point": 0.816496580927726,
+  "half_response_inputs": [
+    0.7978110737261717,
+    0.4922304472377822,
+    0.2633299164042673,
+    0.13051675282977704,
+    0.05952598792284551,
+    0.02324072042434213
+  ],
+  "example_raw_singular_values": [
+    0.8,
+    0.4,
+    0.2,
+    0.02
+  ],
+  "example_normalized_singular_values": [
+    0.8726638085761707,
+    0.4363319042880853,
+    0.21816595214404266,
+    0.021816595214404263
+  ],
+  "example_muon": [
+    0.8229394289637821,
+    1.1326145397422522,
+    0.6992026732452237,
+    0.7300699406318374
+  ],
+  "example_pion_kp1": [
+    0.9999999999999999,
+    0.04505245977838776,
+    1.404004313679718e-18,
+    2.815234842660799e-97
+  ],
+  "example_input_erank": 2.7628477061789316,
+  "interactive_default": {
+    "raw": [
+      0.8,
+      0.4,
+      0.2,
+      0.02
+    ],
+    "normalized": [
+      0.8726638085761705,
+      0.43633190428808527,
+      0.21816595214404264,
+      0.021816595214404263
+    ],
+    "muon": [
+      0.8229394289637796,
+      1.1326145397422522,
+      0.6992026732452237,
+      0.7300699406318374
+    ],
+    "pion": [
+      0.9999999999999999,
+      0.04505245977838776,
+      1.4040043136797054e-18,
+      2.815234842660799e-97
+    ],
+    "input_erank": 2.7628477061789316,
+    "muon_erank": 3.922717863920934,
+    "pion_erank": 1.1944737408878807,
+    "muon_norm": 1.7268270022982115,
+    "pion_norm": 1.001014347615499,
+    "promotion_steps": 1,
+    "suppression_steps": 4,
+    "epsilon": 0.0,
+    "all_zero": false
+  },
+  "isotropic_four_direction_sigma": 0.5,
+  "isotropic_four_direction_pion_kp0": 5.908000561416166e-32,
+  "real_robot_success_counts_inferred_from_30_trials": {
+    "AdamW": [
+      12,
+      10,
+      6
+    ],
+    "Muon": [
+      17,
+      10,
+      8
+    ],
+    "Pion": [
+      28,
+      25,
+      24
+    ]
+  },
+  "vl_adapter_suite_averages_percent": {
+    "AdamW": 72.0,
+    "Muon": 94.95,
+    "Pion": 97.25
+  },
+  "vlanext_pion_minus_muon_percentage_points": {
+    "LIBERO": 2.6999999999999886,
+    "LIBERO-Plus": 3.5900000000000034,
+    "Language": 9.400000000000006,
+    "Noise": 6.109999999999999,
+    "Robot": 5.82
+  }
+}

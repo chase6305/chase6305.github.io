@@ -1,0 +1,436 @@
+{
+  "scope": "Rank-one CPU optimizer steps; no model, GPU, VLA communication or general-matrix BF16 agreement",
+  "official_commit": "87965014b360bde604632cba0aa12e423c6c63c6",
+  "official_source_sha256": "15c1331453ef3db4b565a514d1e43f74692e2e910eb8cb939894d54371dd402d",
+  "torch": "2.8.0+cu128",
+  "numpy": "1.26.4",
+  "device": "cpu",
+  "parameter_dtype": "float64",
+  "official_internal_dtype": "bfloat16",
+  "lr": 0.01,
+  "weight_decay": 0.1,
+  "scale_factor": 0.2,
+  "epsilon": 1e-07,
+  "cases": [
+    {
+      "beta": 0.5,
+      "nesterov": false,
+      "promotion_steps": 0,
+      "steps": [
+        {
+          "step": 1,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 1
+        },
+        {
+          "step": 2,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 3,
+          "status": "missing_skip",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 4,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 3
+        }
+      ]
+    },
+    {
+      "beta": 0.5,
+      "nesterov": false,
+      "promotion_steps": 1,
+      "steps": [
+        {
+          "step": 1,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 1
+        },
+        {
+          "step": 2,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 3,
+          "status": "missing_skip",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 4,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 3
+        }
+      ]
+    },
+    {
+      "beta": 0.5,
+      "nesterov": false,
+      "promotion_steps": 5,
+      "steps": [
+        {
+          "step": 1,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 1
+        },
+        {
+          "step": 2,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 3,
+          "status": "missing_skip",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 4,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 3
+        }
+      ]
+    },
+    {
+      "beta": 0.5,
+      "nesterov": true,
+      "promotion_steps": 0,
+      "steps": [
+        {
+          "step": 1,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 1
+        },
+        {
+          "step": 2,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 3,
+          "status": "missing_skip",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 4,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 3
+        }
+      ]
+    },
+    {
+      "beta": 0.5,
+      "nesterov": true,
+      "promotion_steps": 1,
+      "steps": [
+        {
+          "step": 1,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 1
+        },
+        {
+          "step": 2,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 3,
+          "status": "missing_skip",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 4,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 3
+        }
+      ]
+    },
+    {
+      "beta": 0.5,
+      "nesterov": true,
+      "promotion_steps": 5,
+      "steps": [
+        {
+          "step": 1,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 1
+        },
+        {
+          "step": 2,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 3,
+          "status": "missing_skip",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 4,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 3
+        }
+      ]
+    },
+    {
+      "beta": 0.95,
+      "nesterov": false,
+      "promotion_steps": 0,
+      "steps": [
+        {
+          "step": 1,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 1
+        },
+        {
+          "step": 2,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 3,
+          "status": "missing_skip",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 4,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 3
+        }
+      ]
+    },
+    {
+      "beta": 0.95,
+      "nesterov": false,
+      "promotion_steps": 1,
+      "steps": [
+        {
+          "step": 1,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 1
+        },
+        {
+          "step": 2,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 3,
+          "status": "missing_skip",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 4,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 3
+        }
+      ]
+    },
+    {
+      "beta": 0.95,
+      "nesterov": false,
+      "promotion_steps": 5,
+      "steps": [
+        {
+          "step": 1,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 1
+        },
+        {
+          "step": 2,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 3,
+          "status": "missing_skip",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 4,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 3
+        }
+      ]
+    },
+    {
+      "beta": 0.95,
+      "nesterov": true,
+      "promotion_steps": 0,
+      "steps": [
+        {
+          "step": 1,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 1
+        },
+        {
+          "step": 2,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 3,
+          "status": "missing_skip",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 4,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 3
+        }
+      ]
+    },
+    {
+      "beta": 0.95,
+      "nesterov": true,
+      "promotion_steps": 1,
+      "steps": [
+        {
+          "step": 1,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 1
+        },
+        {
+          "step": 2,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 3,
+          "status": "missing_skip",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 4,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 3
+        }
+      ]
+    },
+    {
+      "beta": 0.95,
+      "nesterov": true,
+      "promotion_steps": 5,
+      "steps": [
+        {
+          "step": 1,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 1
+        },
+        {
+          "step": 2,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 3,
+          "status": "missing_skip",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 2
+        },
+        {
+          "step": 4,
+          "status": "gradient_observed",
+          "max_weight_difference": 0.0,
+          "max_buffer_difference": 0.0,
+          "official_observed_steps": 3
+        }
+      ]
+    }
+  ]
+}

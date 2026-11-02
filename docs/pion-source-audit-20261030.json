@@ -1,0 +1,219 @@
+{
+  "reviewed_on": "2026-10-30",
+  "article": "content/posts/ai/pion-muon-vla-rlvr/index.md",
+  "paper": {
+    "version": "arXiv:2605.19282v1",
+    "url": "https://arxiv.org/abs/2605.19282v1",
+    "pages": 43,
+    "sha256": "2016d07cca61aaa9be936f5a5a701ff033a89e6022f03a9795f639c4d1a2428f"
+  },
+  "formula_review": [
+    {
+      "subject": "Polynomial spectral identity and finite Muon",
+      "locations": "Main text equations 2,3,6; Appendix D",
+      "conclusion": "Odd matrix polynomials act on the compact nonzero singular subspace. Five iterations with 3.4445/-4.7750/2.0315 are not exact matrix sign."
+    },
+    {
+      "subject": "Promotion coefficient range",
+      "locations": "Appendix E pp23–24, A34–A43",
+      "conclusion": "f(1)=1 and fprime(1)=0 give a=1.5+c and b=-0.5-2c; global nondecrease requires c in [-1.5,0.375]. Largest origin slope gives a=1.875."
+    },
+    {
+      "subject": "Suppression and response threshold",
+      "locations": "Main equations7,8; Appendix E",
+      "conclusion": "Suppression coefficients 0/2.5/-1.5; sqrt(2/3) is a single-stage unstable fixed point, not the finite five-step half-response input."
+    },
+    {
+      "subject": "Amplitude-count bound",
+      "locations": "Article derivation from initial Frobenius squared-sum budget",
+      "conclusion": "For monotone response and F(tau)=0.5, q*tau^2<=1. Counts above 0.5 do not identify exact mathematical rank."
+    },
+    {
+      "subject": "Head norm rationale",
+      "locations": "Appendix G pp25–26, A47–A52",
+      "conclusion": "Q/K norm product affects inverse temperature at fixed normalized shape; V/O norms enter output/gradient upper bounds. Neither statement proves that independent normalization preserves raw or weight norm ratios."
+    },
+    {
+      "subject": "GRPO nondegenerate groups",
+      "locations": "Appendix C pp19–22",
+      "conclusion": "The 1-p^g-(1-p)^g expression assumes independent identically distributed binary rewards. KL loss and other regularizers can still contribute gradients when the group-relative task advantage is zero."
+    },
+    {
+      "subject": "Known clean-signal alignment",
+      "locations": "Article6.2 and pion_alignment.py, constructed examples",
+      "conclusion": "Same clean S=diag(1,0,0,0), M=G without momentum history; fixed weak-tail or dominant perturbation. Frobenius cosine compares direction, not training accuracy or stochastic gradient SNR."
+    }
+  ],
+  "results_review": [
+    {
+      "subject": "Isolated action-module study",
+      "location": "Figure1 p4",
+      "steps": 4500,
+      "vision_language": "AdamW fixed",
+      "success_percent": {
+        "AdamW": 93.6,
+        "Muon": 82.2,
+        "LRMuon": 97.0
+      },
+      "elapsed_hours": {
+        "AdamW": 1.31,
+        "Muon": 1.36,
+        "LRMuon": 20.81
+      }
+    },
+    {
+      "subject": "VLA-Adapter main",
+      "location": "Figure5; TableA5 p38",
+      "steps": {
+        "Object": 1500,
+        "Spatial/Goal/Long": 15000
+      },
+      "suite_order": [
+        "Object",
+        "Spatial",
+        "Goal",
+        "Long"
+      ],
+      "success_percent": {
+        "AdamW": [
+          32.2,
+          97.0,
+          89.2,
+          69.6
+        ],
+        "Muon": [
+          97.0,
+          99.0,
+          95.8,
+          88.0
+        ],
+        "Pion": [
+          100.0,
+          99.4,
+          97.2,
+          92.4
+        ]
+      }
+    },
+    {
+      "subject": "Reported AdamW discrepancy",
+      "location": "TableA6 p39 vs Figure5/TableA5",
+      "conclusion": "43.6 vs32.2 at the stated Object1500-step budget; retained per table and not pooled as a matched run."
+    },
+    {
+      "subject": "VLANeXt",
+      "location": "Table1 p8; TableA1 p27",
+      "success_percent": {
+        "AdamW": [
+          79.45,
+          64.57
+        ],
+        "Muon": [
+          93.65,
+          72.34
+        ],
+        "Pion": [
+          96.35,
+          75.93
+        ]
+      },
+      "benchmark_order": [
+        "LIBERO",
+        "LIBERO-Plus"
+      ],
+      "steps": {
+        "Object": 4000,
+        "Spatial/Goal/Long": 10000
+      }
+    },
+    {
+      "subject": "FR3",
+      "location": "Table3 p9; TableA3 p28",
+      "training_steps": 20000,
+      "demonstrations": 200,
+      "trials_per_optimizer_task": 30,
+      "tasks": [
+        "Cucumber to Plate",
+        "Cube to Plate",
+        "Cube to Bowl"
+      ],
+      "Pion_inferred_success_counts": [
+        28,
+        25,
+        24
+      ],
+      "conclusion": "77/90 is inferred from rounded reported values across three tasks; it is not a general-task probability or a repeated-training uncertainty estimate."
+    },
+    {
+      "subject": "RLVR",
+      "location": "Figure6 p9; TableA2 p27",
+      "settings": 8,
+      "algorithms": [
+        "GRPO",
+        "GMPO"
+      ],
+      "models": [
+        "Qwen3-1.7B",
+        "Qwen3-4B"
+      ],
+      "steps": {
+        "MATH": 80,
+        "GSM8K": 40
+      },
+      "rollout_groups": {
+        "MATH": 8,
+        "GSM8K": 5
+      },
+      "conclusion": "No exact unreported curve endpoints extracted; only the specified tested Muon configurations collapse."
+    }
+  ],
+  "official_code": {
+    "repository": "https://github.com/OPTML-Group/Pion",
+    "commit": "87965014b360bde604632cba0aa12e423c6c63c6",
+    "files": {
+      "RL/verl/examples/grpo_trainer/run_qwen3-1.7b_fsdp2_adamw.sh": "4b83a0ab1ff425d2fb8ebfc8b20e96ce7e3292d2d85b1e4268b9ae176dc43769",
+      "RL/verl/examples/grpo_trainer/run_qwen3-1.7b_fsdp2_muon.sh": "d6b3bd29d4975b0e6dd4c6ed35b7b5f9b9e183bac3d1b019fdff7079c54fb65d",
+      "RL/verl/examples/grpo_trainer/run_qwen3-1.7b_fsdp2_perhead_pion.sh": "3e7f8328c3e04e778d0848e7d180635e337c86676bca4908727d4dd9f464a6e2",
+      "RL/verl/scripts/run_pion.sh": "5b6d24ad0f2bbdbe89a0dfde31e6b134b79d8a2e04f9c5516dd0733a0d2b4488",
+      "RL/verl/verl/utils/muon.py": "15c1331453ef3db4b565a514d1e43f74692e2e910eb8cb939894d54371dd402d",
+      "RL/verl/verl/workers/config/optimizer.py": "b76291a6fe436f5c3201dad51a63b48581e2dcfd633e33d9e836ca9259dcac19",
+      "RL/verl/verl/workers/fsdp_workers.py": "c8ef7e42eff6911e2a5bd5f00f1d447031f5e9973bcfc8bedd10e1d042bf4f70",
+      "VLA/VLAAdapter/pion_optim/muon.py": "8e7ca8d6f40ebc4fb066acb15387e618d515896cca5d1eb0ad234e5310e9157e",
+      "VLA/VLAAdapter/scripts/run_pion.sh": "f18aa5860a1c30915782862ff2eb823e3f2843376711cda69febbb34cd012d6f",
+      "VLA/VLAAdapter/vla-scripts/finetune_pion.py": "0cb8c1453e8d9d60690d0cbc3bef99e48430f0f27bfafbdb5542737229d6c74b",
+      "VLA/VLANeXt/config/libero_train_pion_config.yaml": "83dea3344d7af0d8767cb2b21af01aa86d7a11703b0675293795b0151dcd64b1",
+      "VLA/openpi/src/openpi/training/muon_optim.py": "9d43caa8a7867c36b3e317112fbf9b6f5224bf24e0ce86d825ac0f1e0d4ab1f0"
+    },
+    "review": [
+      "VLA launch defaults kp=0 and ns_steps=5; V/L/O route to Muon, A to DefaultPion.",
+      "finetune_pion.py force-AdamW rules include ndim<2, cls_token/reg_token, embed excluding patch_embed, lm_head, action_queries and combined action_head/fc2 names.",
+      "proprio_projector is O by name routing, and O defaults to Muon in the checked launcher.",
+      "RL Q/K/V are split along output rows; O along input columns. Qwen3-1.7B launcher uses16 queryheads and8 KVheads.",
+      "All three checked 1.7B GSM8K launchers enable KL loss and set trainer.total_epochs=15, not an explicit40-step limit.",
+      "Official VLA high_pass_ns helper casts BF16 before normalization. Probe uses CPU and distinguishes fixed epsilon from rounding.",
+      "VLA-Adapter2D scale default0.2*sqrt(max dimension); RL optimizer class defaults5*sqrt(max dimension), with head shapes used in the RL per-head helper. Scalar/matrix examples omit this scale."
+    ]
+  },
+  "limits": [
+    "No VLA/RLVR training or model download performed.",
+    "No hardware experiments reproduced.",
+    "CPU BF16 helper observations do not establish GPU bitwise agreement.",
+    "Constructed spectra/head blocks contain no labeled training-noise data or pretrained weights."
+  ],
+  "paper_license": {
+    "name": "CC BY 4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+    "verified_from": "https://arxiv.org/abs/2605.19282v1",
+    "verified_on": "2026-10-30",
+    "reuse": "Figures1/4/6 cropped to the indicated panels; author/title/source links and license linked in article."
+  },
+  "official_rl_runtime_probe": {
+    "script": "docs/site-reviews/2026-10-30-pion-threehour/probe_official_head_axes.py",
+    "result": "docs/site-reviews/2026-10-30-pion-threehour/official-head-axes.json",
+    "cases": 11,
+    "maximum_absolute_error": 0.0,
+    "fallback_cases": 2,
+    "device": "cpu",
+    "scope": "Unsharded constructed rank-one head blocks, signed/zero heads, GQA-like head counts and incompatible-shape fallback; not model training, real Qwen tensors, GPU or FSDP validation."
+  }
+}

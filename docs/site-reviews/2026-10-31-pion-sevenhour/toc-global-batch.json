@@ -1,0 +1,135 @@
+{
+  "source_delivery": "immutable no-store builds; default CDP HTTP cache disabled",
+  "cdp": 9236,
+  "production": "http://127.0.0.1:13415",
+  "preview": "http://127.0.0.1:13417",
+  "suites": [
+    {
+      "name": "toc-tags",
+      "started_utc": "2026-10-31T05:39:21.149565+00:00",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-10-31-pion-sevenhour/check_sidebar_tags.cjs",
+        "http://127.0.0.1:13417",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/toc-tags"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 327.645,
+      "finished_utc": "2026-10-31T05:44:48.794319+00:00"
+    },
+    {
+      "name": "toc-reflow",
+      "started_utc": "2026-10-31T05:44:48.794603+00:00",
+      "command": [
+        "node",
+        "scripts/check_site_reflow.cjs",
+        "http://127.0.0.1:13417",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/toc-reflow",
+        "--all-articles"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 630.616,
+      "finished_utc": "2026-10-31T05:55:19.410422+00:00"
+    },
+    {
+      "name": "toc-reading",
+      "started_utc": "2026-10-31T05:55:19.410855+00:00",
+      "command": [
+        "node",
+        "scripts/check_blog_reading.cjs",
+        "http://127.0.0.1:13417",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/toc-reading",
+        "--drafts",
+        "--figures"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 455.712,
+      "finished_utc": "2026-10-31T06:02:55.123097+00:00"
+    },
+    {
+      "name": "toc-accessibility",
+      "started_utc": "2026-10-31T06:02:55.123419+00:00",
+      "command": [
+        "node",
+        "scripts/check_site_accessibility.cjs",
+        "http://127.0.0.1:13417",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/toc-accessibility"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 28.369,
+      "finished_utc": "2026-10-31T06:03:23.492209+00:00"
+    },
+    {
+      "name": "toc-focus",
+      "started_utc": "2026-10-31T06:03:23.492543+00:00",
+      "command": [
+        "node",
+        "scripts/check_site_focus.cjs",
+        "http://127.0.0.1:13417",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/toc-focus",
+        "--forced-colors"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 17.951,
+      "finished_utc": "2026-10-31T06:03:41.443682+00:00"
+    },
+    {
+      "name": "toc-print-large",
+      "started_utc": "2026-10-31T06:03:41.444001+00:00",
+      "command": [
+        "node",
+        "/tmp/chase-pion-sevenhour-20261031/check-pion-print-large.cjs",
+        "http://127.0.0.1:13415",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/toc-print-large",
+        "--large-text"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 2.419,
+      "finished_utc": "2026-10-31T06:03:43.862969+00:00"
+    },
+    {
+      "name": "toc-print-large-forced",
+      "started_utc": "2026-10-31T06:03:43.863380+00:00",
+      "command": [
+        "node",
+        "/tmp/chase-pion-sevenhour-20261031/check-pion-print-large.cjs",
+        "http://127.0.0.1:13415",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/toc-print-large-forced",
+        "--large-text",
+        "--forced-colors"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 2.621,
+      "finished_utc": "2026-10-31T06:03:46.484570+00:00"
+    },
+    {
+      "name": "toc-native-pdf",
+      "started_utc": "2026-10-31T06:03:46.484904+00:00",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-10-31-pion-sevenhour/export_reading.cjs",
+        "http://127.0.0.1:13415",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/pdf-toc"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 17.298,
+      "finished_utc": "2026-10-31T06:04:03.782633+00:00"
+    }
+  ]
+}

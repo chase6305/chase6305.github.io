@@ -1,0 +1,18 @@
+{
+  "spectral-mobile-light.png": {
+    "sha256": "282035d3b5e5dda6e64e0e95b8183f7db32d59b6c6e51f92755bc5ec1be9e263",
+    "bytes": 140433
+  },
+  "spectral-native-a4.png": {
+    "sha256": "cc64abb8869b9bdfaa5f03a674566aa39257056ce0cfcfc89ef408c5a091d70d",
+    "bytes": 591855
+  },
+  "spectral-mobile-dark.png": {
+    "sha256": "943c09565ae0f229c277045c3b44aafbb0f6fa609ad0501a867a8f6b6c9e179a",
+    "bytes": 140899
+  },
+  "verification.json.gz": {
+    "sha256": "6de653ddcdead511f010cb3f0d648dea57eaedc814134f4af4843d92318b1899",
+    "bytes": 3928
+  }
+}

@@ -1,0 +1,91 @@
+[
+  {
+    "name": "layout-bridge-v2",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/check_parameter_layout_reading.cjs",
+      "http://127.0.0.1:13535",
+      "http://127.0.0.1:13531",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/layout-bridge-v2"
+    ],
+    "started_utc": "2026-11-01T21:18:07.018510+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "5cdc024736d308f3581ac8fb9d731127e2db3e6716fa2776cfb7b0415476fd53",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 29.972,
+    "finished_utc": "2026-11-01T21:18:36.990373+00:00"
+  },
+  {
+    "name": "layout-print-large-v2",
+    "command": [
+      "node",
+      "/tmp/chase-pion-sevenhour-20261102/check-pion-print.cjs",
+      "http://127.0.0.1:13535",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/layout-print-large-v2",
+      "--large-text"
+    ],
+    "started_utc": "2026-11-01T21:18:36.994254+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "e165be4af4cca1dafd5ab91e76e642b659eff5946e7aea808edc22907520131c",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 3.621,
+    "finished_utc": "2026-11-01T21:18:40.615228+00:00"
+  },
+  {
+    "name": "layout-print-large-forced-v2",
+    "command": [
+      "node",
+      "/tmp/chase-pion-sevenhour-20261102/check-pion-print.cjs",
+      "http://127.0.0.1:13535",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/layout-print-large-forced-v2",
+      "--large-text",
+      "--forced-colors"
+    ],
+    "started_utc": "2026-11-01T21:18:40.619094+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "e165be4af4cca1dafd5ab91e76e642b659eff5946e7aea808edc22907520131c",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 3.671,
+    "finished_utc": "2026-11-01T21:18:44.290206+00:00"
+  },
+  {
+    "name": "layout-content-search-v2",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/check_new_content_search.cjs",
+      "http://127.0.0.1:13535",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/layout-content-search-v2"
+    ],
+    "started_utc": "2026-11-01T21:18:44.294120+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "83af1f5a8f82f91cb4799a0992bf9f6e93cd4ccc4ffe1734625a8651b4b1a90b",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 7.029,
+    "finished_utc": "2026-11-01T21:18:51.323500+00:00"
+  },
+  {
+    "name": "layout-native-pdf-v2",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/export_reading.cjs",
+      "http://127.0.0.1:13535",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/pdf-layout"
+    ],
+    "started_utc": "2026-11-01T21:18:51.327557+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "f8125a6f236dc04b44e2dd3c41df2a64f074dc256da259615dbc352438aad9e7",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 21.056,
+    "finished_utc": "2026-11-01T21:19:12.383480+00:00"
+  }
+]

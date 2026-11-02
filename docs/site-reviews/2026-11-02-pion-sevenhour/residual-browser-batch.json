@@ -1,0 +1,91 @@
+[
+  {
+    "name": "residual-bridge",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/check_residual_bridge.cjs",
+      "http://127.0.0.1:13527",
+      "http://127.0.0.1:13523",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/residual-bridge"
+    ],
+    "started_utc": "2026-11-01T20:05:34.719728+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "10b035d681c27ef6602a428e9e15da5995f99cb100c170df721eef5f93cb6595",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 22.656,
+    "finished_utc": "2026-11-01T20:05:57.376070+00:00"
+  },
+  {
+    "name": "residual-print-large",
+    "command": [
+      "node",
+      "/tmp/chase-pion-sevenhour-20261102/check-pion-print.cjs",
+      "http://127.0.0.1:13527",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/residual-print-large",
+      "--large-text"
+    ],
+    "started_utc": "2026-11-01T20:05:57.379742+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "e165be4af4cca1dafd5ab91e76e642b659eff5946e7aea808edc22907520131c",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 3.621,
+    "finished_utc": "2026-11-01T20:06:01.000432+00:00"
+  },
+  {
+    "name": "residual-print-large-forced",
+    "command": [
+      "node",
+      "/tmp/chase-pion-sevenhour-20261102/check-pion-print.cjs",
+      "http://127.0.0.1:13527",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/residual-print-large-forced",
+      "--large-text",
+      "--forced-colors"
+    ],
+    "started_utc": "2026-11-01T20:06:01.004078+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "e165be4af4cca1dafd5ab91e76e642b659eff5946e7aea808edc22907520131c",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 3.629,
+    "finished_utc": "2026-11-01T20:06:04.632719+00:00"
+  },
+  {
+    "name": "residual-content-search",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/check_new_content_search.cjs",
+      "http://127.0.0.1:13527",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/residual-content-search"
+    ],
+    "started_utc": "2026-11-01T20:06:04.636944+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "d817b5d9cf56fbc646bb3d3127ee314a4336ae63a7322318c57e7ad869912d0b",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 7.028,
+    "finished_utc": "2026-11-01T20:06:11.665160+00:00"
+  },
+  {
+    "name": "residual-native-pdf",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/export_reading.cjs",
+      "http://127.0.0.1:13527",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/pdf-residual"
+    ],
+    "started_utc": "2026-11-01T20:06:11.668948+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "f8125a6f236dc04b44e2dd3c41df2a64f074dc256da259615dbc352438aad9e7",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 21.258,
+    "finished_utc": "2026-11-01T20:06:32.926628+00:00"
+  }
+]

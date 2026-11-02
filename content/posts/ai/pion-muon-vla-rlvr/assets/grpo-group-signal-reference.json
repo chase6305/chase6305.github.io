@@ -1,0 +1,167 @@
+{
+  "construction": "Independent one-step Bernoulli outcomes, reward=y, p=sigmoid(theta), score=y-p, population reward std, epsilon=0 with zero advantages for constant rewards.",
+  "scope": "A constructed scalar on-policy surrogate ascent direction with detached advantages; no clipping, KL, token residuals, model, optimizer or training. It is not the paper low-SNR approximation and not a model-gradient SNR prediction.",
+  "mixed_two_response_example": {
+    "outcomes": [
+      1,
+      0
+    ],
+    "mean_reward": 0.5,
+    "population_reward_std": 0.5,
+    "advantages": [
+      1.0,
+      -1.0
+    ],
+    "scores_wrt_logit": [
+      0.5,
+      -0.5
+    ],
+    "sum_advantages": 0.0,
+    "ascent_gradient": 0.5
+  },
+  "cases": [
+    {
+      "group_size": 8,
+      "success_probability": "0",
+      "decimal_precision": 80,
+      "nondegenerate_probability": "0",
+      "full_group": {
+        "mean": "0",
+        "variance": "0",
+        "snr": null,
+        "variance_zero": true
+      },
+      "nondegenerate_only": null,
+      "expected_proposal_groups_per_kept_group": null
+    },
+    {
+      "group_size": 8,
+      "success_probability": "0.01",
+      "decimal_precision": 80,
+      "nondegenerate_probability": "0.0772553055720798",
+      "full_group": {
+        "mean": "0.025827736210842757030028924220431348912545930859083646027167101641035170551035400",
+        "variance": "0.0079954280422231218233778695537175752826643742620579883780499813059424173097049131",
+        "snr": "0.083431675484305828120740584615399156897328743469004864669128046864767046092688484",
+        "variance_zero": false
+      },
+      "nondegenerate_only": {
+        "mean": "0.33431666627407587674773727792235311874287135568600175017871403910898389179067660",
+        "variance": "0.00036058795416744375514584119046803036506585870289015730669478638871157888653793827",
+        "snr": "309.95942059870101328427291037391351954539990579336440158776707608765846891297582",
+        "variance_zero": false
+      },
+      "expected_proposal_groups_per_kept_group": "12.944094811287649814825319134584924550495053771876245096641480871279466846381836"
+    },
+    {
+      "group_size": 8,
+      "success_probability": "0.1",
+      "decimal_precision": 80,
+      "nondegenerate_probability": "0.56953278",
+      "full_group": {
+        "mean": "0.20949201468964575716984027343896538585552612941684384339118389968461484690978790",
+        "variance": "0.034863095781273246292259171735558573563027164105596124003845705431916088958887010",
+        "snr": "1.2588355461622733153626342801529515942902348266420818096662456536418067427093479",
+        "variance_zero": false
+      },
+      "nondegenerate_only": {
+        "mean": "0.36783135588726913518452840140117200252376365310675154359189632541363966251387306",
+        "variance": "0.0029713271098318484292865040882799598427712717562195738635169164436557894949972998",
+        "snr": "45.535177169208964623276646880865184171550444644248158556807538580056419971903938",
+        "variance_zero": false
+      },
+      "expected_proposal_groups_per_kept_group": "1.7558251870945865486443115706175858745127892375220263880158048146061057275755050"
+    },
+    {
+      "group_size": 8,
+      "success_probability": "0.5",
+      "decimal_precision": 80,
+      "nondegenerate_probability": "0.9921875",
+      "full_group": {
+        "mean": "0.46391398740233320188631717142700909586047146794372070595993749748561704363399014",
+        "variance": "0.0035338122924678312590133551733714105596602280592787723824308552478382240371500130",
+        "snr": "60.901986267424618440679564626028000430656507909920038013964764134449196020669351",
+        "variance_zero": false
+      },
+      "nondegenerate_only": {
+        "mean": "0.46756685344487125859408344836737924622157754249445866427458267463117308334764362",
+        "variance": "0.0018536785045441718238994860909242476662826695097788707739938701953364413556119916",
+        "snr": "117.93779876305847849455126151074500045290313401959231402560987362902172330882990",
+        "variance_zero": false
+      },
+      "expected_proposal_groups_per_kept_group": "1.0078740157480314960629921259842519685039370078740157480314960629921259842519685"
+    },
+    {
+      "group_size": 8,
+      "success_probability": "0.9",
+      "decimal_precision": 80,
+      "nondegenerate_probability": "0.56953278",
+      "full_group": {
+        "mean": "0.20949201468964575716984027343896538585552612941684384339118389968461484690978791",
+        "variance": "0.034863095781273246292259171735558573563027164105596124003845705431916088958887011",
+        "snr": "1.2588355461622733153626342801529515942902348266420818096662456536418067427093479",
+        "variance_zero": false
+      },
+      "nondegenerate_only": {
+        "mean": "0.36783135588726913518452840140117200252376365310675154359189632541363966251387306",
+        "variance": "0.0029713271098318484292865040882799598427712717562195738635169164436557894949972998",
+        "snr": "45.535177169208964623276646880865184171550444644248158556807538580056419971903938",
+        "variance_zero": false
+      },
+      "expected_proposal_groups_per_kept_group": "1.7558251870945865486443115706175858745127892375220263880158048146061057275755050"
+    },
+    {
+      "group_size": 8,
+      "success_probability": "0.99",
+      "decimal_precision": 80,
+      "nondegenerate_probability": "0.0772553055720798",
+      "full_group": {
+        "mean": "0.025827736210842757030028924220431348912545930859083646027167101641035170551035400",
+        "variance": "0.0079954280422231218233778695537175752826643742620579883780499813059424173097049130",
+        "snr": "0.083431675484305828120740584615399156897328743469004864669128046864767046092688485",
+        "variance_zero": false
+      },
+      "nondegenerate_only": {
+        "mean": "0.33431666627407587674773727792235311874287135568600175017871403910898389179067659",
+        "variance": "0.00036058795416744375514584119046803036506585870289015730669478638871157888653793828",
+        "snr": "309.95942059870101328427291037391351954539990579336440158776707608765846891297578",
+        "variance_zero": false
+      },
+      "expected_proposal_groups_per_kept_group": "12.944094811287649814825319134584924550495053771876245096641480871279466846381836"
+    },
+    {
+      "group_size": 8,
+      "success_probability": "1",
+      "decimal_precision": 80,
+      "nondegenerate_probability": "0",
+      "full_group": {
+        "mean": "0",
+        "variance": "0",
+        "snr": null,
+        "variance_zero": true
+      },
+      "nondegenerate_only": null,
+      "expected_proposal_groups_per_kept_group": null
+    }
+  ],
+  "constant_kept_coefficient_example": {
+    "group_size": 2,
+    "success_probability": "0.5",
+    "decimal_precision": 80,
+    "nondegenerate_probability": "0.5",
+    "full_group": {
+      "mean": "0.25",
+      "variance": "0.062500",
+      "snr": "1",
+      "variance_zero": false
+    },
+    "nondegenerate_only": {
+      "mean": "0.5",
+      "variance": "0",
+      "snr": null,
+      "variance_zero": true
+    },
+    "expected_proposal_groups_per_kept_group": "2"
+  },
+  "interpretation": "The two moment distributions use different sampling units: every proposed complete group versus only mixed groups after rejection. Proposal cost assumes independent repeated draws. A null ratio at zero variance is not a claim about noise in real training."
+}

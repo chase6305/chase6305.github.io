@@ -1,0 +1,25 @@
+{
+  "created_on": "2026-10-31",
+  "article": "content/posts/ai/pion-muon-vla-rlvr/index.md",
+  "mode": "built-in image_gen",
+  "intent": "precise-object-edit",
+  "prompt": "Use case: precise-object-edit. Asset type: scientific Pion optimizer flowchart for a technical article. Image 1 is the edit target. Change ONLY the fills and outlines of the four nodes labeled 'Promotion (kp)' and the four nodes labeled 'Suppression (5-kp)'. Make all Promotion nodes pale green with a restrained green outline (matching a green Promotion curve); make all Suppression nodes pale lavender with a restrained purple outline (matching a purple Suppression curve). Preserve dark navy text and clear contrast. Everything else is invariant: exact existing words and spelling, title, canvas proportions, complete uncropped content, geometry, node sizes, arrows and arrowheads, all connections, independent three head branches, merge location, white background, group panels, input/head colors, all other node colors, generous spacing and thin rounded outlines. In particular preserve '5 polynomial steps per block' exactly. Do not add, remove, reword, resize or rearrange any label, node or arrow. Maintain the original technical diagram style and image quality.",
+  "edit_target": "content/posts/ai/pion-muon-vla-rlvr/assets/update-flow.webp",
+  "generated_source": "/home/ubuntu/.codex/generated_images/01a187b4-0b96-71f1-a3fa-173629598f77/exec-a7a87c58-a3be-4c1e-ad10-6f307a27dc3a.png",
+  "output": "content/posts/ai/pion-muon-vla-rlvr/assets/update-flow-v2.webp",
+  "change": "Align Promotion green and Suppression purple with the scalar-map figure; preserve all labels, geometry and arrows.",
+  "visual_review": [
+    "Four Promotion labels and four Suppression labels remain correct.",
+    "Independent three-head paths remain separate until merge; no cross-head polynomial operations.",
+    "Whole-matrix and per-head routes remain alternatives.",
+    "Five polynomial steps per block remains unchanged.",
+    "No numerical results or training-success claims are encoded by the illustration."
+  ],
+  "source_sha256": "5bc0ed4085993b7917807768412013691469bbfa9e14e7db2cb01fbdfd8205ed",
+  "output_sha256": "64d306b876016eaf2596c48e490b92c047e7c49bf0af2ad7e2bc5c04af6bfad9",
+  "dimensions": [
+    1691,
+    930
+  ],
+  "format_conversion": "Lossless WebP; no resizing, cropping or content editing outside image_gen"
+}

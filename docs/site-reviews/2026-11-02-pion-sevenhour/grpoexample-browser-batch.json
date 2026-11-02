@@ -1,0 +1,144 @@
+[
+  {
+    "name": "grpoexample-copies",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/check_copies.cjs",
+      "http://127.0.0.1:13559",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/grpoexample-copies",
+      "/tmp/chase-pion-sevenhour-20261102/source-grpoexample.md"
+    ],
+    "started_utc": "2026-11-01T22:21:42.445064+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "68b2d17e37adc01af7a2d2ecd82e7bc9c880d52485dec8873c7637b6711147d6",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 8.782,
+    "finished_utc": "2026-11-01T22:21:51.227346+00:00"
+  },
+  {
+    "name": "grpoexample-generic-math",
+    "command": [
+      "node",
+      "scripts/check_blog_math.cjs",
+      "http://127.0.0.1:13559",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/grpoexample-generic-math"
+    ],
+    "started_utc": "2026-11-01T22:21:51.231286+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "a40a6863c81542191d1483c2ac8be845afae045466bc97f0fe9dd9f58830274a",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 3.221,
+    "finished_utc": "2026-11-01T22:21:54.451865+00:00"
+  },
+  {
+    "name": "grpoexample-print-all",
+    "command": [
+      "node",
+      "scripts/check_blog_print.cjs",
+      "http://127.0.0.1:13561",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/grpoexample-print-all",
+      "--drafts"
+    ],
+    "started_utc": "2026-11-01T22:21:54.455723+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "d3c7f16aa76deaf33725387f317ff8fabbfb05dc6c392dbc6bf4a5ad393f7e28",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 130.075,
+    "finished_utc": "2026-11-01T22:24:04.531210+00:00"
+  },
+  {
+    "name": "grpoexample-bridge",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/check_grpo_worked_example.cjs",
+      "http://127.0.0.1:13559",
+      "http://127.0.0.1:13555",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/grpoexample-bridge"
+    ],
+    "started_utc": "2026-11-01T22:24:04.535208+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "b8fa61de7cfaaeada790590045b6b78b639d295a25a44906946ef34957feb191",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 23.465,
+    "finished_utc": "2026-11-01T22:24:28.000237+00:00"
+  },
+  {
+    "name": "grpoexample-print-large",
+    "command": [
+      "node",
+      "/tmp/chase-pion-sevenhour-20261102/check-pion-print.cjs",
+      "http://127.0.0.1:13559",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/grpoexample-print-large",
+      "--large-text"
+    ],
+    "started_utc": "2026-11-01T22:24:28.005415+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "e165be4af4cca1dafd5ab91e76e642b659eff5946e7aea808edc22907520131c",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 3.672,
+    "finished_utc": "2026-11-01T22:24:31.677475+00:00"
+  },
+  {
+    "name": "grpoexample-print-large-forced",
+    "command": [
+      "node",
+      "/tmp/chase-pion-sevenhour-20261102/check-pion-print.cjs",
+      "http://127.0.0.1:13559",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/grpoexample-print-large-forced",
+      "--large-text",
+      "--forced-colors"
+    ],
+    "started_utc": "2026-11-01T22:24:31.681486+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "e165be4af4cca1dafd5ab91e76e642b659eff5946e7aea808edc22907520131c",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 3.521,
+    "finished_utc": "2026-11-01T22:24:35.202252+00:00"
+  },
+  {
+    "name": "grpoexample-content-search",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/check_new_content_search.cjs",
+      "http://127.0.0.1:13559",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/grpoexample-content-search"
+    ],
+    "started_utc": "2026-11-01T22:24:35.206186+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "83af1f5a8f82f91cb4799a0992bf9f6e93cd4ccc4ffe1734625a8651b4b1a90b",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 7.328,
+    "finished_utc": "2026-11-01T22:24:42.534263+00:00"
+  },
+  {
+    "name": "grpoexample-native-pdf",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/export_reading.cjs",
+      "http://127.0.0.1:13559",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/pdf-grpoexample"
+    ],
+    "started_utc": "2026-11-01T22:24:42.538130+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "f8125a6f236dc04b44e2dd3c41df2a64f074dc256da259615dbc352438aad9e7",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 21.306,
+    "finished_utc": "2026-11-01T22:25:03.844130+00:00"
+  }
+]

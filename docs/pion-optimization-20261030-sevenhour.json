@@ -1,0 +1,511 @@
+{
+  "status": "complete",
+  "scope": "Pion / Muon article, runnable examples, and reading experience",
+  "window_start_utc": "2026-10-30T14:54:41Z",
+  "planned_end_utc": "2026-10-30T21:54:41Z",
+  "minimum_elapsed_seconds": 25200,
+  "initial_dirty_files": 126,
+  "initial_manifest": "/tmp/chase-pion-sevenhour-20261030/initial-manifest.json",
+  "preserve_other_articles": true,
+  "commit_push_or_deploy": false,
+  "work": [
+    {
+      "phase": "stateful update reference",
+      "changes": [
+        "Added Float64 pure matrix-step trace with EMA/Nesterov/dimension multiplier/decoupled decay",
+        "Distinguished zero gradient, missing skip and missing decay-only policies",
+        "Added pinned official RL rank-one multi-step CPU probe",
+        "Added independent Decimal trajectory tests and immutable-input checks",
+        "Enabled NumPy article checks in the existing isolated CI numerical environment"
+      ],
+      "numerical_tests": 16,
+      "official_configurations": 12,
+      "official_step_calls": 48,
+      "official_weight_and_buffer_max_abs_difference": 0.0,
+      "archive_members": 15
+    },
+    {
+      "phase": "finite-precision audit",
+      "constructed_rotated_cases": 1008,
+      "scope": "Ordinary-scale CPU matrices; no training or stochastic noise model",
+      "observed_max_float64_entry_error": 2.220446049250313e-15,
+      "observed_max_bf16_singular_value": 1.012932418663255,
+      "changes": [
+        "Qualified singular-direction invariance as an exact-arithmetic identity",
+        "Added reproducible integer rank-one rectangle to the optional official BF16 probe",
+        "Added scale-relative tests for full-rank matrices with extremely small nonzero responses"
+      ]
+    },
+    {
+      "phase": "editorial clarity",
+      "changes": [
+        "Kept implementation and experiment assumptions adjacent to their claims",
+        "Removed repeated universal-counterclaim phrasing from six paragraphs",
+        "Clarified zero-promotion in the opening",
+        "Merged overlapping code reading routes",
+        "Documented pre-step gradient logging and local-versus-logical matrix scope"
+      ]
+    },
+    {
+      "phase": "download isolation",
+      "issue": "Extracting check_examples.py one directory below an existing checkout could select the parent repository instead of bundled files",
+      "fix": "Prefer adjacent pion_spectral.py and test the extraction under a deliberately failing parent-repository decoy",
+      "validation": "Archive extraction checks execute the downloaded files in an isolated nested fixture"
+    },
+    {
+      "phase": "pipeline defaults comparison",
+      "class_default_scale_factors": {
+        "VLA-Adapter DefaultPion": 0.2,
+        "RL/verl DefaultPionAdamW and PerHeadPionAdamW": 5.0,
+        "openpi DefaultPionAdamW": 2.0
+      },
+      "scope": "Pinned class defaults for 2D branches; actual run configuration can override values",
+      "source_commit": "87965014b360bde604632cba0aa12e423c6c63c6"
+    },
+    {
+      "phase": "reader prerequisites",
+      "changes": [
+        "Added AdamW / Muon / Pion coordinate-versus-spectral comparison",
+        "Clarified gradient second moments versus Hessians",
+        "Specified checkpoint and averaging scope when estimating gradient SNR"
+      ],
+      "additional_primary_source": "https://arxiv.org/pdf/1711.05101v3#page=3"
+    },
+    {
+      "phase": "experiment budgets",
+      "changes": [
+        "Added MATH/GSM8K prompt batch, rollout count, token limit and step budget comparison from TableA2",
+        "Explained 1024 versus5120 sampled answers per full prompt batch without equating answers to tokens or FLOPs",
+        "Flagged VLANeXt data.max_steps6000 default versus paper4000/10000 suite budgets"
+      ],
+      "primary_sources": [
+        "PaperTableA1/A2 p27",
+        "Pinned VLANeXt libero_train_pion_config.yaml"
+      ]
+    },
+    {
+      "phase": "polynomial terminology",
+      "changes": [
+        "Distinguished five polynomial iterations from the three matrix products per iteration in pinned helpers",
+        "Clarified that the LPMuon low-pass target concerns smaller nonzero directions; odd polynomials still map zero to zero"
+      ]
+    },
+    {
+      "phase": "per-iteration spectral trace",
+      "changes": [
+        "Added optional response_trace and --trace CLI for normalized scalar inputs",
+        "Added collapsible 0.35 trajectory comparison for1+4 versus2+3 schedules",
+        "Saved both Muon/Pion intermediate values and validated each stage with90-digit Decimal",
+        "Rebuilt downloadable archive and verified original default report plus plot unchanged"
+      ],
+      "numerical_tests": 18,
+      "archive_members": 16,
+      "plot_sha256": "cd84865af3c93a13a59d7b500958c02911f0b54cf7be126063d33018313bd7c2"
+    },
+    {
+      "phase": "step diagnostic semantics",
+      "changes": [
+        "Separated configured and actually applied decay factors in the trace",
+        "A skipped parameter records applied factor1 even if configured factor is0.999",
+        "Extended missing-local-source fault injection for extracted downloads"
+      ],
+      "core_weight_and_momentum_updates_changed": false
+    },
+    {
+      "phase": "diagram palette consistency",
+      "change": "Promotion green / Suppression purple now match the scalar-map figure",
+      "mode": "built-in image_gen",
+      "output": "content/posts/ai/pion-muon-vla-rlvr/assets/update-flow-v2.webp",
+      "provenance": "docs/image-generation/pion-flow-20261031-colors.json",
+      "original_asset_preserved": true,
+      "dimensions": [
+        1691,
+        930
+      ],
+      "sha256": "64d306b876016eaf2596c48e490b92c047e7c49bf0af2ad7e2bc5c04af6bfad9"
+    },
+    {
+      "phase": "source mutation and diagnostic precision",
+      "observed": "Pinned VLA fast_newtonschulz mutates its BF16 input during normalization; high_pass_ns preserves input in the tested FP32/FP64/BF16 cases",
+      "scope": "CPU helper calls, no CUDA/distributed model execution",
+      "article_change": "Clarified pre-step gradient sampling and added parameter/buffer/polynomial dtype to training diagnostics",
+      "pion_reference_weights_or_momentum_changed": false
+    },
+    {
+      "phase": "RMS update interpretation",
+      "changes": [
+        "Derived gradient-only RMS from the dimension multiplier and spectral Frobenius norm",
+        "Added gradient_update_rms to stateful traces, excluding weight decay",
+        "Used gamma for the dimension constant to distinguish it from polynomial coefficient c",
+        "Connected Promotion/Suppression to the two endpoints of their feasible coefficient family"
+      ],
+      "numerical_tests": 18
+    },
+    {
+      "phase": "stable RMS calculation",
+      "reproduced_issue": "Four finite1e308 coordinate updates produced infinite intermediate Frobenius norm, despite finite5e307 coordinate RMS",
+      "fix": "Scale by maximum absolute update before the norm and multiply after dividing by sqrt(numel)",
+      "regressions": [
+        "large finite updates retain finite JSON-safe RMS",
+        "tiny1e-300 updates retain a nonzero RMS",
+        "seven rectangular orientations and single-row/column shapes"
+      ],
+      "numerical_tests": 19
+    },
+    {
+      "phase": "method scope and storage",
+      "changes": [
+        "Distinguished a low-rank spectral update from coordinate sparsity and compressed optimizer storage",
+        "Described the pinned Pion momentum state versus AdamW first/second-moment states without claiming total-memory savings",
+        "Included the authors AppendixM prediction about LLM pretraining as a prediction and future direction, not an observed score"
+      ]
+    },
+    {
+      "phase": "page-by-page mathematical review",
+      "snapshot": "/tmp/chase-pion-sevenhour-20261030/page-review/snapshot-manifest.json",
+      "correction": "State zero-matrix output convention adjacent to Frobenius normalization, including the epsilon-zero example contract",
+      "code_changed": false
+    },
+    {
+      "phase": "official per-head execution",
+      "layouts": 9,
+      "configurations": 108,
+      "step_calls": 432,
+      "scope": "Rank-one CPU blocks with PyTorch Float64 parameters and BF16 polynomial internals; no model or distributed shard",
+      "checks": [
+        "Q/K/V output rows and O input columns",
+        "GQA query versus KV head counts",
+        "head-local dimension multiplier",
+        "incompatible-shape whole-matrix fallback",
+        "EMA, Nesterov, zero/missing gradients and weight decay"
+      ],
+      "max_weight_difference": 2.7755575615628914e-17,
+      "max_buffer_difference": 0.0,
+      "record": "docs/site-reviews/2026-10-30-pion-sevenhour/per-head-steps.json.gz"
+    },
+    {
+      "phase": "attention architecture scope",
+      "issue": "Appendix G assumes standard dot-product attention, whereas Qwen3 includes post-projection QK-Norm",
+      "changes": [
+        "Replaced ambiguous normalized-shape wording with the normalized projection-product matrix",
+        "Explained ideal positive-scale cancellation under RMS normalization",
+        "Qualified weight-norm to softmax-temperature inference for actual Qwen3",
+        "Added Q/KV head counts16/8 and32/8 from Qwen3 Table1",
+        "Added Qwen3-4B whole-projection and head-block dimensions from immutable official configuration",
+        "Kept the numerical shape table compact after comparing actual320px/100%/200% layouts"
+      ],
+      "primary_source": "https://arxiv.org/html/2505.09388v1#S2",
+      "scope": "Analytical attention motivation versus measured per-head optimizer result; no new model execution",
+      "config_revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+      "record": "docs/site-reviews/2026-10-30-pion-sevenhour/attention-architecture.json"
+    },
+    {
+      "phase": "enlarged-print prose",
+      "observation": "A repeated explanation after the spectral-norm objective left a four-character continuation line on the next200% printed page",
+      "change": "Removed the repeated sentence; the preceding polar-factor explanation already states all nonzero singular values becomeone",
+      "shared_print_css_changed": false,
+      "verification": "Final255-page PDF snapshot content reviewed with source and rendered-page hashes; no main-body clipping."
+    },
+    {
+      "phase": "entropy convention",
+      "change": "Stated0 log0=0 next to the entropy definition; all-zero matrix remains a separate explicit convention",
+      "numerical_implementation_changed": false
+    },
+    {
+      "phase": "multi-term search completeness",
+      "observed_issue": "Chapter appends put the same page ID in different relevance buckets; QK-Norm and other multi-term queries lost matching pages",
+      "fix": "Use shared single-bucket page-content fields while preserving title/heading and section scoring plus cooperative chapter indexing",
+      "vendor_modified": false,
+      "library": "FlexSearch0.8.143",
+      "regressions": {
+        "old_configuration_failed": true,
+        "generated_whole_text_oracle_queries": 400,
+        "actual_public_entries": 96,
+        "actual_targeted_queries": 20,
+        "previous_incomplete_queries": 11,
+        "current_mismatches": 0,
+        "current_duplicate_pages": 0,
+        "initial_actual_targeted_queries": 16,
+        "initial_previous_incomplete_queries": 9
+      },
+      "browser_validation": {
+        "search_layouts": 12,
+        "contrast_failures": 0,
+        "runtime_exceptions": 0,
+        "chinese_home": true,
+        "network_retry": true,
+        "ime_and_keyboard_editing": true
+      },
+      "provenance": "docs/theme-overrides.json"
+    },
+    {
+      "phase": "VLA asynchronous missing-gradient buffer reuse",
+      "source_commit": "87965014b360bde604632cba0aa12e423c6c63c6",
+      "source_sha256": "8e7ca8d6f40ebc4fb066acb15387e618d515896cca5d1eb0ad234e5310e9157e",
+      "observation": "Same-numel adjacent nonzero/None parameters alias the receive buffer before the prior collective is consumed. Two replay completion orders respectively lose the preceding update or pass its update to the missing-gradient parameter.",
+      "cases": 24,
+      "controls": 21,
+      "deterministic_replay_hazard_cases": 2,
+      "real_one_rank_gloo_hazard_observations": 1,
+      "adaptations": [
+        "Constructor CUDA buffer allocation redirected to CPU",
+        "Deterministic completion replay or flat storage-sharing output view for real CPU/Gloo"
+      ],
+      "scope": "No CUDA/NCCL, model or multi-rank reproduction. Gloo timing is observational.",
+      "article_change": "Added a collapsed explanation, independent expected weights, optional pinned-source probe and result download; qualified single-matrix missing-gradient policy versus multi-parameter communication.",
+      "probe": "content/posts/ai/pion-muon-vla-rlvr/probe_official_vla_buffers.py",
+      "record": "docs/site-reviews/2026-10-30-pion-sevenhour/vla-buffer-cpu-initial.json.gz",
+      "archive_members": 18,
+      "unit_and_extracted_numpy_checks": 19
+    },
+    {
+      "phase": "original CUDA/NCCL confirmation",
+      "device": "NVIDIA GeForce RTX 5090 D v2",
+      "torch": "2.8.0+cu128",
+      "cuda": "12.8",
+      "nccl": "2.27.3",
+      "world_size": 1,
+      "cases": 40,
+      "repeats": 5,
+      "controls_passed": 35,
+      "adjacent_nonzero_none_update_losses": 5,
+      "weight_max_difference": 0.00282842712474618,
+      "source_or_backend_wrappers_modified": false,
+      "scope": "Original pinned class with two tiny parameters; no model or multi-rank training",
+      "combined_reference_cases": 64,
+      "record": "content/posts/ai/pion-muon-vla-rlvr/assets/vla-buffer-reference.json",
+      "archive_members": 18,
+      "archive_sha256": "f709b6a3b14e822bb5e1b3a7f8cf083a3f9e6d001448601278a681dacbf05856"
+    },
+    {
+      "phase": "raw Qwen3 citation line numbers and independent normalization check",
+      "observed_issue": "Web-extracted line numbering omitted blank lines; the old GitHub range did not include the actual Q/K forward normalization calls.",
+      "fix": "Use raw lines195–218 in the article and correct architecture-review raw line references.",
+      "constructed_qk_activation_cases": 14,
+      "reference": "80-digit Decimal versus hash-checked original Qwen3RMSNorm class on CPU; epsilon0/1e-6 and fixed nonuniform learned weights.",
+      "maximum_normalized_activation_error": 2.290272025362583e-07,
+      "maximum_probability_error": 4.5808187354445806e-08,
+      "scope": "One head and three constructed keys; no model, RoPE, mask, GQA or training. Separate from19bundled tests.",
+      "result": "Published epsilon/finite-precision qualification confirmed; no new prose claim was needed.",
+      "final_build": "/tmp/chase-pion-sevenhour-20261030/production-source-linked",
+      "emitted_difference": "Only source URL fragment in articleHTML and7RSS feeds;2205other files byte-identical.",
+      "native_pdf_pages_with_identical_pixels": 255,
+      "native_pdfs_with_corrected_URI": 4
+    }
+  ],
+  "pending": [],
+  "new_examples": {
+    "step_reference": "content/posts/ai/pion-muon-vla-rlvr/pion_step.py",
+    "official_step_probe": "content/posts/ai/pion-muon-vla-rlvr/probe_official_steps.py",
+    "numerical_tests": 19,
+    "download_members": 18,
+    "vla_buffer_probe": "content/posts/ai/pion-muon-vla-rlvr/probe_official_vla_buffers.py"
+  },
+  "scope_assumption": "This window followed the announced Pion/Muon article focus. No scope change was requested; prior article work was preserved.",
+  "checkpoints": [
+    {
+      "at_utc": "2026-10-30T16:56:55.355937+00:00",
+      "phase": "core mathematics and examples reviewed; continuing source, reading and print review",
+      "status": "in_progress"
+    },
+    {
+      "at_utc": "2026-10-30T18:06:13.232069+00:00",
+      "phase": "whole and per-head CPU checks passed; Qwen3 architecture assumptions and actual projection dimensions clarified; continuing enlarged/native reading review",
+      "status": "in_progress"
+    },
+    {
+      "at_utc": "2026-10-30T21:04:16.841087+00:00",
+      "phase": "Frozen final article: source audit20; strict build and assets passed;96layouts/21states;255PDF pages have direct or exact-pixel review evidence; current64-case buffer reference includes original single-rankCUDA/NCCL",
+      "status": "in_progress"
+    },
+    {
+      "at_utc": "2026-10-30T21:19:52.542647+00:00",
+      "phase": "Final source-link correction validated in fresh build,96readinglayouts/21interactive states; all255painted PDF pages exactly match completed review, with corrected URI annotations.",
+      "status": "in_progress"
+    },
+    {
+      "at_utc": "2026-10-30T21:42:58.767604+00:00",
+      "phase": "Final clean production build has2213byte-identical emitted files; source/archive/review evidence consistent; no remaining technical fixes, continuing requested minimum window.",
+      "status": "in_progress"
+    },
+    {
+      "at_utc": "2026-10-30T21:55:06.426628+00:00",
+      "phase": "Requested minimum window complete; final source, archive, production build and preservation evidence reconciled.",
+      "status": "complete"
+    }
+  ],
+  "validation_final_record": "docs/site-reviews/2026-10-30-pion-sevenhour/validation.json",
+  "window_end_utc": "2026-10-30T21:55:06.426628+00:00",
+  "actual_elapsed_seconds": 25225.427,
+  "validation_history": {
+    "stdlib_tests": 11,
+    "numpy_inclusive_tests": 19,
+    "download_fresh_environment": "CPython3.12.14 / NumPy2.2.6",
+    "download_nested_parent_decoy": "old failed, new passed",
+    "native_semantics": {
+      "routes": 317,
+      "cases": 634,
+      "violations": 0,
+      "incomplete_nodes": 0,
+      "exceptions": 0
+    },
+    "article_reading": {
+      "layouts": 96,
+      "chapterActivations": 172,
+      "keyboardScrolls": 370,
+      "nativePdfs": 4,
+      "exceptions": 0
+    },
+    "code_reading": {
+      "layouts": 15,
+      "async_copy": true,
+      "failure_fallback": true,
+      "exceptions": 0
+    },
+    "pdf_raster": {
+      "pages": 239,
+      "pages_with_edge_ink": 0,
+      "empty_pages": 0,
+      "font_box_candidates": 64,
+      "candidate_pages": 24,
+      "interpretation": "Large heading font extents; representative raster shows62px top ink margin. Further page review in progress."
+    },
+    "native_semantics_current": {
+      "routes": 317,
+      "cases": 634,
+      "violations": 0,
+      "incomplete_nodes": 0,
+      "exceptions": 0,
+      "build": "/tmp/chase-pion-sevenhour-20261030/candidate-zero-case"
+    },
+    "code_reading_current": {
+      "layouts": 15,
+      "keyboard_copy": true,
+      "pending_tab": true,
+      "controlled_disclosure": true,
+      "exceptions": 0
+    },
+    "native_print_restoration_current": {
+      "native_cases": 24,
+      "reader_actions": 9,
+      "immediate_reprint": true,
+      "background_tab": true,
+      "exceptions": 0
+    },
+    "forced_colors_print_current": {
+      "layouts": 6,
+      "font_size_percent": 200,
+      "scripts": [
+        true,
+        false
+      ],
+      "themes": [
+        "light",
+        "dark",
+        "warm"
+      ],
+      "failures": 0,
+      "contrast_samples": 5379,
+      "exceptions": 0
+    },
+    "served_download": {
+      "archive_sha256": "c066d333c06235ed4e288ae0b90442198f2d3758aa74284a7ab6f0b04f95bc5b",
+      "members": 16,
+      "numpy_inclusive_tests": 19,
+      "python": "3.12.14",
+      "numpy": "2.2.6",
+      "http_bytes_match_source": true
+    },
+    "attention_architecture_reading": {
+      "layouts": 96,
+      "chapter_activations": 172,
+      "keyboard_scrolls": 378,
+      "native_pdfs": 4,
+      "exceptions": 0,
+      "note": "Before choosing compact layout for new numerical shape table"
+    },
+    "search_native_fallback": {
+      "cases": 60,
+      "modified_clicks": 5,
+      "exceptions": 0
+    },
+    "search_typing_during_indexing": {
+      "cases": 4,
+      "cpu_emulation_rates": [
+        1,
+        6
+      ],
+      "trusted_input_accepted_during_indexing": true,
+      "input_focus_preserved": true,
+      "same_search_data_hash": true,
+      "scope": "Loopback Chrome observations; not a statistical speedup or physical-device claim"
+    },
+    "final_article_reading": {
+      "layouts": 96,
+      "chapter_activations": 172,
+      "keyboard_scrolls": 374,
+      "native_pdfs": 4,
+      "exceptions": 0,
+      "source_checkpoint": "/tmp/chase-pion-sevenhour-20261030/final-reading/source-checkpoint.json"
+    },
+    "final_interactive": {
+      "cases": 19,
+      "axe_violations": 0,
+      "closed_popup_manual_node_records": 80,
+      "status_snapshots": 2,
+      "search_contexts": 2,
+      "queries_per_context": 13,
+      "exceptions": 0
+    },
+    "final_pdf_raster": {
+      "pages": 247,
+      "pages_with_edge_ink": 0,
+      "empty_pages": 0,
+      "render_height": 1500,
+      "edge_band_pixels": 12,
+      "manual_review": "in_progress"
+    },
+    "final_production_build": "/tmp/chase-pion-sevenhour-20261030/production-candidate",
+    "latest_buffer_reading": {
+      "layouts": 96,
+      "chapter_activations": 172,
+      "keyboard_scrolls": 376,
+      "native_pdfs": 4,
+      "runtime_exceptions": 0
+    },
+    "latest_buffer_semantics": {
+      "states": 21,
+      "violations": 0,
+      "closed_popup_manual_node_records": 96,
+      "runtime_exceptions": 0
+    },
+    "latest_code_copy": {
+      "contexts": 4,
+      "copies": 32,
+      "exact": true
+    },
+    "latest_download": {
+      "members": 18,
+      "sha256": "fa2b92eddf2ddb70bf90f3f9f0887a3f8fbaf63c2c8fc9dc495d3f9215c12625",
+      "numpy_checks": 19
+    }
+  },
+  "validation_history_note": "Phase-local counts and old snapshots are retained as history. Current results and source hashes are in validation_final_record; historical in-progress notes are not outstanding work.",
+  "work_history_note": "Test and archive counts inside individual work phases describe those phases, not the final artifact.",
+  "validation_final": {
+    "record": "docs/site-reviews/2026-10-30-pion-sevenhour/validation.json",
+    "sha256": "bfcd2e16cf9d8430fd38cca38ab73588522e5d552a5ca8240125fb29404119ee",
+    "production_build": "/tmp/chase-pion-sevenhour-20261030/production-complete",
+    "frozen_source_files": 38,
+    "numerical_checks": 19,
+    "download_members": 18,
+    "article_layouts": 96,
+    "interactive_states": 21,
+    "reviewed_print_pages": 255,
+    "confirmed_axe_violations": 0,
+    "manual_incomplete_node_records": 96,
+    "remote_ci_executed": false,
+    "model_training_reproduced": false,
+    "commit_push_or_deploy": false
+  }
+}

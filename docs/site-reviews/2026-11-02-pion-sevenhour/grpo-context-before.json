@@ -1,0 +1,146 @@
+{
+  "scope": "Observed caller Decimal context behavior of the new helper before hardening; no model or training.",
+  "cases": [
+    {
+      "case": "sticky_underflow",
+      "before": {
+        "precision": 28,
+        "rounding": "ROUND_HALF_EVEN",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": true,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "after": {
+        "precision": 28,
+        "rounding": "ROUND_HALF_EVEN",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": true,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "returned": false,
+      "error": "probability is outside the supported Decimal numerical range"
+    },
+    {
+      "case": "inexact_trap",
+      "before": {
+        "precision": 28,
+        "rounding": "ROUND_HALF_EVEN",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": false,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "after": {
+        "precision": 28,
+        "rounding": "ROUND_HALF_EVEN",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": false,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "returned": false,
+      "error": "invalid probability or unresolved Decimal numerical range"
+    },
+    {
+      "case": "different_rounding",
+      "before": {
+        "precision": 9,
+        "rounding": "ROUND_FLOOR",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": false,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "after": {
+        "precision": 9,
+        "rounding": "ROUND_FLOOR",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": false,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "returned": true,
+      "same_as_default": false
+    },
+    {
+      "case": "invalid_input_flag",
+      "before": {
+        "precision": 28,
+        "rounding": "ROUND_HALF_EVEN",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": false,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "after": {
+        "precision": 28,
+        "rounding": "ROUND_HALF_EVEN",
+        "flags": {
+          "InvalidOperation": true,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": false,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "returned": false,
+      "error": "invalid probability or unresolved Decimal numerical range"
+    }
+  ],
+  "source_sha256": "3fd88d5e178ac8f994de2220c8f4a899f16fc5f61d2f84ec4bcb1353dd9488f0"
+}

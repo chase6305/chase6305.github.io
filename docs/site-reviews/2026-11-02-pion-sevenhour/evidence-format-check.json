@@ -1,0 +1,10 @@
+{
+  "checked_at_utc": "2026-11-01T23:50:52.725341+00:00",
+  "scope": "Parse durable review records and review-only Python helpers. No runtime suite is repeated.",
+  "parsed": {
+    "json": 105,
+    "gzip_json": 68,
+    "python_ast": 12
+  },
+  "errors": []
+}

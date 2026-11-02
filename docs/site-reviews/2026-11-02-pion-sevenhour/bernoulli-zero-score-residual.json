@@ -1,0 +1,47 @@
+{
+  "scope": "Exact scalar conditional-score identity; source AppendixC A13. No variance-dominant approximation applies when this residual is identically zero.",
+  "cases": [
+    {
+      "p": "1/100",
+      "reward": 0,
+      "score": "-1/100",
+      "conditional_mean": "-1/100",
+      "residual": "0"
+    },
+    {
+      "p": "1/100",
+      "reward": 1,
+      "score": "99/100",
+      "conditional_mean": "99/100",
+      "residual": "0"
+    },
+    {
+      "p": "1/4",
+      "reward": 0,
+      "score": "-1/4",
+      "conditional_mean": "-1/4",
+      "residual": "0"
+    },
+    {
+      "p": "1/4",
+      "reward": 1,
+      "score": "3/4",
+      "conditional_mean": "3/4",
+      "residual": "0"
+    },
+    {
+      "p": "1/2",
+      "reward": 0,
+      "score": "-1/2",
+      "conditional_mean": "-1/2",
+      "residual": "0"
+    },
+    {
+      "p": "1/2",
+      "reward": 1,
+      "score": "1/2",
+      "conditional_mean": "1/2",
+      "residual": "0"
+    }
+  ]
+}

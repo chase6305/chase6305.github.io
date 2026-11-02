@@ -215,6 +215,21 @@
       "browser": "/tmp/chase-sixhour-morph-mapping-browser-20261029/results.json",
       "native_pdfs": 6,
       "native_print": "/tmp/chase-sixhour-morph-mapping-native-print-20261029.json"
+    },
+    {
+      "id": "tamp-reading-route-anchor-offset",
+      "before": "The guide link #paper-search-orders places the flowchart top at4.59px/23.11px, under the64px sticky navbar.",
+      "fix": "Keep both published anchor IDs and give the legacy inline anchor the existing figure scroll offset. No shared styles or theme files changed.",
+      "commit": "1c9f299b9afdefe8127facbb9518c4adab5a4094",
+      "guide_click_cases": 24,
+      "direct_fragment_cases": 4,
+      "chapter_activations": 192,
+      "before_evidence": "/tmp/chase-tamp-reading-route-link-20261029.json",
+      "after_evidence": "/tmp/chase-tamp-reading-route-link-fixed-20261029.json",
+      "direct_evidence": "/tmp/chase-tamp-reading-route-direct-fixed-20261029.json",
+      "artifact_delta": "/tmp/chase-tamp-reading-route-artifact-delta-20261029.json",
+      "changed_artifact_files": 8,
+      "scope": "One article HTML and seven full-content RSS files; remaining2118 files identical."
     }
   ],
   "releases": [
@@ -337,6 +352,51 @@
       "verified_at_utc": "2026-10-29T06:11:39.015378+00:00",
       "network_rechecks": 18,
       "commit": "1dc2eaf6d676f519865dd8f69882fd0851f3dde5"
+    },
+    {
+      "id": 40831626943,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "42e9addac3e621531156e5bb7e6b96fe2bf28855",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40831626943",
+      "updated_at": "2026-10-29T06:55:52Z",
+      "live_audit_exit": 0,
+      "live_audit": "/tmp/chase-sixhour-production-http-42e9addac3e6-20261029.json",
+      "verified_at_utc": "2026-10-29T07:18:12.670474+00:00",
+      "network_rechecks": 1,
+      "summary": {
+        "urls": 384,
+        "failures": 0,
+        "bytes": 35084786
+      },
+      "distinct_network_rechecks": 27
+    },
+    {
+      "id": 40834628161,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "8e2a89915dba686af75d82cb5d866df090359608",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40834628161",
+      "updated_at": "2026-10-29T07:23:15Z",
+      "live_audit": "/tmp/chase-sixhour-release-allimages-live-20261029.json",
+      "live_audit_status": "in progress",
+      "expected_urls": 1902
+    },
+    {
+      "id": 40837083016,
+      "name": "Deploy Hugo site to Pages",
+      "path": ".github/workflows/hugo.yml",
+      "head_sha": "255885e847bdbb1bb42c220831cce9b4e23a9e30",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/chase6305/chase6305.github.io/actions/runs/40837083016",
+      "updated_at": "2026-10-29T07:44:33Z",
+      "site_files_byte_identical_to_previous_release": 2126,
+      "artifact_parity": "/tmp/chase-sixhour-audit-artifact-parity-20261029.json"
     }
   ],
   "scientific_rechecks": [
@@ -413,7 +473,7 @@
       "failure": "TAMP packaging script referenced by workflow but omitted from staged commit",
       "fix_commit": "42e9addac3e621531156e5bb7e6b96fe2bf28855",
       "fix": "Commit the already-tested scripts/package_tamp_lab.py; retain source/archive checks",
-      "status": "fixed; corrective Pages workflow 40831626943 succeeded, live byte audit in progress"
+      "status": "fixed; corrected Pages workflow 40831626943 succeeded and384 live URLs matched after27 distinct network failures were rechecked"
     }
   ],
   "external_reference_review": {
@@ -604,7 +664,7 @@
   "release_verifier": {
     "script": "scripts/check_site_release.py",
     "documentation": "docs/release-verification.md",
-    "local_test_methods": 12,
+    "local_test_methods": 14,
     "python_versions": [
       "3.10",
       "3.13"
@@ -614,7 +674,32 @@
     "expected_404": 5,
     "evidence": "/tmp/chase-tamp-release-checker-loopback-20261029.json",
     "new_production_artifact_parity": 2120,
-    "scope": "Read-only immutable inventory and HTTP bytes; separate from CI status and browser semantics"
+    "scope": "Read-only immutable inventory and HTTP bytes; separate from CI status and browser semantics",
+    "full_image_loopback": {
+      "urls": 1902,
+      "failures": 0,
+      "expected_bytes": 209522456,
+      "evidence": "/tmp/chase-sixhour-release-allimages-loopback-20261029.json"
+    },
+    "complete_inventory": {
+      "urls": 1917,
+      "expected_bytes": 214668221,
+      "loopback_failures": 0,
+      "artifact_files_unchanged": 2126,
+      "parity": "/tmp/chase-sixhour-audit-artifact-parity-20261029.json",
+      "loopback": "/tmp/chase-sixhour-complete-loopback-20261029.json",
+      "additional_live_resources": 15,
+      "additional_live_failures": 0,
+      "additional_live_report": "/tmp/chase-sixhour-complete-supplement-live-20261029.json"
+    },
+    "coverage_correction": {
+      "before": 1902,
+      "after": 1917,
+      "cause": "An extension allowlist missed linked YAML/UI/RSS files; script-fetched search/lab JSON and theme icon/manifest resources were also outside the initial inventory.",
+      "fix": "Inventory every JSON file, actual linked file paths, browser icon/manifest references, and ICO images.",
+      "tests_added": 2,
+      "published_site_output": "all2126 files byte-identical"
+    }
   },
   "final_article_contracts": {
     "baseline_old_articles": 94,
@@ -622,5 +707,18 @@
     "old_dates_draft_states_ids": "all preserved",
     "tamp_first_publication_ids": "all preserved",
     "evidence": "/tmp/chase-sixhour-final-article-contracts-20261029.json"
+  },
+  "final_build": {
+    "files": 2126,
+    "production_log": "/tmp/chase-sixhour-release-production-20261029.log",
+    "global_reading": "/tmp/chase-tamp-grid-global-reading-20261029/results.json",
+    "new_source_commit": "8e2a89915dba686af75d82cb5d866df090359608"
+  },
+  "final_reading": {
+    "articles": 95,
+    "cases": 952,
+    "figure_cases": 572,
+    "runtime_exceptions": 0,
+    "evidence": "/tmp/chase-tamp-grid-global-reading-20261029/results.json"
   }
 }

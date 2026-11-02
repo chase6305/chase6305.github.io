@@ -1,0 +1,96 @@
+{
+  "scope": "Four loopback Chrome observations, ordinary and6x CPU emulation; no statistical speedup or physical-device claim",
+  "cases": [
+    {
+      "version": "previous",
+      "rate": 1,
+      "dataHash": "9d22bec355fb6502ff0a968a4cb899c8839af82895d678360d330c4f50c797dd",
+      "input": {
+        "value": "QK-Norm",
+        "duringPreload": true,
+        "afterDataParsed": true,
+        "focused": true
+      },
+      "elapsed": 958.1000000089407,
+      "frames": 11,
+      "maxFrameGap": 116.70000000000005,
+      "longTasks": [],
+      "maxLongTask": 0,
+      "pionFound": false,
+      "engineScript": "http://127.0.0.1:13383/en.search.min.c3e61f01622d8cdcc644c9e2a04bd9cff8b5fb806710bf6c69e874efb4dfecea.js"
+    },
+    {
+      "version": "fixed",
+      "rate": 1,
+      "dataHash": "9d22bec355fb6502ff0a968a4cb899c8839af82895d678360d330c4f50c797dd",
+      "input": {
+        "value": "QK-Norm",
+        "duringPreload": true,
+        "afterDataParsed": true,
+        "focused": true
+      },
+      "elapsed": 879.5,
+      "frames": 9,
+      "maxFrameGap": 116.70000000000005,
+      "longTasks": [],
+      "maxLongTask": 0,
+      "pionFound": true,
+      "engineScript": "http://127.0.0.1:13384/en.search.min.85e037da3d1c8629b6946c5df711ed099997cb2b9c656ca84f6c6c41cbb26b37.js"
+    },
+    {
+      "version": "previous",
+      "rate": 6,
+      "dataHash": "9d22bec355fb6502ff0a968a4cb899c8839af82895d678360d330c4f50c797dd",
+      "input": {
+        "value": "QK-Norm",
+        "duringPreload": true,
+        "afterDataParsed": true,
+        "focused": true
+      },
+      "elapsed": 7894.5,
+      "frames": 75,
+      "maxFrameGap": 116.80000000000018,
+      "longTasks": [
+        {
+          "start": 414.90000000596046,
+          "duration": 94
+        },
+        {
+          "start": 595.4000000059605,
+          "duration": 52
+        }
+      ],
+      "maxLongTask": 94,
+      "pionFound": false,
+      "engineScript": "http://127.0.0.1:13383/en.search.min.c3e61f01622d8cdcc644c9e2a04bd9cff8b5fb806710bf6c69e874efb4dfecea.js"
+    },
+    {
+      "version": "fixed",
+      "rate": 6,
+      "dataHash": "9d22bec355fb6502ff0a968a4cb899c8839af82895d678360d330c4f50c797dd",
+      "input": {
+        "value": "QK-Norm",
+        "duringPreload": true,
+        "afterDataParsed": true,
+        "focused": true
+      },
+      "elapsed": 7117,
+      "frames": 68,
+      "maxFrameGap": 133.29999999999995,
+      "longTasks": [
+        {
+          "start": 416.19999998807907,
+          "duration": 96
+        },
+        {
+          "start": 596.1999999880791,
+          "duration": 52
+        }
+      ],
+      "maxLongTask": 96,
+      "pionFound": true,
+      "engineScript": "http://127.0.0.1:13384/en.search.min.85e037da3d1c8629b6946c5df711ed099997cb2b9c656ca84f6c6c41cbb26b37.js"
+    }
+  ],
+  "exceptions": []
+}

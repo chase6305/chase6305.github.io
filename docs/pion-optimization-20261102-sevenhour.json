@@ -1,0 +1,647 @@
+{
+  "status": "complete",
+  "scope": "Continue Pion/Muon article with targeted conceptual, runnable-example and reading improvements",
+  "window_start_utc": "2026-11-01T17:06:33+00:00",
+  "planned_end_utc": "2026-11-02T00:06:33+00:00",
+  "minimum_elapsed_seconds": 25200,
+  "initial_dirty_files": 302,
+  "initial_manifest": "/tmp/chase-pion-sevenhour-20261102/initial-manifest.json",
+  "preserve_prior_work": true,
+  "commit_push_or_deploy": false,
+  "work": [
+    {
+      "phase": "initial snapshot and preservation",
+      "captured_at_utc": "2026-11-01T17:06:33+00:00",
+      "initial_files": 302,
+      "initial_bytes": 18910364,
+      "expected_initial_edits": 6,
+      "all_other_initial_files_byte_unchanged": 296,
+      "acceptance_record_ids_modified": [
+        95
+      ],
+      "scope": "Pion article/bundle, package/test scripts and acceptance record95 only; preserve all completed prior audits/reviews and unrelated current user edits."
+    },
+    {
+      "phase": "correlated observations and independent group units",
+      "construction": "Four independent mean-one variance-one scalar gradients, each copied n times. K=4n rows still represent four independent draws.",
+      "closed_form_bias": "(n-1)/(4n-1)",
+      "n8_corrected_power_expectation": "38/31",
+      "independent_group_corrected_power_expectation": 1,
+      "oracles": "Exact Fraction enumeration of all independent signs, plus observed finite-sample estimator values. General common-mean covariance formula is stated separately.",
+      "files": [
+        "snr_correlated_groups.py",
+        "assets/snr-correlated-groups-reference.json"
+      ]
+    },
+    {
+      "phase": "Bernoulli GRPO group gradient and retention",
+      "source": "Supplied PDF AppendixC equationA16 page20",
+      "construction": "One-step Bernoulli logit, binary reward=y, population reward std, fixed advantages, on-policy unclipped task term; no KL or token residual.",
+      "counterexample": "Advantages(1,-1) sum0; score(.5,-.5) yields ascent direction.5.",
+      "g8_p001": {
+        "nondegenerate_probability": "0.0772553055720798",
+        "full_group_snr": "0.083431675484305828120740584615399156897328743469004864669128046864767046092688484",
+        "retained_conditional_snr": "309.95942059870101328427291037391351954539990579336440158776707608765846891297582",
+        "expected_proposal_groups_per_kept_group": "12.944094811287649814825319134584924550495053771876245096641480871279466846381836"
+      },
+      "oracles": [
+        "Full binary outcome enumeration",
+        "Detached-advantage finite differences",
+        "Closed second moment and total-variance identity",
+        "Rare-event centered-variance asymptotic"
+      ],
+      "scope": "Constructed distribution only; no model, optimizer or training."
+    },
+    {
+      "phase": "action dimensions, layer gradient rank and EMA history",
+      "construction": "Scalar-output ReLU network at differentiable points; hidden matrix can be full rank despite a one-dimensional output. Separate rank-one diagonal gradient sequence raises EMA rank1/2/3.",
+      "oracles": [
+        "Network loss finite differences",
+        "Exact Fraction Gaussian elimination/determinant",
+        "Independent NumPy backpropagation and SVD",
+        "Closed EMA history"
+      ],
+      "scope": "No real VLA architecture or measured gradient claims."
+    },
+    {
+      "phase": "current independent environments and extraction",
+      "checked_at_utc": "2026-11-01T17:59:10.025935+00:00",
+      "tests": {
+        "stdlib": 22,
+        "numpy": 10,
+        "python_versions": [
+          "3.10.0",
+          "3.11.15",
+          "3.12.14"
+        ],
+        "numpy_versions": [
+          "1.26.4",
+          "2.2.6"
+        ]
+      },
+      "package_members": 32,
+      "package_sha256": "222698f5d155dc3c283c2dc2a6601ad1d8a24356ed715c9767be4cf7141d554e",
+      "extracted_package_checks": "32 methods passed in clean CPython3.12.14/NumPy2.2.6, including local-source rejection guards and saved references.",
+      "source_manifest_files": 51
+    },
+    {
+      "phase": "dedicated code-copy check precondition correction",
+      "observed_failure": "New correlation disclosure was not included in the keyboard-opening list. The hidden copy button did not receive focus, so Enter recopied the prior visible block.",
+      "root_cause": "Test setup omission; not a demonstrated production copy failure. Earlier commentary attributing this to source/build version drift was corrected after reading the exact log.",
+      "change": "Open every code-bearing disclosure through keyboard activation, assert each opens, and bind expected fences to an explicit source Markdown snapshot.",
+      "current_serial_validation": "14 suites running on immutable moments production13505/preview13507, dedicated CDP9240."
+    },
+    {
+      "phase": "private Decimal contexts and independent oracles",
+      "checked_at_utc": "2026-11-01T19:30:59.930687+00:00",
+      "grpo_context_fix": "Parsing and arithmetic use an explicit80-digit context, avoiding caller traps, flags, rounding and exponent settings; invalid input also preserves caller state.",
+      "flat_spectrum_context_fix": "The pre-existing100-digit helper had inherited caller rounding/traps/range. A reproduced Inexact exception and changed coefficients motivated an explicit private context.",
+      "flat_candidate_cases": 288,
+      "default_reference_json_changed": false,
+      "intentional_initial_edits_expanded_from": 6,
+      "intentional_initial_edits_now": 7,
+      "current_tests": {
+        "checked_at_utc": "2026-11-01T19:27:30.411302+00:00",
+        "environments": [
+          {
+            "label": "root",
+            "python": "3.10.0",
+            "numpy": "1.26.4",
+            "numpy_checks": true,
+            "test_methods": 35,
+            "exit_code": 0,
+            "command": [
+              "/home/ubuntu/miniconda3/envs/dp/bin/python3",
+              "-B",
+              "scripts/test_pion_examples.py",
+              "--numpy"
+            ],
+            "log": "/tmp/chase-pion-sevenhour-20261102/isolated-tests-root.log"
+          },
+          {
+            "label": "cp311",
+            "python": "3.11.15",
+            "numpy": null,
+            "numpy_checks": false,
+            "test_methods": 25,
+            "exit_code": 0,
+            "command": [
+              "/home/ubuntu/.local/share/uv/python/cpython-3.11-linux-x86_64-gnu/bin/python3.11",
+              "-B",
+              "scripts/test_pion_examples.py"
+            ],
+            "log": "/tmp/chase-pion-sevenhour-20261102/isolated-tests-cp311.log"
+          },
+          {
+            "label": "clean-cp312",
+            "python": "3.12.14",
+            "numpy": "2.2.6",
+            "numpy_checks": true,
+            "test_methods": 35,
+            "exit_code": 0,
+            "command": [
+              "/tmp/chase-pion-sevenhour-20261031/plot-env/bin/python",
+              "-B",
+              "scripts/test_pion_examples.py",
+              "--numpy"
+            ],
+            "log": "/tmp/chase-pion-sevenhour-20261102/isolated-tests-clean-cp312.log"
+          }
+        ],
+        "extracted_package": {
+          "exit_code": 0,
+          "test_methods": 35,
+          "command": [
+            "/tmp/chase-pion-sevenhour-20261031/plot-env/bin/python",
+            "-B",
+            "scripts/package_pion_lab.py",
+            "--check",
+            "--test",
+            "--numpy"
+          ]
+        }
+      },
+      "torch_constructs": "4hidden networks,1072realized scalar groups and12group distributions,PyTorch2.8.0+cpu;0optimizer steps, no model checkpoint, GPU, rollout or training."
+    },
+    {
+      "phase": "native themes and corrected print preconditions",
+      "root_cause": "Class-only theme changes left root color-scheme inconsistent. The actual native controls produce correct colors; no shared production CSS was changed.",
+      "print_focus": "Selecting a real theme control intentionally moves focus. The review now establishes the reader target afterwards.",
+      "forced_colors": "Chrome may expose computed color-scheme light dark in forced colors. The check validates the configured scheme and supports this browser state.",
+      "screen_table_contexts": 48,
+      "accepted_distinct_browser_suites": 18,
+      "evidence": "accepted-browser-suites.json",
+      "failed_attempts_retained": true
+    },
+    {
+      "phase": "latest immutable builds and reader download",
+      "checked_at_utc": "2026-11-01T19:30:59.930687+00:00",
+      "source_files": 51,
+      "build_comparison": {
+        "files_compared": 2233,
+        "changed_files": [
+          "posts/ai/pion-muon-vla-rlvr/README.txt",
+          "posts/ai/pion-muon-vla-rlvr/flat_spectrum.py",
+          "posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip"
+        ],
+        "missing": [],
+        "all_html_css_js_byte_identical": true,
+        "article_html_sha256": "d8afa08c6b59bc3530020064a7234d5db177662ce2519ab378222da754cfb158"
+      },
+      "strict_validation": {
+        "html_pages": 319,
+        "local_references": 32456,
+        "errors": 0
+      },
+      "download": {
+        "members": 32,
+        "bytes": 105675,
+        "sha256": "dd62ca232b4c2d1c2da800ededb3c768f861b43d9993fc59e4884eed3456d6d8",
+        "tests": 35,
+        "default_references": 7,
+        "path_contains_chinese_and_spaces": true,
+        "bytecode_files": 0,
+        "new_installs": 0
+      },
+      "initial_download_setup_correction": "An exploratory-I flag disables sibling imports in ordinary loose Python scripts. The documented-B commands pass. Isolated-environment testing does not require unsupported-I CLI execution."
+    },
+    {
+      "phase": "native PDF review in progress",
+      "pages": [
+        46,
+        123,
+        45,
+        121,
+        130
+      ],
+      "source_html_sha256": "d8afa08c6b59bc3530020064a7234d5db177662ce2519ab378222da754cfb158",
+      "source_guard": {
+        "prose": 300,
+        "headings": 51,
+        "formulas": 255,
+        "code_fences": 16,
+        "figures": 6,
+        "stylesheets": 3,
+        "entry_links": 6
+      },
+      "pagination_checks": {
+        "summary_first_content_pairs": 45,
+        "figure_caption_pairs": 5,
+        "new_numerical_row_checks": 60,
+        "failures": 0
+      },
+      "raster_selected_pages": 228,
+      "edge_ink": 0,
+      "empty_pages": 0,
+      "direct_page_review": "In progress; automated raster checks do not imply228pages visually reviewed."
+    },
+    {
+      "phase": "conditional moments and full variance",
+      "checked_at_utc": "2026-11-01T20:13:23.787853+00:00",
+      "explanation": "E[d]=q*mu_c;Var(d)=q*V_c+q*(1-q)*mu_c^2 for zero degenerate-group updates. This explains variance between retained and degenerate categories.",
+      "parameter_cases": 20,
+      "scope": "Constructed scalar surrogate, not model-gradient measurement.",
+      "article_wording": "Copying does not change the sample mean; its true variance remains1/4."
+    },
+    {
+      "phase": "keep conditional definitions with the formula in print",
+      "before": {
+        "native_pdf_cases": 5,
+        "separated_pairs": 2
+      },
+      "after": {
+        "native_pdf_cases": 5,
+        "separated_pairs": 0
+      },
+      "change": "Local article div with break-inside:avoid; no shared CSS edit.",
+      "screen_layouts": 24,
+      "semantic_content_before_after_equal": true,
+      "build_effects": {
+        "files_before": 2233,
+        "files_after": 2233,
+        "files_with_updated_search_fingerprint_references": 312,
+        "changed_after_normalizing_search_urls_and_integrities": [
+          "categories/人工智能/index.xml",
+          "posts/ai/pion-muon-vla-rlvr/index.html",
+          "tags/grpo/index.xml",
+          "tags/muon/index.xml",
+          "tags/paper-notes/index.xml",
+          "tags/pion/index.xml",
+          "tags/rlvr/index.xml",
+          "tags/vla/index.xml"
+        ],
+        "search_json_differences": [
+          {
+            "language": "en",
+            "entry": "/posts/ai/pion-muon-vla-rlvr/",
+            "differences": [
+              {
+                "field": "//posts/ai/pion-muon-vla-rlvr//data/32-全对或全错的组为何没有优势信号#3.2 全对或全错的组为何没有优势信号",
+                "whitespace_only": true,
+                "character_count_delta": 1
+              }
+            ]
+          },
+          {
+            "language": "zh-cn",
+            "entry": "/posts/ai/pion-muon-vla-rlvr/",
+            "differences": [
+              {
+                "field": "//posts/ai/pion-muon-vla-rlvr//data/32-全对或全错的组为何没有优势信号#3.2 全对或全错的组为何没有优势信号",
+                "whitespace_only": true,
+                "character_count_delta": 1
+              }
+            ]
+          }
+        ],
+        "search_script_comparison": [
+          {
+            "language": "en",
+            "changed_only_data_url": true
+          },
+          {
+            "language": "zh-cn",
+            "changed_only_data_url": true
+          }
+        ],
+        "rss_feed_comparison": [
+          {
+            "file": "categories/人工智能/index.xml",
+            "changed_item": "Pion",
+            "changed_only_wrapper": true
+          },
+          {
+            "file": "tags/grpo/index.xml",
+            "changed_item": "Pion",
+            "changed_only_wrapper": true
+          },
+          {
+            "file": "tags/muon/index.xml",
+            "changed_item": "Pion",
+            "changed_only_wrapper": true
+          },
+          {
+            "file": "tags/paper-notes/index.xml",
+            "changed_item": "Pion",
+            "changed_only_wrapper": true
+          },
+          {
+            "file": "tags/pion/index.xml",
+            "changed_item": "Pion",
+            "changed_only_wrapper": true
+          },
+          {
+            "file": "tags/rlvr/index.xml",
+            "changed_item": "Pion",
+            "changed_only_wrapper": true
+          },
+          {
+            "file": "tags/vla/index.xml",
+            "changed_item": "Pion",
+            "changed_only_wrapper": true
+          }
+        ],
+        "scope": "Only article markup changes beyond search resource URLs and integrity. A block boundary adds a separating space to the Pion search entry; search data and loader fingerprints update mechanically. No shared source changed."
+      },
+      "source_guard_html_sha256": "5cf3ae283477f26038ef73f4285aa230c79cafd96d64769d8a2850144478d002"
+    },
+    {
+      "phase": "connect the scalar example to the paper residual-dominant approximation",
+      "source": "Supplied PDF AppendixC A13-A20, pages19-20, fixedv1.",
+      "explanation": "Average token scores are decomposed into reward-conditional means and residuals. In the scalar Bernoulli example, reward=y and score=y-p imply identically zero conditional residual.",
+      "exact_zero_residual_cases": 6,
+      "bridge_reading_layouts": 24,
+      "content_search_cases": 40,
+      "preserved_full_disclosures": 3,
+      "new_default_only_download": {
+        "environment": {
+          "python": "3.11.15",
+          "optional_dependencies": {
+            "numpy": false,
+            "torch": false,
+            "matplotlib": false
+          }
+        },
+        "methods": 25,
+        "reference_outputs": 7,
+        "members": 32,
+        "sha256": "dd62ca232b4c2d1c2da800ededb3c768f861b43d9993fc59e4884eed3456d6d8"
+      },
+      "current_native_pdf": {
+        "pages": [
+          46,
+          125,
+          45,
+          123,
+          131
+        ],
+        "html_sha256": "18acbd205a98c0c75b916a3cbba784a0175cb5a616524dfaf616eaab7de19da8",
+        "source_counts": {
+          "prose": 304,
+          "headings": 51,
+          "formulas": 263,
+          "code_fences": 16,
+          "figures": 6,
+          "stylesheets": 3,
+          "entry_links": 7
+        },
+        "pagination_failures": 0
+      },
+      "strict_validation": {
+        "html_pages": 319,
+        "local_references": 32457,
+        "errors": 0
+      }
+    },
+    {
+      "phase": "independent conditional-score variance audit",
+      "checked_at_utc": "2026-11-01T20:24:25.895316+00:00",
+      "script": "docs/site-reviews/2026-11-02-pion-sevenhour/verify_score_residual.py",
+      "construction": "Two-response product-Bernoulli policy; first bit determines reward, remaining bits give reward-independent score coordinates. T=1. This is a mathematical witness, not a literal instantiation of every AppendixC regularity assumption.",
+      "joint_groups_enumerated": 4092,
+      "finite_difference_checks": 1368,
+      "max_finite_difference_error": 1.2540013472062128e-10,
+      "optimizer_steps": 0,
+      "finding": "Total score variance includes between-reward-mean variation, while the conditional residual excludes it. The residual-dominant approximation becomes accurate as nuisance-coordinate variance dominates. Current article wording already states the approximation and zero-residual scope, so no new article change is needed.",
+      "scope": "Source interpretation audit only; not part of the35download checks or a model-training result."
+    },
+    {
+      "phase": "explicit CPU-install shell continuation",
+      "checked_at_utc": "2026-11-01T20:50:26.887682+00:00",
+      "finding": "A valid single-line command wrapped visually in native PDF. Explicit backslash continuation improves reuse from print.",
+      "change": "Article code fence and bundled README only; mathematical code and reference outputs unchanged.",
+      "bash_argv_checks": 3,
+      "pip_installations": 0,
+      "code_blocks": 16,
+      "exact_keyboard_copies": 64,
+      "browser_suite_purposes": 6,
+      "new_package": {
+        "members": 32,
+        "bytes": 105680,
+        "sha256": "a20456db37d6bd529fde2490f9909d84f4c5c28cad4250d4e44596ad1de03110",
+        "stdlib_checks": 25,
+        "numpy_checks": 35,
+        "default_references": 7
+      },
+      "strict_validation": {
+        "html_pages": 319,
+        "local_references": 32457,
+        "errors": 0
+      },
+      "current_source_html_sha256": "9b404813f84527f32d2bcde2aca84f786e72528c9d05386aeed23eccbacf51c0"
+    },
+    {
+      "phase": "qualify parameter routing and four-dimensional convolution scaling",
+      "checked_at_utc": "2026-11-01T21:23:07.255735+00:00",
+      "source_commit": "87965014b360bde604632cba0aa12e423c6c63c6",
+      "source_evidence": "parameter-layout-audit.json",
+      "routing_cases": 6,
+      "adapted_cpu_optimizer_steps": 2,
+      "adaptations": "CUDA buffer allocation redirected to CPU; one-rank synchronous all_gather copy. No GPU, distributed backend, model or training data.",
+      "finding": "The fixed VLA class reshapes a4Dgradient from(2,3,5,7)to(2,105), while scaling from the original last two dimensions produces gamma*sqrt7, not gamma*sqrt105. Article scopes its matrix/RMS derivation to2D and explains actual routing.",
+      "browser_retry": {
+        "initial_failure": "Overflow tabindex was checked immediately after a font-size change, before the resize observer ran.",
+        "latency_probe": {
+          "immediate_missing_tabindex": 7,
+          "after250ms_missing_tabindex": 0
+        },
+        "change": "Review-only250ms layout settle, no shared production change.",
+        "accepted_suites": 5,
+        "reading_layouts": 24,
+        "content_search_cases": 48,
+        "large_print_cases": 12,
+        "native_pdfs": 5
+      },
+      "strict_validation": {
+        "html_pages": 319,
+        "local_references": 32458,
+        "errors": 0
+      },
+      "official_source_files_modified": false
+    },
+    {
+      "phase": "explicit continuations for optional probe commands",
+      "checked_at_utc": "2026-11-01T21:39:00.498111+00:00",
+      "argument_pairs_checked": 11,
+      "bash_executions": 22,
+      "real_probes_or_installers_invoked": 0,
+      "change": "Five article commands and six README commands have explicit shell continuation. Actual Bash argument lists match their prior one-line forms.",
+      "package": {
+        "members": 32,
+        "bytes": 105687,
+        "sha256": "cfb2f7a0f2fb65135411a7b363ecf521506a2ae941d0ee18f320c9b5a8b7606e",
+        "extracted_methods": 35,
+        "served_default_methods": 25,
+        "default_reference_outputs": 7
+      },
+      "browser_purposes": 7,
+      "strict_validation": {
+        "html_pages": 319,
+        "local_references": 32458,
+        "errors": 0
+      }
+    },
+    {
+      "phase": "four-dimensional view layout compatibility",
+      "checked_at_utc": "2026-11-01T21:39:00.498125+00:00",
+      "source_evidence": "parameter-stride-audit.json",
+      "step_attempts": 8,
+      "completed_adapted_cpu_steps": 4,
+      "expected_view_rejections": 4,
+      "layouts": [
+        "contiguous",
+        "channels_last",
+        "spatial_transpose",
+        "regular_stride"
+      ],
+      "nesterov_settings": [
+        false,
+        true
+      ],
+      "finding": "Contiguous and regular-stride examples complete. Channels-last and spatially transposed examples fail at view. Shape alone is insufficient; the article now asks readers to check gradient and momentum strides. Not every noncontiguous layout is rejected.",
+      "official_source_modified": false,
+      "adaptations": "CPU buffer allocation and synchronous one-rank communication fixture; no actual distributed backend, GPU, model or training data.",
+      "browser_purposes": 5,
+      "reading_layouts": 24,
+      "search_cases": 48
+    },
+    {
+      "phase": "keep complete optional shell commands on one printed page",
+      "status": "checks_passed_manual_review_continues",
+      "before": {
+        "native_pdfs": 5,
+        "logical_command_checks": 25,
+        "split_commands": 3
+      },
+      "change": "Three local article div wrappers use break-inside:avoid around the short optional command blocks. Code and archive bytes remain unchanged.",
+      "scope": "No shared CSS or template edit. Native PDF checks will determine the result.",
+      "checked_at_utc": "2026-11-01T21:43:40.684560+00:00",
+      "after": {
+        "native_pdfs": 5,
+        "logical_command_checks": 25,
+        "split_commands": 0
+      },
+      "browser_purposes": 7,
+      "exact_keyboard_copies": 64,
+      "native_pdf_pages": [
+        46,
+        126,
+        45,
+        124,
+        131
+      ],
+      "source_html_sha256": "df3e6211ac7c8edcbde322b96c38949a89c59796123b25d11267cec72a9684d0"
+    },
+    {
+      "phase": "keep the two-line Python candidate together",
+      "checked_at_utc": "2026-11-01T22:23:43.115758+00:00",
+      "before_split_units": 1,
+      "after": {
+        "native_pdfs": 5,
+        "shell_command_cases": 25,
+        "short_python_cases": 5,
+        "split_units": 0
+      },
+      "change": "A fourth short-code local wrapper prevents separating the candidate comment from its assignment. Code and archive bytes are unchanged.",
+      "browser_purposes": 7,
+      "standard_pdf_visual_acceptance": {
+        "pages": 46,
+        "direct_current": 8,
+        "pixel_identical_inherited": 38
+      }
+    },
+    {
+      "phase": "shorten expectation-table column labels",
+      "checked_at_utc": "2026-11-01T22:23:43.115773+00:00",
+      "finding": "At200% print size, the two long headers left a final character alone on their second line.",
+      "change": "Use concise row-correction and four-group-correction expectation labels; assumptions and all data are unchanged.",
+      "full_article_html_proof": "After substituting exactly those two prior labels, the entire content element is byte-identical.",
+      "browser_purposes": 7,
+      "reading_layouts": 24,
+      "standard_pdf_visual_acceptance": {
+        "pages": 46,
+        "direct_current": 1,
+        "pixel_identical_inherited": 45
+      },
+      "native_pages": [
+        46,
+        126,
+        45,
+        124,
+        131
+      ],
+      "native_page_sum": 472,
+      "scope": "Page totals are computed from exports.json; raster/geometry counts are distinct from manual visual decisions."
+    },
+    {
+      "phase": "display the two-response product-sum example as one unit",
+      "status": "checks_passed_manual_review_continues",
+      "before": {
+        "native_pdfs": 5,
+        "split_example_cases": 2
+      },
+      "change": "The worked-example paragraph and its displayed fraction use a local keep-together group. The mathematical value, example code and download bytes are unchanged.",
+      "scope": "Replaces an inline expression split across pages in two200% A4 exports.",
+      "checked_at_utc": "2026-11-01T22:36:04.325342+00:00",
+      "after": {
+        "native_pdfs": 5,
+        "split_example_cases": 0
+      },
+      "browser_purposes": 8,
+      "reading_layouts": 24,
+      "new_formula_real_arrow_cases": 6,
+      "source_html_sha256": "1535e0490513e52859dce45f0a959c19b619e3502ed9afcaaf45872eeaa7410a",
+      "standard_pdf_visual_acceptance": {
+        "pages": 46,
+        "direct_current": 2,
+        "pixel_identical_inherited": 44
+      }
+    },
+    {
+      "phase": "complete final selected visual and editorial review",
+      "checked_at_utc": "2026-11-01T23:54:06.912367+00:00",
+      "status": "passed",
+      "source_article_sha256": "568865d58aed4f8d876fb7e644251c0db261f6f5fdf19cad4be008e07bd074e7",
+      "source_html_sha256": "1535e0490513e52859dce45f0a959c19b619e3502ed9afcaaf45872eeaa7410a",
+      "selected_rasters": 245,
+      "unique_selected_png_hashes": 211,
+      "required_selected_visual_rows": 153,
+      "required_direct_views": 83,
+      "required_exact_png_inherited": 70,
+      "required_pending": 0,
+      "full_standard_a4": {
+        "accepted_pages": 46,
+        "direct_current": 2,
+        "exact_png_inherited": 44
+      },
+      "editorial_cross_check": "docs/site-reviews/2026-11-02-pion-sevenhour/editorial-cross-check.json",
+      "preflight": "docs/site-reviews/2026-11-02-pion-sevenhour/preflight-acceptance.json",
+      "scope": "Other92selected rasters are not claimed manually reviewed;472is exported page count. Whole-window audit remains in progress until the requested seven hours actually elapse."
+    },
+    {
+      "phase": "final source, archive, visual and preservation reconciliation",
+      "status": "passed",
+      "checked_at_utc": "2026-11-02T00:07:29.773478+00:00",
+      "source_files": 51,
+      "unchanged_other_initial_files": 295,
+      "native_pdf_pages": [
+        46,
+        126,
+        45,
+        124,
+        131
+      ],
+      "native_pdf_page_sum": 472,
+      "required_selected_visual_rows": 153,
+      "required_selected_visual_pending": 0,
+      "full_standard_a4_pages": 46,
+      "browser_purposes": 8
+    }
+  ],
+  "pending": [],
+  "finished_at_utc": "2026-11-02T00:07:29.773478+00:00",
+  "actual_elapsed_seconds": 25256.773,
+  "final_acceptance": "docs/site-reviews/2026-11-02-pion-sevenhour/final-acceptance.json",
+  "final_acceptance_sha256": "41d24e01acefa6803a32e02b510a4d0e27296704d185df9340d85eb3c0b3bd91",
+  "evidence_manifest": "docs/site-reviews/2026-11-02-pion-sevenhour/evidence-manifest.json"
+}

@@ -1,0 +1,279 @@
+{
+  "scope": "Pinned VLA four-dimensional view compatibility; adapted CPU calls only.\n\nCUDA buffer allocations are redirected to CPU. Communication is a synchronous\none-rank copy. Eight one-parameter step attempts cover four constructed gradient\nlayouts and both Nesterov settings; no model, GPU or backend is loaded.\n",
+  "torch": "2.8.0+cpu",
+  "device": "cpu",
+  "official_file_sha256": "8e7ca8d6f40ebc4fb066acb15387e618d515896cca5d1eb0ad234e5310e9157e",
+  "official_source_modified": false,
+  "step_attempts": 8,
+  "completed_steps": 4,
+  "expected_view_rejections": 4,
+  "communication_calls": 4,
+  "buffer_allocation_adaptations": 8,
+  "cases": [
+    {
+      "layout": "contiguous",
+      "nesterov": false,
+      "shape": [
+        2,
+        3,
+        5,
+        7
+      ],
+      "weight_stride": [
+        105,
+        35,
+        7,
+        1
+      ],
+      "gradient_stride": [
+        105,
+        35,
+        7,
+        1
+      ],
+      "buffer_stride": [
+        105,
+        35,
+        7,
+        1
+      ],
+      "contiguous": true,
+      "step_completed": true,
+      "expected_rejection": false,
+      "error": null,
+      "communication_calls": 1
+    },
+    {
+      "layout": "channels_last",
+      "nesterov": false,
+      "shape": [
+        2,
+        3,
+        5,
+        7
+      ],
+      "weight_stride": [
+        105,
+        1,
+        21,
+        3
+      ],
+      "gradient_stride": [
+        105,
+        1,
+        21,
+        3
+      ],
+      "buffer_stride": [
+        105,
+        1,
+        21,
+        3
+      ],
+      "contiguous": false,
+      "step_completed": false,
+      "expected_rejection": true,
+      "error": "view size is not compatible with input tensor's size and stride (at least one dimension spans across two contiguous subspaces). Use .reshape(...) instead.",
+      "communication_calls": 0
+    },
+    {
+      "layout": "spatial_transpose",
+      "nesterov": false,
+      "shape": [
+        2,
+        3,
+        5,
+        7
+      ],
+      "weight_stride": [
+        105,
+        35,
+        1,
+        5
+      ],
+      "gradient_stride": [
+        105,
+        35,
+        1,
+        5
+      ],
+      "buffer_stride": [
+        105,
+        35,
+        1,
+        5
+      ],
+      "contiguous": false,
+      "step_completed": false,
+      "expected_rejection": true,
+      "error": "view size is not compatible with input tensor's size and stride (at least one dimension spans across two contiguous subspaces). Use .reshape(...) instead.",
+      "communication_calls": 0
+    },
+    {
+      "layout": "regular_stride",
+      "nesterov": false,
+      "shape": [
+        2,
+        3,
+        5,
+        7
+      ],
+      "weight_stride": [
+        210,
+        70,
+        14,
+        2
+      ],
+      "gradient_stride": [
+        210,
+        70,
+        14,
+        2
+      ],
+      "buffer_stride": [
+        105,
+        35,
+        7,
+        1
+      ],
+      "contiguous": false,
+      "step_completed": true,
+      "expected_rejection": false,
+      "error": null,
+      "communication_calls": 1
+    },
+    {
+      "layout": "contiguous",
+      "nesterov": true,
+      "shape": [
+        2,
+        3,
+        5,
+        7
+      ],
+      "weight_stride": [
+        105,
+        35,
+        7,
+        1
+      ],
+      "gradient_stride": [
+        105,
+        35,
+        7,
+        1
+      ],
+      "buffer_stride": [
+        105,
+        35,
+        7,
+        1
+      ],
+      "contiguous": true,
+      "step_completed": true,
+      "expected_rejection": false,
+      "error": null,
+      "communication_calls": 1
+    },
+    {
+      "layout": "channels_last",
+      "nesterov": true,
+      "shape": [
+        2,
+        3,
+        5,
+        7
+      ],
+      "weight_stride": [
+        105,
+        1,
+        21,
+        3
+      ],
+      "gradient_stride": [
+        105,
+        1,
+        21,
+        3
+      ],
+      "buffer_stride": [
+        105,
+        1,
+        21,
+        3
+      ],
+      "contiguous": false,
+      "step_completed": false,
+      "expected_rejection": true,
+      "error": "view size is not compatible with input tensor's size and stride (at least one dimension spans across two contiguous subspaces). Use .reshape(...) instead.",
+      "communication_calls": 0
+    },
+    {
+      "layout": "spatial_transpose",
+      "nesterov": true,
+      "shape": [
+        2,
+        3,
+        5,
+        7
+      ],
+      "weight_stride": [
+        105,
+        35,
+        1,
+        5
+      ],
+      "gradient_stride": [
+        105,
+        35,
+        1,
+        5
+      ],
+      "buffer_stride": [
+        105,
+        35,
+        1,
+        5
+      ],
+      "contiguous": false,
+      "step_completed": false,
+      "expected_rejection": true,
+      "error": "view size is not compatible with input tensor's size and stride (at least one dimension spans across two contiguous subspaces). Use .reshape(...) instead.",
+      "communication_calls": 0
+    },
+    {
+      "layout": "regular_stride",
+      "nesterov": true,
+      "shape": [
+        2,
+        3,
+        5,
+        7
+      ],
+      "weight_stride": [
+        210,
+        70,
+        14,
+        2
+      ],
+      "gradient_stride": [
+        210,
+        70,
+        14,
+        2
+      ],
+      "buffer_stride": [
+        105,
+        35,
+        7,
+        1
+      ],
+      "contiguous": false,
+      "step_completed": true,
+      "expected_rejection": false,
+      "error": null,
+      "communication_calls": 1
+    }
+  ],
+  "interpretation": "Shape alone does not establish view compatibility. The fixed4Dcaller uses view rather than reshape. Some noncontiguous views work; channels-last and spatially transposed examples here fail. No claim is made about every layout or a production training backend."
+}

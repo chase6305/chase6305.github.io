@@ -1781,6 +1781,15 @@ article main#content > .content {
 
 /* Keep decorative gutters and side columns from consuming enlarged text space. */
 @media screen {
+  .hextra-toc a {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  /* A sticky footer otherwise covers chapter links reached with Tab. */
+  .hextra-toc .hextra-scrollbar > div:last-child {
+    position: static;
+    box-shadow: none;
+  }
   main#content:has(.chase-hero),
   article main#content {
     padding-inline: max(env(safe-area-inset-left), min(1.5rem, 24px)) max(env(safe-area-inset-right), min(1.5rem, 24px));
@@ -1863,6 +1872,10 @@ article main#content > .content {
     color: #111 !important;
     text-shadow: none !important;
   }
+  .content :focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
   article main#content h1 { font-size: 24pt !important; text-wrap: balance; }
   article main#content :is(h1, h2, h3, h4, h5, h6) { break-after: avoid; }
   article main#content a { text-decoration: underline; }
@@ -1926,6 +1939,11 @@ article main#content > .content {
   .content img { max-height: 210mm; object-fit: contain; box-shadow: none; }
   .content .blog-reading-guide { break-inside: avoid; }
   .content details::details-content { content-visibility: visible; }
+  .content details > summary {
+    list-style-type: disclosure-open;
+    break-after: avoid;
+    break-inside: avoid;
+  }
 }
 
 /* Full-size image viewing stays usable while the original downloads. */

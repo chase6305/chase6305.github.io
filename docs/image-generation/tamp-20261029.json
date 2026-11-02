@@ -119,7 +119,45 @@
       992
     ],
     "sha256": "f154ab6d6c10198fe69d017459ba09f42fac7163b03bbd427206d93f41928091",
-    "data_sha256": "71b6a0722aa12c825add06391f539903e77f664c988798316ccd0417a620da83",
-    "scope": "Actual finite-grid A* output for the constructed carrying-stage geometry; not robot benchmark data."
+    "data_sha256": "7630ba6108697ca8da002486f552ffbd86cfdce1923507d90972d614bf2ed8d5",
+    "scope": "Actual finite-grid A* output for the constructed carrying-stage geometry; not robot benchmark data.",
+    "reference_note": "Added grid metadata and separate spacing comparison. Default 0.2 m path, distances, node expansions and existing plotted geometry are unchanged."
+  },
+  "kinematics_figure": {
+    "asset": "content/posts/planner/task-and-motion-planning/assets/shared-grasp-ik.png",
+    "generator": "content/posts/planner/task-and-motion-planning/make_figures.py",
+    "model": "content/posts/planner/task-and-motion-planning/tamp_kinematics.py",
+    "engine": "Matplotlib 3.10.9",
+    "dimensions": [
+      2016,
+      1632
+    ],
+    "sha256": "94a27e7f3064a113d03cc2d4d6b5bd27e3c6cdcf2dd2c51afb52917304a57a19",
+    "data_sha256": "1638b4884042dc9c2ead00c1870c6e04e81c7691d99bd9a7fca4a3dee3919baf",
+    "scope": "Computed planar 3R FK/analytic-IK endpoint witnesses. No motion, collision or support validation; no robot benchmark data.",
+    "review": "Six panels match the six assignments; larger coordinate, radius and legend labels inspected without overlaps. Circle is two-link wrist reach; arrows are hand-frame x axes; solid/dashed curves and square/cross markers distinguish the outcomes. Existing two numerical figures retain identical RGBA pixels."
+  },
+  "overview_label_revision": {
+    "edited_on_local": "2026-10-30",
+    "time_zone": "Asia/Shanghai",
+    "method": "built-in image_gen",
+    "skill": "/home/ubuntu/.codex/skills/.system/imagegen/SKILL.md",
+    "prompt": "Edit this TAMP diagram with ONLY ONE text change. Replace the second panel's heading 'Mode parameters' with 'Continuous choices'. Preserve the subtitle 'Placement / Grasp / IK', every illustration, arrow, feedback loop, other word, color, opaque white background, layout and canvas exactly. This correction distinguishes fixed mode parameters from IK switch configurations; do not otherwise redraw or add any element. Keep the replacement heading large, centered and fully inside its existing panel.",
+    "input": "content/posts/planner/task-and-motion-planning/assets/tamp-refinement.webp",
+    "output": "content/posts/planner/task-and-motion-planning/assets/tamp-refinement-v2.png",
+    "generated_source": "/home/ubuntu/.codex/generated_images/01a187b4-0b96-71f1-a3fa-173629598f77/exec-74626f53-2118-4a43-80dc-39bf11ff5ede.png",
+    "reason": "IK chooses switch configurations, which are distinct from the fixed parameters defining a concrete mode.",
+    "scientific_review": [
+      "Only the heading changed to Continuous choices",
+      "Placement / Grasp / IK subtitle, forward arrows and both feedback loops preserved",
+      "White background; no new experimental claims"
+    ],
+    "status": "Accepted: 24 reading states, 12 modal viewers, 6 opened-dialog semantic states and 6 tagged native A4 PDFs; no runtime exceptions",
+    "size": [
+      2172,
+      724
+    ],
+    "sha256": "7f23697ac4f9088cdf756d487dacb007e03215abb626e2e8ffe0fa223ce65563",
+    "bytes": 1511408
   }
 }

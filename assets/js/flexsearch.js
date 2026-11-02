@@ -27,7 +27,7 @@
     const attempt = (async () => {
       const tokenize = '{{- site.Params.search.flexsearch.tokenize | default  "forward" -}}';
 
-      const {encode} = window.chaseSearchTerms;
+      const {encode, pageIndexFields} = window.chaseSearchTerms;
 
       pageIndex = new FlexSearch.Document({
         tokenize,
@@ -36,7 +36,7 @@
         document: {
           id: 'id',
           store: ['title', 'breadcrumbs', 'route'],
-          index: ['title', 'headings', 'content']
+          index: pageIndexFields()
         }
       });
 

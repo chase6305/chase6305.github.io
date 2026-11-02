@@ -1,0 +1,334 @@
+{
+  "started_at_utc": "2026-10-29T12:48:20Z",
+  "planned_end_at_utc": "2026-10-29T17:48:20Z",
+  "baseline_revision": "1c9f299",
+  "initial_uncommitted_changes": "Preserved; snapshot stored in /tmp/chase-opt-20261029-fivehour/initial.diff",
+  "baseline": {
+    "production_build": "Hugo 0.165.0 extended; clean destination; official archive SHA-256 verified",
+    "strict_validation": {
+      "posts": 95,
+      "published_posts": 92,
+      "code_blocks": 588,
+      "local_references": 31858,
+      "errors": 0
+    },
+    "test_commands_passed": 19,
+    "sandbox_retries": "Loopback sockets and child processes required escalation; all identical test commands passed outside sandbox."
+  },
+  "changes": [
+    {
+      "topic": "impedance log record intervals",
+      "reproduction": {
+        "timestamp_shift_s": 0.009,
+        "interval_min_s": 0.001,
+        "interval_max_s": 0.019,
+        "mean_s": 0.01,
+        "old_acceptance": "passed"
+      },
+      "implementation": "Report minimum/maximum record intervals and optionally enforce inclusive per-interval bounds; example config enables 5 percent deviation. Validate step-time types. Preserve legacy mean-only config.",
+      "regressions": {
+        "interval_cases": 322,
+        "invalid_api_cases": 24,
+        "invalid_csv_cases": 10,
+        "nonfinite_metric_cases": 18,
+        "cli": "normal pass; shifted timestamps fail"
+      },
+      "scope": "Log-record timing only; no controller deadlines or hardware certification."
+    },
+    {
+      "topic": "stable pass@k estimator",
+      "reproduction": {
+        "n": 1000000000000000000,
+        "c": 1,
+        "k": 1,
+        "previous": 0.0,
+        "expected": 1e-18
+      },
+      "implementation": "Use the shorter symmetric product, log1p, compensated log summation and expm1; preserve the finite-candidate-pool estimator.",
+      "regressions": {
+        "unit_tests": 10,
+        "random_exact_fraction_cases": 500,
+        "python_versions": [
+          "3.10",
+          "3.12"
+        ],
+        "published_stdout_unchanged_lines": 23,
+        "download_zip": "rebuilt"
+      },
+      "reference": "https://github.com/openai/human-eval/blob/master/human_eval/evaluation.py",
+      "benchmark": {
+        "scope": "Single-host diagnostic; not evaluation budgets or portable timing claims",
+        "n": 1000000,
+        "c": 1,
+        "k": 500000,
+        "old_one_call_s": 102.4808050240008,
+        "new_1000_calls_s": 0.001436044000001857
+      }
+    }
+  ],
+  "browser_checks": [
+    {
+      "suite": "all article image viewers",
+      "cases": 1284,
+      "articles_with_images": 65,
+      "runtime_exceptions": 0,
+      "snapshot": "baseline-draft",
+      "note": "First live-server attempt was invalidated by live reload; rerun used a frozen static build."
+    },
+    {
+      "suite": "all article chapters",
+      "posts": 95,
+      "chapter_activations": 9484,
+      "layout_cases": 36,
+      "modifier_cases": 5,
+      "legacy_anchor": true,
+      "fragment_history": true,
+      "runtime_exceptions": 0
+    }
+  ],
+  "finished_at_utc": "2026-10-30T01:38:33Z",
+  "focused_tasks": [
+    {
+      "topic": "TAMP detailed review",
+      "requested_at_utc": "2026-10-29T13:09:44Z",
+      "planned_duration": "1–2 hours within the ongoing optimization session",
+      "status": "completed",
+      "changes": [
+        "mode-family/state trace and terminal goal",
+        "shared-grasp constraint sets and analytic planar 3R example",
+        "scheduler state validation and call budget",
+        "recheck infeasibility certificates",
+        "reject collision-free paths that miss the task endpoints",
+        "17 self-check questions; ZIP and reference outputs"
+      ],
+      "finished_at_utc": "2026-10-29T14:11:00Z",
+      "verification": {
+        "unit_tests": 16,
+        "python_versions": [
+          "3.10",
+          "3.12"
+        ],
+        "independent_pinocchio_model_cases": 1000,
+        "screen_states": 24,
+        "image_viewer_cases": 120,
+        "keyboard_table_cases": 12,
+        "semantic_states": 8,
+        "native_pdfs": 6,
+        "native_pdf_pages_each": 29,
+        "all_article_print_layouts": 570,
+        "all_article_print_text_samples": 457410,
+        "runtime_exceptions": 0,
+        "old_tamp_ids_removed": 0,
+        "all_article_chapter_activations": 9496,
+        "all_article_chapter_posts": 95,
+        "production_acceptance_items": 504,
+        "production_code_blocks": 590,
+        "production_local_references": 31881,
+        "semantic_incomplete_review": "Closed image/search/theme controls: all referenced IDs exist; opened new figure audited in six states with no incomplete results.",
+        "final_short_table_pdf": "All three placement rows kept together in all six native PDFs."
+      },
+      "final_consistency_pass": {
+        "started_at_utc": "2026-10-29T15:57:00Z",
+        "status": "completed",
+        "scope": "Mode parameters vs IK switch configurations; paper method taxonomy; final publication checks",
+        "paper_taxonomy": "Verified all Table 1 axes and cited method cells against the primary survey PDF; no classification correction needed.",
+        "finished_at_utc": "2026-10-29T16:40:00Z",
+        "changes": [
+          "Overview heading changed to Continuous choices; reading focus, introductory list and self-check answer distinguish mode parameters from switch configurations",
+          "Primary survey Table 1 taxonomy and source figures checked"
+        ],
+        "verification": {
+          "reading_states": 24,
+          "image_viewers": 12,
+          "opened_semantic_states": 6,
+          "tagged_native_pdfs": 6,
+          "runtime_exceptions": 0,
+          "old_ids_removed": 0
+        }
+      },
+      "focused_review_duration_approx_minutes": 105
+    },
+    {
+      "topic": "Robot dynamics parameter identification tools and runnable examples",
+      "status": "completed",
+      "scope": [
+        "Five primary-source library comparisons",
+        "Standalone Pinocchio URDF regressor and independent CSV validation",
+        "Drake symbolic lumped-parameter experiment"
+      ],
+      "changes": [
+        "Five libraries compared using official documentation: dynamics backend vs complete estimator",
+        "Two standalone Linux CPython 3.12 examples with pinned direct versions and a full 30-wheel hash lock",
+        "Pinocchio: same geometry with physically valid nominal/truth inertia mismatch, scaled SVD and per-joint held-out residuals",
+        "Drake: URDF symbolic inverse dynamics, explicit gravity/damping conventions and lumped coefficients",
+        "Optional independent COM-distance measurement recovers the pendulum axis-model mass/inertia without claiming a full 3D inertia",
+        "Download ZIP includes models, scripts, tests, plot source and reference results; no RobotServer dependency",
+        "Clarified positive sensor-lag convention and corrected alignment direction; analytic noise-free single-frequency example exposes zero-residual parameter bias",
+        "NumPy-only raw position/torque preprocessing with actual timestamps, local polynomial derivatives, signed known-lag interpolation and no endpoint extrapolation",
+        "Raw-to-processed-to-Pinocchio CLI workflow, independent noisy position/torque fixtures and preprocessing provenance metadata",
+        "Refuse JSON output aliases of model/data inputs and preserve existing CSV exports",
+        "Consistent raw/processed signal requirements and derivative order; bounded excitation positions; segment-local state estimation; positive estimated-body masses",
+        "Three corrected conceptual diagrams: first-moment linear coordinates and separated train/validation flow; signed torque sum without unsupported percentages; opaque staged workflow with approved-snapshot rollback",
+        "Explicit full-rank assumptions for the WLS inverse formula; segment-local preprocessing in the integration pseudocode",
+        "Mean residual sign aligned with the article and diagrams (observed minus predicted), checked with independent held-out sensor-bias changes",
+        "Spatial branched URDF interoperability check with fixed-link aggregation and reversed CSV names",
+        "Documented model-root gravity and a concrete backend difference: Robotics Toolbox rne includes drive/friction terms absent from this rigid-body regressor",
+        "Aligned raw-data fault handling with continuous-segment preprocessing; distinguish prior review from staged validation and default-profile activation without mutating candidate artifacts"
+      ],
+      "sources": [
+        "https://github.com/stack-of-tasks/pinocchio",
+        "https://raw.githubusercontent.com/stack-of-tasks/pinocchio/v4.1.0/include/pinocchio/src/spatial/inertia.hxx",
+        "https://drake.mit.edu/",
+        "https://drake.mit.edu/pip.html",
+        "https://drake.mit.edu/pydrake/pydrake.symbolic.html",
+        "https://underactuated.csail.mit.edu/sysid.html",
+        "https://rbdl.github.io/",
+        "https://github.com/rbdl/rbdl/blob/master/CMakeLists.txt",
+        "https://petercorke.github.io/robotics-toolbox-python/arm_dh.html",
+        "https://gbionics.github.io/idyntree/group__iDynTreeModel.html",
+        "https://github.com/gbionics/idyntree/blob/master/doc/model_loading.md"
+      ],
+      "verification": {
+        "tests": 21,
+        "same_urdf_cross_backend_states": 400,
+        "independent_analytic_two_link_states": 200,
+        "independent_pendulum_states": 200,
+        "clean_environment": "30 pinned wheels installed with hashes; compatible dependencies; PYTHONPATH and LD_LIBRARY_PATH cleared for checks",
+        "screens": 24,
+        "keyboard_table_cases": 12,
+        "exact_code_copy_cases": 4,
+        "image_viewer_cases": 12,
+        "native_pdf_exports": 6,
+        "semantic_article_states": 2,
+        "semantic_violations": 0,
+        "old_article_ids_removed": 0,
+        "all_article_chapter_activations": 9524,
+        "all_article_chapter_posts": 95,
+        "chapter_layouts": 36,
+        "chapter_modifier_cases": 5,
+        "legacy_anchors": true,
+        "native_fragment_history": true,
+        "final_pdf_pages_each": 44,
+        "semantic_incomplete_review": "All aria-controls/labelledby/describedby IDs resolve; incomplete entries correspond to closed controls.",
+        "runtime_exceptions": 0,
+        "lag_counterexample": {
+          "mass_kg": 2.0,
+          "damping_N_s_per_m": 0.4,
+          "delay_s": 0.02,
+          "fit_mass_kg": 1.984277531322008,
+          "fit_damping_N_s_per_m": 1.1712329299973558,
+          "training_force_rmse_N": 6.064009648892517e-16,
+          "held_out_force_rmse_N": 0.1656119059028341,
+          "scope": "Exact analytic state/force signals; known constant delay; no robot measurements or sampled interpolation validation."
+        },
+        "raw_pipeline": {
+          "train_raw_samples": 401,
+          "validation_raw_samples": 301,
+          "train_processed_samples": 381,
+          "validation_processed_samples": 281,
+          "window_samples": 21,
+          "degree": 5,
+          "max_gap_s": 0.03,
+          "validation_measured_rmse_nm": 0.020266920237618363,
+          "nominal_validation_measured_rmse_nm": 0.1873858236862983,
+          "position_noise_std_rad": 1e-05,
+          "torque_noise_std_nm": 0.02
+        },
+        "raw_preprocessing_cases": [
+          "Irregular polynomial exact derivatives and shifted time origin",
+          "Signed known lag with independent linear-torque oracle",
+          "No endpoint extrapolation or insufficient overlap",
+          "Window, gap, finite-state and schema validation",
+          "Input/output hashes and existing-file preservation",
+          "Execute published shell pipeline"
+        ],
+        "snapshot_v8_pdf_pages_each": 42,
+        "diagram_sources": "Three built-in Imagegen outputs accepted after source/arrow review, 24 reading states, native A4 PDFs and modal audits; originals retained",
+        "article_figure_numbers": "1 through 7, unique",
+        "all_article_figure_viewer_states": 84,
+        "opened_diagram_semantic_states": 18,
+        "final_square_workflow_viewer_states": 12,
+        "all_article_figure_viewer_snapshot": "v9 landscape workflow; unchanged six images retain coverage, square workflow checked separately",
+        "independent_pip_environments": "Separate fresh pip venvs installed official PyPI pin==4.1.0/numpy==2.2.6 and drake==1.58.0/numpy==2.2.6 successfully, without ROS environment paths; common 8, Pinocchio 6, Drake 3 tests and both main CLIs passed.",
+        "viewer_harness_followup": {
+          "initial_assertion": "An immediate post-font-change scroll comparison failed before layout had settled.",
+          "control_experiment": "At 320px/200%, the same 367px scroll change and 1572px height change occurred with and without opening the viewer; the focused figure retained its viewport position.",
+          "stable_layout": "After fonts/images/layout settled, all 12 square-workflow modal cases restored focus and scroll immediately and after 30/100/200 ms.",
+          "runtime_changes": "No shared viewer changes."
+        },
+        "spatial_model_cross_backend_states": 400,
+        "all_cross_backend_states": 800,
+        "spatial_model_scope": "Branched 3R URDF, nonparallel axes, rotated inertial frames, fixed tool merged into joint body, reversed named CSV columns; predicted torques agree with Drake to 6.3e-15 N*m in the exploratory run.",
+        "independent_published_commands": "Both full Python snippets and the raw shell workflow passed in their own pip environment; the other backend was confirmed absent. Both pip check commands passed.",
+        "clean_ci_pip_environment": "Exact pip --only-binary=:all: --require-hashes installed all 30 pinned wheels in a fresh Python 3.12 venv; pip check, all 21 source tests and extracted ZIP tests/reference outputs passed.",
+        "throttled_new_diagrams": {
+          "cases": 16,
+          "latency_ms": 400,
+          "download_bytes_per_second": 128000,
+          "checks": "Immediate decoded preview during original loading; cancellation; reopening; full original; modal focus and scroll restoration",
+          "runtime_exceptions": 0,
+          "scope": "Chrome network emulation, not a real-network speed benchmark"
+        },
+        "latest_pdf_pages_each": 44,
+        "latest_tagged_native_A4_exports": 6,
+        "final_reading_entry_checks": "8 layouts; 24 actual keyboard guide links; 8 formula states; both served ZIP files match repository bytes",
+        "entry_harness_note": "Initial scratch checks selected a collapsed TOC entry and referenced a browser global from Node; selectors/scope were corrected. No page-source fix was needed."
+      },
+      "requested_at_utc_approx": "2026-10-29T14:10:00Z",
+      "remaining": "None",
+      "finished_at_utc": "2026-10-30T01:38:33Z"
+    }
+  ],
+  "clock_note": {
+    "last_active_checkpoint_before_gap_utc": "2026-10-29T16:47:03Z",
+    "next_observed_clock_utc": "2026-10-30T01:17:06Z",
+    "evidence": "Container UTC and clock tool agree. Throttled browser results finished at 2026-10-29T16:50:16Z. No active-work duration is claimed for the intervening unobserved interval.",
+    "reported_duration": "Do not describe elapsed wall time as uninterrupted five-hour work."
+  },
+  "status": "completed; local changes only, not committed or deployed",
+  "final_validation": {
+    "hugo": "0.165.0 extended, fresh production and draft destinations",
+    "production_snapshot": "/tmp/chase-opt-20261029-fivehour/final-production-v4",
+    "strict_validation": {
+      "reviewed_posts": 95,
+      "published_posts": 92,
+      "acceptance_checks": 508,
+      "code_blocks": 597,
+      "local_references": 31912,
+      "errors": 0,
+      "python_fragment_warnings": 0,
+      "unrendered_math_warnings": 0
+    },
+    "pinned_assets": "29 files, 20 formula fonts, 21 emitted integrity assets verified",
+    "article_filter": "92 published articles, 11 topics; exact inventory and URL/state tests passed",
+    "anchor_preservation": "No old TAMP or parameter-identification IDs removed; original publication dates, draft states and URLs preserved",
+    "latest_entries": {
+      "reading_states": 8,
+      "keyboard_guide_links": 24,
+      "native_or_enhanced_formula_states": 8,
+      "http_downloads_byte_identical": 2,
+      "runtime_exceptions": 0
+    },
+    "production_downloads": {
+      "posts/robotics/dynamics/parameter-identification": {
+        "old_ids_removed": 0,
+        "new_ids": 11
+      },
+      "posts/planner/task-and-motion-planning": {
+        "old_ids_removed": 0,
+        "new_ids": 4
+      },
+      "parameter-identification-lab.zip": {
+        "bytes": 217703,
+        "sha256": "90ccd00e536a119de6aa0f123644c729faf363cf205d9eeaad8b2e468dde71f2"
+      },
+      "tamp-lab.zip": {
+        "bytes": 15525,
+        "sha256": "bf4617ee87f8e046ab40735af856d9126e1d539852c20a42d39b48d105432bca"
+      }
+    },
+    "git_diff_check": "passed",
+    "initial_dirty_changes": "Two initial six-hour review diffs still match the original snapshot byte for byte; initial untracked files preserved",
+    "deployment": "not performed"
+  }
+}

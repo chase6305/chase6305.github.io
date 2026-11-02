@@ -1,0 +1,49 @@
+{
+  "checked_at_utc": "2026-10-31T03:35:18.882115+00:00",
+  "scope": "Constructed statistics only. No model, GRPO rollout, optimizer or training is run. Independence and fixed-checkpoint assumptions are not verified by the estimator.",
+  "conditions": "sample_mean_power - sample_trace_variance / observations has unbiased expectation under iid finite-second-moment assumptions. Its ratio with the random variance estimate is not generally unbiased.",
+  "cases": [
+    {
+      "name": "single_observation",
+      "population_snr": 1.0,
+      "observations": 256,
+      "naive": 1.0189447651380572,
+      "signed_corrected": 1.0150385151380574
+    },
+    {
+      "name": "average_of_eight_independent",
+      "population_snr": 8.0,
+      "observations": 256,
+      "naive": 7.495807110499082,
+      "signed_corrected": 7.491900860499082
+    },
+    {
+      "name": "zero_mean",
+      "population_snr": 0.0,
+      "observations": 256,
+      "naive": 0.0036152807661679353,
+      "signed_corrected": -0.00029096923383206463
+    }
+  ],
+  "stdlib_tests": 15,
+  "numpy_tests": 9,
+  "tested_python": [
+    "3.10.0",
+    "3.11.15",
+    "3.12.14"
+  ],
+  "zip_members": 26,
+  "zip_sha256": "bafff70ca31c2303b6ab28efa2a886f312a3b04738df2178329e1bce1c8819c7",
+  "independent_oracles": [
+    "Fraction enumeration of all independent signs at sample counts2 through7",
+    "Known mean and covariance for default four-coordinate Rademacher observations",
+    "Common-scaling, single-pass iterable, negative correction, zero-variance and invalid-numerical-range checks"
+  ],
+  "limitations": [
+    "No model or real RLVR gradients",
+    "Cannot verify independence or fixed model state from vectors",
+    "Corrected signal power has unbiased expectation under iid assumptions; ratio generally remains biased",
+    "All observations are materialized in memory"
+  ],
+  "environment_attribution_note": "The earlier3.10.12 patch attribution was not captured by that invocation. Rechecked the actual interpreter and reran all24 current checks; verified3.10.0."
+}

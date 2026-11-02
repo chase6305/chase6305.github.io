@@ -1,0 +1,101 @@
+{
+  "scope": "Constructed fixed diagonal perturbations, not training or statistical SNR",
+  "promotion_steps": 1,
+  "suppression_steps": 4,
+  "epsilon": 0.0,
+  "momentum_equals_gradient": true,
+  "examples": [
+    {
+      "name": "weak_tail",
+      "signal_diagonal": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "perturbation_diagonal": [
+        0.0,
+        0.2,
+        0.1,
+        0.05
+      ],
+      "gradient_diagonal": [
+        1.0,
+        0.2,
+        0.1,
+        0.05
+      ],
+      "update_diagonals": {
+        "normalized_gradient": [
+          0.9747403576571586,
+          0.19494807153143173,
+          0.09747403576571587,
+          0.04873701788285793
+        ],
+        "muon": [
+          0.7309101208779339,
+          0.8131808950297644,
+          0.6953499544095763,
+          0.7545163485379687
+        ],
+        "pion": [
+          1.0,
+          4.641691891518028e-22,
+          4.7091059142546764e-45,
+          4.2938606300694225e-69
+        ]
+      },
+      "cosine_with_clean_signal": {
+        "normalized_gradient": 0.9747403576571587,
+        "muon": 0.48745768043555915,
+        "pion": 1.0
+      }
+    },
+    {
+      "name": "dominant_perturbation",
+      "signal_diagonal": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "perturbation_diagonal": [
+        0.0,
+        5.0,
+        0.0,
+        0.0
+      ],
+      "gradient_diagonal": [
+        1.0,
+        5.0,
+        0.0,
+        0.0
+      ],
+      "update_diagonals": {
+        "normalized_gradient": [
+          0.19611613513818402,
+          0.9805806756909201,
+          0.0,
+          0.0
+        ],
+        "muon": [
+          0.7967155795156765,
+          0.7222224598276215,
+          0.0,
+          0.0
+        ],
+        "pion": [
+          7.148384810287638e-22,
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      "cosine_with_clean_signal": {
+        "normalized_gradient": 0.19611613513818402,
+        "muon": 0.7408948780944629,
+        "pion": 7.148384810287638e-22
+      }
+    }
+  ]
+}

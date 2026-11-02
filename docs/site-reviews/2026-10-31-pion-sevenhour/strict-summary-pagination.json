@@ -1,0 +1,428 @@
+{
+  "pdfs": 5,
+  "cases": 30,
+  "failures": 0,
+  "rows": [
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "summary": "snr",
+      "title_pages": [
+        7
+      ],
+      "first_content_pages": [
+        7
+      ],
+      "passed": true,
+      "together_pages": [
+        7
+      ]
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "summary": "trace",
+      "title_pages": [
+        12
+      ],
+      "first_content_pages": [
+        12
+      ],
+      "passed": true,
+      "together_pages": [
+        12
+      ]
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "summary": "flat",
+      "title_pages": [
+        29
+      ],
+      "first_content_pages": [
+        29
+      ],
+      "passed": true,
+      "together_pages": [
+        29
+      ]
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "summary": "buffers",
+      "title_pages": [
+        32
+      ],
+      "first_content_pages": [
+        32
+      ],
+      "passed": true,
+      "together_pages": [
+        32
+      ]
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "summary": "padding",
+      "title_pages": [
+        33
+      ],
+      "first_content_pages": [
+        33
+      ],
+      "passed": true,
+      "together_pages": [
+        33
+      ]
+    },
+    {
+      "pdf": "pion-false-100-warm-a4.pdf",
+      "summary": "answers",
+      "title_pages": [
+        38
+      ],
+      "first_content_pages": [
+        38
+      ],
+      "passed": true,
+      "together_pages": [
+        38
+      ]
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "summary": "snr",
+      "title_pages": [
+        19
+      ],
+      "first_content_pages": [
+        19
+      ],
+      "passed": true,
+      "together_pages": [
+        19
+      ]
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "summary": "trace",
+      "title_pages": [
+        32
+      ],
+      "first_content_pages": [
+        32
+      ],
+      "passed": true,
+      "together_pages": [
+        32
+      ]
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "summary": "flat",
+      "title_pages": [
+        78
+      ],
+      "first_content_pages": [
+        78
+      ],
+      "passed": true,
+      "together_pages": [
+        78
+      ]
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "summary": "buffers",
+      "title_pages": [
+        85
+      ],
+      "first_content_pages": [
+        85
+      ],
+      "passed": true,
+      "together_pages": [
+        85
+      ]
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "summary": "padding",
+      "title_pages": [
+        88
+      ],
+      "first_content_pages": [
+        88
+      ],
+      "passed": true,
+      "together_pages": [
+        88
+      ]
+    },
+    {
+      "pdf": "pion-false-200-warm-a4.pdf",
+      "summary": "answers",
+      "title_pages": [
+        103
+      ],
+      "first_content_pages": [
+        103
+      ],
+      "passed": true,
+      "together_pages": [
+        103
+      ]
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "summary": "snr",
+      "title_pages": [
+        7
+      ],
+      "first_content_pages": [
+        7
+      ],
+      "passed": true,
+      "together_pages": [
+        7
+      ]
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "summary": "trace",
+      "title_pages": [
+        12
+      ],
+      "first_content_pages": [
+        12
+      ],
+      "passed": true,
+      "together_pages": [
+        12
+      ]
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "summary": "flat",
+      "title_pages": [
+        30
+      ],
+      "first_content_pages": [
+        30
+      ],
+      "passed": true,
+      "together_pages": [
+        30
+      ]
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "summary": "buffers",
+      "title_pages": [
+        33
+      ],
+      "first_content_pages": [
+        33
+      ],
+      "passed": true,
+      "together_pages": [
+        33
+      ]
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "summary": "padding",
+      "title_pages": [
+        34
+      ],
+      "first_content_pages": [
+        34
+      ],
+      "passed": true,
+      "together_pages": [
+        34
+      ]
+    },
+    {
+      "pdf": "pion-true-100-light-a4.pdf",
+      "summary": "answers",
+      "title_pages": [
+        39
+      ],
+      "first_content_pages": [
+        39
+      ],
+      "passed": true,
+      "together_pages": [
+        39
+      ]
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "summary": "snr",
+      "title_pages": [
+        19
+      ],
+      "first_content_pages": [
+        19
+      ],
+      "passed": true,
+      "together_pages": [
+        19
+      ]
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "summary": "trace",
+      "title_pages": [
+        32
+      ],
+      "first_content_pages": [
+        32
+      ],
+      "passed": true,
+      "together_pages": [
+        32
+      ]
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "summary": "flat",
+      "title_pages": [
+        80
+      ],
+      "first_content_pages": [
+        80
+      ],
+      "passed": true,
+      "together_pages": [
+        80
+      ]
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "summary": "buffers",
+      "title_pages": [
+        87
+      ],
+      "first_content_pages": [
+        87
+      ],
+      "passed": true,
+      "together_pages": [
+        87
+      ]
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "summary": "padding",
+      "title_pages": [
+        90
+      ],
+      "first_content_pages": [
+        90
+      ],
+      "passed": true,
+      "together_pages": [
+        90
+      ]
+    },
+    {
+      "pdf": "pion-true-200-dark-a4.pdf",
+      "summary": "answers",
+      "title_pages": [
+        105
+      ],
+      "first_content_pages": [
+        105
+      ],
+      "passed": true,
+      "together_pages": [
+        105
+      ]
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "summary": "snr",
+      "title_pages": [
+        19
+      ],
+      "first_content_pages": [
+        19
+      ],
+      "passed": true,
+      "together_pages": [
+        19
+      ]
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "summary": "trace",
+      "title_pages": [
+        33
+      ],
+      "first_content_pages": [
+        33
+      ],
+      "passed": true,
+      "together_pages": [
+        33
+      ]
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "summary": "flat",
+      "title_pages": [
+        84
+      ],
+      "first_content_pages": [
+        84
+      ],
+      "passed": true,
+      "together_pages": [
+        84
+      ]
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "summary": "buffers",
+      "title_pages": [
+        91
+      ],
+      "first_content_pages": [
+        91
+      ],
+      "passed": true,
+      "together_pages": [
+        91
+      ]
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "summary": "padding",
+      "title_pages": [
+        94
+      ],
+      "first_content_pages": [
+        94
+      ],
+      "passed": true,
+      "together_pages": [
+        94
+      ]
+    },
+    {
+      "pdf": "pion-true-200-light-letter.pdf",
+      "summary": "answers",
+      "title_pages": [
+        110
+      ],
+      "first_content_pages": [
+        110
+      ],
+      "passed": true,
+      "together_pages": [
+        110
+      ]
+    }
+  ],
+  "scope": "Native PDF text pages, not CSS properties. Each full summary and the start of its first content must share a page."
+}

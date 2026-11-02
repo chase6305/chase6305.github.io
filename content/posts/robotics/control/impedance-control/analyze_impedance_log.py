@@ -83,6 +83,10 @@ def analyze(
     rows: list[dict[str, float]], step_on_s: float, step_off_s: float
 ) -> dict[str, float]:
     validate_rows(rows)  # Direct API calls must obey the same contract as CSV input.
+    for name, value in (("step_on_s", step_on_s), ("step_off_s", step_off_s)):
+        if (isinstance(value, bool) or not isinstance(value, (int, float))
+                or not math.isfinite(value)):
+            raise ValueError(f"{name} must be a finite number")
     if not rows[0]["time_s"] < step_on_s < step_off_s < rows[-1]["time_s"]:
         raise ValueError("step times must lie strictly inside the log interval")
 
@@ -113,6 +117,7 @@ def analyze(
         row for row in rows if step_on_s <= row["time_s"] < step_off_s
     ]
     settling_band_m = 0.02 * steady_magnitude
+    sample_periods = [b["time_s"] - a["time_s"] for a, b in zip(rows, rows[1:])]
 
     return {
         "baseline_position_m": baseline_position,
@@ -135,6 +140,8 @@ def analyze(
         "sample_period_mean_s": (
             rows[-1]["time_s"] - rows[0]["time_s"]
         ) / (len(rows) - 1),
+        "sample_period_min_s": min(sample_periods),
+        "sample_period_max_s": max(sample_periods),
     }
 
 
@@ -157,8 +164,9 @@ def load_acceptance(path: Path) -> dict[str, float]:
     if missing:
         raise ValueError(f"missing acceptance fields: {sorted(missing)}")
 
+    optional = {"max_sample_period_relative_deviation"}
     acceptance: dict[str, float] = {}
-    for name in required:
+    for name in required | (optional & raw.keys()):
         value = raw[name]
         if (
             isinstance(value, bool)
@@ -171,7 +179,7 @@ def load_acceptance(path: Path) -> dict[str, float]:
         raise ValueError("expected_stiffness_n_m must be positive")
     if acceptance["expected_sample_period_s"] <= 0.0:
         raise ValueError("expected_sample_period_s must be positive")
-    for name in required - {
+    for name in acceptance.keys() - {
         "expected_stiffness_n_m",
         "expected_sample_period_s",
     }:
@@ -192,7 +200,7 @@ def acceptance_failures(
         - acceptance["expected_sample_period_s"]
     ) / acceptance["expected_sample_period_s"]
 
-    checks = (
+    checks = [
         (
             "stiffness_relative_error",
             stiffness_error,
@@ -223,12 +231,26 @@ def acceptance_failures(
             period_error,
             acceptance["sample_period_relative_tolerance"],
         ),
-    )
-    return [
+    ]
+    failures = [
         f"{name}: actual={actual:.9g}, limit={limit:.9g}"
         for name, actual, limit in checks
         if not math.isfinite(actual) or actual > limit
     ]
+    if "max_sample_period_relative_deviation" in acceptance:
+        # Check BOTH extremes: a long gap followed by a short catch-up interval
+        # leaves the overall mean unchanged. These are log-record intervals,
+        # not proof of controller deadlines or a count of dropped records.
+        expected = acceptance["expected_sample_period_s"]
+        limit = acceptance["max_sample_period_relative_deviation"]
+        for name in ("sample_period_min_s", "sample_period_max_s"):
+            actual = metrics[name]
+            deviation = abs(actual / expected - 1.0) if math.isfinite(actual) else math.inf
+            # Inclusive bounds avoid turning an exactly constructed endpoint
+            # into a failure through a second rounded division by expected.
+            if not math.isfinite(actual) or not expected * (1 - limit) <= actual <= expected * (1 + limit):
+                failures.append(f"{name}_relative_deviation: actual={deviation:.9g}, limit={limit:.9g}")
+    return failures
 
 
 def main() -> None:

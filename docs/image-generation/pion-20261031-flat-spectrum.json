@@ -1,0 +1,34 @@
+{
+  "created_on": "2026-10-31",
+  "method": "deterministic Matplotlib 3.10.9 plot",
+  "article": "content/posts/ai/pion-muon-vla-rlvr/index.md",
+  "figure": 6,
+  "construction": "M=I_r; epsilon=0; five whole-matrix polynomial iterations; weight decay excluded",
+  "quantities": "log10 of RMS(gradient update)/(eta*gamma) in exact arithmetic for the identity construction; Pion uses 100-digit Decimal composition and Muon uses Float64",
+  "representation_references": "BF16 2^-133 and Float64 2^-1074 are format-value references, not universal kernel underflow thresholds",
+  "scope": "Constructed numerical comparison, not model gradient measurements, training performance or automatic schedule selection",
+  "command": "python3 -B content/posts/ai/pion-muon-vla-rlvr/make_rank_figures.py",
+  "files": [
+    {
+      "path": "content/posts/ai/pion-muon-vla-rlvr/make_rank_figures.py",
+      "sha256": "6ab6bdbcef91dc9d8ffd833117797d36243494e83ab17a1ff49dc011069dd55a"
+    },
+    {
+      "path": "content/posts/ai/pion-muon-vla-rlvr/flat_spectrum.py",
+      "sha256": "cc3ed522cd621c4242e3bbfcafb4dbd4560a7ae0ca7947c235f977e354fc65d6"
+    },
+    {
+      "path": "content/posts/ai/pion-muon-vla-rlvr/assets/flat-spectrum-reference.json",
+      "sha256": "2b4329f18893aa567ae8d76039ad35ba40947456cdc167cf0026627d33a2e04e"
+    },
+    {
+      "path": "content/posts/ai/pion-muon-vla-rlvr/assets/flat-spectrum-bf16-reference.json",
+      "sha256": "c24c6bc384b28824ece7ad7e708fa75cf684ab29d400c4dde5f627c27405460e"
+    },
+    {
+      "path": "content/posts/ai/pion-muon-vla-rlvr/assets/flat-spectrum-rms.png",
+      "sha256": "8fb1f742b36e24b0e2b5e20b17df3950a4958632a829c8d979029ec51c8cb555"
+    }
+  ],
+  "label_review": "Moved the BF16 representation label below its reference line with a leader after PDF inspection found that the first placement covered part of the two-promotion curve; all data curves remain visible."
+}

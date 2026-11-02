@@ -1,0 +1,852 @@
+[
+  {
+    "index": 0,
+    "text": "1. Muon 在矩阵上做了什么",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 248,
+      "width": 182,
+      "height": 80,
+      "top": 248,
+      "right": 1383,
+      "bottom": 328,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  },
+  {
+    "index": 1,
+    "text": "1.1 从梯度与动量开始",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 344,
+      "width": 182,
+      "height": 80,
+      "top": 344,
+      "right": 1383,
+      "bottom": 424,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 2,
+    "text": "1.2 为什么称为统一谱白化",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 440,
+      "width": 182,
+      "height": 120,
+      "top": 440,
+      "right": 1383,
+      "bottom": 560,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 3,
+    "text": "1.3 实际 Muon 用有限次多项式近似",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 576,
+      "width": 182,
+      "height": 160,
+      "top": 576,
+      "right": 1383,
+      "bottom": 736,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 4,
+    "text": "1.4 逐坐标自适应与矩阵谱变换",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 752,
+      "width": 182,
+      "height": 120,
+      "top": 752,
+      "right": 1383,
+      "bottom": 872,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 5,
+    "text": "2. 为什么 VLA 的动作模块可能不适合统一白化",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 840,
+      "width": 182,
+      "height": 160,
+      "top": 840,
+      "right": 1383,
+      "bottom": 1000,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  },
+  {
+    "index": 6,
+    "text": "2.1 VLA 的不同模块面对不同结构",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 504,
+      "width": 182,
+      "height": 120,
+      "top": 504,
+      "right": 1383,
+      "bottom": 624,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 7,
+    "text": "2.2 有效秩如何定义",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 640,
+      "width": 182,
+      "height": 80,
+      "top": 640,
+      "right": 1383,
+      "bottom": 720,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 8,
+    "text": "2.3 为什么图中 Muon 变差，主结果却变好",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 736,
+      "width": 182,
+      "height": 160,
+      "top": 736,
+      "right": 1383,
+      "bottom": 896,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 9,
+    "text": "3. 为什么 RLVR 的梯度噪声值得单独考虑",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 840,
+      "width": 182,
+      "height": 160,
+      "top": 840,
+      "right": 1383,
+      "bottom": 1000,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  },
+  {
+    "index": 10,
+    "text": "3.1 可验证奖励不意味着低噪声梯度",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 484,
+      "width": 182,
+      "height": 160,
+      "top": 484,
+      "right": 1383,
+      "bottom": 644,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 11,
+    "text": "3.2 全对或全错的组为何没有优势信号",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 660,
+      "width": 182,
+      "height": 160,
+      "top": 660,
+      "right": 1383,
+      "bottom": 820,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 12,
+    "text": "3.3 统一放大弱方向可能怎样破坏更新",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 836,
+      "width": 182,
+      "height": 160,
+      "top": 836,
+      "right": 1383,
+      "bottom": 996,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 13,
+    "text": "4. 把矩阵问题变成一维多项式",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 504,
+      "width": 182,
+      "height": 120,
+      "top": 504,
+      "right": 1383,
+      "bottom": 624,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  },
+  {
+    "index": 14,
+    "text": "5. Promotion 与 Suppression 怎样推导",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 640,
+      "width": 182,
+      "height": 160,
+      "top": 640,
+      "right": 1383,
+      "bottom": 800,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  },
+  {
+    "index": 15,
+    "text": "5.1 先固定强方向的终点",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 816,
+      "width": 182,
+      "height": 120,
+      "top": 816,
+      "right": 1383,
+      "bottom": 936,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 16,
+    "text": "5.2 Promotion 尽量提升，同时保持顺序",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 800,
+      "width": 182,
+      "height": 200,
+      "top": 800,
+      "right": 1383,
+      "bottom": 1000,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 17,
+    "text": "5.3 Suppression 去掉原点的线性放大",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 484,
+      "width": 182,
+      "height": 160,
+      "top": 484,
+      "right": 1383,
+      "bottom": 644,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 18,
+    "text": "5.4 为什么先提升，再抑制",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 660,
+      "width": 182,
+      "height": 120,
+      "top": 660,
+      "right": 1383,
+      "bottom": 780,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 19,
+    "text": "6. 一个能直接复算的谱例子",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 796,
+      "width": 182,
+      "height": 80,
+      "top": 796,
+      "right": 1383,
+      "bottom": 876,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  },
+  {
+    "index": 20,
+    "text": "6.1 交互比较谱调度与归一化",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 880,
+      "width": 182,
+      "height": 120,
+      "top": 880,
+      "right": 1383,
+      "bottom": 1000,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 21,
+    "text": "6.2 已知信号的对照：强方向也可能是扰动",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 484,
+      "width": 182,
+      "height": 160,
+      "top": 484,
+      "right": 1383,
+      "bottom": 644,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 22,
+    "text": "7. RLVR 为什么还需要分头更新",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 660,
+      "width": 182,
+      "height": 120,
+      "top": 660,
+      "right": 1383,
+      "bottom": 780,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  },
+  {
+    "index": 23,
+    "text": "7.1 分头改变了归一化与谱分析的范围",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 796,
+      "width": 182,
+      "height": 160,
+      "top": 796,
+      "right": 1383,
+      "bottom": 956,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 24,
+    "text": "7.2 为什么预训练的头差异可能有功能意义",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 840,
+      "width": 182,
+      "height": 160,
+      "top": 840,
+      "right": 1383,
+      "bottom": 1000,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 25,
+    "text": "7.3 Q、K、V 与输出投影不能沿同一轴乱切",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 484,
+      "width": 182,
+      "height": 160,
+      "top": 484,
+      "right": 1383,
+      "bottom": 644,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 26,
+    "text": "7.4 两个同形谱的头能说明什么",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 660,
+      "width": 182,
+      "height": 120,
+      "top": 660,
+      "right": 1383,
+      "bottom": 780,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 27,
+    "text": "8. VLA 中究竟把哪部分换成 Pion",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 796,
+      "width": 182,
+      "height": 120,
+      "top": 796,
+      "right": 1383,
+      "bottom": 916,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  },
+  {
+    "index": 28,
+    "text": "9. VLA 实验结果应该怎样读",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 920,
+      "width": 182,
+      "height": 80,
+      "top": 920,
+      "right": 1383,
+      "bottom": 1000,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  },
+  {
+    "index": 29,
+    "text": "9.1 VLA-Adapter 的固定预算比较",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 484,
+      "width": 182,
+      "height": 160,
+      "top": 484,
+      "right": 1383,
+      "bottom": 644,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 30,
+    "text": "9.2 VLANeXt 与场景扰动",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 660,
+      "width": 182,
+      "height": 120,
+      "top": 660,
+      "right": 1383,
+      "bottom": 780,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 31,
+    "text": "9.3 真机结果及其分母",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 796,
+      "width": 182,
+      "height": 80,
+      "top": 796,
+      "right": 1383,
+      "bottom": 876,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 32,
+    "text": "10. RLVR 的结果与关键消融",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 892,
+      "width": 182,
+      "height": 80,
+      "top": 892,
+      "right": 1383,
+      "bottom": 972,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  },
+  {
+    "index": 33,
+    "text": "11. 先运行谱计算，再接入训练",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 880,
+      "width": 182,
+      "height": 120,
+      "top": 880,
+      "right": 1383,
+      "bottom": 1000,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  },
+  {
+    "index": 34,
+    "text": "11.1 不装深度学习框架也能检查响应",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 484,
+      "width": 182,
+      "height": 160,
+      "top": 484,
+      "right": 1383,
+      "bottom": 644,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 35,
+    "text": "11.2 用 NumPy 验证矩阵多项式与 SVD 一致",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 660,
+      "width": 182,
+      "height": 200,
+      "top": 660,
+      "right": 1383,
+      "bottom": 860,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 36,
+    "text": "11.3 官方训练代码从哪里进入",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 876,
+      "width": 182,
+      "height": 120,
+      "top": 876,
+      "right": 1383,
+      "bottom": 996,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 37,
+    "text": "11.4 理想归一化与 BF16 实现怎样区分",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 484,
+      "width": 182,
+      "height": 160,
+      "top": 484,
+      "right": 1383,
+      "bottom": 644,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 38,
+    "text": "11.5 从谱系数走到一次参数更新",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 660,
+      "width": 182,
+      "height": 120,
+      "top": 660,
+      "right": 1383,
+      "bottom": 780,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 39,
+    "text": "12. 接入自己的任务时应记录什么",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 796,
+      "width": 182,
+      "height": 120,
+      "top": 796,
+      "right": 1383,
+      "bottom": 916,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  },
+  {
+    "index": 40,
+    "text": "13. 常见疑问",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 932,
+      "width": 182,
+      "height": 40,
+      "top": 932,
+      "right": 1383,
+      "bottom": 972,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  },
+  {
+    "index": 41,
+    "text": "Pion 是否只保留前几个奇异值？",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 880,
+      "width": 182,
+      "height": 120,
+      "top": 880,
+      "right": 1383,
+      "bottom": 1000,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 42,
+    "text": "有效秩低，就一定要用 Pion 吗？",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 504,
+      "width": 182,
+      "height": 120,
+      "top": 504,
+      "right": 1383,
+      "bottom": 624,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 43,
+    "text": "分头模式是不是让各头获得不同学习率？",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 640,
+      "width": 182,
+      "height": 160,
+      "top": 640,
+      "right": 1383,
+      "bottom": 800,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 44,
+    "text": "五步相同，是否可以保证训练时间相同？",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 816,
+      "width": 182,
+      "height": 160,
+      "top": 816,
+      "right": 1383,
+      "bottom": 976,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 45,
+    "text": "保留较少奇异方向，会自动减少显存吗？",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 840,
+      "width": 182,
+      "height": 160,
+      "top": 840,
+      "right": 1383,
+      "bottom": 1000,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 46,
+    "text": "Pion 会让机器人轨迹更平滑吗？",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 504,
+      "width": 182,
+      "height": 120,
+      "top": 504,
+      "right": 1383,
+      "bottom": 624,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 47,
+    "text": "论文最值得保留的方法结论是什么？",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 640,
+      "width": 182,
+      "height": 160,
+      "top": 640,
+      "right": 1383,
+      "bottom": 800,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-"
+  },
+  {
+    "index": 48,
+    "text": "14. 延伸阅读与复算材料",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 816,
+      "width": 182,
+      "height": 80,
+      "top": 816,
+      "right": 1383,
+      "bottom": 896,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  },
+  {
+    "index": 49,
+    "text": "阅读自测与验收",
+    "focus": true,
+    "box": {
+      "x": 1201,
+      "y": 912,
+      "width": 182,
+      "height": 80,
+      "top": 912,
+      "right": 1383,
+      "bottom": 992,
+      "left": 1201
+    },
+    "visibleAtCenter": true,
+    "hit": "<a class=\"hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:co"
+  }
+]

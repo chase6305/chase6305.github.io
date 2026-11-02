@@ -1,0 +1,68 @@
+{
+  "checked_at_utc": "2026-10-30T17:54:49.692702+00:00",
+  "paper_attention_assumption": "Appendix G p26: standard multi-head scaled dot-product attention, no QK activation normalization in its formula",
+  "qwen3_report": "https://arxiv.org/html/2505.09388v1#S2",
+  "report_table1_heads": {
+    "Qwen3-1.7B": {
+      "query": 16,
+      "kv": 8
+    },
+    "Qwen3-4B": {
+      "query": 32,
+      "kv": 8
+    }
+  },
+  "implementation": {
+    "url": "https://raw.githubusercontent.com/huggingface/transformers/v4.51.3/src/transformers/models/qwen3/modeling_qwen3.py",
+    "sha256": "704c914530530a1acb0b443add1f520404e3ac2c28c0ab7e16f80f86cfe8ccb2",
+    "rmsnorm_lines": [
+      62,
+      76
+    ],
+    "normalization_setup_lines": [
+      195,
+      196
+    ],
+    "projection_and_normalization_lines": [
+      217,
+      219
+    ],
+    "line_number_source": "Raw source bytes, not web-extracted line numbering"
+  },
+  "qwen3_4b_config": {
+    "url": "https://huggingface.co/Qwen/Qwen3-4B/resolve/1cfa9a7208912126459214e8b04321603b3df60c/config.json",
+    "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+    "sha256": "8ba006f74fecfaaeb392872a60f4a480e7ec9860153d2e1b769ec81f9a147f8a",
+    "config": {
+      "architectures": [
+        "Qwen3ForCausalLM"
+      ],
+      "attention_bias": false,
+      "attention_dropout": 0.0,
+      "bos_token_id": 151643,
+      "eos_token_id": 151645,
+      "head_dim": 128,
+      "hidden_act": "silu",
+      "hidden_size": 2560,
+      "initializer_range": 0.02,
+      "intermediate_size": 9728,
+      "max_position_embeddings": 40960,
+      "max_window_layers": 36,
+      "model_type": "qwen3",
+      "num_attention_heads": 32,
+      "num_hidden_layers": 36,
+      "num_key_value_heads": 8,
+      "rms_norm_eps": 1e-06,
+      "rope_scaling": null,
+      "rope_theta": 1000000,
+      "sliding_window": null,
+      "tie_word_embeddings": true,
+      "torch_dtype": "bfloat16",
+      "transformers_version": "4.51.0",
+      "use_cache": true,
+      "use_sliding_window": false,
+      "vocab_size": 151936
+    }
+  },
+  "inference": "Projection shapes follow Linear(out_features,in_features) and head_dim128; they are not generally square. Ideal positive-scale cancellation under epsilon-zero RMS normalization follows algebraically; no model or benchmark was run."
+}

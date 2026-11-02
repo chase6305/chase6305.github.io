@@ -1,0 +1,27 @@
+{
+  "files": [
+    {
+      "file": "pion-false-100-warm-a4.txt",
+      "text_identical": true
+    },
+    {
+      "file": "pion-false-200-warm-a4.txt",
+      "text_identical": true
+    },
+    {
+      "file": "pion-true-100-light-a4.txt",
+      "text_identical": true
+    },
+    {
+      "file": "pion-true-200-dark-a4.txt",
+      "text_identical": true
+    },
+    {
+      "file": "pion-true-200-light-letter.txt",
+      "text_identical": true
+    }
+  ],
+  "source_html_sha256": "f4238c9e9a6d0fc8cccc3de512f7b14a58fbb699ace1ab9a736cb714d3d91653",
+  "strict_no_script_exports": true,
+  "beforeprint_callbacks_blocked_in_script_off_cases": true
+}

@@ -1,0 +1,57 @@
+{
+  "checked_at_utc": "2026-11-01T21:49:27.535984+00:00",
+  "scope": "Read-only retrieval of immutable raw source files. A web renderer cache miss is not a broken-link finding. No downloaded code is executed.",
+  "commit": "87965014b360bde604632cba0aa12e423c6c63c6",
+  "files": [
+    {
+      "file": "VLA/VLAAdapter/pion_optim/muon.py",
+      "url": "https://raw.githubusercontent.com/OPTML-Group/Pion/87965014b360bde604632cba0aa12e423c6c63c6/VLA/VLAAdapter/pion_optim/muon.py",
+      "cached_sha256": "8e7ca8d6f40ebc4fb066acb15387e618d515896cca5d1eb0ad234e5310e9157e",
+      "status": 200,
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 15790,
+      "downloaded_sha256": "8e7ca8d6f40ebc4fb066acb15387e618d515896cca5d1eb0ad234e5310e9157e",
+      "matches_pinned_cache": true
+    },
+    {
+      "file": "VLA/VLAAdapter/vla-scripts/finetune_pion.py",
+      "url": "https://raw.githubusercontent.com/OPTML-Group/Pion/87965014b360bde604632cba0aa12e423c6c63c6/VLA/VLAAdapter/vla-scripts/finetune_pion.py",
+      "cached_sha256": "0cb8c1453e8d9d60690d0cbc3bef99e48430f0f27bfafbdb5542737229d6c74b",
+      "status": 200,
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 54555,
+      "downloaded_sha256": "0cb8c1453e8d9d60690d0cbc3bef99e48430f0f27bfafbdb5542737229d6c74b",
+      "matches_pinned_cache": true
+    },
+    {
+      "file": "VLA/VLANeXt/config/libero_train_pion_config.yaml",
+      "url": "https://raw.githubusercontent.com/OPTML-Group/Pion/87965014b360bde604632cba0aa12e423c6c63c6/VLA/VLANeXt/config/libero_train_pion_config.yaml",
+      "cached_sha256": "83dea3344d7af0d8767cb2b21af01aa86d7a11703b0675293795b0151dcd64b1",
+      "status": 200,
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 4791,
+      "downloaded_sha256": "83dea3344d7af0d8767cb2b21af01aa86d7a11703b0675293795b0151dcd64b1",
+      "matches_pinned_cache": true
+    },
+    {
+      "file": "VLA/openpi/src/openpi/training/muon_optim.py",
+      "url": "https://raw.githubusercontent.com/OPTML-Group/Pion/87965014b360bde604632cba0aa12e423c6c63c6/VLA/openpi/src/openpi/training/muon_optim.py",
+      "cached_sha256": "9d43caa8a7867c36b3e317112fbf9b6f5224bf24e0ce86d825ac0f1e0d4ab1f0",
+      "status": 200,
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 11715,
+      "downloaded_sha256": "9d43caa8a7867c36b3e317112fbf9b6f5224bf24e0ce86d825ac0f1e0d4ab1f0",
+      "matches_pinned_cache": true
+    },
+    {
+      "file": "RL/verl/verl/workers/config/optimizer.py",
+      "url": "https://raw.githubusercontent.com/OPTML-Group/Pion/87965014b360bde604632cba0aa12e423c6c63c6/RL/verl/verl/workers/config/optimizer.py",
+      "cached_sha256": "b76291a6fe436f5c3201dad51a63b48581e2dcfd633e33d9e836ca9259dcac19",
+      "status": 200,
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 17548,
+      "downloaded_sha256": "b76291a6fe436f5c3201dad51a63b48581e2dcfd633e33d9e836ca9259dcac19",
+      "matches_pinned_cache": true
+    }
+  ]
+}

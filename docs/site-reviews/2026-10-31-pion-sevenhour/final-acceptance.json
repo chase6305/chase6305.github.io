@@ -1,0 +1,169 @@
+{
+  "collected_at_utc": "2026-10-31T07:16:49.477773+00:00",
+  "source_html_sha256": "0002cd3bf47ebf7c18501cc04dbd95d9377c878534d1b993322fddce133542a3",
+  "metadata_unchanged": true,
+  "build": "production-print-final: Hugo0.165.0extended, fresh destination; no deploy",
+  "validation": {
+    "reviewed_posts": 96,
+    "learning_paths": 11,
+    "acceptance_checks": 534,
+    "blog_posting_schemas": 93,
+    "sharing_images": 55,
+    "shared_search_indexes": 2,
+    "classified_tags": 189,
+    "code_blocks": 612,
+    "syntax_checked_by_language": {
+      "bash": 249,
+      "json": 8,
+      "jsonc": 6,
+      "python": 212,
+      "sh": 10,
+      "xml": 1
+    },
+    "html_pages": 319,
+    "local_references_checked": 32446,
+    "collection_pages_checked": 305,
+    "filter_indexes_checked": 10,
+    "errors": [],
+    "python_fragment_warnings": [],
+    "unrendered_math_warnings": []
+  },
+  "browser_batches": {
+    "toc-global-batch": {
+      "suites": 8,
+      "failed": 0,
+      "record": "docs/site-reviews/2026-10-31-pion-sevenhour/toc-global-batch.json"
+    },
+    "spectrum-browser-batch": {
+      "suites": 8,
+      "failed": 0,
+      "record": "docs/site-reviews/2026-10-31-pion-sevenhour/spectrum-browser-batch.json"
+    },
+    "print-final-batch": {
+      "suites": 3,
+      "failed": 0,
+      "record": "docs/site-reviews/2026-10-31-pion-sevenhour/print-final-batch.json"
+    }
+  },
+  "pdfs": {
+    "exports": 5,
+    "total_pages": 414,
+    "page_counts": [
+      40,
+      111,
+      39,
+      109,
+      115
+    ],
+    "all_tagged": true,
+    "all_focus_details_scroll_restored": true,
+    "summary_content_pairs": 30,
+    "summary_content_separations": 0,
+    "figure3_full_caption_pairs": 5,
+    "figure3_separations": 0,
+    "raster_selected_pages": 181,
+    "raster_edge_ink": 0,
+    "raster_empty": 0,
+    "visual_review_methods": {
+      "not directly inspected": 156,
+      "pixel-identical to previously directly accepted page": 15,
+      "direct image inspection in final print build": 10
+    },
+    "scope": "Raster bounds and actual direct/pixel-identical review decisions are separate; not a claim that all414 pages were visually inspected."
+  },
+  "current_download": {
+    "download_sha256": "b421ae8412f0822457f1e89435c115993995e1decf7adfe263c4af44b2bb17a9",
+    "members": 26,
+    "source_bytes_match": true,
+    "tests": 24,
+    "environment": "Verified CPython3.12.14 / NumPy2.2.6; no PyTorch",
+    "path_with_spaces_and_chinese": true,
+    "url": "http://127.0.0.1:13419/posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip",
+    "figure_recipe": "Frozen160dpi layout, all six schedules, legends outside data/title/axis-label bounding boxes"
+  },
+  "initial_work_preservation": {
+    "initial_files": 173,
+    "missing": [],
+    "changed_initial_files": [
+      "docs/blog-editorial-review.json",
+      "assets/css/pion-spectrum.css",
+      "content/posts/ai/pion-muon-vla-rlvr/README.txt",
+      "content/posts/ai/pion-muon-vla-rlvr/index.md",
+      "content/posts/ai/pion-muon-vla-rlvr/make_figures.py",
+      "content/posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip",
+      "scripts/package_pion_lab.py",
+      "scripts/test_pion_examples.py"
+    ],
+    "modified_acceptance_ids": [
+      95
+    ],
+    "acceptance_questions": 25,
+    "extra_clean_scope": [
+      "assets/css/custom.css",
+      "scripts/check_blog_print.cjs",
+      "scripts/lib/browser.cjs"
+    ],
+    "scope": "All other initial dirty files remain byte-identical; no prior review or audit files changed."
+  },
+  "source_files": {
+    "assets/css/custom.css": "53fcce05018cdd6317a5894dd6437686b794ba931cabb245805722f0fb91cf5c",
+    "assets/css/pion-spectrum.css": "e28e17ab56bfed4ec6ae41c6eb5d99217da4c25acd80e5a13ef9abee4776d4db",
+    "content/posts/ai/pion-muon-vla-rlvr/README.txt": "c9a53eedf5b8ef10d0e469415dc34c28c2c409f41f63c10af6cc4119db8939f3",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/alignment-reference.json": "deaa97cc3dd763e06e6ab7a14ded121fd1de99ebc237c1ccc4958a7b5411f5dc",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/flat-spectrum-bf16-reference.json": "c24c6bc384b28824ece7ad7e708fa75cf684ab29d400c4dde5f627c27405460e",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/flat-spectrum-reference.json": "2b4329f18893aa567ae8d76039ad35ba40947456cdc167cf0026627d33a2e04e",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/flat-spectrum-rms.png": "8fb1f742b36e24b0e2b5e20b17df3950a4958632a829c8d979029ec51c8cb555",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/official-precision.json": "8deea385c9c0c9ce87a41960b9145dc4c7fcc10f77a0d0a722c86dd4d5b4e7d6",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/official-steps.json": "7df8a62dc541fb9b7c887c51e4c044353eb0aaee6d54a4c64a3982db2b8d5ac4",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/paper-module-rank.png": "fa917e1e52adbed9b0c152986344667f9b19e1cd58e3cfe89c492d43e06c68ff",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/paper-per-head.png": "c1ef4859dea5740d0fd55a9700dfbd48b71f76055392642ee33c8a3ec4492655",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/paper-rlvr.png": "fec2833727c0b020d9b04003e568d6071ee2baa920aa6bde0371b63a596a7b27",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/per-head-reference.json": "3392f6d6ed71435adffa27e4d7f122c05fff08c42b803471009c80a66b983c9c",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/snr-reference.json": "4ec1fe9e17e391a3d6c07a4948ebefa8bbb299bc8fb08ac607c9e5e97a5423e5",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/spectral-polynomials-v2.png": "d4de6e8ce1518baee6c48c03ad501e101e740e928abe0735b47c8671eaaa6a66",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/spectral-polynomials.png": "cd84865af3c93a13a59d7b500958c02911f0b54cf7be126063d33018313bd7c2",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/spectral-reference.json": "98f3e20a6eae8f6fddd987787cd6d7d844525ada08e48624c3a2a7392cb9823e",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/step-reference.json": "dc76216b4f6537c629fe8dfd042028dca3cb0d77cf57960317f2436f0f6ccb48",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/trace-reference.json": "d814479382647a1e527faaa685c9784addd4ebc40bdd8d7403e61fdede576888",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/update-flow-v2.webp": "64d306b876016eaf2596c48e490b92c047e7c49bf0af2ad7e2bc5c04af6bfad9",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/update-flow.webp": "efe1fed01a5060e257a7d8c97a2954127203011f962386eb9f2fe23a63798b46",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/vla-buffer-reference.json": "32bd950b716420d962837c36c4f2e7f64e1cc43e4678b31b821cf0f5a5bc42bf",
+    "content/posts/ai/pion-muon-vla-rlvr/assets/vla-padding-reference.json": "b0cbb40186271d6bae53b094e8092539dd20c2cffb0e139afa477f5da1d4538f",
+    "content/posts/ai/pion-muon-vla-rlvr/flat_spectrum.py": "cc3ed522cd621c4242e3bbfcafb4dbd4560a7ae0ca7947c235f977e354fc65d6",
+    "content/posts/ai/pion-muon-vla-rlvr/index.md": "7b77f9c80883607711db8bd39e0d971219052c04fd345888a8272ceed693e521",
+    "content/posts/ai/pion-muon-vla-rlvr/make_figures.py": "f8d2d2fde0d25abefc9201a7a16a8de9772c0c3e090cce59fd4c93ed0337e0b7",
+    "content/posts/ai/pion-muon-vla-rlvr/make_rank_figures.py": "6ab6bdbcef91dc9d8ffd833117797d36243494e83ab17a1ff49dc011069dd55a",
+    "content/posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip": "b421ae8412f0822457f1e89435c115993995e1decf7adfe263c4af44b2bb17a9",
+    "content/posts/ai/pion-muon-vla-rlvr/pion_alignment.py": "1391eacddf39376f7fdb9f4ba5be376e8dcc3dcb4c1f71c0d24609a1815cbfc0",
+    "content/posts/ai/pion-muon-vla-rlvr/pion_matrix.py": "2f8bfd999af5150e4c05f66ee93f134d32148b2be9377325aa8c36af0b46332f",
+    "content/posts/ai/pion-muon-vla-rlvr/pion_snr.py": "ee5cbadfe75f86ae4156a0d2f9ba004745ed612bfd42eb7f4cdf5215969082a8",
+    "content/posts/ai/pion-muon-vla-rlvr/pion_spectral.py": "917fe49d4e9d37c750d95425245c74145f8bc01be2124926ec7d576596ff40ed",
+    "content/posts/ai/pion-muon-vla-rlvr/pion_step.py": "2cc8b896ee79799cda72e9b233c76493d49bef4dd1b2056bc465689a39c09357",
+    "content/posts/ai/pion-muon-vla-rlvr/probe_official_pion.py": "ffc25dc8b5d5cbcf1fbbcee03261ddd5ecfb78bea3dc200b977b47eb0a4fbea9",
+    "content/posts/ai/pion-muon-vla-rlvr/probe_official_steps.py": "68ac9a3189bae000a2ff24b50d1c5fcc8ecec14c78c6b1b83d9ca26ebcf691cc",
+    "content/posts/ai/pion-muon-vla-rlvr/probe_official_vla_buffers.py": "2eee54fe838abc7d0d0443f9c0588814b05631e927cca67ba8e1411c66c79d7c",
+    "content/posts/ai/pion-muon-vla-rlvr/probe_official_vla_padding.py": "e4a40baea6bad7d95d0b700f4de9ae131cfc096587841c4c6a915c17030e7f59",
+    "docs/blog-editorial-review.json": "d0db869c016a5178ad8d650aaf8bb1a7cc33a8af2c213badfd315d34390b633b",
+    "scripts/check_blog_print.cjs": "d3c7f16aa76deaf33725387f317ff8fabbfb05dc6c392dbc6bf4a5ad393f7e28",
+    "scripts/lib/browser.cjs": "9b540f5eaa558f207c0b50f134ec78dca9717e5c72ca037226f92b2d2e0e2b21",
+    "scripts/package_pion_lab.py": "bfb54b8e899054e53f51c575b49ad3f85c2fdaeebef2bd5b15dc345a1ab11d0f",
+    "scripts/test_pion_examples.py": "c3c112ba25d3ea247032dd98d48e8532bb2882cb0a4a1c5c63e66dcd57696145"
+  },
+  "additional_required_suites": [
+    {
+      "name": "code-reading-final",
+      "passed": true,
+      "record": "docs/site-reviews/2026-10-31-pion-sevenhour/code-reading-final.json.gz"
+    },
+    {
+      "name": "overflow-final",
+      "passed": true,
+      "record": "docs/site-reviews/2026-10-31-pion-sevenhour/overflow-final.json.gz"
+    },
+    {
+      "name": "math-final",
+      "passed": true,
+      "record": "docs/site-reviews/2026-10-31-pion-sevenhour/math-final.json.gz"
+    }
+  ]
+}

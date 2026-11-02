@@ -1,0 +1,177 @@
+{
+  "backend": "Pinocchio",
+  "pinocchio": "4.1.0",
+  "numpy": "2.2.6",
+  "algorithm_sha256": "81df393c7052663d1dd2f2d9feafd78669b951c17200bbb858c37c9054769e48",
+  "helper_sha256": "e7e209b7a35b8a8b3b3d47668d05afe13b0bbd11ccb6361c7131d982d49257c8",
+  "data_kind": "synthetic_joint_torque",
+  "urdf_sha256": "2e446861b1c2b080ba22c6939d633fcff2a596953c62d7f1d8fe6b4255c7414c",
+  "joint_names": [
+    "joint1",
+    "joint2"
+  ],
+  "gravity_m_s2": [
+    0.0,
+    0.0,
+    -9.81
+  ],
+  "regressor_model": "Rigid-body inertial parameters, including gravity",
+  "omitted_torque_terms": [
+    "actuator armature",
+    "joint friction",
+    "torque bias",
+    "external contact"
+  ],
+  "nominal_model_armature_kg_m2": [
+    0.0,
+    0.0
+  ],
+  "train_samples": 401,
+  "validation_samples": 301,
+  "regressor_shape": [
+    802,
+    20
+  ],
+  "parameter_count": 20,
+  "retained_rank": 6,
+  "unobserved_directions": 14,
+  "column_scaling": "training column L2 norms; zero columns use scale 1",
+  "training_column_l2_norms": [
+    0.0,
+    186.51777932121243,
+    0.0,
+    61.65869036140458,
+    0.0,
+    0.0,
+    15.138958599684527,
+    0.0,
+    0.0,
+    0.0,
+    113.67803575067691,
+    263.57058265682946,
+    0.0,
+    107.58955095967038,
+    0.0,
+    0.0,
+    39.45029891272626,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "svd_relative_cutoff": 1e-10,
+  "retained_scaled_condition": 5.270259138068646,
+  "scaled_singular_values": [
+    1.8730655576736228,
+    1.3054491706524947,
+    0.9933858942645091,
+    0.6087389777755934,
+    0.5511242658536742,
+    0.35540293344285756,
+    1.2909505010116485e-16,
+    7.131598067842267e-17,
+    2.7917362418051465e-17,
+    1.3593401811152017e-17,
+    3.9948816949645435e-33,
+    2.875282182594202e-33,
+    1.2574486426485972e-33,
+    5.270883677151776e-50,
+    -0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "validation_unseen_scaled_direction_fraction": 5.85622722539001e-16,
+  "train_measured_rmse_nm": 0.019863620853255902,
+  "validation_measured_rmse_nm": 0.020198444666117404,
+  "residual_definition": "measured torque minus predicted torque",
+  "per_joint_validation_rmse_nm": [
+    0.01914489613856019,
+    0.02119970013241122
+  ],
+  "per_joint_validation_mean_residual_nm": [
+    -0.001688697703563061,
+    -0.000660846789724336
+  ],
+  "per_joint_validation_peak_absolute_residual_nm": [
+    0.08181603748339228,
+    0.0703345675670577
+  ],
+  "per_joint_train_rmse_nm": [
+    0.019670881817646924,
+    0.020054507606021475
+  ],
+  "nominal_urdf_validation_measured_rmse_nm": 0.18478638509759263,
+  "per_joint_nominal_urdf_validation_rmse_nm": [
+    0.06778797579574836,
+    0.25238226279274584
+  ],
+  "parameter_order_per_joint": [
+    "m",
+    "mcx",
+    "mcy",
+    "mcz",
+    "Ixx_O",
+    "Ixy_O",
+    "Iyy_O",
+    "Ixz_O",
+    "Iyz_O",
+    "Izz_O"
+  ],
+  "prediction_parameter_vector": [
+    0.0,
+    0.44317114060413415,
+    1.6567282648935132e-15,
+    -0.010898678151716575,
+    -2.142358654611058e-15,
+    2.7110368579420557e-15,
+    0.1840470239227635,
+    -7.826712236566833e-31,
+    2.967157275684561e-44,
+    1.0973799021789629e-43,
+    0.7170053789606526,
+    0.15124856571451945,
+    2.8234317555394424e-61,
+    0.006842156455184478,
+    0.0,
+    0.0,
+    0.04517457372376318,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "physical_parameters_uniquely_identified": false,
+  "interpretation": "One minimum-norm prediction vector in scaled coordinates of a data-dependent retained subspace; not a physical URDF update.",
+  "regressor_rnea_max_error_nm": 3.552713678800501e-15,
+  "synthetic_truth_dynamic_parameters": [
+    1.38,
+    0.4416,
+    0.01656,
+    -0.01104,
+    0.00098704,
+    -0.0052992000000000004,
+    0.18240032,
+    0.0035328,
+    0.00013247999999999998,
+    0.18271072,
+    0.72,
+    0.1512,
+    -0.00432,
+    0.0072,
+    0.00049792,
+    0.0009072,
+    0.043324,
+    -0.001512,
+    4.32e-05,
+    0.043477919999999996
+  ],
+  "validation_noise_free_rmse_nm": 0.002604558407945922,
+  "nominal_urdf_validation_noise_free_rmse_nm": 0.18411043111203507,
+  "state_derivative_finite_difference_max_errors": {
+    "dtau_dq": 7.409273194980415e-10,
+    "dtau_dv": 1.6510749711873274e-09,
+    "dtau_da": 9.797340438932878e-10
+  },
+  "scope": "Same-geometry synthetic torques with inertias different from the nominal URDF, analytic motion derivatives and IID torque noise; no measured robot accuracy."
+}

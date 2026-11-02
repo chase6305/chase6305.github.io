@@ -30,7 +30,7 @@ const output = process.argv[4] || '/tmp/chase-site-search';
     await browser.navigate(base + '/posts/');
     const savedTheme = await browser.evaluate(`localStorage.getItem('color-theme')`);
     const api = await browser.evaluate(`(async()=>{
-      const result={};for(const query of ['C++','A*','Cosmos','Ｃｏｓｍｏｓ','MorphMimic','ＭｏｒｐｈＭｉｍｉｃ','形态 描述','四元数','关节','C++ zzxxyy','不存在的随机词zzxxyy','+++'])result[query]=await window.hextraSearch.search(query);
+      const result={};for(const query of ['C++','A*','Cosmos','Ｃｏｓｍｏｓ','MorphMimic','ＭｏｒｐｈＭｉｍｉｃ','形态 描述','四元数','关节','QK-Norm','gradient norm','action head','C++ zzxxyy','不存在的随机词zzxxyy','+++'])result[query]=await window.hextraSearch.search(query);
       return result;
     })()`);
     assert(api['C++'].length && api['C++'].slice(0, 3).every(g => g.title.includes('C++')));
@@ -42,11 +42,15 @@ const output = process.argv[4] || '/tmp/chase-site-search';
     assert(api['形态 描述'].some(g => g.route === '/posts/ai/morphmimic/'));
     assert(api['四元数'][0].matches.some(m => m.title.includes('四元数')));
     assert(api['关节'][0].title.includes('关节'));
+    for (const text of ['QK-Norm', 'gradient norm', 'action head']) {
+      assert(api[text].some(group => group.route === '/posts/ai/pion-muon-vla-rlvr/'),
+        'Chapter-wise indexing lost a matching article: ' + text);
+    }
     for (const text of ['C++ zzxxyy', '不存在的随机词zzxxyy', '+++']) assert.deepEqual(api[text], []);
     for (const groups of Object.values(api)) for (const group of groups) {
       assert.equal(new Set(group.matches.map(m => m.route)).size, group.matches.length, 'Repeated chapter destination');
     }
-    report.querySemantics = 'technical punctuation, NFKC, CJK, all terms and title/chapter ranking passed';
+    report.querySemantics = 'technical punctuation, NFKC, CJK, all terms, chapter-appended body queries and title/chapter ranking passed';
     report.queries = Object.fromEntries(Object.entries(api).map(([q, groups]) => [q, groups.slice(0, 3).map(g => g.route)]));
 
     // An opening-frame callback must not reclaim focus after a result is chosen.
@@ -159,12 +163,16 @@ const output = process.argv[4] || '/tmp/chase-site-search';
     const shared = await browser.evaluate(`(async()=>({
       cosmos:(await window.hextraSearch.search('Cosmos')).map(g=>g.route),
       cpp:(await window.hextraSearch.search('C++')).map(g=>g.route),
+      qk:(await window.hextraSearch.search('QK-Norm')).map(g=>g.route),
       latest:document.querySelectorAll('.latest-card').length
     }))()`);
     assert(shared.cosmos.includes('/posts/ai/cosmos3/') && shared.cpp.includes('/posts/cpp/gcc/') && shared.latest === 3);
+    assert(shared.qk.includes('/posts/ai/pion-muon-vla-rlvr/'));
     await browser.evaluate(`document.querySelector('[data-search-open]').click()`);
     await query('SuperMimic');
     assert(await browser.evaluate(`document.querySelector('#hextra-search-results a').getAttribute('href')==='/posts/ai/supermimic/'`));
+    await query('QK-Norm');
+    assert(await browser.evaluate(`!!document.querySelector('#hextra-search-results a[href="/posts/ai/pion-muon-vla-rlvr/"]')`));
     report.chineseDiscovery = true;
 
     const restore = savedTheme === null ? `localStorage.removeItem('color-theme')` : `localStorage.setItem('color-theme',${JSON.stringify(savedTheme)})`;

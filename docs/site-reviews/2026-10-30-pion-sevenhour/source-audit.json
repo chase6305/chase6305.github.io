@@ -1,0 +1,111 @@
+{
+  "checked_at_utc": "2026-10-30T21:17:08.185954+00:00",
+  "paper_sha256": "2016d07cca61aaa9be936f5a5a701ff033a89e6022f03a9795f639c4d1a2428f",
+  "paper_version": "arXiv:2605.19282v1, 2026-05-19, 43 pages",
+  "official_commit": "87965014b360bde604632cba0aa12e423c6c63c6",
+  "article_sha256": "49fc444dd7fdf05d5bd15b6381cd2135592af600bc013570e356add8fc245ad0",
+  "scope": "Final source and claim reconciliation against the supplied local paper, pinned official files and primary Qwen3 sources already retained in attention-architecture.json. This record is a manual editorial audit, not an additional numerical test or model reproduction.",
+  "checks": [
+    {
+      "article_anchor": "muon-matrix-update",
+      "evidence": "Paper pp.3,22, compact positive-singular-value SVD",
+      "reviewed_conclusion": "Polar factor uses the nonzero subspace; zero singular directions are not completed into nonzero directions. The spectral-norm minimizer is described as one optimal direction."
+    },
+    {
+      "article_anchor": "muon-matrix-update",
+      "evidence": "Paper p.3 and pinned polynomial helper",
+      "reviewed_conclusion": "The five-step Muon polynomial is distinguished from its ideal polar target; f(1)=0.701 for the stated coefficients and finite outputs need not be exactly one."
+    },
+    {
+      "article_anchor": "vla-effective-rank",
+      "evidence": "Paper Figure1 and effective-rank definition",
+      "reviewed_conclusion": "Entropy normalizes singular amplitudes, not their squares; dimensions and gradient-versus-momentum scope remain explicit. Zero entropy terms and all-zero convention are stated."
+    },
+    {
+      "article_anchor": "vla-effective-rank",
+      "evidence": "Paper Figure1 versus Figure5/TableA5",
+      "reviewed_conclusion": "Action-only 4500-step comparison is not merged with all-module 1500-step comparison. The reported exact-SVD baseline runtime is not a universal low-rank-optimizer cost."
+    },
+    {
+      "article_anchor": "rlvr-snr",
+      "evidence": "Paper AppendixC pp.19–21",
+      "reviewed_conclusion": "SNR is squared mean over gradient variance, not a norm or one singular value. Repeated sampling requires a fixed checkpoint and specified averaging."
+    },
+    {
+      "article_anchor": "rlvr-snr",
+      "evidence": "Paper AppendixC, Bernoulli group model",
+      "reviewed_conclusion": "Nondegenerate-group probability is conditional on independent equal-success-probability responses. Representative lengths, score variance/independence, importance-ratio factorization and clipping-mask approximations remain explicit. Zero reward advantage does not imply zero KL-loss gradient."
+    },
+    {
+      "article_anchor": "spectral-polynomial-view",
+      "evidence": "Paper AppendixD p.22",
+      "reviewed_conclusion": "Matrix/scalar polynomial factorization and fixed singular subspaces are exact-arithmetic identities; BF16 results are separately observed, including small off-subspace components."
+    },
+    {
+      "article_anchor": "pion-polynomials",
+      "evidence": "Paper AppendixE pp.23–24",
+      "reviewed_conclusion": "Endpoint constraints reduce to a one-parameter family; derivative endpoint conditions yield c in [-1.5,0.375]. Maximal origin slope gives Promotion; zero origin slope uniquely gives Suppression."
+    },
+    {
+      "article_anchor": "pion-polynomials",
+      "evidence": "Direct algebra from paper coefficients",
+      "reviewed_conclusion": "Suppression fixed point sqrt(2/3) is distinct from full five-step 0.5-response inputs. Promotion-minus-Suppression is nonnegative on [0,1], and five promotions omit suppression entirely."
+    },
+    {
+      "article_anchor": "spectral-example",
+      "evidence": "Constructed spectra and independent Decimal/SVD records",
+      "reviewed_conclusion": "Four-direction responses preserve original input labels; output order can differ for finite Muon. A flat spectrum can retain relative effective rank while all updates become tiny. Fixed clean-signal examples do not identify real gradient noise."
+    },
+    {
+      "article_anchor": "per-head",
+      "evidence": "Paper AppendixG p.26 versus primary Qwen3 report/implementation",
+      "reviewed_conclusion": "The appendix assumes standard attention. Qwen3 applies post-projection QK-Norm; weight-norm temperature intuition alone cannot explain its actual attention. Per-head filtering does not promise norm-ratio preservation."
+    },
+    {
+      "article_anchor": "per-head",
+      "evidence": "Qwen3 Table1 and immutable 4B configuration",
+      "reviewed_conclusion": "Query/KV heads are16/8 for1.7B and32/8 for4B. Explicit head_dim128 gives Q4096x2560, K/V1024x2560, O2560x4096. Q/K/V split output rows, O splits input columns."
+    },
+    {
+      "article_anchor": "optimizer-assignment",
+      "evidence": "Paper TableA1, TableA3, TableA5 and TableA6",
+      "reviewed_conclusion": "VLA main Pion configuration is a mixed assignment; modality and per-head ablations retain their own scopes. TableA6 AdamW43.6 versus main32.2 at1500steps remains a reported discrepancy, without invented reconciliation."
+    },
+    {
+      "article_anchor": "vla-results",
+      "evidence": "Paper Table1, Table3, TableA3, TableA5",
+      "reviewed_conclusion": "Transcribed success rates, suite means and percentage-point differences agree. Robot rounding corresponds to28+25+24 successes in90 trials; trials are not independent training seeds or arbitrary-task success guarantees."
+    },
+    {
+      "article_anchor": "rlvr-results",
+      "evidence": "Paper Figure6 and TableA2",
+      "reviewed_conclusion": "Eight algorithm/model/dataset settings are distinguished. MATH/GSM8K prompt batches128/1024, rollouts8/5, token limits1024/3000 and512/1024, and steps80/40 match the paper. No graph-derived precise final accuracy or seed errors are invented."
+    },
+    {
+      "article_anchor": "runnable-example",
+      "evidence": "Pinned VLA/RL/openpi classes and launch configurations",
+      "reviewed_conclusion": "Class default scale factors0.2/5.0/2.0 can be overridden. GSM8K scripts use15epochs andKL loss; VLANeXt default6000steps differs from paper4000/10000. Actual run budgets must be explicit."
+    },
+    {
+      "article_anchor": "stateful-step",
+      "evidence": "Pinned RL update ordering and independent multi-step probes",
+      "reviewed_conclusion": "EMA, Nesterov, decoupled weight decay and shape multiplier are separate from the scalar polynomial. Zero and missing gradients have distinct state behavior. Gradient-only RMS excludes decay and uses a stable scaled norm."
+    },
+    {
+      "article_anchor": "vla-buffer-order",
+      "evidence": "Pinned VLA loop, replay/Gloo and unmodified CUDA/NCCL probe",
+      "reviewed_conclusion": "The receive buffer is cleared before prior gather consumption. CPU adaptations and actual one-rank CUDA observations are distinguished;64cases contain56normalcontrols and8observed mismatches, not64healthyupdates."
+    },
+    {
+      "article_anchor": "practical-checks",
+      "evidence": "Pinned VLA gradient mixing/normalization helper and direct mutation probe",
+      "reviewed_conclusion": "Raw gradients should be recorded before optimizer mutation, after required synchronization/unscaling. Local shards and logical full matrices must be distinguished."
+    },
+    {
+      "article_anchor": "faq",
+      "evidence": "Paper AppendixM p.43 and pinned optimizer state",
+      "reviewed_conclusion": "LLM-pretraining underperformance is the authors prediction/future-work limit, not a reported score. Low-rank spectral updates do not imply sparse arrays or compressed momentum storage."
+    }
+  ],
+  "changes_required_in_this_final_pass": []
+}

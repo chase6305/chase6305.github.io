@@ -1,0 +1,113 @@
+{
+  "download_url": "http://127.0.0.1:13391/posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip",
+  "download_sha256": "612031c055fbff5d20a896dd2f0a4fe65ca8d598a7137d47dd45d858eb0d373c",
+  "archive_members": 24,
+  "python": "3.12.14",
+  "numpy": "2.2.6",
+  "matplotlib": "3.10.9",
+  "extraction_path_has_spaces_and_chinese": true,
+  "tests": {
+    "standard_library": 13,
+    "numpy": 9,
+    "total": 22,
+    "passed": true
+  },
+  "plots": [
+    {
+      "path": "assets/flat-spectrum-rms.png",
+      "sha256": "8fb1f742b36e24b0e2b5e20b17df3950a4958632a829c8d979029ec51c8cb555",
+      "identical_to_article_asset": true
+    },
+    {
+      "path": "assets/spectral-polynomials.png",
+      "sha256": "cd84865af3c93a13a59d7b500958c02911f0b54cf7be126063d33018313bd7c2",
+      "identical_to_article_asset": true
+    }
+  ],
+  "installed_packages": [
+    {
+      "name": "numpy",
+      "version": "2.2.6",
+      "hashes": {
+        "sha256": "fd83c01228a688733f1ded5201c678f0c53ecc1006ffbc404db9f7a899ac6249"
+      }
+    },
+    {
+      "name": "matplotlib",
+      "version": "3.10.9",
+      "hashes": {
+        "sha256": "ae20801130378b82d647ff5047c07316295b68dc054ca6b3c13519d0ea624285"
+      }
+    },
+    {
+      "name": "contourpy",
+      "version": "1.4.0",
+      "hashes": {
+        "sha256": "875f42444c9cf48d56f724f2637e60d0f73b3b12c9041e1484580a233edf9591"
+      }
+    },
+    {
+      "name": "cycler",
+      "version": "0.12.1",
+      "hashes": {
+        "sha256": "85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30"
+      }
+    },
+    {
+      "name": "fonttools",
+      "version": "4.68.0",
+      "hashes": {
+        "sha256": "3edce69ecdefa73ab1041901ca22eefed6ebb93a77bc77e889d940479f25bf7d"
+      }
+    },
+    {
+      "name": "kiwisolver",
+      "version": "1.5.1",
+      "hashes": {
+        "sha256": "34633ecf50d16187ab8e5528b7a2530f2feb4e23f300db4672538b51cfc5cd38"
+      }
+    },
+    {
+      "name": "packaging",
+      "version": "26.3",
+      "hashes": {
+        "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c"
+      }
+    },
+    {
+      "name": "pillow",
+      "version": "13.0.0",
+      "hashes": {
+        "sha256": "42d63be3af4f9b951b199b0a9d23365d37ab14687e6d77b74940432c8515c4ca"
+      }
+    },
+    {
+      "name": "pyparsing",
+      "version": "3.3.3",
+      "hashes": {
+        "sha256": "ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4"
+      }
+    },
+    {
+      "name": "python-dateutil",
+      "version": "3.0.0",
+      "hashes": {
+        "sha256": "3c79630202e4152c6add678446984236efe4f57e84d8e892aab0637bab82e9fd"
+      }
+    },
+    {
+      "name": "six",
+      "version": "1.17.0",
+      "hashes": {
+        "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
+      }
+    },
+    {
+      "name": "tzdata",
+      "version": "2026.6",
+      "hashes": {
+        "sha256": "0a10eec6e13ef16b627fabed9a5f2ba61a62b1c67f327305f4e7e412a70b4aec"
+      }
+    }
+  ]
+}

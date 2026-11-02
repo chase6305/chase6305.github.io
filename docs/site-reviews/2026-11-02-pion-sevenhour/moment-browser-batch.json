@@ -1,0 +1,109 @@
+[
+  {
+    "name": "moment-group",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/check_moment_group.cjs",
+      "http://127.0.0.1:13523",
+      "http://127.0.0.1:13519",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/moment-group"
+    ],
+    "started_utc": "2026-11-01T19:52:04.745594+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "96c496b7427b19bddb9df8e17291b87cf288d4398218052b58ee4c3c9a516e23",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 18.603,
+    "finished_utc": "2026-11-01T19:52:23.348307+00:00"
+  },
+  {
+    "name": "moment-print-all",
+    "command": [
+      "node",
+      "scripts/check_blog_print.cjs",
+      "http://127.0.0.1:13525",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/moment-print-all",
+      "--drafts"
+    ],
+    "started_utc": "2026-11-01T19:52:23.352157+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "d3c7f16aa76deaf33725387f317ff8fabbfb05dc6c392dbc6bf4a5ad393f7e28",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 130.728,
+    "finished_utc": "2026-11-01T19:54:34.080184+00:00"
+  },
+  {
+    "name": "moment-print-large",
+    "command": [
+      "node",
+      "/tmp/chase-pion-sevenhour-20261102/check-pion-print.cjs",
+      "http://127.0.0.1:13523",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/moment-print-large",
+      "--large-text"
+    ],
+    "started_utc": "2026-11-01T19:54:34.084235+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "e165be4af4cca1dafd5ab91e76e642b659eff5946e7aea808edc22907520131c",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 3.722,
+    "finished_utc": "2026-11-01T19:54:37.806488+00:00"
+  },
+  {
+    "name": "moment-print-large-forced",
+    "command": [
+      "node",
+      "/tmp/chase-pion-sevenhour-20261102/check-pion-print.cjs",
+      "http://127.0.0.1:13523",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/moment-print-large-forced",
+      "--large-text",
+      "--forced-colors"
+    ],
+    "started_utc": "2026-11-01T19:54:37.810348+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "e165be4af4cca1dafd5ab91e76e642b659eff5946e7aea808edc22907520131c",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 3.572,
+    "finished_utc": "2026-11-01T19:54:41.381993+00:00"
+  },
+  {
+    "name": "moment-content-search",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/check_new_content_search.cjs",
+      "http://127.0.0.1:13523",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/moment-content-search"
+    ],
+    "started_utc": "2026-11-01T19:54:41.386129+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "61c738cb7eadb38d3c89cbc7ebd0b1d9841faee7e3f566d7fa487230554e41fc",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 6.485,
+    "finished_utc": "2026-11-01T19:54:47.870750+00:00"
+  },
+  {
+    "name": "moment-native-pdf",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/export_reading.cjs",
+      "http://127.0.0.1:13523",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/pdf-moment"
+    ],
+    "started_utc": "2026-11-01T19:54:47.874768+00:00",
+    "status": "passed",
+    "exit_code": 0,
+    "test_script_sha256": "f8125a6f236dc04b44e2dd3c41df2a64f074dc256da259615dbc352438aad9e7",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 21.213,
+    "finished_utc": "2026-11-01T19:55:09.087868+00:00"
+  }
+]

@@ -1,0 +1,111 @@
+{
+  "official_commit": "87965014b360bde604632cba0aa12e423c6c63c6",
+  "scope": "Article pinned-source line ranges checked against retained files; semantic contexts manually reviewed. This is not an HTTP availability check.",
+  "ranges": [
+    {
+      "file": "VLA/VLAAdapter/pion_optim/muon.py",
+      "start_line": 227,
+      "end_line": 278,
+      "source_sha256": "8e7ca8d6f40ebc4fb066acb15387e618d515896cca5d1eb0ad234e5310e9157e",
+      "source_line_count": 425,
+      "range_exists": true
+    },
+    {
+      "file": "RL/verl/verl/utils/muon.py",
+      "start_line": 427,
+      "end_line": 449,
+      "source_sha256": "15c1331453ef3db4b565a514d1e43f74692e2e910eb8cb939894d54371dd402d",
+      "source_line_count": 717,
+      "range_exists": true
+    },
+    {
+      "file": "RL/verl/verl/utils/muon.py",
+      "start_line": 611,
+      "end_line": 641,
+      "source_sha256": "15c1331453ef3db4b565a514d1e43f74692e2e910eb8cb939894d54371dd402d",
+      "source_line_count": 717,
+      "range_exists": true
+    },
+    {
+      "file": "VLA/openpi/src/openpi/training/muon_optim.py",
+      "start_line": 212,
+      "end_line": 239,
+      "source_sha256": "9d43caa8a7867c36b3e317112fbf9b6f5224bf24e0ce86d825ac0f1e0d4ab1f0",
+      "source_line_count": 309,
+      "range_exists": true
+    },
+    {
+      "file": "VLA/VLAAdapter/vla-scripts/finetune_pion.py",
+      "start_line": 948,
+      "end_line": 1024,
+      "source_sha256": "0cb8c1453e8d9d60690d0cbc3bef99e48430f0f27bfafbdb5542737229d6c74b",
+      "source_line_count": 1356,
+      "range_exists": true
+    },
+    {
+      "file": "RL/verl/verl/workers/config/optimizer.py",
+      "start_line": 43,
+      "end_line": 141,
+      "source_sha256": "b76291a6fe436f5c3201dad51a63b48581e2dcfd633e33d9e836ca9259dcac19",
+      "source_line_count": 445,
+      "range_exists": true
+    },
+    {
+      "file": "VLA/VLANeXt/config/libero_train_pion_config.yaml",
+      "start_line": 27,
+      "end_line": 35,
+      "source_sha256": "83dea3344d7af0d8767cb2b21af01aa86d7a11703b0675293795b0151dcd64b1",
+      "source_line_count": 145,
+      "range_exists": true
+    },
+    {
+      "file": "RL/verl/verl/utils/muon.py",
+      "start_line": 449,
+      "end_line": 512,
+      "source_sha256": "15c1331453ef3db4b565a514d1e43f74692e2e910eb8cb939894d54371dd402d",
+      "source_line_count": 717,
+      "range_exists": true
+    },
+    {
+      "file": "VLA/VLAAdapter/pion_optim/muon.py",
+      "start_line": 259,
+      "end_line": 294,
+      "source_sha256": "8e7ca8d6f40ebc4fb066acb15387e618d515896cca5d1eb0ad234e5310e9157e",
+      "source_line_count": 425,
+      "range_exists": true
+    },
+    {
+      "file": "VLA/VLAAdapter/pion_optim/muon.py",
+      "start_line": 271,
+      "end_line": 310,
+      "source_sha256": "8e7ca8d6f40ebc4fb066acb15387e618d515896cca5d1eb0ad234e5310e9157e",
+      "source_line_count": 425,
+      "range_exists": true
+    },
+    {
+      "file": "RL/verl/verl/utils/muon.py",
+      "start_line": 476,
+      "end_line": 492,
+      "source_sha256": "15c1331453ef3db4b565a514d1e43f74692e2e910eb8cb939894d54371dd402d",
+      "source_line_count": 717,
+      "range_exists": true
+    }
+  ],
+  "qwen3_source_link": {
+    "url": "https://github.com/huggingface/transformers/blob/v4.51.3/src/transformers/models/qwen3/modeling_qwen3.py#L195-L218",
+    "source_sha256": "704c914530530a1acb0b443add1f520404e3ac2c28c0ab7e16f80f86cfe8ccb2",
+    "lines": [
+      195,
+      218
+    ],
+    "line_number_source": "Actual raw-file lines, including blank lines",
+    "construction_and_forward_calls_present": true
+  },
+  "rechecked_at_utc": "2026-10-30T21:19:52.542426+00:00",
+  "paper_license_recheck": {
+    "paper": "https://arxiv.org/abs/2605.19282v1",
+    "license_link_target": "https://creativecommons.org/licenses/by/4.0/",
+    "observed_license": "CC BY4.0",
+    "scope": "Read the arXiv version page and followed its license link; no change to published figure attribution was required."
+  }
+}

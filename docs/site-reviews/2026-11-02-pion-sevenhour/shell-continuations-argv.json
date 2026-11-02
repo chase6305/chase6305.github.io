@@ -1,0 +1,182 @@
+{
+  "scope": "Parse reformatted commands with Bash and a fake Python; no probe is run.",
+  "cases": [
+    {
+      "source": "article",
+      "command_index": 1,
+      "before": "python -B flat_spectrum.py --official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py > flat-bf16.json",
+      "after": "python -B flat_spectrum.py \\\n--official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py \\\n> flat-bf16.json",
+      "argv": [
+        "-B",
+        "flat_spectrum.py",
+        "--official-file",
+        "/path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py"
+      ],
+      "exactly_one_command": true,
+      "argv_equal": true
+    },
+    {
+      "source": "article",
+      "command_index": 2,
+      "before": "python -B probe_official_vla_buffers.py --official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py --gloo",
+      "after": "python -B probe_official_vla_buffers.py \\\n--official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py \\\n--gloo",
+      "argv": [
+        "-B",
+        "probe_official_vla_buffers.py",
+        "--official-file",
+        "/path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py",
+        "--gloo"
+      ],
+      "exactly_one_command": true,
+      "argv_equal": true
+    },
+    {
+      "source": "article",
+      "command_index": 3,
+      "before": "python -B probe_official_vla_buffers.py --official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py --gloo --nccl",
+      "after": "python -B probe_official_vla_buffers.py \\\n--official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py \\\n--gloo --nccl",
+      "argv": [
+        "-B",
+        "probe_official_vla_buffers.py",
+        "--official-file",
+        "/path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py",
+        "--gloo",
+        "--nccl"
+      ],
+      "exactly_one_command": true,
+      "argv_equal": true
+    },
+    {
+      "source": "article",
+      "command_index": 4,
+      "before": "python -B probe_official_vla_padding.py --official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py --world-size 2 --output padding-two.json",
+      "after": "python -B probe_official_vla_padding.py \\\n--official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py \\\n--world-size 2 --output padding-two.json",
+      "argv": [
+        "-B",
+        "probe_official_vla_padding.py",
+        "--official-file",
+        "/path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py",
+        "--world-size",
+        "2",
+        "--output",
+        "padding-two.json"
+      ],
+      "exactly_one_command": true,
+      "argv_equal": true
+    },
+    {
+      "source": "article",
+      "command_index": 5,
+      "before": "python -B probe_official_vla_padding.py --official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py --world-size 3 --output padding-three.json",
+      "after": "python -B probe_official_vla_padding.py \\\n--official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py \\\n--world-size 3 --output padding-three.json",
+      "argv": [
+        "-B",
+        "probe_official_vla_padding.py",
+        "--official-file",
+        "/path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py",
+        "--world-size",
+        "3",
+        "--output",
+        "padding-three.json"
+      ],
+      "exactly_one_command": true,
+      "argv_equal": true
+    },
+    {
+      "source": "readme",
+      "command_index": 1,
+      "before": "python -B probe_official_pion.py --official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py",
+      "after": "python -B probe_official_pion.py \\\n--official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py",
+      "argv": [
+        "-B",
+        "probe_official_pion.py",
+        "--official-file",
+        "/path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py"
+      ],
+      "exactly_one_command": true,
+      "argv_equal": true
+    },
+    {
+      "source": "readme",
+      "command_index": 2,
+      "before": "python -B flat_spectrum.py --official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py > flat-bf16.json",
+      "after": "python -B flat_spectrum.py \\\n--official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py \\\n> flat-bf16.json",
+      "argv": [
+        "-B",
+        "flat_spectrum.py",
+        "--official-file",
+        "/path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py"
+      ],
+      "exactly_one_command": true,
+      "argv_equal": true
+    },
+    {
+      "source": "readme",
+      "command_index": 3,
+      "before": "python -B probe_official_steps.py --official-file /path/to/Pion/RL/verl/verl/utils/muon.py",
+      "after": "python -B probe_official_steps.py \\\n--official-file /path/to/Pion/RL/verl/verl/utils/muon.py",
+      "argv": [
+        "-B",
+        "probe_official_steps.py",
+        "--official-file",
+        "/path/to/Pion/RL/verl/verl/utils/muon.py"
+      ],
+      "exactly_one_command": true,
+      "argv_equal": true
+    },
+    {
+      "source": "readme",
+      "command_index": 4,
+      "before": "python -B probe_official_vla_buffers.py --official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py",
+      "after": "python -B probe_official_vla_buffers.py \\\n--official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py",
+      "argv": [
+        "-B",
+        "probe_official_vla_buffers.py",
+        "--official-file",
+        "/path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py"
+      ],
+      "exactly_one_command": true,
+      "argv_equal": true
+    },
+    {
+      "source": "readme",
+      "command_index": 5,
+      "before": "python -B probe_official_vla_padding.py --official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py --world-size 2 --output padding-two.json",
+      "after": "python -B probe_official_vla_padding.py \\\n--official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py \\\n--world-size 2 --output padding-two.json",
+      "argv": [
+        "-B",
+        "probe_official_vla_padding.py",
+        "--official-file",
+        "/path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py",
+        "--world-size",
+        "2",
+        "--output",
+        "padding-two.json"
+      ],
+      "exactly_one_command": true,
+      "argv_equal": true
+    },
+    {
+      "source": "readme",
+      "command_index": 6,
+      "before": "python -B probe_official_vla_padding.py --official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py --world-size 3 --output padding-three.json",
+      "after": "python -B probe_official_vla_padding.py \\\n--official-file /path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py \\\n--world-size 3 --output padding-three.json",
+      "argv": [
+        "-B",
+        "probe_official_vla_padding.py",
+        "--official-file",
+        "/path/to/Pion/VLA/VLAAdapter/pion_optim/muon.py",
+        "--world-size",
+        "3",
+        "--output",
+        "padding-three.json"
+      ],
+      "exactly_one_command": true,
+      "argv_equal": true
+    }
+  ],
+  "pairs": 11,
+  "bash_executions": 22,
+  "probe_executions": 0,
+  "installations": 0
+}

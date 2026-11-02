@@ -1,0 +1,20 @@
+[
+  {
+    "name": "layout-bridge",
+    "command": [
+      "node",
+      "docs/site-reviews/2026-11-02-pion-sevenhour/check_parameter_layout_reading.cjs",
+      "http://127.0.0.1:13535",
+      "http://127.0.0.1:13531",
+      "9240",
+      "/tmp/chase-pion-sevenhour-20261102/layout-bridge"
+    ],
+    "started_utc": "2026-11-01T21:09:41.280693+00:00",
+    "status": "failed",
+    "exit_code": 1,
+    "test_script_sha256": "50fb5c999a7711170a53033252ef972fc04e3b7f68b3b7b4526b264834878cd3",
+    "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+    "elapsed_seconds": 2.57,
+    "finished_utc": "2026-11-01T21:09:43.850313+00:00"
+  }
+]

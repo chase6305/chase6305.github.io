@@ -1,0 +1,9 @@
+{
+  "checked_at_utc": "2026-10-30T21:40:56.913210+00:00",
+  "hugo": "0.165.0 extended",
+  "fresh_destination": "/tmp/chase-pion-sevenhour-20261030/production-complete",
+  "validated_predecessor": "/tmp/chase-pion-sevenhour-20261030/production-source-linked",
+  "byte_identical_emitted_files": 2213,
+  "differences": [],
+  "scope": "All emitted bytes match the strict-validated and browser-reviewed build; no deployment or remote CI."
+}

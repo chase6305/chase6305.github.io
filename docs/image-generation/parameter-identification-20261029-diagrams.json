@@ -1,0 +1,99 @@
+{
+  "created_on": "2026-10-29",
+  "article": "content/posts/robotics/dynamics/parameter-identification/index.md",
+  "mode": "built-in image_gen",
+  "skill": "/home/ubuntu/.codex/skills/.system/imagegen/SKILL.md",
+  "status": "Accepted: source/arrow review, mobile and desktop reading, image zoom, semantic audits and native A4 print",
+  "diagrams": [
+    {
+      "id": "regression-principle-v2",
+      "target": "content/posts/robotics/dynamics/parameter-identification/assets/dynamics-regression-principle.webp",
+      "style_reference": "content/posts/ai/transformer-attention/assets/transformer-block-overview.webp",
+      "output": "content/posts/robotics/dynamics/parameter-identification/assets/dynamics-regression-principle-v2.png",
+      "prompt": "Use case: scientific-educational. Asset: a corrected robotics parameter-identification diagram for a technical article. Image 1 is the old diagram to replace; its Y-to-theta arrow and center-of-mass parameter label are mathematically misleading, so redraw the data flow. Image 2 is a style reference only: opaque white background, thin rounded outlines, restrained pastel blue/purple/orange/green fills, generous whitespace, dark sans-serif labels. Wide landscape canvas, no transparency, no texture. Title: 'Rigid-body parameter identification'. Two clearly separated panels, TRAIN and VALIDATE. TRAIN panel: box 'Training states q, v, a' points to 'Y_train'. Both Y_train and a SEPARATE box 'Measured tau_train' point into 'Fit: scaled QR / SVD'. The fit has one output, 'theta_hat'. VALIDATE panel: 'Held-out states q, v, a' points to 'Y_val'. Both Y_val and theta_hat are separate inputs to a prediction block 'tau_pred = Y_val theta_hat'. That prediction and a separate 'Measured tau_val' box are the TWO inputs to the final block 'r = tau_val - tau_pred'. Validation data must never point back into the fit. Make every arrowhead and operand unambiguous. Keep labels short and verbatim, use simple matrix/vector icons if helpful. Two footer lines: 'Linear inertial coordinates: m, m c, I_O' and 'Accurate prediction does not make every inertia unique.' m c is the first moment, not a standalone center-of-mass coordinate. Do not draw Y producing theta directly; only the fit produces theta_hat. No percentages, fabricated data curves, extra branches, logos or watermark. Keep all text comfortably legible and inside the canvas.",
+      "revisions": [
+        "Edit this diagram with ONE targeted change. Preserve its canvas, white background, all text, formulas, panels, icons, colors and every existing arrow exactly. Add a single thin dark-blue connector from the BOTTOM edge of the upper TRAIN theta_hat box to the TOP edge of the lower VALIDATE theta_hat box. Route it down through the empty space under the upper theta_hat box, left along the open gutter BETWEEN the two panels, then down with a clear arrowhead into the lower theta_hat box. It means the SAME fitted candidate is transferred to held-out prediction. The connector must not touch any other box or resemble validation feeding training. Do not move or resize existing elements. No other edits."
+      ],
+      "generated_source": "/home/ubuntu/.codex/generated_images/01a187b4-0b96-71f1-a3fa-173629598f77/exec-d8185d17-e758-4889-ab69-fce79ea0b52d.png",
+      "scientific_review": [
+        "Separate Y and measured torque inputs to the fit",
+        "Same fitted theta_hat explicitly transferred into held-out prediction",
+        "Both Y_val and theta_hat enter prediction; measured tau_val only enters the residual",
+        "Inertial coordinates use mass, first moment and origin inertia; no direct COM coordinate claim"
+      ],
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "sha256": "70abc74df6efc2aefef902087b2d1a7bb0e159c55a653584082a9fc77f50235a",
+      "bytes": 1517027
+    },
+    {
+      "id": "workflow-v3",
+      "target": "content/posts/robotics/dynamics/parameter-identification/assets/identification-workflow.webp",
+      "style_reference": "content/posts/ai/transformer-attention/assets/training-lifecycle.webp",
+      "output": "content/posts/robotics/dynamics/parameter-identification/assets/identification-workflow-v3.png",
+      "prompt": "Use case: infographic-diagram. Asset: a clean replacement for a robotics identification workflow. Image 1 is the old workflow: retain stages 0 through 9 and the anomaly rollback meaning, but remove the corrupted transparent/grid background. Image 2 is a style reference only. Render on a completely opaque pure white background, thin rounded outlines, pastel blue/purple/orange/green fills, dark sans-serif text, generous spacing, no decorative grid or texture. Wide landscape. Title: 'From measurements to approved parameters'. Ten numbered cards, each number used exactly once, all main arrows forward in order 0,1,2,3,4,5,6,7,8,9. Use two rows: top 0-4 left to right, bottom 5-9 left to right. Route the 4-to-5 connector around cards in the open gutter with a clear arrowhead at 5, without touching any other card. Card text verbatim: 0 'Freeze model' / 'URDF + units + joint order'; 1 'Design excitation' / 'Limits + information'; 2 'Preflight' / 'Motion + collision + drives'; 3 'Record raw data' / 'raw.csv (unchanged)'; 4 'Estimate states' / 'processed.csv'; 5 'Build regressor' / 'Y + parameter order'; 6 'Fit candidate' / 'Rank + scaled solve'; 7 'Validate' / 'Held-out + physical checks'; 8 'Review' / 'Approval + rollback snapshot'; 9 'Enable in stages' / 'Simulation -> low-speed checks'. Label the arrow from 7 to 8 'pass' and from 8 to 9 'approve'. A separate orange anomaly branch goes from stage 9 downward to a box 'On anomaly: restore approved snapshot'. Do not imply that a solver output is automatically enabled. Only show the successful main path and anomaly rollback; omit other rework branches. Small simple icons are welcome but must not compete with text. No invented numbers, performance curves, extra stages, logos, watermarks or transparency. Make each label, connector and stage number crisp and correct.",
+      "generated_source": "/home/ubuntu/.codex/generated_images/01a187b4-0b96-71f1-a3fa-173629598f77/exec-711db2a3-f951-4366-b818-0b2d20f90b0d.png",
+      "scientific_review": [
+        "Stages 0 through 9 each occur once in the correct order",
+        "Clear 2-to-3 and 5-to-6 gutter connectors",
+        "Pass from validation 7 to review 8; approval from 8 to staged enabling 9",
+        "Anomaly restores an approved snapshot; other rework branches are described in selectable text",
+        "Square layout increases label size at article and A4 widths"
+      ],
+      "revisions": [
+        "Redraw the attached workflow as a SQUARE diagram, roughly 1600 by 1600 pixels, so its labels are readable when printed at A4 article width. The attached image is a CONTENT and STYLE reference; explicitly change its landscape aspect ratio and layout. Use pure opaque white, thin rounded outlines, restrained pastel fills, crisp dark sans-serif labels and generous whitespace. Retain EXACTLY stages 0 through 9 in this main order, with clear one-way arrowheads. Layout three columns: first row 0,1,2 left-to-right; second row 3,4,5 left-to-right; third row 6,7,8 left-to-right; final row is one wide card 9. Route 2-to-3 and 5-to-6 in open row gutters, with the final arrowheads entering 3 and 6; do not cross or touch any other card. Arrow 7-to-8 is labeled 'pass'. Arrow 8-to-9 is labeled 'approve'. A downward anomaly branch from 9 ends at 'On anomaly: restore approved snapshot'. Title 'From measurements to approved parameters'. All TEN stages, each number exactly once: 0 'Freeze model' / 'URDF + units + joint order'; 1 'Design excitation' / 'Limits + information'; 2 'Preflight' / 'Motion + collision + drives'; 3 'Record raw data' / 'raw.csv (unchanged)'; 4 'Estimate states' / 'processed.csv'; 5 'Build regressor' / 'Y + parameter order'; 6 'Fit candidate' / 'Rank + scaled solve'; 7 'Validate' / 'Held-out + physical checks'; 8 'Review' / 'Approval + rollback snapshot'; 9 'Enable in stages' / 'Simulation -> low-speed checks'. Use LARGE type and simple smaller icons: stage names are the most important element, subtitles must also be readable. No added stages or branches, no direct solver-to-controller shortcut, no charts with numerical claims, no texture, no background grid, no transparency, no watermark."
+      ],
+      "previous_generated_source": "/home/ubuntu/.codex/generated_images/01a187b4-0b96-71f1-a3fa-173629598f77/exec-24f6cf88-3680-4c76-817e-c805bac51764.png",
+      "previous_workspace_output": "content/posts/robotics/dynamics/parameter-identification/assets/identification-workflow-v2.png",
+      "previous_workspace_sha256": "d886661927e43a2c0f8640937ca6e4f4afbaf31ce382cb75fd4f0059ad7fe2b2",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "dd62cdbd184e4248f3ff8d5a2cffe5fa61cfbc70bf0d085d2935741a615b463b",
+      "bytes": 1560096,
+      "previous_workspace_output_removed": true
+    },
+    {
+      "id": "torque-decomposition-v2",
+      "target": "content/posts/robotics/dynamics/parameter-identification/assets/dynamics-torque-decomposition.webp",
+      "style_reference": "content/posts/ai/transformer-attention/assets/transformer-block-overview.webp",
+      "output": "content/posts/robotics/dynamics/parameter-identification/assets/dynamics-torque-decomposition-v2.png",
+      "prompt": "Use case: scientific-educational. Asset: a corrected fixed-base robot torque-decomposition diagram. Image 1 is the old image: preserve the physical terms, remove its unsupported percentage bar and replace the noisy transparent background. Image 2 is a style reference only. Draw a completely opaque white landscape image with thin rounded outlines, restrained pastel blue/purple/orange/green fills, dark sans-serif text and generous whitespace. Title: 'Joint torque is a signed sum'. Five separate input cards, each with a clear arrow into ONE central summation symbol, and one output arrow from the sum to 'Joint torque tau'. Card labels and formulas: 'Inertial torque' / 'M(q) a'; 'Velocity terms' / 'C(q,v) v'; 'Gravity' / 'g(q)'; 'Friction' / 'tau_f(v)'; 'Bias' / 'tau_b'. Every card is one additive vector contribution. Keep arrows distinct and avoid crossings or pointing into the wrong term. No line should loop around the sum or pass through another card. A small clean outline robot-arm icon may be used only if it does not alter the flow. Footer: 'Terms can reinforce or cancel each other.' Second footer: 'Relative sizes depend on motion, pose, load, and friction.' No percentages, measured-looking data plots, quantitative values, extra terms, contact-force claims, logos, watermarks, decorative grid, texture or transparency. Keep all labels exact, readable, fully inside the canvas, and clearly connected to the sum.",
+      "revisions": [
+        "Edit this torque diagram with only two targeted changes; preserve all existing labels, formulas, colors, white background, card positions, summation symbol, footer and the FIVE incoming arrows. 1) Remove the robot-arm icon from the middle. Reconstruct the orange Gravity connector as one uninterrupted straight arrow from the Gravity card into the sum; no object may cover it. 2) Inside the right output card, remove the illustrative time-series curve and both plot axes. Keep its heading 'Joint torque' with tau, and put a single large tau vector with a vertical ellipsis below the heading instead. The output is a symbolic vector, with no measured-looking data graph. Preserve the sum-to-output arrow. No other edits, no new text, no percentages, no transparency.",
+        "Keep this entire diagram unchanged except one tiny mathematical label in the right output card. Inside the vector brackets, change the first entry from tau to tau_1 (tau with subscript 1); keep the vertical ellipsis beneath it. The vector's card heading stays 'Joint torque tau'. Do not move, add or remove any other element, arrow, word, formula, icon or background."
+      ],
+      "generated_source": "/home/ubuntu/.codex/generated_images/01a187b4-0b96-71f1-a3fa-173629598f77/exec-6ffd4243-7c92-4bc0-9242-a30773f11c39.png",
+      "scientific_review": [
+        "Five incoming additive vectors and one output",
+        "Velocity term C(q,v)v; acceleration a; bias tau_b",
+        "No unsupported contribution percentages or total-torque data curve",
+        "Uninterrupted gravity connector; output component tau_1 and ellipsis"
+      ],
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "sha256": "02988bfdb254f67e9a13fd4cd96babc1b404ef9afd52e1ecd5995ba2f53adc3f",
+      "bytes": 1522012
+    }
+  ],
+  "rendered_reviewed_on_local": "2026-10-30",
+  "time_zone": "Asia/Shanghai",
+  "rendered_validation": {
+    "screen_states": 24,
+    "all_figure_viewer_states": 84,
+    "final_square_workflow_viewer_states": 12,
+    "opened_diagram_semantic_states": 18,
+    "semantic_violations": 0,
+    "tagged_native_A4_pdfs": 6,
+    "pdf_pages_each": 44,
+    "runtime_exceptions": 0
+  }
+}

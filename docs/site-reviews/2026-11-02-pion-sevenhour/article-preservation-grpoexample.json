@@ -1,0 +1,18 @@
+{
+  "old_content_ids": 73,
+  "current_content_ids": 76,
+  "old_page_ids": 78,
+  "current_page_ids": 81,
+  "missing_ids": [],
+  "new_ids": [
+    "grpo-group-gradient",
+    "snr-correlated-groups",
+    "vla-gradient-rank"
+  ],
+  "front_matter_changed_only_lastmod": true,
+  "original_publication_date": "2026-10-30",
+  "draft": false,
+  "supplied_pdf_sha256": "2016d07cca61aaa9be936f5a5a701ff033a89e6022f03a9795f639c4d1a2428f",
+  "source_article_sha256": "568865d58aed4f8d876fb7e644251c0db261f6f5fdf19cad4be008e07bd074e7",
+  "scope": "Article-level static IDs, original front matter and given PDF; no deployment or live-site claim."
+}

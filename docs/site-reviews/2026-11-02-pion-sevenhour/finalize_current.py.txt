@@ -1,0 +1,122 @@
+from pathlib import Path
+from datetime import datetime, timezone
+from collections import Counter
+import argparse, hashlib, json, subprocess, urllib.request, zipfile, gzip
+
+ROOT=Path('/home/ubuntu/workspace/chase/chase6305.github.io')
+WORK=Path('/tmp/chase-pion-sevenhour-20261102')
+REVIEW=ROOT/'docs/site-reviews/2026-11-02-pion-sevenhour'
+AUDIT=ROOT/'docs/pion-optimization-20261102-sevenhour.json'
+ARTICLE='content/posts/ai/pion-muon-vla-rlvr/index.md'
+HTML='posts/ai/pion-muon-vla-rlvr/index.html'
+HTML_SHA='1535e0490513e52859dce45f0a959c19b619e3502ed9afcaaf45872eeaa7410a'
+ZIP_SHA='cfb2f7a0f2fb65135411a7b363ecf521506a2ae941d0ee18f320c9b5a8b7606e'
+
+def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+def read(path):return json.loads(Path(path).read_text())
+def write(path, data):Path(path).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
+def fetch(path):
+    with urllib.request.urlopen('http://127.0.0.1:13559/'+path,timeout=8)as response:return response.read()
+
+def verify():
+    manifest=read(REVIEW/'grpoexample-source-manifest.json')['sha256']
+    assert len(manifest)==51
+    assert all((ROOT/p).is_file()and sha(ROOT/p)==h for p,h in manifest.items())
+    assert sha(WORK/'production-grpoexample'/HTML)==HTML_SHA
+    assert hashlib.sha256(fetch(HTML)).hexdigest()==HTML_SHA
+    archive=ROOT/'content/posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip'
+    assert sha(archive)==ZIP_SHA and archive.stat().st_size==105687
+    assert hashlib.sha256(fetch('posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip')).hexdigest()==ZIP_SHA
+    with zipfile.ZipFile(archive)as z:
+        assert len(z.namelist())==32 and z.testzip()is None
+    subprocess.run(['python3','-B','scripts/package_pion_lab.py','--check'],cwd=ROOT,check=True,capture_output=True,text=True)
+    subprocess.run(['python3','-B',str(WORK/'check_preservation.py')],cwd=ROOT,check=True,capture_output=True,text=True)
+    preservation=read(WORK/'preservation-current.json')
+    assert preservation['initial_files']==302 and preservation['other_initial_files_byte_unchanged']==295
+    assert preservation['modified_acceptance_ids']==[95]
+    initial=read(WORK/'initial-manifest.json')
+    tracked=[p for p in subprocess.check_output(['git','diff','--name-only','-z'],cwd=ROOT).decode().split('\0')if p]
+    assert not set(tracked)-set(initial)
+    new=[p for p in subprocess.check_output(['git','ls-files','--others','--exclude-standard','-z'],cwd=ROOT).decode().split('\0')if p and p not in initial]
+    added={f'content/posts/ai/pion-muon-vla-rlvr/{p}'for p in ['grpo_group_signal.py','snr_correlated_groups.py','vla_gradient_rank.py','assets/grpo-group-signal-reference.json','assets/snr-correlated-groups-reference.json','assets/vla-gradient-rank-reference.json']}
+    assert all(p in added or p=='docs/pion-optimization-20261102-sevenhour.json'or p.startswith('docs/site-reviews/2026-11-02-pion-sevenhour/')for p in new)
+    assert not list((ROOT/'content/posts/ai/pion-muon-vla-rlvr').rglob('*.pyc'))
+    subprocess.run(['git','diff','--check','--',*preservation['changed_initial_files']],cwd=ROOT,check=True,capture_output=True,text=True)
+    metadata=read(REVIEW/'article-preservation-grpoexample.json')
+    assert not metadata['missing_ids']and metadata['old_page_ids']==78 and metadata['front_matter_changed_only_lastmod']
+    assert metadata['source_article_sha256']==sha(ROOT/ARTICLE)
+    assert sha('/home/ubuntu/Documents/Rethinking Muon Beyond Pretraining: Spectral Failures and High-Pass Remedies for VLA and RLVR.pdf')==metadata['supplied_pdf_sha256']
+    strict=read(REVIEW/'strict-grpoexample.json')
+    assert strict['html_pages']==319 and strict['local_references_checked']==32458
+    assert not strict['errors']and not strict['python_fragment_warnings']and not strict['unrendered_math_warnings']
+    numeric=read(REVIEW/'numeric-checks.json')
+    assert [x['test_methods']for x in numeric['environments']]==[35,25,35]
+    assert all(x['exit_code']==0 for x in numeric['environments'])
+    assert numeric['extracted_package']['exit_code']==0 and numeric['extracted_package']['test_methods']==35
+    for file,methods in [('wrap-download-stdlib.json',25),('wrap-download-numpy.json',35)]:
+        d=read(REVIEW/file)
+        assert d['sha256']==ZIP_SHA and d['bytes']==105687 and d['member_count']==32
+        assert d['test_methods']==methods and len(d['references'])==7
+        assert all(x['matches_saved_reference']for x in d['references'].values())
+        assert not d['bytecode_files']and d['download_matches_current_source']and d['pip_installations']==0
+    batches=read(REVIEW/'grpoexample-browser-batch.json')
+    assert len(batches)==8 and all(x['status']=='passed'and x['exit_code']==0 for x in batches)
+    for b in batches:
+        script=Path(b['command'][1]);script=script if script.is_absolute()else ROOT/script
+        assert sha(script)==b['test_script_sha256']
+        assert sha(REVIEW/'theme_state.cjs')==b['theme_helper_sha256']
+    assert sha(REVIEW/'check-pion-print-executed.cjs.txt')==sha(WORK/'check-pion-print.cjs')
+    exports=read(REVIEW/'grpoexample-native-exports.json')
+    assert not exports['exceptions']and exports['sourceHtmlSha256']==HTML_SHA
+    pdfs=exports['pdfs'];assert [p['pages']for p in pdfs]==[46,126,45,124,131]
+    assert all(p['tagged']and p['restored']['focus']and p['restored']['details']and p['restored']['scrollError']<=2 for p in pdfs)
+    assert all(all(v['same']for v in p['sourceCheck'].values())for p in pdfs)
+    pagination={}
+    for name in ['grpoexample-code-pagination.json','grpoexample-summary-pagination.json','grpoexample-table-rows.json','grpoexample-figure-pagination.json','grpoexample-definition-pagination.json','grpo-example-after.json']:
+        d=read(REVIEW/name);assert not d['failures'];pagination[name]=d['cases']
+    for row in read(REVIEW/'grpoexample-definition-pagination.json')['rows']:
+        assert sha(WORK/'pdf-grpoexample'/row['pdf'])==row['sha256']
+    ledger=json.loads(gzip.decompress((REVIEW/'grpoexample-visual-review.json.gz').read_bytes()))
+    assert ledger==read(WORK/'pdf-grpoexample/visual-review.json')and ledger['source_html_sha256']==HTML_SHA
+    rows=ledger['rows'];required=[x for x in rows if x['manual_required']]
+    assert len(rows)==245 and len({x['sha256']for x in rows})==211
+    assert len(required)==153 and all(x['reviewed']and x['decision']=='pass'for x in required)
+    assert Counter(x['review_type']for x in required)=={'direct_visual':83,'pixel_identical_inherited':70}
+    for row in rows:
+        assert sha(row['image'])==row['sha256']and not row['edge_ink']and row['ink_bbox']
+        if row.get('review_type')=='pixel_identical_inherited':assert sha(row['reference'])==row['sha256']
+    standard=read(REVIEW/'grpoexample-full-standard-review.json')
+    assert standard['source_html_sha256']==HTML_SHA and len(standard['rows'])==46
+    assert standard['counts']=={'pages':46,'direct_current':2,'pixel_identical_inherited':44,'pending':0}
+    for row in standard['rows']:
+        assert row['decision']=='pass'and sha(row['image'])==row['sha256']and not row['edge_ink']
+        if row['review_type']=='pixel_identical_inherited':assert sha(row['reference'])==row['sha256']
+    editorial=read(REVIEW/'editorial-cross-check.json')
+    assert editorial['status']=='complete'and editorial['source_article_sha256']==sha(ROOT/ARTICLE)
+    return {'source_files':manifest,'production_article_html_sha256':HTML_SHA,'archive':{'sha256':ZIP_SHA,'bytes':105687,'members':32},'numeric_methods':{'standard_library':25,'with_numpy':35,'default_references':7},'strict_validation':{'html_pages':319,'local_references':32458,'errors':0},'final_browser_purposes':8,'pdf_pagination_cases':pagination,'native_pdf_pages':[p['pages']for p in pdfs],'native_pdf_page_sum':sum(p['pages']for p in pdfs),'visual_review':read(REVIEW/'grpoexample-visual-statistics.json'),'full_standard_a4':standard['counts'],'preservation':preservation,'initially_clean_tracked_changes':[],'unexpected_added_paths':[],'article_preservation':metadata,'scope':'Local article/example improvements and evidence. No commit, push, deployment, model training or new GPU execution. Exported-page/raster counts are not claims of complete manual review.'}
+
+parser=argparse.ArgumentParser();parser.add_argument('--preflight',action='store_true');args=parser.parse_args()
+audit=read(AUDIT);assert audit['status']=='in_progress'
+now=datetime.now(timezone.utc);start=datetime.fromisoformat(audit['window_start_utc']);elapsed=(now-start).total_seconds()
+if not args.preflight:assert elapsed>=audit['minimum_elapsed_seconds'],'Requested seven-hour window has not elapsed'
+result=verify();finished=datetime.now(timezone.utc);elapsed=(finished-start).total_seconds()
+result.update(status='preflight_passed_window_in_progress'if args.preflight else'complete',window_start_utc=start.isoformat(),checked_at_utc=finished.isoformat(),elapsed_seconds=round(elapsed,3),minimum_elapsed_seconds=audit['minimum_elapsed_seconds'])
+if args.preflight:
+    write(WORK/'preflight-acceptance.json',result)
+    print(json.dumps({'status':result['status'],'elapsed_seconds':result['elapsed_seconds'],'source_files':len(result['source_files']),'required_visual_pending':result['visual_review']['required_pending']}))
+else:
+    assert elapsed>=25200 and not(REVIEW/'final-acceptance.json').exists()
+    write(REVIEW/'final-acceptance.json',result)
+    write(REVIEW/'preservation-final.json',result['preservation'])
+    readme=REVIEW/'README.md';text=readme.read_text();old='Status: in progress. The requested seven-hour window starts at\n`2026-11-01T17:06:33Z` and cannot finish before `2026-11-02T00:06:33Z`.\nThe final status and actual elapsed time belong in\n`docs/pion-optimization-20261102-sevenhour.json` and `final-acceptance.json`.'
+    assert old in text
+    text=text.replace(old,'Status: complete. The seven-hour window started at\n`2026-11-01T17:06:33Z` and finished at `'+finished.isoformat()+'`\n('+str(round(elapsed,3))+' elapsed seconds). Final reconciliation passes; see\n`docs/pion-optimization-20261102-sevenhour.json` and `final-acceptance.json`.')
+    text=text.replace('The final reconciliation must recheck source hashes, archive,\ninitial-file preservation and the actual seven-hour elapsed-time requirement.','The final reconciliation verifies source hashes, archive, initial-file\npreservation and the actual seven-hour elapsed-time requirement.\n`evidence-manifest.json` hashes this review and its audit, excluding itself.')
+    readme.write_text(text)
+    audit.update(status='complete',finished_at_utc=finished.isoformat(),actual_elapsed_seconds=round(elapsed,3),pending=[],final_acceptance='docs/site-reviews/2026-11-02-pion-sevenhour/final-acceptance.json',final_acceptance_sha256=sha(REVIEW/'final-acceptance.json'),evidence_manifest='docs/site-reviews/2026-11-02-pion-sevenhour/evidence-manifest.json')
+    audit['work'].append({'phase':'final source, archive, visual and preservation reconciliation','status':'passed','checked_at_utc':finished.isoformat(),'source_files':51,'unchanged_other_initial_files':295,'native_pdf_pages':[46,126,45,124,131],'native_pdf_page_sum':472,'required_selected_visual_rows':153,'required_selected_visual_pending':0,'full_standard_a4_pages':46,'browser_purposes':8})
+    write(AUDIT,audit)
+    files={str(p.relative_to(ROOT)):sha(p)for p in sorted(REVIEW.rglob('*'))if p.is_file()and p.name!='evidence-manifest.json'}
+    files[str(AUDIT.relative_to(ROOT))]=sha(AUDIT)
+    write(REVIEW/'evidence-manifest.json',{'captured_at_utc':datetime.now(timezone.utc).isoformat(),'scope':'Durable evidence and audit only; manifest excludes itself. Final candidate source hashes are in final-acceptance.json.','sha256':files})
+    print(json.dumps({'status':'complete','elapsed_seconds':round(elapsed,3),'source_files':51,'evidence_files':len(files),'archive_sha256':ZIP_SHA}))

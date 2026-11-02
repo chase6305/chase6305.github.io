@@ -1,0 +1,558 @@
+{
+  "status": "complete",
+  "scope": "Continue Pion/Muon detailed article, reproducible examples and reading experience",
+  "window_start_utc": "2026-10-31T00:20:51Z",
+  "planned_end_utc": "2026-10-31T07:20:51Z",
+  "minimum_elapsed_seconds": 25200,
+  "initial_dirty_files": 173,
+  "initial_manifest": "/tmp/chase-pion-sevenhour-20261031/initial-manifest.json",
+  "preserve_prior_work": true,
+  "commit_push_or_deploy": false,
+  "work": [
+    {
+      "phase": "multi-rank padding investigation",
+      "checked_at_utc": "2026-10-31T00:30:14.552859+00:00",
+      "source_commit": "87965014b360bde604632cba0aa12e423c6c63c6",
+      "source_sha256": "8e7ca8d6f40ebc4fb066acb15387e618d515896cca5d1eb0ad234e5310e9157e",
+      "new_observation": "Under completed-before-return Gloo scheduling, a padded final shard can clear a preceding receive slot even when all parameters have gradients; two/three ranks then disagree in parameter weights.",
+      "variants": "Original class and an explicitly modified in-memory private-zero variant; source file unchanged.",
+      "adaptations": "CPU allocation plus flat storage-sharing Gloo output; normal completion and explicitly completed-before-return collectives.",
+      "initial_reports": [
+        "/tmp/chase-pion-sevenhour-20261031/padding-two-ranks.json",
+        "/tmp/chase-pion-sevenhour-20261031/padding-three-ranks.json"
+      ],
+      "scope": "Tiny CPU parameters only, no multi-GPU/model training; controlled completion is explicitly distinguished from natural scheduling."
+    },
+    {
+      "phase": "flat-spectrum dimension and representation study",
+      "construction": "M=I_r; epsilon=0; gradient update excludes weight decay",
+      "high_precision": "100-digit Decimal scalar compositions; exact Fraction cross-checks at perfect-square dimensions",
+      "observations": "Pure suppression BF16 identity output stored zero from r=8 in this CPU probe; Float64 scalar pure suppression stored zero at r=4096 while high-precision response remains positive. These are constructed observations, not universal device thresholds.",
+      "artifacts": [
+        "flat_spectrum.py",
+        "assets/flat-spectrum-reference.json",
+        "assets/flat-spectrum-bf16-reference.json",
+        "make_rank_figures.py",
+        "assets/flat-spectrum-rms.png"
+      ],
+      "tests": "22 methods: 13 standard-library and 9 NumPy; CPython 3.12/NumPy 2.2.6 passed; downloaded package and hostile fallback checks passed."
+    },
+    {
+      "phase": "multi-rank three-step checks",
+      "configuration_cases": 48,
+      "optimizer_step_calls": 360,
+      "world_sizes": [
+        2,
+        3
+      ],
+      "candidate_cases": 24,
+      "candidate_wrong_cases": 0,
+      "original_wrong_cases_observed": 10,
+      "checked_each_step": [
+        "independent weights",
+        "rank agreement",
+        "momentum ownership",
+        "momentum initialization",
+        "EMA values and missing-observation preservation"
+      ],
+      "normal_and_optimized_python": "Two-rank normal and three-rank optimized execution passed their candidate/control requirements.",
+      "file_protection": "10 normal/optimized output path rejection cases; official source, symlink and hardlink aliases rejected before workers; source preserved."
+    },
+    {
+      "phase": "initial content and reading validation",
+      "production_build": "production-details; Hugo 0.165.0 extended",
+      "strict_validator": {
+        "reviewed_posts": 96,
+        "acceptance_checks": 533,
+        "html_pages": 319,
+        "errors": 0
+      },
+      "toc_fixtures": "passed",
+      "image_fixtures": "passed",
+      "native_fallback_fixtures": "passed",
+      "reading_positions": 988,
+      "figure_positions": 616,
+      "runtime_exceptions": 0,
+      "old_article_ids": 67,
+      "retained_old_article_ids": 67,
+      "new_article_ids": 3
+    },
+    {
+      "phase": "clean optional CPU environment",
+      "python": "3.12.14",
+      "torch": "2.8.0+cpu",
+      "numpy": "2.2.6",
+      "installation": "official CPU index command validated after retrying a download timeout",
+      "checks": [
+        "48 flat BF16 coefficients identical to the prior CPU calculations with cu128 package",
+        "diagonal and rank-one rectangle BF16 outputs identical",
+        "two-rank and optimized three-rank candidate/control checks passed"
+      ],
+      "evidence": "docs/site-reviews/2026-10-31-pion-sevenhour/cpu-environment.json.gz"
+    },
+    {
+      "phase": "reader entry and article scope",
+      "changes": [
+        "independent Linux CPU environment commands validated",
+        "flat-spectrum figure caption shortened after 320px/200% screenshot inspection",
+        "new asymptotic leading term (5/2)^121 * sigma^243 checked symbolically",
+        "24 self-check questions; only acceptance record 95 updated"
+      ],
+      "initial_browser_checks": {
+        "new_details_layouts": 60,
+        "keyboard_table_checks": 4,
+        "pion_lab_layouts": 60,
+        "article_image_viewer_cases": 24,
+        "print_contexts": 6,
+        "print_text_samples": 6231,
+        "runtime_exceptions": 0
+      },
+      "initial_173_file_preservation": "No missing files; only six expected initial files modified; other acceptance records untouched."
+    },
+    {
+      "phase": "native print review findings",
+      "selected_pdf_pages": 64,
+      "raster_edge_ink_pages": 0,
+      "raster_empty_pages": 0,
+      "findings": [
+        "BF16 format label covered a portion of the green curve; moved below the format line with a leader; final PNG directly inspected",
+        "A focused native details summary printed its keyboard outline; suppress focus outline/shadow only in print media and extend full article print checks to verify focus and screen-outline restoration"
+      ],
+      "regression_proof": "The extended check run against pre-fix output failed all 6 Pion print contexts solely for printed focus ink; its other geometry/restoration conditions passed.",
+      "scope_extension": [
+        "assets/css/custom.css print rules",
+        "scripts/check_blog_print.cjs"
+      ],
+      "extra_pristine_backups": "/tmp/chase-pion-sevenhour-20261031/extra-pristine/manifest.json",
+      "pending_validation": "Full draft-inclusive ordinary and forced-color print suites, screen focus checks, and fresh native PDF review."
+    },
+    {
+      "phase": "shared print focus regression",
+      "ordinary": {
+        "layouts": 576,
+        "failures": 0,
+        "text_samples": 467835
+      },
+      "forced_colors": {
+        "layouts": 576,
+        "failures": 0,
+        "text_samples": 467835
+      },
+      "tested": "No printed focus outline or focus shadow; active target, screen outline and original disclosures restored in all article contexts.",
+      "test_precondition_correction": "First forced-color run changed the screen palette between before/after snapshots for the first case; initialize its palette before capturing the screen outline, then rerun passed all576.",
+      "article_faq": "Seven bold FAQ labels converted to semantic third-level headings with explicit new anchors so questions stay with their answers in print and gain direct navigation. Old anchors preserved."
+    },
+    {
+      "phase": "chapter navigation and screen focus after print cleanup",
+      "screen_outlines": 702,
+      "screen_failures": 0,
+      "chapter_posts": 96,
+      "chapter_activations": 9736,
+      "chapter_failures": 0,
+      "modifier_cases": 5,
+      "legacy_anchor_and_fragment_history": "passed",
+      "old_ids_retained": 67,
+      "current_ids": 77,
+      "native_pdf_observation": "Focused summary outline is absent in directly inspected post-fix native PDF. beforeprint fires before print media in this Chrome path; export harness records timing but uses actual PDF and separate print-media assertions for printed ink."
+    },
+    {
+      "phase": "printed disclosure marker consistency",
+      "change": "In print media, native summaries use the open disclosure marker because all details content is visible; screen markers and DOM open states remain unchanged.",
+      "ordinary_contexts": 576,
+      "forced_color_contexts": 576,
+      "failures": 0,
+      "checked_each_context": [
+        "no hidden detail content",
+        "no closed marker on visible native print disclosure",
+        "screen marker restoration",
+        "focus and screen-outline restoration",
+        "original details states"
+      ],
+      "site_accessibility": "Passed standard navigation/appearance/zoom checks after the print-focus-only change; print-marker rule is print-only."
+    },
+    {
+      "phase": "installation citation verification",
+      "url": "https://pytorch.org/get-started/previous-versions/",
+      "finding": "The current official HTML gives the v2.8.0 heading id v260; inferred v280 is absent. Removed the inferred fragment from article and README, retaining the authoritative page URL and tested version-specific commands.",
+      "pytorch_distributed_url": "Direct urllib access returned403; the same official 2.8 documentation was successfully read with the web tool earlier. No assertion of HTTP404 or unsupported API."
+    },
+    {
+      "phase": "exact published-code copying",
+      "markdown_code_blocks": 12,
+      "viewport_font_contexts": 4,
+      "exact_keyboard_copies": 48,
+      "focus_preserved": true,
+      "opened_by_keyboard": [
+        "spectral-step-trace",
+        "flat-rank-study",
+        "vla-buffer-order",
+        "vla-padding-recovery"
+      ],
+      "runtime_exceptions": 0,
+      "evidence": "docs/site-reviews/2026-10-31-pion-sevenhour/copies.json.gz"
+    },
+    {
+      "phase": "served download and independent plotting environment",
+      "download_sha256": "612031c055fbff5d20a896dd2f0a4fe65ca8d598a7137d47dd45d858eb0d373c",
+      "members": 24,
+      "tests_passed": 22,
+      "environment": "CPython3.12.14 / NumPy2.2.6 / Matplotlib3.10.9; no PyTorch in this environment",
+      "path_handling": "Unpacked into a path with spaces and Chinese characters",
+      "plots": "Both generators produced bytes identical to the accepted article assets",
+      "evidence": "docs/site-reviews/2026-10-31-pion-sevenhour/fresh-download.json"
+    },
+    {
+      "phase": "direct advanced-example entrances",
+      "change": "Reading route links now reach the two advanced details; Pion article CSS supplies fixed-nav clearance for details with IDs.",
+      "entries": 16,
+      "scripts": [
+        true,
+        false
+      ],
+      "widths": [
+        320,
+        1440
+      ],
+      "font_sizes": [
+        100,
+        200
+      ],
+      "checks": [
+        "summary below nav",
+        "no page overflow",
+        "no image-loading shift",
+        "Tab reaches summary",
+        "Enter expands and closes with focus retained"
+      ],
+      "evidence": "docs/site-reviews/2026-10-31-pion-sevenhour/entries.json.gz"
+    },
+    {
+      "phase": "native printed summary pagination",
+      "finding": "Five native exports contained10 summary/content separations among25 checked pairs, including trace, padding and answers; page37 direct review identified the answer-heading orphan.",
+      "change": "Print summaries avoid breaks inside themselves and immediately after, keeping the first content with the heading.",
+      "independent_pdf_check": {
+        "before_failures": 10,
+        "after_failures": 0,
+        "cases": 25,
+        "pdfs": 5
+      },
+      "native_state_restoration": "All five exports retain tagged structure and restore focus, original detail states and exact scroll position.",
+      "evidence": "docs/site-reviews/2026-10-31-pion-sevenhour/summary-pagination.json"
+    },
+    {
+      "phase": "large-text native formula clipping finding",
+      "finding": "Directly inspected200% native PDFs show the new combined flat erank/RMS equation clipped inside its scroll region with a printed scrollbar. Page-edge and default-font geometry checks did not expose this.",
+      "change": "Split the equation into aligned rows; add--large-text to the print geometry checker and inspect all Pion formulas at200% before accepting.",
+      "status": "resolved; current print-final geometry and five actual native PDFs pass"
+    },
+    {
+      "phase": "fresh-source large-text verification",
+      "issue": "The reused loopback origin delivered a cached old HTML document even though direct HTTP and build-file bytes contained the new equations. Browser geometry output still contained the old TeX.",
+      "hardening": [
+        "Common CDP harness disables HTTP cache by default; cache-specific tests can explicitly enable it",
+        "Fresh immutable production/preview origins13397/13399 use no-store headers",
+        "Native export verifies document formula, heading, code, stylesheet and entry-link signatures against independently fetched current HTML before each PDF"
+      ],
+      "large_text_result": {
+        "contexts": 6,
+        "failures": 0,
+        "math_overflows": 0,
+        "source_html_sha256": "7b06f57839ba28add1463ace7ff01fa31b0bf5fec98f7e6f8ea80eee31a1125b"
+      },
+      "native_exports": {
+        "pdfs": 5,
+        "source_formulas_per_pdf": 168,
+        "source_headings_per_pdf": 51,
+        "source_code_blocks_per_pdf": 12,
+        "entry_links_per_pdf": 2,
+        "state_restoration": "exact focus, details and scroll restored"
+      },
+      "release_evidence_policy": "Earlier browser/PDF reports are retained as iteration history; final acceptance will use the fresh-source runs."
+    },
+    {
+      "phase": "fresh-source whole-site print acceptance",
+      "ordinary_contexts": 576,
+      "forced_color_contexts": 576,
+      "text_samples_per_suite": 467847,
+      "failures": 0,
+      "runtime_exceptions": 0,
+      "source_delivery": "Immutable no-store preview13399; CDP HTTP cache disabled by default.",
+      "scope": "96 draft-inclusive articles; focus/outline/marker/detail restoration and print geometry/contrast."
+    },
+    {
+      "phase": "fresh-source reading and preservation",
+      "draft_inclusive_reading_cases": 1000,
+      "figure_positions": 616,
+      "runtime_exceptions": 0,
+      "preservation": {
+        "initial_files": 173,
+        "missing_files": 0,
+        "modified_initial_files": 7,
+        "modified_acceptance_ids": [
+          95
+        ],
+        "extra_clean_files_intentionally_changed": [
+          "assets/css/custom.css",
+          "scripts/check_blog_print.cjs",
+          "scripts/lib/browser.cjs"
+        ]
+      },
+      "evidence": "docs/site-reviews/2026-10-31-pion-sevenhour/fresh-reading.json.gz"
+    },
+    {
+      "phase": "finite-sample gradient SNR diagnostic",
+      "checked_at_utc": "2026-10-31T03:35:18.882115+00:00",
+      "changes": [
+        "Folded section explains observation units, upward mean-power bias, signed correction, zero sample variance and GRPO group dependence",
+        "New standard-library helper and default constructed reference included in26-member download",
+        "25 self-check questions; only acceptance record95 changed"
+      ],
+      "tests": {
+        "standard_library": 15,
+        "numpy": 9,
+        "python": [
+          "3.10.0",
+          "3.11.15",
+          "3.12.14"
+        ],
+        "independent_expectation_check": "Exact Fraction enumeration for2 through7 iid signed observations",
+        "version_correction": "Earlier3.10.12 was an inaccurate environment label; actual root interpreter3.10.0 was queried and all24 tests rerun. Older protected audit files are retained unchanged."
+      },
+      "evidence": "docs/site-reviews/2026-10-31-pion-sevenhour/snr-arithmetic.json",
+      "scope": "Constructed statistics only. No model, GRPO rollout, optimizer or training is run. Independence and fixed-checkpoint assumptions are not verified by the estimator."
+    },
+    {
+      "phase": "SNR current-source browser acceptance",
+      "checked_at_utc": "2026-10-31T03:50:53.706594+00:00",
+      "source_html_sha256": "f4238c9e9a6d0fc8cccc3de512f7b14a58fbb699ace1ab9a736cb714d3d91653",
+      "source_delivery": "Immutable no-store production13401 and preview13403; CDP9236 with cache disabled",
+      "details_layouts": 60,
+      "keyboard_tables": 8,
+      "direct_entries": 24,
+      "math_reflow_cases": 36,
+      "exact_code_copies": 52,
+      "semantic_contexts": 16,
+      "semantic_violations": 0,
+      "large_text_print_contexts": 12,
+      "native_pdf_exports": 5,
+      "native_pdf_pages": 413,
+      "native_summary_content_pairs": 30,
+      "native_summary_content_separations": 0,
+      "test_precondition_correction": "Selecting the widest formula can choose a non-aligned formula. Removed the irrelevant TeX-environment assertion; retain actual overflow, arrow scrolling, focus, fitting-state cleanup and re-entry checks."
+    },
+    {
+      "phase": "strict native script-disabled checks",
+      "change": "Keep page script execution disabled throughout native entries, layout, formula focus and PDF checks. Runtime.evaluate is used only to set test conditions and observe state. Axe semantics deliberately enables only its audit engine after loading the native DOM.",
+      "details_layouts": 60,
+      "entries": 24,
+      "math_cases": 36,
+      "native_exports": 5,
+      "no_script_beforeprint_callbacks": 0,
+      "render_comparison": "All163 selected raster PNGs are byte-identical to the prior SNR exports; all five extracted PDF text files identical.",
+      "scope": "Strengthens fallback evidence without changing published content.",
+      "evidence": [
+        "docs/site-reviews/2026-10-31-pion-sevenhour/strict-native-comparison.json",
+        "docs/site-reviews/2026-10-31-pion-sevenhour/strict-summary-pagination.json"
+      ]
+    },
+    {
+      "phase": "reading-sidebar tag overflow at200percent",
+      "finding": "Direct desktop SNR review exposed a horizontal scrollbar in the sticky table-of-contents footer. A nowrap tag plus the Tags label forced min-content width236px into a214px scroller.",
+      "controlled_css_injection": {
+        "before_scroll_width": 236,
+        "after_scroll_width": 214,
+        "client_width": 214,
+        "paper_notes_link_before_width": 151.90625,
+        "paper_notes_link_after_width": 98.03125,
+        "paper_notes_link_before_height": 32,
+        "paper_notes_link_after_height": 64
+      },
+      "change": "Screen-only .hextra-toc a uses white-space:normal and overflow-wrap:anywhere. No theme template, URL, tag spelling, color or print rule changed.",
+      "new_builds": [
+        "production-sidebar",
+        "preview-sidebar"
+      ],
+      "initial_tag_check_correction": "DOM Range includes font em-box leading beyond the line box; with visible overflow this is not evidence of vertical clipping. Retain actual horizontal ink-range/footer bounds and native focus visibility checks; inspect the screen captures directly.",
+      "status": "Resolved;1152 tag contexts,1926 reflow contexts,1000 reading positions and702 outline checks passed."
+    },
+    {
+      "phase": "desktop chapter focus occlusion",
+      "finding": "At200percent text, native Tab reached all50 Pion chapter links but the sticky footer covered the center of48. The footer background, tags or back-to-top control received hit testing instead of the active link.",
+      "controlled_static_footer_result": {
+        "links": 50,
+        "occluded": 0,
+        "focus_failures": 0
+      },
+      "change": "Keep the footer in normal screen document flow and remove its overlay shadow. Preserve the existing markup, heading render hook, URL fragments, tags and print hiding.",
+      "full_regression": "Passed1152 desktop contexts;29268 focus checks,28116 actual native Tab transitions; zero failures/exceptions. Deliberately restoring sticky positioning reproduces47 covered targets.",
+      "evidence_paths": [
+        "/tmp/chase-pion-sevenhour-20261031/toc-focus-probe.json",
+        "/tmp/chase-pion-sevenhour-20261031/toc-focus-static.json"
+      ],
+      "new_authoritative_origins": {
+        "production": "http://127.0.0.1:13415",
+        "preview": "http://127.0.0.1:13417"
+      },
+      "serial_followup": "All8 subsequent suites passed; see toc-global-batch.json."
+    },
+    {
+      "phase": "complete all-article sidebar regression",
+      "checked_at_utc": "2026-10-31T06:34:12.058884+00:00",
+      "desktop_contexts": 1152,
+      "focus_checks": 29268,
+      "native_tab_transitions": 28116,
+      "tag_contexts": 1152,
+      "tag_links": 4572,
+      "reflow_contexts": 1926,
+      "reading_positions": 1000,
+      "figure_positions": 616,
+      "forced_outline_checks": 702,
+      "failures": 0,
+      "runtime_exceptions": 0,
+      "evidence": "docs/site-reviews/2026-10-31-pion-sevenhour/toc-global-batch.json",
+      "scope": "Shared screen styles; whole article collection, with and without page scripts."
+    },
+    {
+      "phase": "all six spectral schedules and readable figure layout",
+      "image": "content/posts/ai/pion-muon-vla-rlvr/assets/spectral-polynomials-v2.png",
+      "sha256": "d4de6e8ce1518baee6c48c03ad501e101e740e928abe0735b47c8671eaaa6a66",
+      "legacy_image_sha256": "cd84865af3c93a13a59d7b500958c02911f0b54cf7be126063d33018313bd7c2",
+      "changes": [
+        "Show all six promotion/suppression schedules under a five-step budget",
+        "Separate legends from data axes and check full axes/title/label bounds",
+        "Larger type; freeze160dpi layout for byte-identical reproduction"
+      ],
+      "numerical_inputs": "Unchanged1501-point data and formula coefficients; existing JSON retained.",
+      "reproduction": "Exact PNG bytes from extracted download on CPython3.10.0/NumPy1.26.4 and clean CPython3.12.14/NumPy2.2.6; Matplotlib3.10.9.",
+      "archive_members": 26,
+      "archive_sha256": "b421ae8412f0822457f1e89435c115993995e1decf7adfe263c4af44b2bb17a9",
+      "evidence": [
+        "docs/site-reviews/2026-10-31-pion-sevenhour/spectral-layout-reproduction.json",
+        "docs/site-reviews/2026-10-31-pion-sevenhour/final-download.json"
+      ]
+    },
+    {
+      "phase": "current spectrum screen acceptance",
+      "details_contexts": 60,
+      "keyboard_table_checks": 8,
+      "image_viewer_contexts": 24,
+      "reading_positions": 28,
+      "semantic_contexts": 16,
+      "semantic_violations": 0,
+      "exact_keyboard_copies": 52,
+      "failures": 0,
+      "runtime_exceptions": 0,
+      "evidence": "docs/site-reviews/2026-10-31-pion-sevenhour/spectrum-browser-batch.json"
+    },
+    {
+      "phase": "final Figure3 print pagination",
+      "finding": "Letter200percent placed Figure3 image on page39 and caption on40; A4 remained together.",
+      "change": "Article-only print image height clamp accounts for enlarged caption type without shrinking caption text.",
+      "before_failure_cases": 1,
+      "after_failure_cases": 0,
+      "native_exports": 5,
+      "native_pdf_pages": 414,
+      "page_counts": [
+        40,
+        111,
+        39,
+        109,
+        115
+      ],
+      "source_html_sha256": "0002cd3bf47ebf7c18501cc04dbd95d9377c878534d1b993322fddce133542a3",
+      "native_summary_content_pairs": 30,
+      "summary_content_separations": 0,
+      "figure_image_caption_pairs": 5,
+      "figure_caption_separations": 0,
+      "print_geometry_contexts": 12,
+      "geometry_failures": 0,
+      "native_state_restoration": "All five: focus, details and exact scroll; all tagged. No page script execution for no-script cases.",
+      "evidence": [
+        "docs/site-reviews/2026-10-31-pion-sevenhour/print-final-batch.json",
+        "docs/site-reviews/2026-10-31-pion-sevenhour/print-final-summary-pagination.json",
+        "docs/site-reviews/2026-10-31-pion-sevenhour/print-final-figure-pagination.json"
+      ]
+    },
+    {
+      "phase": "final source review and preservation reconciliation",
+      "checked_at_utc": "2026-10-31T07:03:37.325713+00:00",
+      "metadata_unchanged": true,
+      "article_source_sha256": "7b77f9c80883607711db8bd39e0d971219052c04fd345888a8272ceed693e521",
+      "current_bundle_sha256": "b421ae8412f0822457f1e89435c115993995e1decf7adfe263c4af44b2bb17a9",
+      "strict_site_validation": {
+        "posts": 96,
+        "acceptance_checks": 534,
+        "html_pages": 319,
+        "local_references": 32446,
+        "errors": 0
+      },
+      "selected_pdf_pages": 181,
+      "visual_review_methods": {
+        "not directly inspected": 156,
+        "pixel-identical to previously directly accepted page": 15,
+        "direct image inspection in final print build": 10
+      },
+      "source_file_hashes": 42,
+      "initial_files": 173,
+      "changed_initial_files": 8,
+      "other_initial_files_byte_unchanged": 165,
+      "additional_initially_clean_files": 3,
+      "unexpected_tracked_changes": 0,
+      "modified_acceptance_ids": [
+        95
+      ],
+      "scope": "No theme edits; prior articles and completed audit/review records preserved. No commit, push or deployment."
+    },
+    {
+      "phase": "complete generic code and math checks on final build",
+      "checked_at_utc": "2026-10-31T07:16:49.477773+00:00",
+      "reason": "Repository instructions require the generic suites in addition to article-specific checks after code-block and formula revisions.",
+      "code_reading_layouts": 15,
+      "overflow_focus_cases": 18,
+      "math_themes": 2,
+      "collapsed_equation": true,
+      "checks": [
+        "pending copy and duplicate activation",
+        "focus/selection retention after copy rejection",
+        "background tab and unavailable clipboard fallback",
+        "dynamic code sizing/disclosures",
+        "native overflow arrow keys",
+        "responsive hints, reflow focus and blur cleanup"
+      ],
+      "failures": 0,
+      "runtime_exceptions": 0,
+      "evidence": [
+        {
+          "name": "code-reading-final",
+          "passed": true,
+          "record": "docs/site-reviews/2026-10-31-pion-sevenhour/code-reading-final.json.gz"
+        },
+        {
+          "name": "overflow-final",
+          "passed": true,
+          "record": "docs/site-reviews/2026-10-31-pion-sevenhour/overflow-final.json.gz"
+        },
+        {
+          "name": "math-final",
+          "passed": true,
+          "record": "docs/site-reviews/2026-10-31-pion-sevenhour/math-final.json.gz"
+        }
+      ]
+    },
+    {
+      "phase": "seven-hour window completion",
+      "completed_at_utc": "2026-10-31T07:21:35.593594+00:00",
+      "elapsed_seconds": 25244.594,
+      "minimum_required_seconds": 25200,
+      "preservation": "Initial173files0missing;165outside intended edits byte-identical; only acceptance95changed.",
+      "source_files_still_match_final_acceptance": 42,
+      "commit_push_or_deploy": false
+    }
+  ],
+  "pending": [],
+  "quality_review_finished_utc": "2026-10-31T07:03:37.325713+00:00",
+  "current_acceptance_record": "docs/site-reviews/2026-10-31-pion-sevenhour/final-acceptance.json",
+  "completed_at_utc": "2026-10-31T07:21:35.593594+00:00",
+  "elapsed_seconds": 25244.594,
+  "final_preservation_record": "docs/site-reviews/2026-10-31-pion-sevenhour/final-preservation.json"
+}

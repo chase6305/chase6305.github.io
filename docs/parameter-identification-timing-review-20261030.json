@@ -1,0 +1,53 @@
+{
+  "created_on": "2026-10-30",
+  "article": "content/posts/robotics/dynamics/parameter-identification/index.md",
+  "method": "Responsive native SVG from computed analytic force samples; browser two-column QR and independent Python phase expansion",
+  "source_sha256": {
+    "assets/js/identification-timing.js": "171164d030ec1b1950a81f463c98b21500fbd1354943123c7c35b3aaeaee231a",
+    "assets/css/identification-timing.css": "8ac787c4501401629c13daa4999eb824125bc1c41729c265971083dfbc5f9801",
+    "layouts/_shortcodes/identification-timing.html": "060de0031eb11724ce8aec49aba4144fd1cac9a6b49fdaeeadc7d292825c3eaf",
+    "content/posts/robotics/dynamics/parameter-identification/timing_counterexample.py": "95602dc50052ef6c823bb539415953eeab9689d0603f18883393436d06afedab",
+    "content/posts/robotics/dynamics/parameter-identification/assets/timing-reference.json": "8bb1d9ef14089faecd001436e20917afa585adb3ae05aad1cc8de430bd9e53c3"
+  },
+  "validation_targets": {
+    "delayed_validation_record_rmse_n": 0.1656119059028343,
+    "aligned_reference_rmse_n": 0.11428275596923788
+  },
+  "scope": "Noiseless translating mass with analytic derivatives and constant known lag. No measured robot precision, sampled interpolation, automatic lag estimation or hardware validation.",
+  "verification": "500 random phase oracles, 43 invalid inputs, 6 independent Python comparisons; 40 reading states, 18 interactive and 21 semantic cases with zero violations/incomplete rules, 4 fallback cases and 216 actual keyboard-outline checks; 24 native A4 and 2 Letter PDFs. Root theme class and color-scheme are synchronized. PDF word bounding boxes verify axis labels at approximately 10.7 pt and 21.4 pt. Zero runtime exceptions.",
+  "fallback_review": {
+    "blocked_script_layouts": 2,
+    "controlled_svg_setup_failures": 2,
+    "actual_tab_outline_checks": 216,
+    "palette_modes": [
+      "normal",
+      "forced-light",
+      "forced-dark"
+    ],
+    "component_semantics": {
+      "cases": 3,
+      "violations": 0,
+      "incomplete": 0
+    },
+    "runtime_exceptions": 0
+  },
+  "print_control_review": {
+    "presets_remain_visible": true,
+    "focused_controls": [
+      "delayed",
+      "aligned",
+      "delayMs",
+      "trainHz",
+      "validationHz",
+      "correctTrainingDelay"
+    ],
+    "ordinary_a4_pdfs": 12,
+    "forced_color_a4_pdfs": 12,
+    "letter_pdfs": 2,
+    "all_focus_preserved": true,
+    "all_cards_kept_together": true,
+    "runtime_exceptions": 0,
+    "focus_scope": "All six explicitly focused interactive controls; static no-script cases have no focused control."
+  },
+  "final_evidence_directory": "docs/site-reviews/2026-10-30-fivehour"
+}

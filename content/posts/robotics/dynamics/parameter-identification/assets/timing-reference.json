@@ -1,0 +1,18 @@
+{
+  "delay_ms": 20.0,
+  "train_hz": 0.7,
+  "validation_hz": 1.1,
+  "correct_training_delay": false,
+  "mass_kg": 1.9842775313220087,
+  "damping_n_s_per_m": 1.1712329299973545,
+  "train_rmse_n": 5.399104923082005e-16,
+  "validation_reference_rmse_n": 0.11428275596923788,
+  "validation_logged_rmse_n": 0.1656119059028343,
+  "true_mass_kg": 2.0,
+  "true_damping_n_s_per_m": 0.4,
+  "amplitude_m": 0.03,
+  "rate_hz": 100.0,
+  "train_samples": 400,
+  "validation_samples": 300,
+  "scope": "Analytic noiseless single-frequency signals; validation reference is aligned. Known-lag correction evaluates the analytic force, without sampled interpolation or boundary extrapolation."
+}

@@ -1,0 +1,317 @@
+{
+  "accepted_suites": [
+    {
+      "name": "review-screen",
+      "command": [
+        "node",
+        "/tmp/chase-pion-sevenhour-20261102/capture_review_reading.cjs"
+      ],
+      "started_utc": "2026-11-01T19:10:27.197910+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "32061487bda8c292a00fc791012aaf01b29503ef51c6aa9f1c80fe48cdb91eb9",
+      "theme_helper_sha256": "3e1dd4162ed5039e46821aeb85947316bc77c0950fb0257f85840e6e1fae46bb",
+      "elapsed_seconds": 30.022,
+      "finished_utc": "2026-11-01T19:10:57.219702+00:00"
+    },
+    {
+      "name": "review-details",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-02-pion-sevenhour/check_details.cjs",
+        "http://127.0.0.1:13513",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-details"
+      ],
+      "started_utc": "2026-11-01T19:10:57.223599+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "0b7b76efb35d9ed414c1942bdd8e5d075cf067d796f71abaac64697ee315b691",
+      "theme_helper_sha256": "3e1dd4162ed5039e46821aeb85947316bc77c0950fb0257f85840e6e1fae46bb",
+      "elapsed_seconds": 43.456,
+      "finished_utc": "2026-11-01T19:11:40.679513+00:00"
+    },
+    {
+      "name": "review-math",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-02-pion-sevenhour/check_math_reflow.cjs",
+        "http://127.0.0.1:13513",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-math"
+      ],
+      "started_utc": "2026-11-01T19:11:40.683543+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "dfa8cff3e129e36ed449ddb619e9b793e945735f1d834dc98aea21d8b4cd0e23",
+      "theme_helper_sha256": "3e1dd4162ed5039e46821aeb85947316bc77c0950fb0257f85840e6e1fae46bb",
+      "elapsed_seconds": 123.157,
+      "finished_utc": "2026-11-01T19:13:43.840944+00:00"
+    },
+    {
+      "name": "review-entries",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-02-pion-sevenhour/check_entries.cjs",
+        "http://127.0.0.1:13513",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-entries"
+      ],
+      "started_utc": "2026-11-01T19:13:43.844758+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "ca543b27f3f5d4fc02fa16258d2d39172cc25e775de6fc2662533cc7ea180bfc",
+      "theme_helper_sha256": "3e1dd4162ed5039e46821aeb85947316bc77c0950fb0257f85840e6e1fae46bb",
+      "elapsed_seconds": 47.609,
+      "finished_utc": "2026-11-01T19:14:31.453724+00:00"
+    },
+    {
+      "name": "review-copies",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-02-pion-sevenhour/check_copies.cjs",
+        "http://127.0.0.1:13513",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-copies",
+        "/tmp/chase-pion-sevenhour-20261102/source-review.md"
+      ],
+      "started_utc": "2026-11-01T19:14:31.457853+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "68b2d17e37adc01af7a2d2ecd82e7bc9c880d52485dec8873c7637b6711147d6",
+      "theme_helper_sha256": "3e1dd4162ed5039e46821aeb85947316bc77c0950fb0257f85840e6e1fae46bb",
+      "elapsed_seconds": 8.68,
+      "finished_utc": "2026-11-01T19:14:40.137853+00:00"
+    },
+    {
+      "name": "review-images",
+      "command": [
+        "node",
+        "/tmp/chase-pion-sevenhour-20261102/check-pion-images.cjs",
+        "http://127.0.0.1:13513",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-images"
+      ],
+      "started_utc": "2026-11-01T19:14:40.141879+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "9cc315b99f78d6cb79315747b57e10eae9581769c6b5c8fe712ea78304e92add",
+      "theme_helper_sha256": "3e1dd4162ed5039e46821aeb85947316bc77c0950fb0257f85840e6e1fae46bb",
+      "elapsed_seconds": 3.876,
+      "finished_utc": "2026-11-01T19:14:44.017964+00:00"
+    },
+    {
+      "name": "review-reading",
+      "command": [
+        "node",
+        "/tmp/chase-pion-sevenhour-20261102/check-pion-reading.cjs",
+        "http://127.0.0.1:13513",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-reading",
+        "--figures"
+      ],
+      "started_utc": "2026-11-01T19:14:44.021867+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "51209a12e11e92bb28f69a4ff3fa29b11ae28065f75c931bfb28073e4731a22a",
+      "theme_helper_sha256": "3e1dd4162ed5039e46821aeb85947316bc77c0950fb0257f85840e6e1fae46bb",
+      "elapsed_seconds": 15.746,
+      "finished_utc": "2026-11-01T19:14:59.768329+00:00"
+    },
+    {
+      "name": "review-semantics",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-02-pion-sevenhour/check_semantics.cjs",
+        "http://127.0.0.1:13513",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-semantics",
+        "/tmp/chase-opt-20261029-fivehour/a11y/node_modules/axe-core/axe.min.js"
+      ],
+      "started_utc": "2026-11-01T19:14:59.772383+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "77d6666d8a2b04d48885c87516773d5aa013694c02d8206a07fc9f869d546f5d",
+      "theme_helper_sha256": "3e1dd4162ed5039e46821aeb85947316bc77c0950fb0257f85840e6e1fae46bb",
+      "elapsed_seconds": 26.877,
+      "finished_utc": "2026-11-01T19:15:26.649843+00:00"
+    },
+    {
+      "name": "review-code-reading",
+      "command": [
+        "node",
+        "scripts/check_code_reading.cjs",
+        "http://127.0.0.1:13513",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-code-reading"
+      ],
+      "started_utc": "2026-11-01T19:15:26.653972+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "800d11625d60c20264ac815e9c3031cfd4b05cac7e315218b6b978b8d1ce2a0e",
+      "theme_helper_sha256": "3e1dd4162ed5039e46821aeb85947316bc77c0950fb0257f85840e6e1fae46bb",
+      "elapsed_seconds": 7.48,
+      "finished_utc": "2026-11-01T19:15:34.134363+00:00"
+    },
+    {
+      "name": "review-overflow",
+      "command": [
+        "node",
+        "scripts/check_overflow_focus.cjs",
+        "http://127.0.0.1:13513",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-overflow"
+      ],
+      "started_utc": "2026-11-01T19:15:34.138044+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "64c6d0e16b4b14203f51ea8a1599277b4ee4448f6a075bdb83371c0a9908504f",
+      "theme_helper_sha256": "3e1dd4162ed5039e46821aeb85947316bc77c0950fb0257f85840e6e1fae46bb",
+      "elapsed_seconds": 35.431,
+      "finished_utc": "2026-11-01T19:16:09.569306+00:00"
+    },
+    {
+      "name": "review-generic-math",
+      "command": [
+        "node",
+        "scripts/check_blog_math.cjs",
+        "http://127.0.0.1:13513",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-generic-math"
+      ],
+      "started_utc": "2026-11-01T19:16:09.573267+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "a40a6863c81542191d1483c2ac8be845afae045466bc97f0fe9dd9f58830274a",
+      "theme_helper_sha256": "3e1dd4162ed5039e46821aeb85947316bc77c0950fb0257f85840e6e1fae46bb",
+      "elapsed_seconds": 3.27,
+      "finished_utc": "2026-11-01T19:16:12.843173+00:00"
+    },
+    {
+      "name": "review-print-all",
+      "command": [
+        "node",
+        "scripts/check_blog_print.cjs",
+        "http://127.0.0.1:13515",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-print-all",
+        "--drafts"
+      ],
+      "started_utc": "2026-11-01T19:16:12.847138+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "d3c7f16aa76deaf33725387f317ff8fabbfb05dc6c392dbc6bf4a5ad393f7e28",
+      "theme_helper_sha256": "3e1dd4162ed5039e46821aeb85947316bc77c0950fb0257f85840e6e1fae46bb",
+      "elapsed_seconds": 130.414,
+      "finished_utc": "2026-11-01T19:18:23.261341+00:00"
+    },
+    {
+      "name": "review-print-large-v2",
+      "command": [
+        "node",
+        "/tmp/chase-pion-sevenhour-20261102/check-pion-print.cjs",
+        "http://127.0.0.1:13513",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-print-large-v2",
+        "--large-text"
+      ],
+      "started_utc": "2026-11-01T19:21:49.964805+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "e165be4af4cca1dafd5ab91e76e642b659eff5946e7aea808edc22907520131c",
+      "theme_helper_sha256": "3e1dd4162ed5039e46821aeb85947316bc77c0950fb0257f85840e6e1fae46bb",
+      "elapsed_seconds": 3.32,
+      "finished_utc": "2026-11-01T19:21:53.285300+00:00"
+    },
+    {
+      "name": "review-print-large-forced-v3",
+      "command": [
+        "node",
+        "/tmp/chase-pion-sevenhour-20261102/check-pion-print.cjs",
+        "http://127.0.0.1:13513",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-print-large-forced-v3",
+        "--large-text",
+        "--forced-colors"
+      ],
+      "started_utc": "2026-11-01T19:22:38.684896+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "e165be4af4cca1dafd5ab91e76e642b659eff5946e7aea808edc22907520131c",
+      "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+      "elapsed_seconds": 3.622,
+      "finished_utc": "2026-11-01T19:22:42.307012+00:00"
+    },
+    {
+      "name": "review-global-readability",
+      "command": [
+        "node",
+        "scripts/check_site_readability.cjs",
+        "http://127.0.0.1:13515",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-global-readability",
+        "--all-articles"
+      ],
+      "started_utc": "2026-11-01T19:22:42.310941+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "ee11231c79d044cbfd91833c76ceff7ded4d2ffcc00a7b38548ee9c6a6d3ce8d",
+      "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+      "elapsed_seconds": 164.325,
+      "finished_utc": "2026-11-01T19:25:26.635765+00:00"
+    },
+    {
+      "name": "review-accessibility",
+      "command": [
+        "node",
+        "scripts/check_site_accessibility.cjs",
+        "http://127.0.0.1:13515",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-accessibility"
+      ],
+      "started_utc": "2026-11-01T19:25:26.643532+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "3ee36fca98ff74bc72fc833ce68713425973fb6af8c8d5029a251d3e8a3549a0",
+      "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+      "elapsed_seconds": 29.069,
+      "finished_utc": "2026-11-01T19:25:55.712898+00:00"
+    },
+    {
+      "name": "review-content-search",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-02-pion-sevenhour/check_new_content_search.cjs",
+        "http://127.0.0.1:13513",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/review-content-search"
+      ],
+      "started_utc": "2026-11-01T19:25:55.716758+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "61c738cb7eadb38d3c89cbc7ebd0b1d9841faee7e3f566d7fa487230554e41fc",
+      "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+      "elapsed_seconds": 6.427,
+      "finished_utc": "2026-11-01T19:26:02.143375+00:00"
+    },
+    {
+      "name": "review-native-pdf",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-02-pion-sevenhour/export_reading.cjs",
+        "http://127.0.0.1:13513",
+        "9240",
+        "/tmp/chase-pion-sevenhour-20261102/pdf-review"
+      ],
+      "started_utc": "2026-11-01T19:26:02.147641+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "test_script_sha256": "f8125a6f236dc04b44e2dd3c41df2a64f074dc256da259615dbc352438aad9e7",
+      "theme_helper_sha256": "d3e7684a051f85da89e1e4a02ddfadda8db04c15ac3476077ff8ff1c1f6e9403",
+      "elapsed_seconds": 20.955,
+      "finished_utc": "2026-11-01T19:26:23.102221+00:00"
+    }
+  ],
+  "unique_suite_purposes": 18,
+  "scope": "Original first12 passed, corrected ordinary print and forced print, then remaining4. Failed setup attempts retained separately."
+}

@@ -1,0 +1,11 @@
+{
+  "files_compared": 2233,
+  "changed_files": [
+    "posts/ai/pion-muon-vla-rlvr/README.txt",
+    "posts/ai/pion-muon-vla-rlvr/flat_spectrum.py",
+    "posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip"
+  ],
+  "missing": [],
+  "all_html_css_js_byte_identical": true,
+  "article_html_sha256": "d8afa08c6b59bc3530020064a7234d5db177662ce2519ab378222da754cfb158"
+}

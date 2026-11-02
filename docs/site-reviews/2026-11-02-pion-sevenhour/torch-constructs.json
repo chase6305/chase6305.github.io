@@ -1,0 +1,145 @@
+{
+  "python": "3.12.14",
+  "torch": "2.8.0+cpu",
+  "device": "cpu",
+  "optimizer_steps": 0,
+  "hidden_networks": [
+    {
+      "width": 2,
+      "scalar_output": 1,
+      "positions": 2,
+      "hidden_gradient_rank": 2,
+      "head_gradient_rank": 1,
+      "max_gradient_absolute_error": 0.0
+    },
+    {
+      "width": 3,
+      "scalar_output": 1,
+      "positions": 3,
+      "hidden_gradient_rank": 3,
+      "head_gradient_rank": 1,
+      "max_gradient_absolute_error": 0.0
+    },
+    {
+      "width": 8,
+      "scalar_output": 1,
+      "positions": 8,
+      "hidden_gradient_rank": 8,
+      "head_gradient_rank": 1,
+      "max_gradient_absolute_error": 0.0
+    },
+    {
+      "width": 32,
+      "scalar_output": 1,
+      "positions": 32,
+      "hidden_gradient_rank": 32,
+      "head_gradient_rank": 1,
+      "max_gradient_absolute_error": 0.0
+    }
+  ],
+  "group_distributions": [
+    {
+      "size": 2,
+      "p": 0.01,
+      "patterns": 4,
+      "full_snr": 0.020199959192001633,
+      "retained_snr": null,
+      "nondegenerate_probability": 0.0198
+    },
+    {
+      "size": 2,
+      "p": 0.1,
+      "patterns": 4,
+      "full_snr": 0.21951219512195125,
+      "retained_snr": null,
+      "nondegenerate_probability": 0.18000000000000002
+    },
+    {
+      "size": 2,
+      "p": 0.5,
+      "patterns": 4,
+      "full_snr": 1.0,
+      "retained_snr": null,
+      "nondegenerate_probability": 0.5
+    },
+    {
+      "size": 2,
+      "p": 0.9,
+      "patterns": 4,
+      "full_snr": 0.21951219512195114,
+      "retained_snr": null,
+      "nondegenerate_probability": 0.17999999999999997
+    },
+    {
+      "size": 3,
+      "p": 0.01,
+      "patterns": 8,
+      "full_snr": 0.03060908997217356,
+      "retained_snr": null,
+      "nondegenerate_probability": 0.0297
+    },
+    {
+      "size": 3,
+      "p": 0.1,
+      "patterns": 8,
+      "full_snr": 0.36986301369863034,
+      "retained_snr": null,
+      "nondegenerate_probability": 0.2700000000000001
+    },
+    {
+      "size": 3,
+      "p": 0.5,
+      "patterns": 8,
+      "full_snr": 2.9999999999999996,
+      "retained_snr": null,
+      "nondegenerate_probability": 0.75
+    },
+    {
+      "size": 3,
+      "p": 0.9,
+      "patterns": 8,
+      "full_snr": 0.36986301369863,
+      "retained_snr": null,
+      "nondegenerate_probability": 0.26999999999999996
+    },
+    {
+      "size": 8,
+      "p": 0.01,
+      "patterns": 256,
+      "full_snr": 0.0834316754843058,
+      "retained_snr": 309.9594205986998,
+      "nondegenerate_probability": 0.0772553055720798
+    },
+    {
+      "size": 8,
+      "p": 0.1,
+      "patterns": 256,
+      "full_snr": 1.2588355461622733,
+      "retained_snr": 45.5351771692089,
+      "nondegenerate_probability": 0.5695327800000001
+    },
+    {
+      "size": 8,
+      "p": 0.5,
+      "patterns": 256,
+      "full_snr": 60.90198626742464,
+      "retained_snr": 117.93779876305854,
+      "nondegenerate_probability": 0.9921875
+    },
+    {
+      "size": 8,
+      "p": 0.9,
+      "patterns": 256,
+      "full_snr": 1.258835546162273,
+      "retained_snr": 45.535177169208886,
+      "nondegenerate_probability": 0.5695327799999998
+    }
+  ],
+  "autograd_groups": 1072,
+  "max_group_gradient_absolute_error": 1.1102230246251565e-16,
+  "source_sha256": {
+    "grpo_group_signal.py": "94ca286a849e6cf28777cb0988bdced8d06dd3a78161098f550bce6a98df8f19",
+    "vla_gradient_rank.py": "b8c42f73968301de621116fb8bba7fa7c0bc43b65950ec49b0e0ee55fdf90634"
+  },
+  "scope": "Tiny constructed forward/backward evaluations only. No VLA/LLM checkpoint, rollout engine, GPU or model training."
+}

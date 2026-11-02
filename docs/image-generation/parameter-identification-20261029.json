@@ -1,0 +1,31 @@
+{
+  "created_on": "2026-10-29",
+  "method": "Deterministic Matplotlib plot of the saved constructed experiment",
+  "article": "content/posts/robotics/dynamics/parameter-identification/index.md",
+  "figure": 7,
+  "source_files": {
+    "make_identification_figure.py": {
+      "sha256": "7cb2a942b8d57c11f33507806daf7cf05e9dc2cbf304c33efa78a239f34ee1ad"
+    },
+    "assets/pinocchio-reference.json": {
+      "sha256": "435df9e2464774b4d128f480c584962ae18c35954c0f0655863fee4bbd62a2ca"
+    },
+    "assets/identification-held-out.png": {
+      "sha256": "a80adc057d33e5367243d2a53890ec3f0eabfab47ad09a710cbc947e2dc7e8d3"
+    }
+  },
+  "image_size": [
+    1650,
+    1936
+  ],
+  "scope": "Same kinematics with nominal/truth inertia mismatch; independent validation trajectory, analytic motion derivatives, IID 0.02 N*m torque noise. No measured robot accuracy or physical-parameter uniqueness claim.",
+  "visual_review": [
+    "Relative singular values from training-column-scaled matrix; cutoff 1e-10.",
+    "Values at/below 1e-18 are clipped only for display and marked by down triangles.",
+    "Two per-joint validation RMSE groups use identical held-out samples.",
+    "Numeric labels, hatch and marker shapes distinguish series without relying on color.",
+    "All labels, axes, footer and title inspected at full source size."
+  ],
+  "reference_note": "Mean residual convention corrected to measured minus predicted; all plotted singular values and RMSE values unchanged, reproduced PNG byte-identical.",
+  "numerical_revision_20261030": "Aggregate RMSE rejects broadcasting and uses scaled residuals. Column L2 norms use stable hypot accumulation, preserving finite extreme column scales. Reproduced references and figure; sub-threshold singular values change at floating-point noise level, while retained rank, labeled per-joint errors and scientific conclusions stay the same."
+}

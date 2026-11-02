@@ -1,0 +1,48 @@
+{
+  "review_date": "2026-10-30",
+  "articles": [
+    "content/posts/planner/task-and-motion-planning/index.md",
+    "content/posts/robotics/dynamics/parameter-identification/index.md"
+  ],
+  "images": {
+    "tamp-grid-mobile-light.png": "320px, 100% text; compact table with native horizontal scrolling.",
+    "tamp-grid-mobile-dark-200.png": "320px, 200% root text and increased letter/word spacing.",
+    "identification-window-mobile-light.png": "320px common-time window comparison.",
+    "identification-delay-mobile-dark.png": "320px analytic force-delay counterexample; three line styles and separate validation targets.",
+    "identification-aligned-native-print.png": "Native A4 PDF page raster; known-lag alignment checked, m=2 and b=0.4; no editing decorations."
+  },
+  "files": {
+    "identification-aligned-native-print.png": {
+      "sha256": "4d6d30eed8b3ca0f2774d038e0ddf4caf50fc763c7c5dd5db6118e224d6a823e",
+      "bytes": 184687
+    },
+    "identification-delay-mobile-dark.png": {
+      "sha256": "064b744a131e51cab810657558b8b21abc8e52fa167a67401f18b34abc526082",
+      "bytes": 82154
+    },
+    "identification-window-mobile-light.png": {
+      "sha256": "d15ea6971bee85e09c005e9f3e8c77dba80e827097e4c0eefe8fb213867dfa69",
+      "bytes": 103449
+    },
+    "initial-work-preservation.json": {
+      "sha256": "ddef961842b29793857e040342b1ec8071d00d8bbdc626b0db0663391b47295d",
+      "bytes": 3841
+    },
+    "source-manifest.json": {
+      "sha256": "c59a97928f9251c329413dd8692473931566e677e482cc18c8cb093cba913532",
+      "bytes": 6525
+    },
+    "tamp-grid-mobile-dark-200.png": {
+      "sha256": "a624e74a99606b9d04eb4084a3221bbe78cc9439499884f9328c88a2b94a3ee5",
+      "bytes": 57604
+    },
+    "tamp-grid-mobile-light.png": {
+      "sha256": "f34107b35eee65d2c59a550b3af98acdc027af51c2ea3fd7a513a7ce5f1d9d16",
+      "bytes": 109075
+    },
+    "verification.json.gz": {
+      "sha256": "6a3280ea96af7d81d18eaba51bae45102a47c4dec4ddd08ca3d54cf409021789",
+      "bytes": 38228
+    }
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "checked_at_utc": "2026-11-01T23:46:14.187386+00:00",
+  "scope": "Stop only historical static-server commands whose exact script and served directory are inside this window work directory. Keep current production/preview ports; no browser processes affected.",
+  "stopped_historical_servers": [
+    {
+      "pid": 3405114,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/preview-groups",
+      "port": 13503
+    },
+    {
+      "pid": 3405116,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-groups",
+      "port": 13501
+    },
+    {
+      "pid": 3483868,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-moments",
+      "port": 13505
+    },
+    {
+      "pid": 3483869,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/preview-moments",
+      "port": 13507
+    },
+    {
+      "pid": 3563201,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/preview-polish",
+      "port": 13511
+    },
+    {
+      "pid": 3563202,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-polish",
+      "port": 13509
+    },
+    {
+      "pid": 3569212,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-review",
+      "port": 13513
+    },
+    {
+      "pid": 3569213,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/preview-review",
+      "port": 13515
+    },
+    {
+      "pid": 3598203,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-isolated",
+      "port": 13517
+    },
+    {
+      "pid": 3603783,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-variance",
+      "port": 13519
+    },
+    {
+      "pid": 3603795,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/preview-variance",
+      "port": 13521
+    },
+    {
+      "pid": 3618859,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-moment",
+      "port": 13523
+    },
+    {
+      "pid": 3618869,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/preview-moment",
+      "port": 13525
+    },
+    {
+      "pid": 3633579,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-residual",
+      "port": 13527
+    },
+    {
+      "pid": 3633591,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/preview-residual",
+      "port": 13529
+    },
+    {
+      "pid": 3660423,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-commands",
+      "port": 13531
+    },
+    {
+      "pid": 3679788,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-layout",
+      "port": 13535
+    },
+    {
+      "pid": 3679800,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/preview-layout",
+      "port": 13537
+    },
+    {
+      "pid": 3690761,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-wrap",
+      "port": 13539
+    },
+    {
+      "pid": 3690762,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/preview-wrap",
+      "port": 13541
+    },
+    {
+      "pid": 3700805,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-stride",
+      "port": 13543
+    },
+    {
+      "pid": 3700806,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/preview-stride",
+      "port": 13545
+    },
+    {
+      "pid": 3707526,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/preview-commandgroup",
+      "port": 13549
+    },
+    {
+      "pid": 3707527,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-commandgroup",
+      "port": 13547
+    },
+    {
+      "pid": 3717634,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/preview-shortcode",
+      "port": 13553
+    },
+    {
+      "pid": 3717635,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-shortcode",
+      "port": 13551
+    },
+    {
+      "pid": 3735451,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/preview-compactheader",
+      "port": 13557
+    }
+  ],
+  "kept_servers": [
+    {
+      "pid": 3751792,
+      "directory": "/tmp/chase-pion-sevenhour-20261102/production-grpoexample",
+      "port": 13559
+    }
+  ],
+  "own_browser_shutdown": {
+    "checked_at_utc": "2026-11-01T23:53:20.650790+00:00",
+    "matched_processes": [],
+    "scope": "Only the dedicated Chrome parent with both exact CDP9240 and this window profile arguments. Other browser profiles/endpoints are untouched."
+  },
+  "preview_liveness": {
+    "checked_at_utc": "2026-11-01T23:54:39.585750+00:00",
+    "rows": [
+      {
+        "port": 13559,
+        "status": 200,
+        "article_html_sha256": "1535e0490513e52859dce45f0a959c19b619e3502ed9afcaaf45872eeaa7410a"
+      },
+      {
+        "port": 13561,
+        "status": 200,
+        "article_html_sha256": "f83c0aa8298d8eafd165952235cd3a5018ed0261fa106c1f62a034b003a052ee"
+      }
+    ],
+    "finding": "Production remained available. Draft-inclusive static preview was no longer listening and was restarted on13561 from the same immutable build. No source/build bytes changed; prior browser results refer to their recorded execution time."
+  }
+}

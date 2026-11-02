@@ -1,0 +1,61 @@
+{
+  "checked_at_utc": "2026-11-01T19:27:30.411302+00:00",
+  "environments": [
+    {
+      "label": "root",
+      "python": "3.10.0",
+      "numpy": "1.26.4",
+      "numpy_checks": true,
+      "test_methods": 35,
+      "exit_code": 0,
+      "command": [
+        "/home/ubuntu/miniconda3/envs/dp/bin/python3",
+        "-B",
+        "scripts/test_pion_examples.py",
+        "--numpy"
+      ],
+      "log": "/tmp/chase-pion-sevenhour-20261102/isolated-tests-root.log"
+    },
+    {
+      "label": "cp311",
+      "python": "3.11.15",
+      "numpy": null,
+      "numpy_checks": false,
+      "test_methods": 25,
+      "exit_code": 0,
+      "command": [
+        "/home/ubuntu/.local/share/uv/python/cpython-3.11-linux-x86_64-gnu/bin/python3.11",
+        "-B",
+        "scripts/test_pion_examples.py"
+      ],
+      "log": "/tmp/chase-pion-sevenhour-20261102/isolated-tests-cp311.log"
+    },
+    {
+      "label": "clean-cp312",
+      "python": "3.12.14",
+      "numpy": "2.2.6",
+      "numpy_checks": true,
+      "test_methods": 35,
+      "exit_code": 0,
+      "command": [
+        "/tmp/chase-pion-sevenhour-20261031/plot-env/bin/python",
+        "-B",
+        "scripts/test_pion_examples.py",
+        "--numpy"
+      ],
+      "log": "/tmp/chase-pion-sevenhour-20261102/isolated-tests-clean-cp312.log"
+    }
+  ],
+  "extracted_package": {
+    "exit_code": 0,
+    "test_methods": 35,
+    "command": [
+      "/tmp/chase-pion-sevenhour-20261031/plot-env/bin/python",
+      "-B",
+      "scripts/package_pion_lab.py",
+      "--check",
+      "--test",
+      "--numpy"
+    ]
+  }
+}

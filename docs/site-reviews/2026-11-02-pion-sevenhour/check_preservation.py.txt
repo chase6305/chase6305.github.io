@@ -1,0 +1,15 @@
+from pathlib import Path
+import hashlib,json
+root=Path('/home/ubuntu/workspace/chase/chase6305.github.io');w=Path('/tmp/chase-pion-sevenhour-20261102');initial=json.loads((w/'initial-manifest.json').read_text());changed=[];missing=[]
+for name,record in initial.items():
+ p=root/name
+ if 'sha256'in record:
+  if not p.is_file():missing.append(name)
+  elif hashlib.sha256(p.read_bytes()).hexdigest()!=record['sha256']:changed.append(name)
+ elif 'symlink'in record:
+  if not p.is_symlink()or str(p.readlink())!=record['symlink']:missing.append(name)
+expected=['content/posts/ai/pion-muon-vla-rlvr/README.txt','content/posts/ai/pion-muon-vla-rlvr/flat_spectrum.py','content/posts/ai/pion-muon-vla-rlvr/index.md','content/posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip','docs/blog-editorial-review.json','scripts/package_pion_lab.py','scripts/test_pion_examples.py']
+if sorted(changed)!=expected or missing:raise SystemExit(str({'changed':changed,'missing':missing,'expected':expected}))
+a=json.loads((w/'initial-backup/docs/blog-editorial-review.json').read_text());b=json.loads((root/'docs/blog-editorial-review.json').read_text());edits=[old['id']for old,new in zip(a['posts'],b['posts'])if old!=new]
+if len(a['posts'])!=len(b['posts'])or edits!=[95]or {k:v for k,v in a.items()if k!='posts'}!={k:v for k,v in b.items()if k!='posts'}:raise SystemExit('Unexpected acceptance changes')
+result={'initial_files':len(initial),'missing':missing,'changed_initial_files':changed,'other_initial_files_byte_unchanged':len(initial)-len(changed),'modified_acceptance_ids':edits,'scope':'No other initial dirty files changed; completed audit/review files remain byte-identical.'};(w/'preservation-current.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n');print(json.dumps(result))

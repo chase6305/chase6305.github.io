@@ -1,0 +1,849 @@
+{
+  "construction": "M=I_r, full-rank square identity; epsilon=0; five whole-matrix polynomial iterations",
+  "scope": "Constructed flat spectra, not measured model gradients. No matrices are allocated in the standard-library study.",
+  "decimal_precision": 100,
+  "ratio_definition": "In exact arithmetic for this construction, RMS(gradient update)/(eta*gamma)=abs(coefficient); the ideal full-rank polar factor gives 1. Float64 coefficients are recorded before learning-rate/dimension multiplication, whose rounding is not modeled here. Weight decay is excluded.",
+  "entropy_convention": "Every positive equal coefficient gives mathematical entropy rank r; a stored all-zero spectrum has the separate example convention 0.",
+  "rows": [
+    {
+      "rank": 1,
+      "mathematical_entropy_rank": 1,
+      "muon_float64_coefficient": 0.6964364094697524,
+      "pion": {
+        "0": {
+          "promotion_steps": 0,
+          "suppression_steps": 5,
+          "normalized_input_float64": 1.0,
+          "coefficient_decimal": "1.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "log10_coefficient_decimal": 0.0,
+          "coefficient_float64": 1.0,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 1
+        },
+        "1": {
+          "promotion_steps": 1,
+          "suppression_steps": 4,
+          "normalized_input_float64": 1.0,
+          "coefficient_decimal": "1.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "log10_coefficient_decimal": 0.0,
+          "coefficient_float64": 1.0,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 1
+        },
+        "2": {
+          "promotion_steps": 2,
+          "suppression_steps": 3,
+          "normalized_input_float64": 1.0,
+          "coefficient_decimal": "1.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "log10_coefficient_decimal": 0.0,
+          "coefficient_float64": 1.0,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 1
+        }
+      }
+    },
+    {
+      "rank": 2,
+      "mathematical_entropy_rank": 2,
+      "muon_float64_coefficient": 1.1081111156829322,
+      "pion": {
+        "0": {
+          "promotion_steps": 0,
+          "suppression_steps": 5,
+          "normalized_input_float64": 0.7071067811865475,
+          "coefficient_decimal": "0.00002588829349583863704984204691897400174055045228826080631556477847725347157214106029093534348671991062",
+          "log10_coefficient_decimal": -4.586896576439088,
+          "coefficient_float64": 2.5888293495838435e-05,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 2
+        },
+        "1": {
+          "promotion_steps": 1,
+          "suppression_steps": 4,
+          "normalized_input_float64": 0.7071067811865475,
+          "coefficient_decimal": "0.999999991283799438986967150033501983994422209646009193741261001891932538884107263768898075917136045",
+          "log10_coefficient_decimal": -3.785397823307131e-09,
+          "coefficient_float64": 0.9999999912837995,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 2
+        },
+        "2": {
+          "promotion_steps": 2,
+          "suppression_steps": 3,
+          "normalized_input_float64": 0.7071067811865475,
+          "coefficient_decimal": "0.999999999999999999999917605403473514666325676658984059026356064972220308892676681436255032987427723",
+          "log10_coefficient_decimal": -3.578351861009742e-23,
+          "coefficient_float64": 1.0,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 2
+        }
+      }
+    },
+    {
+      "rank": 4,
+      "mathematical_entropy_rank": 4,
+      "muon_float64_coefficient": 0.7654385304543397,
+      "pion": {
+        "0": {
+          "promotion_steps": 0,
+          "suppression_steps": 5,
+          "normalized_input_float64": 0.5,
+          "coefficient_decimal": "5.908000561416174225361535563143253006426456959603960231498810934843789910844608093335062716220793109E-32",
+          "log10_coefficient_decimal": -31.228559472090634,
+          "coefficient_float64": 5.908000561416166e-32,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 4
+        },
+        "1": {
+          "promotion_steps": 1,
+          "suppression_steps": 4,
+          "normalized_input_float64": 0.5,
+          "coefficient_decimal": "0.5911935419460659365600627253955642079478184878952901313765694536320262510405729691967734997523227187",
+          "log10_coefficient_decimal": -0.22827031871422232,
+          "coefficient_float64": 0.5911935419460659,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 4
+        },
+        "2": {
+          "promotion_steps": 2,
+          "suppression_steps": 3,
+          "normalized_input_float64": 0.5,
+          "coefficient_decimal": "0.999999981155603102458239205646356823347158725207001047086106744195436005938581693416732230675707386",
+          "log10_coefficient_decimal": -8.184017664508585e-09,
+          "coefficient_float64": 0.9999999811556032,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 4
+        }
+      }
+    },
+    {
+      "rank": 8,
+      "mathematical_entropy_rank": 8,
+      "muon_float64_coefficient": 1.0669679484723613,
+      "pion": {
+        "0": {
+          "promotion_steps": 0,
+          "suppression_steps": 5,
+          "normalized_input_float64": 0.35355339059327373,
+          "coefficient_decimal": "4.064959833988651558464975105575484801551729975876807285184614236787849950768565005853368745124521574E-65",
+          "log10_coefficient_decimal": -64.39094374132779,
+          "coefficient_float64": 4.0649598339885415e-65,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 8
+        },
+        "1": {
+          "promotion_steps": 1,
+          "suppression_steps": 4,
+          "normalized_input_float64": 0.35355339059327373,
+          "coefficient_decimal": "0.00001104511261433364676713494906259703674492385978518725629170255589592216105381749378968147050448765252",
+          "log10_coefficient_decimal": -4.956829851767706,
+          "coefficient_float64": 1.1045112614333574e-05,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 8
+        },
+        "2": {
+          "promotion_steps": 2,
+          "suppression_steps": 3,
+          "normalized_input_float64": 0.35355339059327373,
+          "coefficient_decimal": "0.991036867802996907204750424128339434533455825905064485182837253941581851094025748481086364530335324",
+          "log10_coefficient_decimal": -0.0039101889197960945,
+          "coefficient_float64": 0.9910368678029968,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 8
+        }
+      }
+    },
+    {
+      "rank": 16,
+      "mathematical_entropy_rank": 16,
+      "muon_float64_coefficient": 0.7145262613330344,
+      "pion": {
+        "0": {
+          "promotion_steps": 0,
+          "suppression_steps": 5,
+          "normalized_input_float64": 0.25,
+          "coefficient_decimal": "3.130929723662757450513254997808571447604289341234232247337672810297050021827464208225970554303155534E-100",
+          "log10_coefficient_decimal": -99.50432668037669,
+          "coefficient_float64": 3.130929723662754e-100,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 16
+        },
+        "1": {
+          "promotion_steps": 1,
+          "suppression_steps": 4,
+          "normalized_input_float64": 0.25,
+          "coefficient_decimal": "1.529254032169637681609104228852934384175677305576283370548788845454177101246471656079098251357826182E-14",
+          "log10_coefficient_decimal": -13.8155203657285,
+          "coefficient_float64": 1.5292540321696367e-14,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 16
+        },
+        "2": {
+          "promotion_steps": 2,
+          "suppression_steps": 3,
+          "normalized_input_float64": 0.25,
+          "coefficient_decimal": "0.3491311034398197025834393614784199602937470281390988975549171412365551327788850791590330324038335252",
+          "log10_coefficient_decimal": -0.4570114589756796,
+          "coefficient_float64": 0.34913110343981973,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 16
+        }
+      }
+    },
+    {
+      "rank": 32,
+      "mathematical_entropy_rank": 32,
+      "muon_float64_coefficient": 1.018686662876538,
+      "pion": {
+        "0": {
+          "promotion_steps": 0,
+          "suppression_steps": 5,
+          "normalized_input_float64": 0.17677669529663687,
+          "coefficient_decimal": "4.053963032773525336608678494575920089868852596323884585200337796544709955255238883871637103519091800E-136",
+          "log10_coefficient_decimal": -135.39212021586394,
+          "coefficient_float64": 4.0539630327734445e-136,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 32
+        },
+        "1": {
+          "promotion_steps": 1,
+          "suppression_steps": 4,
+          "normalized_input_float64": 0.17677669529663687,
+          "coefficient_decimal": "3.610781997902676749341849760816282879065872182278056068517349126439842695705331168270800052616640357E-25",
+          "log10_coefficient_decimal": -24.44239873144743,
+          "coefficient_float64": 3.610781997902657e-25,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 32
+        },
+        "2": {
+          "promotion_steps": 2,
+          "suppression_steps": 3,
+          "normalized_input_float64": 0.17677669529663687,
+          "coefficient_decimal": "0.003738219561472392173278715649776168502883809843747349940161777749692375519267992649642622339733177363",
+          "log10_coefficient_decimal": -2.427335194253184,
+          "coefficient_float64": 0.0037382195614723873,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 32
+        }
+      }
+    },
+    {
+      "rank": 64,
+      "mathematical_entropy_rank": 64,
+      "muon_float64_coefficient": 0.6881398557760552,
+      "pion": {
+        "0": {
+          "promotion_steps": 0,
+          "suppression_steps": 5,
+          "normalized_input_float64": 0.125,
+          "coefficient_decimal": "2.335401711642801625490515533474189997115561530457888364710900859966396678442062197731344723943174152E-172",
+          "log10_coefficient_decimal": -171.6316384058283,
+          "coefficient_float64": 2.3354017116428008e-172,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 64
+        },
+        "1": {
+          "promotion_steps": 1,
+          "suppression_steps": 4,
+          "normalized_input_float64": 0.125,
+          "coefficient_decimal": "1.339391829772892045809254039119560212491465945402983270757679879381036579208980809921901163097734756E-36",
+          "log10_coefficient_decimal": -35.87309235456765,
+          "coefficient_float64": 1.339391829772895e-36,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 64
+        },
+        "2": {
+          "promotion_steps": 2,
+          "suppression_steps": 3,
+          "normalized_input_float64": 0.125,
+          "coefficient_decimal": "0.000003393173078458775821462282230034566392949995489205008662293784056141577328596242230864656596886797628",
+          "log10_coefficient_decimal": -5.469393987362694,
+          "coefficient_float64": 3.3931730784587733e-06,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 64
+        }
+      }
+    },
+    {
+      "rank": 128,
+      "mathematical_entropy_rank": 128,
+      "muon_float64_coefficient": 0.7227621604452795,
+      "pion": {
+        "0": {
+          "promotion_steps": 0,
+          "suppression_steps": 5,
+          "normalized_input_float64": 0.08838834764831843,
+          "coefficient_decimal": "9.108043413793032822706988767946366508109305515990674390311682886360245125256936971118086680146977595E-209",
+          "log10_coefficient_decimal": -208.04057490797283,
+          "coefficient_float64": 9.108043413792818e-209,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 128
+        },
+        "1": {
+          "promotion_steps": 1,
+          "suppression_steps": 4,
+          "normalized_input_float64": 0.08838834764831843,
+          "coefficient_decimal": "2.052760795370256320927541744291770789926969093382340232268963239387585838860009741687091761077356508E-48",
+          "log10_coefficient_decimal": -47.68766165525839,
+          "coefficient_float64": 2.052760795370246e-48,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 128
+        },
+        "2": {
+          "promotion_steps": 2,
+          "suppression_steps": 3,
+          "normalized_input_float64": 0.08838834764831843,
+          "coefficient_decimal": "9.299435425174881829629881350258704400301913870880087726246287601147761533730762487327005063368715962E-10",
+          "log10_coefficient_decimal": -9.031543416948635,
+          "coefficient_float64": 9.299435425174864e-10,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 128
+        }
+      }
+    },
+    {
+      "rank": 256,
+      "mathematical_entropy_rank": 256,
+      "muon_float64_coefficient": 1.0705244477246696,
+      "pion": {
+        "0": {
+          "promotion_steps": 0,
+          "suppression_steps": 5,
+          "normalized_input_float64": 0.0625,
+          "coefficient_decimal": "2.931148301308206815530553230646115453624800268445158667904632567900783943498696769220599201053017352E-245",
+          "log10_coefficient_decimal": -244.53296220789713,
+          "coefficient_float64": 2.93114830130821e-245,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 256
+        },
+        "1": {
+          "promotion_steps": 1,
+          "suppression_steps": 4,
+          "normalized_input_float64": 0.0625,
+          "coefficient_decimal": "2.036170779374747801838110815243337455766699063296667431795821043138435030779996433019365622607124891E-60",
+          "log10_coefficient_decimal": -59.69118579930697,
+          "coefficient_float64": 2.0361707793747482e-60,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 256
+        },
+        "2": {
+          "promotion_steps": 2,
+          "suppression_steps": 3,
+          "normalized_input_float64": 0.0625,
+          "coefficient_decimal": "1.425551529720340949891141330936476615941930985503751989905132477139902401057641865044017702461435910E-13",
+          "log10_coefficient_decimal": -12.84601707953395,
+          "coefficient_float64": 1.4255515297203407e-13,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 256
+        }
+      }
+    },
+    {
+      "rank": 1024,
+      "mathematical_entropy_rank": 1024,
+      "muon_float64_coefficient": 1.1329236117054717,
+      "pion": {
+        "0": {
+          "promotion_steps": 0,
+          "suppression_steps": 5,
+          "normalized_input_float64": 0.03125,
+          "coefficient_decimal": "2.391543101714174269188060565370692398602324393144923282985208702655125277978996198975379246906667961E-318",
+          "log10_coefficient_decimal": -317.62132178762585,
+          "coefficient_float64": 2.391545e-318,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 1024
+        },
+        "1": {
+          "promotion_steps": 1,
+          "suppression_steps": 4,
+          "normalized_input_float64": 0.03125,
+          "coefficient_decimal": "1.165476251673155249426459993732697889152102887757843249727257923276617488656301523790998875290409801E-84",
+          "log10_coefficient_decimal": -83.93349657145475,
+          "coefficient_float64": 1.1654762516731583e-84,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 1024
+        },
+        "2": {
+          "promotion_steps": 2,
+          "suppression_steps": 3,
+          "normalized_input_float64": 0.03125,
+          "coefficient_decimal": "1.635112890972421919118723518818285911545859670659394525585212458091449199313951431055100723397703746E-21",
+          "log10_coefficient_decimal": -20.786452257539565,
+          "coefficient_float64": 1.635112890972421e-21,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 1024
+        }
+      }
+    },
+    {
+      "rank": 4096,
+      "mathematical_entropy_rank": 4096,
+      "muon_float64_coefficient": 0.9025257529666191,
+      "pion": {
+        "0": {
+          "promotion_steps": 0,
+          "suppression_steps": 5,
+          "normalized_input_float64": 0.015625,
+          "coefficient_decimal": "1.753290934729331616826799924152316693045458419421659242455180491572396596806249026255886462914216037E-391",
+          "log10_coefficient_decimal": -390.75614601267756,
+          "coefficient_float64": 0.0,
+          "float64_underflowed": true,
+          "float64_entropy_rank": 0
+        },
+        "1": {
+          "promotion_steps": 1,
+          "suppression_steps": 4,
+          "normalized_input_float64": 0.015625,
+          "coefficient_decimal": "5.228313318819819524571990824119488626342907453099002265982349348277337752464824194247466717340863904E-109",
+          "log10_coefficient_decimal": -108.28163839420603,
+          "coefficient_float64": 5.228313318819827e-109,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 4096
+        },
+        "2": {
+          "promotion_steps": 2,
+          "suppression_steps": 3,
+          "normalized_input_float64": 0.015625,
+          "coefficient_decimal": "1.357502402838407430753614458197920883177265189876207545004299444342080392589321377827052956612509670E-29",
+          "log10_coefficient_decimal": -28.867259393018276,
+          "coefficient_float64": 1.3575024028384083e-29,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 4096
+        }
+      }
+    },
+    {
+      "rank": 65536,
+      "mathematical_entropy_rank": 65536,
+      "muon_float64_coefficient": 1.199441259414638,
+      "pion": {
+        "0": {
+          "promotion_steps": 0,
+          "suppression_steps": 5,
+          "normalized_input_float64": 0.00390625,
+          "coefficient_decimal": "8.873754597674859841742156297408105145837020755354690335204092729010492911107155258176071481292665265E-538",
+          "log10_coefficient_decimal": -537.0518925858008,
+          "coefficient_float64": 0.0,
+          "float64_underflowed": true,
+          "float64_entropy_rank": 0
+        },
+        "1": {
+          "promotion_steps": 1,
+          "suppression_steps": 4,
+          "normalized_input_float64": 0.00390625,
+          "coefficient_decimal": "9.173412654908936348420907454465267167040439706419051842016712300433601073929204250528145268711658418E-158",
+          "log10_coefficient_decimal": -157.0374690698393,
+          "coefficient_float64": 9.173412654908952e-158,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 65536
+        },
+        "2": {
+          "promotion_steps": 2,
+          "suppression_steps": 3,
+          "normalized_input_float64": 0.00390625,
+          "coefficient_decimal": "7.795228368804606675155265044093450215052931826771935921792775003792491000783562793481476362910699621E-46",
+          "log10_coefficient_decimal": -45.108171157209085,
+          "coefficient_float64": 7.79522836880462e-46,
+          "float64_underflowed": false,
+          "float64_entropy_rank": 65536
+        }
+      }
+    }
+  ],
+  "official_bf16": {
+    "official_commit": "87965014b360bde604632cba0aa12e423c6c63c6",
+    "source_sha256": "8e7ca8d6f40ebc4fb066acb15387e618d515896cca5d1eb0ad234e5310e9157e",
+    "source_modified": false,
+    "torch": "2.8.0+cu128",
+    "device": "cpu",
+    "input_dtype": "float64",
+    "internal_and_output_dtype": "bfloat16",
+    "scope": "Only small identity matrices in the official helper. No model, GPU, optimizer state or distributed execution. Rounding and underflow are device/kernel observations, not universal thresholds.",
+    "cases": [
+      {
+        "rank": 1,
+        "promotion_steps": 0,
+        "epsilon": 0.0,
+        "coefficient": 1.0,
+        "stored_entropy_rank": 1,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 1,
+        "promotion_steps": 0,
+        "epsilon": 1e-07,
+        "coefficient": 1.0,
+        "stored_entropy_rank": 1,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 1,
+        "promotion_steps": 1,
+        "epsilon": 0.0,
+        "coefficient": 1.0,
+        "stored_entropy_rank": 1,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 1,
+        "promotion_steps": 1,
+        "epsilon": 1e-07,
+        "coefficient": 1.0,
+        "stored_entropy_rank": 1,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 1,
+        "promotion_steps": 2,
+        "epsilon": 0.0,
+        "coefficient": 1.0,
+        "stored_entropy_rank": 1,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 1,
+        "promotion_steps": 2,
+        "epsilon": 1e-07,
+        "coefficient": 1.0,
+        "stored_entropy_rank": 1,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 2,
+        "promotion_steps": 0,
+        "epsilon": 0.0,
+        "coefficient": 2.110004425048828e-05,
+        "stored_entropy_rank": 2,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 2,
+        "promotion_steps": 0,
+        "epsilon": 1e-07,
+        "coefficient": 2.110004425048828e-05,
+        "stored_entropy_rank": 2,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 2,
+        "promotion_steps": 1,
+        "epsilon": 0.0,
+        "coefficient": 1.0078125,
+        "stored_entropy_rank": 2,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 2,
+        "promotion_steps": 1,
+        "epsilon": 1e-07,
+        "coefficient": 1.0078125,
+        "stored_entropy_rank": 2,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 2,
+        "promotion_steps": 2,
+        "epsilon": 0.0,
+        "coefficient": 1.0,
+        "stored_entropy_rank": 2,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 2,
+        "promotion_steps": 2,
+        "epsilon": 1e-07,
+        "coefficient": 1.0,
+        "stored_entropy_rank": 2,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 4,
+        "promotion_steps": 0,
+        "epsilon": 0.0,
+        "coefficient": 5.39260384428426e-32,
+        "stored_entropy_rank": 4,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 4,
+        "promotion_steps": 0,
+        "epsilon": 1e-07,
+        "coefficient": 5.39260384428426e-32,
+        "stored_entropy_rank": 4,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 4,
+        "promotion_steps": 1,
+        "epsilon": 0.0,
+        "coefficient": 0.55859375,
+        "stored_entropy_rank": 4,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 4,
+        "promotion_steps": 1,
+        "epsilon": 1e-07,
+        "coefficient": 0.55859375,
+        "stored_entropy_rank": 4,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 4,
+        "promotion_steps": 2,
+        "epsilon": 0.0,
+        "coefficient": 1.0,
+        "stored_entropy_rank": 4,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 4,
+        "promotion_steps": 2,
+        "epsilon": 1e-07,
+        "coefficient": 1.0,
+        "stored_entropy_rank": 4,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 8,
+        "promotion_steps": 0,
+        "epsilon": 0.0,
+        "coefficient": 0.0,
+        "stored_entropy_rank": 0,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 8,
+        "promotion_steps": 0,
+        "epsilon": 1e-07,
+        "coefficient": 0.0,
+        "stored_entropy_rank": 0,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 8,
+        "promotion_steps": 1,
+        "epsilon": 0.0,
+        "coefficient": 1.043081283569336e-05,
+        "stored_entropy_rank": 8,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 8,
+        "promotion_steps": 1,
+        "epsilon": 1e-07,
+        "coefficient": 1.043081283569336e-05,
+        "stored_entropy_rank": 8,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 8,
+        "promotion_steps": 2,
+        "epsilon": 0.0,
+        "coefficient": 0.9921875,
+        "stored_entropy_rank": 8,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 8,
+        "promotion_steps": 2,
+        "epsilon": 1e-07,
+        "coefficient": 0.9921875,
+        "stored_entropy_rank": 8,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 16,
+        "promotion_steps": 0,
+        "epsilon": 0.0,
+        "coefficient": 0.0,
+        "stored_entropy_rank": 0,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 16,
+        "promotion_steps": 0,
+        "epsilon": 1e-07,
+        "coefficient": 0.0,
+        "stored_entropy_rank": 0,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 16,
+        "promotion_steps": 1,
+        "epsilon": 0.0,
+        "coefficient": 1.5432100042289676e-14,
+        "stored_entropy_rank": 16,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 16,
+        "promotion_steps": 1,
+        "epsilon": 1e-07,
+        "coefficient": 1.5432100042289676e-14,
+        "stored_entropy_rank": 16,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 16,
+        "promotion_steps": 2,
+        "epsilon": 0.0,
+        "coefficient": 0.353515625,
+        "stored_entropy_rank": 16,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 16,
+        "promotion_steps": 2,
+        "epsilon": 1e-07,
+        "coefficient": 0.353515625,
+        "stored_entropy_rank": 16,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 32,
+        "promotion_steps": 0,
+        "epsilon": 0.0,
+        "coefficient": 0.0,
+        "stored_entropy_rank": 0,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 32,
+        "promotion_steps": 0,
+        "epsilon": 1e-07,
+        "coefficient": 0.0,
+        "stored_entropy_rank": 0,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 32,
+        "promotion_steps": 1,
+        "epsilon": 0.0,
+        "coefficient": 4.491332232221517e-25,
+        "stored_entropy_rank": 32,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 32,
+        "promotion_steps": 1,
+        "epsilon": 1e-07,
+        "coefficient": 4.491332232221517e-25,
+        "stored_entropy_rank": 32,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 32,
+        "promotion_steps": 2,
+        "epsilon": 0.0,
+        "coefficient": 0.00439453125,
+        "stored_entropy_rank": 32,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 32,
+        "promotion_steps": 2,
+        "epsilon": 1e-07,
+        "coefficient": 0.00439453125,
+        "stored_entropy_rank": 32,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 64,
+        "promotion_steps": 0,
+        "epsilon": 0.0,
+        "coefficient": 0.0,
+        "stored_entropy_rank": 0,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 64,
+        "promotion_steps": 0,
+        "epsilon": 1e-07,
+        "coefficient": 0.0,
+        "stored_entropy_rank": 0,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 64,
+        "promotion_steps": 1,
+        "epsilon": 0.0,
+        "coefficient": 1.586917373610088e-36,
+        "stored_entropy_rank": 64,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 64,
+        "promotion_steps": 1,
+        "epsilon": 1e-07,
+        "coefficient": 1.586917373610088e-36,
+        "stored_entropy_rank": 64,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 64,
+        "promotion_steps": 2,
+        "epsilon": 0.0,
+        "coefficient": 3.6209821701049805e-06,
+        "stored_entropy_rank": 64,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 64,
+        "promotion_steps": 2,
+        "epsilon": 1e-07,
+        "coefficient": 3.6209821701049805e-06,
+        "stored_entropy_rank": 64,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 128,
+        "promotion_steps": 0,
+        "epsilon": 0.0,
+        "coefficient": 0.0,
+        "stored_entropy_rank": 0,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 128,
+        "promotion_steps": 0,
+        "epsilon": 1e-07,
+        "coefficient": 0.0,
+        "stored_entropy_rank": 0,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 128,
+        "promotion_steps": 1,
+        "epsilon": 0.0,
+        "coefficient": 0.0,
+        "stored_entropy_rank": 0,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 128,
+        "promotion_steps": 1,
+        "epsilon": 1e-07,
+        "coefficient": 0.0,
+        "stored_entropy_rank": 0,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 128,
+        "promotion_steps": 2,
+        "epsilon": 0.0,
+        "coefficient": 8.512870408594608e-10,
+        "stored_entropy_rank": 128,
+        "off_diagonal_max": 0.0
+      },
+      {
+        "rank": 128,
+        "promotion_steps": 2,
+        "epsilon": 1e-07,
+        "coefficient": 8.512870408594608e-10,
+        "stored_entropy_rank": 128,
+        "off_diagonal_max": 0.0
+      }
+    ]
+  }
+}

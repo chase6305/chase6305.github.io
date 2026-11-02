@@ -1,0 +1,36 @@
+{
+  "scope": "Constructed unsharded Float64 matrix; no optimizer dimension scale or pretrained weights",
+  "promotion_steps": 1,
+  "suppression_steps": 4,
+  "epsilon": 0.0,
+  "input_diagonal": [
+    8.0,
+    1.0,
+    0.8,
+    0.1
+  ],
+  "whole_diagonal": [
+    1.0,
+    4.990984316827298e-37,
+    1.298020431884995e-44,
+    2.662913495696712e-117
+  ],
+  "per_head_diagonal": [
+    1.0,
+    7.342335239389282e-37,
+    1.0,
+    7.342335239389282e-37
+  ],
+  "input_block_norms": [
+    8.06225774829855,
+    0.806225774829855
+  ],
+  "whole_block_norms": [
+    1.0,
+    1.298020431884995e-44
+  ],
+  "per_head_block_norms": [
+    1.0,
+    1.0
+  ]
+}

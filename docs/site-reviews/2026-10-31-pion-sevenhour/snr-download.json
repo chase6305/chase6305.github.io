@@ -1,0 +1,13 @@
+{
+  "url": "http://127.0.0.1:13401/posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip",
+  "sha256": "bafff70ca31c2303b6ab28efa2a886f312a3b04738df2178329e1bce1c8819c7",
+  "members": 26,
+  "cache_control": "no-store, max-age=0",
+  "content_type": "application/zip",
+  "download_matches_source": true,
+  "unpacked_path_contains_spaces_and_chinese": true,
+  "tests": 24,
+  "snr_reference": "exact JSON equality",
+  "environment": "CPython3.12.14 / NumPy2.2.6 / Matplotlib3.10.9; no PyTorch",
+  "scope": "Actual served ZIP, no repository imports; no model or optional official probes run."
+}

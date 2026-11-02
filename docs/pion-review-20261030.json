@@ -1,0 +1,175 @@
+{
+  "reviewed_at_utc": "2026-10-30T10:04:37+00:00",
+  "status": "complete",
+  "article": "content/posts/ai/pion-muon-vla-rlvr/index.md",
+  "paper": "arXiv:2605.19282v1",
+  "source_pdf_pages": 43,
+  "official_code_commit": "87965014b360bde604632cba0aa12e423c6c63c6",
+  "published_article_state": {
+    "draft": false,
+    "date": "2026-10-30",
+    "lastmod": "2026-10-30"
+  },
+  "numerical_checks": {
+    "stdlib_tests": 5,
+    "with_numpy_tests": 7,
+    "decimal_precision": 90,
+    "python_versions": [
+      "3.10",
+      "3.12.14"
+    ],
+    "numpy_versions": [
+      "1.26.4",
+      "2.2.6"
+    ],
+    "extracted_archive_tested": true,
+    "published_complete_python_snippets_executed": 1
+  },
+  "browser": {
+    "layouts": 48,
+    "chapterActivations": 74,
+    "keyboardScrolls": 116,
+    "nativePdfs": 4,
+    "exceptions": 0
+  },
+  "final_reading": {
+    "cases": 20,
+    "figures": 16,
+    "exceptions": 0
+  },
+  "image_viewers": {
+    "cases": 16,
+    "articles": 1,
+    "formats": [
+      "png"
+    ],
+    "runtimeExceptions": 0
+  },
+  "semantics": {
+    "cases": 8,
+    "violations": 0,
+    "closed_popup_incomplete_nodes_reviewed": 16,
+    "manual_review": "All image-viewer aria-controls references resolve; closed target dialog is outside the scoped article. No missing target IDs.",
+    "runtime_exceptions": 0
+  },
+  "print": {
+    "ordinary_layouts": 6,
+    "forced_color_layouts": 6,
+    "native_a4_pdfs": 4,
+    "root_text_percent": [
+      100,
+      200
+    ],
+    "visual_review": "All four panels, labels, marked plotting floor and complete caption remain together; native PDF inspected."
+  },
+  "production": {
+    "reviewed_posts": 96,
+    "learning_paths": 11,
+    "acceptance_checks": 525,
+    "blog_posting_schemas": 93,
+    "sharing_images": 55,
+    "shared_search_indexes": 2,
+    "classified_tags": 189,
+    "code_blocks": 603,
+    "syntax_checked_by_language": {
+      "bash": 241,
+      "json": 8,
+      "jsonc": 6,
+      "python": 211,
+      "sh": 10,
+      "xml": 1
+    },
+    "html_pages": 319,
+    "local_references_checked": 32365,
+    "collection_pages_checked": 305,
+    "filter_indexes_checked": 10,
+    "errors": [],
+    "python_fragment_warnings": [],
+    "unrendered_math_warnings": []
+  },
+  "metadata_validator_revision": "Compare JSON dimensions numerically: valid minified 2e3 equals HTML 2000; reject booleans, nonnumeric and unequal dimensions. Verified against the actual generated image schema.",
+  "evidence_directory": "docs/site-reviews/2026-10-30-pion",
+  "scope_limits": "Scalar and NumPy examples verify polynomial arithmetic and matrix/head conventions. No VLA/RLVR training, GPU timing or robot experiment reproduced.",
+  "source_sha256": {
+    "content/posts/ai/pion-muon-vla-rlvr/README.txt": {
+      "sha256": "2dc0c004e4d778ad11e9e952bc6ac01afc59eda4e37c79e73358382983ab7f4e",
+      "bytes": 2298
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip": {
+      "sha256": "a0ef3fe7f9337ab458fa6c4a974e56e73f6f30d16646f8b42ec89688d23edd48",
+      "bytes": 9297
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/make_figures.py": {
+      "sha256": "5945ce251e731fff632859c02e7fb8950da2e012650dfeb9d744511417384a73",
+      "bytes": 3604
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/index.md": {
+      "sha256": "7a5c7c7fc9c674b2c5a4ef3ee4a92da9c721339036b564ba3c099bde92750ce4",
+      "bytes": 38758
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/pion_spectral.py": {
+      "sha256": "72e8afa29d740303cd28a6cc5ae3723491d7609c04e29eeed10978e577c4efeb",
+      "bytes": 4650
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/pion_matrix.py": {
+      "sha256": "8a46bf42c3b0b6971ee898dc7aa30350d3213e60b12631cb73e82a3ad6d96273",
+      "bytes": 2143
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/assets/spectral-reference.json": {
+      "sha256": "746e9b12bb820a0a0c3b163efc03902e70661489b70566e7d0962281f31893b8",
+      "bytes": 1520
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/assets/paper-per-head.png": {
+      "sha256": "c1ef4859dea5740d0fd55a9700dfbd48b71f76055392642ee33c8a3ec4492655",
+      "bytes": 56876
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/assets/paper-module-rank.png": {
+      "sha256": "fa917e1e52adbed9b0c152986344667f9b19e1cd58e3cfe89c492d43e06c68ff",
+      "bytes": 61049
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/assets/spectral-polynomials.png": {
+      "sha256": "cd84865af3c93a13a59d7b500958c02911f0b54cf7be126063d33018313bd7c2",
+      "bytes": 450424
+    },
+    "content/posts/ai/pion-muon-vla-rlvr/assets/paper-rlvr.png": {
+      "sha256": "fec2833727c0b020d9b04003e568d6071ee2baa920aa6bde0371b63a596a7b27",
+      "bytes": 99798
+    },
+    "scripts/test_pion_examples.py": {
+      "sha256": "e7ffcd789684a63876e91fb215106e1db586e86fd9166e0641ee0af952781b51",
+      "bytes": 5705
+    },
+    "scripts/package_pion_lab.py": {
+      "sha256": "0555125cc7813e983ed4904dc624e54e32993e71dbcc3b27bc13571202124b32",
+      "bytes": 2262
+    },
+    "scripts/validate_blog.py": {
+      "sha256": "c71cf07700a448138be95083761459ba40a7a4a8318853d19c7f1fee667ff95b",
+      "bytes": 24129
+    },
+    "docs/image-generation/pion-20261030.json": {
+      "sha256": "eb3fed07e735e83f66c1445b3bc4ef0c9ba009716aa6cc62f1ba61edd91f810c",
+      "bytes": 3603
+    },
+    "data/blog_topics.json": {
+      "sha256": "ede785fc00a9661002ef8d641e5bdc37855d246c67c087cb80cb779774cf15ad",
+      "bytes": 6605
+    },
+    "data/tag_groups.yaml": {
+      "sha256": "fb80643ce9a68fba2f3502df3f5ab0ff050ce3982c85d655e91060f37fdb3764",
+      "bytes": 2900
+    },
+    "docs/blog-editorial-review.json": {
+      "sha256": "d76efa5f592b5d2d3d71433939865bbd87b9fd82fe352cd71a4a1eab662b3bc4",
+      "bytes": 125273
+    },
+    ".github/workflows/hugo.yml": {
+      "sha256": "92c99fc579e51efff2bb0c0db178f3cd5cb29bae68b24782367942a17798fb72",
+      "bytes": 6274
+    },
+    "AGENTS.md": {
+      "sha256": "c14cbc3ed278bd17818393aa84906c3a5871288757a424e009021f53766cbce4",
+      "bytes": 27680
+    }
+  }
+}

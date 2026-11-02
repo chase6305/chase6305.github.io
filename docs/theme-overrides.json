@@ -15,7 +15,8 @@
         "Rank page titles, chapter headings, then body matches",
         "Deduplicate chapter destinations and retain page-only results",
         "Validate HTTP status and data shape before building indexes",
-        "Build indexes in cooperatively scheduled chapter-sized batches to keep the dialog responsive"
+        "Build indexes in cooperatively scheduled chapter-sized batches to keep the dialog responsive",
+        "Use a shared single-bucket page-content descriptor so chapter appends cannot duplicate IDs or lose multi-term intersections; retain title, heading and section scoring"
       ]
     },
     {

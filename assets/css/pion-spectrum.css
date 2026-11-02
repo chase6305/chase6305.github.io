@@ -1,0 +1,115 @@
+.content details[id] { scroll-margin-top: calc(var(--hextra-navbar-height) + 1.5rem); }
+
+@media print {
+  /* Reserve room for the full caption as the reader enlarges the text. */
+  #fig-pion-spectral-maps img {
+    max-height: clamp(80mm, calc(210mm - 7rem), 210mm);
+  }
+}
+
+.pion-spectrum {
+  --pion-identity: #64748b;
+  --pion-muon: #994b14;
+  --pion-result: #205e96;
+  --pion-print-width: 624px;
+  margin-block: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--chase-border);
+  border-radius: .8rem;
+  background: var(--chase-surface);
+  color: var(--chase-text);
+  min-width: 0;
+}
+:root.dark .pion-spectrum { --pion-identity: #b9c7db; --pion-muon: #f1b079; --pion-result: #97c9f7; }
+.pion-spectrum__title { margin-top: 0 !important; font-size: 1.05rem; }
+.pion-spectrum__detail { font-size: .85rem; color: var(--chase-muted); overflow-wrap: anywhere; }
+.pion-spectrum__presets { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,6.5rem),1fr)); gap: .5rem; margin-block: .8rem; }
+.pion-spectrum button,
+.pion-spectrum input,
+.pion-spectrum select {
+  color: var(--chase-text);
+  background: var(--chase-surface-strong);
+  border: 1px solid var(--chase-border);
+  border-radius: .4rem;
+  padding: .5rem .6rem;
+  font: inherit;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.pion-spectrum button { min-height: 2.75rem; cursor: pointer; white-space: normal; overflow-wrap: anywhere; font-size: .9rem; }
+.pion-spectrum button:hover { border-color: var(--chase-accent); }
+.pion-spectrum :is(button,input,select):focus-visible { outline: 2px solid var(--chase-accent); outline-offset: 3px; }
+.pion-spectrum form { margin-block: .8rem 1rem; }
+.pion-spectrum fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.pion-spectrum legend { font-weight: 600; padding: 0; margin-bottom: .5rem; }
+.pion-spectrum__fields,
+.pion-spectrum__results { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,6.5rem),1fr)); gap: .65rem; }
+.pion-spectrum__fields label,
+.pion-spectrum__settings > label { display: flex; flex-direction: column; gap: .3rem; min-width: 0; }
+.pion-spectrum__fields input { width: 100%; min-width: 0; }
+.pion-spectrum__settings { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,12rem),1fr)); gap: .75rem; align-items: end; margin-top: .8rem; }
+.pion-spectrum__settings > .pion-spectrum__checkbox { flex-direction: row; align-items: start; gap: .5rem; padding-block: .5rem; }
+.pion-spectrum__checkbox input { width: 1.25em; height: 1.25em; min-width: max(24px,1.25em); min-height: max(24px,1.25em); margin-top: .1em; accent-color: var(--chase-accent); }
+.content .pion-spectrum__error { color: var(--chase-text); font-weight: 600; border-left: 3px solid #b53e39; padding-left: .65rem; }
+.pion-spectrum__results { margin-block: 1rem; }
+.pion-spectrum__results > div { border: 1px solid var(--chase-border); border-radius: .5rem; background: var(--chase-surface-strong); padding: .65rem; min-width: 0; break-inside: avoid; }
+.pion-spectrum__results dt { color: var(--chase-muted); font-size: .8rem; overflow-wrap: anywhere; }
+.pion-spectrum__exponent { white-space: nowrap; }
+.content .pion-spectrum__results dd { margin: .35rem 0 0; padding: 0; font-weight: 650; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.content .pion-spectrum table { font-size: .82rem; font-variant-numeric: tabular-nums; margin-block: 1rem; }
+.content .pion-spectrum table caption { text-align: left; color: var(--chase-text); font-weight: 600; padding-bottom: .5rem; }
+.content .pion-spectrum table th,
+.content .pion-spectrum table td { white-space: nowrap; }
+.pion-spectrum__plot { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--chase-border); }
+.pion-spectrum__plot svg { display: block; width: 100%; overflow: visible; font: .8rem sans-serif; color: var(--chase-text); }
+.pion-spectrum__plot svg text { fill: currentColor; }
+.pion-spectrum__axis { font-size: .8rem; margin-block: .35rem !important; }
+.pion-spectrum__axis--input { text-align: right; }
+.pion-spectrum__grid { stroke: var(--chase-border); stroke-width: 1; }
+.pion-spectrum__curve { fill: none; stroke-width: 2.2; vector-effect: non-scaling-stroke; }
+.pion-spectrum__curve--identity { stroke: var(--pion-identity); stroke-dasharray: 2 4; }
+.pion-spectrum__curve--muon { stroke: var(--pion-muon); stroke-dasharray: 7 3; }
+.pion-spectrum__curve--pion { stroke: var(--pion-result); }
+.pion-spectrum__marker--muon { fill: var(--pion-muon); }
+.pion-spectrum__marker--pion { fill: var(--pion-result); }
+.pion-spectrum__legend { display: flex; flex-wrap: wrap; gap: .4rem 1rem; font-size: .8rem; margin-block: .6rem; }
+.pion-spectrum__legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.pion-spectrum__key { display: inline-block; width: 1.6rem; border-top: 2px solid var(--pion-result); flex-shrink: 0; }
+.pion-spectrum__key--identity { border-color: var(--pion-identity); border-top-style: dotted; }
+.pion-spectrum__key--muon { border-color: var(--pion-muon); border-top-style: dashed; }
+@media (forced-colors: active) {
+  .pion-spectrum { --pion-identity: GrayText; --pion-muon: LinkText; --pion-result: CanvasText; }
+  .pion-spectrum :is(button,input,select):focus-visible { outline-color: Highlight; }
+}
+@media print {
+  .pion-spectrum {
+    --chase-text: #202020;
+    --chase-muted: #444;
+    --chase-border: #888;
+    --chase-surface: white;
+    --chase-surface-strong: white;
+    --pion-identity: #4b5563;
+    --pion-muon: #8c4511;
+    --pion-result: #1f4f88;
+    background: white !important;
+    color: #202020 !important;
+    forced-color-adjust: none;
+    box-shadow: none;
+    break-inside: auto;
+  }
+  :root.dark .pion-spectrum { --pion-identity: #4b5563; --pion-muon: #8c4511; --pion-result: #1f4f88; }
+  .pion-spectrum button,
+  .pion-spectrum input,
+  .pion-spectrum select { color: #202020 !important; background: white !important; border: 1px solid #777 !important; outline: none !important; box-shadow: none !important; caret-color: transparent !important; forced-color-adjust: none; }
+  .pion-spectrum input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
+  .pion-spectrum input::-webkit-inner-spin-button,
+  .pion-spectrum input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .pion-spectrum__checkbox input { accent-color: #202020; }
+  .content .pion-spectrum table { table-layout: auto; }
+  .content .pion-spectrum table th,
+  .content .pion-spectrum table td { white-space: normal; }
+  .pion-spectrum__plot { max-width: var(--pion-print-width); }
+  .pion-spectrum__axis { break-after: avoid; }
+  .pion-spectrum__axis--input { break-before: avoid; }
+  .pion-spectrum__results > div { break-inside: avoid; }
+}

@@ -1,0 +1,56 @@
+{
+  "source_delivery": "immutable no-store builds; default CDP HTTP cache disabled",
+  "cdp": 9236,
+  "production": "http://127.0.0.1:13423",
+  "preview": "http://127.0.0.1:13425",
+  "suites": [
+    {
+      "name": "print-final-large",
+      "started_utc": "2026-10-31T06:32:01.965311+00:00",
+      "command": [
+        "node",
+        "/tmp/chase-pion-sevenhour-20261031/check-pion-print-large.cjs",
+        "http://127.0.0.1:13423",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/print-final-large",
+        "--large-text"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 2.419,
+      "finished_utc": "2026-10-31T06:32:04.383915+00:00"
+    },
+    {
+      "name": "print-final-large-forced",
+      "started_utc": "2026-10-31T06:32:04.384214+00:00",
+      "command": [
+        "node",
+        "/tmp/chase-pion-sevenhour-20261031/check-pion-print-large.cjs",
+        "http://127.0.0.1:13423",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/print-final-large-forced",
+        "--large-text",
+        "--forced-colors"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 2.369,
+      "finished_utc": "2026-10-31T06:32:06.753160+00:00"
+    },
+    {
+      "name": "print-final-native-pdf",
+      "started_utc": "2026-10-31T06:32:06.753451+00:00",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-10-31-pion-sevenhour/export_reading.cjs",
+        "http://127.0.0.1:13423",
+        "9236",
+        "/tmp/chase-pion-sevenhour-20261031/pdf-print-final"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "elapsed_seconds": 16.845,
+      "finished_utc": "2026-10-31T06:32:23.598627+00:00"
+    }
+  ]
+}

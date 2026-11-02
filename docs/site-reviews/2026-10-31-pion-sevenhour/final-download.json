@@ -1,0 +1,10 @@
+{
+  "download_sha256": "b421ae8412f0822457f1e89435c115993995e1decf7adfe263c4af44b2bb17a9",
+  "members": 26,
+  "source_bytes_match": true,
+  "tests": 24,
+  "environment": "Verified CPython3.12.14 / NumPy2.2.6; no PyTorch",
+  "path_with_spaces_and_chinese": true,
+  "url": "http://127.0.0.1:13419/posts/ai/pion-muon-vla-rlvr/pion-spectral-lab.zip",
+  "figure_recipe": "Frozen160dpi layout, all six schedules, legends outside data/title/axis-label bounding boxes"
+}

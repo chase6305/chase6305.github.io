@@ -1,0 +1,466 @@
+{
+  "skip": {
+    "scope": "Constructed Float64 whole-matrix trace; no model, BF16, AdamW or distributed training",
+    "settings": {
+      "lr": 0.01,
+      "weight_decay": 0.1,
+      "beta": 0.5,
+      "nesterov": true,
+      "promotion_steps": 1,
+      "suppression_steps": 4,
+      "epsilon": 0.0,
+      "scale_factor": 0.2,
+      "missing_gradient": "skip"
+    },
+    "steps": [
+      {
+        "step": 1,
+        "gradient": [
+          [
+            0.8,
+            0.0
+          ],
+          [
+            0.0,
+            0.2
+          ]
+        ],
+        "status": "gradient_observed",
+        "weight_before": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ],
+        "buffer_before": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "buffer_after": [
+          [
+            0.4,
+            0.0
+          ],
+          [
+            0.0,
+            0.1
+          ]
+        ],
+        "direction_before_normalization": [
+          [
+            0.6000000000000001,
+            0.0
+          ],
+          [
+            0.0,
+            0.15000000000000002
+          ]
+        ],
+        "filtered_direction": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0213334386581064e-15
+          ]
+        ],
+        "dimension_scale": 0.28284271247461906,
+        "gradient_update_rms": 0.0014142135623730952,
+        "configured_decay_factor": 0.999,
+        "applied_decay_factor": 0.999,
+        "weight_after": [
+          [
+            0.9961715728752538,
+            0.0
+          ],
+          [
+            0.0,
+            1.998
+          ]
+        ]
+      },
+      {
+        "step": 2,
+        "gradient": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "status": "gradient_observed",
+        "weight_before": [
+          [
+            0.9961715728752538,
+            0.0
+          ],
+          [
+            0.0,
+            1.998
+          ]
+        ],
+        "buffer_before": [
+          [
+            0.4,
+            0.0
+          ],
+          [
+            0.0,
+            0.1
+          ]
+        ],
+        "buffer_after": [
+          [
+            0.2,
+            0.0
+          ],
+          [
+            0.0,
+            0.05
+          ]
+        ],
+        "direction_before_normalization": [
+          [
+            0.1,
+            0.0
+          ],
+          [
+            0.0,
+            0.025
+          ]
+        ],
+        "filtered_direction": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0213334386581064e-15
+          ]
+        ],
+        "dimension_scale": 0.28284271247461906,
+        "gradient_update_rms": 0.0014142135623730952,
+        "configured_decay_factor": 0.999,
+        "applied_decay_factor": 0.999,
+        "weight_after": [
+          [
+            0.9923469741776324,
+            0.0
+          ],
+          [
+            0.0,
+            1.996002
+          ]
+        ]
+      },
+      {
+        "step": 3,
+        "gradient": null,
+        "status": "missing_skip",
+        "weight_before": [
+          [
+            0.9923469741776324,
+            0.0
+          ],
+          [
+            0.0,
+            1.996002
+          ]
+        ],
+        "buffer_before": [
+          [
+            0.2,
+            0.0
+          ],
+          [
+            0.0,
+            0.05
+          ]
+        ],
+        "buffer_after": [
+          [
+            0.2,
+            0.0
+          ],
+          [
+            0.0,
+            0.05
+          ]
+        ],
+        "direction_before_normalization": null,
+        "filtered_direction": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "dimension_scale": 0.28284271247461906,
+        "gradient_update_rms": 0.0,
+        "configured_decay_factor": 0.999,
+        "applied_decay_factor": 1.0,
+        "weight_after": [
+          [
+            0.9923469741776324,
+            0.0
+          ],
+          [
+            0.0,
+            1.996002
+          ]
+        ]
+      }
+    ]
+  },
+  "decay": {
+    "scope": "Constructed Float64 whole-matrix trace; no model, BF16, AdamW or distributed training",
+    "settings": {
+      "lr": 0.01,
+      "weight_decay": 0.1,
+      "beta": 0.5,
+      "nesterov": true,
+      "promotion_steps": 1,
+      "suppression_steps": 4,
+      "epsilon": 0.0,
+      "scale_factor": 0.2,
+      "missing_gradient": "decay"
+    },
+    "steps": [
+      {
+        "step": 1,
+        "gradient": [
+          [
+            0.8,
+            0.0
+          ],
+          [
+            0.0,
+            0.2
+          ]
+        ],
+        "status": "gradient_observed",
+        "weight_before": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ],
+        "buffer_before": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "buffer_after": [
+          [
+            0.4,
+            0.0
+          ],
+          [
+            0.0,
+            0.1
+          ]
+        ],
+        "direction_before_normalization": [
+          [
+            0.6000000000000001,
+            0.0
+          ],
+          [
+            0.0,
+            0.15000000000000002
+          ]
+        ],
+        "filtered_direction": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0213334386581064e-15
+          ]
+        ],
+        "dimension_scale": 0.28284271247461906,
+        "gradient_update_rms": 0.0014142135623730952,
+        "configured_decay_factor": 0.999,
+        "applied_decay_factor": 0.999,
+        "weight_after": [
+          [
+            0.9961715728752538,
+            0.0
+          ],
+          [
+            0.0,
+            1.998
+          ]
+        ]
+      },
+      {
+        "step": 2,
+        "gradient": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "status": "gradient_observed",
+        "weight_before": [
+          [
+            0.9961715728752538,
+            0.0
+          ],
+          [
+            0.0,
+            1.998
+          ]
+        ],
+        "buffer_before": [
+          [
+            0.4,
+            0.0
+          ],
+          [
+            0.0,
+            0.1
+          ]
+        ],
+        "buffer_after": [
+          [
+            0.2,
+            0.0
+          ],
+          [
+            0.0,
+            0.05
+          ]
+        ],
+        "direction_before_normalization": [
+          [
+            0.1,
+            0.0
+          ],
+          [
+            0.0,
+            0.025
+          ]
+        ],
+        "filtered_direction": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0213334386581064e-15
+          ]
+        ],
+        "dimension_scale": 0.28284271247461906,
+        "gradient_update_rms": 0.0014142135623730952,
+        "configured_decay_factor": 0.999,
+        "applied_decay_factor": 0.999,
+        "weight_after": [
+          [
+            0.9923469741776324,
+            0.0
+          ],
+          [
+            0.0,
+            1.996002
+          ]
+        ]
+      },
+      {
+        "step": 3,
+        "gradient": null,
+        "status": "missing_decay_only",
+        "weight_before": [
+          [
+            0.9923469741776324,
+            0.0
+          ],
+          [
+            0.0,
+            1.996002
+          ]
+        ],
+        "buffer_before": [
+          [
+            0.2,
+            0.0
+          ],
+          [
+            0.0,
+            0.05
+          ]
+        ],
+        "buffer_after": [
+          [
+            0.2,
+            0.0
+          ],
+          [
+            0.0,
+            0.05
+          ]
+        ],
+        "direction_before_normalization": null,
+        "filtered_direction": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "dimension_scale": 0.28284271247461906,
+        "gradient_update_rms": 0.0,
+        "configured_decay_factor": 0.999,
+        "applied_decay_factor": 0.999,
+        "weight_after": [
+          [
+            0.9913546272034548,
+            0.0
+          ],
+          [
+            0.0,
+            1.994005998
+          ]
+        ]
+      }
+    ]
+  }
+}

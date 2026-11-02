@@ -1,0 +1,749 @@
+{
+  "source_html_sha256": "df33fe239ba7f4ed6cbc7c3bb2cce2550a4023bdfb1bade21b0ecd0fb5417aba",
+  "source_pdf_sha256": "04f0bc61441a025e9ff40e8a8d49acf72ce00fd5a46572614422c90055004da1",
+  "scope": "All pages of the latest standard A4 native PDF rasterized. Prior visual acceptance is inherited only when rendered PNG bytes match. Pending images require direct review.",
+  "rows": [
+    {
+      "page": 1,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-01.png",
+      "sha256": "d662d9d87b0ecc175d1018406f857dec7dfd4f29be0196271bae4f25abf1760a",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        62,
+        1012,
+        1366
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Title, original date, prerequisites, primary version/commit attribution and first reading-route links complete and readable.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-01.png"
+    },
+    {
+      "page": 2,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-02.png",
+      "sha256": "d09e40b95c1dd18d806d20eb094b334022bee811c19e5eb9d3a71bf34fe3cae6",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        59,
+        1012,
+        1406
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Update-flow arrows, alternative paths, per-block five-step budget and complete caption readable; section1starts with intact EMA equation.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-02.png"
+    },
+    {
+      "page": 3,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-03.png",
+      "sha256": "d1f50d6eefbd70b5c5767346086c444f3bf32bddddd32e34c9982d5a9bc10657",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        70,
+        1011,
+        1414
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Polar-factor/SVD definitions, compact-rank convention, spectrum example and finite-polynomial introduction readable.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-03.png"
+    },
+    {
+      "page": 4,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-04.png",
+      "sha256": "79cf41deb1e1e59750fb97f2362fb95e36efb46435aa546b2c7cea7141d9f849",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        68,
+        1012,
+        1261
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Normalization, coefficients and AdamW/Muon/Pion comparison table legible; finite-five-step qualification preserved.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-04.png"
+    },
+    {
+      "page": 5,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-05.png",
+      "sha256": "b7ac9564e8318bcda239140eac4549d1ad502331878c60502c0f7a7f5fc50a4e",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        54,
+        1012,
+        1339
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Regression/flow-matching targets, nonphysical velocity explanation and entropy-rank definition legible.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-05.png"
+    },
+    {
+      "page": 6,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-06.png",
+      "sha256": "9f67868f0faec3de38ce33205e6d46a564bc82ed2abe95ea76c489fbd464d5e2",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1010,
+        1366
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Entropy-rank convention, module averages, raw-gradient/momentum distinction and hidden-gradient derivation legible; eigenvalues complete.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-06.png"
+    },
+    {
+      "page": 7,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-07.png",
+      "sha256": "b8d5255e82af5730ff4af379b867d35d557b192b0e53da47c18802e7aed8048f",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        49,
+        1012,
+        1354
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Hidden/head rank table and3EMA rows readable; command complete; Figure2 and full caption together.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-07.png"
+    },
+    {
+      "page": 8,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-08.png",
+      "sha256": "f97f870537a9d9ba58e4e47ab519f2e81820a891a3fe5210c3d90be6323cdb3c",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        55,
+        1012,
+        1330
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Section transition and SNR definition readable; sampling and raw/momentum qualifications intact.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-08.png"
+    },
+    {
+      "page": 9,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-09.png",
+      "sha256": "0699d9c571f768a5c5ccbe7905909e79eae7c3ebe22a5501abc3dd15d85bd15f",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        70,
+        1012,
+        1339
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Independent-power correction equations and signed numerical table complete; negative ratio and null visible.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-09.png"
+    },
+    {
+      "page": 10,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-10.png",
+      "sha256": "85ed990ac052ca4c43a836beb75284be0e084c063100f41b5d2bf08804625ab1",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        1391
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Pass: cross-pair and covariance identities, assumptions, bias sign and disclosure opening all legible and uncut.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-10.png"
+    },
+    {
+      "page": 11,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-11.png",
+      "sha256": "683948c88d79c923cd55a9699f5fb42dfb5daddecc1efc7b9f678a795425b07e",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        1415
+      ],
+      "review_type": "direct_visual",
+      "decision": "pass",
+      "notes": "Both shortened power-expectation headers fit on one line; all four numerical rows, assumptions and the CLI command remain intact."
+    },
+    {
+      "page": 12,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-12.png",
+      "sha256": "8215f4b809d15f881a2b04b162766589eef5aa7105864fd1e6b921095e4f83d5",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        1446
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Detached Bernoulli score/advantage example, ascent sign, A16 coefficient and second moment readable; first2table rows intact.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-12.png"
+    },
+    {
+      "page": 13,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-13.png",
+      "sha256": "a7118aeb723db5c33ede16cc48b163b915b26d17a591b508991e22b9b883f078",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        49,
+        1012,
+        1278
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Pass: repeated table header, conditional definitions and formula together; full current residual bridge and scope readable.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-13.png"
+    },
+    {
+      "page": 14,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-14.png",
+      "sha256": "d2f7722983f30db19f5f4f152c482f1902facc597e44efe7c56b3eb01ea6a6ad",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        55,
+        1012,
+        1275
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Current section3.3transitions to matrix/scalar reduction; equations and temporal-frequency distinction readable.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-14.png"
+    },
+    {
+      "page": 15,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-15.png",
+      "sha256": "4b80d1beb41b4db210740fbd22bc7c885bf4b07719c83ba8f18ca22c2e5c7a73",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        54,
+        1012,
+        1439
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Polynomial coefficient constraints and promotion formula complete; inline arithmetic may continue at operators, with all symbols visible and ordered.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-15.png"
+    },
+    {
+      "page": 16,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-16.png",
+      "sha256": "05cbf32d1e8320d3c2ed555e69bad2a86efafb38b791441035fc5dbc1bc89d72",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        68,
+        1000,
+        1343
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Suppression polynomial, derivative, difference from identity and unstable fixed point readable without clipping.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-16.png"
+    },
+    {
+      "page": 17,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-17.png",
+      "sha256": "d5ca3e71fee1fb3313c70efccec9d45c34393b8da02f99945966189c689efb79",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        1341
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Composition order, six-row trace table and two complete CLI commands readable; summary and content together.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-17.png"
+    },
+    {
+      "page": 18,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-18.png",
+      "sha256": "88f86366cdf36a255096ac2ef5e2f1eecd6523db0225fa02a70f69364f2b4640",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        68,
+        1012,
+        1194
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "All six half-response rows and direction-count bound complete; rank versus amplitude qualification clear.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-18.png"
+    },
+    {
+      "page": 19,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-19.png",
+      "sha256": "132dba05ff5702347f542746330b6eda4601a5953d9f637306633ad1a6c56b85",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        49,
+        1012,
+        1408
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "All4spectral panels, axes and independent legends legible; Figure3and full caption on one page.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-19.png"
+    },
+    {
+      "page": 20,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-20.png",
+      "sha256": "6fba76fcf28346927b6aa400d724cbf4dc0efcff603d48e4c82c924e48bfdd47",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        49,
+        1012,
+        1450
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Constructed four-direction coefficients complete with scientific exponents; flat-spectrum caveat and lab introduction readable.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-20.png"
+    },
+    {
+      "page": 21,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-21.png",
+      "sha256": "c7405fa0468070b3dc754bd42b4454ecc828bc97a98138538aaf5cde184daebf",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        49,
+        991,
+        1450
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Lab parameters, four complete label/value cards, coefficient table, canvas axes and distinct line/marker legend readable.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-21.png"
+    },
+    {
+      "page": 22,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-22.png",
+      "sha256": "f92f06e0000f34708284d373c204f761f4301dc5de24ce0da032939207e87aa4",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        49,
+        1012,
+        1380
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Known-signal constructions, alignment formula and both comparison rows complete; epsilon/momentum simplifications stated.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-22.png"
+    },
+    {
+      "page": 23,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-23.png",
+      "sha256": "acb47163747248bc643d6e349ab8bcf1040216fa132c6d188a58323d9b7f8aca",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        1311
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Signal/noise interpretation and per-head noncommutativity clear; QK-Norm qualification and pinned primary references readable.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-23.png"
+    },
+    {
+      "page": 24,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-24.png",
+      "sha256": "b5e3a82217707d9fba4e8b282fbabe2a4a376104edc93905961c65088ee568c1",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        1425
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Per-head comparison figure and complete caption readable; Q/K/V/O axis table intact; Q/KV head counts explicit.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-24.png"
+    },
+    {
+      "page": 25,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-25.png",
+      "sha256": "e9f8907edee487232d8dfb32443996c1bc921cdf1cbe553590be0c6cb3c4ce74",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        1393
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Qwen3-4B unsharded shape table complete; two-block norm example readable, with scope and omitted scale factors stated.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-25.png"
+    },
+    {
+      "page": 26,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-26.png",
+      "sha256": "02303871eaf2899719dfbd13a2834704db39820f93fcfa8349aae331864892bc",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        1148
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Revised2D module scope and auxiliary-parameter column are readable; all routing rows and source qualifications are complete.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-26.png"
+    },
+    {
+      "page": 27,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-27.png",
+      "sha256": "17945a729b0ebcd47b29c00e71e3d4f6049fcedd8bce9105291dca5e4a0880ca",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        53,
+        1012,
+        1283
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "VLA-Adapter and VLANeXt result tables intact; fixed budgets and percentage-point arithmetic explicit.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-27.png"
+    },
+    {
+      "page": 28,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-28.png",
+      "sha256": "c2f242ebbb3d0b762e5140d000db8b7e8d7e6d8c8ee8009d5c217a74504f48f2",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        55,
+        1012,
+        1424
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Real-robot rates and30-trial denominator clear;77/90inference distinguished from rounded averages. RLVR setup and first budget rows readable.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-28.png"
+    },
+    {
+      "page": 29,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-29.png",
+      "sha256": "bc803221e4bd1fd2cd80b203c20444ebcd0579d6a8c4fd64a59a70839a3705b9",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        49,
+        1012,
+        1405
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Repeated budget header and final row intact; all8RLVR panels and complete caption readable; claims retain setting/budget qualifications.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-29.png"
+    },
+    {
+      "page": 30,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-30.png",
+      "sha256": "459e59bee65ddd6a2572a417ad6f8c3e5a4d4ac60b242bf7d7455bb088e3a043",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        53,
+        1012,
+        1430
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Standard-library commands, isolated NumPy setup and complete matrix/SVD example readable; optimizer scope explicit.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-30.png"
+    },
+    {
+      "page": 31,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-31.png",
+      "sha256": "73d2d866716c105b4c33761beece6ea650f95a7c7922ec14b153003a06519063",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        1411
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Pipeline directories, pinned checkout, configured promotion schedules and2D scale-default table are intact.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-31.png"
+    },
+    {
+      "page": 32,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-32.png",
+      "sha256": "14aef0f18d1cf2e2d6a1b8a5f77322bc6bf16786094fc581aa80ba32dbe56591",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        1365
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "4D shape/scale/view-compatibility paragraph and explicit CPU install command are fully readable.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-32.png"
+    },
+    {
+      "page": 33,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-33.png",
+      "sha256": "817c66a52806e3815308ff4df5abc438e39489e00b308fc30dc09a4a0b72a69a",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        1384
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Epsilon relation and BF16 comparison table remain legible after paragraph reflow; no numerical row is split.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-33.png"
+    },
+    {
+      "page": 34,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-34.png",
+      "sha256": "d1c8efb13e167df594563b30fc761428ddee4388a40dc34f70818dc885cf0ade",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        57,
+        1009,
+        1379
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "EMA and Nesterov equations plus2D whole-matrix update and decoupled-decay explanation remain readable.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-34.png"
+    },
+    {
+      "page": 35,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-35.png",
+      "sha256": "05ff77b7ce30133e3bae0eeb5ca3565615850ffb0a5c5883b8be0d3ad78a9ba1",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        68,
+        1012,
+        1133
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Gradient-only RMS and flat-spectrum equations/asymptotic are complete; figure begins intact on next page.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-35.png"
+    },
+    {
+      "page": 36,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-36.png",
+      "sha256": "d35d4327376d0d159d43aae50da773ea3e7882ecc1bc3ba5a5cec611c452d149",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        49,
+        1012,
+        1358
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Figure6 axes, line/marker legend and full caption are legible; all six BF16/high-precision comparison rows are complete.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-36.png"
+    },
+    {
+      "page": 37,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-37.png",
+      "sha256": "4a42e46f72d7e56b972b64c685602a4dab03c51e1cb19e20920f9bcdcd8f525a",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        1360
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Flat-spectrum command continuation is complete on one page; all step-table rows and numerical qualifications remain readable.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-37.png"
+    },
+    {
+      "page": 38,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-38.png",
+      "sha256": "6cf55d365db129fd9ec252c5a945432623fb62b9ea906cebfb4c93b6e1c40294",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        1270
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "The complete short buffer command block moves to the next page, while the preceding analysis and result table remain readable.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-38.png"
+    },
+    {
+      "page": 39,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-39.png",
+      "sha256": "ce9c70d9690de20ab53e0b6e81c6ebb2ecabbebbd304a20219926e9d9d9c87bd",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        49,
+        1012,
+        1353
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Both buffer commands are complete at the page top; controlled-timing equations and table remain readable. The short Python unit moves intact to the next page.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-39.png"
+    },
+    {
+      "page": 40,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-40.png",
+      "sha256": "f55713b5524f8481b0f53d11b6424671e64925a6d2a139e655a8aa79fd8bbeb0",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        49,
+        1012,
+        1443
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "The candidate comment and assignment are together. Both padding commands are complete with explicit continuations; the diagnostic table begins with readable rows.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-40.png"
+    },
+    {
+      "page": 41,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-41.png",
+      "sha256": "9c5b733706e6aafb3446554677e410c71b1ffd1ea6cdbc821a5a92aeedd45a04",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        49,
+        1012,
+        1403
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "The repeated diagnostic header and final rows are complete. Gradient-sampling cautions and the FAQ entrance remain readable.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-41.png"
+    },
+    {
+      "page": 42,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-42.png",
+      "sha256": "8fd513b3d679f4bd3305f6d20d1c5d469e33935dfac2e5f8c8ec71fb9d254c43",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        59,
+        1012,
+        1401
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Remaining FAQ entries, practical limitations and first primary-source link are readable; heading14 retains content on the same page.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-42.png"
+    },
+    {
+      "page": 43,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-43.png",
+      "sha256": "5c4cd449137a4e32ea9e69422e3c429750e913f14763751c7e842fc59cf18689",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        1435
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "References and the self-check entrance remain readable; questions1-17 are complete with consistent ordering.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-43.png"
+    },
+    {
+      "page": 44,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-44.png",
+      "sha256": "b7c63eb8310d8223acecc3cd909b552ff643f4627527bfd9e2164d78457e0f17",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1009,
+        1393
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Questions18-28 and answers1-7 are complete; the answer disclosure starts with its content, and the hidden-gradient rank explanation is legible.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-44.png"
+    },
+    {
+      "page": 45,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-45.png",
+      "sha256": "cda9c567cc539d9e39a59d8a0a205344a3993fbba5a2586f04ed50ab13c87833",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1010,
+        1374
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Answers8-24 are complete. Revised answer11 distinguishes auxiliary parameters and actual name/shape routing; source/budget qualifications remain legible.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-45.png"
+    },
+    {
+      "page": 46,
+      "image": "/tmp/chase-pion-sevenhour-20261102/pdf-compactheader/full-standard/pion-standard-46.png",
+      "sha256": "5a0d831e579ad1ce1ef467ec889ca7ef10fbf0df785167aa69fbceb5028bf7a8",
+      "edge_ink": false,
+      "ink_bbox": [
+        49,
+        58,
+        1012,
+        678
+      ],
+      "review_type": "pixel_identical_inherited",
+      "decision": "pass",
+      "notes": "Final answers25-28 and lastmod are complete, including cross-covariance, conditional-SNR/cost and EMA-history qualifications.",
+      "reference": "/tmp/chase-pion-sevenhour-20261102/pdf-shortcode/full-standard/pion-standard-46.png"
+    }
+  ],
+  "accepted_at_utc": "2026-11-01T22:13:47.835941+00:00",
+  "counts": {
+    "pages": 46,
+    "direct_current": 1,
+    "pixel_identical_inherited": 45,
+    "pending": 0
+  }
+}

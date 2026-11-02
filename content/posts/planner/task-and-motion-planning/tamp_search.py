@@ -16,6 +16,7 @@ import tamp_constraints as geometry
 
 GRID_STEP = .2
 GRID_BOUNDS = (-10, 10, -6, 6)  # Integer indices: x=-2..2 m, y=-1.2..1.2 m.
+GRID_WORLD_BOUNDS = (-2., 2., -1.2, 1.2)
 
 
 @dataclass(frozen=True)
@@ -48,20 +49,38 @@ def candidates(initial_parking, allow_relocation):
                  for name, parked in modes for grasp in geometry.GRASPS)
 
 
-def grid_motion(parked, radius, max_expansions=1000):
+def grid_layout(step):
+    """Represent a fixed physical domain; the task endpoints must lie on the grid."""
+    step = geometry.finite_scalar(step, "step")
+    if step <= 0:
+        raise ValueError("step must be positive")
+    quotients = [bound / step for bound in GRID_WORLD_BOUNDS]
+    if any(not math.isfinite(value) or abs(value) > 2**52 for value in quotients):
+        raise ValueError("step is too small to represent grid indices reliably")
+    # Include exact physical boundaries despite division rounding (1.2 / .2).
+    bounds = tuple((math.ceil(math.nextafter(q, -math.inf)) if i % 2 == 0
+                    else math.floor(math.nextafter(q, math.inf)))
+                   for i, q in enumerate(quotients))
+    start, goal = (round(-2. / step), 0), (round(2. / step), 0)
+    for node, target in ((start, (-2., 0.)), (goal, (2., 0.))):
+        if (not (bounds[0] <= node[0] <= bounds[1] and bounds[2] <= node[1] <= bounds[3])
+                or math.dist((node[0] * step, node[1] * step), target) > 8 * math.ulp(2.)):
+            raise ValueError("step must place the fixed start and goal on grid nodes")
+    return step, bounds, start, goal
+
+
+def grid_motion(parked, radius, max_expansions=1000, step=None):
     """A* on a finite 8-neighbor grid; grid failure never proves continuous failure."""
-    parked = tuple(parked)
-    if len(parked) != 2 or not all(math.isfinite(value) for value in parked):
-        raise ValueError("parked must contain two finite coordinates")
-    if not math.isfinite(radius) or radius < 0:
-        raise ValueError("radius must be finite and nonnegative")
+    parked, radius = geometry.validate_scene(parked, radius)
     if type(max_expansions) is not int or max_expansions < 0:
         raise ValueError("max_expansions must be a nonnegative integer")
-    start, goal = (-10, 0), (10, 0)
-    point = lambda node: (node[0] * GRID_STEP, node[1] * GRID_STEP)
+    step, bounds, start, goal = grid_layout(GRID_STEP if step is None else step)
+    metadata = {"grid_step_m": step, "grid_bounds_m": GRID_WORLD_BOUNDS,
+                "grid_node_count": (bounds[1] - bounds[0] + 1) * (bounds[3] - bounds[2] + 1)}
+    point = lambda node: (node[0] * step, node[1] * step)
     if not all(geometry.verify_path([point(n), point(n)], radius, parked)["valid"]
                for n in (start, goal)):
-        return {"status": "unknown", "reason": "grid_endpoint_collision", "expanded_nodes": 0}
+        return {"status": "unknown", "reason": "grid_endpoint_collision", "expanded_nodes": 0, **metadata}
     frontier = [(math.dist(point(start), point(goal)), 0., start)]
     costs, parents, expanded = {start: 0.}, {}, 0
     while frontier:
@@ -77,17 +96,17 @@ def grid_motion(parked, radius, max_expansions=1000):
             if not checks["valid"]:
                 raise RuntimeError("Grid search produced an invalid path")
             return {"status": "feasible", "reason": "verified_grid_path", "path_m": path,
-                    "path_length_m": cost, "expanded_nodes": expanded, **checks}
+                    "path_length_m": cost, "expanded_nodes": expanded, **checks, **metadata}
         if expanded >= max_expansions:
-            return {"status": "unknown", "reason": "grid_budget_exhausted", "expanded_nodes": expanded}
+            return {"status": "unknown", "reason": "grid_budget_exhausted", "expanded_nodes": expanded, **metadata}
         expanded += 1
         for dx in (-1, 0, 1):
             for dy in (-1, 0, 1):
                 if dx == dy == 0:
                     continue
                 nxt = (node[0] + dx, node[1] + dy)
-                if not (GRID_BOUNDS[0] <= nxt[0] <= GRID_BOUNDS[1]
-                        and GRID_BOUNDS[2] <= nxt[1] <= GRID_BOUNDS[3]):
+                if not (bounds[0] <= nxt[0] <= bounds[1]
+                        and bounds[2] <= nxt[1] <= bounds[3]):
                     continue
                 edge = [point(node), point(nxt)]
                 if not geometry.verify_path(edge, radius, parked)["valid"]:
@@ -97,7 +116,26 @@ def grid_motion(parked, radius, max_expansions=1000):
                     costs[nxt], parents[nxt] = new_cost, node
                     estimate = new_cost + math.dist(point(nxt), point(goal))
                     heapq.heappush(frontier, (estimate, new_cost, nxt))
-    return {"status": "unknown", "reason": "finite_grid_exhausted", "expanded_nodes": expanded}
+    return {"status": "unknown", "reason": "finite_grid_exhausted", "expanded_nodes": expanded, **metadata}
+
+
+def grid_resolution_demo():
+    """Same geometry and continuous edge checks, five different finite graphs."""
+    return {"scope": "Fixed carrying scene; finite-graph paths, not continuous optima or timing benchmarks.",
+            "parking_m": (1., 0.), "radius_m": .25, "max_expansions": 1000,
+            "results": [grid_motion((1., 0.), .25, step=step)
+                        for step in (2., 1., .4, .2, .1)]}
+
+
+def resolution_summary(result):
+    lines = ["Same carrying scene; changing only grid spacing",
+             "Step (m)  Nodes  Expanded  Status    Length (m)"]
+    for row in result["results"]:
+        length = f"{row['path_length_m']:.6f}" if "path_length_m" in row else "--"
+        lines.append(f"{row['grid_step_m']:>8g}  {row['grid_node_count']:>5}"
+                     f"  {row['expanded_nodes']:>8}  {row['status']:<8}  {length}")
+    lines.append("Grid exhaustion remains unknown for continuous motion.")
+    return "\n".join(lines) + "\n"
 
 
 def refine_one(candidate):
@@ -109,6 +147,7 @@ def refine_one(candidate):
 
 def search(initial_parking=(0., .05), allow_relocation=True, reuse=True,
            max_attempts=2, max_calls=20):
+    initial_parking, _ = geometry.validate_scene(initial_parking, 0.)
     if type(max_attempts) is not int or max_attempts < 1:
         raise ValueError("max_attempts must be a positive integer")
     if type(max_calls) is not int or max_calls < 0:
@@ -129,9 +168,26 @@ def search(initial_parking=(0., .05), allow_relocation=True, reuse=True,
             break
         result = refine_one(candidate)
         calls += 1
+        if not isinstance(result, dict) or result.get("status") not in {"feasible", "infeasible", "unknown"}:
+            raise ValueError("Refinement must return feasible, infeasible or unknown")
+        if result["status"] == "infeasible":
+            _, certificate = geometry.crossing_intervals(
+                geometry.GRASPS[candidate.grasp], candidate.parking)
+            if certificate is None or result.get("reason") != certificate:
+                raise ValueError("Infeasibility was not supported by this example's geometric certificate")
         trace.append({**row, "status": result["status"], "reason": result["reason"]})
         if result["status"] == "feasible":
-            checks = geometry.verify_path(result["path_m"],
+            path = result.get("path_m")
+            if not isinstance(path, (list, tuple)) or len(path) < 2:
+                raise ValueError("A carry witness must be a finite 2D polyline")
+            try:
+                path = [geometry.finite_point(point) for point in path]
+            except ValueError as error:
+                raise ValueError("A carry witness must be a finite 2D polyline") from error
+            if (math.dist(path[0], (-2., 0.)) > geometry.EPS
+                    or math.dist(path[-1], (2., 0.)) > geometry.EPS):
+                raise ValueError("A carry witness must connect the specified start and goal")
+            checks = geometry.verify_path(path,
                 geometry.GRASPS[candidate.grasp], candidate.parking)
             if not checks["valid"]:
                 raise RuntimeError("Refinement returned an invalid witness")
@@ -140,7 +196,7 @@ def search(initial_parking=(0., .05), allow_relocation=True, reuse=True,
             return {"status": "carry_witness_found", "refinement_calls": calls,
                     "trace": trace, "skeleton": candidate.skeleton,
                     "grasp": candidate.grasp, "abstract_actions": actions,
-                    "carry_path_m": result["path_m"], "carry_checks": checks,
+                    "carry_path_m": path, "carry_checks": checks,
                     "unverified": ["blocker relocation", "arm IK", "pick/place",
                                    "dynamics", "hardware execution"]}
         if result["status"] == "infeasible":
@@ -223,13 +279,16 @@ def self_check():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--check", action="store_true")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--check", action="store_true")
+    mode.add_argument("--resolutions", action="store_true", help="Compare five grid spacings in one scene")
     parser.add_argument("--summary", action="store_true", help="Print a short trace instead of full JSON")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    result = self_check() if args.check else demo()
+    result = grid_resolution_demo() if args.resolutions else self_check() if args.check else demo()
     text = json.dumps(result, indent=2, allow_nan=False) + "\n"
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(text, encoding="utf-8")
-    print(summary(result) if args.summary else text, end="")
+    short = resolution_summary if args.resolutions else summary
+    print(short(result) if args.summary else text, end="")

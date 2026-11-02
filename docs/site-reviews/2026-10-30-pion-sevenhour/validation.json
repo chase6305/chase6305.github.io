@@ -1,0 +1,239 @@
+{
+  "recorded_at_utc": "2026-10-30T21:17:49.364817+00:00",
+  "production_build": "/tmp/chase-pion-sevenhour-20261030/production-complete",
+  "source_checkpoint": "final-source-checkpoint.json.gz",
+  "source_link_only_reuse": {
+    "at_utc": "2026-10-30T21:17:27.711553+00:00",
+    "only_content_change": "Corrected a source URL fragment from web-extracted to raw-file line numbers.",
+    "exact_pixel_matches_to_reviewed_predecessor": 255,
+    "pdf_link_annotations": [
+      {
+        "pdf": "pion-native-false-100-warm.pdf",
+        "sha256": "64a2c3f9777ab855dfac1406d04b63d91898ec7a5a5b04c0d33081a1808b04cb",
+        "corrected_source_link_annotations": 2,
+        "obsolete_source_link_annotations": 0
+      },
+      {
+        "pdf": "pion-native-false-200-warm.pdf",
+        "sha256": "cc7608dfd7b1a3125dc6a4c25d531082b022d11b4278851089cc779c77769b9c",
+        "corrected_source_link_annotations": 2,
+        "obsolete_source_link_annotations": 0
+      },
+      {
+        "pdf": "pion-native-true-100-light.pdf",
+        "sha256": "93cf7602d8cae710e8f6af864f44d360cec349b55874316532dfd2c42a32ba5f",
+        "corrected_source_link_annotations": 2,
+        "obsolete_source_link_annotations": 0
+      },
+      {
+        "pdf": "pion-native-true-200-dark.pdf",
+        "sha256": "3c526a0ea299901dc5b4bec63dcaad8677b402e43d8243398216d05932f568e3",
+        "corrected_source_link_annotations": 2,
+        "obsolete_source_link_annotations": 0
+      }
+    ],
+    "predecessor_source_checkpoint_sha256": "0653b8f98d160badcb8c3b8f1f2564a4c2e77bbb6e6fa207c6811353977a67bd"
+  },
+  "build_difference": {
+    "changed_files": [
+      "categories/人工智能/index.xml",
+      "posts/ai/pion-muon-vla-rlvr/index.html",
+      "tags/grpo/index.xml",
+      "tags/muon/index.xml",
+      "tags/paper-notes/index.xml",
+      "tags/pion/index.xml",
+      "tags/rlvr/index.xml",
+      "tags/vla/index.xml"
+    ],
+    "added_files": [],
+    "deleted_files": [],
+    "other_identical_files": 2205,
+    "article_difference": "Only the Qwen3 source URL fragment changed in articleHTML and seven related RSS feeds; all other bytes match.",
+    "old_html_sha256": "14fce63f8f7e30bb76e56b23abf8e425be6627fa5d3dedab8ecb2442cc0f1119",
+    "current_html_sha256": "19a01a3bcd86d9df465f4896cdd66e261d0dd990faad795e4c7ec71c8599f077"
+  },
+  "report_reuse_note": "Code copying, buffer-table scrolling, forced-color print and served ZIP reports precede only the source-URL correction. Build comparison verifies article/RSS differ only in that URL and2205other files are byte-identical; all255new PDF pages match reviewed pixels and contain corrected link annotations.",
+  "frozen_source_files_verified": 38,
+  "article_source_sha256": "49fc444dd7fdf05d5bd15b6381cd2135592af600bc013570e356add8fc245ad0",
+  "hugo": "0.165.0 extended",
+  "production_build_passed": true,
+  "strict_blog_validation": {
+    "reviewed_posts": 96,
+    "learning_paths": 11,
+    "acceptance_checks": 531,
+    "blog_posting_schemas": 93,
+    "sharing_images": 55,
+    "shared_search_indexes": 2,
+    "classified_tags": 189,
+    "code_blocks": 607,
+    "syntax_checked_by_language": {
+      "bash": 245,
+      "json": 8,
+      "jsonc": 6,
+      "python": 211,
+      "sh": 10,
+      "xml": 1
+    },
+    "html_pages": 319,
+    "local_references_checked": 32408,
+    "collection_pages_checked": 305,
+    "filter_indexes_checked": 10,
+    "errors": [],
+    "python_fragment_warnings": [],
+    "unrendered_math_warnings": []
+  },
+  "asset_validation": {
+    "pinned_packages": 3,
+    "pinned_files": 29,
+    "active_pinned_packages": 2,
+    "native_image_viewers": 1,
+    "theme_overrides": 13,
+    "core_renderer_overrides": 1,
+    "local_math_fonts": 20,
+    "verified_integrity_assets": 25
+  },
+  "numerical_checks": {
+    "stdlib": 11,
+    "numpy_inclusive": 19,
+    "numpy_versions": [
+      "1.26.4",
+      "2.2.6"
+    ],
+    "latest_log": "/tmp/chase-pion-sevenhour-20261030/tests-cuda-reviewed.log",
+    "extracted_checks_log": "/tmp/chase-pion-sevenhour-20261030/package-cuda-reviewed.log",
+    "official_whole_matrix_cpu_calls": 48,
+    "official_per_head_cpu_calls": 432,
+    "rotated_precision_cpu_cases": 1008
+  },
+  "vla_buffer_probe": {
+    "cases": 64,
+    "normal_controls": 56,
+    "observed_independent_update_mismatches": 8,
+    "cpu_replay_cases": 16,
+    "actual_cpu_gloo_cases": 8,
+    "original_cuda_nccl_cases": 40,
+    "cuda_controls": 35,
+    "cuda_adjacent_nonzero_none_losses": 5,
+    "scope": "One rank and tiny matrices, original pinned class and unwrapped NCCL on RTX 5090 D v2; no model or multi-rank training.",
+    "reference": "../../../content/posts/ai/pion-muon-vla-rlvr/assets/vla-buffer-reference.json"
+  },
+  "download": {
+    "sha256": "f709b6a3b14e822bb5e1b3a7f8cf083a3f9e6d001448601278a681dacbf05856",
+    "bytes": 34273,
+    "members": 18,
+    "served_bytes_equal_source": true,
+    "fresh_extracted_numpy_checks": 19,
+    "all_python_sources_compile": true
+  },
+  "article_browser": {
+    "layouts": 96,
+    "chapterActivations": 172,
+    "keyboardScrolls": 378,
+    "nativePdfs": 4,
+    "exceptions": 0
+  },
+  "interactive_browser": {
+    "cases": 21,
+    "violations": 0,
+    "manualIncompleteNodes": 96,
+    "statusSnapshots": 2,
+    "searchContexts": 2,
+    "exceptions": 0
+  },
+  "manual_incomplete_interpretation": "96 repeated axe manual records identify eight unique closed-popup controls. All referenced IDs exist; open dialogs/menus were inspected in separate states. This is not zero incomplete records.",
+  "forced_colors_print": {
+    "layouts": 6,
+    "failures": 0,
+    "textSamples": 5697,
+    "runtimeExceptions": 0
+  },
+  "published_code_copy": {
+    "contexts": 4,
+    "exact_copies": 32,
+    "focus_preserved": true,
+    "exceptions": 0
+  },
+  "buffer_table": {
+    "layouts": 4,
+    "width": 320,
+    "sizes_percent": [
+      100,
+      200
+    ],
+    "real_arrow_key_scrolling": true,
+    "exceptions": 0
+  },
+  "pdf_review": {
+    "pages": 255,
+    "pdfs": [
+      {
+        "pdf": "pion-native-false-100-warm.pdf",
+        "sha256": "64a2c3f9777ab855dfac1406d04b63d91898ec7a5a5b04c0d33081a1808b04cb",
+        "pages": 34
+      },
+      {
+        "pdf": "pion-native-false-200-warm.pdf",
+        "sha256": "cc7608dfd7b1a3125dc6a4c25d531082b022d11b4278851089cc779c77769b9c",
+        "pages": 92
+      },
+      {
+        "pdf": "pion-native-true-100-light.pdf",
+        "sha256": "93cf7602d8cae710e8f6af864f44d360cec349b55874316532dfd2c42a32ba5f",
+        "pages": 35
+      },
+      {
+        "pdf": "pion-native-true-200-dark.pdf",
+        "sha256": "3c526a0ea299901dc5b4bec63dcaad8677b402e43d8243398216d05932f568e3",
+        "pages": 94
+      }
+    ],
+    "render_height": 1500,
+    "edge_band_pixels": 12,
+    "empty_pages": 0,
+    "pages_with_edge_ink": 0,
+    "content_review_methods": {
+      "pixel_identical_predecessor": 255
+    },
+    "all_pages_have_content_review_evidence": true,
+    "scope": "All255current pages exactly match the completed CUDA-reviewed painted pages after a source-URL-only correction. That predecessor has70direct visual pages,183matches to earlier reviewed pages and2matches to current reviewed pages. Automated edge scanning is separate.",
+    "known_minor_observation": "At 200% text size, an existing decorative breadcrumb can be clipped; article headings and body remain complete. Some FAQ questions and answers continue on adjacent pages."
+  },
+  "search": {
+    "actual_public_entries": 96,
+    "targeted_queries": 20,
+    "previous_incomplete_queries": 11,
+    "current_oracle_mismatches": 0,
+    "current_duplicate_pages": 0,
+    "generated_unit_oracle_queries": 400,
+    "source_sha256": {
+      "library": "433e941a8a573ebb9931fc16fc75266ab6b93f569ac2fb4f3dc66882e0416f4c",
+      "data": "71f553d201398bee751c467931f8a0fe63b82fd44e606a6b989e9abd55a3423d",
+      "terms": "a8d5f46e71ff787d63d0935e8f7c813db8458fa9e02d11ce9063a1e57f208200",
+      "adapter": "c64513382cfef8773df6571483f4e37c9d844b5de4e30033da8f747b7a41d7ff"
+    },
+    "vendor_changed": false
+  },
+  "component_reports": {
+    "shared_search": "search-browser/results.json",
+    "search_fallback": "search-fallback/results.json",
+    "search_print": "search-print-final/results.json",
+    "code_reading": "code-reading-latest/results.json",
+    "all_site_native_semantics": "semantics-current-native/results.json",
+    "image_viewers": "viewers-reviewed/results.json",
+    "native_disclosures_opened_by_keyboard": "native-open-print/results.json"
+  },
+  "ci_configuration_updated": true,
+  "remote_ci_executed": false,
+  "model_training_reproduced": false,
+  "commit_push_or_deploy": false,
+  "evidence": "browser-evidence.json.gz",
+  "final_clean_build": {
+    "checked_at_utc": "2026-10-30T21:40:56.913210+00:00",
+    "hugo": "0.165.0 extended",
+    "fresh_destination": "/tmp/chase-pion-sevenhour-20261030/production-complete",
+    "validated_predecessor": "/tmp/chase-pion-sevenhour-20261030/production-source-linked",
+    "byte_identical_emitted_files": 2213,
+    "differences": [],
+    "scope": "All emitted bytes match the strict-validated and browser-reviewed build; no deployment or remote CI."
+  }
+}

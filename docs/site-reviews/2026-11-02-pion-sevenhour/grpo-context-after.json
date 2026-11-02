@@ -1,0 +1,146 @@
+{
+  "scope": "Observed caller Decimal context behavior of the new helper after hardening; no model or training.",
+  "cases": [
+    {
+      "case": "sticky_underflow",
+      "before": {
+        "precision": 28,
+        "rounding": "ROUND_HALF_EVEN",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": true,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "after": {
+        "precision": 28,
+        "rounding": "ROUND_HALF_EVEN",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": true,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "returned": true,
+      "same_as_default": true
+    },
+    {
+      "case": "inexact_trap",
+      "before": {
+        "precision": 28,
+        "rounding": "ROUND_HALF_EVEN",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": false,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "after": {
+        "precision": 28,
+        "rounding": "ROUND_HALF_EVEN",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": false,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "returned": true,
+      "same_as_default": true
+    },
+    {
+      "case": "different_rounding",
+      "before": {
+        "precision": 9,
+        "rounding": "ROUND_FLOOR",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": false,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "after": {
+        "precision": 9,
+        "rounding": "ROUND_FLOOR",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": false,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "returned": true,
+      "same_as_default": true
+    },
+    {
+      "case": "invalid_input_flag",
+      "before": {
+        "precision": 28,
+        "rounding": "ROUND_HALF_EVEN",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": false,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "after": {
+        "precision": 28,
+        "rounding": "ROUND_HALF_EVEN",
+        "flags": {
+          "InvalidOperation": false,
+          "FloatOperation": false,
+          "DivisionByZero": false,
+          "Overflow": false,
+          "Underflow": false,
+          "Subnormal": false,
+          "Inexact": false,
+          "Rounded": false,
+          "Clamped": false
+        }
+      },
+      "returned": false,
+      "error": "invalid probability or unresolved Decimal numerical range"
+    }
+  ],
+  "source_sha256": "94ca286a849e6cf28777cb0988bdced8d06dd3a78161098f550bce6a98df8f19"
+}
