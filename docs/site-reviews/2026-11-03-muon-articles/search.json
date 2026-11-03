@@ -1,0 +1,1 @@
+{"library":"FlexSearch 0.8.143","checks":"NFKC, CJK bigrams and final characters, supplementary Unicode, technical punctuation, no partial-term suggestions, field-specific ranking, chapter intersections, unique limited results and 400 whole-text oracle queries passed"}

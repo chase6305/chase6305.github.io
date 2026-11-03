@@ -1,0 +1,41 @@
+{
+  "ns_one_at_one": 0.7009999999999996,
+  "ns_five_at_half": 0.7654385304543396,
+  "expansion_4096_by_1024": {
+    "plain": 1.0,
+    "jordan": 2.0,
+    "muP_factor": 2.0,
+    "moonlight": 12.8
+  },
+  "compression_1024_by_4096": {
+    "plain": 1.0,
+    "jordan": 1.0,
+    "muP_factor": 0.5,
+    "moonlight": 12.8
+  },
+  "full_rank_moonlight_rms": 0.2,
+  "rank_256_moonlight_rms": 0.1,
+  "moonlight_to_plain_lr_decay": [
+    0.0128,
+    0.0078125
+  ],
+  "qk": {
+    "per_head": [
+      100.0,
+      50.0
+    ],
+    "whole_layer": [
+      100.0,
+      25.0
+    ],
+    "mla_correct_content_rotary": [
+      60.0,
+      40.0
+    ],
+    "mla_wrong_content_rotary": [
+      60.0,
+      56.568542494923804
+    ],
+    "stale_statistic_new_score": 200.0
+  }
+}

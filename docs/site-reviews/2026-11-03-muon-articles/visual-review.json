@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-03",
+  "inspected": [
+    "All eight original figure assets: labels, arrows, shape orientation, numeric values and model assumptions",
+    "Revised shape/RMS plot: separate vertical numerical labels; no overlapping annotations",
+    "320px light and dark reading captures; 1440px light and dark captures",
+    "Native A4 PDF pages: first article RMS section, second article curvature counterexample"
+  ],
+  "result": "accepted",
+  "scope": "No measurement plots are presented as training benchmarks. Closed-popup axe incomplete results checked through existing target references and the passing image viewer tests."
+}

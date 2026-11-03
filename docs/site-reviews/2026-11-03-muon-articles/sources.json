@@ -1,0 +1,46 @@
+{
+  "checked_on": "2026-11-03",
+  "sources": [
+    {
+      "url": "https://kexue.fm/archives/11416",
+      "local": "/tmp/chase-muon-articles-20261103-a3ush9p0/sources/su11416-reader.txt",
+      "access": "Primary article via public Jina text proxy; original host returned 403; equations independently recomputed",
+      "sha256": "10e056d5c797a2894e613ed0a4c04f4dd3486d47fc8c946362d4dc422c6c4b9c"
+    },
+    {
+      "url": "https://kexue.fm/archives/10739",
+      "local": "/tmp/chase-muon-articles-20261103-a3ush9p0/sources/su10739-reader.txt",
+      "access": "Primary article via public Jina text proxy; original host returned 403; equations independently recomputed",
+      "sha256": "79905a6fc849ccdabea42a9f965be5c5f34f46d979f9334c7e0a87b0cf68a7b8"
+    },
+    {
+      "url": "https://kexue.fm/archives/11285",
+      "local": "/tmp/chase-muon-articles-20261103-a3ush9p0/sources/su11285-reader.txt",
+      "access": "Primary article via public Jina text proxy; original host returned 403; equations independently recomputed",
+      "sha256": "baaf674f5af885e4b739891f40bb2cc81eff08457c3d8f74abd619fe411131df"
+    },
+    {
+      "url": "https://kexue.fm/archives/11126",
+      "local": "/tmp/chase-muon-articles-20261103-a3ush9p0/sources/su11126-reader.txt",
+      "access": "Primary article via public Jina text proxy; original host returned 403; equations independently recomputed",
+      "sha256": "1b57137dfbee30e2f11f7b1712268fc04a0bda33c5df75d20567bbe6f23b15e3"
+    },
+    {
+      "url": "https://kellerjordan.github.io/posts/muon/",
+      "access": "Primary HTML inspected with web tool"
+    },
+    {
+      "url": "https://arxiv.org/html/2502.16982v1",
+      "access": "Primary HTML inspected with web tool"
+    },
+    {
+      "url": "https://arxiv.org/html/2507.20534v1#S2.SS1",
+      "access": "Primary HTML inspected with web tool"
+    },
+    {
+      "url": "https://docs.pytorch.org/docs/2.14/generated/torch.optim.Muon.html",
+      "access": "Primary HTML inspected with web tool"
+    }
+  ],
+  "scope": "General Muon and learning-rate/batch-size analysis. New numerical figures are constructed algebraic or quadratic models, not training benchmarks."
+}

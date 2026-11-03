@@ -82,6 +82,7 @@ jobs:
           python3 -B scripts/test_parkour_examples.py
           python3 -B scripts/test_act_examples.py
           python3 -B scripts/test_pion_examples.py
+          python3 -B scripts/test_muon_articles.py
           python3 -B scripts/package_pion_lab.py --check --test
           python3 -B content/posts/planner/task-and-motion-planning/tamp_constraints.py --check
           python3 -B content/posts/planner/task-and-motion-planning/tamp_search.py --check
@@ -111,6 +112,7 @@ jobs:
           "$identification_env/bin/python" -B scripts/test_parameter_identification.py
           "$identification_env/bin/python" -B scripts/package_parameter_identification.py --check --test
           "$identification_env/bin/python" -B scripts/test_pion_examples.py --numpy
+          "$identification_env/bin/python" -B scripts/test_muon_articles.py --numpy
           "$identification_env/bin/python" -B scripts/package_pion_lab.py --check --test --numpy
       - name: Set up Python for executable progress examples
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7

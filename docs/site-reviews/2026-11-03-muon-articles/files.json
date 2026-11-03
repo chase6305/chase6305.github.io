@@ -1,0 +1,76 @@
+{
+  "files": [
+    {
+      "path": "content/posts/ai/muon-optimizer/assets/muon-update-flow.png",
+      "sha256": "193f1f5835998ce1f5fb89147ede2f8fa9b702632ac5d6df1ac19bcc98b97ac3",
+      "bytes": 1441053
+    },
+    {
+      "path": "content/posts/ai/muon-optimizer/assets/qk-clip-example.png",
+      "sha256": "153ecfa0d8d77a775e8aae4fe05d45e597cfc6f3d1762ab7f0bb29d09789f510",
+      "bytes": 122737
+    },
+    {
+      "path": "content/posts/ai/muon-optimizer/assets/shape-scaling.png",
+      "sha256": "5f3a7d9eeceb170f8d8eb152455cde7f25c9c2b74bced101675ad48fa8a07afd",
+      "bytes": 119628
+    },
+    {
+      "path": "content/posts/ai/muon-optimizer/assets/spectral-response.png",
+      "sha256": "504f496046349f4520686dc6670f459a69d984155f950c0cd890f9b0c6ff99fc",
+      "bytes": 155044
+    },
+    {
+      "path": "content/posts/ai/muon-optimizer/index.md",
+      "sha256": "01e1f59f66a7cc3915d2f4ea1c073745d2d0b8318298791a231aad810dd76e03",
+      "bytes": 23009
+    },
+    {
+      "path": "content/posts/ai/muon-optimizer/make_figures.py",
+      "sha256": "ed74c7208840f5bd10c6499bad3ae3c19f8d2c5b4962f5d20cc9c7e65018a270",
+      "bytes": 4510
+    },
+    {
+      "path": "content/posts/ai/muon-optimizer/muon_math.py",
+      "sha256": "f95e1ae375ca4fc31b05dd18d0af3dbbc3eeec6a78d5e195f863a16a16588b48",
+      "bytes": 3251
+    },
+    {
+      "path": "content/posts/ai/muon-learning-rate-batch-size/assets/batch-scaling-law.png",
+      "sha256": "7473c4d4f514f81231c61b3971c4bba50e79e679b3d82895abbb2b6c2860ee9b",
+      "bytes": 136158
+    },
+    {
+      "path": "content/posts/ai/muon-learning-rate-batch-size/assets/batch-three-clocks.png",
+      "sha256": "80798df59571a9f2f2f7b3c0c5f6b00a5c8cf75b187da7eba0a64acbfe69668d",
+      "bytes": 1400300
+    },
+    {
+      "path": "content/posts/ai/muon-learning-rate-batch-size/assets/curvature-counterexample.png",
+      "sha256": "b93d607437ddde4a2f8c7ef13919b68a09dfcfb40c603e20dfe32b09e4194102",
+      "bytes": 160746
+    },
+    {
+      "path": "content/posts/ai/muon-learning-rate-batch-size/assets/gram-anisotropy.png",
+      "sha256": "637df7d486e6cf5b96e997daa441acd94d917fba05ce72d7bedf4357f567828d",
+      "bytes": 87474
+    },
+    {
+      "path": "content/posts/ai/muon-learning-rate-batch-size/batch_math.py",
+      "sha256": "3c618071b690885079d38d6c242445a38c5c4c750a4f0b21cbb9931d80d653bb",
+      "bytes": 4659
+    },
+    {
+      "path": "content/posts/ai/muon-learning-rate-batch-size/index.md",
+      "sha256": "06ead2a0f0a54c32e3c56551a0fec472da8d046c7ce03a6682ea41f030bd7c5f",
+      "bytes": 20803
+    },
+    {
+      "path": "content/posts/ai/muon-learning-rate-batch-size/make_figures.py",
+      "sha256": "ac081e5d836f9fb9b67098a081945e5c1cc85fbba38dcbc843093f6e27c171cf",
+      "bytes": 3518
+    }
+  ],
+  "baseline": "70d583e3857fe88a3fac571c5cf41804064a9323",
+  "review_date": "2026-11-03"
+}

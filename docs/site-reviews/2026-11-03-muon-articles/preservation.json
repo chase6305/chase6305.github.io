@@ -1,0 +1,16 @@
+{
+  "baseline": "70d583e3857fe88a3fac571c5cf41804064a9323",
+  "existing_acceptance_records_unchanged": 96,
+  "existing_learning_path_order_unchanged": true,
+  "existing_article_files_changed": 0,
+  "tracked_changes": [
+    ".github/workflows/hugo.yml",
+    "data/blog_topics.json",
+    "data/tag_groups.yaml",
+    "docs/blog-editorial-review.json"
+  ],
+  "new_articles": [
+    "muon-optimizer",
+    "muon-learning-rate-batch-size"
+  ]
+}

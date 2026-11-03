@@ -1,0 +1,341 @@
+{
+  "pdfs": [
+    {
+      "route": "/posts/ai/muon-optimizer/",
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "htmlSha256": "051ad41443071704f45caa021ad2e6bedeeb0b99b4a0415d3078ed6343b90983",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 29
+        },
+        "math": {
+          "same": true,
+          "count": 87
+        },
+        "code": {
+          "same": true,
+          "count": 2
+        },
+        "captions": {
+          "same": true,
+          "count": 4
+        }
+      },
+      "file": "/tmp/chase-muon-articles-20261103-a3ush9p0/final-exports/muon-optimizer-true-100-light-a4.pdf",
+      "pages": 14,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "Newton–Schulz",
+        "4096",
+        "12.8",
+        "muon_math.py",
+        "QK-Clip"
+      ],
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "route": "/posts/ai/muon-optimizer/",
+      "scripts": true,
+      "size": 200,
+      "theme": "dark",
+      "paper": "a4",
+      "htmlSha256": "051ad41443071704f45caa021ad2e6bedeeb0b99b4a0415d3078ed6343b90983",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 29
+        },
+        "math": {
+          "same": true,
+          "count": 87
+        },
+        "code": {
+          "same": true,
+          "count": 2
+        },
+        "captions": {
+          "same": true,
+          "count": 4
+        }
+      },
+      "file": "/tmp/chase-muon-articles-20261103-a3ush9p0/final-exports/muon-optimizer-true-200-dark-a4.pdf",
+      "pages": 33,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "Newton–Schulz",
+        "4096",
+        "12.8",
+        "muon_math.py",
+        "QK-Clip"
+      ],
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "route": "/posts/ai/muon-optimizer/",
+      "scripts": false,
+      "size": 100,
+      "theme": "warm",
+      "paper": "a4",
+      "htmlSha256": "051ad41443071704f45caa021ad2e6bedeeb0b99b4a0415d3078ed6343b90983",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 29
+        },
+        "math": {
+          "same": true,
+          "count": 87
+        },
+        "code": {
+          "same": true,
+          "count": 2
+        },
+        "captions": {
+          "same": true,
+          "count": 4
+        }
+      },
+      "file": "/tmp/chase-muon-articles-20261103-a3ush9p0/final-exports/muon-optimizer-false-100-warm-a4.pdf",
+      "pages": 14,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "Newton–Schulz",
+        "4096",
+        "12.8",
+        "muon_math.py",
+        "QK-Clip"
+      ],
+      "scriptExecutionDisabledEntireCase": true
+    },
+    {
+      "route": "/posts/ai/muon-optimizer/",
+      "scripts": false,
+      "size": 200,
+      "theme": "warm",
+      "paper": "letter",
+      "htmlSha256": "051ad41443071704f45caa021ad2e6bedeeb0b99b4a0415d3078ed6343b90983",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 29
+        },
+        "math": {
+          "same": true,
+          "count": 87
+        },
+        "code": {
+          "same": true,
+          "count": 2
+        },
+        "captions": {
+          "same": true,
+          "count": 4
+        }
+      },
+      "file": "/tmp/chase-muon-articles-20261103-a3ush9p0/final-exports/muon-optimizer-false-200-warm-letter.pdf",
+      "pages": 34,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "Newton–Schulz",
+        "4096",
+        "12.8",
+        "muon_math.py",
+        "QK-Clip"
+      ],
+      "scriptExecutionDisabledEntireCase": true
+    },
+    {
+      "route": "/posts/ai/muon-learning-rate-batch-size/",
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "htmlSha256": "a74a6c67dfe05659f5a10768a8633c64e66b4a0764ce9594db70332057f6531f",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 28
+        },
+        "math": {
+          "same": true,
+          "count": 115
+        },
+        "code": {
+          "same": true,
+          "count": 1
+        },
+        "captions": {
+          "same": true,
+          "count": 4
+        }
+      },
+      "file": "/tmp/chase-muon-articles-20261103-a3ush9p0/final-exports/muon-learning-rate-batch-size-true-100-light-a4.pdf",
+      "pages": 14,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "BatchSize",
+        "0.02199",
+        "batch_math.py",
+        "Hessian",
+        "EMA"
+      ],
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "route": "/posts/ai/muon-learning-rate-batch-size/",
+      "scripts": true,
+      "size": 200,
+      "theme": "dark",
+      "paper": "a4",
+      "htmlSha256": "a74a6c67dfe05659f5a10768a8633c64e66b4a0764ce9594db70332057f6531f",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 28
+        },
+        "math": {
+          "same": true,
+          "count": 115
+        },
+        "code": {
+          "same": true,
+          "count": 1
+        },
+        "captions": {
+          "same": true,
+          "count": 4
+        }
+      },
+      "file": "/tmp/chase-muon-articles-20261103-a3ush9p0/final-exports/muon-learning-rate-batch-size-true-200-dark-a4.pdf",
+      "pages": 34,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "BatchSize",
+        "0.02199",
+        "batch_math.py",
+        "Hessian",
+        "EMA"
+      ],
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "route": "/posts/ai/muon-learning-rate-batch-size/",
+      "scripts": false,
+      "size": 100,
+      "theme": "warm",
+      "paper": "a4",
+      "htmlSha256": "a74a6c67dfe05659f5a10768a8633c64e66b4a0764ce9594db70332057f6531f",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 28
+        },
+        "math": {
+          "same": true,
+          "count": 115
+        },
+        "code": {
+          "same": true,
+          "count": 1
+        },
+        "captions": {
+          "same": true,
+          "count": 4
+        }
+      },
+      "file": "/tmp/chase-muon-articles-20261103-a3ush9p0/final-exports/muon-learning-rate-batch-size-false-100-warm-a4.pdf",
+      "pages": 14,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "BatchSize",
+        "0.02199",
+        "batch_math.py",
+        "Hessian",
+        "EMA"
+      ],
+      "scriptExecutionDisabledEntireCase": true
+    },
+    {
+      "route": "/posts/ai/muon-learning-rate-batch-size/",
+      "scripts": false,
+      "size": 200,
+      "theme": "warm",
+      "paper": "letter",
+      "htmlSha256": "a74a6c67dfe05659f5a10768a8633c64e66b4a0764ce9594db70332057f6531f",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 28
+        },
+        "math": {
+          "same": true,
+          "count": 115
+        },
+        "code": {
+          "same": true,
+          "count": 1
+        },
+        "captions": {
+          "same": true,
+          "count": 4
+        }
+      },
+      "file": "/tmp/chase-muon-articles-20261103-a3ush9p0/final-exports/muon-learning-rate-batch-size-false-200-warm-letter.pdf",
+      "pages": 35,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "BatchSize",
+        "0.02199",
+        "batch_math.py",
+        "Hessian",
+        "EMA"
+      ],
+      "scriptExecutionDisabledEntireCase": true
+    }
+  ],
+  "exceptions": []
+}
