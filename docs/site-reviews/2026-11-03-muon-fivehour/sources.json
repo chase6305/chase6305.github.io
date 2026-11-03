@@ -72,6 +72,11 @@
       "raw_sha256": "c17abbb8af4c935d125b189c38d3cbaec295f1cfd232d2712bdb75e13184b972",
       "installed_sha256": "c17abbb8af4c935d125b189c38d3cbaec295f1cfd232d2712bdb75e13184b972",
       "matches_installed": true
+    },
+    {
+      "url": "https://proceedings.mlr.press/v80/gupta18a.html",
+      "access": "Primary PMLR page inspected; instantaneous inverse-quarter identity also independently checked against SVD",
+      "purpose": "Historical preconditioner accumulation versus the instantaneous polar factor"
     }
   ],
   "cpu_wheel": {

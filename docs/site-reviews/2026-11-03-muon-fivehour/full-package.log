@@ -1,3 +1,4 @@
+test_instantaneous_shampoo_identity_and_history (__main__.MatrixUpdateTests.test_instantaneous_shampoo_identity_and_history) ... ok
 test_normalization_without_squaring_extreme_entries (__main__.MatrixUpdateTests.test_normalization_without_squaring_extreme_entries) ... ok
 test_ns_scalar_oracle_and_transpose (__main__.MatrixUpdateTests.test_ns_scalar_oracle_and_transpose) ... ok
 test_rotated_directions_and_rank_selection (__main__.MatrixUpdateTests.test_rotated_directions_and_rank_selection) ... ok
@@ -24,7 +25,7 @@ test_same_parameter_update_after_conversion (__main__.MuonArticleTests.test_same
 test_scalar_response_decimal (__main__.MuonArticleTests.test_scalar_response_decimal) ... ok
 
 ----------------------------------------------------------------------
-Ran 24 tests in 0.821s
+Ran 25 tests in 0.676s
 
 OK
 test_checkpoint_round_trip_and_missing_momentum (__main__.NativeMuonTrainingTests.test_checkpoint_round_trip_and_missing_momentum) ... ok
@@ -37,7 +38,7 @@ test_semantic_groups_and_shared_role_rejection (__main__.NativeMuonTrainingTests
 test_uneven_microbatch_against_linear_derivative (__main__.NativeMuonTrainingTests.test_uneven_microbatch_against_linear_derivative) ... ok
 
 ----------------------------------------------------------------------
-Ran 8 tests in 5.055s
+Ran 8 tests in 4.441s
 
 OK
 Muon download matches source; extracted checks passed

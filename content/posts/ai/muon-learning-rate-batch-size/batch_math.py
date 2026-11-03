@@ -53,7 +53,7 @@ def local_budget_scores(batch, critical_batch, overhead=0):
 def independent_weighted_batch(weights):
     """Equivalent equal-weight count for independent equal-covariance noise.
 
-    The deterministic nonnegative weights change the mean being estimated.
+    The deterministic nonnegative weights can change the mean being estimated.
     No claim is made for data-dependent weights or correlated observations.
     """
     weights = list(weights)

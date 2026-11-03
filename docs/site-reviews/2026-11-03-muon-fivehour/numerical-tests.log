@@ -1,3 +1,4 @@
+test_instantaneous_shampoo_identity_and_history (__main__.MatrixUpdateTests.test_instantaneous_shampoo_identity_and_history) ... ok
 test_normalization_without_squaring_extreme_entries (__main__.MatrixUpdateTests.test_normalization_without_squaring_extreme_entries) ... ok
 test_ns_scalar_oracle_and_transpose (__main__.MatrixUpdateTests.test_ns_scalar_oracle_and_transpose) ... ok
 test_rotated_directions_and_rank_selection (__main__.MatrixUpdateTests.test_rotated_directions_and_rank_selection) ... ok
@@ -24,6 +25,6 @@ test_same_parameter_update_after_conversion (__main__.MuonArticleTests.test_same
 test_scalar_response_decimal (__main__.MuonArticleTests.test_scalar_response_decimal) ... ok
 
 ----------------------------------------------------------------------
-Ran 24 tests in 0.611s
+Ran 25 tests in 0.647s
 
 OK

@@ -301,6 +301,27 @@ class MatrixUpdateTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 self.ref.normalized(np.eye(2), eps=epsilon, convention=convention)
 
+    def test_instantaneous_shampoo_identity_and_history(self):
+        def inverse_quarter(gram):
+            values, basis = np.linalg.eigh(gram)
+            keep = values > max(gram.shape)*np.finfo(float).eps*max(values)
+            weights = np.zeros_like(values)
+            weights[keep] = values[keep]**(-0.25)
+            return (basis*weights)@basis.T
+        for gradient in (np.array([[5.5,4.5],[4.5,5.5]]),
+                         np.array([[1.,2.],[3.,-1.]]),
+                         np.array([[2.,0.],[0.,1.],[0.,0.]]),
+                         np.ones((2,2))):
+            left, right = gradient@gradient.T, gradient.T@gradient
+            direction = inverse_quarter(left)@gradient@inverse_quarter(right)
+            np.testing.assert_allclose(direction,self.ref.polar(gradient),atol=1e-12)
+        current, previous = np.diag([2.,1.]), np.diag([0.,3.])
+        left = current@current.T+previous@previous.T
+        right = current.T@current+previous.T@previous
+        direction = inverse_quarter(left)@current@inverse_quarter(right)
+        np.testing.assert_allclose(direction,np.diag([1.,1/math.sqrt(10)]),atol=1e-14)
+        self.assertGreater(np.linalg.norm(direction-self.ref.polar(current)),0.5)
+
     def test_stateful_diagonal_update_and_input_preservation(self):
         W, M, G = np.diag([2., 3.]), np.diag([0.4, -0.2]), np.diag([1., 2.])
         copies = [a.copy() for a in (W, M, G)]

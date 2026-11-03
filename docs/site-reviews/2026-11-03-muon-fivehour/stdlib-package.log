@@ -1,30 +1,31 @@
-test_normalization_without_squaring_extreme_entries (__main__.MatrixUpdateTests) ... skipped 'optional NumPy matrix update reference'
-test_ns_scalar_oracle_and_transpose (__main__.MatrixUpdateTests) ... skipped 'optional NumPy matrix update reference'
-test_rotated_directions_and_rank_selection (__main__.MatrixUpdateTests) ... skipped 'optional NumPy matrix update reference'
-test_stateful_diagonal_update_and_input_preservation (__main__.MatrixUpdateTests) ... skipped 'optional NumPy matrix update reference'
-test_zero_buffer_decay_and_rejected_shapes (__main__.MatrixUpdateTests) ... skipped 'optional NumPy matrix update reference'
-test_chunked_moments_against_direct_centered_sum (__main__.MeanFieldProbeTests) ... skipped 'optional Gaussian matrix expectation probe'
-test_noise_free_polar_and_stable_ill_conditioned_signal (__main__.MeanFieldProbeTests) ... skipped 'optional Gaussian matrix expectation probe'
-test_saved_gaussian_probe_reference (__main__.MeanFieldProbeTests) ... skipped 'optional Gaussian matrix expectation probe'
-test_seed_and_chunk_size_preserve_the_distribution (__main__.MeanFieldProbeTests) ... skipped 'optional Gaussian matrix expectation probe'
-test_batch_ratio_and_limits (__main__.MuonArticleTests) ... ok
-test_decay_equal_sample_budget (__main__.MuonArticleTests) ... ok
-test_effective_counts_from_independent_sign_enumeration (__main__.MuonArticleTests) ... ok
-test_exact_gaussian_sign_integral (__main__.MuonArticleTests) ... ok
-test_gaussian_integral_independent_quadrature (__main__.MuonArticleTests) ... ok
-test_invalid_inputs (__main__.MuonArticleTests) ... ok
-test_layout_and_rank (__main__.MuonArticleTests) ... ok
-test_local_budget_score_by_completed_square (__main__.MuonArticleTests) ... ok
-test_matrix_polynomial_svd_and_accumulation (__main__.MuonArticleTests) ... skipped 'optional independent NumPy matrix/SVD checks'
-test_momentum_as_explicit_filter_weights (__main__.MuonArticleTests) ... ok
-test_noise_estimator_exact_enumeration (__main__.MuonArticleTests) ... ok
-test_normalization_conventions (__main__.MuonArticleTests) ... ok
-test_qk_bilinear_and_shared_key (__main__.MuonArticleTests) ... ok
-test_same_parameter_update_after_conversion (__main__.MuonArticleTests) ... ok
-test_scalar_response_decimal (__main__.MuonArticleTests) ... ok
+test_instantaneous_shampoo_identity_and_history (__main__.MatrixUpdateTests.test_instantaneous_shampoo_identity_and_history) ... skipped 'optional NumPy matrix update reference'
+test_normalization_without_squaring_extreme_entries (__main__.MatrixUpdateTests.test_normalization_without_squaring_extreme_entries) ... skipped 'optional NumPy matrix update reference'
+test_ns_scalar_oracle_and_transpose (__main__.MatrixUpdateTests.test_ns_scalar_oracle_and_transpose) ... skipped 'optional NumPy matrix update reference'
+test_rotated_directions_and_rank_selection (__main__.MatrixUpdateTests.test_rotated_directions_and_rank_selection) ... skipped 'optional NumPy matrix update reference'
+test_stateful_diagonal_update_and_input_preservation (__main__.MatrixUpdateTests.test_stateful_diagonal_update_and_input_preservation) ... skipped 'optional NumPy matrix update reference'
+test_zero_buffer_decay_and_rejected_shapes (__main__.MatrixUpdateTests.test_zero_buffer_decay_and_rejected_shapes) ... skipped 'optional NumPy matrix update reference'
+test_chunked_moments_against_direct_centered_sum (__main__.MeanFieldProbeTests.test_chunked_moments_against_direct_centered_sum) ... skipped 'optional Gaussian matrix expectation probe'
+test_noise_free_polar_and_stable_ill_conditioned_signal (__main__.MeanFieldProbeTests.test_noise_free_polar_and_stable_ill_conditioned_signal) ... skipped 'optional Gaussian matrix expectation probe'
+test_saved_gaussian_probe_reference (__main__.MeanFieldProbeTests.test_saved_gaussian_probe_reference) ... skipped 'optional Gaussian matrix expectation probe'
+test_seed_and_chunk_size_preserve_the_distribution (__main__.MeanFieldProbeTests.test_seed_and_chunk_size_preserve_the_distribution) ... skipped 'optional Gaussian matrix expectation probe'
+test_batch_ratio_and_limits (__main__.MuonArticleTests.test_batch_ratio_and_limits) ... ok
+test_decay_equal_sample_budget (__main__.MuonArticleTests.test_decay_equal_sample_budget) ... ok
+test_effective_counts_from_independent_sign_enumeration (__main__.MuonArticleTests.test_effective_counts_from_independent_sign_enumeration) ... ok
+test_exact_gaussian_sign_integral (__main__.MuonArticleTests.test_exact_gaussian_sign_integral) ... ok
+test_gaussian_integral_independent_quadrature (__main__.MuonArticleTests.test_gaussian_integral_independent_quadrature) ... ok
+test_invalid_inputs (__main__.MuonArticleTests.test_invalid_inputs) ... ok
+test_layout_and_rank (__main__.MuonArticleTests.test_layout_and_rank) ... ok
+test_local_budget_score_by_completed_square (__main__.MuonArticleTests.test_local_budget_score_by_completed_square) ... ok
+test_matrix_polynomial_svd_and_accumulation (__main__.MuonArticleTests.test_matrix_polynomial_svd_and_accumulation) ... skipped 'optional independent NumPy matrix/SVD checks'
+test_momentum_as_explicit_filter_weights (__main__.MuonArticleTests.test_momentum_as_explicit_filter_weights) ... ok
+test_noise_estimator_exact_enumeration (__main__.MuonArticleTests.test_noise_estimator_exact_enumeration) ... ok
+test_normalization_conventions (__main__.MuonArticleTests.test_normalization_conventions) ... ok
+test_qk_bilinear_and_shared_key (__main__.MuonArticleTests.test_qk_bilinear_and_shared_key) ... ok
+test_same_parameter_update_after_conversion (__main__.MuonArticleTests.test_same_parameter_update_after_conversion) ... ok
+test_scalar_response_decimal (__main__.MuonArticleTests.test_scalar_response_decimal) ... ok
 
 ----------------------------------------------------------------------
-Ran 24 tests in 0.217s
+Ran 25 tests in 0.130s
 
-OK (skipped=10)
+OK (skipped=11)
 Muon download matches source; extracted checks passed

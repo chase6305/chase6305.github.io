@@ -4,9 +4,13 @@
   "pdf_pages": [
     "visual/toy-groups-pdf.png",
     "visual/gaussian-probe-pdf.png",
-    "visual/local-budget-pdf.png"
+    "visual/local-budget-pdf.png",
+    "visual/shampoo-proof-pdf.png",
+    "visual/ema-variance-pdf.png",
+    "visual/quadratic-step-pdf.png"
   ],
   "pdf_observations": "New diagrams and captions stay readable and complete; matrix/noise numbers, legend patterns, units and local-model assumptions match the text.",
   "screens": "Mobile/desktop, light/dark, native/enhanced geometry and viewers passed; selected screenshots retained.",
-  "limits": "Browser-emulated layouts and local native PDFs, not physical mobile devices or printer hardware."
+  "limits": "Browser-emulated layouts and local native PDFs, not physical mobile devices or printer hardware.",
+  "supplemental_review": "Inspected instantaneous Shampoo algebra and historical diagonal counterexample, ordinary EMA variance matching and its separate data-memory target, plus the exact scalar quadratic table in current native PDFs."
 }

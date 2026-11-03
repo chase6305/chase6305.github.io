@@ -1,0 +1,9 @@
+{
+  "old_beta": "19/20",
+  "batch_ratio": 4,
+  "old_variance_factor": "1/39",
+  "new_beta_keep_variance": "35/43",
+  "new_variance_factor": "4/39",
+  "new_beta_keep_old_state": 0.81450625,
+  "variance_after_dividing_new_batch": "1/39"
+}

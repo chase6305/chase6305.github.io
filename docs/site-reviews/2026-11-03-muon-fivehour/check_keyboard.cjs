@@ -16,7 +16,7 @@ const routes = ['/posts/ai/muon-optimizer/','/posts/ai/muon-learning-rate-batch-
     for (const scripts of [true, false]) {
       await b.cdp('Emulation.setScriptExecutionDisabled', {value: !scripts});
       await b.viewport(320);
-      for (const size of [100, 200]) for (const header of (route.includes('batch-size') ? ['比较条件'] : ['想弄清的问题','方法','约定','归一化分母'])) {
+      for (const size of [100, 200]) for (const header of (route.includes('batch-size') ? ['比较条件','学习率'] : ['想弄清的问题','方法','约定','归一化分母'])) {
         await b.navigate(base + route);
         await b.evaluate(`document.documentElement.style.fontSize='${size}%';document.fonts.ready`);
         await b.pause(180);

@@ -143,6 +143,27 @@ $$
 
 在精确极分解下，旋转参数的行、列正交基会相应旋转更新方向；逐坐标缩放通常不具有这种不变性。这说明两类方法使用了不同几何结构，不构成“矩阵方法总是更好”的排序。[原始博客中的相关方法讨论][jordan]
 
+<details>
+<summary>Muon 与 Shampoo 的瞬时矩阵关系是什么？</summary>
+
+先取满秩方阵 $G=U\Sigma V^\top$。若只用当前梯度构造左右矩阵，并暂时移除阻尼项，双侧四次方根预条件化满足：
+
+$$
+\begin{aligned}
+P(G)&=(GG^\top)^{-1/4}\,G\,(G^\top G)^{-1/4}\\
+&=U\Sigma^{-1/2}\Sigma\Sigma^{-1/2}V^\top\\
+&=UV^\top.
+\end{aligned}
+$$
+
+两个半次逆幂刚好抵消中间的奇异值，于是得到极因子。矩形或秩亏时，可以只在非零谱上取逆幂，零谱分量设为零；对应的是前文的规范部分等距映射。[Jordan 的推导][jordan]
+
+这个恒等式解释了两类矩阵方法的联系。通常的 [Shampoo][shampoo] 保留跨步累积的左右预条件矩阵；加入历史和阻尼后，当前梯度的奇异值不会再按上式逐项抵消。Muon 则先形成动量，再计算有限步谱变换。比较两者时，要同时保留历史统计、动量位置与数值近似的定义。
+
+例如，当前梯度为 $\operatorname{diag}(2,1)$，过去还出现过一次 $\operatorname{diag}(0,3)$。忽略阻尼，左右累积矩阵都为 $\operatorname{diag}(4,10)$，预条件化后的当前方向是 $\operatorname{diag}(1,1/\sqrt{10})$。过去第二方向的强梯度仍在影响本次幅度；当前梯度自己的极因子则为 $I_2$。
+
+</details>
+
 ## 3. 实际计算的是有限步 Newton–Schulz {#newton-schulz}
 
 ### 3.1 从矩阵多项式变成标量谱映射
@@ -584,6 +605,7 @@ python3.12 -m venv .venv
 18. 固定五步 NS 是否改变了稠密矩阵相对于 SVD 的渐近计算阶数？
 19. 动量非零时，全零梯度与缺失梯度是否会产生相同的参数变化？
 20. 为什么训练恢复还需要另一套优化器状态与采样位置？
+21. 双侧四次方根预条件化在什么条件下等于当前梯度的极因子？
 
 <details>
 <summary>展开核对答案</summary>
@@ -608,6 +630,7 @@ python3.12 -m venv .venv
 18. 不改变固定步数下的稠密渐近阶数；实际优势来自矩阵乘法、精度与硬件执行等因素。
 19. 本文例子里不同：零梯度仍可通过历史动量移动参数并触发衰减；缺失梯度跳过该矩阵。
 20. 下一步还依赖 AdamW 的历史和将读到的数据；只恢复模型与 Muon 动量无法重现这条训练路径。
+21. 只取当前梯度构造左右矩阵、移除阻尼，并在非零谱上取逆幂时，奇异值恰好抵消；跨步累积的 Shampoo 仍保留历史。
 
 </details>
 
@@ -629,3 +652,4 @@ python3.12 -m venv .venv
 [torch-muon-source]: https://github.com/pytorch/pytorch/blob/v2.14.1/torch/optim/_muon.py
 [deriving-muon]: https://jeremybernste.in/writing/deriving-muon
 [adam-rms]: https://kexue.fm/archives/11267
+[shampoo]: https://proceedings.mlr.press/v80/gupta18a.html

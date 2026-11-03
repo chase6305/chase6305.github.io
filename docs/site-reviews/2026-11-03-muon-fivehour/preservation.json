@@ -17,7 +17,7 @@
       "new_ids": 43,
       "missing_ids": [],
       "baseline_source_sha256": "01e1f59f66a7cc3915d2f4ea1c073745d2d0b8318298791a231aad810dd76e03",
-      "source_sha256": "99a61be88aece43614839030215cbc5a24a37879b3274b20944eb6e030026674"
+      "source_sha256": "49350901c4498111ec97bd8e641960f7b45751f9e59e1069c5f35634000b9a10"
     },
     {
       "path": "content/posts/ai/muon-learning-rate-batch-size/index.md",
@@ -35,7 +35,7 @@
       "new_ids": 60,
       "missing_ids": [],
       "baseline_source_sha256": "06ead2a0f0a54c32e3c56551a0fec472da8d046c7ce03a6682ea41f030bd7c5f",
-      "source_sha256": "8d0436ffd5221e6f5ff963b63c4fd7d996ab7a8457686bb41294e5f3c1f94b7d"
+      "source_sha256": "bff416e0eb93c556ba343af802028cad5590683a514d49805fc94dd6cf8e299b"
     }
   ],
   "other_editorial_records_unchanged": 96,

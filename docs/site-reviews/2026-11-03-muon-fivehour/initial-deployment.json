@@ -1,0 +1,13 @@
+{
+  "revision": "1e3ee30c7eb09cbf322cae0ce154845d450f71a4",
+  "workflow": "https://github.com/chase6305/chase6305.github.io/actions/runs/41616330919",
+  "workflow_result": "success",
+  "summary": {
+    "urls": 725,
+    "failures": 0,
+    "retried_urls": 8
+  },
+  "extra_image_outputs": 50,
+  "receipt": "/tmp/chase-muon-fivehour-20261103-7235a3f5/site-release-1e3ee30.json",
+  "scope": "First completed release during the continuing review; later prose refinements will have their own deployment verification."
+}

@@ -6,7 +6,7 @@
       "size": 100,
       "theme": "light",
       "paper": "a4",
-      "htmlSha256": "77d53a19d6e5fc6e0f7e13ed3383007c6471a9c2bee4bfedaf67b3f6c88f34fb",
+      "htmlSha256": "c2dd80a1783c09ab2e42398220f3c7dfcfd3957259e82041750f9efde0a3989c",
       "sourceCheck": {
         "headings": {
           "same": true,
@@ -14,7 +14,7 @@
         },
         "math": {
           "same": true,
-          "count": 119
+          "count": 126
         },
         "code": {
           "same": true,
@@ -25,8 +25,8 @@
           "count": 5
         }
       },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/round8-exports/muon-optimizer-true-100-light-a4.pdf",
-      "pages": 20,
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-optimizer-true-100-light-a4.pdf",
+      "pages": 21,
       "tagged": true,
       "restored": {
         "scrollError": 0,
@@ -51,7 +51,7 @@
       "size": 200,
       "theme": "dark",
       "paper": "a4",
-      "htmlSha256": "77d53a19d6e5fc6e0f7e13ed3383007c6471a9c2bee4bfedaf67b3f6c88f34fb",
+      "htmlSha256": "c2dd80a1783c09ab2e42398220f3c7dfcfd3957259e82041750f9efde0a3989c",
       "sourceCheck": {
         "headings": {
           "same": true,
@@ -59,7 +59,7 @@
         },
         "math": {
           "same": true,
-          "count": 119
+          "count": 126
         },
         "code": {
           "same": true,
@@ -70,8 +70,8 @@
           "count": 5
         }
       },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/round8-exports/muon-optimizer-true-200-dark-a4.pdf",
-      "pages": 51,
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-optimizer-true-200-dark-a4.pdf",
+      "pages": 54,
       "tagged": true,
       "restored": {
         "scrollError": 0,
@@ -96,7 +96,7 @@
       "size": 100,
       "theme": "warm",
       "paper": "a4",
-      "htmlSha256": "77d53a19d6e5fc6e0f7e13ed3383007c6471a9c2bee4bfedaf67b3f6c88f34fb",
+      "htmlSha256": "c2dd80a1783c09ab2e42398220f3c7dfcfd3957259e82041750f9efde0a3989c",
       "sourceCheck": {
         "headings": {
           "same": true,
@@ -104,7 +104,7 @@
         },
         "math": {
           "same": true,
-          "count": 119
+          "count": 126
         },
         "code": {
           "same": true,
@@ -115,8 +115,8 @@
           "count": 5
         }
       },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/round8-exports/muon-optimizer-false-100-warm-a4.pdf",
-      "pages": 20,
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-optimizer-false-100-warm-a4.pdf",
+      "pages": 21,
       "tagged": true,
       "restored": {
         "scrollError": 0,
@@ -141,7 +141,7 @@
       "size": 200,
       "theme": "warm",
       "paper": "letter",
-      "htmlSha256": "77d53a19d6e5fc6e0f7e13ed3383007c6471a9c2bee4bfedaf67b3f6c88f34fb",
+      "htmlSha256": "c2dd80a1783c09ab2e42398220f3c7dfcfd3957259e82041750f9efde0a3989c",
       "sourceCheck": {
         "headings": {
           "same": true,
@@ -149,7 +149,7 @@
         },
         "math": {
           "same": true,
-          "count": 119
+          "count": 126
         },
         "code": {
           "same": true,
@@ -160,8 +160,8 @@
           "count": 5
         }
       },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/round8-exports/muon-optimizer-false-200-warm-letter.pdf",
-      "pages": 53,
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-optimizer-false-200-warm-letter.pdf",
+      "pages": 56,
       "tagged": true,
       "restored": {
         "scrollError": 0,
@@ -186,7 +186,7 @@
       "size": 100,
       "theme": "light",
       "paper": "a4",
-      "htmlSha256": "f24cbeeac6ad3294a0befd0504945c2b5cf9c316a5237d97ad834da250456efd",
+      "htmlSha256": "29769f706909b4b391763adb0d957cbb1afd14c97c60c4f6eeadd19604b6768b",
       "sourceCheck": {
         "headings": {
           "same": true,
@@ -194,7 +194,7 @@
         },
         "math": {
           "same": true,
-          "count": 165
+          "count": 179
         },
         "code": {
           "same": true,
@@ -205,8 +205,8 @@
           "count": 5
         }
       },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/round8-exports/muon-learning-rate-batch-size-true-100-light-a4.pdf",
-      "pages": 20,
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-learning-rate-batch-size-true-100-light-a4.pdf",
+      "pages": 22,
       "tagged": true,
       "restored": {
         "scrollError": 0,
@@ -231,7 +231,7 @@
       "size": 200,
       "theme": "dark",
       "paper": "a4",
-      "htmlSha256": "f24cbeeac6ad3294a0befd0504945c2b5cf9c316a5237d97ad834da250456efd",
+      "htmlSha256": "29769f706909b4b391763adb0d957cbb1afd14c97c60c4f6eeadd19604b6768b",
       "sourceCheck": {
         "headings": {
           "same": true,
@@ -239,7 +239,7 @@
         },
         "math": {
           "same": true,
-          "count": 165
+          "count": 179
         },
         "code": {
           "same": true,
@@ -250,8 +250,8 @@
           "count": 5
         }
       },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/round8-exports/muon-learning-rate-batch-size-true-200-dark-a4.pdf",
-      "pages": 51,
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-learning-rate-batch-size-true-200-dark-a4.pdf",
+      "pages": 55,
       "tagged": true,
       "restored": {
         "scrollError": 0,
@@ -276,7 +276,7 @@
       "size": 100,
       "theme": "warm",
       "paper": "a4",
-      "htmlSha256": "f24cbeeac6ad3294a0befd0504945c2b5cf9c316a5237d97ad834da250456efd",
+      "htmlSha256": "29769f706909b4b391763adb0d957cbb1afd14c97c60c4f6eeadd19604b6768b",
       "sourceCheck": {
         "headings": {
           "same": true,
@@ -284,7 +284,7 @@
         },
         "math": {
           "same": true,
-          "count": 165
+          "count": 179
         },
         "code": {
           "same": true,
@@ -295,8 +295,8 @@
           "count": 5
         }
       },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/round8-exports/muon-learning-rate-batch-size-false-100-warm-a4.pdf",
-      "pages": 20,
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-learning-rate-batch-size-false-100-warm-a4.pdf",
+      "pages": 21,
       "tagged": true,
       "restored": {
         "scrollError": 0,
@@ -321,7 +321,7 @@
       "size": 200,
       "theme": "warm",
       "paper": "letter",
-      "htmlSha256": "f24cbeeac6ad3294a0befd0504945c2b5cf9c316a5237d97ad834da250456efd",
+      "htmlSha256": "29769f706909b4b391763adb0d957cbb1afd14c97c60c4f6eeadd19604b6768b",
       "sourceCheck": {
         "headings": {
           "same": true,
@@ -329,7 +329,7 @@
         },
         "math": {
           "same": true,
-          "count": 165
+          "count": 179
         },
         "code": {
           "same": true,
@@ -340,8 +340,8 @@
           "count": 5
         }
       },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/round8-exports/muon-learning-rate-batch-size-false-200-warm-letter.pdf",
-      "pages": 54,
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-learning-rate-batch-size-false-200-warm-letter.pdf",
+      "pages": 58,
       "tagged": true,
       "restored": {
         "scrollError": 0,
