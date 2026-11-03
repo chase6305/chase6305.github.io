@@ -1,0 +1,108 @@
+[
+  {
+    "name": "reading",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-02-onejev-clarity/check_reading.cjs",
+      "http://127.0.0.1:13669",
+      "9244",
+      "/tmp/chase-onejev-clarity-20261102-0nfg9b3d/qa/v4-reading"
+    ],
+    "started": "2026-11-02T12:56:47.094493+00:00",
+    "finished": "2026-11-02T12:57:18.896356+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "print",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-02-onejev-clarity/check_print.cjs",
+      "http://127.0.0.1:13669",
+      "9244",
+      "/tmp/chase-onejev-clarity-20261102-0nfg9b3d/qa/v4-print"
+    ],
+    "started": "2026-11-02T12:57:18.896498+00:00",
+    "finished": "2026-11-02T12:57:20.478779+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "large-print",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-02-onejev-clarity/check_print.cjs",
+      "http://127.0.0.1:13669",
+      "9244",
+      "/tmp/chase-onejev-clarity-20261102-0nfg9b3d/qa/v4-large-print",
+      "--large-text"
+    ],
+    "started": "2026-11-02T12:57:20.478982+00:00",
+    "finished": "2026-11-02T12:57:22.159265+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "semantics",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-02-onejev-clarity/check_semantics.cjs",
+      "http://127.0.0.1:13669",
+      "9244",
+      "/tmp/chase-onejev-clarity-20261102-0nfg9b3d/qa/v4-semantics",
+      "/tmp/chase-opt-20261029-fivehour/a11y/node_modules/axe-core/axe.min.js"
+    ],
+    "started": "2026-11-02T12:57:22.159476+00:00",
+    "finished": "2026-11-02T12:57:26.727109+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "search",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-02-onejev-clarity/check_search.cjs",
+      "http://127.0.0.1:13669",
+      "9244",
+      "/tmp/chase-onejev-clarity-20261102-0nfg9b3d/qa/v4-search"
+    ],
+    "started": "2026-11-02T12:57:26.727316+00:00",
+    "finished": "2026-11-02T12:57:30.838407+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "images",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-02-onejev-clarity/check_images.cjs",
+      "http://127.0.0.1:13669",
+      "9244",
+      "/tmp/chase-onejev-clarity-20261102-0nfg9b3d/qa/v4-images"
+    ],
+    "started": "2026-11-02T12:57:30.838578+00:00",
+    "finished": "2026-11-02T12:57:34.465708+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "native",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-02-onejev-clarity/export_article.cjs",
+      "http://127.0.0.1:13669",
+      "9244",
+      "/tmp/chase-onejev-clarity-20261102-0nfg9b3d/qa/v4-native"
+    ],
+    "started": "2026-11-02T12:57:34.465866+00:00",
+    "finished": "2026-11-02T12:57:45.746771+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "keyboard",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-02-onejev-clarity/check_keyboard.cjs",
+      "http://127.0.0.1:13669",
+      "9244",
+      "/tmp/chase-onejev-clarity-20261102-0nfg9b3d/qa/v4-keyboard"
+    ],
+    "started": "2026-11-02T12:57:45.747033+00:00",
+    "finished": "2026-11-02T12:57:56.807995+00:00",
+    "exit_code": 0
+  }
+]

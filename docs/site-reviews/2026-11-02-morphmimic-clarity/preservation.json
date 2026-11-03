@@ -1,0 +1,34 @@
+{
+  "initial_dirty_files_checked": 60,
+  "previous_files_changed_except_allowed_metadata": [],
+  "metadata_records_changed_this_task": [
+    93
+  ],
+  "all_other_records_preserved": true,
+  "original_headings_retained": 27,
+  "original_explicit_ids_retained": 19,
+  "current_rendered_ids": 42,
+  "new_explicit_ids": [
+    "imagined-policy-gradient",
+    "one-motion-three-bodies",
+    "supermimic-comparison",
+    "two-alignment-objectives"
+  ],
+  "prior_rendered_ids_retained": 38,
+  "stable_front_matter_fields": [
+    "title",
+    "date",
+    "draft",
+    "tags",
+    "categories",
+    "authors",
+    "contentLanguage",
+    "math",
+    "toc",
+    "images",
+    "imageZoom",
+    "related_posts"
+  ],
+  "example_implementation_unchanged": true,
+  "article_bytecode_files": 0
+}

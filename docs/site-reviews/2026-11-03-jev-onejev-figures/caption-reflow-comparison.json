@@ -1,0 +1,26 @@
+[
+  {
+    "id": "fig-jev-onejev-deployment",
+    "viewport_width_px": 320,
+    "root_font_percent": 200,
+    "before_height_px": 1282.4375,
+    "after_height_px": 849.625,
+    "saved_px": 432.8125
+  },
+  {
+    "id": "fig-onejev-probability-readout",
+    "viewport_width_px": 320,
+    "root_font_percent": 200,
+    "before_height_px": 1120.421875,
+    "after_height_px": 860.734375,
+    "saved_px": 259.6875
+  },
+  {
+    "id": "fig-onejev-state-forking",
+    "viewport_width_px": 320,
+    "root_font_percent": 200,
+    "before_height_px": 1239.15625,
+    "after_height_px": 806.34375,
+    "saved_px": 432.8125
+  }
+]

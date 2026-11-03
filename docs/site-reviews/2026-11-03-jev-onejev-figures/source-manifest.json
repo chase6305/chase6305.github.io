@@ -1,0 +1,290 @@
+{
+  "repository": "/home/ubuntu/workspace/chase/chase6305.github.io",
+  "head_revision": "0d6f32a910b912d8d9f1d6af4b25a0a829803664",
+  "uncommitted_working_tree": true,
+  "fresh_public_directory": "/tmp/chase-onejev-figures-20261103-jd1pcwye/production-v6",
+  "loopback_base": "http://127.0.0.1:13681",
+  "private_cdp_port": 9244,
+  "hugo": "/tmp/chase-opt-20261029-fivehour/tools/hugo",
+  "application_and_provenance_sources": [
+    {
+      "path": "content/posts/ai/jev-decision-layer/index.md",
+      "sha256": "c4c871418d4b34120bd3694b8bacfc0ae8fb5ad421f198f9d16b833766796183",
+      "bytes": 88809
+    },
+    {
+      "path": "layouts/_shortcodes/jev-routing-lab.html",
+      "sha256": "c24e2550ce086978a16f8174dab40d8d2165c6ba32af35cbbba8d16a9151a2c2",
+      "bytes": 3143
+    },
+    {
+      "path": "docs/blog-editorial-review.json",
+      "sha256": "8915481364ce73df6fbaccaac11ffe963146120b0769cf696474b9d880305830",
+      "bytes": 130681
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/make_onejev_readout_figure.py",
+      "sha256": "501140e8af0126f87bfe022c9d72acd2bbe1977a8a42006b937d18ec1298c8c6",
+      "bytes": 4321
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/assets/jev-onejev-deployment.png",
+      "sha256": "e0d5f1879add2a18fe041f64f5129f0c41638480979d8aa92af387477b87dd53",
+      "bytes": 1416127
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/assets/onejev-state-forking.png",
+      "sha256": "94d87e597b5258732bf6873c8a7f09182ab8c2099f1d6d1b9232579289a4701b",
+      "bytes": 1416957
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/assets/onejev-probability-readout.png",
+      "sha256": "b66dc4a19f0625a4aee2cc66c3b75c68395bad6e945f4733390906af4f394cd9",
+      "bytes": 174640
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/onejev_examples.py",
+      "sha256": "4ba8cae4f46aa180f22f8814585ad6d095011f6f7f5d5622852d96dbe234cf0c",
+      "bytes": 6039
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/onejev-examples.zip",
+      "sha256": "40c8d44c22043940bd8af1aa8b12635f02ff7bc92c653def59393b98976cb9b1",
+      "bytes": 16446
+    },
+    {
+      "path": "docs/image-generation/jev-onejev-figures-20261103.json",
+      "sha256": "4451a24868079220e1a6ad2f0c45c2df74eac9be291badfc26bbfb7462549f16",
+      "bytes": 8591
+    }
+  ],
+  "rendered_article": {
+    "path": "/tmp/chase-onejev-figures-20261103-jd1pcwye/production-v6/posts/ai/jev-decision-layer/index.html",
+    "sha256": "5e19337bc877b7c5bef973c4b7d7aca1de943d0237f8f81261d075cc3b553d40",
+    "bytes": 416146
+  },
+  "native_pdf_sources_match_rendered_article": true,
+  "review_artifacts": [
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/README.md",
+      "sha256": "c060190532ca1c8206720e5ac526dbef962adead78a5975b03e3790c89a255ac",
+      "bytes": 5612
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/article-changes.patch",
+      "sha256": "f27b3c978435edd4b585386afb25130186a2c0b644b790b2be715d984361ee6d",
+      "bytes": 15324
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/blog-filter.json",
+      "sha256": "ae993437ed52280a67ad6aca91a8a0d7418029eb872b878f6c4aba2e0cf6ff2b",
+      "bytes": 186
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/browser-runs.json",
+      "sha256": "6c94a8038a30b6510e6d74a29eacca7b00cd29f12c60c1cce7d25dc231a11d73",
+      "bytes": 3944
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/caption-reflow-comparison.json",
+      "sha256": "4b1223f97ba69b8f59800555ad75d7b6c83c8f830fcfc2099df48f51ac2a6e9c",
+      "bytes": 615
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/capture_figures.cjs",
+      "sha256": "988e9fecca1aba14b7cb4e06c836aef5a94c695a7a11aded254dc5c5f07e59ec",
+      "bytes": 2112
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/check_figures.cjs",
+      "sha256": "f7d526dabb4574a9f4b9ed3894f7e23465bd17d04f669a767fb058b5ff8914d1",
+      "bytes": 3507
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/check_images.cjs",
+      "sha256": "b0962e4071df55ff35436d16d404fa30146d9357a3448faf2785409dab09837d",
+      "bytes": 5839
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/check_keyboard.cjs",
+      "sha256": "73e1f345083104f9b01fc3b81ea8b473293375f2f4803ba9f57606fb15fb5e19",
+      "bytes": 6283
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/check_print.cjs",
+      "sha256": "f488524a00acbe939eceab2ef1a1cd3381a4bb6d9acd094573c709fc8f85e1ac",
+      "bytes": 8283
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/check_reading.cjs",
+      "sha256": "444bcec6b3945395036d9751e1e0d66527043f2ed3ef71fa9ee267c3b7a2d1dd",
+      "bytes": 5958
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/check_search.cjs",
+      "sha256": "2bb3cba0d3348f80707a3fa5b8a7f788420e0bb38966ead4ff2dc5bf64f4f30c",
+      "bytes": 2027
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/check_semantics.cjs",
+      "sha256": "e1d06ffe1d3fd0aae2a66adf4a625b5b1ca0d0c5d325dc39e08004c21bce193f",
+      "bytes": 3440
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/diagram-source-review.json",
+      "sha256": "c6711e3c707f340e5580ee1edc1ef352f1d1425cb446274754ebc5900fe39415",
+      "bytes": 1388
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/export_article.cjs",
+      "sha256": "9942f00baf714e9a7b55bc00b3b5722f0ae1650ee3c50b7af86b1724bc1fc190",
+      "bytes": 5329
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/figure-captures.json",
+      "sha256": "7a9f80885e1f66712fdb85235adcd6f6b8e768ebc2980aa2aea5d7a041d868f0",
+      "bytes": 9637
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/figures.json.gz",
+      "sha256": "818dd416bd128edd0030c1768544e39f1a415d29e1ef56f06a075698d8cabbd0",
+      "bytes": 1297
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/high-density.json",
+      "sha256": "c7fde509aa2a873252efdd101799298d4c7e70df9607c18aa49da39f838aaed8",
+      "bytes": 3829
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/hugo.log",
+      "sha256": "038b0b3f52030af0b4a3df6a71c02b921e4240abf423c26098f73cbd799cb1fc",
+      "bytes": 588
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/image-delivery.json",
+      "sha256": "e0c03552d9eb99817a2de9d169243a256b06b9c15609dab68551f282d2e8fd1b",
+      "bytes": 2848
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/images.json.gz",
+      "sha256": "921ab9ef24cf85e34cf3364a3f81043dfc024cf1a4e0488c1b966efceae060a9",
+      "bytes": 346
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/keyboard.json.gz",
+      "sha256": "629a362f49d090316387f21b0145b5ecdbed5489c11700c1af2b86a8682346fb",
+      "bytes": 3724
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/lab-loading.json.gz",
+      "sha256": "d02e7e40a3802d7c4f8bdd4839a9821e8ba98f90a5d52375ee8227ee82309917",
+      "bytes": 1050
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/large-print.json.gz",
+      "sha256": "e04b71f82a00a1e10b715caaa77383f020359a0d29c60457ff4f83a5e5947180",
+      "bytes": 396
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/native-exports.json",
+      "sha256": "f2ad02fdbaefb35967755d03b0762e269026b68489b92d4f3bd90fbfeeb3a6b3",
+      "bytes": 4265
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/onejev-tests.log",
+      "sha256": "dfe3334da0bb3280f43ebadde9addbad61540c16830eedee2ac0b5d4076daa57",
+      "bytes": 104
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/package-check.log",
+      "sha256": "cc69e6253185e7e5b87fd54611b2c591a97be66c4dd377397162abae32328844",
+      "bytes": 44
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/plot-reproduction.json",
+      "sha256": "13875e5c898cadc719918af0731a4574203bd80c6c5f7ca2212f4d3665dcac6b",
+      "bytes": 405
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/preservation.json",
+      "sha256": "23d890d8e347e7a6058b6f54a825beb780f9e7cfe50d5267b076650338712267",
+      "bytes": 1142
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/print.json.gz",
+      "sha256": "f82b6e6e31df332d990187dc5e26c6b0a8c27f179b3c34bd83047ac65f57fc6a",
+      "bytes": 395
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/reading.json.gz",
+      "sha256": "1be1cc8a4c27e50a08ed280638e2b4acc0508074583e205c289ffd91339471ff",
+      "bytes": 1437
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/search.json.gz",
+      "sha256": "e1c0c336802d29a55800ca8846c4c04302b0689b2b4fd73500fda21a582c9567",
+      "bytes": 1027
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/semantics.json.gz",
+      "sha256": "49275562b5a22e1fc0419c7b7003ba656dcb1b113ef16c1080499b170b655f72",
+      "bytes": 2151
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/task-scope.json",
+      "sha256": "98ba87d59cb4e00ec212e674dafa55200324d0811a4fcc33ed911437c2e7f0c1",
+      "bytes": 1915
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/tool-versions.json",
+      "sha256": "2b1537da0111b2e9d0ac0968e9fd48e8d7d4f09bb53b10d9fdf8a6adf8c6b35f",
+      "bytes": 584
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/validation.json",
+      "sha256": "a4360fe66291ed7256eecee904ecc3de78a2203fe6a52fd293939a7e14fdc5bd",
+      "bytes": 554
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/visual/a4-light-page-4.png",
+      "sha256": "27b3b92fb6968a2acd88f178a00ce4d328268bbc7ca96eb349eaf6d266a3af01",
+      "bytes": 361496
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/visual/a4-light-page-7.png",
+      "sha256": "3b4da90bf00a40e1771c53271e77b4f1e77256aa90607f869298fb3bd54d3b92",
+      "bytes": 215444
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/visual/a4-light-page-8.png",
+      "sha256": "338bf5542610dcc7f8ac1f4f7d41142257e8ded31a945451655c33f47fd73595",
+      "bytes": 357386
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/visual/fig-jev-onejev-deployment-320-100-light.png",
+      "sha256": "36926d2d1b9717d4a2bdb39fd835b86e7253dd18b74ec05aa124ebc4b34eb748",
+      "bytes": 66518
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/visual/fig-onejev-probability-readout-320-100-dark.png",
+      "sha256": "9cecd9a24fdfa65be676f4f08c06bbda736a42b26c23bdeaeb1bb559c25d69cd",
+      "bytes": 40954
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/visual/fig-onejev-state-forking-1440-100-light.png",
+      "sha256": "e10be375499fda96173be4ebae22be0f6bed3fc157021c08245fb50d664ef022",
+      "bytes": 202192
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/visual/fig-onejev-state-forking-320-200-dark.png",
+      "sha256": "7ba35c93d0c6988a7ffc9f824a040c2ec9070ffb08ab06b9d5c0bb9224310cb1",
+      "bytes": 83221
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-figures/visual-review.json",
+      "sha256": "fe5c9401f4c9b9ad0865060bb289f91a47fa611d090aedc4b185218d2dc52f40",
+      "bytes": 2144
+    }
+  ],
+  "scope_note": "The lab loading report explicitly identifies its earlier build. Final reading, figure, image, search, keyboard, semantic and print reports use production-v6."
+}

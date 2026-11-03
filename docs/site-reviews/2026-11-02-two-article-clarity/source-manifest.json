@@ -1,0 +1,15 @@
+{
+  "captured_at_utc": "2026-11-02T09:05:21.009716+00:00",
+  "sha256": {
+    "content/posts/ai/supermimic/index.md": "6993e14860b83af9eaefebcdf5b8c693f4898a4aa20892c0a8543a9f10f5d895",
+    "content/posts/ai/rlhf-rlvr-rlcd/index.md": "1c0f69727507c66fc083d52428c201a4db16838fec2bcedc1dcf8074fdd0ed88",
+    "content/posts/ai/rlhf-rlvr-rlcd/assets/post-training-feedback-routes.svg": "85d382296e48f8b8a26a71d9c19271cf083ac41bf529746604c34aaf2f0bef21",
+    "docs/blog-editorial-review.json": "60d7019e9bd73abe2b98db2bd0d80911bdba34bb969d2b5f5cf0e8e17b9d27d9",
+    "content/posts/ai/supermimic/survival_credit.py": "4d1cb979921593d8a1597a4accaf8e2487b6b0863615e9550ed22287b3b8738d",
+    "static/labs/supermimic/gradient_lab.js": "db849949869b5c4a877f039eed764dfcd6c3da2f9dab96e34258b354054814f0",
+    "assets/css/custom.css": "53fcce05018cdd6317a5894dd6437686b794ba931cabb245805722f0fb91cf5c",
+    "scripts/lib/browser.cjs": "9b540f5eaa558f207c0b50f134ec78dca9717e5c72ca037226f92b2d2e0e2b21",
+    "config.yaml": "fcec6040718d7ec3f92ae4b74d7ffb949bd054eb34b0bb14377a5201502c0c24",
+    "scripts/check_overflow_focus.cjs": "320c4d1944fa5c4b39dfe77abd2ee23bb9c30f6e4dcd969e705accfa35f6fd84"
+  }
+}

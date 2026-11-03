@@ -1,0 +1,29 @@
+{
+  "paper_url": "https://lzyang2000.github.io/morphmimic/static/morphmimic.pdf",
+  "paper_sha256": "b4259b6c9f569a477a65775b9fc264351ec3eb45212d13ec9eb391274f790467",
+  "paper_matches_original_review": true,
+  "code_revision": "aa40fe46a7fa995ba7a7354ad065a2c8ad64a302",
+  "clarity_checks": [
+    {
+      "claim": "Motion targets are paired by source clip/frame after robot-specific retargeting, not by identical joint angles.",
+      "evidence": "Report III-E.2 and pinned distributed.py."
+    },
+    {
+      "claim": "Frozen world-model and critic parameters still pass actor derivatives.",
+      "evidence": "Report III-E.1, referring to SuperMimic imagined-return objective."
+    },
+    {
+      "claim": "Morphology is concatenated and also modulates the policy decoder through FiLM; zero FiLM does not erase the concatenated descriptor.",
+      "evidence": "Report equations 7–8 and pinned policy.py."
+    },
+    {
+      "claim": "Five-point matching updates only its encoder; the motion latent is a clean-reference stopped-gradient target.",
+      "evidence": "Report III-F.1, equation 11."
+    },
+    {
+      "claim": "I_b contains valid rewarded rollout steps; latent dimensions are summed and steps averaged.",
+      "evidence": "Report III-F.1, text around equation 11."
+    }
+  ],
+  "scope": "Source and explanation review; no simulator, training or hardware reproduction."
+}

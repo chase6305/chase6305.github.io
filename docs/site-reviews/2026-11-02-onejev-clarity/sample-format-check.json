@@ -1,0 +1,16 @@
+{
+  "dataset": "OmniJev/OneJev-Data",
+  "revision": "1028292856b8bc3029e4e423df78d0637c735dc0",
+  "sample_rows": 100,
+  "question_types": {
+    "choice": 49,
+    "score": 20,
+    "noul": 31
+  },
+  "questions_and_targets_validated": 100,
+  "media_references": 634,
+  "unique_media_files_verified": 634,
+  "all_paths_within_disposable_directory": true,
+  "train_jsonl_sha256": "5d83323b9720d969dd22d3fa62a4e7e15665fda3d06621e3c3f251f11eb1bc9b",
+  "scope": "Public training sample extraction and format/target/media checks only; zero optimizer steps and no held-out evaluation."
+}

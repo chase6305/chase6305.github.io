@@ -1,0 +1,118 @@
+{
+  "checked_at_utc": "2026-11-02T08:17:31.952463+00:00",
+  "scope": "Single-agent source/teaching audit. The numerical constructions are explanatory examples, not paper measurements or a user comprehension study.",
+  "pdf_sources": [
+    {
+      "name": "rlcd-v3",
+      "url": "https://arxiv.org/pdf/2307.12950v3",
+      "bytes": 873642,
+      "sha256": "3723ddbabbf34f84eece2dc97fd3bab6609889360a89d09a7a9561f8cfc0e46a"
+    },
+    {
+      "name": "instructgpt-v1",
+      "url": "https://arxiv.org/pdf/2203.02155v1",
+      "bytes": 1797405,
+      "sha256": "c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98"
+    },
+    {
+      "name": "deepseek-r1-v1",
+      "url": "https://arxiv.org/pdf/2501.12948v1",
+      "bytes": 1312189,
+      "sha256": "52d8ca3ac93e88cef9944e1fd03b0e04aec5954495a8250fb2fadf8fa20a4dad"
+    },
+    {
+      "name": "supermimic",
+      "url": "https://arxiv.org/pdf/2610.28480v1",
+      "local_supplied_path": "/home/ubuntu/Documents/SuperMimic.pdf",
+      "sha256": "fe213017ab062f4acc3965da89abd3c29969163e144a2628a662b8ce46691009"
+    }
+  ],
+  "claims": [
+    {
+      "article": "supermimic",
+      "claim": "Reference motion specifies the desired body motion; the deterministic actor outputs a normalized joint setpoint based on observation and goal.",
+      "evidence": "Supplied PDF p4, Section3.1; p8, control period; p17, deployment.",
+      "clarity_change": "Separate reference motion, executed action, simulator logs and deployment control."
+    },
+    {
+      "article": "supermimic",
+      "claim": "A differentiable surrogate supplies action/state derivatives for policy training even when simulator rigid-body dynamics are already specified. Actor and critic updates are two substeps of the third training phase.",
+      "evidence": "Supplied PDF p5, Section3.2; p15, AlgorithmA.1.",
+      "clarity_change": "Add motivation before world-model equations and explicitly reconcile the three-phase loop with the four-row parameter table."
+    },
+    {
+      "article": "supermimic",
+      "claim": "The model fits logged action windows; actor improvement uses new actions from the current policy, with model/critic weights fixed during the actor step.",
+      "evidence": "PDF pp4–5, Figure2 and Equations1–3; p15, AlgorithmA.1.",
+      "clarity_change": "Put phase/parameter table before the equations, then repeat the data-source distinction."
+    },
+    {
+      "article": "supermimic",
+      "claim": "Default k8, H32 and 50Hz imply trajectory durations0.16s and0.64s, separate from execution wall time.",
+      "evidence": "PDF pp5,8,16; arithmetic8/50 and32/50.",
+      "clarity_change": "Separate control cycle, model-fit window and actor imagination."
+    },
+    {
+      "article": "supermimic",
+      "claim": "Frozen network parameters can still transmit derivatives with respect to their inputs; eval mode does not freeze weights.",
+      "evidence": "PDF p5, BPTT through the frozen model; PyTorch2.14 autograd notes; published scalar snippet executed with PyTorch2.8.0+cpu.",
+      "url": "https://docs.pytorch.org/docs/2.14/notes/autograd.html#evaluation-mode-nn-module-eval",
+      "clarity_change": "Add an optional executed freeze example and retain standard-library finite differences."
+    },
+    {
+      "article": "supermimic",
+      "claim": "The terminal value participates in the actor objective through its state input; lambda mixes critic targets while actor still uses the window-return/terminal-value objective.",
+      "evidence": "PDF p5, Equations2–3; p15, critic target fitting; p16, gamma0.99/lambda0.95.",
+      "clarity_change": "Add the0.55/0.58 comparison and explain lambda0/1 endpoints."
+    },
+    {
+      "article": "supermimic",
+      "claim": "Analytic versus learned reward/observation/termination heads is left implementation-dependent by the method description.",
+      "evidence": "PDF p5, Section3.2.",
+      "clarity_change": "Retain the distinction and avoid inventing separate trained networks for every head."
+    },
+    {
+      "article": "rlhf-rlvr-rlcd",
+      "claim": "Classic InstructGPT uses demonstrations, human comparisons, a learned reward model and PPO; fitting the reward model is a separate update from policy optimization.",
+      "evidence": "InstructGPT v1, pp3,6–7; independent Bradley–Terry arithmetic from the current table.",
+      "clarity_change": "Track phi versus theta and distinguish score model, critic, reference and sampling policy."
+    },
+    {
+      "article": "rlhf-rlvr-rlcd",
+      "claim": "DPO directly optimizes the policy from preference pairs and need not fit an explicit reward model or perform online PPO.",
+      "evidence": "DPO v3 primary abstract.",
+      "url": "https://arxiv.org/abs/2305.18290v3",
+      "clarity_change": "Separate preference-data provenance from downstream update choice in prose and the existing SVG."
+    },
+    {
+      "article": "rlhf-rlvr-rlcd",
+      "claim": "GRPO uses a group baseline in place of a learned value model; verifiable scoring need not be differentiable.",
+      "evidence": "DeepSeek-R1 v1, pp5–6; policy-score gradient explanation and exact population-standard-deviation construction.",
+      "clarity_change": "Connect(1,1,0,0) to(1,1,-1,-1), preserve the epsilon qualification and explain why zero-sum advantages do not force a zero gradient."
+    },
+    {
+      "article": "rlhf-rlvr-rlcd",
+      "claim": "RLCD labels positive-branch outputs as preferred without post-hoc AI scoring, trains a preference model, then runs PPO.",
+      "evidence": "RLCD v3, p3, Section3.1.",
+      "clarity_change": "List the original four stages; identify DPO with similarly synthesized pairs as an alternative downstream choice."
+    },
+    {
+      "article": "rlhf-rlvr-rlcd",
+      "claim": "RLCD contrasts attribute-conditioned output distributions; prompt surface forms should stay similar.",
+      "evidence": "RLCD v3, pp2–4, Sections2,3.2,3.3.",
+      "clarity_change": "Explain context distillation and the possible length/style shortcut."
+    },
+    {
+      "article": "rlhf-rlvr-rlcd",
+      "claim": "RLCD30B indicates a30B preference-data generator; the final model being aligned remains LLaMA7B.",
+      "evidence": "RLCD v3, p6, Section4 implementation paragraph.",
+      "clarity_change": "Separate the general same-model setup from the two reported generation configurations."
+    },
+    {
+      "article": "rlhf-rlvr-rlcd",
+      "claim": "Synthetic training labels and independent human evaluation are distinct; the paper also reports separate human comparison evaluation.",
+      "evidence": "RLCD v3, p19, AppendixF.1.",
+      "clarity_change": "Correct the reversed audit answer and clarify that evaluation does not require manually relabeling every training pair."
+    }
+  ]
+}

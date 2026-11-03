@@ -1,0 +1,15 @@
+{
+  "asset": "content/posts/ai/rlhf-rlvr-rlcd/assets/post-training-feedback-routes.svg",
+  "updated_at_utc": "2026-11-02T07:00:21.504582+00:00",
+  "method": "Edit the existing repository-owned SVG in place; preserve its public path and vector format.",
+  "baseline_revision": "0d6f32a910b912d8d9f1d6af4b25a0a829803664",
+  "sha256": "85d382296e48f8b8a26a71d9c19271cf083ac41bf529746604c34aaf2f0bef21",
+  "meaning": "Human and contrastive feedback provide preference pairs, with reward-model/online-RL and direct-preference alternatives. Verifier scores go directly to online RL. The original RLCD reward-model/PPO route is identified separately.",
+  "sources": [
+    "https://arxiv.org/abs/2203.02155v1",
+    "https://arxiv.org/abs/2307.12950v3",
+    "https://arxiv.org/abs/2305.18290v3",
+    "https://arxiv.org/abs/2501.12948v1"
+  ],
+  "style": "White background, thin rounded outlines, pastel source groups, short labels and explicit arrows; essential distinctions also appear in article prose and caption."
+}

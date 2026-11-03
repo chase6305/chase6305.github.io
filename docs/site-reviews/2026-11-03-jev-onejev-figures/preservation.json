@@ -1,0 +1,46 @@
+{
+  "previous_dirty_files_checked": 142,
+  "allowed_existing_dirty_files_changed": [
+    "content/posts/ai/jev-decision-layer/index.md",
+    "docs/blog-editorial-review.json"
+  ],
+  "unexpected_previous_changes": [],
+  "changed_metadata_records": [
+    81
+  ],
+  "old_rendered_ids": 71,
+  "current_rendered_ids": 74,
+  "missing_ids": [],
+  "figure_labels": [
+    "图 1",
+    "图 2",
+    "图 3",
+    "图 4",
+    "图 5",
+    "图 6",
+    "图 7",
+    "图 8"
+  ],
+  "routing_lab_section_byte_identical_to_baseline": true,
+  "routing_lab_section_sha256": "a5d4acd97fef181dd73308c9f8fdab2e838d3fa5a79a97b68ddc9f909b4eee45",
+  "raw_math_delimiters_in_captions": false,
+  "publication_date_preserved": true,
+  "draft_state_preserved": true,
+  "final_production_directory": "/tmp/chase-onejev-figures-20261103-jd1pcwye/production-v6",
+  "heading_text_and_ids": {
+    "same": true,
+    "count": 52
+  },
+  "formula_annotations": {
+    "same": true,
+    "count": 92
+  },
+  "code_block_contents": {
+    "same": true,
+    "count": 18
+  },
+  "previous_figures": {
+    "same_image_and_alt_and_caption_after_number_removal": true,
+    "count": 5
+  }
+}

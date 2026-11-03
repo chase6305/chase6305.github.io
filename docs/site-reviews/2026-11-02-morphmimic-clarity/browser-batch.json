@@ -1,0 +1,108 @@
+[
+  {
+    "name": "print",
+    "argv": [
+      "node",
+      "docs/site-reviews/2026-11-02-morphmimic-clarity/check_print.cjs",
+      "http://127.0.0.1:13661",
+      "9244",
+      "/tmp/chase-morphmimic-standalone-20261102-pu3onz95/qa/symbols-print"
+    ],
+    "started": "2026-11-02T11:02:50.606104+00:00",
+    "finished": "2026-11-02T11:02:51.830360+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "large-print",
+    "argv": [
+      "node",
+      "docs/site-reviews/2026-11-02-morphmimic-clarity/check_print.cjs",
+      "http://127.0.0.1:13661",
+      "9244",
+      "/tmp/chase-morphmimic-standalone-20261102-pu3onz95/qa/symbols-large-print",
+      "--large-text"
+    ],
+    "started": "2026-11-02T11:02:51.830481+00:00",
+    "finished": "2026-11-02T11:02:53.165408+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "reading",
+    "argv": [
+      "node",
+      "docs/site-reviews/2026-11-02-morphmimic-clarity/check_reading.cjs",
+      "http://127.0.0.1:13661",
+      "9244",
+      "/tmp/chase-morphmimic-standalone-20261102-pu3onz95/qa/symbols-reading"
+    ],
+    "started": "2026-11-02T11:02:53.165536+00:00",
+    "finished": "2026-11-02T11:03:12.754859+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "semantics",
+    "argv": [
+      "node",
+      "docs/site-reviews/2026-11-02-morphmimic-clarity/check_semantics.cjs",
+      "http://127.0.0.1:13661",
+      "9244",
+      "/tmp/chase-morphmimic-standalone-20261102-pu3onz95/qa/symbols-semantics",
+      "/tmp/chase-opt-20261029-fivehour/a11y/node_modules/axe-core/axe.min.js"
+    ],
+    "started": "2026-11-02T11:03:12.755007+00:00",
+    "finished": "2026-11-02T11:03:16.164982+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "search",
+    "argv": [
+      "node",
+      "docs/site-reviews/2026-11-02-morphmimic-clarity/check_search.cjs",
+      "http://127.0.0.1:13661",
+      "9244",
+      "/tmp/chase-morphmimic-standalone-20261102-pu3onz95/qa/symbols-search"
+    ],
+    "started": "2026-11-02T11:03:16.165141+00:00",
+    "finished": "2026-11-02T11:03:19.541122+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "code-reading",
+    "argv": [
+      "node",
+      "scripts/check_code_reading.cjs",
+      "http://127.0.0.1:13661",
+      "9244",
+      "/tmp/chase-morphmimic-standalone-20261102-pu3onz95/qa/symbols-code-reading"
+    ],
+    "started": "2026-11-02T11:03:19.541294+00:00",
+    "finished": "2026-11-02T11:03:26.238877+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "native",
+    "argv": [
+      "node",
+      "docs/site-reviews/2026-11-02-morphmimic-clarity/export_article.cjs",
+      "http://127.0.0.1:13661",
+      "9244",
+      "/tmp/chase-morphmimic-standalone-20261102-pu3onz95/qa/symbols-native"
+    ],
+    "started": "2026-11-02T11:03:26.239048+00:00",
+    "finished": "2026-11-02T11:03:35.339035+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "images",
+    "argv": [
+      "node",
+      "docs/site-reviews/2026-11-02-morphmimic-clarity/check_images.cjs",
+      "http://127.0.0.1:13661",
+      "9244",
+      "/tmp/chase-morphmimic-standalone-20261102-pu3onz95/qa/symbols-images"
+    ],
+    "started": "2026-11-02T11:03:35.339213+00:00",
+    "finished": "2026-11-02T11:03:38.064901+00:00",
+    "exit_code": 0
+  }
+]

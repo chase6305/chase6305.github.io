@@ -1,0 +1,14 @@
+{
+  "url": "https://huggingface.co/api/models/mradermacher/OneJev1.6-0.8B-GGUF",
+  "checked_on": "2026-11-03",
+  "repository": "mradermacher/OneJev1.6-0.8B-GGUF",
+  "observed_revision": "54f205a532e283f1b0697d78891f6968c57c3ebc",
+  "q8_files": [
+    "OneJev1.6-0.8B.Q8_0.gguf"
+  ],
+  "projector_files": [
+    "OneJev1.6-0.8B.mmproj-Q8_0.gguf",
+    "OneJev1.6-0.8B.mmproj-f16.gguf"
+  ],
+  "scope": "Repository/file availability only; no quantized weights downloaded and no llama.cpp inference executed."
+}

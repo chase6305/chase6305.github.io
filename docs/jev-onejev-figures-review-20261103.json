@@ -1,0 +1,78 @@
+{
+  "status": "complete",
+  "window_start_utc": "2026-11-03T02:51:58+00:00",
+  "planned_end_utc": "2026-11-03T03:51:58+00:00",
+  "minimum_elapsed_seconds": 3600,
+  "scope": "Improve Jev and OneJev explanations with corresponding figures, full source/arrow review and article reading validation.",
+  "baseline_revision": "0d6f32a910b912d8d9f1d6af4b25a0a829803664",
+  "work_directory": "/tmp/chase-onejev-figures-20261103-jd1pcwye",
+  "article": "content/posts/ai/jev-decision-layer/index.md",
+  "acceptance_records_changed": [
+    81
+  ],
+  "prior_page_ids_retained": 71,
+  "new_figure_ids": [
+    "fig-jev-onejev-deployment",
+    "fig-onejev-probability-readout",
+    "fig-onejev-state-forking"
+  ],
+  "changes": [
+    "Add two conceptual diagrams using built-in Imagegen and a deterministic probability-readout figure.",
+    "Keep the original five figures and their IDs; renumber captions 4–8.",
+    "Explain internal slot A versus external option ID and three-way arithmetic versus four-option client.",
+    "Distinguish independent question inputs from statistically independent answers.",
+    "Shorten mobile captions and use plain K/T notation in raw HTML captions.",
+    "Accept an optional lab shortcode ID and pin the existing instance to preserve all previous control/status IDs."
+  ],
+  "validation": "docs/site-reviews/2026-11-03-jev-onejev-figures/README.md",
+  "image_provenance": "docs/image-generation/jev-onejev-figures-20261103.json",
+  "shared_template_change": "Optional id argument in layouts/_shortcodes/jev-routing-lab.html; existing ordinal fallback retained.",
+  "shared_javascript_or_css_changes": false,
+  "model_forward_executed": false,
+  "training_or_robot_hardware_tested": false,
+  "commit_push_or_deploy": false,
+  "checks": {
+    "strict_validation_errors": 0,
+    "html_pages": 320,
+    "local_references": 32641,
+    "reading_layouts": 24,
+    "fresh_fragment_loads": 64,
+    "figure_geometry_contexts": 64,
+    "image_viewer_contexts": 32,
+    "chapter_clicks": 212,
+    "table_arrow_cases": 8,
+    "exact_code_copies": 8,
+    "semantic_contexts": 8,
+    "semantic_violations": 0,
+    "search_cases": 24,
+    "ordinary_print_layouts": 6,
+    "large_print_layouts": 6,
+    "native_pdf_exports": 4,
+    "native_pdf_pages": [
+      39,
+      107,
+      39,
+      111
+    ],
+    "manually_reviewed_final_a4_pages": [
+      4,
+      7,
+      8
+    ],
+    "lab_loading_cases": 89,
+    "standard_library_test_methods": 6,
+    "portable_archive_members": 4,
+    "previous_dirty_files_preserved_with_scoped_exceptions": 142,
+    "plot_reproduction_byte_identical": true,
+    "mobile_device_pixel_ratios": [
+      1,
+      2,
+      3
+    ],
+    "high_density_image_cases": 9
+  },
+  "pending": [],
+  "window_finished_utc": "2026-11-03T03:53:19.259210+00:00",
+  "elapsed_seconds": 3681.25921,
+  "elapsed_requirement_met": true
+}

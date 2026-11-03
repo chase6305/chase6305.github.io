@@ -1,0 +1,22 @@
+{
+  "scope": "Read existing pinned primary source files to verify figure dataflow and confidence fields; no new inference claim.",
+  "sources": [
+    {
+      "url": "https://github.com/OmniJev/OneJev/blob/d18d82243d82062af9c6c1bed999eaec5f39cbe0/qev/answers.py",
+      "local_source": "/tmp/chase-onejev-clarity-20261102-0nfg9b3d/sources/OneJev/qev/answers.py",
+      "sha256": "09b06dba258c80a6a9afdaa5aacfd0f7523f9d2a087a7b6402ca03553ea6fba6",
+      "reviewed_functions": "choice_confidence, make_choice, make_score"
+    },
+    {
+      "url": "https://github.com/OmniJev/Flide/blob/ea93bfaf8e8109aad444d9f548957a519212a70a/plugins/onejev/flide_onejev/format.py",
+      "local_source": "/tmp/chase-onejev-clarity-20261102-0nfg9b3d/sources/Flide-source/plugins/onejev/flide_onejev/format.py",
+      "sha256": "2d96673914284f8abc4a27632fd5c463aa38e97b777c3b41b401e4707a52e05d",
+      "reviewed_functions": "plan, finish, _prefix_and_suffix_ids, _prefix_and_suffix_media"
+    }
+  ],
+  "omissions": [
+    "The deployment diagram selects the Flide path; qev/GGUF is discussed in the article.",
+    "The branch diagram selects shared-prefix execution with small questions; scheduling, numeric precision and large-choice splitting/optional ordering passes are not depicted.",
+    "Typed-answer diagram rows omit some full response fields; their detailed definitions remain in the prose."
+  ]
+}

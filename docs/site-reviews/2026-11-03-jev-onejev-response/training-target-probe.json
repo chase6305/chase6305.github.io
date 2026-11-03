@@ -1,0 +1,640 @@
+{
+  "scope": "Actual pinned train.common rendering and target mapping, on a constructed notification training row; no model forward or training.",
+  "target_by_candidate_id": {
+    "enable": 1.0
+  },
+  "missing_candidate_targets_are_zero": true,
+  "common_source": "/tmp/chase-onejev-clarity-20261102-0nfg9b3d/sources/OneJev/train/common.py",
+  "common_sha256": "fa15871397c4ced330be750f6d1a26ab54edaa3c0b5ffa0a82b79beb8641a3a2",
+  "seeded_renderings_checked": 24,
+  "exhaustive_option_permutations_checked": 24,
+  "exhaustive_checks": [
+    {
+      "order": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "labels": [
+        "enable",
+        "stop",
+        "reobserve",
+        "handoff"
+      ],
+      "target": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        0,
+        1,
+        3,
+        2
+      ],
+      "labels": [
+        "enable",
+        "stop",
+        "handoff",
+        "reobserve"
+      ],
+      "target": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        0,
+        2,
+        1,
+        3
+      ],
+      "labels": [
+        "enable",
+        "reobserve",
+        "stop",
+        "handoff"
+      ],
+      "target": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        0,
+        2,
+        3,
+        1
+      ],
+      "labels": [
+        "enable",
+        "reobserve",
+        "handoff",
+        "stop"
+      ],
+      "target": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        0,
+        3,
+        1,
+        2
+      ],
+      "labels": [
+        "enable",
+        "handoff",
+        "stop",
+        "reobserve"
+      ],
+      "target": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        0,
+        3,
+        2,
+        1
+      ],
+      "labels": [
+        "enable",
+        "handoff",
+        "reobserve",
+        "stop"
+      ],
+      "target": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        1,
+        0,
+        2,
+        3
+      ],
+      "labels": [
+        "stop",
+        "enable",
+        "reobserve",
+        "handoff"
+      ],
+      "target": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        1,
+        0,
+        3,
+        2
+      ],
+      "labels": [
+        "stop",
+        "enable",
+        "handoff",
+        "reobserve"
+      ],
+      "target": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        1,
+        2,
+        0,
+        3
+      ],
+      "labels": [
+        "stop",
+        "reobserve",
+        "enable",
+        "handoff"
+      ],
+      "target": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        1,
+        2,
+        3,
+        0
+      ],
+      "labels": [
+        "stop",
+        "reobserve",
+        "handoff",
+        "enable"
+      ],
+      "target": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "order": [
+        1,
+        3,
+        0,
+        2
+      ],
+      "labels": [
+        "stop",
+        "handoff",
+        "enable",
+        "reobserve"
+      ],
+      "target": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        1,
+        3,
+        2,
+        0
+      ],
+      "labels": [
+        "stop",
+        "handoff",
+        "reobserve",
+        "enable"
+      ],
+      "target": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "order": [
+        2,
+        0,
+        1,
+        3
+      ],
+      "labels": [
+        "reobserve",
+        "enable",
+        "stop",
+        "handoff"
+      ],
+      "target": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        2,
+        0,
+        3,
+        1
+      ],
+      "labels": [
+        "reobserve",
+        "enable",
+        "handoff",
+        "stop"
+      ],
+      "target": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        2,
+        1,
+        0,
+        3
+      ],
+      "labels": [
+        "reobserve",
+        "stop",
+        "enable",
+        "handoff"
+      ],
+      "target": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        2,
+        1,
+        3,
+        0
+      ],
+      "labels": [
+        "reobserve",
+        "stop",
+        "handoff",
+        "enable"
+      ],
+      "target": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "order": [
+        2,
+        3,
+        0,
+        1
+      ],
+      "labels": [
+        "reobserve",
+        "handoff",
+        "enable",
+        "stop"
+      ],
+      "target": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        2,
+        3,
+        1,
+        0
+      ],
+      "labels": [
+        "reobserve",
+        "handoff",
+        "stop",
+        "enable"
+      ],
+      "target": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "order": [
+        3,
+        0,
+        1,
+        2
+      ],
+      "labels": [
+        "handoff",
+        "enable",
+        "stop",
+        "reobserve"
+      ],
+      "target": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        3,
+        0,
+        2,
+        1
+      ],
+      "labels": [
+        "handoff",
+        "enable",
+        "reobserve",
+        "stop"
+      ],
+      "target": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        3,
+        1,
+        0,
+        2
+      ],
+      "labels": [
+        "handoff",
+        "stop",
+        "enable",
+        "reobserve"
+      ],
+      "target": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        3,
+        1,
+        2,
+        0
+      ],
+      "labels": [
+        "handoff",
+        "stop",
+        "reobserve",
+        "enable"
+      ],
+      "target": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "order": [
+        3,
+        2,
+        0,
+        1
+      ],
+      "labels": [
+        "handoff",
+        "reobserve",
+        "enable",
+        "stop"
+      ],
+      "target": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "order": [
+        3,
+        2,
+        1,
+        0
+      ],
+      "labels": [
+        "handoff",
+        "reobserve",
+        "stop",
+        "enable"
+      ],
+      "target": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    }
+  ],
+  "seeded_distinct_orders": 16,
+  "seeded_orders": [
+    [
+      "reobserve",
+      "enable",
+      "stop",
+      "handoff"
+    ],
+    [
+      "handoff",
+      "enable",
+      "reobserve",
+      "stop"
+    ],
+    [
+      "stop",
+      "reobserve",
+      "handoff",
+      "enable"
+    ],
+    [
+      "handoff",
+      "enable",
+      "reobserve",
+      "stop"
+    ],
+    [
+      "reobserve",
+      "enable",
+      "handoff",
+      "stop"
+    ],
+    [
+      "enable",
+      "stop",
+      "handoff",
+      "reobserve"
+    ],
+    [
+      "handoff",
+      "reobserve",
+      "stop",
+      "enable"
+    ],
+    [
+      "handoff",
+      "stop",
+      "enable",
+      "reobserve"
+    ],
+    [
+      "enable",
+      "reobserve",
+      "handoff",
+      "stop"
+    ],
+    [
+      "enable",
+      "stop",
+      "reobserve",
+      "handoff"
+    ],
+    [
+      "handoff",
+      "reobserve",
+      "stop",
+      "enable"
+    ],
+    [
+      "enable",
+      "stop",
+      "reobserve",
+      "handoff"
+    ],
+    [
+      "enable",
+      "reobserve",
+      "stop",
+      "handoff"
+    ],
+    [
+      "handoff",
+      "enable",
+      "stop",
+      "reobserve"
+    ],
+    [
+      "stop",
+      "handoff",
+      "reobserve",
+      "enable"
+    ],
+    [
+      "handoff",
+      "reobserve",
+      "enable",
+      "stop"
+    ],
+    [
+      "enable",
+      "handoff",
+      "stop",
+      "reobserve"
+    ],
+    [
+      "enable",
+      "reobserve",
+      "stop",
+      "handoff"
+    ],
+    [
+      "reobserve",
+      "handoff",
+      "enable",
+      "stop"
+    ],
+    [
+      "stop",
+      "handoff",
+      "reobserve",
+      "enable"
+    ],
+    [
+      "reobserve",
+      "enable",
+      "handoff",
+      "stop"
+    ],
+    [
+      "enable",
+      "reobserve",
+      "handoff",
+      "stop"
+    ],
+    [
+      "handoff",
+      "reobserve",
+      "enable",
+      "stop"
+    ],
+    [
+      "stop",
+      "handoff",
+      "enable",
+      "reobserve"
+    ]
+  ]
+}

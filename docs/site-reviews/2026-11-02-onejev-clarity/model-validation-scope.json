@@ -1,0 +1,21 @@
+{
+  "recorded_at_utc": "2026-11-02T13:13:53.428227+00:00",
+  "model": "OmniJev/OneJev1.6-0.8B",
+  "revision": "c89933c277629b707895bff752c61d2b0664c85e",
+  "complete_weights_downloaded": false,
+  "model_forward_executed": false,
+  "gpu_model_inference_claimed": false,
+  "reason": "Model download was not completed over the available network. Partial range downloads are not accepted as a model test.",
+  "completed_verified_range_parts": 792,
+  "parts_total": 814,
+  "bytes_in_range_parts": 1659893184,
+  "download_processes_stopped": [
+    273568
+  ],
+  "completed_checks": [
+    "Actual Flide request planning and constructed-logit answer assembly",
+    "Published training loss on one CPU tensor; no optimizer step",
+    "Pinned 100-row public dataset unpacking and all media references",
+    "Standard-library HTTP client against loopback fixtures"
+  ]
+}

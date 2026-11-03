@@ -1,0 +1,18 @@
+[
+  {
+    "route": "/posts/ai/supermimic/",
+    "baseline_layouts": 6,
+    "baseline_failures": 6,
+    "baseline_formulas_per_case": 8,
+    "reflowed_layouts": 6,
+    "reflowed_failures": 0
+  },
+  {
+    "route": "/posts/ai/rlhf-rlvr-rlcd/",
+    "baseline_layouts": 6,
+    "baseline_failures": 6,
+    "baseline_formulas_per_case": 2,
+    "reflowed_layouts": 6,
+    "reflowed_failures": 0
+  }
+]

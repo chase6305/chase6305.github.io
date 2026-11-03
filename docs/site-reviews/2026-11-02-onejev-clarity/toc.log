@@ -1,0 +1,9 @@
+{
+  "toc_variants": 2,
+  "anchor_modes": 3,
+  "headings_per_variant": 7,
+  "literal_dollars": "preserved",
+  "both_math_delimiters": "passed",
+  "nested_links": "absent",
+  "automatic_section": "passed"
+}

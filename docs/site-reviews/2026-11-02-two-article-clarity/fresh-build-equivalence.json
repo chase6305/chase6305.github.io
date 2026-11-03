@@ -1,0 +1,8 @@
+{
+  "checked_at_utc": "2026-11-02T09:05:21.433371+00:00",
+  "fresh_build": "production-reconciled",
+  "browser_build": "production-coherent / preview-coherent",
+  "files_compared": 2233,
+  "byte_differences": [],
+  "test_only_script_change_does_not_change_site_output": true
+}

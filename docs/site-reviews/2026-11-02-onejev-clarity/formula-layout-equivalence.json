@@ -1,0 +1,35 @@
+{
+  "layout_only_equations": [
+    {
+      "before": "T_{\\mathrm{loop}}=T_{\\mathrm{observe}}+T_{\\mathrm{build}}\n+T_{\\mathrm{request}}+T_{\\mathrm{gate}}+T_{\\mathrm{execute}}.",
+      "after": "\\begin{aligned}\nT_{\\mathrm{loop}}&=T_{\\mathrm{observe}}+T_{\\mathrm{build}}\n+T_{\\mathrm{request}}\\\\\n&\\quad+T_{\\mathrm{gate}}+T_{\\mathrm{execute}}.\n\\end{aligned}",
+      "tokens_preserved": true
+    },
+    {
+      "before": "1-\\frac{132.67}{197.21}\\approx32.7\\%,\\qquad\n1-\\frac{0.072744}{0.273694}\\approx73.4\\%.",
+      "after": "\\begin{aligned}\n1-\\frac{132.67}{197.21}&\\approx32.7\\%,\\\\\n1-\\frac{0.072744}{0.273694}&\\approx73.4\\%.\n\\end{aligned}",
+      "tokens_preserved": true
+    },
+    {
+      "before": "s_t=f(o_t),\\quad C_t=G(s_t,g_k),\\quad\n\\hat p_t=p_\\phi(\\cdot\\mid s_t,g_k,C_t).",
+      "after": "\\begin{aligned}\ns_t&=f(o_t),\\\\\nC_t&=G(s_t,g_k),\\\\\n\\hat p_t&=p_\\phi(\\cdot\\mid s_t,g_k,C_t).\n\\end{aligned}",
+      "tokens_preserved": true
+    },
+    {
+      "before": "\\mathrm{ObservationAge}=t_e-t_o,\\qquad\n\\mathrm{RequestAge}=t_e-t_s.",
+      "after": "\\begin{aligned}\n\\mathrm{ObservationAge}&=t_e-t_o,\\\\\n\\mathrm{RequestAge}&=t_e-t_s.\n\\end{aligned}",
+      "tokens_preserved": true
+    },
+    {
+      "before": "\\mathbb E[(q-Y)^2]\n=p(q-1)^2+(1-p)q^2\n=(q-p)^2+p(1-p).",
+      "after": "\\begin{aligned}\n\\mathbb E[(q-Y)^2]&=p(q-1)^2\\\\\n&\\quad+(1-p)q^2\\\\\n&=(q-p)^2+p(1-p).\n\\end{aligned}",
+      "tokens_preserved": true
+    },
+    {
+      "before": "\\text{成功轨迹条件均价}=\n\\frac{\\sum_{i:y_i=1}C_i}{\\sum_i y_i},\\qquad\n\\text{全部尝试的每成功成本}=\n\\frac{\\sum_i C_i}{\\sum_i y_i}.",
+      "after": "\\begin{aligned}\n\\text{成功轨迹条件均价}&=\n\\frac{\\sum_{i:y_i=1}C_i}{\\sum_i y_i},\\\\\n\\text{全部尝试的每成功成本}&=\n\\frac{\\sum_i C_i}{\\sum_i y_i}.\n\\end{aligned}",
+      "tokens_preserved": true
+    }
+  ],
+  "long_inline_vectors": "The same constructed numerical values are now selectable prose so enlarged narrow layouts can wrap them."
+}

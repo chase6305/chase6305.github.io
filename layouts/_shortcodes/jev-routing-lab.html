@@ -1,4 +1,4 @@
-{{- $id := printf "jev-routing-lab-%d" .Ordinal -}}
+{{- $id := .Get "id" | default (printf "jev-routing-lab-%d" .Ordinal) -}}
 {{- $css := resources.Get "css/jev-routing-lab.css" | minify | fingerprint -}}
 {{- $js := slice (resources.Get "js/lab-data-loader.js") (resources.Get "js/jev-routing-lab.js") | resources.Concat "js/jev-routing-lab-bundle.js" | minify | fingerprint -}}
 {{- $records := .Page.Resources.Get "assets/routing-fixtures.json" | fingerprint -}}

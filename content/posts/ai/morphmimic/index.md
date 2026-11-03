@@ -1,20 +1,20 @@
 ---
 title: "MorphMimic 详解：跨人形机器人的世界模型与策略共享"
 date: 2026-10-27
-lastmod: 2026-10-29
+lastmod: 2026-11-02
 draft: false
 tags: ["MorphMimic", "Humanoid", "Whole-Body Control", "World Model", "Imitation Learning", "Cross-Embodiment", "Paper Notes"]
 categories: ["人工智能"]
 authors: ["chase"]
-summary: "从关节映射、125 维形态描述和 FiLM 出发，拆解 MorphMimic 的跨机器人世界模型、动作潜变量对齐与五点接口；复算输入维数、PD 动作尺度和实验差值，区分三机联合训练、单机直接迁移与 G1 真机证据。"
-description: "从关节映射、125 维形态描述和 FiLM 出发，拆解 MorphMimic 的跨机器人世界模型、动作潜变量对齐与五点接口；复算输入维数、PD 动作尺度和实验差值，区分三机联合训练、单机直接迁移与 G1 真机证据。"
+summary: "用同一段挥手动作走通 MorphMimic 的跨机器人控制：从统一关节、形态向量和 FiLM，到共享世界模型、两种潜变量对齐与五点接口，再用标准库脚本复算维数、动作尺度和实验结果。"
+description: "用同一段挥手动作走通 MorphMimic 的跨机器人控制：从统一关节、形态向量和 FiLM，到共享世界模型、两种潜变量对齐与五点接口，再用标准库脚本复算维数、动作尺度和实验结果。"
 contentLanguage: "zh-CN"
 math: true
 toc: true
 images: ["assets/shared-architecture.webp"]
 imageZoom: true
-reading_prerequisites: "关节位置控制、actor–critic 与链式法则；可先阅读 SuperMimic 的训练闭环"
-reading_focus: "先核对统一关节与本机动作映射，再区分共享参数和本地统计；沿完整动作、五点接口追踪梯度，最后检查评估分母、迁移对照和真机范围。"
+reading_prerequisites: "关节位置控制与基础线性代数；梯度部分需要链式法则，训练闭环会在文中解释"
+reading_focus: "先用同一段动作走通跨机器人控制，再看共享权重、形态调制和两种潜变量对齐，最后复算维数、回报并核对部署条件。"
 related_posts:
   - "/posts/ai/supermimic"
   - "/posts/ai/light-loco-parkour"
@@ -26,7 +26,7 @@ related_posts:
 
 **MorphMimic 把“正在控制哪种身体”作为网络输入，在共同的关节与身体表示上，共享一个可微世界模型和一套运动跟踪策略。** 它的目标是让多个已参与训练的机器人复用网络，而不是为每种机体保留完全独立的控制器。
 
-本文依据 [MorphMimic 项目页][project]、其链接的 [9 页技术报告][paper]，以及核对日期为 2026-10-27 的[代码提交 `aa40fe4`][repo]。作者为 Lizhi Yang、Fengze Xie、Yuyang Wang、Lu Gan、Yisong Yue 和 Aaron D. Ames，来自 Caltech 与 Georgia Tech。项目在 **SuperMimic 论文的独立实现**上扩展跨具身共享；关于短时域模型梯度的基础，可先读本站的 [SuperMimic 详解](../supermimic/)。
+本文依据 [MorphMimic 项目页][project]、其链接的 [9 页技术报告][paper]，以及核对日期为 2026-10-27 的[代码提交 `aa40fe4`][repo]。作者为 Lizhi Yang、Fengze Xie、Yuyang Wang、Lu Gan、Yisong Yue 和 Aaron D. Ames，来自 Caltech 与 Georgia Tech。项目在 **SuperMimic 论文的独立实现**上扩展跨具身共享。下文从控制周期与训练闭环讲起；需要进一步推导模型梯度时，可继续读本站的 [SuperMimic 详解](../supermimic/)。
 
 先记住三条阅读边界：
 
@@ -36,7 +36,7 @@ related_posts:
 
 ## 阅读路线 {#reading-map}
 
-首次阅读可以沿着[统一表示](#canonical) → [形态条件](#morphology) → [世界模型](#world-model) → [共享策略](#policy) → [五点接口](#five-point) → [实验与边界](#results)建立主线。
+首次阅读先看[与 SuperMimic 的对照](#supermimic-comparison)和[同一段动作的执行过程](#one-motion-three-bodies)，再沿[统一表示](#canonical) → [形态条件](#morphology) → [世界模型](#world-model) → [共享策略](#policy) → [五点接口](#five-point)建立主线。理解方法后，再核对[实验结果](#results)。
 
 准备实现时，重点核对[输入维数](#dimensions)、[跨进程更新](#training)、[传感器坐标](#transfer)和[复算脚本](#contracts)。关心应用时，先读[无需全局位置的代价](#position-free)与[部署接口](#deployment)。
 
@@ -51,10 +51,40 @@ MorphMimic 进一步问：不同机器人能否共享这种动力学知识与跟
 
 因此，方法不是简单地把三份数据拼起来，而是同时使用**语义映射、物理描述和按机器人保留的统计量**。其整体结构见图 1。
 
+### 1.1 与 SuperMimic 的联系和区别 {#supermimic-comparison}
+
+先分清四个训练角色：**模拟器**产生执行经验，**世界模型**预测动作后果并提供导数，**actor**根据目标和观测输出控制动作，**critic**估计想象窗口之后的回报。两种方法都利用这些角色，MorphMimic 增加的是跨机器人共享所需的表示与训练约束。
+
+<div style="break-inside: avoid">
+
+| 比较项 | SuperMimic 的主任务 | MorphMimic 的主任务 |
+| --- | --- | --- |
+| 共享范围 | 同一种机器人上的大量参考动作 | G1、X2 Ultra、T2 上对应的重定向动作 |
+| 物理差异怎样进入模型 | 每回合物理上下文，如摩擦与编码器偏差 | 另加入静态形态描述，区分驱动、几何与质量 |
+| 动作语义 | 一台机器人的观测与动作约定 | 先建立共同关节布局，再转换成本机控制目标 |
+| 命令接口 | 完整动作跟踪，并研究速度命令接口 | 完整动作与五点目标经各自编码器进入共享解码器 |
+{.table-readable}
+
+</div>
+
+两者的基本闭环相同：先采集模拟器转移，再拟合世界模型，最后在模型预测的短轨迹中更新策略。MorphMimic 的一个共享模型接收不同机体的数据；训练必须保留这些数据属于哪种身体、采用什么坐标和尺度。[报告 §III][paper]
+
 <figure class="article-figure" id="fig-morphmimic-sharing">
   {{< post-image src="assets/shared-architecture.webp" alt="MorphMimic 的训练与控制结构：报告配置下，各机器人保留仿真回放和本地统计，共享形态条件世界模型；完整动作或五点目标编码成 32 维命令，与本体历史及形态一起进入共享解码器，再经本机动作映射和 PD 执行" >}}
   <figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">训练时跨机器人共享网络参数，控制时选择一种目标编码接口。世界模型用于训练中的想象滚动；部署执行路径使用编码器、解码器和本机控制常量。图中本机统计对应报告配置；代码当前默认的策略统计池化见<a href="#training">训练配置说明</a>。图中省略目标归一化、critic、回报计算、梯度同步和返回模拟器的数据采集闭环；左右两部分不是同时部署的两级控制器。</span></figcaption>
 </figure>
+
+### 1.2 用一段挥手动作走通执行过程 {#one-motion-three-bodies}
+
+假设三台机器人要跟踪同一段人类挥手动作。这里的“同一段”指动作身份与时间帧对应；它先被重定向到各机体，得到符合各自关节与身体几何的参考。
+
+1. **构造本机目标。** 取当前及后续参考帧，得到机器人 $b$ 的目标 $g_t^b$；按该检查点配套的约定归一化。
+2. **读取当前身体。** 用关节编码器和 IMU 构造十帧观测历史。即使参考帧相同，一台机器人正在侧倾、另一台手臂已经到位，它们的控制需要也不同。
+3. **编码动作意图。** 共享运动编码器把目标压成 32 维命令 $z_t^b$。训练把配对参考帧的命令拉近，运行时不要求三台机器人的每个潜变量数值完全一致。
+4. **生成标准动作。** 同一个解码器结合命令、各机当前观测和形态向量，分别输出 29 维标准动作 $a_t^b$。共享的是计算规则与权重，各机的输出可以不同。
+5. **执行并接收新反馈。** 标准动作经本机排列、符号、动作尺度和默认姿态转换为关节目标，由 PD 控制器执行；下一周期再用新的观测纠偏。
+
+在默认 50 Hz 下，这个闭环每 20 ms 更新一次设定值。部署执行的是编码器、解码器与本机动作映射；世界模型和 critic 在训练端帮助得到这套策略。训练中的 32 步想象不会变成每个真机周期重新运行一次的规划搜索。
 
 ## 2. 先统一关节语义，再保留本机执行方式 {#canonical}
 
@@ -129,9 +159,10 @@ $$
 静态形态向量为：
 
 $$
-m_b=S\!\left(
-[\log\alpha_b,\log k_{p,b},\log k_{d,b},
- \log\tau^{\max}_b,\eta_b]\right).
+\begin{aligned}
+m_b&=S\!\Bigl([\log\alpha_b,\log k_{p,b},\\
+&\qquad\log k_{d,b},\log\tau^{\max}_b,\eta_b]\Bigr).
+\end{aligned}
 $$
 
 前四组分别包含 29 个关节的动作尺度、比例增益、微分增益和力矩上限，合计 116 维。$\eta_b$ 的 9 维是大腿、小腿、上臂、前臂长度，髋宽、躯干高度，总质量，以及单侧腿、臂子树质量。[形态向量实现][morphology-code]
@@ -197,16 +228,36 @@ $$
 
 策略再在模型中想象 32 步，用存活权重和末端 critic 计算目标。固定世界模型参数时，动作和状态的梯度仍通过模型；把整段计算包进 `no_grad` 会切断这条路径。模型预测准不等于其动作导数必然准，相关区别见 [SuperMimic 的梯度分析](../supermimic/#world-model)。
 
+### 5.3 预测轨迹怎样变成策略的更新方向 {#imagined-policy-gradient}
+
+对机器人 $b$ 的一条想象轨迹，可以把训练目标写成两部分：[报告 §III-E.1][paper]
+
+$$
+\begin{aligned}
+\hat J_b(\theta)&=\mathbb E\Bigl[
+\sum_{t=0}^{H-1}\gamma^t\hat c_t^b\hat r_{t+1}^b\\
+&\qquad+\gamma^H\hat c_H^b\hat V_H^b\Bigr].
+\end{aligned}
+$$
+
+其中 $H=32$，$\hat r_{t+1}^b$ 是一步预测奖励，$\gamma$ 是逐控制步的折扣因子；$\hat c_0^b=1$，后续存活权重按 $\hat c_{t+1}^b=\hat c_t^b(1-\hat d_{t+1}^b)$ 累积。第一项累计窗口内经折扣与存活加权的奖励，$\hat V_H^b$ 则是 critic 对末端之后回报的估计。
+
+策略参数 $\theta$ 改变动作，动作经过形态条件世界模型改变后续状态，状态又改变奖励、终止概率与末端价值。沿这条计算链反向求导，就能判断当前参数应怎样调整。每种身体使用自己的形态与上下文，但求导经过的是同一组共享模型权重。
+
+更新 actor 时固定世界模型和 critic 的权重，仍保留它们对输入的导数；拟合 critic 时，则用已经算好的固定回报目标训练价值网络。完整动作阶段还加入[跨机器人潜变量对齐](#policy)，五点阶段使用[专门的接口损失](#five-point)。因此，“模型预测状态”“优化控制策略”“拟合价值估计”是三个不同的学习任务。
+
 ## 6. 共享策略与 FiLM：相同命令怎样驱动不同身体 {#policy}
 
 共享运动编码器只读取归一化目标，把它压成 32 维、经过 tanh 的命令 $z$；解码器同时读取命令、本体历史和形态：
 
 $$
-z_t^b=E(\mathcal N_g^b(g_t^b)),\qquad
- a_t=D\bigl(z_t^b,\mathcal N_o^b(o_{t-9:t}^b),m_b\bigr).
+\begin{aligned}
+z_t^b&=E(\mathcal N_g^b(g_t^b)),\\
+a_t&=D\bigl(z_t^b,\mathcal N_o^b(o_{t-9:t}^b),m_b\bigr).
+\end{aligned}
 $$
 
-形态不仅拼在解码器输入上，还通过 FiLM 调节各隐藏层的特征。对隐藏层激活前的 $h_\ell$：
+形态不仅拼在解码器输入上，还通过逐特征线性调制（FiLM，Feature-wise Linear Modulation）调整各隐藏层的特征。对隐藏层激活前的 $h_\ell$：
 
 $$
 \tilde h_\ell=h_\ell\odot(1+\Gamma_\ell m_b+\mu_\ell)
@@ -215,14 +266,31 @@ $$
 
 可以把它理解成：共享网络先提取一组控制特征，再根据身体调整各特征的幅度和偏移。FiLM 参数从零初始化，初始行为等价于仅拼接形态输入的解码器；世界模型本身使用形态拼接。[报告 Equations 7–8、策略实现][policy-code]
 
+为单独观察调制作用，假设两个机体在某一维的隐藏特征都为 $h=2$，形态映射得到下列乘数与偏移：
+
+<div style="break-inside: avoid">
+
+| 量 | 假设机体 A | 假设机体 B |
+| --- | ---: | ---: |
+| 输入特征 $h$ | 2 | 2 |
+| 形态产生的乘数 | 1.25 | 0.75 |
+| 形态产生的偏移 | −0.1 | +0.2 |
+| 调制后特征 $\tilde h$ | 2.4 | 1.7 |
+
+</div>
+
+计算分别是 $2\times1.25-0.1=2.4$ 与 $2\times0.75+0.2=1.7$。这些构造值只说明“同一套调制映射，因形态输入不同而产生不同结果”；真实网络的输入特征本身也可以随观测、命令和形态变化。FiLM 的矩阵与偏置跨机器人共享；零初始化时乘数为 1、偏移为 0，形态信息仍通过解码器输入中的拼接分量进入网络。
+
 ### 6.1 仅共享网络还不保证命令一致
 
 同一人类动作会分别重定向到三台机器人。MorphMimic 从共同动作交集中抽取相同的 clip／frame 配对，让共享编码器分别处理三份目标，再把输出拉向跨机器人的均值：
 
 $$
-\bar z_i=\frac1{|\mathcal B|}\sum_b z_b^i,\qquad
+\begin{aligned}
+\bar z_i&=\frac1{|\mathcal B|}\sum_b z_b^i,\\
 \mathcal L^b_{\mathrm{align}}
-=\frac1{N_a}\sum_i\left\|z_b^i-\operatorname{sg}(\bar z_i)\right\|^2.
+&=\frac1{N_a}\sum_i\left\|z_b^i-\operatorname{sg}(\bar z_i)\right\|^2.
+\end{aligned}
 $$
 
 $\operatorname{sg}$ 表示停止目标端梯度。各进程通过自身编码结果求导，跨进程汇集的均值作为固定目标。默认每次抽取 1024 对，权重为 0.05，并与想象回报共同优化运动编码器和解码器。[对齐与梯度同步实现][distributed-code]
@@ -248,22 +316,46 @@ G1 使用 BONES-SEED 提供的重定向动作，X2、T2 从同一人类动作源
   <figcaption><span class="article-figure__number">图 2</span><span class="article-figure__text">共享策略的五点接口。圆球为当前目标，实线为十帧预览，渐隐轨迹仅用于显示过去目标，不作为新增历史目标输入。来源：<a href="https://lzyang2000.github.io/morphmimic/static/morphmimic.pdf#page=5">MorphMimic 报告 Figure 3</a>及<a href="https://lzyang2000.github.io/morphmimic/static/images/fig3.jpg">项目图片</a>；画面为仿真。</span></figcaption>
 </figure>
 
-第二个编码器 $E_{\mathrm{kp}}$ 输出相同维数的命令，经同一个解码器执行。它的训练同时考虑想象回报，以及与本机器人完整动作命令的匹配：
+第二个编码器 $E_{\mathrm{kp}}$ 输出相同维数的命令，经同一个解码器执行。它的训练同时考虑想象回报，以及与本机器人完整动作命令的匹配。把后者记为 $\mathcal L^b_{\mathrm{match}}$，总损失为：
 
 $$
+\begin{aligned}
 \mathcal L^b_{\mathrm{kp}}
-=-\hat J^b_{\mathrm{kp}}
-+\beta_{\mathrm{kp}}\frac1{|I_b|}
+&=-\hat J^b_{\mathrm{kp}}
++\beta_{\mathrm{kp}}\mathcal L^b_{\mathrm{match}},\\
+\mathcal L^b_{\mathrm{match}}
+&=\frac1{|I_b|}
  \sum_{(i,t)\in I_b}
  \left\|z^{b,\mathrm{kp}}_{i,t}
   -\operatorname{sg}(z^{b,\mathrm{motion}}_{i,t})\right\|^2.
+\end{aligned}
 $$
+
+这里 $I_b$ 是机器人 $b$ 的想象轨迹中参与奖励计算的有效步骤集合，$(i,t)$ 表示第 $i$ 条轨迹的第 $t$ 步。匹配项先对 32 个潜变量维度的平方误差求和，再对这些有效步骤取平均；$\beta_{\mathrm{kp}}$ 控制它在总损失中的权重。
 
 这一步只更新五点编码器。解码器、世界模型和 critic 的参数固定，但计算导数仍穿过它们。完整动作编码器与解码器已经学习的控制能力，为新接口提供可复用的执行路径。
 
 报告还使用单独的五点 critic；它与运动 critic 是两套接口相关的价值模型，在统一配置中各自跨机器人共享。五点 critic 训练时能读取干净的完整参考，不意味着部署 actor 也读取完整参考。
 
 想象训练给 actor 的点目标加入有界位置与朝向扰动，重叠预览窗口复用同一目标帧的扰动；奖励、终止、critic 目标和评估继续使用干净参考。默认一半采集环境通过五点编码器执行，因此五点训练还会改变回放数据分布，不能只把它理解为对固定数据的离线编码蒸馏。
+
+### 7.1 两种“对齐”分别在对齐什么 {#two-alignment-objectives}
+
+两种损失都作用在 32 维潜变量上，但训练配对与更新对象不同：
+
+<div style="break-inside: avoid">
+
+| 比较项 | 跨机器人动作对齐 | 五点接口匹配 |
+| --- | --- | --- |
+| 配对来源 | 同一动作、同一参考帧在不同机器人上的目标 | 同一机器人、同一帧的完整动作目标与五点目标 |
+| 固定目标 | 各机器人运动命令的均值 $\operatorname{sg}(\bar z)$ | 本机完整动作编码器的命令 $\operatorname{sg}(z^{b,\mathrm{motion}})$ |
+| 本项直接训练谁 | 共享运动编码器；完整动作阶段另有回报训练编码器与解码器 | 五点编码器，执行解码器保持固定 |
+| 希望得到什么 | 对应动作在不同身体上使用相近的命令表示 | 稀疏目标能进入已经学好的控制解码器 |
+{.table-readable}
+
+</div>
+
+可以先把跨机对齐理解为“不同身体怎样表达对应的动作意图”，再把五点匹配理解为“换一种目标输入，怎样接入这套意图表示”。前者本身不能保证动作正确，后者也不能唯一补全所有关节姿态；跟踪回报和实际执行结果仍承担控制验收的职责。
 
 ## 8. 把关键维数与时间一次核对清楚 {#dimensions}
 
@@ -405,8 +497,11 @@ T2 的 IMU 坐标差异尤其关键。附录把仿真 T2 的 IMU 移到 waist-ya
 
 ```bash
 python3 -B morphmimic_contracts.py
+python3 -B morphmimic_contracts.py --check
 python3 -B morphmimic_contracts.py --output contracts-results.json
 ```
+
+第一次运行会打印输入维数、动作映射和回报比较；`--check` 将计算值与随文记录逐项比较，成功时输出 `MorphMimic dimensions, mappings, gradients and Table I differences passed`。只需下载一个脚本即可查看计算结果；使用 `--check` 时，还要把[参考记录](assets/contracts-results.json)放在脚本旁的 `assets/` 目录中。
 
 脚本核对上述七种维数、关节映射往返、两个 PD 尺度例子、固定均值目标的对齐梯度有限差分、时间窗口、提前终止的回报分母，以及六组 Table I 回报／存活率差值。固定停止梯度目标后，有限差分与局部解析梯度一致；若扰动时也重新计算目标均值，检查的就是另一条计算图。
 
@@ -442,9 +537,12 @@ python3 -B morphmimic_contracts.py --output contracts-results.json
 14. 三机联合训练是否证明了未知身体零样本泛化？
 15. 论文与项目页的硬件遥操作接口标注是否一致？
 16. 重算形态向量缩放范围会不会改变旧机器人输入？
+17. 同一段动作是否要求三台机器人输出相同的 29 维控制向量？
+18. FiLM 从零初始化时，形态信息是否完全消失？
+19. 共享世界模型是否在真机每个 20 ms 周期中滚动 32 步？
 
 <details id="morphmimic-self-check-answers">
-<summary>展开 16 题答案</summary>
+<summary>展开 19 题答案</summary>
 
 1. 不足；先做排列、方向、零位与默认姿态转换，再核对动力学与训练覆盖。
 2. 不需要；速度与增量只转换排列和方向，绝对位置才减偏置。
@@ -462,6 +560,9 @@ python3 -B morphmimic_contracts.py --output contracts-results.json
 14. 不能；三台机体均参与联合训练，G1 迁移对照也不是统一模型在第四台身体上的测试。
 15. 不一致；报告写五点接口，当前项目页硬件标签写完整动作，需核对演示的实际运行配置。
 16. 会有这种可能；若新机体改变各维最小值或最大值，旧向量也会改变，必须保存缩放契约或配套重训。
+17. 不要求；解码器权重共享，但观测、形态和本机执行条件不同。潜变量对齐也不要求运行时所有命令逐项相等。
+18. 不会；FiLM 的初始乘数为 1、偏移为 0，解码器仍接收拼接的形态向量。
+19. 不会；真机运行目标编码器、共享解码器与本机控制映射，32 步想象用于训练策略。
 
 </details>
 

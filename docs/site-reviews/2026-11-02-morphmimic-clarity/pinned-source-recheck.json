@@ -1,0 +1,12 @@
+{
+  "src/morphmimic/model/policy.py": {
+    "url": "https://raw.githubusercontent.com/lzyang2000/morphmimic/aa40fe46a7fa995ba7a7354ad065a2c8ad64a302/src/morphmimic/model/policy.py",
+    "sha256": "6ad2d87651a320d5c7ab8a057eaa963323f1eff0c50505fd15c4c89cdef9875b",
+    "matches_previous_pin": true
+  },
+  "src/morphmimic/train/distributed.py": {
+    "url": "https://raw.githubusercontent.com/lzyang2000/morphmimic/aa40fe46a7fa995ba7a7354ad065a2c8ad64a302/src/morphmimic/train/distributed.py",
+    "sha256": "30423357374f3fb6e543a7ab227477df93f319ca031a8d3b5ba848b4850e97a7",
+    "matches_previous_pin": true
+  }
+}

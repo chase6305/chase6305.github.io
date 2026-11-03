@@ -1,0 +1,62 @@
+{
+  "checked_at_utc": "2026-11-02T09:13:39.041299+00:00",
+  "stopped_obsolete_owned_servers": [
+    {
+      "pid": 4052005,
+      "port": "13625"
+    },
+    {
+      "pid": 4067730,
+      "port": "13627"
+    },
+    {
+      "pid": 4067750,
+      "port": "13629"
+    },
+    {
+      "pid": 4076748,
+      "port": "13631"
+    },
+    {
+      "pid": 4076791,
+      "port": "13633"
+    },
+    {
+      "pid": 4101730,
+      "port": "13635"
+    },
+    {
+      "pid": 4101771,
+      "port": "13637"
+    },
+    {
+      "pid": 4111178,
+      "port": "13639"
+    },
+    {
+      "pid": 4111217,
+      "port": "13641"
+    },
+    {
+      "pid": 4147490,
+      "port": "13643"
+    },
+    {
+      "pid": 4147508,
+      "port": "13645"
+    },
+    {
+      "pid": 4166734,
+      "port": "13647"
+    },
+    {
+      "pid": 4166767,
+      "port": "13649"
+    }
+  ],
+  "remaining_preview_ports": [
+    13651,
+    13653
+  ],
+  "scope": "Only HTTP servers whose directory is inside this task work directory."
+}

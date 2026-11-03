@@ -1,0 +1,18 @@
+{
+  "scope": "Constructed scalar FiLM illustration; no learned-network measurement",
+  "rows": [
+    [
+      "2",
+      "5/4",
+      "-1/10",
+      "12/5"
+    ],
+    [
+      "2",
+      "3/4",
+      "1/5",
+      "17/10"
+    ]
+  ],
+  "all_exact": true
+}

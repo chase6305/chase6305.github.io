@@ -1,0 +1,121 @@
+{
+  "upstream_git": {
+    "OneJev": "d18d82243d82062af9c6c1bed999eaec5f39cbe0",
+    "Flide": "ea93bfaf8e8109aad444d9f548957a519212a70a"
+  },
+  "hugging_face": {
+    "pins": {
+      "OmniJev/OneJev1.6-0.8B": "c89933c277629b707895bff752c61d2b0664c85e",
+      "OmniJev/OneJev1.6-4B": "bb248003b6eb771a995cb3672ad47db090a9cd48",
+      "OmniJev/OneJev-Data": "1028292856b8bc3029e4e423df78d0637c735dc0"
+    },
+    "files": [
+      {
+        "file": "model-08-api.json",
+        "url": "https://huggingface.co/api/models/OmniJev/OneJev1.6-0.8B",
+        "sha256": "0e96b450cfa928378de280931db8f570637f57454c8bd0677979c60be85f229d"
+      },
+      {
+        "file": "model-4-api.json",
+        "url": "https://huggingface.co/api/models/OmniJev/OneJev1.6-4B",
+        "sha256": "7b96212b5c3fa9f32d3d1c370ab8bbecaf57b972eaf6787dfd42099e10d7278f"
+      },
+      {
+        "file": "dataset-api.json",
+        "url": "https://huggingface.co/api/datasets/OmniJev/OneJev-Data",
+        "sha256": "979130871c3b3f0149a7399204e15313dc3cc1e458834d838c9592ffd1573335"
+      },
+      {
+        "file": "model-08-README.md",
+        "url": "https://huggingface.co/OmniJev/OneJev1.6-0.8B/resolve/c89933c277629b707895bff752c61d2b0664c85e/README.md",
+        "sha256": "736745e65720b657fcf5f84f8f1eca5a25e4b1b39c46d43d244d7a96e284070b"
+      },
+      {
+        "file": "model-08-config.json",
+        "url": "https://huggingface.co/OmniJev/OneJev1.6-0.8B/resolve/c89933c277629b707895bff752c61d2b0664c85e/config.json",
+        "sha256": "09e987471d022500c939c71e06f86bf1239586e491546a8296d855689c022e2a"
+      },
+      {
+        "file": "model-08-calibration.json",
+        "url": "https://huggingface.co/OmniJev/OneJev1.6-0.8B/resolve/c89933c277629b707895bff752c61d2b0664c85e/calibration.json",
+        "error": "HTTP Error 404: Not Found"
+      },
+      {
+        "file": "model-4-README.md",
+        "url": "https://huggingface.co/OmniJev/OneJev1.6-4B/resolve/bb248003b6eb771a995cb3672ad47db090a9cd48/README.md",
+        "sha256": "732e2c6ab6800d4a7c0957be831fd10ddd99e332560b2131dd1122ced2eb1bdd"
+      },
+      {
+        "file": "model-4-config.json",
+        "url": "https://huggingface.co/OmniJev/OneJev1.6-4B/resolve/bb248003b6eb771a995cb3672ad47db090a9cd48/config.json",
+        "sha256": "53aa95673d1fb0021348b82fbaed6041d7eccdde3712f741cd04eef1956bac68"
+      },
+      {
+        "file": "model-4-calibration.json",
+        "url": "https://huggingface.co/OmniJev/OneJev1.6-4B/resolve/bb248003b6eb771a995cb3672ad47db090a9cd48/calibration.json",
+        "error": "HTTP Error 404: Not Found"
+      },
+      {
+        "file": "dataset-README.md",
+        "url": "https://huggingface.co/datasets/OmniJev/OneJev-Data/resolve/1028292856b8bc3029e4e423df78d0637c735dc0/README.md",
+        "sha256": "72c47c3eb7dc91f9e3e28f094a8528b17b9ec2d81d083625b255c2c1f748c3fd"
+      }
+    ]
+  },
+  "decision_config": [
+    {
+      "url": "https://huggingface.co/OmniJev/OneJev1.6-0.8B/resolve/c89933c277629b707895bff752c61d2b0664c85e/decision_config.json",
+      "file": "model-08-decision_config.json",
+      "sha256": "cde7598820ce71c4d1f44c1bc386bb666cc8d055202f89f022cd9a0f93b35074",
+      "content": {
+        "format_id": "onejev-slot-v2",
+        "package": "flide"
+      }
+    },
+    {
+      "url": "https://huggingface.co/OmniJev/OneJev1.6-4B/resolve/bb248003b6eb771a995cb3672ad47db090a9cd48/decision_config.json",
+      "file": "model-4-decision_config.json",
+      "sha256": "cde7598820ce71c4d1f44c1bc386bb666cc8d055202f89f022cd9a0f93b35074",
+      "content": {
+        "format_id": "onejev-slot-v2",
+        "package": "flide"
+      }
+    }
+  ],
+  "claims": [
+    {
+      "claim": "OneJev 1.6 training scale and three-run weight averaging differ from the older released sample recipe.",
+      "sources": [
+        "Pinned 1.6 model cards",
+        "Pinned OneJev README/train configs",
+        "Pinned dataset card"
+      ]
+    },
+    {
+      "claim": "Choice confidence rescales the maximum relative to uniform; Score confidence uses normalized modal deviation.",
+      "sources": [
+        "Flide api/answers.py at the recorded pin",
+        "Actual installed 0.1.7 matches the pinned file"
+      ]
+    },
+    {
+      "claim": "Typed output comes from restricted slot logits; the model-specific format handles shared state and media.",
+      "sources": [
+        "Flide OneJev format/prompt at the recorded pin",
+        "Actual text/image planning and constructed-logit assembly"
+      ]
+    },
+    {
+      "claim": "Current TypeSafe Jev 1.14 remains text-only; older article experiments retain the 1.13 ID.",
+      "source": "https://docs.typesafe.ai/models",
+      "checked_on": "2026-11-02"
+    },
+    {
+      "claim": "The OneJev project page still labels version 1.0, while repository and selected model cards describe 1.6.",
+      "sources": [
+        "https://omnijev.github.io/OneJev/",
+        "Pinned README and 1.6 model cards"
+      ]
+    }
+  ]
+}

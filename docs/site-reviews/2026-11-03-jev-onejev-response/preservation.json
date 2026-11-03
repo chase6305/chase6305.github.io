@@ -1,0 +1,31 @@
+{
+  "initial_dirty_files": 194,
+  "allowed_changes_to_initial_dirty_files": [
+    "content/posts/ai/jev-decision-layer/index.md",
+    "content/posts/ai/jev-decision-layer/onejev-examples.zip",
+    "content/posts/ai/jev-decision-layer/onejev-readme.txt",
+    "content/posts/ai/jev-decision-layer/onejev_examples.py",
+    "docs/blog-editorial-review.json",
+    "scripts/package_onejev_examples.py",
+    "scripts/test_onejev_examples.py"
+  ],
+  "unexpected_previous_changes": [],
+  "changed_editorial_records": [
+    81
+  ],
+  "old_rendered_ids": 74,
+  "current_rendered_ids": 76,
+  "missing_ids": [],
+  "all_previous_figure_html_identical": true,
+  "old_figure_count": 8,
+  "publication_date_preserved": true,
+  "draft_state_preserved": true,
+  "shared_runtime_templates_scripts_styles_changed": false,
+  "existing_lab_html_identical": true,
+  "old_heading_text_and_ids_preserved": 54,
+  "old_formula_annotations_preserved": 92,
+  "current_formula_annotations": 93,
+  "old_code_blocks_identical": 17,
+  "old_code_blocks_expanded": 1,
+  "current_code_blocks": 22
+}

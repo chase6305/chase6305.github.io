@@ -1,0 +1,337 @@
+{
+  "pdfs": [
+    {
+      "route": "/posts/ai/supermimic/",
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "htmlSha256": "b09aa35f1dd3185739bd253e1850e3901e14203fff9b338356abafb278e2c583",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 50
+        },
+        "math": {
+          "same": true,
+          "count": 156
+        },
+        "code": {
+          "same": true,
+          "count": 4
+        },
+        "captions": {
+          "same": true,
+          "count": 7
+        }
+      },
+      "file": "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/native-coherent/supermimic-true-100-light-a4.pdf",
+      "pages": 33,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "每个阶段究竟更新谁",
+        "可选：用PyTorch查看固定模型参数时的梯度",
+        "actorgradient=8.0",
+        "modelgradient=None"
+      ],
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "scripts": true,
+      "size": 200,
+      "theme": "dark",
+      "paper": "a4",
+      "htmlSha256": "b09aa35f1dd3185739bd253e1850e3901e14203fff9b338356abafb278e2c583",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 50
+        },
+        "math": {
+          "same": true,
+          "count": 156
+        },
+        "code": {
+          "same": true,
+          "count": 4
+        },
+        "captions": {
+          "same": true,
+          "count": 7
+        }
+      },
+      "file": "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/native-coherent/supermimic-true-200-dark-a4.pdf",
+      "pages": 88,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "每个阶段究竟更新谁",
+        "可选：用PyTorch查看固定模型参数时的梯度",
+        "actorgradient=8.0",
+        "modelgradient=None"
+      ],
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "scripts": false,
+      "size": 100,
+      "theme": "warm",
+      "paper": "a4",
+      "htmlSha256": "b09aa35f1dd3185739bd253e1850e3901e14203fff9b338356abafb278e2c583",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 50
+        },
+        "math": {
+          "same": true,
+          "count": 156
+        },
+        "code": {
+          "same": true,
+          "count": 4
+        },
+        "captions": {
+          "same": true,
+          "count": 7
+        }
+      },
+      "file": "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/native-coherent/supermimic-false-100-warm-a4.pdf",
+      "pages": 33,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "每个阶段究竟更新谁",
+        "可选：用PyTorch查看固定模型参数时的梯度",
+        "actorgradient=8.0",
+        "modelgradient=None"
+      ],
+      "scriptExecutionDisabledEntireCase": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "scripts": false,
+      "size": 200,
+      "theme": "warm",
+      "paper": "letter",
+      "htmlSha256": "b09aa35f1dd3185739bd253e1850e3901e14203fff9b338356abafb278e2c583",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 50
+        },
+        "math": {
+          "same": true,
+          "count": 156
+        },
+        "code": {
+          "same": true,
+          "count": 4
+        },
+        "captions": {
+          "same": true,
+          "count": 7
+        }
+      },
+      "file": "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/native-coherent/supermimic-false-200-warm-letter.pdf",
+      "pages": 93,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "每个阶段究竟更新谁",
+        "可选：用PyTorch查看固定模型参数时的梯度",
+        "actorgradient=8.0",
+        "modelgradient=None"
+      ],
+      "scriptExecutionDisabledEntireCase": true
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "htmlSha256": "244a4cb3b5a85e567ddab39457c21039edcd455f54cbc57e6a9c562e2201e976",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 17
+        },
+        "math": {
+          "same": true,
+          "count": 55
+        },
+        "code": {
+          "same": true,
+          "count": 0
+        },
+        "captions": {
+          "same": true,
+          "count": 1
+        }
+      },
+      "file": "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/native-coherent/rlhf-rlvr-rlcd-true-100-light-a4.pdf",
+      "pages": 12,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "同一个请求怎样得到三种反馈",
+        "奖励模型、critic与参考策略各做什么",
+        "一个通过分数怎样改变生成概率",
+        "0.880797",
+        "0.126928"
+      ],
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "scripts": true,
+      "size": 200,
+      "theme": "dark",
+      "paper": "a4",
+      "htmlSha256": "244a4cb3b5a85e567ddab39457c21039edcd455f54cbc57e6a9c562e2201e976",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 17
+        },
+        "math": {
+          "same": true,
+          "count": 55
+        },
+        "code": {
+          "same": true,
+          "count": 0
+        },
+        "captions": {
+          "same": true,
+          "count": 1
+        }
+      },
+      "file": "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/native-coherent/rlhf-rlvr-rlcd-true-200-dark-a4.pdf",
+      "pages": 32,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "同一个请求怎样得到三种反馈",
+        "奖励模型、critic与参考策略各做什么",
+        "一个通过分数怎样改变生成概率",
+        "0.880797",
+        "0.126928"
+      ],
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "scripts": false,
+      "size": 100,
+      "theme": "warm",
+      "paper": "a4",
+      "htmlSha256": "244a4cb3b5a85e567ddab39457c21039edcd455f54cbc57e6a9c562e2201e976",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 17
+        },
+        "math": {
+          "same": true,
+          "count": 55
+        },
+        "code": {
+          "same": true,
+          "count": 0
+        },
+        "captions": {
+          "same": true,
+          "count": 1
+        }
+      },
+      "file": "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/native-coherent/rlhf-rlvr-rlcd-false-100-warm-a4.pdf",
+      "pages": 12,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "同一个请求怎样得到三种反馈",
+        "奖励模型、critic与参考策略各做什么",
+        "一个通过分数怎样改变生成概率",
+        "0.880797",
+        "0.126928"
+      ],
+      "scriptExecutionDisabledEntireCase": true
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "scripts": false,
+      "size": 200,
+      "theme": "warm",
+      "paper": "letter",
+      "htmlSha256": "244a4cb3b5a85e567ddab39457c21039edcd455f54cbc57e6a9c562e2201e976",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 17
+        },
+        "math": {
+          "same": true,
+          "count": 55
+        },
+        "code": {
+          "same": true,
+          "count": 0
+        },
+        "captions": {
+          "same": true,
+          "count": 1
+        }
+      },
+      "file": "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/native-coherent/rlhf-rlvr-rlcd-false-200-warm-letter.pdf",
+      "pages": 34,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "同一个请求怎样得到三种反馈",
+        "奖励模型、critic与参考策略各做什么",
+        "一个通过分数怎样改变生成概率",
+        "0.880797",
+        "0.126928"
+      ],
+      "scriptExecutionDisabledEntireCase": true
+    }
+  ],
+  "exceptions": []
+}

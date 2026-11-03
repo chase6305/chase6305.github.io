@@ -1,0 +1,28 @@
+{
+  "accepted": [
+    {
+      "file": "visuals/mobile-dark.png",
+      "scope": "320px dark reading and horizontally scrollable commands."
+    },
+    {
+      "file": "visuals/training-a4.png",
+      "scope": "A4 page 11; full download/unpack block and training command remain together."
+    },
+    {
+      "file": "visuals/temperature-a4.png",
+      "scope": "A4 page 10; loss arithmetic, calibration details and exact JSON."
+    }
+  ],
+  "earlier_v3_visuals_inspected": [
+    "Readout equation and confidence on A4 page 5",
+    "State-sharing explanation and full first startup block on A4 page 6"
+  ],
+  "pdf_pages": [
+    37,
+    104,
+    37,
+    107
+  ],
+  "total_export_pages": 285,
+  "all_pages_manually_reviewed": false
+}

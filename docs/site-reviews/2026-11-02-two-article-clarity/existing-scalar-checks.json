@@ -1,0 +1,20 @@
+{
+  "recorded_at_utc": "2026-11-02T07:16:04.168744+00:00",
+  "status": "passed in the first implementation phase",
+  "standalone_log_captured": false,
+  "commands": [
+    {
+      "command": "python3 -B content/posts/ai/supermimic/survival_credit.py --check",
+      "random_trajectory_cases": 500
+    },
+    {
+      "command": "node scripts/test_supermimic_gradient_lab.cjs",
+      "closed_form_cases": 100
+    }
+  ],
+  "tested_source_sha256": {
+    "content/posts/ai/supermimic/survival_credit.py": "4d1cb979921593d8a1597a4accaf8e2487b6b0863615e9550ed22287b3b8738d",
+    "static/labs/supermimic/gradient_lab.js": "db849949869b5c4a877f039eed764dfcd6c3da2f9dab96e34258b354054814f0"
+  },
+  "scope": "Existing scalar survival and interactive-lab math tests; their implementation files remain unchanged throughout this window. These are not robot or model-training evaluations."
+}

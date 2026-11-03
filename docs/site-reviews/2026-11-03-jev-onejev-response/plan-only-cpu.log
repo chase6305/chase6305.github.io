@@ -1,0 +1,33 @@
+2026-11-03 12:43:04,164 INFO train.sft loaded 100 rows from /tmp/chase-onejev-clarity-20261102-0nfg9b3d/dataset-sample/train.jsonl (world size 1)
+2026-11-03 12:43:04,164 INFO train.sft option padding p=0.50, pool {'next_action:tools': 14}
+2026-11-03 12:43:05,617 WARNING fla.utils._device Current Python version 3.10 is below the recommended 3.11 version. It is recommended to upgrade to Python 3.11 or higher for the best experience.
+/tmp/chase-onejev-clarity-20261102-0nfg9b3d/model-env/lib/python3.10/site-packages/fla/utils/_device.py:100: UserWarning: Triton is not supported on current platform, roll back to CPU.
+  _cpu_device_warning()
+plan-only: 100 rows rendered in 1s; tokens p50 1638 p90 8753 p99 15729 max 15729; 0 rows over max-len 16384; 26 micro-batches, 2 steps for 4 ranks; total tokens 320,214
+  worst padded_tokens  rows  14 max_len   1168 padded  16352 options   8 media tokens   9895
+  worst padded_tokens  rows   4 max_len   4033 padded  16132 options  50 media tokens   6714
+  worst padded_tokens  rows  18 max_len    896 padded  16128 options   5 media tokens   4558
+  worst padded_tokens  rows   1 max_len  15729 padded  15729 options   2 media tokens      0
+  worst padded_tokens  rows   2 max_len   7854 padded  15708 options   4 media tokens   7032
+  worst longest_row    rows   1 max_len  14283 padded  14283 options   2 media tokens   2637
+  worst longest_row    rows   1 max_len  12693 padded  12693 options   2 media tokens      0
+  worst longest_row    rows   1 max_len  12563 padded  12563 options   8 media tokens      0
+  worst longest_row    rows   1 max_len  11915 padded  11915 options   2 media tokens   3516
+  worst longest_row    rows   1 max_len  10794 padded  10794 options   2 media tokens   3516
+  worst most_rows      rows  10 max_len   1526 padded  15260 options  12 media tokens   9748
+  worst most_rows      rows   9 max_len   1638 padded  14742 options   8 media tokens  12521
+  worst most_rows      rows   7 max_len   2016 padded  14112 options 219 media tokens   6078
+  worst most_rows      rows   5 max_len   2823 padded  14115 options  25 media tokens    719
+  worst most_rows      rows   4 max_len   3327 padded  13308 options  47 media tokens   5179
+  worst most_padding   rows   3 max_len   4959 padded  14877 options  50 media tokens   7512
+  worst most_padding   rows   4 max_len   3450 padded  13800 options  47 media tokens   2366
+  worst most_padding   rows   3 max_len   5160 padded  15480 options   5 media tokens   7032
+  worst most_padding   rows   2 max_len   5697 padded  11394 options   2 media tokens   3516
+  worst most_padding   rows   3 max_len   4098 padded  12294 options  50 media tokens   8391
+  worst most_options   rows   1 max_len  10250 padded  10250 options   3 media tokens      0
+  worst most_options   rows   1 max_len   8210 padded   8210 options   2 media tokens      0
+  worst most_options   rows   1 max_len  10071 padded  10071 options   2 media tokens   3516
+  worst most_options   rows   1 max_len   9546 padded   9546 options   2 media tokens      0
+  worst most_options   rows   1 max_len   8475 padded   8475 options   2 media tokens   3516
+  worst most_media     rows   1 max_len   8753 padded   8753 options   2 media tokens      0
+PLAN_OK

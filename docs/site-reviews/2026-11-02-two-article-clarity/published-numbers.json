@@ -1,0 +1,56 @@
+{
+  "checked_at_utc": "2026-11-02T08:58:23.572721+00:00",
+  "source_sha256": {
+    "content/posts/ai/supermimic/index.md": "6993e14860b83af9eaefebcdf5b8c693f4898a4aa20892c0a8543a9f10f5d895",
+    "content/posts/ai/rlhf-rlvr-rlcd/index.md": "1c0f69727507c66fc083d52428c201a4db16838fec2bcedc1dcf8074fdd0ed88"
+  },
+  "bradley_terry": [
+    {
+      "difference": "0",
+      "published_probability": "0.500000",
+      "published_loss": "0.693147",
+      "probability_90_digits": "0.5",
+      "loss_90_digits": "0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863327"
+    },
+    {
+      "difference": "2",
+      "published_probability": "0.880797",
+      "published_loss": "0.126928",
+      "probability_90_digits": "0.880797077977882444059729141302396795206384298628968275798405250060976622288319241729473763",
+      "loss_90_digits": "0.126928011042972496443726806358304431434333062808358357550141216787973279656758423739522555"
+    }
+  ],
+  "critic_comparison": [
+    {
+      "trajectory": "A",
+      "window": "0.50",
+      "value": "0.10",
+      "terminal_coefficient": "1/2",
+      "total": "0.55"
+    },
+    {
+      "trajectory": "B",
+      "window": "0.48",
+      "value": "0.20",
+      "terminal_coefficient": "1/2",
+      "total": "0.58"
+    }
+  ],
+  "grpo_population_mean": "1/2",
+  "grpo_population_variance": "1/4",
+  "grpo_advantages": [
+    "1",
+    "1",
+    "-1",
+    "-1"
+  ],
+  "constructed_verifier_scores": [
+    1,
+    0,
+    1
+  ],
+  "published_finite_difference_output": "gradient=8.0, return=-1.000\n",
+  "torch_snippet_unchanged_since_cpu_execution": true,
+  "torch_snippet_sha256": "15deaed6f927824dcca165559d989196e3fb4604d1e2e1d2b0d69f08bb3557a5",
+  "scope": "Arithmetic on values extracted from current article tables, the published standard-library snippet, two constructed function-interface tests, and a hash binding to earlier CPU autograd evidence. No human-judgment quality test, robot, GPU or model training."
+}

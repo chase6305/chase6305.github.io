@@ -1,0 +1,270 @@
+{
+  "images": [
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "index": 0,
+      "width": 320,
+      "theme": "light",
+      "format": "svg",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "index": 0,
+      "width": 320,
+      "theme": "dark",
+      "format": "svg",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 0,
+      "width": 320,
+      "theme": "light",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 1,
+      "width": 320,
+      "theme": "light",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 2,
+      "width": 320,
+      "theme": "light",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 3,
+      "width": 320,
+      "theme": "light",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 4,
+      "width": 320,
+      "theme": "light",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 5,
+      "width": 320,
+      "theme": "light",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 6,
+      "width": 320,
+      "theme": "light",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 0,
+      "width": 320,
+      "theme": "dark",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 1,
+      "width": 320,
+      "theme": "dark",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 2,
+      "width": 320,
+      "theme": "dark",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 3,
+      "width": 320,
+      "theme": "dark",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 4,
+      "width": 320,
+      "theme": "dark",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 5,
+      "width": 320,
+      "theme": "dark",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 6,
+      "width": 320,
+      "theme": "dark",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "index": 0,
+      "width": 1440,
+      "theme": "light",
+      "format": "svg",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "index": 0,
+      "width": 1440,
+      "theme": "dark",
+      "format": "svg",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 0,
+      "width": 1440,
+      "theme": "light",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 1,
+      "width": 1440,
+      "theme": "light",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 2,
+      "width": 1440,
+      "theme": "light",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 3,
+      "width": 1440,
+      "theme": "light",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 4,
+      "width": 1440,
+      "theme": "light",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 5,
+      "width": 1440,
+      "theme": "light",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 6,
+      "width": 1440,
+      "theme": "light",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 0,
+      "width": 1440,
+      "theme": "dark",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 1,
+      "width": 1440,
+      "theme": "dark",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 2,
+      "width": 1440,
+      "theme": "dark",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 3,
+      "width": 1440,
+      "theme": "dark",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 4,
+      "width": 1440,
+      "theme": "dark",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 5,
+      "width": 1440,
+      "theme": "dark",
+      "format": "webp",
+      "passed": true
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "index": 6,
+      "width": 1440,
+      "theme": "dark",
+      "format": "webp",
+      "passed": true
+    }
+  ],
+  "exceptions": [],
+  "summary": {
+    "cases": 32,
+    "articles": 2,
+    "formats": [
+      "svg",
+      "webp"
+    ],
+    "runtimeExceptions": 0
+  }
+}

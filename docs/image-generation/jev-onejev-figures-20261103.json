@@ -1,0 +1,99 @@
+{
+  "date": "2026-11-03",
+  "mode": "built-in image_gen",
+  "style_references": [
+    "content/posts/ai/transformer-attention/assets/training-lifecycle.webp",
+    "content/posts/ai/transformer-attention/assets/transformer-block-overview.webp",
+    "content/posts/ai/transformer-attention/assets/training-vs-kv-cache-inference.webp"
+  ],
+  "prompts": [
+    {
+      "name": "jev-onejev-deployment",
+      "use_case": "infographic-diagram",
+      "prompt": "Create one polished technical infographic for a Chinese robotics blog. Landscape 3:2 composition, white background, thin rounded outlines, restrained pastel blue inputs, lavender inference, green typed outputs, orange application checks. Clean sans-serif English labels, generous spacing, large readable text, no branding icons or watermark. The figure explains two distinct deployment paths sharing a typed interface, not identical weights. Title: \"Jev and OneJev: models, engines, and typed answers\".\nExactly two horizontal lanes, visually separated and labelled \"Hosted TypeSafe Jev\" and \"Local OneJev\". Upper lane: a blue card \"Text / structured state\" with a smaller line \"+ typed questions\", arrow to a lavender card \"Hosted Jev service\" with small subtitle \"TypeSafe model\". Lower lane: blue card \"Text + images / video frames\" with smaller line \"+ typed questions\", arrow to a larger lavender rounded container labelled \"Flide engine\". INSIDE that container put a clearly nested inset block \"OneJev weights\" and a small line \"loaded by the engine\". This nesting is essential: Flide is the engine, OneJev is the model. From EACH inference lane draw a separate rightward arrow ending at ONE shared green output card on the far right: \"Typed answers\", with three simple text rows \"Noul: yes probability\", \"Choice: option + probabilities\", \"Score: level distribution\". Under this output card, an arrow labelled \"consumed by program\" leads down to an orange card \"Checks + skill execution\". Small final line at bottom: \"Compatible API shapes; different model weights\". Place a small neutral label between lanes or above the output card: \"System One API\" to identify the protocol, not a third model or engine. The upper branch is the article's text-only Jev snapshot. Do NOT draw images into the hosted Jev branch. Do NOT draw arrows between the two models. Do NOT connect model output directly to robot motors. Do NOT depict training, probabilities as physical safety guarantees, or benchmark results. Keep the model/engine/protocol labels unmistakable. Use short labels only as specified."
+    },
+    {
+      "name": "onejev-state-forking",
+      "use_case": "infographic-diagram",
+      "prompt": "Create one precise, polished landscape 3:2 technical infographic for an article explaining OneJev inference. White background, thin rounded outlines, restrained pastel blue for state inputs and shared prefix, purple for question branches, green for typed outputs. Clean large sans-serif English labels. Generous whitespace, no decorative AI brain, no watermark, no numerical benchmark values. Title: \"One state, three independent questions\".\nThe left third contains a blue input group labelled \"One request\" holding a screenshot icon, short text lines and a media-frame icon, caption \"State + media\". A rightward arrow leads to a blue rounded block \"Vision encoding + shared prefix\", subtitle \"State computed once\". From this ONE shared prefix block, three distinct clean arrows fan out to three vertically aligned purple branch cards in the center-right. Top card: \"Q1: Is it done?\" and smaller \"yes / no slots\". Middle card: \"Q2: What next?\" and smaller \"candidate action slots\". Bottom card: \"Q3: Which level?\" and smaller \"ordered level slots\". From each question card draw a short rightward arrow to its OWN small purple-to-green processing box labelled \"Slot logits -> softmax\". Then a separate arrow to its OWN green output card. Top output: \"Noul\" subtitle \"yes probability\". Middle output: \"Choice\" subtitle \"option probabilities\". Bottom output: \"Score\" subtitle \"level distribution\". Keep three green output cards spatially separate. Put a narrow bracket across the three branches labelled \"Shared model weights\". There must be NO arrows from one question branch or its answer to another branch. Small neutral footer: \"Each branch sees the shared state and its own question\". Second short footer: \"New observations form the next request\".\nThis is a logical dataflow, NOT three independently trained models and NOT a claim that there is only one low-level network call. The shared prefix contains attention caches and recurrent state, so do not label it only KV cache. Make the arrow endpoints exact, without crossing labels. All essential wording is included above; avoid adding extra claims."
+    }
+  ],
+  "quantitative_asset": {
+    "name": "onejev-probability-readout",
+    "method": "Deterministic Matplotlib plot of the published constructed example, with exact source values and separate confidence.",
+    "file": "content/posts/ai/jev-decision-layer/assets/onejev-probability-readout.png",
+    "sha256": "b66dc4a19f0625a4aee2cc66c3b75c68395bad6e945f4733390906af4f394cd9",
+    "generator": "content/posts/ai/jev-decision-layer/make_onejev_readout_figure.py",
+    "source_values": "content/posts/ai/jev-decision-layer/onejev_examples.py: arithmetic()",
+    "constructed": true,
+    "dimensions": [
+      2160,
+      1152
+    ],
+    "bytes": 174640,
+    "reproduction_environment": {
+      "python": "3.10.0",
+      "matplotlib": "3.10.9",
+      "numpy": "1.26.4"
+    }
+  },
+  "status": "accepted",
+  "generated_assets": [
+    {
+      "file": "content/posts/ai/jev-decision-layer/assets/jev-onejev-deployment.png",
+      "source": "/home/ubuntu/.codex/generated_images/01a187b4-0b96-71f1-a3fa-173629598f77/exec-44c490e0-55b3-4c3c-8182-188ff55e223f.png",
+      "sha256": "e0d5f1879add2a18fe041f64f5129f0c41638480979d8aa92af387477b87dd53",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 1416127
+    },
+    {
+      "file": "content/posts/ai/jev-decision-layer/assets/onejev-state-forking.png",
+      "source": "/home/ubuntu/.codex/generated_images/01a187b4-0b96-71f1-a3fa-173629598f77/exec-7910d955-3653-4a63-a5b8-b257a099335e.png",
+      "sha256": "94d87e597b5258732bf6873c8a7f09182ab8c2099f1d6d1b9232579289a4701b",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 1416957
+    }
+  ],
+  "inspection": {
+    "deployment": [
+      "Hosted Jev snapshot receives text/structured state, without an image input arrow.",
+      "OneJev weights are nested inside Flide; the model and engine are separate roles.",
+      "Two service arrows terminate at the typed-answer container; the program checks before skill execution.",
+      "Displayed output rows simplify full response fields; the article explains confidence and score elsewhere."
+    ],
+    "state_forking": [
+      "One shared prefix fans into three separate question/slot-readout paths.",
+      "There are no answer-to-question or cross-question arrows.",
+      "Model weights are shared; the figure depicts a logical shared-prefix path, not a universal count of low-level calls.",
+      "Next observations form a new request."
+    ],
+    "probability_readout": [
+      "Constructed K=3, T=1 values agree with the standard-library arithmetic helper.",
+      "Slot A maps to external option ID enable.",
+      "Maximum probability 0.80 and confidence 0.70 remain separate; the image is not a measured success-rate result.",
+      "Re-running the generator produced byte-identical PNG output."
+    ],
+    "article_integration": "Three new figures use the existing post-image and article-figure components; image alt text and complete captions are selectable alongside the surrounding explanation."
+  },
+  "primary_source_scope": [
+    {
+      "url": "https://github.com/OmniJev/OneJev/blob/d18d82243d82062af9c6c1bed999eaec5f39cbe0/qev/answers.py",
+      "supports": "Choice confidence formula and typed-answer assembly."
+    },
+    {
+      "url": "https://github.com/OmniJev/Flide/blob/ea93bfaf8e8109aad444d9f548957a519212a70a/plugins/onejev/flide_onejev/format.py",
+      "supports": "Separate question suffixes, shared prefix, slot-logit softmax and answer mapping."
+    },
+    {
+      "url": "https://docs.typesafe.ai/models",
+      "supports": "The article distinguishes its text-only hosted Jev snapshot from local multimodal OneJev."
+    }
+  ],
+  "validation_review": "docs/site-reviews/2026-11-03-jev-onejev-figures/README.md"
+}

@@ -1,0 +1,46 @@
+{
+  "reviewed_generated_originals": [
+    {
+      "file": "content/posts/ai/jev-decision-layer/assets/jev-onejev-deployment.png",
+      "source": "/home/ubuntu/.codex/generated_images/01a187b4-0b96-71f1-a3fa-173629598f77/exec-44c490e0-55b3-4c3c-8182-188ff55e223f.png",
+      "sha256": "e0d5f1879add2a18fe041f64f5129f0c41638480979d8aa92af387477b87dd53",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 1416127
+    },
+    {
+      "file": "content/posts/ai/jev-decision-layer/assets/onejev-state-forking.png",
+      "source": "/home/ubuntu/.codex/generated_images/01a187b4-0b96-71f1-a3fa-173629598f77/exec-7910d955-3653-4a63-a5b8-b257a099335e.png",
+      "sha256": "94d87e597b5258732bf6873c8a7f09182ab8c2099f1d6d1b9232579289a4701b",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 1416957
+    }
+  ],
+  "reviewed_plot": "content/posts/ai/jev-decision-layer/assets/onejev-probability-readout.png",
+  "retained_views": [
+    "docs/site-reviews/2026-11-03-jev-onejev-figures/visual/fig-jev-onejev-deployment-320-100-light.png",
+    "docs/site-reviews/2026-11-03-jev-onejev-figures/visual/fig-onejev-probability-readout-320-100-dark.png",
+    "docs/site-reviews/2026-11-03-jev-onejev-figures/visual/fig-onejev-state-forking-320-200-dark.png",
+    "docs/site-reviews/2026-11-03-jev-onejev-figures/visual/fig-onejev-state-forking-1440-100-light.png",
+    "docs/site-reviews/2026-11-03-jev-onejev-figures/visual/a4-light-page-4.png",
+    "docs/site-reviews/2026-11-03-jev-onejev-figures/visual/a4-light-page-7.png",
+    "docs/site-reviews/2026-11-03-jev-onejev-figures/visual/a4-light-page-8.png"
+  ],
+  "manual_pdf_pages": [
+    4,
+    7,
+    8
+  ],
+  "manual_pdf": "qa/final-accepted-native/jev-decision-layer-true-100-light-a4.pdf",
+  "checks": [
+    "Labels and arrows agree with the pinned explanation.",
+    "New narrow captions are complete in light/dark views and the large-text branch view.",
+    "Final A4 figures and captions are intact, with no literal K/T math delimiters."
+  ],
+  "native_pdf_note": "Other exports are automatically checked and are not counted as manually reviewed pages."
+}

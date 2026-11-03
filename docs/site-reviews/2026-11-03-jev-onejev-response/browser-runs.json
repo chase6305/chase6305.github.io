@@ -1,0 +1,143 @@
+[
+  {
+    "name": "reading",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-response/check_reading.cjs",
+      "http://127.0.0.1:13689",
+      "9244",
+      "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/accepted-reading"
+    ],
+    "started": "2026-11-03T04:41:38.002646+00:00",
+    "finished": "2026-11-03T04:42:20.570965+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "print",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-response/check_print.cjs",
+      "http://127.0.0.1:13689",
+      "9244",
+      "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/accepted-print"
+    ],
+    "started": "2026-11-03T04:42:20.571058+00:00",
+    "finished": "2026-11-03T04:42:22.171363+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "large-print",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-response/check_print.cjs",
+      "http://127.0.0.1:13689",
+      "9244",
+      "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/accepted-large-print",
+      "--large-text"
+    ],
+    "started": "2026-11-03T04:42:22.171503+00:00",
+    "finished": "2026-11-03T04:42:24.145956+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "semantics",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-response/check_semantics.cjs",
+      "http://127.0.0.1:13689",
+      "9244",
+      "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/accepted-semantics",
+      "/tmp/chase-opt-20261029-fivehour/a11y/node_modules/axe-core/axe.min.js"
+    ],
+    "started": "2026-11-03T04:42:24.146097+00:00",
+    "finished": "2026-11-03T04:42:29.224422+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "search",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-response/check_search.cjs",
+      "http://127.0.0.1:13689",
+      "9244",
+      "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/accepted-search"
+    ],
+    "started": "2026-11-03T04:42:29.224571+00:00",
+    "finished": "2026-11-03T04:42:33.655777+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "images",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-response/check_images.cjs",
+      "http://127.0.0.1:13689",
+      "9244",
+      "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/accepted-images"
+    ],
+    "started": "2026-11-03T04:42:33.655947+00:00",
+    "finished": "2026-11-03T04:42:38.650807+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "keyboard",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-response/check_keyboard.cjs",
+      "http://127.0.0.1:13689",
+      "9244",
+      "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/accepted-keyboard"
+    ],
+    "started": "2026-11-03T04:42:38.650965+00:00",
+    "finished": "2026-11-03T04:42:59.462082+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "native",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-response/export_article.cjs",
+      "http://127.0.0.1:13689",
+      "9244",
+      "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/accepted-native"
+    ],
+    "started": "2026-11-03T04:42:59.462294+00:00",
+    "finished": "2026-11-03T04:43:12.608679+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "figures",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-response/check_figures.cjs",
+      "http://127.0.0.1:13689",
+      "9244",
+      "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/accepted-figures"
+    ],
+    "started": "2026-11-03T04:43:12.608834+00:00",
+    "finished": "2026-11-03T04:43:19.711627+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "expanded-search",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-response/check_search.cjs",
+      "http://127.0.0.1:13689",
+      "9244",
+      "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/search-expanded-accepted"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "shared-code-reading",
+    "args": [
+      "node",
+      "scripts/check_code_reading.cjs",
+      "http://127.0.0.1:13689",
+      "9244",
+      "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/code-reading"
+    ],
+    "exit_code": 0
+  }
+]

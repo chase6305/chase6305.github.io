@@ -1,0 +1,24 @@
+{
+  "retained_views": [
+    "docs/site-reviews/2026-11-03-jev-onejev-response/visual/onejev-response-example-320-100-light.png",
+    "docs/site-reviews/2026-11-03-jev-onejev-response/visual/response-table-left-320-100-light.png",
+    "docs/site-reviews/2026-11-03-jev-onejev-response/visual/response-table-right-320-200-dark.png",
+    "docs/site-reviews/2026-11-03-jev-onejev-response/visual/onejev-startup-troubleshooting-320-200-dark.png",
+    "docs/site-reviews/2026-11-03-jev-onejev-response/visual/accepted-a4-page-11.png",
+    "docs/site-reviews/2026-11-03-jev-onejev-response/visual/accepted-a4-page-12.png",
+    "docs/site-reviews/2026-11-03-jev-onejev-response/visual/accepted-a4-page-16.png"
+  ],
+  "manual_pdf_pages": [
+    11,
+    12,
+    16
+  ],
+  "manual_pdf_source": "qa/accepted-native/jev-decision-layer-true-100-light-a4.pdf",
+  "reviewed": [
+    "New response example and field table in actual light theme.",
+    "Horizontal response-table right edge at 200% text in dark theme.",
+    "Expanded troubleshooting at 200% text.",
+    "A4 response fields, probability arithmetic and training plan-only instructions."
+  ],
+  "note": "Other PDFs are automatic exports, not claimed as manually reviewed pages."
+}

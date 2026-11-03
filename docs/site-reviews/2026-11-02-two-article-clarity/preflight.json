@@ -1,0 +1,47 @@
+{
+  "status": "preflight",
+  "checked_at_utc": "2026-11-02T09:09:59.862873+00:00",
+  "window_start_utc": "2026-11-02T06:21:09+00:00",
+  "elapsed_seconds": 10130.862873,
+  "minimum_elapsed_seconds": 10800,
+  "elapsed_requirement_met": false,
+  "baseline_revision": "0d6f32a910b912d8d9f1d6af4b25a0a829803664",
+  "tracked_files_changed": [
+    "content/posts/ai/rlhf-rlvr-rlcd/assets/post-training-feedback-routes.svg",
+    "content/posts/ai/rlhf-rlvr-rlcd/index.md",
+    "content/posts/ai/supermimic/index.md",
+    "docs/blog-editorial-review.json",
+    "scripts/check_overflow_focus.cjs"
+  ],
+  "source_hashes_match": true,
+  "acceptance_records_changed": [
+    83,
+    91
+  ],
+  "preserved_page_ids": {
+    "supermimic": {
+      "prior_ids_retained": 62,
+      "current_ids": 66,
+      "html_sha256": "b09aa35f1dd3185739bd253e1850e3901e14203fff9b338356abafb278e2c583"
+    },
+    "rlhf-rlvr-rlcd": {
+      "prior_ids_retained": 21,
+      "current_ids": 24,
+      "html_sha256": "244a4cb3b5a85e567ddab39457c21039edcd455f54cbc57e6a9c562e2201e976"
+    }
+  },
+  "checks": {
+    "strict_html_pages": 319,
+    "reading_layouts": 48,
+    "chapter_loads": 40,
+    "semantic_contexts": 16,
+    "search_cases": 48,
+    "ordinary_print_layouts": 576,
+    "large_print_layouts_in_scope": 12,
+    "native_exports": 8,
+    "native_pages": 337,
+    "short_pdf_units": 36
+  },
+  "commit_push_or_deploy": false,
+  "known_outside_scope": "The earlier extra whole-site 200% print run failed on 42 other unchanged articles; this review does not claim a full-site 200% print pass."
+}

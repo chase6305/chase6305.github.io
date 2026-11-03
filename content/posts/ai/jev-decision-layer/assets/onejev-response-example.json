@@ -1,0 +1,35 @@
+{
+  "model": "constructed-example-not-model-inference",
+  "answers": {
+    "done": {
+      "type": "noul",
+      "noul": 0.05
+    },
+    "next": {
+      "type": "choice",
+      "choice": "enable",
+      "probabilities": {
+        "enable": 0.8,
+        "stop": 0.1,
+        "reobserve": 0.05,
+        "handoff": 0.05
+      },
+      "confidence": 0.733333
+    },
+    "progress": {
+      "type": "score",
+      "score": 1.0,
+      "legend": {
+        "0": "Notifications toggle is not available on the screen.",
+        "1": "Notifications toggle is available but notifications are disabled.",
+        "2": "Notifications are enabled."
+      },
+      "probabilities": {
+        "0": 0.05,
+        "1": 0.9,
+        "2": 0.05
+      },
+      "confidence": 0.85
+    }
+  }
+}

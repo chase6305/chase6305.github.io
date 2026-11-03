@@ -1,0 +1,8 @@
+{
+  "generator": "content/posts/ai/jev-decision-layer/make_onejev_readout_figure.py",
+  "file": "content/posts/ai/jev-decision-layer/assets/onejev-probability-readout.png",
+  "source_sha256": "b66dc4a19f0625a4aee2cc66c3b75c68395bad6e945f4733390906af4f394cd9",
+  "reproduced_sha256": "b66dc4a19f0625a4aee2cc66c3b75c68395bad6e945f4733390906af4f394cd9",
+  "byte_identical": true,
+  "pixel_identical": true
+}

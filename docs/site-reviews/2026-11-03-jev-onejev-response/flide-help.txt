@@ -1,0 +1,60 @@
+usage: flide serve [-h] --model MODEL [--format FORMAT]
+                   [--format-arg KEY=VALUE] [--name NAME]
+                   [--calibration CALIBRATION] [--device DEVICE]
+                   [--dtype DTYPE] [--media-root MEDIA_ROOT]
+                   [--no-cuda-graphs] [--batch-invariant] [--quantize {fp8}]
+                   [--max-branch-tokens MAX_BRANCH_TOKENS]
+                   [--max-request-tokens MAX_REQUEST_TOKENS]
+                   [--session-cache-gb SESSION_CACHE_GB]
+                   [--session-min-tokens SESSION_MIN_TOKENS]
+                   [--planners PLANNERS] [--frontends FRONTENDS]
+                   [--batch-window-ms BATCH_WINDOW_MS] [--gather-ms GATHER_MS]
+                   [--host HOST] [--port PORT] [--access-log]
+
+`flide serve`: load a checkpoint and serve the System One API. Options a
+family does not use are left out of its constructor, so one command line
+serves every family.
+
+options:
+  -h, --help            show this help message and exit
+  --model MODEL         local directory or Hub repository id
+  --format FORMAT       model family (default: detected from the checkpoint)
+  --format-arg KEY=VALUE
+                        family option
+  --name NAME           model name reported by the API (default: from --model)
+  --calibration CALIBRATION
+                        calibration.json (default: the one next to the
+                        weights)
+  --device DEVICE
+  --dtype DTYPE
+  --media-root MEDIA_ROOT
+                        directory that local media paths in requests resolve
+                        against (without it, only URLs and base64)
+  --no-cuda-graphs      run every request eagerly
+  --batch-invariant     batch-invariant products: every request gets the same
+                        bits at any load (slower)
+  --quantize {fp8}      decoder weights in float8 with per-row scales, inputs
+                        scaled per token (compute capability 8.9+); changes
+                        the numbers a little
+  --max-branch-tokens MAX_BRANCH_TOKENS
+  --max-request-tokens MAX_REQUEST_TOKENS
+  --session-cache-gb SESSION_CACHE_GB
+                        GPU memory for saved prefix states; a request that
+                        extends an earlier prefix resumes from it
+  --session-min-tokens SESSION_MIN_TOKENS
+                        shortest prefix the session cache saves
+  --planners PLANNERS   CPU threads that render and tokenize requests
+  --frontends FRONTENDS
+                        HTTP front-end processes (each plans and finishes
+                        requests with its own planners); 0 serves from the GPU
+                        process itself
+  --batch-window-ms BATCH_WINDOW_MS
+                        wait this long after the first waiting request for
+                        more to join its GPU round
+  --gather-ms GATHER_MS
+                        wait up to this long for requests still being planned
+                        to join a round (default 2)
+  --host HOST
+  --port PORT
+  --access-log          log every request (off by default: at hundreds of
+                        requests a second the lines cost CPU)

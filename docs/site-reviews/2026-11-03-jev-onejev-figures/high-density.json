@@ -1,0 +1,95 @@
+{
+  "rows": [
+    {
+      "viewport": 320,
+      "deviceScaleFactor": 1,
+      "images": [
+        {
+          "id": "fig-jev-onejev-deployment",
+          "source": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/jev-onejev-deployment_hu_f96bedebc2942cd6.webp",
+          "decoded": true,
+          "cssWidth": 255.625,
+          "naturalWidth": 272,
+          "link": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/jev-onejev-deployment.png"
+        },
+        {
+          "id": "fig-onejev-probability-readout",
+          "source": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/onejev-probability-readout_hu_2da8b3453575ab96.webp",
+          "decoded": true,
+          "cssWidth": 255.625,
+          "naturalWidth": 272,
+          "link": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/onejev-probability-readout.png"
+        },
+        {
+          "id": "fig-onejev-state-forking",
+          "source": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/onejev-state-forking_hu_4c9b91321f621bf0.webp",
+          "decoded": true,
+          "cssWidth": 255.625,
+          "naturalWidth": 272,
+          "link": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/onejev-state-forking.png"
+        }
+      ]
+    },
+    {
+      "viewport": 320,
+      "deviceScaleFactor": 2,
+      "images": [
+        {
+          "id": "fig-jev-onejev-deployment",
+          "source": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/jev-onejev-deployment_hu_9529f92eb1bafc03.webp",
+          "decoded": true,
+          "cssWidth": 255.625,
+          "naturalWidth": 272,
+          "link": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/jev-onejev-deployment.png"
+        },
+        {
+          "id": "fig-onejev-probability-readout",
+          "source": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/onejev-probability-readout_hu_13903bc55d16bbc8.webp",
+          "decoded": true,
+          "cssWidth": 255.625,
+          "naturalWidth": 272,
+          "link": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/onejev-probability-readout.png"
+        },
+        {
+          "id": "fig-onejev-state-forking",
+          "source": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/onejev-state-forking_hu_f6a31ba4bc933bd.webp",
+          "decoded": true,
+          "cssWidth": 255.625,
+          "naturalWidth": 272,
+          "link": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/onejev-state-forking.png"
+        }
+      ]
+    },
+    {
+      "viewport": 320,
+      "deviceScaleFactor": 3,
+      "images": [
+        {
+          "id": "fig-jev-onejev-deployment",
+          "source": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/jev-onejev-deployment_hu_9529f92eb1bafc03.webp",
+          "decoded": true,
+          "cssWidth": 255.625,
+          "naturalWidth": 272,
+          "link": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/jev-onejev-deployment.png"
+        },
+        {
+          "id": "fig-onejev-probability-readout",
+          "source": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/onejev-probability-readout_hu_13903bc55d16bbc8.webp",
+          "decoded": true,
+          "cssWidth": 255.625,
+          "naturalWidth": 272,
+          "link": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/onejev-probability-readout.png"
+        },
+        {
+          "id": "fig-onejev-state-forking",
+          "source": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/onejev-state-forking_hu_f6a31ba4bc933bd.webp",
+          "decoded": true,
+          "cssWidth": 255.625,
+          "naturalWidth": 272,
+          "link": "http://127.0.0.1:13681/posts/ai/jev-decision-layer/assets/onejev-state-forking.png"
+        }
+      ]
+    }
+  ],
+  "exceptions": []
+}

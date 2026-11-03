@@ -1,0 +1,33 @@
+{
+  "article_baseline_sha256": "9aff09835b4b4b11efb42b786bbf674403fb16bb5f50e56c6b20d264939c7777",
+  "article_result_sha256": "c4c871418d4b34120bd3694b8bacfc0ae8fb5ad421f198f9d16b833766796183",
+  "article_patch": "article-changes.patch",
+  "changed_editorial_records": [
+    {
+      "id": 81,
+      "fields": {
+        "image": {
+          "before": "assets/jev-decision-loop-v2.webp",
+          "after": "assets/jev-onejev-deployment.png"
+        },
+        "focus": {
+          "before": "先区分 Jev 服务、OneJev 权重与推理引擎，沿概率读出和两个本地例子理解接口，再用候选、时效、置信度与交接检查机器人闭环。",
+          "after": "先用部署关系和概率读出图区分模型、引擎与输出，再看共享前缀和两个本地例子，最后检查机器人候选、观测时效与执行交接。"
+        },
+        "image_decision": {
+          "before": "四张配图解释分层闭环、失败归因、状态信息丢失和执行协议，一张数值图及交互算例分析路由取舍；另附构造的设置截图、OneJev 标准库调用与复算包，保留原有门控与校准练习。",
+          "after": "六张结构与流程图解释托管/本地部署、独立问题分支及机器人闭环，两张定量图解释概率读出与路由取舍；保留设置截图、标准库调用与离线练习包。"
+        }
+      }
+    }
+  ],
+  "allowed_clean_file_modified": "layouts/_shortcodes/jev-routing-lab.html",
+  "new_content_sources": [
+    "content/posts/ai/jev-decision-layer/assets/jev-onejev-deployment.png",
+    "content/posts/ai/jev-decision-layer/assets/onejev-state-forking.png",
+    "content/posts/ai/jev-decision-layer/assets/onejev-probability-readout.png",
+    "content/posts/ai/jev-decision-layer/make_onejev_readout_figure.py"
+  ],
+  "prior_dirty_file_count": 142,
+  "prior_dirty_preservation_receipt": "preservation.json"
+}

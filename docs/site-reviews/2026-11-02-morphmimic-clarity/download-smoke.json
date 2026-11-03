@@ -1,0 +1,15 @@
+{
+  "standalone_script_without_assets": true,
+  "check_with_reference_record": true,
+  "path_contains_spaces_and_chinese": true,
+  "output": "MorphMimic dimensions, mappings, gradients and Table I differences passed",
+  "dimensions": {
+    "proprioception": 93,
+    "history": 930,
+    "full_goal": 670,
+    "five_point": 465,
+    "morphology": 125,
+    "decoder_input": 1087,
+    "world_model_input": 472
+  }
+}

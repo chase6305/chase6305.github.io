@@ -1,0 +1,29 @@
+{
+  "source": "constructed logits and probabilities; not model inference",
+  "logits": [
+    2.0794415416798357,
+    0.0,
+    0.0
+  ],
+  "probabilities_T1": [
+    0.8,
+    0.10000000000000002,
+    0.10000000000000002
+  ],
+  "choice_confidence": 0.7000000000000001,
+  "probabilities_T2": [
+    0.585786437626905,
+    0.20710678118654754,
+    0.20710678118654754
+  ],
+  "cross_entropy": 0.2231435513142097,
+  "brier_sum": 0.059999999999999984,
+  "loss_with_brier_weight_1": 0.2831435513142097,
+  "score_distribution": [
+    0.1,
+    0.6,
+    0.3
+  ],
+  "expected_score": 1.2,
+  "score_confidence": 0.3999999999999999
+}

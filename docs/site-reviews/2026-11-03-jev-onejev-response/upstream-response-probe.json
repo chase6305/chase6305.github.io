@@ -1,0 +1,41 @@
+{
+  "scope": "Actual pinned Flide request planning and answer assembly from constructed slot logits. No model weights or inference forward are loaded. Same constructed output is used for both plans only to test format compatibility, not expected image predictions.",
+  "plans": [
+    {
+      "kind": "text",
+      "prefix_tokens": 90,
+      "suffix_tokens": [
+        56,
+        100,
+        79
+      ],
+      "vision_present": false,
+      "constructed_answers_match_published_excerpt": true
+    },
+    {
+      "kind": "image",
+      "prefix_tokens": 287,
+      "suffix_tokens": [
+        56,
+        100,
+        79
+      ],
+      "vision_present": true,
+      "constructed_answers_match_published_excerpt": true
+    }
+  ],
+  "answer_source_sha256": "09b06dba258c80a6a9afdaa5aacfd0f7523f9d2a087a7b6402ca03553ea6fba6",
+  "fixture_sha256": "2dc4b4590752a861a1e07ab3aaa94d6a214ad0ea65bb55ab46f509bc23281ba4",
+  "fixture_model_name": "constructed-example-not-model-inference",
+  "fixture_omits_usage": true,
+  "reader_output": {
+    "model": "constructed-example-not-model-inference",
+    "next_choice": "enable",
+    "next_choice_probability": 0.8,
+    "next_confidence": 0.733333,
+    "done_probability": 0.05,
+    "progress_score": 1.0,
+    "progress_confidence": 0.85
+  },
+  "model_forward_executed": false
+}

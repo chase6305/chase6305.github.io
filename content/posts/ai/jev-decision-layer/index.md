@@ -1,35 +1,37 @@
 ---
-title: "Jev 详解：VLA 系统中的类型化决策、分层执行与置信度路由"
+title: "Jev 与 OneJev 详解：类型化决策、多模态推理与机器人分层执行"
 date: 2026-09-29
-lastmod: 2026-09-29
+lastmod: 2026-11-03
 draft: false
-tags: ["Jev", "VLA", "Embodied AI", "VLM", "Evaluation", "机器人"]
+tags: ["Jev", "OneJev", "VLA", "Embodied AI", "VLM", "Evaluation", "机器人"]
 categories: ["人工智能"]
 authors: ["chase"]
-summary: "从类型化接口与公开证据理解 Jev，详解状态压缩、候选动作、观测时效和异步执行，通过可复现门控、阈值交互与校准反例分析机器人分层决策。"
-description: "从类型化接口与公开证据理解 Jev，详解状态压缩、候选动作、观测时效和异步执行，通过可复现门控、阈值交互与校准反例分析机器人分层决策。"
+summary: "从 TypeSafe Jev 到开源多模态 OneJev，讲清选项 logits、概率与 confidence、状态共享和训练校准；用文字与截图两个本地调用示例，再分析机器人候选、观测时效与分层执行。"
+description: "从 TypeSafe Jev 到开源多模态 OneJev，讲清选项 logits、概率与 confidence、状态共享和训练校准；用文字与截图两个本地调用示例，再分析机器人候选、观测时效与分层执行。"
 contentLanguage: "zh-CN"
 math: true
 toc: true
 imageZoom: true
-images: ["assets/jev-decision-loop-v2.webp"]
-reading_prerequisites: "了解 VLM、机器人观测—动作闭环和基本条件概率；代码示例只需 Python 标准库"
-reading_focus: "区分模型判断、动作执行与任务完成；沿候选、时效、置信度和交接检查闭环，同时核对成功率、延迟与费用的统计单位。"
+images: ["assets/jev-onejev-deployment.png"]
+reading_prerequisites: "了解 VLM、观测—动作闭环和基本概率；随文客户端与复算只需 Python 标准库，模型推理另需后端环境"
+reading_focus: "先区分模型、引擎与概率读出，再连起文字请求、响应读取与截图闭环，最后检查机器人候选、观测时效与执行交接。"
 related_posts:
   - "/posts/ai/vla-evolution"
   - "/posts/ai/real-time-chunking"
   - "/posts/robotics/control/robot-filters"
 ---
 
-**Jev 可以承担“当前该选哪个动作”的判断，但机器人能看见什么、允许执行什么、怎样执行，仍由整个系统共同决定。** 它不是 RT-2、OpenVLA 或 π0 那样的视觉—语言—动作模型；更准确的定位，是可嵌入分层智能体的类型化决策服务。
+**Jev 与 OneJev 把当前状态和类型化问题转换成程序可用的判断，例如候选动作、完成概率与进度等级。** TypeSafe Jev 是托管服务，OneJev 提供可本地运行的多模态权重；机器人能看见什么、允许执行什么、怎样执行，仍由整个系统共同决定。
 
 以关抽屉为例：上层给出局部目标，感知模块报告把手与接触状态，程序列出可用技能，Jev 返回其中一个 ID。执行器检查这个选择是否仍然有效，再调用相应技能；下一轮依据实际观测继续选择或交回上层。本文将沿着这条链路，逐项说明每个模块需要什么信息、承担什么判断。
 
-本文核对资料的日期为 **2026-09-29**。先介绍公开接口，再读 Jev-Mobile 的 GUI 实验与社区机械臂仿真，最后给出机器人集成设计。文中的机械臂候选、门控代码和消融方案是独立示例，不是已部署的 Jev 机器人产品。
+TypeSafe 部分围绕 Jev 1.13 与 Jev-Mobile 实验展开；[OneJev 部分](#onejev)选用 1.6 权重与 Flide 0.1.7，说明概率读出、本地部署和训练接口。想先动手，可以直接从 [OneJev 本地示例](#onejev-quickstart)开始，再回来看分层架构。机械臂候选与门控代码用于说明机器人集成，设置界面示例用于展示本地请求格式。
 
 | 想解决的问题 | 建议阅读 |
 | --- | --- |
 | Jev 到底输出什么 | [模型与接口](#interface) |
+| OneJev 怎样从模型变成可调用服务 | [概率读出](#onejev-probability-readout)、[文字调用](#onejev-quickstart)、[响应解读](#onejev-response-example)、[截图调用](#onejev-image-example) |
+| OneJev 能否在本地训练和校准 | [训练目标](#onejev-training)、[数据与复现范围](#onejev-data-and-evaluation) |
 | 它应放在 VLA 的哪里 | [分层架构](#architecture)、[动作粒度](#action-granularity) |
 | 79% 与成本下降意味着什么 | [Jev-Mobile](#jev-mobile)、[机械臂实验](#embodied-evidence) |
 | 怎样避免错误动作被直接执行 | [观测与候选](#candidate-contract)、[置信度路由](#confidence-routing) |
@@ -39,9 +41,9 @@ related_posts:
 
 TypeSafe 将 Jev 定义为 System One 模型：输入状态与类型化问题，输出程序可以消费的结构化判断。这里的 “System One” 是产品与架构定位，重点是供程序使用的有限选择、等级和二元判断。公开入口介绍了接口和使用方式；本文没有找到足以复现其完整网络、权重与训练配方的公开材料。[官方介绍](https://docs.typesafe.ai/introduction)
 
-因此，“轻量”应先理解为**交互接口短、决策成本较低的设计目标**，不能擅自换算成几亿参数、本地 CPU 推理或开源小模型。当前文中讨论的是通过服务调用的 Jev；部署位置与选择范围要分开讨论。
+因此，“轻量”应先理解为**交互接口短、决策成本较低的设计目标**，不能擅自换算成几亿参数、本地 CPU 推理或开源小模型。本节讨论的是通过服务调用的 TypeSafe Jev；后面的 [OneJev 专题](#onejev)另讲公开权重与本地部署。
 
-本文所核对的版本是 `jev-1.13.0`。官方模型页明确列出纯文本输入，支持字符串、JSON 对象或文本数组；图像、音频与视频需要先由上游转换。`jev-latest` 等别名会随发布改变，复现实验应同时固定请求版本并保存响应中的实际模型 ID。模型页还区分整次请求与“状态加最长问题”的上下文预算，不能仅检查单个 `state` 字段的长度。[模型版本与输入限制](https://docs.typesafe.ai/models)
+早期实验所核对的版本是 `jev-1.13.0`。官方模型页明确列出纯文本输入，支持字符串、JSON 对象或文本数组；图像、音频与视频需要先由上游转换。`jev-latest` 等别名会随发布改变，复现实验应同时固定请求版本并保存响应中的实际模型 ID。模型页还区分整次请求与“状态加最长问题”的上下文预算，不能仅检查单个 `state` 字段的长度。[模型版本与输入限制](https://docs.typesafe.ai/models)
 
 ### 1.1 三种输出并不等价
 
@@ -68,7 +70,7 @@ $$
 
 还要区分**不返回自由文本解释**与**没有任何返回数据或输出 token 统计**。API 仍返回 JSON 与用量信息；不能仅因接口不返回一段文字理由，就断言网络传输、用量记录或序列化开销为零。
 
-### 1.3 RLCD 公开了什么，还没有公开什么 {#rlcd}
+### 1.3 TypeSafe 的 RLCD 公开了什么 {#rlcd}
 
 TypeSafe 把其训练方向称为 **Reinforcement Learning for Calibrated Decisions，RLCD**：希望输出既能用于决策，也能表达可用的不确定性。其公开说明强调概率校准；目前这里核对的材料没有给出足以复现训练的完整数据、奖励公式、优化器和权重。[官方训练定位](https://docs.typesafe.ai/introduction/machine-learning-primer)
 
@@ -86,13 +88,448 @@ TypeSafe 把其训练方向称为 **Reinforcement Learning for Calibrated Decisi
 
 这张表按接口与验证任务分类，不是模型优劣排名。尤其当程序已经算出“目标在左侧、右侧有障碍”，而唯一规则就是向左时，换成模型并不会自动增加系统能力。更值得测试的是需要结合语言目标、状态语义与多个可行技能的选择。
 
-## 2. 放进机器人系统：规划、选择与控制各做什么 {#architecture}
+## 2. OneJev：从公开权重到本地决策服务 {#onejev}
+
+如果希望直接查看模型、处理图像，或把推理放到自己的机器上，应该进一步看 [OmniJev/OneJev][onejev-repo]。它保留了“状态＋类型化问题 → 选项概率”的接口，同时公开了多模态模型权重和一套训练代码。理解它时，先把模型、协议和推理引擎分开。
+
+### 2.1 OneJev、Jev、Flide 分别是什么 {#onejev-model-and-engine}
+
+先沿图 1 看两条输入到输出的路径，再对照下表区分名称。
+
+<figure class="article-figure" id="fig-jev-onejev-deployment">
+  {{< post-image src="assets/jev-onejev-deployment.png" alt="托管 Jev 读取文字或结构化状态，本地 OneJev 由 Flide 引擎加载并读取文字与媒体；两路返回 Noul、Choice、Score 类型化答案，再由独立程序检查与执行技能" >}}
+  <figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text"><strong>两种部署，共用类型化接口。</strong>托管 Jev 与本地 OneJev 使用不同模型，Flide 负责加载 OneJev 权重；答案由程序检查后交给技能执行。</span></figcaption>
+</figure>
+
+| 名称 | 在系统中扮演什么角色 | 应怎样理解它与其他项的关系 |
+| --- | --- | --- |
+| TypeSafe Jev | TypeSafe 托管的决策模型与服务 | 本文早期实验固定为 Jev 1.13；2026-11-02 的官方模型页另列出文本模型 Jev 1.14 |
+| OneJev | OmniJev 发布的开源多模态决策模型 | 基于 Qwen 微调，提供自己的权重；使用兼容的接口，不代表拥有 TypeSafe Jev 的权重或训练配方 |
+| System One API | 请求与返回值的协议 | 定义 `state`、`questions`、`answers` 等字段；OneJev 还通过 `media` 传图像和视频帧 |
+| Flide | 支持 OneJev 等模型的推理引擎 | 负责加载权重、共享状态计算和提供 HTTP 服务；换引擎不等于重新训练一个模型 |
+| qev | OneJev 仓库中的 Python 包和命令 | 包含提示构造、答案组装与 llama.cpp 接入；包名、模型名和 API 模型别名属于不同层次 |
+{.table-readable}
+
+这些入口可以分别对照 [TypeSafe 模型页](https://docs.typesafe.ai/models)、[OneJev 仓库][onejev-repo]与 [Flide 项目][flide-repo]核对。
+
+OneJev 1.6 提供 0.8B、4B、9B、27B 四种规模，其中前三种基于相应的 Qwen3.5，27B 基于 Qwen3.8。文字、图像和视频输入是否可用，还取决于所用检查点与后端：当前推荐的 Flide 路线支持这三类输入，仓库的 llama.cpp 路线支持文字和图像。[OneJev 仓库说明][onejev-repo]
+
+下面的代码说明固定到 OneJev 仓库提交 [`d18d822`][onejev-repo]，部署示例选择 **OneJev1.6-0.8B** 和 **Flide 0.1.7**。[项目展示页](https://omnijev.github.io/OneJev/)仍有 OneJev 1.0 的说明，因此运行时应记录完整模型名、权重 revision 和引擎版本；只写“OneJev”或 `jev-latest`，不能确定实际用了哪一套权重。[0.8B 模型卡][onejev-model]
+
+### 2.2 模型怎样把一个问题变成概率 {#onejev-probability-readout}
+
+以“下一步启用通知、停止，还是重新观察”为例，程序先提供三个候选及各自语义，提示模板再把它们排列成 A、B、C。模型处理状态和这个问题，在答案读出位置计算这些候选标签 token 的分数，也就是 logits。这里复用语言模型输出头中对应标签的行，再对当前候选做归一化。[提示模板][onejev-prompt]、[Flide 的 OneJev 读出实现][onejev-format]
+
+在这条 OneJev 路径中，神经网络计算候选标签的分数，推理软件随后完成归一化和字段组装。因此，返回的 JSON 是服务序列化这些数值的结果。生成式模型也能提供相同形状的 JSON；判断它是否采用这一读出方式，要看模型与引擎实现，不能仅看返回格式。[读出与答案组装][onejev-format]
+
+A、B、C 是**当前问题内部的槽位**，具体含义由这次请求的候选描述决定。下次调用可以让 A 对应另一项技能；程序仍通过映射取回原来的技能 ID。这也解释了为什么接口可以传入新候选，而无需为每个技能另建一个固定类别输出头。
+
+设第 $j$ 个候选的 logit 是 $\ell_j$，候选数为 $K$，温度为 $T>0$：
+
+$$
+p_j=\frac{\exp(\ell_j/T)}
+{\sum_{k=1}^{K}\exp(\ell_k/T)}.
+$$
+
+这个 softmax 的分母只覆盖本题的候选标签，并非整个词表。若构造分数为 $(\log 8,0,0)$，在 $T=1$ 时，三项概率就是 $(0.8,0.1,0.1)$。选择结果通过模板中的映射还原成技能 ID，不需要让调用者解析一段文字解释。
+
+但是，**候选内的 0.8 仍然依赖候选集合**。如果三个候选都不合适，归一化后仍然有一项最大；模型不会因为概率和为 1，就自动具备“当前世界里一定存在可行动作”的证据。需要拒绝或重新观察时，应显式提供相应选项，并继续检查执行前条件。
+
+OneJev 的 Choice 答案还组装一个 `confidence`。所核对实现把最大概率相对于均匀分布的位置缩放到 0–1；当 $K>1$ 时：[答案组装代码][onejev-answers]
+
+$$
+c_{\mathrm{choice}}
+=\frac{\max_j p_j-1/K}{1-1/K}.
+$$
+
+因此，三选一分布 $(0.8,0.1,0.1)$ 的 `confidence` 是 **0.7**。它与最高候选概率含义不同；只有一个候选时，代码直接返回 confidence 1，这更不能作为任务必然成功的依据。
+
+<figure class="article-figure" id="fig-onejev-probability-readout">
+  {{< post-image src="assets/onejev-probability-readout.png" alt="三选一构造例：槽位分数为自然对数八、零、零，温度一的 softmax 得到零点八、零点一、零点一；槽位 A 映射为 enable，Choice confidence 单独计算为零点七" >}}
+  <figcaption><span class="article-figure__number">图 2</span><span class="article-figure__text"><strong>最高概率与 confidence 分开读。</strong>K = 3、T = 1 的构造例得到概率 (0.8, 0.1, 0.1)，Choice confidence 为 0.7；这些值不表示机器人执行成功率。</span></figcaption>
+</figure>
+
+图 2 中的 A 只是模板内部槽位，`enable` 才是程序取回的候选 ID。图中三选一便于手算，后面的通知设置客户端另外提供四个候选。数值与随文复算脚本一致。需要重画时，将[绘图脚本](make_onejev_readout_figure.py)与[复算脚本](onejev_examples.py)放在同一目录；绘图另需 Matplotlib。
+
+Noul 用两个标签表示肯定与否定，返回肯定项的概率。Score 则先得到各有序等级的概率，再计算等级下标的期望。沿用前文 $(0.1,0.6,0.3)$，分数是 1.2；所核对代码还根据概率相对众数等级的平均距离计算 Score confidence，结果为 0.4。Choice 与 Score 的 confidence 也不能互换阈值。
+
+### 2.3 多个问题怎样共享一次状态计算 {#onejev-state-forking}
+
+同一张截图可以同时回答“是否完成”“下一步选什么”“当前是哪一级进度”。这些问题共享视觉输入和状态前缀，每道题仍有自己的问题文本、候选和答案读出位置。
+
+<figure class="article-figure" id="fig-onejev-state-forking">
+  {{< post-image src="assets/onejev-state-forking.png" alt="同一请求中的状态与媒体形成共享前缀，分别进入完成判断、下一步选择和进度等级三个问题分支；各分支独立进行槽位读出与 softmax，返回 Noul、Choice、Score，彼此没有答案传递箭头" >}}
+  <figcaption><span class="article-figure__number">图 3</span><span class="article-figure__text"><strong>共享前缀，各题分别读出。</strong>在共享前缀路径中，各分支复用状态与模型权重，仅读取共同状态和自身问题；新观测进入下一轮请求。</span></figcaption>
+</figure>
+
+沿图 3 可以按四步理解推理过程：
+
+1. 把图像或视频帧编码为视觉特征，与文字状态一起形成共同输入。
+2. 计算共同状态的前缀，保留后续问题需要的注意力缓存和递归状态。
+3. 从这个共同状态展开各问题的独立分支；每个分支读取共同状态和自身问题。
+4. 分别读出候选标签的 logits，组装为 Noul、Choice 或 Score 答案。
+
+这样能够复用相同状态的计算，同时让每道题只读取共同状态和自身问题；其他题目的文本与答案不会成为本题的额外输入。Qwen3.5 同时含有线性注意力与完整注意力层，所以需要保留的状态不只有常见的 KV cache；图像之后的问题还必须保持正确的位置编码。[Flide 的 OneJev 格式][onejev-format]、[Flide 项目][flide-repo]
+
+这里首先指**同一请求内部**的共享。下一轮环境发生变化，仍要提交新状态；跨请求缓存是另一项引擎配置，不能代替重新观测。问题与候选本身的计算也随数量增加，前缀复用节约的是重复工作。
+
+项目所说的“一次前向”，重点是直接读出决策分布，以及多个问题复用输入计算。实际引擎可能采用前缀预填充、分支批处理、CUDA graph 或回退路径，不能把它解释成“任意请求都只有一次底层网络调用”。分支独立描述的是输入读取方式，不意味着各答案在统计上独立。也不要把多个答案相乘就当成联合动作分布：例如“可以移动”和“可以闭合夹爪”分别成立，仍需要程序检查组合动作。
+
+### 2.4 第一个例子：启动服务并判断文字状态 {#onejev-quickstart}
+
+先用最小规模把链路跑通，再决定是否需要更大模型。Flide 路线需要 NVIDIA GPU；在独立目录建立环境，下面采用项目推荐的 Python 3.12：
+
+<div style="break-inside: avoid">
+
+```bash
+uv venv --python 3.12 .venv-onejev
+source .venv-onejev/bin/activate
+uv pip install "flide==0.1.7" torchvision
+flide serve \
+  --model OmniJev/OneJev1.6-0.8B \
+  --host 127.0.0.1 --port 8000
+```
+
+</div>
+
+第一次启动包含权重下载与加载。若要固定本文核对的权重，可以先下载指定 revision，再从本地目录启动：
+
+<details id="onejev-fixed-revision">
+<summary>固定权重版本运行</summary>
+
+<div style="break-inside: avoid">
+
+```bash
+hf download OmniJev/OneJev1.6-0.8B \
+  --revision c89933c277629b707895bff752c61d2b0664c85e \
+  --local-dir models/OneJev1.6-0.8B
+flide serve --model models/OneJev1.6-0.8B \
+  --host 127.0.0.1 --port 8000
+```
+
+</div>
+
+</details>
+
+等待服务就绪后，再在另一个终端查看实际服务名：
+
+<div style="break-inside: avoid">
+
+```bash
+curl http://127.0.0.1:8000/v1/models
+```
+
+</div>
+
+然后发送一个文字状态。任务是启用桌面通知，当前观察到设置页中的开关仍关闭：
+
+```json
+{
+  "model": "OneJev1.6-0.8B",
+  "state": {
+    "task": "Enable desktop notifications.",
+    "observation": {
+      "page": "Settings",
+      "notifications_enabled": false,
+      "toggle_visible": true
+    }
+  },
+  "questions": {
+    "done": {"type": "noul", "instructions": "Notifications are enabled."},
+    "next": {
+      "type": "choice",
+      "instructions": "What should the agent do next to complete the task?",
+      "criteria": {
+        "enable": "Click the Notifications toggle if notifications are disabled.",
+        "stop": "Stop because notifications are already enabled.",
+        "reobserve": "Capture a new screen because the current state is unreadable.",
+        "handoff": "Ask the planner for help because the setting is unavailable."
+      }
+    },
+    "progress": {
+      "type": "score",
+      "instructions": "Which level describes the current notification setting?",
+      "criteria": [
+        "Notifications toggle is not available on the screen.",
+        "Notifications toggle is available but notifications are disabled.",
+        "Notifications are enabled."
+      ]
+    }
+  }
+}
+```
+
+保存为 `request.json` 后调用：
+
+<div style="break-inside: avoid">
+
+```bash
+curl http://127.0.0.1:8000/v1/systemone \
+  -H 'Content-Type: application/json' \
+  --data-binary @request.json
+```
+
+</div>
+
+这次请求同时询问三个不同的问题：`done` 判断通知是否已开启，`next` 从四个候选中选择下一步，`progress` 判断当前等级。问题 ID 用于把答案放回 `answers` 的对应位置；`enable` 等候选 ID 用于定位程序可执行的动作。问题 ID 与候选 ID 属于不同层次。
+
+可以下载 [OneJev 调用示例包](onejev-examples.zip)，解压后进入 `onejev-examples/` 目录；也可单独下载 [onejev_examples.py](onejev_examples.py)。脚本只需 Python 标准库，使用同样的三个问题。进度 Score 的等级依次为“找不到开关”“找到但仍关闭”“已经开启”，对应下标 0、1、2；返回分数是这些下标的期望。`request` 打印请求，`ask` 才调用服务：
+
+<div style="break-inside: avoid">
+
+```bash
+python3 -B onejev_examples.py request
+python3 -B onejev_examples.py ask
+```
+
+</div>
+
+如果 `/v1/models` 返回其他服务名，使用 `--model` 指定。`model` 字段选择本地服务已经加载的模型，不能让服务器临时下载任意另一个模型；本地的 `jev-latest` 别名也不意味着请求被发到了 TypeSafe 云端。
+
+#### 把返回值读完整：先看一份离线响应 {#onejev-response-example}
+
+还没有模型服务时，可以先下载[响应节选](assets/onejev-response-example.json)，或使用示例包内的同名文件。**这份 JSON 由构造概率经答案组装代码生成，模型名明确标为构造示例，省略 `usage`；它用于练习字段读取，不是模型运行结果。**
+
+```bash
+python3 -B onejev_examples.py read-response onejev-response-example.json
+```
+
+输出中的核心数值是：
+
+```json
+{
+  "model": "constructed-example-not-model-inference",
+  "next_choice": "enable",
+  "next_choice_probability": 0.8,
+  "next_confidence": 0.733333,
+  "done_probability": 0.05,
+  "progress_score": 1.0,
+  "progress_confidence": 0.85
+}
+```
+
+这几项分别怎样得到？
+
+| 字段 | 响应中的原始位置 | 本例的解释 |
+| --- | --- | --- |
+| `next_choice` | `answers.next.choice` | `enable` 是候选 ID，程序据此找到本轮的点击操作 |
+| `next_choice_probability` | `answers.next.probabilities.enable` | 四个候选的构造分布是 0.8、0.1、0.05、0.05 |
+| `next_confidence` | `answers.next.confidence` | 按四选一的均匀基线计算，约为 0.733333 |
+| `done_probability` | `answers.done.noul` | 对“通知已经开启”这个命题的概率估计为 0.05 |
+| `progress_score` | `answers.progress.score` | 三级分布 0.05、0.9、0.05 的等级期望为 1.0 |
+| `progress_confidence` | `answers.progress.confidence` | Score 按等级距离计算的 confidence 为 0.85 |
+{.table-readable}
+
+四选一的 Choice confidence 是 $(0.8-0.25)/(1-0.25)\approx0.733333$；图 2 三选一的结果则是 0.7。**改变候选数会改变均匀基线**，不能只因前一个数更大，就认为一次请求更可靠。进度分数 1.0 对应等级下标的期望，也不表示完成了 100%。这些字段分别回答完成、选择和进度问题，不能合并成一个“动作成功率”。[答案组装实现][onejev-answers]
+
+Score confidence 的 0.85 也能手算：众数为等级 1，两个边缘等级各有 0.05 概率，平均等级距离为 0.1；三级均匀分布的距离基线为 2/3，用 1 减去这两个数的比值，得到 0.85。它与 Choice confidence 使用的统计量不同。
+
+有了服务后，把真实返回保存下来，再用同一命令读取：
+
+<div style="break-inside: avoid">
+
+```bash
+python3 -B onejev_examples.py ask > response.json
+python3 -B onejev_examples.py read-response response.json
+```
+
+</div>
+
+`ask` 输出服务返回的全部 JSON 字段；`read-response` 只读取随文三个问题的字段，进度范围固定为 0–2，不发起新请求，也不执行动作。它不是完整的执行门控：候选 ID 白名单、整个分布的一致性、观测版本和动作前条件仍按[离线门控练习](#lab)检查。这样可以分别检查“请求是否发通”“返回怎样解释”“动作能否提交”。
+
+### 2.5 第二个例子：让模型直接读取截图 {#onejev-image-example}
+
+现在让任务保持不变，用一张设置截图替换文字观察。可以下载[随文的设置界面](assets/onejev-settings-screen.png)：画面中的 Notifications 开关已经开启。这个输入是构造的界面，用来检查多模态请求，不是 GUI benchmark 的测试轨迹。
+
+<div style="break-inside: avoid">
+
+```bash
+python3 -B onejev_examples.py ask --image onejev-settings-screen.png
+```
+
+</div>
+
+脚本把文件编码为 data URI，并把请求改为以下结构；问题部分保持原样：
+
+```json
+{
+  "state": {"task": "Enable desktop notifications.", "screen": "<image:1>"},
+  "media": [{"type": "image", "data": "data:image/png;base64,..."}]
+}
+```
+
+这里的省略号只展示字段位置，不能当成真实图像数据发送；脚本会写入完整编码。图像请求没有再附加 `notifications_enabled` 文字字段，因而模型需要依据画面回答。合理的预期是：开启通知的命题偏向肯定，下一步倾向 `stop`，进度分数接近等级 2；具体概率应以本机返回为准。文字例观察到“关闭”，截图例看到“开启”，这是两种状态，不是要求相同输入得到相同动作。
+
+把两段接成真实闭环时，顺序是：读取关闭状态 → 选择 `enable` → 程序提交点击并确认完成 → 采集新截图 → 再询问是否停止。执行器返回“点击已完成”只是操作反馈，新截图才提供开关状态的下一份证据；不要用模型上次的选择替代重新观测。
+
+`<image:1>` 关联 `media` 的第一项。多张图像或视频混合时，编号按媒体列表的位置计算，每项应在状态中按顺序引用一次；不要在某道问题里再重复放入同一媒体占位符。默认发送 data URI 或 URL；客户端的文件路径不会自动成为服务器可读的路径，路径模式需要启动时配置媒体根目录。[媒体表示实现][onejev-media]
+
+视频请求传入的是预先抽取的帧列表和对应的 `fps`。这个 fps 用于建立模型看到的帧时间戳，并不表示服务承诺以同一频率完成推理，也不自动证明模型能判断机器人真实接触或高速运动。截图、时序观测和本体传感器各能提供什么证据，仍应按任务拆开。
+
+### 2.6 没有 NVIDIA GPU 时怎样选后端 {#onejev-backends}
+
+OneJev 仓库还提供 llama.cpp 接入，适合从 GGUF 路线尝试文字和图像。在独立 Python 环境中，先按 [llama.cpp 的构建说明](https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md)安装可用的 `llama-server`，再安装这里固定的 qev 版本：
+
+<div style="break-inside: avoid">
+
+```bash
+uv pip install "qev @ git+https://github.com/OmniJev/OneJev.git@d18d82243d82062af9c6c1bed999eaec5f39cbe0"
+qev serve \
+  --gguf mradermacher/OneJev1.6-0.8B-GGUF:Q8_0 \
+  --name OneJev1.6-0.8B \
+  --host 127.0.0.1 --port 8000
+```
+
+</div>
+
+上述命令自动寻找模型及视觉投影文件；如果使用本地 GGUF，图像支持还需要相应的 `mmproj`，必要时显式传入 `--mmproj`。服务就绪后，前两节的 HTTP 客户端仍可使用。模型服务名相同只方便复用请求；GGUF 的量化、推理后端和权重 revision 仍要另行记录。[llama.cpp 接入实现][onejev-gguf]
+
+两条路线的取舍是：Flide 支持当前项目的文字、图像和视频帧输入，并优化多问题共享计算；GGUF 路线可利用 llama.cpp 支持的设备，但不能把 Flide 的视频支持和吞吐数字直接套过去。CPU、Apple GPU 与 NVIDIA GPU 的实际速度也需要分别测量。
+
+#### 排查启动与调用问题 {#onejev-startup-troubleshooting}
+
+<details>
+<summary>服务启动或请求失败时，按什么顺序排查？</summary>
+
+先区分安装、模型加载、HTTP 请求和字段读取，避免把所有问题都当作模型判断错误。
+
+| 现象 | 优先检查什么 |
+| --- | --- |
+| 第一次启动很久没有响应 | 查看权重下载、显存分配和引擎日志；权重加载完成前不计入稳态推理延迟 |
+| 客户端提示连接失败 | 确认服务进程仍在运行，`--host`、端口和客户端 `--url` 对应；先查询 `/v1/models` |
+| 收到 HTTP 错误 | 阅读 `ask` 输出的状态码和错误正文，核对服务名、`questions` 字段及媒体占位符 |
+| 文字可用，图像不可用 | Flide 路线检查模型是否含视觉模块；GGUF 路线检查配套 `mmproj`，并核对媒体编码 |
+| `read-response` 提示字段不完整 | 确认保存的是成功响应，且请求包含随文的 `done`、`next`、`progress` 三题 |
+{.table-readable}
+
+HTTP 成功返回只说明调用链路有了结果。模型是否正确识别开关、概率是否校准、执行后目标是否达成，需要用各自的观测和评测回答。
+
+</details>
+
+### 2.7 训练、温度校准和 RLCD 怎样区分 {#onejev-training}
+
+公开的 `train/sft.py` 在答案读出位置训练模型。对一题的候选分布 $p$ 和目标分布 $y$，其损失可以写为：[训练实现][onejev-training-code]
+
+$$
+\begin{aligned}
+\mathcal L_{\mathrm{CE}}&=-\sum_j y_j\log p_j,\\
+\mathcal L_{\mathrm{Brier}}&=\sum_j(p_j-y_j)^2,\\
+\mathcal L&=\mathcal L_{\mathrm{CE}}+\lambda\mathcal L_{\mathrm{Brier}}.
+\end{aligned}
+$$
+
+交叉熵会强烈惩罚把正确选项概率压到接近零的预测，Brier 项直接度量各项概率与目标之间的平方误差。这里 Brier 项对候选维求和，再对批内问题平均；公开配置的权重为 $\lambda=1$，这个权重本身并不保证校准。若正确选项是第一项，预测概率依次为 0.8、0.1、0.1，目标概率依次为 1、0、0，交叉熵约 0.223144，Brier 项为 0.06，总损失约 **0.283144**。监督作用是同时改善正确选项的分数与整个分布，仍需在独立任务上检验概率是否校准。 `confidence` 是单次答案的分布统计量；校准则要比较一组预测概率与真实发生频率，具体见[校准与区分能力](#calibration-and-cost)。
+
+温度校准则固定模型已有分数，用独立验证集调整 $T$。对前面的 $(\log 8,0,0)$，把 $T$ 从 1 调到 2，会把三项概率从 0.8、0.1、0.1 变为约 0.585786、0.207107、0.207107。它减弱了尖锐程度，没有改变排序，也无法补出候选集合中缺失的正确动作。温度应在验证集上拟合，然后固定到测试集；不能看完测试标签再选。
+
+<div style="break-inside: avoid">
+
+```bash
+python3 -B onejev_examples.py math
+```
+
+</div>
+
+该命令复算上面的概率、两种 confidence 和损失，数值来自构造输入，可对照[完整数值记录](assets/onejev-math-results.json)。Flide 的 OneJev 实现可读取模型旁的 `calibration.json` 或显式指定的温度表，没有配置时回退到 $T=1$；本节不假定每个发布模型都附带了额外的温度文件。[校准实现][onejev-calibration]
+
+<details id="onejev-temperature-file">
+<summary>怎样把验证集拟合的温度接入服务</summary>
+
+先固定权重、提示模板与选项顺序，保存验证问题的标签和原始 logits，再按问题类型与候选数拟合温度。Flide 可以用请求参数 `debug=1` 返回 OneJev 的读出诊断；默认单次选项排列下，每题的诊断中包含原始槽位 logits。[读出诊断实现][onejev-format]
+
+温度表的键可以写成“问题类型:候选数”。例如，随文客户端的 `next` 有四个选项，文件格式可以是：
+
+```json
+{"temperatures": {"choice:4": 2.0}}
+```
+
+这里的 2.0 只演示文件格式，应替换成验证集拟合值。保存为 `temperature.json` 后，重新启动同一检查点：
+
+<div style="break-inside: avoid">
+
+```bash
+flide serve --model OmniJev/OneJev1.6-0.8B \
+  --calibration temperature.json \
+  --host 127.0.0.1 --port 8000
+```
+
+</div>
+
+这张表只覆盖四选一 Choice；未指定的类型与候选数按配置的回退规则处理。之后用独立测试集比较 NLL、Brier、覆盖率与接受部分的错误率，不能把加载温度文件本身当成校准成功。
+
+</details>
+
+TypeSafe 的 **Reinforcement Learning for Calibrated Decisions** 是其服务的训练定位；公开 OneJev 这条训练路径是带概率目标的监督微调。两者不能因 API 兼容就视为同一训练算法。此外，本站[后训练文章](../rlhf-rlvr-rlcd/)中的 **Reinforcement Learning from Contrast Distillation** 也缩写为 RLCD，含义与 TypeSafe 这个名称不同。
+
+### 2.8 从公开数据走通微调流程 {#onejev-data-and-evaluation}
+
+希望理解数据格式时，先取公开训练集的 100 条样本，不必一开始下载全部图像与视频。下列命令在 OneJev 仓库根目录执行：
+
+<div style="break-inside: avoid">
+
+```bash
+git clone https://github.com/OmniJev/OneJev.git
+cd OneJev
+git checkout d18d82243d82062af9c6c1bed999eaec5f39cbe0
+uv pip install -e ".[train]"
+hf download OmniJev/OneJev-Data sample/sample-100.parquet \
+  --repo-type dataset \
+  --revision 1028292856b8bc3029e4e423df78d0637c735dc0 \
+  --local-dir data/onejev
+python -m train.unpack data/onejev --sample
+```
+
+</div>
+
+解包后得到 `data/onejev/train.jsonl` 和媒体文件。随文核对的 100 行中，Choice、Score、Noul 分别有 49、20、31 条；共 634 个媒体文件，一道视频问题可以关联多帧，因此问题数与图像数不同。可以对照[数据格式复核记录](assets/onejev-data-check.json)。一条记录把 `state`、`question`、`target` 与 `media` 对应起来，训练脚本依据候选标签构造目标分布；改变选项排列时，目标也必须跟着排列。原始 GUI 任务及其相邻帧应整组划分，防止同一任务的近似状态同时进入训练和测试。
+
+以文字通知例为例：如果标注者确认正确动作为 `enable`，目标可以写成 `{"enable": 1.0}`，其余候选按 0 处理。训练记录把请求中的 `questions.next` 放入单数的 `question` 字段，目标使用候选 ID；A、B、C 槽位由渲染器生成。这样重排候选时，目标也能按 ID 跟随，而不会仍然把第一个槽位当作正确答案。模型自己选中的动作不能自动当作标注真值。[目标映射实现][onejev-training-common]
+
+在已经安装训练依赖、解包样本的环境中，可以先做一次不加载完整模型权重的规划检查：
+
+<div style="break-inside: avoid">
+
+```bash
+python -m train.sft \
+  --config train/configs/onejev_08b_full.yaml \
+  --plan-only --limit 100
+```
+
+</div>
+
+这一步仍在仓库根目录执行，配置默认读取 Qwen3.5-0.8B 的 tokenizer 与 processor；也可用 `--model` 指向已有的本地检查点目录。输出会列出样本长度、超过 `max_len` 的行数和批次计划，成功完成时显示 `PLAN_OK`。它检查格式与长度，不执行优化器步骤，也不测训练峰值显存；计划中的多卡数量不表示已经启动了多卡训练。[规划检查实现][onejev-training-code]
+
+公开的 4B 配置随后可以这样启动正式训练：
+
+<div style="break-inside: avoid">
+
+```bash
+torchrun --nproc-per-node 4 -m train.sft \
+  --config train/configs/onejev_4b_full.yaml
+```
+
+</div>
+
+这个配置的学习率为 $5\times10^{-6}$、一个 epoch、最长 16,384 token，并冻结视觉塔。`--nproc-per-node` 是参与训练的 GPU 数，修改它不代表显存需求同比消失。100 条样本用于检查数据与训练链路，不是独立评测集，也不足以复现发布模型的能力。[公开配置][onejev-train-config]
+
+还要注意一个版本差异：公开 OneJev-Data 包含 **94,707** 条可再分发的早期训练问题，其完整媒体包约 17.7 GB；OneJev 1.6 模型卡描述的训练量则是 **390,000–440,000** 条，并对三次完整微调得到的权重做平均。因此，上述公开配方与样本只能帮助走通训练流程，不能据此声称已经完整复现 1.6。这里的 0.8B 模型卡标注 Apache-2.0，数据则保留逐来源许可。[数据卡][onejev-data]、[1.6 模型卡][onejev-model]
+
+### 2.9 实验分数与延迟应该怎样读 {#onejev-results}
+
+模型卡报告 0.8B 的 Decision Index 0.3 **公开部分**为 48.82，对比 1.5 的 42.71。这里需要保留 benchmark 版本、公开子集和计分规则；它不能直接替代机器人任务成功率。仓库的延迟展示使用一张 1280×720 截图和 H200，区分单问题请求与十问题请求；其中 0.8B 的单题请求为 31 ms，十题合并请求为 51 ms，摊到每题 5.1 ms。**5.1 ms 是吞吐摊销值，客户端仍需等待整次请求返回。** 迁移到自己的设备后，应重新测量图像处理、请求总延迟、p50/p95 与多问题吞吐。[模型卡评测条件][onejev-model]、[项目延迟图][onejev-speed]
+
+Decision Index 的分数、后文 Jev-Mobile 的任务成功率、Score 接口返回的等级期望，以及模型自报的 confidence，是四种不同的量。比较方法时，先确认是否使用同一数据集、同一输入、同一计分口径，再讨论模型大小与延迟的取舍。
+
+接入机器人时，可把当前截图、本体状态摘要和候选技能一起交给 OneJev，但执行器仍需绑定观测版本、校验技能参数、执行并确认结果。OneJev 补上的是可本地运行的多模态选择模型；后文的候选覆盖、时效、交接与误差归因，仍是把它接成闭环时需要完成的工作。
+
+
+## 3. 放进机器人系统：规划、选择与控制各做什么 {#architecture}
 
 一种合理的集成方式，是让上层把“整理桌面”拆成局部目标，让中间层在当前允许的技能里选择，让底层完成轨迹跟踪。Jev 可承担中间的语义选择，但**它并不要求所有 VLA 都必须改成这一架构**。
 
 <figure class="article-figure" id="fig-jev-architecture">
   {{< post-image src="assets/jev-decision-loop-v2.webp" alt="Jev 接收局部目标、结构化状态和候选动作；执行门控检查后调用技能控制器，环境反馈重新进入感知与候选构造" >}}
-  <figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text"><strong>决策层连接目标与可执行技能。</strong>图中是机器人集成设计；图像由上游处理，Jev 接收结构化输入。执行反馈必须重新进入观测链路，拒绝分支可以触发补充观测或重新规划。 <a href="assets/jev-decision-loop-v2.webp">查看原图</a></span></figcaption>
+  <figcaption><span class="article-figure__number">图 4</span><span class="article-figure__text"><strong>决策层连接目标与可执行技能。</strong>图中沿用 TypeSafe Jev 文字状态入口的机器人集成设计；图像由上游处理，选择器接收结构化输入。OneJev 可直接接入媒体，但仍需观测与执行协议。执行反馈必须重新进入观测链路，拒绝分支可以触发补充观测或重新规划。 <a href="assets/jev-decision-loop-v2.webp">查看原图</a></span></figcaption>
 </figure>
 
 | 层次 | 典型输入与输出 | 主要责任 |
@@ -106,11 +543,11 @@ TypeSafe 把其训练方向称为 **Reinforcement Learning for Calibrated Decisi
 
 这里的“独立运行保护”是机器人集成所需的职责划分，不是声称本文的几行 Python 已实现安全控制器。真实系统仍需自己的限位、速度与力约束、急停及故障响应。
 
-### 2.1 不能把全部 VLA 描述成“每个伺服周期都调用大模型”
+### 3.1 不能把全部 VLA 描述成“每个伺服周期都调用大模型” {#21-不能把全部-vla-描述成每个伺服周期都调用大模型}
 
 动作块模型已经可以一次预测多个未来控制点，然后逐步执行。π0 的流匹配采样迭代、动作块更新与机器人执行频率是三个不同概念；详见 [VLA 演进中的 Flow Matching](../vla-evolution/#flow)。因此，Jev 的比较对象应是**具体调用方式下的逐步生成式决策器**，而不是抽象地宣称所有 VLA 都必须逐周期生成文字。
 
-### 2.2 “2–14 Hz”只是特定延迟的倒数
+### 3.2 “2–14 Hz”只是特定延迟的倒数 {#22-214-hz只是特定延迟的倒数}
 
 TypeSafe 发布文章报告的端到端服务延迟范围是约 **70–500 ms**，并带有测试地点等条件。这属于提供方报告，不是机器人控制周期保证；[后文的社区记录](#community-accounting)也展示了不同运行条件下更长的网络调用延迟。[发布文章](https://typesafe.ai/blog/introducing-system-one-models-and-jev)
 
@@ -123,19 +560,24 @@ $$
 但串行闭环每轮还要经历：
 
 $$
-T_{\mathrm{loop}}=T_{\mathrm{observe}}+T_{\mathrm{build}}
-+T_{\mathrm{request}}+T_{\mathrm{gate}}+T_{\mathrm{execute}}.
+\begin{aligned}
+T_{\mathrm{loop}}&=T_{\mathrm{observe}}+T_{\mathrm{build}}
++T_{\mathrm{request}}\\
+&\quad+T_{\mathrm{gate}}+T_{\mathrm{execute}}.
+\end{aligned}
 $$
 
 这里 request 已包含相应服务调用与网络等待，不应再次重复加同一段网络时间。假设观测与候选构造 40 ms，请求 150 ms，门控 2 ms，动作与稳定等待 300 ms，那么一轮 492 ms，约 2.03 Hz；这组数仅用于解释预算。并发可以提高吞吐，但尚未观察动作结果的请求，不能算作同一个因果闭环的下一步。
 
-### 2.3 感知成本不会因为换了选择器而消失
+### 3.3 感知成本不会因为换了选择器而消失 {#23-感知成本不会因为换了选择器而消失}
+
+下面先按 TypeSafe Jev 的文字入口分析。使用 OneJev 直接处理媒体时，视觉计算转入本地多模态模型；目标构造、几何换算与本体状态准备仍有各自成本。
 
 如果每一帧仍需调用一个 VLM，才能把图像转写成 Jev 可用的状态，那么系统虽然减少了“生成动作文字”的工作，仍承担逐步视觉理解的费用和等待。相反，若对象跟踪、深度几何与本体反馈已能稳定给出所需字段，低频 VLM 才更容易集中于目标解释和异常恢复。
 
 因此应沿完整链路记账：图像如何变成状态、状态何时生成、是否缓存、缓存何时失效、选择器调用后还要等待哪些动作。Jev-Mobile 使用已有无障碍树构造文字候选，是一种特定的结构化观测条件；机械臂未必天然具备同等完备的对象与接触状态。把 GUI 的费用变化迁移到机器人，必须重新计算这部分输入成本。
 
-## 3. 一条动作究竟是什么 {#action-granularity}
+## 4. 一条动作究竟是什么 {#action-granularity}
 
 “打开抽屉”在不同系统里可能完全不同：对任务规划器是一个子任务；对技能库是一次带参数调用；对接触控制器则包含接近、抓取、拉动和释放。设计 Jev 接口前，应先写清粒度。
 
@@ -153,11 +595,11 @@ $$
 
 例如，程序规定一次平移增量的总幅值不超过 10 mm，X、Y 两个通道各选 8 mm，合成幅值却是 $\sqrt{8^2+8^2}\approx11.3$ mm。两个单轴值分别通过检查，不能证明组合通过。坐标系也应留在候选参数中：相机画面的“左”与机器人基坐标的负 X 不一定相同，变换与单位换算应由程序完成。
 
-## 4. Jev-Mobile：从论文里逐步还原闭环 {#jev-mobile}
+## 5. Jev-Mobile：从论文里逐步还原闭环 {#jev-mobile}
 
 [Jev-Mobile 预印本](https://arxiv.org/html/2609.30186v1)研究 Android GUI 操作，作者是 Linghua Zhang，2026 年 9 月发布。它是理解“VLM 规划 + 类型化执行”的直接材料，但其结果不能直接当作机械臂 benchmark。
 
-### 4.1 上层看什么，下层看什么
+### 5.1 上层看什么，下层看什么 {#41-上层看什么下层看什么}
 
 VLM 读取任务、当前截图、无障碍树及程序记录的真实操作历史，输出局部目标与必要的精确输入文本。程序根据**当前原始无障碍树**枚举动作。Jev 读取树的文字表示、局部目标、本轮委派历史和候选描述，选一个 ID，或返回 `DONE` / `BLOCKED`。
 
@@ -177,7 +619,7 @@ VLM 读取任务、当前截图、无障碍树及程序记录的真实操作历�
 
 这是用于说明协议的例子，不是引用论文中的某一条原始轨迹。关键是第 3 步：旧页面的 ID 和坐标不能直接沿用到新页面。
 
-### 4.2 DONE 与 BLOCKED 为什么必须存在
+### 5.2 DONE 与 BLOCKED 为什么必须存在 {#42-done-与-blocked-为什么必须存在}
 
 控制器把 `DONE`、`BLOCKED` 与当前动作 ID 一起写入 Choice 的 `criteria`，并说明各自含义。它们是这套协议定义的交接选项；后文离线脚本用小写 `done`、`blocked` 作为自己的候选 ID。[论文的类型化决策定义](https://arxiv.org/html/2609.30186v1#S3.SS3)
 
@@ -185,7 +627,7 @@ VLM 读取任务、当前截图、无障碍树及程序记录的真实操作历�
 
 论文第一版直接使用原始树构造候选，没有依靠额外视觉坐标补全来修复树中缺失的目标；精确输入值由规划器提供，输入还受可打印 ASCII 等实现限制。这些限制会影响候选覆盖，不能全部归因于 Jev “不够聪明”。方法细节与约束见[论文第 3 节](https://arxiv.org/html/2609.30186v1#S3)。
 
-### 4.3 79%、32.7% 与 73.4% 的分母
+### 5.3 79%、32.7% 与 73.4% 的分母 {#43-79327-与-734-的分母}
 
 以下保留论文表 1 的系统级比较。共享的通用 VLM 为 Qwen3.8-Max；SeeAct-V 对照使用 UI-TARS-1.5-7B 作为 grounding 组件，是该实验中的适配版本。
 
@@ -200,8 +642,10 @@ VLM 读取任务、当前截图、无障碍树及程序记录的真实操作历�
 来源：[论文结果与表 1](https://arxiv.org/html/2609.30186v1#S6)，统计定义见[第 5.2 节](https://arxiv.org/html/2609.30186v1#S5.SS2)。相对于逐步 VLM：
 
 $$
-1-\frac{132.67}{197.21}\approx32.7\%,\qquad
-1-\frac{0.072744}{0.273694}\approx73.4\%.
+\begin{aligned}
+1-\frac{132.67}{197.21}&\approx32.7\%,\\
+1-\frac{0.072744}{0.273694}&\approx73.4\%.
+\end{aligned}
 $$
 
 同时成功率从 84% 变成 79%，下降 **5 个百分点**。这组结果支持“在该实验中，Jev-Mobile 成功轨迹更省时间与费用”，不能简写成“更便宜且全面更强”。各系统成功的任务集合也可能不同，因此条件平均数并非严格的相同成功任务配对比较。
@@ -210,9 +654,9 @@ $$
 
 这些实验比较的是完整系统，架构、候选与执行方式共同变化。若要隔离“换成 Jev 本身”的收益，还需要保持同一委派协议、候选集合和执行器，只替换选择模型；现有表格不能替代这项消融。
 
-## 5. 机械臂与导航：证据应读到哪一步 {#embodied-evidence}
+## 6. 机械臂与导航：证据应读到哪一步 {#embodied-evidence}
 
-### 5.1 embodied-jev：抽屉成功对照与微波炉失败都要看
+### 6.1 embodied-jev：抽屉成功对照与微波炉失败都要看 {#51-embodied-jev抽屉成功对照与微波炉失败都要看}
 
 社区项目 [embodied-jev](https://github.com/FBddcz/embodied-jev)提供分层机器人仿真实验。本文固定到提交 `f08de2e4e20d6cd69fea9c57ac1062c3ef510f1e`，避免后续 README 改动混淆协议。项目使用模拟环境相机观测；“真实观测”在这里不能理解成已完成物理机器人验证。
 
@@ -244,7 +688,7 @@ $$
 
 这份记录还提醒我们：Jev 请求的 p50 约 1.07 秒、p95 约 10.60 秒，不能套用另一地点、负载与输入条件下的 70–500 ms 范围。这里仅有 63 次 Jev 请求，尾分位估计也不应被当作稳定承诺。两行 p50 或 p95 不能按次数平均后当作混合分布的对应分位数；记录中的 314 个步骤、75 次请求和 319.7 秒整局时间，也各有自己的统计单位。
 
-### 5.2 NavJev：先保留待核实状态
+### 6.2 NavJev：先保留待核实状态 {#52-navjev先保留待核实状态}
 
 截至本文核对日期，尚未定位到可核验的 **NavJev** 原始论文、作者项目页或代码，因此不把待核实的 “27.0% SR / 22.4% SPL / 0.65 秒” 纳入已验证结果。这个证据空缺不等于断言项目不存在；补齐来源后，还需核对环境版本、训练数据、观测接口与计时范围。
 
@@ -265,20 +709,23 @@ $$
 
 例如两个回合仅一个成功，该回合最短路 6 米、实际走了 8 米，则 SR 为 50%，SPL 为 $(6/8)/2=37.5\%$。这是独立算例，与待核实的 NavJev 数字无关。若只是把模型等待时间减半，而路径与成功判定不变，SR、SPL 都不会因此改变；还需另报真实耗时。
 
-## 6. 候选动作是整个系统的接口契约 {#candidate-contract}
+## 7. 候选动作是整个系统的接口契约 {#candidate-contract}
 
 设观测为 $o_t$，局部目标为 $g_k$，状态转换器为 $f$，程序候选生成器为 $G$：
 
 $$
-s_t=f(o_t),\quad C_t=G(s_t,g_k),\quad
-\hat p_t=p_\phi(\cdot\mid s_t,g_k,C_t).
+\begin{aligned}
+s_t&=f(o_t),\\
+C_t&=G(s_t,g_k),\\
+\hat p_t&=p_\phi(\cdot\mid s_t,g_k,C_t).
+\end{aligned}
 $$
 
 模型返回候选 ID $i_t$ 和相应分布 $\hat p_t$；公开 Choice 契约将 ID 描述为最高概率项，而不是要求执行器重新从分布采样。实际遇到 ID 与分布不一致时，示例门控的处理见[离线练习](#lab)。
 
 这里 $i_t$ 是候选 ID，不是最终扭矩。执行器还需把 $C_t[i_t]$ 转成技能调用，并检查它是否仍对当前观测有效。$f$ 丢失的重要信息、$G$ 漏掉的动作，都不是选择器仅靠更高置信度就能恢复的。
 
-### 6.1 每个候选至少携带什么
+### 7.1 每个候选至少携带什么 {#61-每个候选至少携带什么}
 
 以下是独立的机械臂接口示例。距离、时间和可行性由程序或相应模块计算，不让 Jev 从长段文字里数出来。
 
@@ -327,11 +774,11 @@ $$
 
 这里的说明文本属于选项语义，物理参数仍保留在程序的候选记录中。不要把模型返回的自由字符串直接拼接成 shell 命令、任意函数调用或控制报文。
 
-### 6.2 把失败拆成覆盖、选择与交接
+### 7.2 把失败拆成覆盖、选择与交接 {#62-把失败拆成覆盖选择与交接}
 
 <figure class="article-figure" id="fig-jev-failure-modes">
   {{< post-image src="assets/jev-failure-modes.webp" alt="三种失败分别是候选里缺少重新抓取、候选存在但选错，以及局部目标完成后没有交回规划器" >}}
-  <figcaption><span class="article-figure__number">图 2</span><span class="article-figure__text"><strong>错误可能发生在选择之前或之后。</strong>左侧需要补充候选，中间需要改进选择，右侧需要改进终止与交接。三种问题不能仅用一个最终成功率定位。 <a href="assets/jev-failure-modes.webp">查看原图</a></span></figcaption>
+  <figcaption><span class="article-figure__number">图 5</span><span class="article-figure__text"><strong>错误可能发生在选择之前或之后。</strong>左侧需要补充候选，中间需要改进选择，右侧需要改进终止与交接。三种问题不能仅用一个最终成功率定位。 <a href="assets/jev-failure-modes.webp">查看原图</a></span></figcaption>
 </figure>
 
 评测前要区分普通技能、补充观测和控制权交接。若衡量普通技能的候选覆盖，只对需要选择这类技能的状态计数；不能因为总有 `BLOCKED` 可选，就把技能缺失也记成已覆盖。
@@ -347,13 +794,13 @@ $$
 
 交接还应单独统计：提前 `DONE`、应该 `BLOCKED` 却继续动作、目标完成后仍重复执行。记录事件原因与观测版本，比只存最终 ID 更有助于复盘。
 
-### 6.3 状态压缩也可能把问题变成无解 {#state-bottleneck}
+### 7.3 状态压缩也可能把问题变成无解 {#state-bottleneck}
 
 想象两个场景：A 中红杯在左、蓝杯在右；B 中位置互换。目标都是“取红杯”，候选都是“取左杯”或“取右杯”。若上游只输出“两只杯子可见”，那么两种场景传给 Jev 的状态、问题与选项完全相同。
 
 <figure class="article-figure" id="fig-jev-state-bottleneck">
   {{< post-image src="assets/jev-state-bottleneck.webp" alt="两种红蓝杯位置互换的场景被压缩为相同的两只杯子可见状态，导致决策层无法区分应该选择左杯还是右杯" >}}
-  <figcaption><span class="article-figure__number">图 3</span><span class="article-figure__text"><strong>状态相同，所需动作却不同。</strong>例子刻意省略颜色与位置关系，用于分析信息丢失；补充观测或保留对象关系可以改变问题条件。 <a href="assets/jev-state-bottleneck.webp">查看原图</a></span></figcaption>
+  <figcaption><span class="article-figure__number">图 6</span><span class="article-figure__text"><strong>状态相同，所需动作却不同。</strong>例子刻意省略颜色与位置关系，用于分析信息丢失；补充观测或保留对象关系可以改变问题条件。 <a href="assets/jev-state-bottleneck.webp">查看原图</a></span></figcaption>
 </figure>
 
 如果每次独立、等概率出现这两种场景，并且必须立即二选一，任何只读这份状态的选择器都面临相同限制。令它选择左杯的概率为 $q$，则平均正确率为：
@@ -366,13 +813,15 @@ $$
 
 因此，一份可用状态应按决策需要保留：对象身份和关系、坐标系和单位、接触与可见性、最近动作的实际效果，以及哪些字段未知。`unknown`、未观测和已确认的 `false` 应分开；“没看到抓稳”不能自动写成“确认没有抓稳”。数字转换、计数和几何比较放在代码中，语义字段仍应保留可追溯的观测依据。
 
-### 6.4 观测年龄与请求延迟是两个时钟 {#observation-age}
+### 7.4 观测年龄与请求延迟是两个时钟 {#observation-age}
 
 设观测采集时间为 $t_o$，请求发出时间为 $t_s$，响应到达时间为 $t_r$，准备执行时为 $t_e$。同一时间基准下：
 
 $$
-\mathrm{ObservationAge}=t_e-t_o,\qquad
-\mathrm{RequestAge}=t_e-t_s.
+\begin{aligned}
+\mathrm{ObservationAge}&=t_e-t_o,\\
+\mathrm{RequestAge}&=t_e-t_s.
+\end{aligned}
 $$
 
 请求年龄只从发出请求开始计时，不能覆盖此前的感知预处理、排队与候选构造。服务调用的往返耗时则是 $t_r-t_s$；若响应到达后又排队，执行时的请求年龄还要加上 $t_e-t_r$。不要把这两个量混成同一个“模型延迟”。
@@ -391,11 +840,11 @@ $$
 
 物理误差也能帮助理解年龄预算。只在相对运动速度有可信上界 $v_{\max}$、测量误差不超过 $e_0$ 等假设下，目标位置误差可保守写为 $e_0+v_{\max}\Delta t$。例如误差预算 20 mm、原测量误差 5 mm、相对速度上界 100 mm/s，对应剩余时间预算 0.15 秒。这是说明参数如何关联的算例；突发运动、接触变化或错误的速度上界会使该推理失效。
 
-### 6.5 结果返回后，还差一次提交与一次结果确认 {#execution-lifecycle}
+### 7.5 结果返回后，还差一次提交与一次结果确认 {#execution-lifecycle}
 
 <figure class="article-figure" id="fig-jev-execution-contract">
   {{< post-image src="assets/jev-execution-contract.webp" alt="观测和请求绑定目标及候选版本，Jev 返回后检查当前有效性；接受后执行有界动作，结果不明时先检查再重试" >}}
-  <figcaption><span class="article-figure__number">图 4</span><span class="article-figure__text"><strong>从选择到执行需要明确的状态转换。</strong>执行前再次检查时效；响应超时、动作超时和结果不明分别记录。动作 ID 可帮助去重，但不能单凭一个 ID 保证物理世界中的恰好一次执行。 <a href="assets/jev-execution-contract.webp">查看原图</a></span></figcaption>
+  <figcaption><span class="article-figure__number">图 7</span><span class="article-figure__text"><strong>从选择到执行需要明确的状态转换。</strong>执行前再次检查时效；响应超时、动作超时和结果不明分别记录。动作 ID 可帮助去重，但不能单凭一个 ID 保证物理世界中的恰好一次执行。 <a href="assets/jev-execution-contract.webp">查看原图</a></span></figcaption>
 </figure>
 
 假设一个动作已经提交，设备完成了点击或移动，但确认消息丢失。此时“没有收到成功返回”并不意味着“动作没有发生”。再次发送同一动作可能导致重复输入、额外位移或错误的状态切换。先查询实际状态，再决定补发、恢复或交接，才能将网络结果与物理结果分开。
@@ -404,9 +853,9 @@ $$
 
 一次可复盘的事件记录可以依次保存“请求已发出 → 响应已验证 → 动作已提交 → 结果已观测”。其中被拒绝的响应也要记原因，但不能混入“实际执行动作”的历史。Jev-Mobile 的论文采用实际动作历史交接，并明确指出非幂等动作的确认不明时先检查。[论文的观测绑定与历史约定](https://arxiv.org/html/2609.30186v1#S3.SS2)
 
-## 7. 概率、confidence 与置信度路由 {#confidence-routing}
+## 8. 概率、confidence 与置信度路由 {#confidence-routing}
 
-### 7.1 概率分布并不是物理成功保证
+### 8.1 概率分布并不是物理成功保证 {#71-概率分布并不是物理成功保证}
 
 Choice 给出的概率是针对**本次问题与候选集合**的相对判断。它不自动等于抓取成功率、无碰撞概率或任务最终完成率。缺少“以上皆不合适”时，所有选项都很差也仍需在它们之间分配概率。
 
@@ -414,13 +863,13 @@ Choice 给出的概率是针对**本次问题与候选集合**的相对判断。
 
 例如，当候选数 $K>1$ 时，自行定义归一化熵指标 $1-H(p)/\log K$ 可以反映集中程度，其中 $H(p)=-\sum_i p_i\log p_i$，约定 $0\log0=0$。这只是**自定义指标**，不是对 Jev 字段实现的复现。候选只有一个时，归一化公式的分母为零，也无法借此判断该动作是否适合世界状态。模型在遗漏观测或分布变化时仍可能高度确信地犯错，故阈值应在本项目的标注数据上选择并验证。
 
-### 7.2 一次返回多个问题，不等于得到联合动作分布
+### 8.2 一次返回多个问题，不等于得到联合动作分布 {#72-一次返回多个问题不等于得到联合动作分布}
 
 若分别询问 X、Y、Z 方向，每题是针对同一输入独立求值的接口问题；这些边缘答案不保证逻辑一致，也不能未经假设就把概率相乘，声称获得整个运动的成功概率。需要互斥时，可以把允许的组合定义成一个 Choice，或由程序投影到合法动作集合；后者改变了实际动作，应记录变换并重新检查有效性。
 
 官方列出的 Jev 1.13 局限包括算术、计数、时间比较、复杂间接推理和跨问题结构一致性。工程上将这些精确计算放在程序内，并用直接、边界清楚的语义描述提问。[版本局限说明](https://docs.typesafe.ai/model-jaggedness/jev-1.13)
 
-### 7.3 置信门控应与观测门控串起来
+### 8.3 置信门控应与观测门控串起来 {#73-置信门控应与观测门控串起来}
 
 一种可检验的处理顺序是：
 
@@ -433,7 +882,7 @@ Choice 给出的概率是针对**本次问题与候选集合**的相对判断。
 
 置信度路由是 TypeSafe 文档支持的用法，但阈值与机器人恢复策略是集成者的设计，不是已经由 Jev 自动保证的行为。[路由模式](https://docs.typesafe.ai/patterns/confidence-routing)
 
-### 7.4 怎样选择阈值：同时报告覆盖与错误
+### 8.4 怎样选择阈值：同时报告覆盖与错误 {#74-怎样选择阈值同时报告覆盖与错误}
 
 设人工或独立验证器标注的一步选择正确性为 $y_i\in\{0,1\}$，返回 confidence 为 $c_i$。对阈值 $\tau$，可计算：
 
@@ -451,7 +900,7 @@ $$
 
 此外，要明确标注的是“选项语义正确”还是“执行后成功”。两种标签对应不同问题；第一种校准得好，仍不能证明接触控制可靠。
 
-### 7.5 一个可以手算的阈值反例 {#routing-counterexample}
+### 8.5 一个可以手算的阈值反例 {#routing-counterexample}
 
 下面用 **200 条人为构造的记录**说明阈值选择，不代表 Jev、VLM 或任何机器人的测量表现。每条记录包含唯一 ID、分组、用于路由的分数和“所选动作是否可接受”的布尔标签。为避免混淆 API 字段，脚本将这个人为分数命名为 `routing_score`。
 
@@ -467,18 +916,18 @@ $$
 
 把这个阈值冻结后，留出组接受 40 条、错 4 条，错误率为 **10%**；分布变化组接受 40 条、错 10 条，错误率为 **25%**。若再把后者阈值提高到 0.9，只留下最高分段的 20 条，却有 8 条错误，错误率反而升到 **40%**。因此，阈值本身没有“越高越可靠”的数学保证，可靠性依赖分数与真实标签的关系。
 
-{{< jev-routing-lab >}}
+{{< jev-routing-lab id="jev-routing-lab-4" >}}
 
 <figure class="article-figure" id="fig-jev-routing-tradeoff">
   {{< post-image src="assets/routing-tradeoff.png" alt="固定合成记录中的路由阈值与接受部分错误率，以及接受率与平均调用费用；分布变化组在阈值提高时可能出现更高错误率" >}}
-  <figcaption><span class="article-figure__number">图 5</span><span class="article-figure__text"><strong>阈值同时改变错误与调用分配。</strong>左图用颜色、点标记与线型区分分组，只连接预先指定阈值的算例点；阈值为 1 时错误率未定义。右图使用选择器 1、上层 20 的任意费用单位。全部数据由表中计数展开，不是模型实验。 <a href="assets/routing-tradeoff.png">查看原图</a></span></figcaption>
+  <figcaption><span class="article-figure__number">图 8</span><span class="article-figure__text"><strong>阈值同时改变错误与调用分配。</strong>左图用颜色、点标记与线型区分分组，只连接预先指定阈值的算例点；阈值为 1 时错误率未定义。右图使用选择器 1、上层 20 的任意费用单位。全部数据由表中计数展开，不是模型实验。 <a href="assets/routing-tradeoff.png">查看原图</a></span></figcaption>
 </figure>
 
 这里的分组是为了演示“先选阈值、再检查”的协议，并不具有随机抽样的统计代表性。真实实验还应按任务、环境或轨迹划分，避免同一轨迹相邻帧跨进训练、验证和测试集合。看到测试结果后调整阈值，会让该测试集参与选择，需再用新的留出数据评估。
 
 样本内 5% 也不等于真实风险已被证明低于 5%。作为另一个独立算例，若**固定规则下的 20 次独立同分布伯努利试验**恰有 1 次错误，95% Wilson 区间约为 **0.9%–23.6%**，远宽于一个点估计。这个区间演算不能套成上述构造记录的统计结论，也不能忽略阈值筛选或轨迹内相关性。[Wilson 区间定义](https://www.itl.nist.gov/div898/handbook/prc/section2/prc241.htm)
 
-### 7.6 校准、区分能力与成本还要分别检查 {#calibration-and-cost}
+### 8.6 校准、区分能力与成本还要分别检查 {#calibration-and-cost}
 
 若某个输出 $q_i$ 被明确设计成二元事件 $Y_i$ 的概率，才有理由问：“预测接近 0.9 的那组事件是否约有 90% 发生？”这与“分布很集中”不同。常用的二元 Brier score 为：
 
@@ -489,9 +938,11 @@ $$
 给定同一条件下的真实事件概率 $p$，可以直接展开得到：
 
 $$
-\mathbb E[(q-Y)^2]
-=p(q-1)^2+(1-p)q^2
-=(q-p)^2+p(1-p).
+\begin{aligned}
+\mathbb E[(q-Y)^2]&=p(q-1)^2\\
+&\quad+(1-p)q^2\\
+&=(q-p)^2+p(1-p).
+\end{aligned}
 $$
 
 因此期望平方误差在 $q=p$ 处最小。这个推导说明概率评分的意义，**不是 Jev RLCD 的公开损失函数**。如果输出仅是路由分数或分布集中度，先在保留数据上定义并验证“分数 → 事件概率”的映射；不能只因数值位于 0–1 就直接赋予成功概率含义。
@@ -510,7 +961,7 @@ $$
 
 这只是一层路由的调用账本。它没有假设上层必然正确，也没有把低层错误造成的恢复成本算进去；机器人最终是否划算，仍要用包含失败、动作时长与重试的完整任务记录判断。
 
-## 8. 可运行练习：离线检查响应是否能进入执行 {#lab}
+## 9. 可运行练习：离线检查响应是否能进入执行 {#lab}
 
 下载 [decision_gate.py](decision_gate.py)，用 Python 3.10+ 标准库运行：
 
@@ -554,7 +1005,7 @@ python -B routing_lab.py --output routing-results.json \
 
 若需要重画图，在已有 Matplotlib 环境中再加 `--figure routing-tradeoff.png`。脚本检查分组计数、仅用验证组选择阈值、无人接受时的未定义错误率、成本累计和子组校准反例。可以对照 [JSON 结果](assets/routing-results.json)、[逐条记录](assets/routing-fixtures.json)与 [CSV 数据](assets/routing-fixtures.csv)；所有合成标签由源码公开定义，没有付费模型调用。
 
-## 9. 怎样做有解释力的消融实验 {#evaluation}
+## 10. 怎样做有解释力的消融实验 {#evaluation}
 
 如果目标是判断 Jev 能否改善自己的系统，应先冻结感知、候选和执行器，再替换选择模块。以下是一套可执行的比较顺序。
 
@@ -570,7 +1021,7 @@ python -B routing_lab.py --output routing-results.json \
 
 每组至少记录任务初态、种子、模型版本、候选生成版本、实际执行动作、规划与选择调用次数、p50/p95 延迟、超时、失败与重试费用。初态配对与协议一致，比只比较最漂亮的两段视频更能回答系统差异。
 
-### 9.1 离线回放能隔离判断，闭环评估才能观察后果
+### 10.1 离线回放能隔离判断，闭环评估才能观察后果 {#91-离线回放能隔离判断闭环评估才能观察后果}
 
 离线比较时，把同一份观测、局部目标与候选快照交给不同选择器，检查它们选了什么。这样容易隔离模型判断，也能针对遮挡、缺项和过期响应构造反例。但记录中的下一帧来自原来执行过的动作，不一定是新选择器采取另一个动作后会到达的状态。不能把“换个 ID 后继续播放原视频”当作新的真实闭环轨迹。
 
@@ -578,7 +1029,7 @@ python -B routing_lab.py --output routing-results.json \
 
 可以增加三项接口扰动：保持物理意义不变，只交换候选顺序、重新命名不含语义的 ID，或用等价句改写选项。若输出对这些变化非常敏感，说明接口表述影响很大。每次必须保留 ID 到实际技能的映射，不能把一次重命名误算成选择了另一个物理动作。
 
-### 9.2 任务、轨迹与单步记录应有不同统计单位
+### 10.2 任务、轨迹与单步记录应有不同统计单位 {#92-任务轨迹与单步记录应有不同统计单位}
 
 一个长任务产生很多相邻步骤，不等于获得同样数量的独立任务样本。建议同时保存任务级完成结果与步骤级选择记录，明确分母；划分数据时优先按完整轨迹或环境分组。同初态配对比较，还应保留哪一对任务两者都成功、只有一方成功或两者都失败，而不只报告总体均值。
 
@@ -586,22 +1037,24 @@ python -B routing_lab.py --output routing-results.json \
 
 延迟至少区分一次请求、一次完整决策、一次技能和整个任务。重试等待应进入实际经历的请求或决策延迟；超时按单独的失败/删失记录保留，不要丢掉以后再计算一个更漂亮的 p95。尾延迟的估计同样依赖样本数，十几次调用无法支持精确稳定的高分位结论。
 
-### 9.3 费用按尝试记账，再按问题汇总
+### 10.3 费用按尝试记账，再按问题汇总 {#93-费用按尝试记账再按问题汇总}
 
 成本也建议同时保留两种量：
 
 $$
-\text{成功轨迹条件均价}=
-\frac{\sum_{i:y_i=1}C_i}{\sum_i y_i},\qquad
-\text{全部尝试的每成功成本}=
+\begin{aligned}
+\text{成功轨迹条件均价}&=
+\frac{\sum_{i:y_i=1}C_i}{\sum_i y_i},\\
+\text{全部尝试的每成功成本}&=
 \frac{\sum_i C_i}{\sum_i y_i}.
+\end{aligned}
 $$
 
 这里 $y_i$ 表示**整次任务**是否成功，与上一节一步标签的统计层次不同。例如三次尝试费用是 \$0.1、0.2、0.6，前两次成功，条件均价是 \$0.15，包含失败的每成功成本是 \$0.45。二者回答不同问题；成功数为零时都不能给出有限的“每成功成本”。
 
-## 10. 与行为树、VLA 动作头和后续研究怎样连接
+## 11. 与行为树、VLA 动作头和后续研究怎样连接 {#10-与行为树vla-动作头和后续研究怎样连接}
 
-### 10.1 行为树负责生命周期，Jev 负责一次有限选择 {#behavior-tree-integration}
+### 11.1 行为树负责生命周期，Jev 负责一次有限选择 {#behavior-tree-integration}
 
 行为树可以管理任务顺序、条件检查、超时与恢复，Jev 成为某个有限选择节点。模型输出映射到已有分支，叶节点继续报告运行、成功或失败。模型的 `DONE` 应经过局部条件验证后再映射为成功，不能直接跳过父节点的完成条件。
 
@@ -620,7 +1073,7 @@ $$
 
 取消本地等待不一定能撤回远端已经进行的推理，所以“发过取消”不能代替版本检查。若物理动作已经提交，任务切换还要按控制器协议停止或等待，并确认实际状态；不能只清空 Python 对象，就假设机器人也停下来了。
 
-### 10.2 用可观测进度限制局部循环 {#progress-and-handoff}
+### 11.2 用可观测进度限制局部循环 {#progress-and-handoff}
 
 “向前移动成功”通常只说明动作接口执行完毕。对于推门任务，还需要看门的角度或位置是否变化；对于抓取，还需要看物体是否随夹爪稳定运动。这些任务效果可以成为回到上层的条件，而不是一律由 Jev 从自己的上次回答中推断。
 
@@ -628,7 +1081,7 @@ $$
 
 规划器接收的程序化交接记录至少应说明：原局部目标、实际执行的动作、最后有效观测、进度依据和交接原因。模型提出却未提交的动作留在决策日志中，不混入实际动作历史。这样上层才能区分“抓取失败”“模型没有可用候选”和“动作已执行但结果尚不明确”。
 
-### 10.3 与连续策略、主动感知及候选学习组合
+### 11.3 与连续策略、主动感知及候选学习组合 {#103-与连续策略主动感知及候选学习组合}
 
 **与 VLA 连接**：Jev 可以选择任务阶段或已定义技能，而技能内部使用 VLA 策略。若 VLA 已能稳定直接闭环，额外加入选择层会增加状态压缩与交接误差，是否值得需由对照实验决定。Flow Matching 解决连续动作分布的生成问题；类型化选择解决有限选项的判断问题，它们可以组合，但不是彼此的替代实现。
 
@@ -636,7 +1089,7 @@ $$
 
 **与学习型候选生成连接**：当主要失败来自覆盖不足时，可以改进技能库、可达性估计或候选生成模型，再重新测选择器。这样形成“生成候选—选择—执行—验证”的可拆解流程，也能知道优化发生在哪一层。
 
-### 10.4 对照 SayCan：有助于任务与能够完成是两种依据 {#saycan-comparison}
+### 11.4 对照 SayCan：有助于任务与能够完成是两种依据 {#saycan-comparison}
 
 2022 年的 SayCan 已经研究如何让语言模型选择机器人技能：语言侧评估技能与指令的关联，技能对应的价值函数提供当前状态下的执行可行性，两类分数共同参与选择。[SayCan 项目与方法说明](https://say-can.github.io/)
 
@@ -652,7 +1105,7 @@ Jev 的 Choice 可以承担有限候选中的语义选择，但返回的概率�
 
 ## 阅读自测与验收
 
-1. **Jev 是直接接收图像并输出机器人轨迹的 VLA 吗？** 不是；本文讨论的接口接收文本或结构化状态，物理轨迹由其他模块实现。
+1. **Jev 或 OneJev 会直接输出机器人轨迹吗？** 不会；TypeSafe Jev 本文版本读取文字状态，OneJev 可读取媒体，两者都返回类型化判断，物理轨迹由执行模块实现。
 2. **类型化输出是否意味着动作一定正确？** 不是；候选覆盖、语义选择和执行结果仍可能出错。
 3. **70–500 ms 能直接证明 2–14 Hz 机器人闭环吗？** 不能；倒数没有计入完整闭环，并不保证尾延迟。
 4. **Jev-Mobile 的 73.4% 是否统计了全部失败尝试？** 该数字由成功轨迹平均模型费用计算，不能当成包含失败的每成功成本。
@@ -665,11 +1118,39 @@ Jev 的 Choice 可以承担有限候选中的语义选择，但返回的概率�
 11. **总体 ECE 为零能证明每个技能都校准吗？** 不能；汇总可能掩盖子组偏差，也不代表有足够的区分能力。
 12. **行为树每次 tick 都要重新调用 Jev 吗？** 不需要；等待中的异步节点检查已有请求，目标改变后拒绝旧响应。
 
+13. **OneJev 的 API 与 TypeSafe 兼容，意味着二者权重相同吗？** 不意味着；协议、模型权重与训练配方分别核对。
+14. **OneJev1.6-0.8B 与 Flide 0.1.7 是同一种版本号吗？** 不是；前者指定模型，后者指定推理引擎，还应记录权重 revision。
+15. **三选一分布为 (0.8, 0.1, 0.1)，Choice confidence 就是 0.8 吗？** 不是；所核对 OneJev 实现返回 0.7。
+16. **“一次前向”意味着多问题请求只有一次底层网络调用吗？** 不意味着；实际引擎可以使用共享前缀、分支与不同执行路径。
+17. **公开的 100 条数据能作为独立测试集吗？** 不能；它们是训练样本，用于检查格式和链路。
+18. **公开的 94,707 条数据足以完整复现 OneJev 1.6 吗？** 不能据此断言；1.6 模型卡描述更大训练集和三次微调权重平均。
+19. **温度校准能补出缺失的正确动作吗？** 不能；正温度改变分布尖锐程度，不改变既有 logits 的排序或候选集合。
+
+20. **十题请求用 51 ms，意味着每题 5.1 ms 即可返回吗？** 不意味着；5.1 ms 是按题数摊销的吞吐值，客户端等待的是整次请求。
+21. **四选一最高概率同样是 0.8，confidence 也会是 0.7 吗？** 不会；本例约为 0.733333，因为均匀基线从三选一的 1/3 变成四选一的 1/4。
+22. **保存响应并成功读取字段，是否意味着动作可以执行？** 不意味着；字段读取与完整响应校验、观测版本检查和动作前条件是不同步骤。
+
 ## 资料与继续阅读
 
+- [OneJev 固定版本][onejev-repo]、[1.6 模型卡][onejev-model]与 [Flide][flide-repo]：分别核对模型、推理格式和服务版本。
 - [Jev-Mobile 论文](https://arxiv.org/abs/2609.30186)：优先阅读方法、表 1 和限制，区分系统比较与模型消融。
 - [TypeSafe 文档](https://docs.typesafe.ai/introduction)：检查当前模型版本、类型接口与返回值；上线前重新核对，避免依赖易变默认值。
 - [embodied-jev 固定版本](https://github.com/FBddcz/embodied-jev/tree/f08de2e4e20d6cd69fea9c57ac1062c3ef510f1e)：结合结果、失败轨迹和费用记录阅读。
 - [VLA 演进与 Flow Matching](../vla-evolution/)：理解连续动作生成与动作块执行。
 - [实时动作块执行](../real-time-chunking/)：进一步区分模型延迟、观测时效和控制频率。
 - [机器人滤波与状态估计](../../robotics/control/robot-filters/)：分析结构化状态的噪声、滞后与几何含义。
+
+[onejev-repo]: https://github.com/OmniJev/OneJev/tree/d18d82243d82062af9c6c1bed999eaec5f39cbe0
+[onejev-model]: https://huggingface.co/OmniJev/OneJev1.6-0.8B/blob/c89933c277629b707895bff752c61d2b0664c85e/README.md
+[onejev-prompt]: https://github.com/OmniJev/Flide/blob/ea93bfaf8e8109aad444d9f548957a519212a70a/plugins/onejev/flide_onejev/prompt.py
+[onejev-format]: https://github.com/OmniJev/Flide/blob/ea93bfaf8e8109aad444d9f548957a519212a70a/plugins/onejev/flide_onejev/format.py
+[onejev-answers]: https://github.com/OmniJev/Flide/blob/ea93bfaf8e8109aad444d9f548957a519212a70a/flide/api/answers.py
+[flide-repo]: https://github.com/OmniJev/Flide/tree/ea93bfaf8e8109aad444d9f548957a519212a70a
+[onejev-media]: https://github.com/OmniJev/OneJev/blob/d18d82243d82062af9c6c1bed999eaec5f39cbe0/qev/media.py
+[onejev-gguf]: https://github.com/OmniJev/OneJev/blob/d18d82243d82062af9c6c1bed999eaec5f39cbe0/qev/llamacpp.py
+[onejev-training-code]: https://github.com/OmniJev/OneJev/blob/d18d82243d82062af9c6c1bed999eaec5f39cbe0/train/sft.py
+[onejev-training-common]: https://github.com/OmniJev/OneJev/blob/d18d82243d82062af9c6c1bed999eaec5f39cbe0/train/common.py
+[onejev-calibration]: https://github.com/OmniJev/Flide/blob/ea93bfaf8e8109aad444d9f548957a519212a70a/plugins/onejev/flide_onejev/calibrate.py
+[onejev-train-config]: https://github.com/OmniJev/OneJev/blob/d18d82243d82062af9c6c1bed999eaec5f39cbe0/train/configs/onejev_4b_full.yaml
+[onejev-data]: https://huggingface.co/datasets/OmniJev/OneJev-Data/blob/1028292856b8bc3029e4e423df78d0637c735dc0/README.md
+[onejev-speed]: https://github.com/OmniJev/OneJev/blob/d18d82243d82062af9c6c1bed999eaec5f39cbe0/assets/speed.svg

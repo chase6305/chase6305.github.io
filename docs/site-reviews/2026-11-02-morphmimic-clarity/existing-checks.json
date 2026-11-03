@@ -1,0 +1,21 @@
+{
+  "receipt_type": "Passing tool output observed during this task; standalone logs were not retained.",
+  "commands": [
+    {
+      "command": "python3 -B content/posts/ai/morphmimic/morphmimic_contracts.py --check",
+      "passed": true
+    },
+    {
+      "command": "python3 -B scripts/test_morphmimic_contracts.py",
+      "passed": true,
+      "test_methods": 10,
+      "random_mapping_roundtrips": 500
+    },
+    {
+      "command": "python3 -B scripts/test_blog_toc.py --hugo /tmp/chase-opt-20261029-fivehour/tools/hugo",
+      "passed": true
+    }
+  ],
+  "download_smoke": "download-smoke.json",
+  "example_sources_unchanged": true
+}

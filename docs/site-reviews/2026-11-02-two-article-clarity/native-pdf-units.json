@@ -1,0 +1,472 @@
+{
+  "pdfs": 8,
+  "cases": 36,
+  "failures": 0,
+  "scope": "Nine selected short units stay on one native PDF page. This does not replace visual review or audit every article table.",
+  "rows": [
+    {
+      "file": "rlhf-rlvr-rlcd-false-100-warm-a4.pdf",
+      "unit": "three_constructed_candidates",
+      "tokens": [
+        "正确解释None表示",
+        "但声称已经处理零除数",
+        "却声称除数为零时返回数值0"
+      ],
+      "pages": [
+        4
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-false-100-warm-a4.pdf",
+      "unit": "model_role_comparison",
+      "tokens": [
+        "下一个token生成什么",
+        "这批回答采集时的概率是多少"
+      ],
+      "pages": [
+        6
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-false-100-warm-a4.pdf",
+      "unit": "three_feedback_protocols",
+      "tokens": [
+        "本例选择A",
+        "不检查解释文字",
+        "按生成分支自动标记"
+      ],
+      "pages": [
+        4
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-false-100-warm-a4.pdf",
+      "unit": "preference_difference_and_rows",
+      "tokens": [
+        "沿用 A 优于 C 的记录",
+        "0 0.500000 0.693147",
+        "2 0.880797 0.126928"
+      ],
+      "pages": [
+        5
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-false-200-warm-letter.pdf",
+      "unit": "three_constructed_candidates",
+      "tokens": [
+        "正确解释None表示",
+        "但声称已经处理零除数",
+        "却声称除数为零时返回数值0"
+      ],
+      "pages": [
+        8
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-false-200-warm-letter.pdf",
+      "unit": "model_role_comparison",
+      "tokens": [
+        "下一个token生成什么",
+        "这批回答采集时的概率是多少"
+      ],
+      "pages": [
+        15
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-false-200-warm-letter.pdf",
+      "unit": "three_feedback_protocols",
+      "tokens": [
+        "本例选择A",
+        "不检查解释文字",
+        "按生成分支自动标记"
+      ],
+      "pages": [
+        8
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-false-200-warm-letter.pdf",
+      "unit": "preference_difference_and_rows",
+      "tokens": [
+        "沿用 A 优于 C 的记录",
+        "0 0.500000 0.693147",
+        "2 0.880797 0.126928"
+      ],
+      "pages": [
+        12
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-true-100-light-a4.pdf",
+      "unit": "three_constructed_candidates",
+      "tokens": [
+        "正确解释None表示",
+        "但声称已经处理零除数",
+        "却声称除数为零时返回数值0"
+      ],
+      "pages": [
+        4
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-true-100-light-a4.pdf",
+      "unit": "model_role_comparison",
+      "tokens": [
+        "下一个token生成什么",
+        "这批回答采集时的概率是多少"
+      ],
+      "pages": [
+        6
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-true-100-light-a4.pdf",
+      "unit": "three_feedback_protocols",
+      "tokens": [
+        "本例选择A",
+        "不检查解释文字",
+        "按生成分支自动标记"
+      ],
+      "pages": [
+        4
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-true-100-light-a4.pdf",
+      "unit": "preference_difference_and_rows",
+      "tokens": [
+        "沿用 A 优于 C 的记录",
+        "0 0.500000 0.693147",
+        "2 0.880797 0.126928"
+      ],
+      "pages": [
+        5
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-true-200-dark-a4.pdf",
+      "unit": "three_constructed_candidates",
+      "tokens": [
+        "正确解释None表示",
+        "但声称已经处理零除数",
+        "却声称除数为零时返回数值0"
+      ],
+      "pages": [
+        8
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-true-200-dark-a4.pdf",
+      "unit": "model_role_comparison",
+      "tokens": [
+        "下一个token生成什么",
+        "这批回答采集时的概率是多少"
+      ],
+      "pages": [
+        14
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-true-200-dark-a4.pdf",
+      "unit": "three_feedback_protocols",
+      "tokens": [
+        "本例选择A",
+        "不检查解释文字",
+        "按生成分支自动标记"
+      ],
+      "pages": [
+        8
+      ],
+      "passed": true
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-true-200-dark-a4.pdf",
+      "unit": "preference_difference_and_rows",
+      "tokens": [
+        "沿用 A 优于 C 的记录",
+        "0 0.500000 0.693147",
+        "2 0.880797 0.126928"
+      ],
+      "pages": [
+        12
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-false-100-warm-a4.pdf",
+      "unit": "three_time_windows",
+      "tokens": [
+        "每20ms一次控制输出",
+        "8个控制步，代表0.16s轨迹",
+        "32个控制步，代表0.64s轨迹"
+      ],
+      "pages": [
+        4
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-false-100-warm-a4.pdf",
+      "unit": "phase_parameter_comparison",
+      "tokens": [
+        "只更新回放数据",
+        "Actorθ；模型与critic参数固定",
+        "Criticψ；样本与监督目标固定"
+      ],
+      "pages": [
+        6
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-false-100-warm-a4.pdf",
+      "unit": "torch_code_and_output",
+      "tokens": [
+        "import torch",
+        "print(f\"model gradient={gain.grad}\")",
+        "输出为 actor gradient=8.0 和 model gradient=None。"
+      ],
+      "pages": [
+        13
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-false-100-warm-a4.pdf",
+      "unit": "three_gradient_presets",
+      "tokens": [
+        "完整 BPTT 8 −0.488",
+        "状态 detach 5.6 −0.61472",
+        "反向模型 −8 −1.768"
+      ],
+      "pages": [
+        13
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-false-100-warm-a4.pdf",
+      "unit": "critic_definition_and_rows",
+      "tokens": [
+        "表中的窗口回报已经应用折扣与存活权重",
+        "A 0.50 0.10 0.55",
+        "B 0.48 0.20 0.58"
+      ],
+      "pages": [
+        14
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-false-200-warm-letter.pdf",
+      "unit": "three_time_windows",
+      "tokens": [
+        "每20ms一次控制输出",
+        "8个控制步，代表0.16s轨迹",
+        "32个控制步，代表0.64s轨迹"
+      ],
+      "pages": [
+        9
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-false-200-warm-letter.pdf",
+      "unit": "phase_parameter_comparison",
+      "tokens": [
+        "只更新回放数据",
+        "Actorθ；模型与critic参数固定",
+        "Criticψ；样本与监督目标固定"
+      ],
+      "pages": [
+        14
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-false-200-warm-letter.pdf",
+      "unit": "torch_code_and_output",
+      "tokens": [
+        "import torch",
+        "print(f\"model gradient={gain.grad}\")",
+        "输出为 actor gradient=8.0 和 model gradient=None。"
+      ],
+      "pages": [
+        33
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-false-200-warm-letter.pdf",
+      "unit": "three_gradient_presets",
+      "tokens": [
+        "完整 BPTT 8 −0.488",
+        "状态 detach 5.6 −0.61472",
+        "反向模型 −8 −1.768"
+      ],
+      "pages": [
+        35
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-false-200-warm-letter.pdf",
+      "unit": "critic_definition_and_rows",
+      "tokens": [
+        "表中的窗口回报已经应用折扣与存活权重",
+        "A 0.50 0.10 0.55",
+        "B 0.48 0.20 0.58"
+      ],
+      "pages": [
+        37
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-true-100-light-a4.pdf",
+      "unit": "three_time_windows",
+      "tokens": [
+        "每20ms一次控制输出",
+        "8个控制步，代表0.16s轨迹",
+        "32个控制步，代表0.64s轨迹"
+      ],
+      "pages": [
+        4
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-true-100-light-a4.pdf",
+      "unit": "phase_parameter_comparison",
+      "tokens": [
+        "只更新回放数据",
+        "Actorθ；模型与critic参数固定",
+        "Criticψ；样本与监督目标固定"
+      ],
+      "pages": [
+        6
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-true-100-light-a4.pdf",
+      "unit": "torch_code_and_output",
+      "tokens": [
+        "import torch",
+        "print(f\"model gradient={gain.grad}\")",
+        "输出为 actor gradient=8.0 和 model gradient=None。"
+      ],
+      "pages": [
+        13
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-true-100-light-a4.pdf",
+      "unit": "three_gradient_presets",
+      "tokens": [
+        "完整 BPTT 8 −0.488",
+        "状态 detach 5.6 −0.61472",
+        "反向模型 −8 −1.768"
+      ],
+      "pages": [
+        13
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-true-100-light-a4.pdf",
+      "unit": "critic_definition_and_rows",
+      "tokens": [
+        "表中的窗口回报已经应用折扣与存活权重",
+        "A 0.50 0.10 0.55",
+        "B 0.48 0.20 0.58"
+      ],
+      "pages": [
+        14
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-true-200-dark-a4.pdf",
+      "unit": "three_time_windows",
+      "tokens": [
+        "每20ms一次控制输出",
+        "8个控制步，代表0.16s轨迹",
+        "32个控制步，代表0.64s轨迹"
+      ],
+      "pages": [
+        9
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-true-200-dark-a4.pdf",
+      "unit": "phase_parameter_comparison",
+      "tokens": [
+        "只更新回放数据",
+        "Actorθ；模型与critic参数固定",
+        "Criticψ；样本与监督目标固定"
+      ],
+      "pages": [
+        14
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-true-200-dark-a4.pdf",
+      "unit": "torch_code_and_output",
+      "tokens": [
+        "import torch",
+        "print(f\"model gradient={gain.grad}\")",
+        "输出为 actor gradient=8.0 和 model gradient=None。"
+      ],
+      "pages": [
+        33
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-true-200-dark-a4.pdf",
+      "unit": "three_gradient_presets",
+      "tokens": [
+        "完整 BPTT 8 −0.488",
+        "状态 detach 5.6 −0.61472",
+        "反向模型 −8 −1.768"
+      ],
+      "pages": [
+        34
+      ],
+      "passed": true
+    },
+    {
+      "file": "supermimic-true-200-dark-a4.pdf",
+      "unit": "critic_definition_and_rows",
+      "tokens": [
+        "表中的窗口回报已经应用折扣与存活权重",
+        "A 0.50 0.10 0.55",
+        "B 0.48 0.20 0.58"
+      ],
+      "pages": [
+        37
+      ],
+      "passed": true
+    }
+  ]
+}

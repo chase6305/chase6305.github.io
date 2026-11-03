@@ -1,0 +1,60 @@
+usage: qev serve [-h] [--model MODEL] [--name NAME]
+                 [--calibration CALIBRATION] [--device DEVICE] [--dtype DTYPE]
+                 [--head-dtype HEAD_DTYPE]
+                 [--fork-mode {auto,batched,sequential}] [--multimodal]
+                 [--media-root MEDIA_ROOT] [--no-cuda-graphs]
+                 [--quantize {fp8}] [--no-gpu-preprocess]
+                 [--max-branch-tokens MAX_BRANCH_TOKENS]
+                 [--max-request-tokens MAX_REQUEST_TOKENS] [--gguf GGUF]
+                 [--llama-url LLAMA_URL] [--llama-server LLAMA_SERVER]
+                 [--mmproj MMPROJ] [--tokenizer TOKENIZER]
+                 [--parallel PARALLEL] [--host HOST] [--port PORT]
+
+options:
+  -h, --help            show this help message and exit
+  --model MODEL         release alias (onejev1.6-4b), HF id
+                        (OmniJev/OneJev1.6-4B), or local path
+  --name NAME           model name reported by the API (default: last path
+                        component)
+  --calibration CALIBRATION
+                        calibration.json with temperatures (default: the one
+                        shipped next to the weights, if any)
+  --device DEVICE
+  --dtype DTYPE
+  --head-dtype HEAD_DTYPE
+                        dtype of the LM head for the readout (float32
+                        recommended)
+  --fork-mode {auto,batched,sequential}
+  --multimodal          vision checkpoint (OneJev): requests may carry media
+                        referenced as <image:N> / <video:N>
+  --media-root MEDIA_ROOT
+                        with --multimodal, also accept media paths inside this
+                        directory (URLs and base64 always work)
+  --no-cuda-graphs      run the decoder eagerly (CUDA graphs are captured per
+                        padded length)
+  --quantize {fp8}      with --multimodal, run the decoder's linear layers in
+                        FP8 (an -FP8 checkpoint does this by itself)
+  --no-gpu-preprocess   with --multimodal, normalise images and frames on the
+                        CPU (they are resized on the CPU either way)
+  --max-branch-tokens MAX_BRANCH_TOKENS
+                        longest state plus one question the server accepts
+                        (the bases take 262,144 positions)
+  --max-request-tokens MAX_REQUEST_TOKENS
+                        longest whole request the server accepts
+  --gguf GGUF           run a GGUF model on llama.cpp: a local .gguf file or a
+                        Hub repo:quant
+                        (prithivMLmods/OneJev1.5-9B-GGUF:Q4_K_M); needs llama-
+                        server
+  --llama-url LLAMA_URL
+                        use a running llama-server at this URL instead of
+                        starting one
+  --llama-server LLAMA_SERVER
+                        llama-server binary for --gguf
+  --mmproj MMPROJ       vision projector GGUF for --gguf (found next to a
+                        local file)
+  --tokenizer TOKENIZER
+                        OneJev repository or directory for the tokenizer with
+                        --gguf (guessed from the file name)
+  --parallel PARALLEL   llama-server slots for --gguf
+  --host HOST
+  --port PORT

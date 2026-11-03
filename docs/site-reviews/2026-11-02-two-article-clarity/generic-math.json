@@ -1,0 +1,20 @@
+{
+  "checks": [
+    {
+      "theme": "light",
+      "keyboardScroll": true,
+      "responsiveHint": true,
+      "reflowFocus": true,
+      "blurCleanup": true
+    },
+    {
+      "theme": "dark",
+      "keyboardScroll": true,
+      "responsiveHint": true,
+      "reflowFocus": true,
+      "blurCleanup": true
+    }
+  ],
+  "collapsedEquation": true,
+  "exceptions": []
+}

@@ -1,0 +1,173 @@
+{
+  "pdfs": [
+    {
+      "route": "/posts/ai/jev-decision-layer/",
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "htmlSha256": "5e19337bc877b7c5bef973c4b7d7aca1de943d0237f8f81261d075cc3b553d40",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 52
+        },
+        "math": {
+          "same": true,
+          "count": 92
+        },
+        "code": {
+          "same": true,
+          "count": 18
+        },
+        "captions": {
+          "same": true,
+          "count": 8
+        }
+      },
+      "file": "/tmp/chase-onejev-figures-20261103-jd1pcwye/qa/final-accepted-native/jev-decision-layer-true-100-light-a4.pdf",
+      "pages": 39,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "OneJev1.6-0.8B",
+        "0.283144",
+        "94,707",
+        "390,000–440,000",
+        "onejev_examples.py"
+      ],
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "route": "/posts/ai/jev-decision-layer/",
+      "scripts": true,
+      "size": 200,
+      "theme": "dark",
+      "paper": "a4",
+      "htmlSha256": "5e19337bc877b7c5bef973c4b7d7aca1de943d0237f8f81261d075cc3b553d40",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 52
+        },
+        "math": {
+          "same": true,
+          "count": 92
+        },
+        "code": {
+          "same": true,
+          "count": 18
+        },
+        "captions": {
+          "same": true,
+          "count": 8
+        }
+      },
+      "file": "/tmp/chase-onejev-figures-20261103-jd1pcwye/qa/final-accepted-native/jev-decision-layer-true-200-dark-a4.pdf",
+      "pages": 107,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "OneJev1.6-0.8B",
+        "0.283144",
+        "94,707",
+        "390,000–440,000",
+        "onejev_examples.py"
+      ],
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "route": "/posts/ai/jev-decision-layer/",
+      "scripts": false,
+      "size": 100,
+      "theme": "warm",
+      "paper": "a4",
+      "htmlSha256": "5e19337bc877b7c5bef973c4b7d7aca1de943d0237f8f81261d075cc3b553d40",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 52
+        },
+        "math": {
+          "same": true,
+          "count": 92
+        },
+        "code": {
+          "same": true,
+          "count": 18
+        },
+        "captions": {
+          "same": true,
+          "count": 8
+        }
+      },
+      "file": "/tmp/chase-onejev-figures-20261103-jd1pcwye/qa/final-accepted-native/jev-decision-layer-false-100-warm-a4.pdf",
+      "pages": 39,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "OneJev1.6-0.8B",
+        "0.283144",
+        "94,707",
+        "390,000–440,000",
+        "onejev_examples.py"
+      ],
+      "scriptExecutionDisabledEntireCase": true
+    },
+    {
+      "route": "/posts/ai/jev-decision-layer/",
+      "scripts": false,
+      "size": 200,
+      "theme": "warm",
+      "paper": "letter",
+      "htmlSha256": "5e19337bc877b7c5bef973c4b7d7aca1de943d0237f8f81261d075cc3b553d40",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 52
+        },
+        "math": {
+          "same": true,
+          "count": 92
+        },
+        "code": {
+          "same": true,
+          "count": 18
+        },
+        "captions": {
+          "same": true,
+          "count": 8
+        }
+      },
+      "file": "/tmp/chase-onejev-figures-20261103-jd1pcwye/qa/final-accepted-native/jev-decision-layer-false-200-warm-letter.pdf",
+      "pages": 111,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "OneJev1.6-0.8B",
+        "0.283144",
+        "94,707",
+        "390,000–440,000",
+        "onejev_examples.py"
+      ],
+      "scriptExecutionDisabledEntireCase": true
+    }
+  ],
+  "exceptions": []
+}

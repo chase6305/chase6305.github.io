@@ -1,0 +1,57 @@
+[
+  {
+    "name": "reading",
+    "argv": [
+      "node",
+      "docs/site-reviews/2026-11-02-two-article-clarity/check_article_clarity.cjs",
+      "http://127.0.0.1:13653",
+      "9242",
+      "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/reading-coherent"
+    ],
+    "started_at_utc": "2026-11-02T09:05:21.473240+00:00",
+    "finished_at_utc": "2026-11-02T09:05:55.930596+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "semantics",
+    "argv": [
+      "node",
+      "docs/site-reviews/2026-11-02-two-article-clarity/check_article_semantics.cjs",
+      "http://127.0.0.1:13653",
+      "9242",
+      "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/semantics-coherent",
+      "/tmp/chase-opt-20261029-fivehour/a11y/node_modules/axe-core/axe.min.js"
+    ],
+    "started_at_utc": "2026-11-02T09:05:55.930691+00:00",
+    "finished_at_utc": "2026-11-02T09:06:03.434453+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "search",
+    "argv": [
+      "node",
+      "docs/site-reviews/2026-11-02-two-article-clarity/check_article_search.cjs",
+      "http://127.0.0.1:13651",
+      "9242",
+      "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/search-coherent"
+    ],
+    "started_at_utc": "2026-11-02T09:06:03.434601+00:00",
+    "finished_at_utc": "2026-11-02T09:06:07.941283+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "large-print",
+    "argv": [
+      "node",
+      "docs/site-reviews/2026-11-02-two-article-clarity/check_article_print.cjs",
+      "http://127.0.0.1:13653",
+      "9242",
+      "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/print-large-coherent",
+      "--drafts",
+      "--large-text"
+    ],
+    "started_at_utc": "2026-11-02T09:06:07.941455+00:00",
+    "finished_at_utc": "2026-11-02T09:06:10.835497+00:00",
+    "exit_code": 0
+  }
+]

@@ -1,0 +1,123 @@
+{
+  "status": "complete",
+  "scope": "Improve clarity of the SuperMimic and RLHF/RLVR/RLCD articles and their relevant examples/figures; preserve publication dates, draft states, URLs and prior anchors.",
+  "window_start_utc": "2026-11-02T06:21:09+00:00",
+  "planned_end_utc": "2026-11-02T09:21:09+00:00",
+  "minimum_elapsed_seconds": 10800,
+  "baseline_revision": "0d6f32a910b912d8d9f1d6af4b25a0a829803664",
+  "initial_working_tree": "clean",
+  "work_directory": "/tmp/chase-two-article-clarity-20261102-n43qnb22",
+  "commit_push_or_deploy": false,
+  "work": [
+    {
+      "phase": "primary-source and clarity audit",
+      "checked_at_utc": "2026-11-02T07:16:04.168735+00:00",
+      "sources": "Four paper PDFs in work/sources, DPO primary abstract and PyTorch autograd documentation. Supplied SuperMimic PDF is preserved.",
+      "findings": [
+        "Correct reversed RLCD human-audit answer",
+        "Clarify that SFT is post-training",
+        "Distinguish reward-model fitting from policy optimization",
+        "Identify automatic branch labels and original reward-model/PPO RLCD path",
+        "Distinguish reference motion, executed action, training windows and deployment control"
+      ]
+    },
+    {
+      "phase": "first substantive editorial implementation",
+      "checked_at_utc": "2026-11-02T07:16:04.168744+00:00",
+      "scope": "Two article bodies and metadata, existing SVG, and acceptance records83/91 only.",
+      "changes": [
+        "Same-request three-feedback example, reward-model arithmetic, model-role table and verifier-to-policy explanation",
+        "Early SuperMimic control/training distinction and parameter-update table",
+        "Terminal-value arithmetic and lambda-return endpoint explanation",
+        "Optional published PyTorch freeze example, verified independently on CPU",
+        "Existing SVG now separates preference pairs from verifier scores and marks original RLCD path"
+      ],
+      "checks": {
+        "scalar_survival_random_cases": 500,
+        "gradient_lab_closed_form_cases": 100,
+        "torch_variations": 4,
+        "torch_optimizer_steps": 0,
+        "svg_text_labels": 28,
+        "initial_svg_label_bound_issues": 0
+      }
+    },
+    {
+      "phase": "source distinctions, native pagination and enlarged formulas",
+      "checked_at_utc": "2026-11-02T08:13:36.614422+00:00",
+      "changes": [
+        "Distinguish RLCD 30B data generator from 7B final policy",
+        "Define sigmoid, score-model parameters, per-step discount and Jacobian",
+        "Keep short code/output, example definitions and small comparison tables together in native PDFs",
+        "Reflow eight SuperMimic equations and one RLCD equation without changing mathematical tokens; earlier conditional-KL rewrite also avoids its original single-line overflow",
+        "Add a text name to the formula-only preference-loss table header"
+      ],
+      "checks": {
+        "native_exports": 8,
+        "selected_pagination_units": 16,
+        "changed_article_200_percent_layouts": 12,
+        "changed_article_200_percent_failures_after_reflow": 0,
+        "independent_axe_cases_after_header_fix": 16,
+        "axe_violations_after_header_fix": 0
+      },
+      "extra_broad_check": {
+        "scope": "Optional whole-site 200% print run before formula reflow",
+        "layouts": 576,
+        "failing_layouts": 264,
+        "affected_articles": 44,
+        "current_scope_articles": 2,
+        "other_articles_not_edited": 42,
+        "note": "All failures were long-formula bounds. This review fixes the two requested articles and does not claim a passing whole-site 200% print run."
+      },
+      "review_setup_corrections": [
+        "Wait for image-viewer opening transition before accepting screenshots",
+        "Compare exact rendered code while excluding the Markdown closing-fence newline",
+        "Select the fenced code block rather than earlier inline code when checking copying"
+      ]
+    },
+    {
+      "phase": "final source, numerical and reading reconciliation",
+      "checked_at_utc": "2026-11-02T09:13:39.088436+00:00",
+      "changes": [
+        "Complete the short comparison tables as print units",
+        "Adapt the repository overflow checker to validate genuinely fitting 200% equations instead of requiring a synthetic overflow"
+      ],
+      "checks": {
+        "fresh_production_files_compared": 2233,
+        "production_byte_differences": 0,
+        "strict_html_pages": 319,
+        "local_references": 32489,
+        "reading_layouts": 48,
+        "chapter_loads": 40,
+        "independent_semantic_contexts": 16,
+        "source_body_search_cases": 48,
+        "ordinary_print_layouts": 576,
+        "in_scope_200_percent_print_layouts": 12,
+        "native_exports": 8,
+        "native_export_pages": 337,
+        "short_pdf_units": 36,
+        "direct_current_pdf_rasters": 6
+      },
+      "status": "All scope checks pass; elapsed-time requirement still pending."
+    },
+    {
+      "phase": "completion",
+      "checked_at_utc": "2026-11-02T09:22:15.777298+00:00",
+      "status": "All in-scope work and the requested elapsed-time requirement are complete. Changes remain local."
+    }
+  ],
+  "pending": [],
+  "window_finished_utc": "2026-11-02T09:22:15.777298+00:00",
+  "elapsed_seconds": 10866.777298,
+  "elapsed_requirement_met": true,
+  "final_acceptance": "docs/site-reviews/2026-11-02-two-article-clarity/final-acceptance.json",
+  "final_scope": {
+    "article_bodies": 2,
+    "existing_svg": 1,
+    "acceptance_records": [
+      83,
+      91
+    ],
+    "test_only_script": "scripts/check_overflow_focus.cjs",
+    "shared_runtime_changes": false
+  }
+}

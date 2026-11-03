@@ -1,0 +1,113 @@
+{
+  "checked_at_utc": "2026-11-02T08:59:22.470778+00:00",
+  "direct_current_rasters": 6,
+  "rows": [
+    {
+      "file": "rlhf-rlvr-rlcd-false-200-warm-letter.pdf",
+      "unit": "model_role_comparison",
+      "tokens": [
+        "下一个token生成什么",
+        "这批回答采集时的概率是多少"
+      ],
+      "pages": [
+        15
+      ],
+      "passed": true,
+      "raster": "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/native-coherent/rasters/model_role_comparison.png",
+      "stored_raster": "docs/site-reviews/2026-11-02-two-article-clarity/visuals/model_role_comparison.png",
+      "sha256": "7225d8d453dbcf8ac806ff3e8c0828eee6bcc88cdcf7f4400d96aa65129c233a",
+      "review_status": "accepted by direct visual inspection",
+      "review_scope": "Table/code/definition completeness, labels, formulas, page bounds and ordinary line wrapping; no claim that every native PDF page was inspected."
+    },
+    {
+      "file": "rlhf-rlvr-rlcd-true-200-dark-a4.pdf",
+      "unit": "three_constructed_candidates",
+      "tokens": [
+        "正确解释None表示",
+        "但声称已经处理零除数",
+        "却声称除数为零时返回数值0"
+      ],
+      "pages": [
+        8
+      ],
+      "passed": true,
+      "raster": "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/native-coherent/rasters/three_constructed_candidates.png",
+      "stored_raster": "docs/site-reviews/2026-11-02-two-article-clarity/visuals/three_constructed_candidates.png",
+      "sha256": "3d5d92ae7a6e7e3a82683027531dec682d98356a45e412f9530f92060341fa27",
+      "review_status": "accepted by direct visual inspection",
+      "review_scope": "Table/code/definition completeness, labels, formulas, page bounds and ordinary line wrapping; no claim that every native PDF page was inspected."
+    },
+    {
+      "file": "supermimic-true-100-light-a4.pdf",
+      "unit": "three_time_windows",
+      "tokens": [
+        "每20ms一次控制输出",
+        "8个控制步，代表0.16s轨迹",
+        "32个控制步，代表0.64s轨迹"
+      ],
+      "pages": [
+        4
+      ],
+      "passed": true,
+      "raster": "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/native-coherent/rasters/three_time_windows.png",
+      "stored_raster": "docs/site-reviews/2026-11-02-two-article-clarity/visuals/three_time_windows.png",
+      "sha256": "30c1233d364ce7d4f0c0c7afe513cf7e1d0244be7dfdd7eba18e85e3cf151e3e",
+      "review_status": "accepted by direct visual inspection",
+      "review_scope": "Table/code/definition completeness, labels, formulas, page bounds and ordinary line wrapping; no claim that every native PDF page was inspected."
+    },
+    {
+      "file": "supermimic-true-100-light-a4.pdf",
+      "unit": "phase_parameter_comparison",
+      "tokens": [
+        "只更新回放数据",
+        "Actorθ；模型与critic参数固定",
+        "Criticψ；样本与监督目标固定"
+      ],
+      "pages": [
+        6
+      ],
+      "passed": true,
+      "raster": "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/native-coherent/rasters/phase_parameter_comparison.png",
+      "stored_raster": "docs/site-reviews/2026-11-02-two-article-clarity/visuals/phase_parameter_comparison.png",
+      "sha256": "304797d1bb54ce97366dfd6c31718db9f03a8aee28a47be777ba1767dcb65895",
+      "review_status": "accepted by direct visual inspection",
+      "review_scope": "Table/code/definition completeness, labels, formulas, page bounds and ordinary line wrapping; no claim that every native PDF page was inspected."
+    },
+    {
+      "file": "supermimic-true-200-dark-a4.pdf",
+      "unit": "torch_code_and_output",
+      "tokens": [
+        "import torch",
+        "print(f\"model gradient={gain.grad}\")",
+        "输出为 actor gradient=8.0 和 model gradient=None。"
+      ],
+      "pages": [
+        33
+      ],
+      "passed": true,
+      "raster": "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/native-coherent/rasters/torch_code_and_output.png",
+      "stored_raster": "docs/site-reviews/2026-11-02-two-article-clarity/visuals/torch_code_and_output.png",
+      "sha256": "5c53f8a0b285533bc60563ea1595e5a58639763a3d088951703669121e16718f",
+      "review_status": "accepted by direct visual inspection",
+      "review_scope": "Table/code/definition completeness, labels, formulas, page bounds and ordinary line wrapping; no claim that every native PDF page was inspected."
+    },
+    {
+      "file": "supermimic-true-200-dark-a4.pdf",
+      "unit": "critic_definition_and_rows",
+      "tokens": [
+        "表中的窗口回报已经应用折扣与存活权重",
+        "A 0.50 0.10 0.55",
+        "B 0.48 0.20 0.58"
+      ],
+      "pages": [
+        37
+      ],
+      "passed": true,
+      "raster": "/tmp/chase-two-article-clarity-20261102-n43qnb22/qa/native-coherent/rasters/critic_definition_and_rows.png",
+      "stored_raster": "docs/site-reviews/2026-11-02-two-article-clarity/visuals/critic_definition_and_rows.png",
+      "sha256": "64a2fe5d462cddb3900110279d39b75c8354cd60cb8132effc899d58a51bd506",
+      "review_status": "accepted by direct visual inspection",
+      "review_scope": "Table/code/definition completeness, labels, formulas, page bounds and ordinary line wrapping; no claim that every native PDF page was inspected."
+    }
+  ]
+}

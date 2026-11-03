@@ -1,0 +1,34 @@
+[
+  {
+    "article": "content/posts/ai/supermimic/index.md",
+    "immutable_front_matter": {
+      "title": true,
+      "date": true,
+      "draft": true,
+      "tags": true,
+      "categories": true,
+      "authors": true,
+      "contentLanguage": true,
+      "math": true,
+      "toc": true,
+      "related_posts": true
+    },
+    "images_preserved": true
+  },
+  {
+    "article": "content/posts/ai/rlhf-rlvr-rlcd/index.md",
+    "immutable_front_matter": {
+      "title": true,
+      "date": true,
+      "draft": true,
+      "tags": true,
+      "categories": true,
+      "authors": true,
+      "contentLanguage": true,
+      "math": true,
+      "toc": true,
+      "related_posts": true
+    },
+    "images_preserved": true
+  }
+]

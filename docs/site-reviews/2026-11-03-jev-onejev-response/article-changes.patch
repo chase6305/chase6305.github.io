@@ -1,0 +1,205 @@
+--- before/content/posts/ai/jev-decision-layer/index.md
++++ after/content/posts/ai/jev-decision-layer/index.md
+@@ -14,7 +14,7 @@
+ imageZoom: true
+ images: ["assets/jev-onejev-deployment.png"]
+ reading_prerequisites: "了解 VLM、观测—动作闭环和基本概率；随文客户端与复算只需 Python 标准库，模型推理另需后端环境"
+-reading_focus: "先用部署关系和概率读出图区分模型、引擎与输出，再看共享前缀和两个本地例子，最后检查机器人候选、观测时效与执行交接。"
++reading_focus: "先区分模型、引擎与概率读出，再连起文字请求、响应读取与截图闭环，最后检查机器人候选、观测时效与执行交接。"
+ related_posts:
+   - "/posts/ai/vla-evolution"
+   - "/posts/ai/real-time-chunking"
+@@ -30,7 +30,7 @@
+ | 想解决的问题 | 建议阅读 |
+ | --- | --- |
+ | Jev 到底输出什么 | [模型与接口](#interface) |
+-| OneJev 怎样从模型变成可调用服务 | [概率读出](#onejev-probability-readout)、[文字调用](#onejev-quickstart)、[截图调用](#onejev-image-example) |
++| OneJev 怎样从模型变成可调用服务 | [概率读出](#onejev-probability-readout)、[文字调用](#onejev-quickstart)、[响应解读](#onejev-response-example)、[截图调用](#onejev-image-example) |
+ | OneJev 能否在本地训练和校准 | [训练目标](#onejev-training)、[数据与复现范围](#onejev-data-and-evaluation) |
+ | 它应放在 VLA 的哪里 | [分层架构](#architecture)、[动作粒度](#action-granularity) |
+ | 79% 与成本下降意味着什么 | [Jev-Mobile](#jev-mobile)、[机械臂实验](#embodied-evidence) |
+@@ -119,6 +119,8 @@
+ ### 2.2 模型怎样把一个问题变成概率 {#onejev-probability-readout}
+ 
+ 以“下一步启用通知、停止，还是重新观察”为例，程序先提供三个候选及各自语义，提示模板再把它们排列成 A、B、C。模型处理状态和这个问题，在答案读出位置计算这些候选标签 token 的分数，也就是 logits。这里复用语言模型输出头中对应标签的行，再对当前候选做归一化。[提示模板][onejev-prompt]、[Flide 的 OneJev 读出实现][onejev-format]
++
++在这条 OneJev 路径中，神经网络计算候选标签的分数，推理软件随后完成归一化和字段组装。因此，返回的 JSON 是服务序列化这些数值的结果。生成式模型也能提供相同形状的 JSON；判断它是否采用这一读出方式，要看模型与引擎实现，不能仅看返回格式。[读出与答案组装][onejev-format]
+ 
+ A、B、C 是**当前问题内部的槽位**，具体含义由这次请求的候选描述决定。下次调用可以让 A 对应另一项技能；程序仍通过映射取回原来的技能 ID。这也解释了为什么接口可以传入新候选，而无需为每个技能另建一个固定类别输出头。
+ 
+@@ -243,6 +245,15 @@
+         "reobserve": "Capture a new screen because the current state is unreadable.",
+         "handoff": "Ask the planner for help because the setting is unavailable."
+       }
++    },
++    "progress": {
++      "type": "score",
++      "instructions": "Which level describes the current notification setting?",
++      "criteria": [
++        "Notifications toggle is not available on the screen.",
++        "Notifications toggle is available but notifications are disabled.",
++        "Notifications are enabled."
++      ]
+     }
+   }
+ }
+@@ -260,9 +271,9 @@
+ 
+ </div>
+ 
+-这段例子把 `next` 的候选交给模型选择，把是否完成交给另一个 Noul 问题。业务程序从 `answers.next.choice` 取 ID，从 `answers.next.probabilities` 取候选分布，从 `answers.done.noul` 取完成命题的概率；选择返回后，再由程序执行动作并重新观察。
+-
+-可以下载 [OneJev 调用示例包](onejev-examples.zip)，解压后进入 `onejev-examples/` 目录；也可单独下载 [onejev_examples.py](onejev_examples.py)。脚本只需 Python 标准库。它额外加入进度 Score，等级依次为“找不到开关”“找到但仍关闭”“已经开启”，对应下标 0、1、2；返回分数是这些下标的期望。`request` 打印请求，`ask` 才调用服务：
++这次请求同时询问三个不同的问题：`done` 判断通知是否已开启，`next` 从四个候选中选择下一步，`progress` 判断当前等级。问题 ID 用于把答案放回 `answers` 的对应位置；`enable` 等候选 ID 用于定位程序可执行的动作。问题 ID 与候选 ID 属于不同层次。
++
++可以下载 [OneJev 调用示例包](onejev-examples.zip)，解压后进入 `onejev-examples/` 目录；也可单独下载 [onejev_examples.py](onejev_examples.py)。脚本只需 Python 标准库，使用同样的三个问题。进度 Score 的等级依次为“找不到开关”“找到但仍关闭”“已经开启”，对应下标 0、1、2；返回分数是这些下标的期望。`request` 打印请求，`ask` 才调用服务：
+ 
+ <div style="break-inside: avoid">
+ 
+@@ -274,6 +285,57 @@
+ </div>
+ 
+ 如果 `/v1/models` 返回其他服务名，使用 `--model` 指定。`model` 字段选择本地服务已经加载的模型，不能让服务器临时下载任意另一个模型；本地的 `jev-latest` 别名也不意味着请求被发到了 TypeSafe 云端。
++
++#### 把返回值读完整：先看一份离线响应 {#onejev-response-example}
++
++还没有模型服务时，可以先下载[响应节选](assets/onejev-response-example.json)，或使用示例包内的同名文件。**这份 JSON 由构造概率经答案组装代码生成，模型名明确标为构造示例，省略 `usage`；它用于练习字段读取，不是模型运行结果。**
++
++```bash
++python3 -B onejev_examples.py read-response onejev-response-example.json
++```
++
++输出中的核心数值是：
++
++```json
++{
++  "model": "constructed-example-not-model-inference",
++  "next_choice": "enable",
++  "next_choice_probability": 0.8,
++  "next_confidence": 0.733333,
++  "done_probability": 0.05,
++  "progress_score": 1.0,
++  "progress_confidence": 0.85
++}
++```
++
++这几项分别怎样得到？
++
++| 字段 | 响应中的原始位置 | 本例的解释 |
++| --- | --- | --- |
++| `next_choice` | `answers.next.choice` | `enable` 是候选 ID，程序据此找到本轮的点击操作 |
++| `next_choice_probability` | `answers.next.probabilities.enable` | 四个候选的构造分布是 0.8、0.1、0.05、0.05 |
++| `next_confidence` | `answers.next.confidence` | 按四选一的均匀基线计算，约为 0.733333 |
++| `done_probability` | `answers.done.noul` | 对“通知已经开启”这个命题的概率估计为 0.05 |
++| `progress_score` | `answers.progress.score` | 三级分布 0.05、0.9、0.05 的等级期望为 1.0 |
++| `progress_confidence` | `answers.progress.confidence` | Score 按等级距离计算的 confidence 为 0.85 |
++{.table-readable}
++
++四选一的 Choice confidence 是 $(0.8-0.25)/(1-0.25)\approx0.733333$；图 2 三选一的结果则是 0.7。**改变候选数会改变均匀基线**，不能只因前一个数更大，就认为一次请求更可靠。进度分数 1.0 对应等级下标的期望，也不表示完成了 100%。这些字段分别回答完成、选择和进度问题，不能合并成一个“动作成功率”。[答案组装实现][onejev-answers]
++
++Score confidence 的 0.85 也能手算：众数为等级 1，两个边缘等级各有 0.05 概率，平均等级距离为 0.1；三级均匀分布的距离基线为 2/3，用 1 减去这两个数的比值，得到 0.85。它与 Choice confidence 使用的统计量不同。
++
++有了服务后，把真实返回保存下来，再用同一命令读取：
++
++<div style="break-inside: avoid">
++
++```bash
++python3 -B onejev_examples.py ask > response.json
++python3 -B onejev_examples.py read-response response.json
++```
++
++</div>
++
++`ask` 输出服务返回的全部 JSON 字段；`read-response` 只读取随文三个问题的字段，进度范围固定为 0–2，不发起新请求，也不执行动作。它不是完整的执行门控：候选 ID 白名单、整个分布的一致性、观测版本和动作前条件仍按[离线门控练习](#lab)检查。这样可以分别检查“请求是否发通”“返回怎样解释”“动作能否提交”。
+ 
+ ### 2.5 第二个例子：让模型直接读取截图 {#onejev-image-example}
+ 
+@@ -296,7 +358,9 @@
+ }
+ ```
+ 
+-这里的省略号只展示字段位置，不能当成真实图像数据发送；脚本会写入完整编码。图像请求没有再附加 `notifications_enabled` 文字字段，因而模型需要依据画面回答。合理的预期是：开启通知的命题偏向肯定，下一步倾向 `stop`；具体概率应以本机返回为准。
++这里的省略号只展示字段位置，不能当成真实图像数据发送；脚本会写入完整编码。图像请求没有再附加 `notifications_enabled` 文字字段，因而模型需要依据画面回答。合理的预期是：开启通知的命题偏向肯定，下一步倾向 `stop`，进度分数接近等级 2；具体概率应以本机返回为准。文字例观察到“关闭”，截图例看到“开启”，这是两种状态，不是要求相同输入得到相同动作。
++
++把两段接成真实闭环时，顺序是：读取关闭状态 → 选择 `enable` → 程序提交点击并确认完成 → 采集新截图 → 再询问是否停止。执行器返回“点击已完成”只是操作反馈，新截图才提供开关状态的下一份证据；不要用模型上次的选择替代重新观测。
+ 
+ `<image:1>` 关联 `media` 的第一项。多张图像或视频混合时，编号按媒体列表的位置计算，每项应在状态中按顺序引用一次；不要在某道问题里再重复放入同一媒体占位符。默认发送 data URI 或 URL；客户端的文件路径不会自动成为服务器可读的路径，路径模式需要启动时配置媒体根目录。[媒体表示实现][onejev-media]
+ 
+@@ -322,6 +386,26 @@
+ 
+ 两条路线的取舍是：Flide 支持当前项目的文字、图像和视频帧输入，并优化多问题共享计算；GGUF 路线可利用 llama.cpp 支持的设备，但不能把 Flide 的视频支持和吞吐数字直接套过去。CPU、Apple GPU 与 NVIDIA GPU 的实际速度也需要分别测量。
+ 
++#### 排查启动与调用问题 {#onejev-startup-troubleshooting}
++
++<details>
++<summary>服务启动或请求失败时，按什么顺序排查？</summary>
++
++先区分安装、模型加载、HTTP 请求和字段读取，避免把所有问题都当作模型判断错误。
++
++| 现象 | 优先检查什么 |
++| --- | --- |
++| 第一次启动很久没有响应 | 查看权重下载、显存分配和引擎日志；权重加载完成前不计入稳态推理延迟 |
++| 客户端提示连接失败 | 确认服务进程仍在运行，`--host`、端口和客户端 `--url` 对应；先查询 `/v1/models` |
++| 收到 HTTP 错误 | 阅读 `ask` 输出的状态码和错误正文，核对服务名、`questions` 字段及媒体占位符 |
++| 文字可用，图像不可用 | Flide 路线检查模型是否含视觉模块；GGUF 路线检查配套 `mmproj`，并核对媒体编码 |
++| `read-response` 提示字段不完整 | 确认保存的是成功响应，且请求包含随文的 `done`、`next`、`progress` 三题 |
++{.table-readable}
++
++HTTP 成功返回只说明调用链路有了结果。模型是否正确识别开关、概率是否校准、执行后目标是否达成，需要用各自的观测和评测回答。
++
++</details>
++
+ ### 2.7 训练、温度校准和 RLCD 怎样区分 {#onejev-training}
+ 
+ 公开的 `train/sft.py` 在答案读出位置训练模型。对一题的候选分布 $p$ 和目标分布 $y$，其损失可以写为：[训练实现][onejev-training-code]
+@@ -334,7 +418,7 @@
+ \end{aligned}
+ $$
+ 
+-交叉熵会强烈惩罚把正确选项概率压到接近零的预测，Brier 项直接度量各项概率与目标之间的平方误差。这里 Brier 项对候选维求和，再对批内问题平均；公开配置的权重为 $\lambda=1$，这个权重本身并不保证校准。若正确选项是第一项，预测概率依次为 0.8、0.1、0.1，目标概率依次为 1、0、0，交叉熵约 0.223144，Brier 项为 0.06，总损失约 **0.283144**。监督作用是同时改善正确选项的分数与整个分布，仍需在独立任务上检验概率是否校准。
++交叉熵会强烈惩罚把正确选项概率压到接近零的预测，Brier 项直接度量各项概率与目标之间的平方误差。这里 Brier 项对候选维求和，再对批内问题平均；公开配置的权重为 $\lambda=1$，这个权重本身并不保证校准。若正确选项是第一项，预测概率依次为 0.8、0.1、0.1，目标概率依次为 1、0、0，交叉熵约 0.223144，Brier 项为 0.06，总损失约 **0.283144**。监督作用是同时改善正确选项的分数与整个分布，仍需在独立任务上检验概率是否校准。 `confidence` 是单次答案的分布统计量；校准则要比较一组预测概率与真实发生频率，具体见[校准与区分能力](#calibration-and-cost)。
+ 
+ 温度校准则固定模型已有分数，用独立验证集调整 $T$。对前面的 $(\log 8,0,0)$，把 $T$ 从 1 调到 2，会把三项概率从 0.8、0.1、0.1 变为约 0.585786、0.207107、0.207107。它减弱了尖锐程度，没有改变排序，也无法补出候选集合中缺失的正确动作。温度应在验证集上拟合，然后固定到测试集；不能看完测试标签再选。
+ 
+@@ -399,7 +483,23 @@
+ 
+ 解包后得到 `data/onejev/train.jsonl` 和媒体文件。随文核对的 100 行中，Choice、Score、Noul 分别有 49、20、31 条；共 634 个媒体文件，一道视频问题可以关联多帧，因此问题数与图像数不同。可以对照[数据格式复核记录](assets/onejev-data-check.json)。一条记录把 `state`、`question`、`target` 与 `media` 对应起来，训练脚本依据候选标签构造目标分布；改变选项排列时，目标也必须跟着排列。原始 GUI 任务及其相邻帧应整组划分，防止同一任务的近似状态同时进入训练和测试。
+ 
+-公开的 4B 配置可以这样启动：
++以文字通知例为例：如果标注者确认正确动作为 `enable`，目标可以写成 `{"enable": 1.0}`，其余候选按 0 处理。训练记录把请求中的 `questions.next` 放入单数的 `question` 字段，目标使用候选 ID；A、B、C 槽位由渲染器生成。这样重排候选时，目标也能按 ID 跟随，而不会仍然把第一个槽位当作正确答案。模型自己选中的动作不能自动当作标注真值。[目标映射实现][onejev-training-common]
++
++在已经安装训练依赖、解包样本的环境中，可以先做一次不加载完整模型权重的规划检查：
++
++<div style="break-inside: avoid">
++
++```bash
++python -m train.sft \
++  --config train/configs/onejev_08b_full.yaml \
++  --plan-only --limit 100
++```
++
++</div>
++
++这一步仍在仓库根目录执行，配置默认读取 Qwen3.5-0.8B 的 tokenizer 与 processor；也可用 `--model` 指向已有的本地检查点目录。输出会列出样本长度、超过 `max_len` 的行数和批次计划，成功完成时显示 `PLAN_OK`。它检查格式与长度，不执行优化器步骤，也不测训练峰值显存；计划中的多卡数量不表示已经启动了多卡训练。[规划检查实现][onejev-training-code]
++
++公开的 4B 配置随后可以这样启动正式训练：
+ 
+ <div style="break-inside: avoid">
+ 
+@@ -1027,6 +1127,8 @@
+ 19. **温度校准能补出缺失的正确动作吗？** 不能；正温度改变分布尖锐程度，不改变既有 logits 的排序或候选集合。
+ 
+ 20. **十题请求用 51 ms，意味着每题 5.1 ms 即可返回吗？** 不意味着；5.1 ms 是按题数摊销的吞吐值，客户端等待的是整次请求。
++21. **四选一最高概率同样是 0.8，confidence 也会是 0.7 吗？** 不会；本例约为 0.733333，因为均匀基线从三选一的 1/3 变成四选一的 1/4。
++22. **保存响应并成功读取字段，是否意味着动作可以执行？** 不意味着；字段读取与完整响应校验、观测版本检查和动作前条件是不同步骤。
+ 
+ ## 资料与继续阅读
+ 
+@@ -1047,6 +1149,7 @@
+ [onejev-media]: https://github.com/OmniJev/OneJev/blob/d18d82243d82062af9c6c1bed999eaec5f39cbe0/qev/media.py
+ [onejev-gguf]: https://github.com/OmniJev/OneJev/blob/d18d82243d82062af9c6c1bed999eaec5f39cbe0/qev/llamacpp.py
+ [onejev-training-code]: https://github.com/OmniJev/OneJev/blob/d18d82243d82062af9c6c1bed999eaec5f39cbe0/train/sft.py
++[onejev-training-common]: https://github.com/OmniJev/OneJev/blob/d18d82243d82062af9c6c1bed999eaec5f39cbe0/train/common.py
+ [onejev-calibration]: https://github.com/OmniJev/Flide/blob/ea93bfaf8e8109aad444d9f548957a519212a70a/plugins/onejev/flide_onejev/calibrate.py
+ [onejev-train-config]: https://github.com/OmniJev/OneJev/blob/d18d82243d82062af9c6c1bed999eaec5f39cbe0/train/configs/onejev_4b_full.yaml
+ [onejev-data]: https://huggingface.co/datasets/OmniJev/OneJev-Data/blob/1028292856b8bc3029e4e423df78d0637c735dc0/README.md

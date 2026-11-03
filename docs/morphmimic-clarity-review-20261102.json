@@ -1,0 +1,42 @@
+{
+  "status": "complete",
+  "completed_at_utc": "2026-11-02T11:14:21.001566+00:00",
+  "scope": "Improve the existing standalone MorphMimic explanation; preserve its URL, original date, draft state, prior anchors, figures and executable examples.",
+  "baseline_revision": "0d6f32a910b912d8d9f1d6af4b25a0a829803664",
+  "working_tree_at_start": "Earlier completed SuperMimic/RLHF/RLVR/RLCD edits were already present and preserved.",
+  "article": "content/posts/ai/morphmimic/index.md",
+  "acceptance_records_changed_this_task": [
+    93
+  ],
+  "changes": [
+    "Standalone SuperMimic comparison and same-motion control walkthrough.",
+    "Explicit imagined-return objective, update roles and FiLM scalar example.",
+    "Separate cross-robot latent alignment from five-point interface matching.",
+    "Define loss symbols, reflow long equations and document standalone download checks.",
+    "Expand reading self-checks from 16 to 19."
+  ],
+  "checks": {
+    "fresh_hugo_production_build": true,
+    "strict_validation_errors": 0,
+    "html_pages": 319,
+    "local_references": 32506,
+    "reading_layouts": 24,
+    "chapter_loads": 32,
+    "image_viewer_cases": 12,
+    "normal_print_layouts": 6,
+    "large_print_layouts": 6,
+    "semantic_contexts": 8,
+    "semantic_violations": 0,
+    "search_cases": 16,
+    "native_pdf_exports": 4,
+    "native_pdf_pages": 160,
+    "manual_pdf_pages": 2,
+    "all_original_headings_retained": 27,
+    "prior_page_ids_retained": 38
+  },
+  "evidence": "docs/site-reviews/2026-11-02-morphmimic-clarity/README.md",
+  "shared_runtime_changes": false,
+  "model_training_or_hardware_tests": false,
+  "commit_push_or_deploy": false,
+  "pending": []
+}

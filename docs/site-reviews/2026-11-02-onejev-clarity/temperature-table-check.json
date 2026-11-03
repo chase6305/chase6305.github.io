@@ -1,0 +1,14 @@
+{
+  "constructed_file": {
+    "temperatures": {
+      "choice:4": 2.0
+    }
+  },
+  "actual": {
+    "choice:4": 2.0,
+    "choice:3": 1.0,
+    "noul:2": 1.0,
+    "score:3": 1.0
+  },
+  "scope": "Actual Flide 0.1.7 temperature loading and fallback; constructed values, no calibration-quality claim."
+}

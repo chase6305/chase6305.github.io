@@ -1,0 +1,90 @@
+{
+  "recorded_at_utc": "2026-11-02T13:12:22.071896+00:00",
+  "baseline_revision": "0d6f32a910b912d8d9f1d6af4b25a0a829803664",
+  "files": [
+    {
+      "path": "content/posts/ai/jev-decision-layer/index.md",
+      "sha256": "9aff09835b4b4b11efb42b786bbf674403fb16bb5f50e56c6b20d264939c7777"
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/onejev_examples.py",
+      "sha256": "4ba8cae4f46aa180f22f8814585ad6d095011f6f7f5d5622852d96dbe234cf0c"
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/onejev-readme.txt",
+      "sha256": "aae58ec86240988245ee776be85c6fcd98ba85979abc0cef3788619846707e84"
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/onejev-examples.zip",
+      "sha256": "40c8d44c22043940bd8af1aa8b12635f02ff7bc92c653def59393b98976cb9b1"
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/assets/onejev-settings-screen.png",
+      "sha256": "ee222aa7145dcc2fbc928f90429edbe32b833fcf9132059ee1c6609d998912d7"
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/assets/onejev-math-results.json",
+      "sha256": "9502ad84cea005a3331af25a7c6aafc070eae9b20413d0b2ecceb29527236fca"
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/assets/onejev-data-check.json",
+      "sha256": "31db9366e39b42a9c15258dab5c99c09a527f68c72e5f216fa0b5e5f38cc11eb"
+    },
+    {
+      "path": "scripts/test_onejev_examples.py",
+      "sha256": "045c172c628c3150149064e9ad0a4c472f7c08a57179d54525581e8863a1dbe4"
+    },
+    {
+      "path": "scripts/package_onejev_examples.py",
+      "sha256": "886bfdfb799cb51791faf728334ceb20df23f1bfb83aeeb7d3c2627bb49cc429"
+    },
+    {
+      "path": ".github/workflows/hugo.yml",
+      "sha256": "a476eb42657b94c62a86c620bf2312b9bf3354f2d3f7df92930f8b64fd79d510"
+    },
+    {
+      "path": "data/tag_groups.yaml",
+      "sha256": "18736473a479b10b8fad64e4323dc23d60cc6dc2a1931ea766fce5012a203bfc"
+    },
+    {
+      "path": "docs/blog-editorial-review.json",
+      "sha256": "7a1d631c7045d9bd104de51c1971df3a8d1748febbb74c776121b1e7ae922ca3"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-02-onejev-clarity/check_images.cjs",
+      "sha256": "5581ec138f45d950926f3020f403cf6ad16755103dd54a5ed97589bebc41b6ae"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-02-onejev-clarity/check_semantics.cjs",
+      "sha256": "e1d06ffe1d3fd0aae2a66adf4a625b5b1ca0d0c5d325dc39e08004c21bce193f"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-02-onejev-clarity/capture_input.cjs",
+      "sha256": "8fd67bf5191c66a858c206d0f9a1fcd70ef7e19e9c6a029d6d94cf64bffd5427"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-02-onejev-clarity/check_reading.cjs",
+      "sha256": "394a69920e165eeafa1f6c0273d2292967084f51420616f74a04659751fb2e67"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-02-onejev-clarity/check_keyboard.cjs",
+      "sha256": "73e1f345083104f9b01fc3b81ea8b473293375f2f4803ba9f57606fb15fb5e19"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-02-onejev-clarity/check_print.cjs",
+      "sha256": "64901d957f4d9f84100871ac2200ef1c01fcb4326b0d1b5368d4f18a7fa1b537"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-02-onejev-clarity/check_search.cjs",
+      "sha256": "12d06d69c5a962007a49f65825ea0b870bfe0c2241438e7c7a754da906b0f3e1"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-02-onejev-clarity/export_article.cjs",
+      "sha256": "9942f00baf714e9a7b55bc00b3b5722f0ae1650ee3c50b7af86b1724bc1fc190"
+    }
+  ],
+  "build": "/tmp/chase-onejev-clarity-20261102-0nfg9b3d/production-v4",
+  "preview": "http://127.0.0.1:13669",
+  "private_cdp_port": 9244,
+  "article_html_sha256": "231b668449a43b58c9ce2f8cdb8a63b51877fe287df0afa283a5fe68fb0a4b49"
+}

@@ -1,20 +1,20 @@
 ---
 title: "SuperMimic 论文详解：用可微世界模型训练全身控制"
 date: 2026-10-22
-lastmod: 2026-10-29
+lastmod: 2026-11-02
 draft: false
 tags: ["SuperMimic", "Humanoid", "Whole-Body Control", "World Model", "Reinforcement Learning", "Imitation Learning", "Automatic Differentiation", "Paper Notes"]
 categories: ["人工智能"]
 authors: ["chase"]
-summary: "拆解 SuperMimic 的在线世界模型、短时域 BPTT、存活权重与 critic，用手算和交互实验解释预测误差与梯度可靠性的区别，分析 G1 控制接口、算力比较、消融和速度评估，并厘清零失败与真机迁移的证据边界。"
-description: "拆解 SuperMimic 的在线世界模型、短时域 BPTT、存活权重与 critic，用手算和交互实验解释预测误差与梯度可靠性的区别，分析 G1 控制接口、算力比较、消融和速度评估，并厘清零失败与真机迁移的证据边界。"
+summary: "沿采集、拟合与策略改进讲清 SuperMimic：区分参考运动与控制动作、模型参数与输入梯度，用两步算例、存活权重和 critic 理解短时域训练，再核对 G1 接口、算力比较与真机结果。"
+description: "沿采集、拟合与策略改进讲清 SuperMimic：区分参考运动与控制动作、模型参数与输入梯度，用两步算例、存活权重和 critic 理解短时域训练，再核对 G1 接口、算力比较与真机结果。"
 contentLanguage: "zh-CN"
 math: true
 toc: true
 images: ["assets/training-cycle.webp"]
 imageZoom: true
-reading_prerequisites: "策略与价值函数、链式法则、关节控制与本体观测的基本概念"
-reading_focus: "先沿训练闭环理解梯度，用两步交互实验比较 BPTT、detach 与模型偏差，再核对 critic、参数更新和各类实验的评估口径。"
+reading_prerequisites: "函数输入输出与链式法则；了解关节控制和本体观测会更容易连接真机接口"
+reading_focus: "先分清参考目标、控制动作与训练阶段，再沿两步算例理解梯度和 critic，最后核对控制接口、训练预算及实验口径。"
 related_posts:
   - "/posts/ai/light-loco-parkour"
   - "/posts/ai/ppo-dpo-grpo"
@@ -29,11 +29,14 @@ related_posts:
 
 本文依据 Qiayuan Liao、Yiyang Shao、Junfeng Long、Kevin Zakka、Roberto Horowitz、Pieter Abbeel 和 Koushil Sreenath 的 [《SuperMimic: Scaling Humanoid Whole-Body Control with One Differentiable World Model》arXiv v1](https://arxiv.org/abs/2610.28480v1)，版本日期为 2026-10-20。作者来自 UC Berkeley；[项目页](https://supermimic.github.io/)提供真机视频和浏览器演示。下文的实验数字来自论文，公式推导中的解释会与作者报告的结论分开。
 
-全文围绕三个角色展开：
+先区分四个角色，后面的训练闭环就容易对上：
 
 - **模拟器提供经验。** MuJoCo Warp 运行当前策略，记录实际执行动作及后续状态。
 - **世界模型提供预测和导数。** 它学习机器人动力学，供策略在短轨迹中计算回报梯度。
+- **Critic 估计更远的回报。** 它评价短轨迹末端之后还有多少回报，并为策略提供末端状态的价值梯度。
 - **Actor 提供实时控制。** 它读取本体历史和运动目标，输出由低层 PD 执行的关节设定值。
+
+部署时，真机运行 actor 和低层控制器。世界模型与 critic 主要帮助训练 actor；训练中的 32 步预测不会变成真机每个控制周期都要求解的规划问题。
 
 论文最醒目的结果是：单张 H100 训练 3 h 后超过 SONIC 已发布检查点的归一化回报；两张 H100 训练 9.8 h 后，在 129,514 段训练动作的固定仿真评估中零失败。[主实验](#compute)会分别解释这两个检查点的预算与评估条件。
 
@@ -46,7 +49,10 @@ related_posts:
 
 | 想回答的问题 | 阅读入口 |
 | --- | --- |
+| 参考运动怎样变成当前控制动作 | [目标与控制输入](#reference-versus-action) |
+| 50 Hz 控制与 32 步想象是什么关系 | [控制周期与训练窗口](#training-versus-control) |
 | 一个模型为什么能服务十几万段动作 | [任务与共享动力学](#task)、[三阶段闭环](#training-loop) |
+| 模型、actor 与 critic 分别何时更新 | [阶段与参数](#phase-parameter-updates) |
 | 解析梯度到底怎样算 | [模型拟合](#world-model)、[策略梯度与存活权重](#policy-gradient)、[两步手算](#bptt-example) |
 | 为什么只想象 32 步还需要 critic | [短时域 actor–critic](#critic) |
 | G1 真正读取什么、输出什么 | [网络和控制接口](#interfaces)、[奖励与随机化](#reward-randomization) |
@@ -82,6 +88,29 @@ $$
 
 本文的“世界模型”主要处于低层控制训练环节。它没有自动解决语言理解、任务分解或物体交互规划。与[视觉／动作世界模型](../vla-world-model-data/)比较时，应先看预测对象和使用位置。
 
+### 1.1 参考运动与控制动作怎样区分 {#reference-versus-action}
+
+本文的“动作”可能指两种东西。参考运动（motion）描述身体在各时刻应当怎样移动，例如脚应抬到哪里、躯干应怎样转动；控制动作（action）$a_t$ 则是 actor 在当前周期输出的电机控制设定。默认接口把这个 29 维归一化输出映射成关节设定值，再交给 PD 控制器。
+
+参考序列给出了**要跟踪的身体目标**，不直接给出当前观测下最合适的闭环控制动作。即使参考帧相同，机器人已经侧倾、落脚偏晚或关节速度不同，纠偏动作也可能不同。因此，训练信号来自“执行后跟得怎样”的回报；它不只是把参考关节角当作 actor 的逐步监督标签。
+
+回放缓冲区中的动作也有明确含义：它记录模拟器实际执行的控制输入，用来监督“这个输入导致什么转移”。参考目标 $g_t$ 与记录动作 $a_t$ 在模型拟合、奖励计算中的职责不同。
+
+### 1.2 先分清控制周期与训练窗口 {#training-versus-control}
+
+<div style="break-inside: avoid">
+
+| 所在环节 | 一次计算在做什么 | 默认时间尺度 |
+| --- | --- | --- |
+| 真机执行 | 根据最新本体历史与目标，运行 actor 并更新关节设定值 | 50 Hz，即每 20 ms 一次控制输出 |
+| 世界模型拟合 | 用日志动作从窗口起点自回归预测，并与日志状态比较 | 8 个控制步，代表 0.16 s 轨迹 |
+| 策略训练 | 在固定参数的模型中，用当前 actor 想象未来并求梯度 | 32 个控制步，代表 0.64 s 轨迹 |
+{.table-readable}
+
+</div>
+
+后两行的秒数是**轨迹所代表的任务时间**，不是程序必须等待的墙钟时间。32 步想象用于训练策略参数；真机执行已训练好的策略时，并不重新做一轮 32 步 BPTT 或 MPC 搜索。
+
 ## 2. 三阶段闭环：采集、拟合、改进 {#training-loop}
 
 SuperMimic 没有先训练一个永久固定的世界模型，再从头训练策略。两个学习过程在同一个循环中交替进行。[论文 Section 3、Figure 2 与 Algorithm A.1](https://arxiv.org/pdf/2610.28480v1#page=4)
@@ -114,7 +143,27 @@ SuperMimic 没有先训练一个永久固定的世界模型，再从头训练策
 
 这里有两个相互推动的学习过程：策略逐渐进入新的身体状态，为模型提供新的训练样本；模型在这些状态上变得更准确，又为策略提供更有用的优化方向。因此“共享一个模型”描述的是跨动作的动力学复用，不意味着训练期间模型始终不变。
 
+### 2.4 每个阶段究竟更新谁 {#phase-parameter-updates}
+
+用三个参数符号追踪训练：$\omega$ 属于世界模型，$\theta$ 属于 actor，$\psi$ 属于 critic。下面把第三阶段中的 actor 改进与 critic 拟合分成两行，按实际使用数据与梯度的顺序列出：
+
+<div style="break-inside: avoid">
+
+| 阶段 | 更新的参数 | 数据或计算来自哪里 |
+| --- | --- | --- |
+| 模拟器采集 | 不更新网络，只更新回放数据 | 当前 actor 输出动作，模拟器执行带噪控制并记录转移 |
+| 模型拟合 | 世界模型 $\omega$ | 输入日志动作，比较预测轨迹与模拟器日志 |
+| Actor 改进 | Actor $\theta$；模型与 critic 参数固定 | 当前 actor 在模型预测状态上输出新动作，计算想象回报 |
+| Critic 拟合 | Critic $\psi$；样本与监督目标固定 | 使用同批想象轨迹与已算好的回报目标 |
+{.table-readable}
+
+</div>
+
+**“固定模型”只发生在当前 actor 更新内部。** 下一轮又会用新旧回放数据拟合 $\omega$。模型拟合需要状态转移标签，actor 改进需要回报对动作的导数，critic 拟合需要未来回报目标；三项损失解决不同问题。
+
 ## 3. 世界模型：学动力学，也学可用于优化的反馈 {#world-model}
+
+模拟器中的多刚体动力学已经给定。SuperMimic 学习世界模型，是为了建立适合批量想象和反向传播的替代函数：模拟器提供转移样本，世界模型提供对状态与动作的导数，改进后的策略再回到模拟器收集经验、评价跟踪表现。模型预测是否准确、导数是否有用，都需要在这个闭环中检查。[论文 Section 3.2](https://arxiv.org/pdf/2610.28480v1#page=5)
 
 ### 3.1 输入状态、动作和物理上下文
 
@@ -130,6 +179,8 @@ $$
 $$
 
 帽子表示模型中的量，$\bar o_t$ 表示无传感噪声的观测。各个头可以学习，也可以用解析关系计算；解析头不需要对应的拟合损失。不能仅凭这个记号就断言所有输出都由独立神经网络预测。
+
+看目标 $g_t$ 出现的位置，就能理解“共享动力学”：同一身体状态、控制动作和物理上下文决定怎样转移，参考目标则决定这次转移是否跟得好、是否相对参考偏离过大。换一段舞蹈会改变目标和策略动作，但不需要为这段舞蹈重新定义一套身体动力学。式中的 $g_\omega$ 是观测映射，$g_t$ 是目标输入；两者虽然同用字母 $g$，职责不同。
 
 模型直接知道该回合的 $\xi$。例如相同的制动动作在高摩擦与低摩擦地面上产生不同结果，模型应当学习“给定摩擦后的转移”，而不是把两种结果混成一种不可解释的随机性。
 
@@ -147,14 +198,14 @@ $$
 后续步骤把上一步**预测状态**作为输入，而不是每一步都替换回日志真值。默认窗口 $k=8$，损失为：
 
 $$
-\mathcal L_{\mathrm{WM}}(\omega)=
-\mathbb E_{\mathcal B}\sum_{j=1}^{k}
-\left[
-\|\hat s_j-s_j\|^2+
-(\hat r_j-r_j)^2+
-\|\hat{\bar o}_j-\bar o_j\|^2+
-\operatorname{BCE}(\hat d_j,d_j)
-\right].
+\begin{aligned}
+\mathcal L_{\mathrm{WM}}(\omega)
+&=\mathbb E_{\mathcal B}\sum_{j=1}^{k}\Bigl[
+\|\hat s_j-s_j\|^2\\
+&\quad+(\hat r_j-r_j)^2
++\|\hat{\bar o}_j-\bar o_j\|^2\\
+&\quad+\operatorname{BCE}(\hat d_j,d_j)\Bigr].
+\end{aligned}
 $$
 
 这就是论文 Equation 1 的结构，解析头的项应当省略。状态、奖励和观测使用平方误差，终止概率使用二元交叉熵。
@@ -163,7 +214,7 @@ $$
 
 ### 3.3 为什么低预测误差还不够
 
-策略不只使用模型的预测值，也使用它的 Jacobian：
+策略不只使用模型的预测值，也使用它对输入的局部导数矩阵（Jacobian）：
 
 $$
 \frac{\partial f_\omega}{\partial s},\qquad
@@ -177,9 +228,11 @@ $$
 若奖励为 $r(s')=-(s'-1)^2$，同一点的回报梯度为：
 
 $$
-\frac{\mathrm d r(f(a))}{\mathrm da}=+3.2,\qquad
-\frac{\mathrm d r(\hat f(a))}{\mathrm da}=-3.2
+\begin{aligned}
+\frac{\mathrm d r(f(a))}{\mathrm da}&=+3.2,\\
+\frac{\mathrm d r(\hat f(a))}{\mathrm da}&=-3.2
 \quad(a=0.1).
+\end{aligned}
 $$
 
 真实系统希望增大动作，替代模型却建议减小动作。这不是论文中的实测失败，而是说明：单个样本的值拟合不能约束附近的斜率。动作噪声和持续采集可补充邻域数据，但效果仍要通过控制评估检验。[后文的有限差分](#bptt-example)核对的是替代目标的求导计算，也不能代替这种检验。
@@ -190,6 +243,8 @@ $$
 
 ### 4.1 “解析梯度”是哪个目标的梯度
 
+把同一组 actor 和世界模型参数沿时间重复使用，就得到一张展开的计算图。**沿时间反向传播**（BPTT，Backpropagation Through Time）从整段预测回报出发，追踪早先动作怎样改变后续状态、后续动作与奖励。“解析梯度”指利用这张图的链式导数，程序仍可用自动微分计算，不要求手写一个闭式控制器。
+
 设暂时忽略终止、噪声和目标变化，只看模型中的一步：
 
 $$
@@ -199,15 +254,17 @@ $$
 链式法则给出：
 
 $$
+\begin{aligned}
 \frac{\mathrm d\hat s_{t+1}}{\mathrm d\theta}
-=\frac{\partial f_\omega}{\partial s}
-\frac{\mathrm d\hat s_t}{\mathrm d\theta}
-+\frac{\partial f_\omega}{\partial a}
+&=\frac{\partial f_\omega}{\partial s}
+\frac{\mathrm d\hat s_t}{\mathrm d\theta}\\
+&\quad+\frac{\partial f_\omega}{\partial a}
 \left(
 \frac{\partial\pi_\theta}{\partial s}
 \frac{\mathrm d\hat s_t}{\mathrm d\theta}
 +\frac{\partial\pi_\theta}{\partial\theta}
 \right).
+\end{aligned}
 $$
 
 真正的 actor 读取带噪观测和目标，完整计算图还要包含观测映射。这里的简化只用来展示两条路径：策略参数改变当前动作，早先动作也通过状态影响后续动作与奖励。
@@ -236,13 +293,15 @@ $$
 每次从缓冲区抽取初始状态与上下文，重新注入传感噪声，滚动 $H=32$ 步：
 
 $$
-\hat J(\theta)=\mathbb E\left[
-\sum_{t=0}^{H-1}\gamma^t\hat c_t\hat r_{t+1}
-+\gamma^H\hat c_H V_\psi(\hat s_H,g_H,\xi)
-\right].
+\begin{aligned}
+\hat J(\theta)&=\mathbb E\Bigl[
+\sum_{t=0}^{H-1}\gamma^t\hat c_t\hat r_{t+1}\\
+&\qquad+\gamma^H\hat c_H V_\psi(\hat s_H,g_H,\xi)
+\Bigr].
+\end{aligned}
 $$
 
-前半段是想象窗口内的回报，后半段是窗口之外的价值估计。这是论文 Equation 2。控制频率为 50 Hz，因此默认 32 步覆盖 0.64 s，八步模型拟合窗口覆盖 0.16 s。两个窗口承担不同任务，不需要长度相同。
+其中 $\gamma$ 是逐控制步的折扣因子，论文默认 0.99。前半段累计想象窗口内的回报，后半段由 critic $V_\psi$ 估计窗口之外的未来回报。这是论文 Equation 2。控制频率为 50 Hz，因此默认 32 步覆盖 0.64 s，八步模型拟合窗口覆盖 0.16 s。两个窗口承担不同任务，不需要长度相同。
 
 <figure class="article-figure" id="fig-supermimic-horizons">
   {{< post-image src="assets/short-horizon-gradients.webp" alt="两个训练时域：上行用记录动作自回归八步并比较预测与模拟器真值，下行用当前策略想象三十二步，将窗口内奖励和末端价值一起反向传播到策略" >}}
@@ -270,12 +329,15 @@ $$
 为了把长公式变成可核对的数字，考虑一个一维、两步的控制问题。它只保留“动作改变状态、状态产生奖励”这条路径：
 
 $$
-s_0=0,\qquad a_0=a_1=\theta,\qquad
-s_{t+1}=s_t+2a_t,\qquad
-r_{t+1}=-(s_{t+1}-1)^2.
+\begin{aligned}
+s_0&=0,\\
+a_0=a_1&=\theta,\\
+s_{t+1}&=s_t+2a_t,\\
+r_{t+1}&=-(s_{t+1}-1)^2.
+\end{aligned}
 $$
 
-模型增益 2 固定；策略的唯一参数是每步输出的 $\theta$。暂时令 $\gamma=1$，忽略终止、噪声和 critic。这组构造值用于说明链式法则，与论文 G1 实验无关。
+模型增益 2 固定；为便于手算，把 actor 简化成每步都输出同一个标量参数 $\theta$。真实 actor 会根据各步的新观测与目标输出不同动作，但各步复用同一组策略参数。暂时令 $\gamma=1$，忽略终止、噪声和 critic。这组构造值用于说明链式法则，与论文 G1 实验无关。
 
 第一步 $s_1=2\theta$，第二步 $s_2=4\theta$，于是：
 
@@ -291,7 +353,7 @@ $$
 
 当 $\theta=0.1$ 时，两步状态为 0.2、0.4，总回报为 −1，梯度为 8。做一次学习率 0.01 的梯度上升，$\theta$ 变为 0.18，回报提高到 −0.488。整个过程中模型的增益始终为 2，**改变的是策略，提供方向的是固定模型对动作的导数。**
 
-第二步状态的完整导数为 $\mathrm ds_2/\mathrm d\theta=4$：当前动作贡献 2，第一步动作留下的状态影响再贡献 2。若把传入第二步的 $s_1$ 分离出计算图，前一项状态影响就丢了；同一点算出的总梯度将变为 5.6。这说明 `detach` 会改变优化方向的计算，而非只节省存储。
+第二步状态的完整导数为 $\mathrm ds_2/\mathrm d\theta=4$：当前动作贡献 2，第一步动作留下的状态影响再贡献 2。若把传入第二步的 $s_1$ 分离出计算图，来自第一步的状态影响就丢了；同一点算出的总梯度将变为 5.6。这说明 `detach` 会改变优化方向的计算，而非只节省存储。
 
 可以用不依赖深度学习框架的有限差分核对完整梯度：
 
@@ -317,9 +379,46 @@ print(f"gradient={analytic_gradient:.1f}, return={return_two_steps(theta):.3f}")
 
 输出为 `gradient=8.0, return=-1.000`。SuperMimic 把同样的依赖关系扩展到高维身体状态、目标条件策略、软终止和末端价值，使用自动微分完成沿时间的计算。
 
+<details id="frozen-model-autograd">
+<summary>可选：用 PyTorch 查看固定模型参数时的梯度</summary>
+
+若已经安装 PyTorch，可以对同一个两步目标直接求导。用一个固定的参数 `gain` 表示动力学增益，它不接收梯度；`theta` 仍通过乘法与状态累积影响回报：
+
+<div style="break-inside: avoid">
+
+```python
+import torch
+
+gain = torch.nn.Parameter(
+    torch.tensor(2.0, dtype=torch.float64), requires_grad=False
+)
+theta = torch.tensor(0.1, dtype=torch.float64, requires_grad=True)
+state = torch.zeros((), dtype=torch.float64)
+total_return = torch.zeros((), dtype=torch.float64)
+for _ in range(2):
+    state = state + gain * theta
+    total_return = total_return - (state - 1.0).square()
+
+total_return.backward()
+print(f"actor gradient={theta.grad.item():.1f}")
+print(f"model gradient={gain.grad}")
+```
+
+输出为 `actor gradient=8.0` 和 `model gradient=None`。
+
+</div>
+
+固定模型参数与保留 actor 梯度在同一张计算图中同时成立。对完整 `nn.Module` 可以用 `requires_grad_(False)` 固定参数；若把这里的状态转移前向放进 `torch.no_grad()`，输出就不再保留 actor 所需的这条依赖。
+
+这段代码只验证标量计算图，不包含学习动力学、机器人仿真或策略优化器。原来的标准库有限差分不依赖 PyTorch，仍可单独运行。
+
+</details>
+
 ### 4.6 交互实验：轨迹相同，更新方向也可能相反 {#gradient-lab}
 
 打开[两步策略梯度实验](/labs/supermimic/)，可以调整 $\theta$、替代模型的增益与偏移，以及梯度上升的学习率。参照转移固定为 $s'=s+2a$，替代转移为 $s'=s+ba+c$；两步都输出 $a=\theta$，每步奖励仍是 $-(s'-1)^2$。模型参数 $b,c$ 在每次策略更新中固定。
+
+<div style="break-inside: avoid">
 
 依次载入三个预设。前两行模型为 $b=2,c=0$，第三行改为 $b=-2,c=0.4$；各行起始的两步状态都为 0.2、0.4：
 
@@ -328,6 +427,8 @@ print(f"gradient={analytic_gradient:.1f}, return={return_two_steps(theta):.3f}")
 | 完整 BPTT | 8 | −0.488 |
 | 状态 detach | 5.6 | −0.61472 |
 | 反向模型 | −8 | −1.768 |
+
+</div>
 
 各行都从 $\theta=0.1$、回报 −1 开始，学习率为 0.01。第一行与前面的手算一致；第二行的前向轨迹不变，但丢失了一条跨步依赖。第三行中，**两步预测与参照都相同，替代目标的解析梯度也能通过有限差分核对，却把参照系统的回报从 −1 降到 −1.768。** 同时，替代模型自己预测的更新后回报升到了 −0.488。
 
@@ -341,18 +442,36 @@ print(f"gradient={analytic_gradient:.1f}, return={return_two_steps(theta):.3f}")
 
 论文的 critic 为 $V_\psi(\hat s_t,g_t,\xi)$，读取状态、目标和物理上下文。它比部署 actor 拥有更多训练信息。部署时不需要运行这个价值网络。
 
+<div style="break-inside: avoid">
+
+可以先用一组构造的回报理解它的作用。假设两种策略参数在训练模型中产生 A、B 两条短轨迹，末端系数同为 $\gamma^H\hat c_H=0.5$。表中的窗口回报已经应用折扣与存活权重：
+
+| 短轨迹 | 窗口回报 | 末端估值 $V_\psi$ | Actor 目标 |
+| --- | ---: | ---: | ---: |
+| A | 0.50 | 0.10 | 0.55 |
+| B | 0.48 | 0.20 | 0.58 |
+{.table-readable}
+
+</div>
+
+A 的目标为 $0.50+0.5\times0.10=0.55$，B 为 $0.48+0.5\times0.20=0.58$。只看窗口内奖励会偏向 A，加入末端估值后则偏向 B。直观上，B 可以稍微牺牲当前贴合度，换一个更有利于后续恢复的末端状态。这张表只说明目标怎样使用价值估计；实际改善仍取决于 critic 是否估得可靠。
+
+在 SuperMimic 中，critic 通过末端价值项参与 actor 目标；在 [PPO 后训练管线](../rlhf-rlvr-rlcd/#reward-model-and-critic)中，value critic 通常为优势估计提供基线。网络都在预测未来回报，但接入策略更新的位置不同。
+
 critic 的目标只从想象轨迹计算，采用以下递推：[论文 Equation 3](https://arxiv.org/pdf/2610.28480v1#page=5)
 
 $$
 \begin{aligned}
 \hat R_H&=V_\psi(\hat s_H,g_H,\xi),\\
-\hat R_t&=\hat r_{t+1}+\gamma(1-\hat d_{t+1})
-\left[(1-\lambda)V_{t+1}+\lambda\hat R_{t+1}\right],\\
+\hat R_t&=\hat r_{t+1}+\gamma(1-\hat d_{t+1})\\
+&\quad\cdot\left[(1-\lambda)V_{t+1}+\lambda\hat R_{t+1}\right],\\
 \mathcal L_V(\psi)&=\mathbb E\sum_{t=0}^{H-1}(V_t-\hat R_t)^2.
 \end{aligned}
 $$
 
 其中 $V_t=V_\psi(\hat s_t,g_t,\xi)$，默认 $\lambda=0.95$。每条想象轨迹的目标算好后，在 critic 拟合期间固定。论文没有使用指数滑动平均的目标 critic 网络。
+
+可以用两个端点读懂这条递推：$\lambda=0$ 时，每个目标只向前看一个奖励，再接下一状态的估值；$\lambda=1$ 时，把窗口内的奖励继续向后展开，最后仍接窗口末端的 $V_H$。中间值混合不同长度的回报目标。它影响的是 **critic 的监督目标**，actor 仍使用前面那条“窗口回报加末端价值”的目标。
 
 “Bootstrap”在这里是指用窗口末端的价值估计补上窗口之外的回报；它不会额外生成一条真实的未来轨迹。Actor 优化时要保留 $V_\psi$ 对末端状态的导数，critic 拟合时则把算好的 $\hat R_t$ 当作固定监督目标。这两种梯度用途应分开处理。
 
@@ -439,8 +558,10 @@ python3 -B survival_credit.py --theta 0.2 --gamma 0.9
 策略分成两段：
 
 $$
-z=\operatorname{enc}_{\theta,i}(g)\in\mathbb R^{32},\qquad
-a=\operatorname{dec}_\theta(z,o_{\mathrm{history}}).
+\begin{aligned}
+z&=\operatorname{enc}_{\theta,i}(g)\in\mathbb R^{32},\\
+a&=\operatorname{dec}_\theta(z,o_{\mathrm{history}}).
+\end{aligned}
 $$
 
 32 维潜变量经 `tanh` 限幅。不同目标接口使用各自的编码器，复用同一个解码器。默认运动编码器的目标是未来参考动作；速度编码器则还读取历史观测特征。
@@ -700,9 +821,11 @@ $$
 每个接口各自从头训练一轮，100,000 次迭代，速度接口和运动跟踪接口各占一半环境与想象 batch。RL 接口的命令来源一半为参考速度，一半为随机命令；随机范围为：
 
 $$
-v_x\in[-1.5,2]\ \mathrm{m/s},\quad
-v_y\in[-1.32,1.32]\ \mathrm{m/s},\quad
-\omega_z\in[-3.35,3.35]\ \mathrm{rad/s}.
+\begin{aligned}
+v_x&\in[-1.5,2]\ \mathrm{m/s},\\
+v_y&\in[-1.32,1.32]\ \mathrm{m/s},\\
+\omega_z&\in[-3.35,3.35]\ \mathrm{rad/s}.
+\end{aligned}
 $$
 
 随机命令还以 0.1 概率置零，形成站立目标。使用参考命令的滚动额外带权重 0.1 的潜变量对齐损失，将速度 latent 拉向运动编码器的 latent。
@@ -732,15 +855,7 @@ $$
 
 ## 13. 实现时先核对哪些参数 {#implementation}
 
-论文的附录给出组件与训练流程；完整复现还需要机器人资产、动作预处理和物理配置。先按 [Algorithm A.1](https://arxiv.org/pdf/2610.28480v1#page=15) 与 [Equations 1–3](https://arxiv.org/pdf/2610.28480v1#page=5) 检查每轮的更新对象：
-
-| 阶段 | 更新的参数 | 需要保留或固定的依赖 |
-| --- | --- | --- |
-| 模拟器采集 | 不更新网络 | 记录实际执行的带噪动作及转移 |
-| 模型拟合 | 世界模型 $\omega$ | 用日志动作自回归；真值进入监督损失 |
-| Actor 改进 | 策略 $\theta$ | 模型、critic 权重固定，保留它们对输入的导数 |
-| Critic 拟合 | 价值网络 $\psi$ | 想象样本与算好的 $\hat R_t$ 作为固定训练数据 |
-{.table-readable}
+论文的附录给出组件与训练流程；完整复现还需要机器人资产、动作预处理和物理配置。[前面的阶段表](#phase-parameter-updates)可与 [Algorithm A.1](https://arxiv.org/pdf/2610.28480v1#page=15)、[Equations 1–3](https://arxiv.org/pdf/2610.28480v1#page=5)逐项对应：采集改变回放数据，模型拟合改变 $\omega$，actor 改进改变 $\theta$，critic 拟合改变 $\psi$。应先让数据与更新对象对应，再核对各阶段的 batch 和训练次数。
 
 下游速度接口还多一层限制：其任务奖励只更新速度编码器，经过共享解码器的输入导数传递，解码器权重继续由运动跟踪目标更新。该限制与“所有参数一起最大化所有任务回报”有不同的优化含义。默认训练参数如下：
 
@@ -800,9 +915,12 @@ SuperMimic 展示了一条可部署的人形控制训练路线：用普通刚体
 17. **交互实验中三种预设的初始轨迹相同，为什么更新后回报不同？**
 18. **Critic 拟合时，需要继续对生成监督目标的 actor 和世界模型求导吗？**
 19. **切断存活权重或末端价值输入的梯度，会改变前向回报吗？**
+20. **参考运动中的关节角就是当前 actor 的正确输出标签吗？**
+21. **真机每个 20 ms 控制周期都要重新做 32 步 BPTT 或 MPC 搜索吗？**
+22. **Critic 的 $\lambda$ 改变的是哪一个目标？**
 
 <details id="supermimic-self-check-answers">
-<summary>展开 19 题答案</summary>
+<summary>展开 22 题答案</summary>
 
 1. 不需要；模拟器提供转移数据，梯度通过学到的世界模型。
 2. 不是；模型与策略交替更新，只在单次策略优化中固定模型参数。
@@ -823,6 +941,9 @@ SuperMimic 展示了一条可部署的人形控制训练路线：用普通刚体
 17. 前向值相同不约束反向依赖与动作导数；detach 丢失跨步路径，反向增益模型还会给出相反方向。策略按不同梯度更新后，参照执行的回报也随之不同。
 18. 不需要；此阶段用固定的想象样本和回报目标拟合价值网络。保留末端价值对状态导数，是另一个阶段中 actor 改进的需要。
 19. 本节的 detach 配置保持前向回报，改变的是反向依赖。完整梯度约为 4.505；切断存活或末端价值输入后分别约为 8.674、2.836。固定函数系数仍可保留这些输入梯度。
+20. 不是；参考定义身体运动目标，actor 根据实际观测输出控制设定值。参考相同但身体状态不同，纠偏动作也可以不同，训练用执行后的跟踪回报改进策略。
+21. 不需要；真机运行已训练的 actor 与低层控制器。32 步、0.64 s 是训练中的预测窗口，不是每个部署周期重新优化一遍的计划。
+22. 它混合不同长度的回报，形成 critic 的监督目标；actor 仍优化窗口内回报加末端价值。$\lambda=0$ 是一步奖励加下一状态估值，$\lambda=1$ 展开到窗口末端再接 $V_H$。
 
 </details>
 

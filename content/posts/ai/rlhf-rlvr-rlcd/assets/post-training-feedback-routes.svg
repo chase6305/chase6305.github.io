@@ -1,29 +1,85 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
-  <title id="title">三条后训练路线的反馈来源与闭环</title>
-  <desc id="desc">RLHF 使用人工比较回答；RLVR 使用可执行验证器；RLCD 使用正负对比提示生成的合成偏好。三条路线都将评分信号送入策略优化，并由独立评测检验。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 940" role="img" aria-labelledby="title desc">
+  <title id="title">三种反馈来源与两类训练数据</title>
+  <desc id="desc">RLHF 的人工比较与 RLCD 的对比生成提供偏好对，可以先拟合奖励模型再在线更新，也可以直接用于 DPO。RLVR 的验证分数可直接用于在线 PPO 或 GRPO。原始 RLCD 使用偏好模型和 PPO。策略更新后，用独立评测检验结果。</desc>
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L9,4 Z" fill="#315d93"/></marker>
-    <style>text{font-family:system-ui,-apple-system,"Noto Sans CJK SC",sans-serif;fill:#17243c}.title{font-size:32px;font-weight:700}.head{font-size:25px;font-weight:700}.body{font-size:19px}.small{font-size:17px}.box{stroke:#8ba8ca;stroke-width:2}.arrow{fill:none;stroke:#315d93;stroke-width:3;marker-end:url(#arrow)}</style>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L9,4 Z" fill="#315d93"/></marker>
+    <style>
+      text{font-family:system-ui,-apple-system,"Noto Sans CJK SC",sans-serif;fill:#17243c}
+      .title{font-size:32px;font-weight:700}.head{font-size:27px;font-weight:700}
+      .body{font-size:24px}.small{font-size:22px}.note{font-size:19px}
+      .box{stroke:#8ba8ca;stroke-width:1.6}.arrow{fill:none;stroke:#315d93;stroke-width:2.8;marker-end:url(#arrow)}
+      .line{fill:none;stroke:#315d93;stroke-width:2.8}
+    </style>
   </defs>
-  <rect width="1200" height="760" rx="24" fill="#fffef9"/>
-  <text x="48" y="58" class="title">后训练的关键差异：谁给出“这条回答更好”的信号？</text>
-  <text x="48" y="91" class="body">同一策略可配不同优化器；这里按反馈的来源、可扩展性与误差模式比较。</text>
-  <rect x="45" y="130" width="335" height="300" rx="20" class="box" fill="#eaf3ff"/>
-  <text x="70" y="172" class="head">RLHF</text><text x="70" y="202" class="body">人类对同题候选排序／打分</text>
-  <rect x="70" y="230" width="285" height="76" rx="12" fill="#fff" stroke="#a4b9d3"/><text x="92" y="261" class="body">偏好对 → 奖励模型</text><text x="92" y="287" class="small">覆盖细腻的主观价值</text>
-  <text x="70" y="347" class="body">优势：表达“有帮助、得体、安全”</text><text x="70" y="380" class="body">风险：标注成本、偏好偏差、</text><text x="70" y="406" class="body">奖励投机</text>
-  <rect x="432" y="130" width="335" height="300" rx="20" class="box" fill="#ecf8ed"/>
-  <text x="457" y="172" class="head">RLVR</text><text x="457" y="202" class="body">程序或规则验证结果</text>
-  <rect x="457" y="230" width="285" height="76" rx="12" fill="#fff" stroke="#a4b9d3"/><text x="479" y="261" class="body">答案／测试 → 可验证奖励</text><text x="479" y="287" class="small">可自动重复检查</text>
-  <text x="457" y="347" class="body">优势：规模大、标准清楚</text><text x="457" y="380" class="body">风险：只奖励可判定目标、</text><text x="457" y="406" class="body">验证器漏洞与稀疏信号</text>
-  <rect x="819" y="130" width="335" height="300" rx="20" class="box" fill="#fff1df"/>
-  <text x="844" y="172" class="head">RLCD</text><text x="844" y="202" class="body">正／负对比提示生成候选</text>
-  <rect x="844" y="230" width="285" height="76" rx="12" fill="#fff" stroke="#a4b9d3"/><text x="866" y="261" class="body">合成偏好对 → 偏好模型</text><text x="866" y="287" class="small">无需逐条人工标注</text>
-  <text x="844" y="347" class="body">优势：用原则扩充反馈</text><text x="844" y="380" class="body">风险：提示诱导偏差、</text><text x="844" y="406" class="body">教师模型的盲点</text>
-  <path d="M212,438 L445,522" class="arrow"/><path d="M600,438 L600,522" class="arrow"/><path d="M987,438 L755,522" class="arrow"/>
-  <rect x="365" y="526" width="470" height="104" rx="18" class="box" fill="#eee9fa"/>
-  <text x="405" y="568" class="head">采样 → 评分 → 策略更新</text><text x="405" y="601" class="body">PPO、GRPO、DPO 等是“怎样更新”，不是反馈来源</text>
-  <path d="M600,636 L600,683" class="arrow"/>
-  <rect x="365" y="688" width="470" height="48" rx="16" class="box" fill="#f2f5f8"/>
-  <text x="418" y="721" class="body">独立评测：能力、偏好、安全、校准与成本</text>
+  <rect width="1200" height="940" rx="24" fill="#fff"/>
+  <text x="48" y="55" class="title">先得到反馈数据，再选择训练目标</text>
+  <text x="48" y="94" class="small">这里比较两类数据：回答偏好对，以及可验证的数值分数。</text>
+
+  <g id="human-feedback">
+    <rect x="48" y="130" width="330" height="170" rx="18" class="box" fill="#eaf3ff"/>
+    <text x="73" y="178" class="head">RLHF</text>
+    <text x="73" y="220" class="body">人工比较同题回答</text>
+    <text x="73" y="263" class="small">例如：A 优于 C</text>
+    <path d="M213,300 V355" class="arrow"/>
+  </g>
+  <g id="contrastive-feedback">
+    <rect x="438" y="130" width="330" height="170" rx="18" class="box" fill="#fff1df"/>
+    <text x="463" y="178" class="head">RLCD</text>
+    <text x="463" y="220" class="body">正负提示分别生成回答</text>
+    <text x="463" y="263" class="small">按生成分支标记优劣</text>
+    <path d="M603,300 V355" class="arrow"/>
+  </g>
+  <g id="verifiable-feedback">
+    <rect x="822" y="130" width="330" height="170" rx="18" class="box" fill="#ecf8ed"/>
+    <text x="847" y="178" class="head">RLVR</text>
+    <text x="847" y="220" class="body">运行测试或检查器</text>
+    <text x="847" y="263" class="small">例如：通过或失败</text>
+    <path d="M987,300 V355" class="arrow"/>
+  </g>
+
+  <g id="preference-data">
+    <rect x="48" y="355" width="720" height="85" rx="16" class="box" fill="#f5f3fb"/>
+    <text x="408" y="391" text-anchor="middle" class="head">偏好对</text>
+    <text x="408" y="424" text-anchor="middle" class="small">同一请求下的优选与劣选</text>
+    <path d="M408,440 V476 H213" class="line"/>
+    <path d="M408,476 H603" class="line"/>
+    <path d="M213,476 V520" class="arrow"/>
+    <path d="M603,476 V520" class="arrow"/>
+  </g>
+  <g id="verified-scores">
+    <rect x="822" y="355" width="330" height="85" rx="16" class="box" fill="#f1f8f2"/>
+    <text x="987" y="391" text-anchor="middle" class="head">验证分数</text>
+    <text x="987" y="424" text-anchor="middle" class="small">例如 r = 1 或 0</text>
+    <path d="M987,440 V520" class="arrow"/>
+  </g>
+
+  <g id="reward-model-route">
+    <rect x="48" y="520" width="330" height="124" rx="18" class="box" fill="#eef3ff"/>
+    <text x="213" y="556" text-anchor="middle" class="body">先拟合奖励模型</text>
+    <text x="213" y="589" text-anchor="middle" class="small">再给新回答评分</text>
+    <text x="213" y="622" text-anchor="middle" class="small">PPO / GRPO</text>
+    <path d="M213,644 V695" class="arrow"/>
+  </g>
+  <g id="direct-preference-route">
+    <rect x="438" y="520" width="330" height="124" rx="18" class="box" fill="#fff5e8"/>
+    <text x="603" y="556" text-anchor="middle" class="body">直接偏好优化</text>
+    <text x="603" y="589" text-anchor="middle" class="small">用回答对计算策略损失</text>
+    <text x="603" y="622" text-anchor="middle" class="small">DPO 等</text>
+    <path d="M603,644 V695" class="arrow"/>
+  </g>
+  <g id="verified-reward-route">
+    <rect x="822" y="520" width="330" height="124" rx="18" class="box" fill="#ecf8ed"/>
+    <text x="987" y="556" text-anchor="middle" class="body">直接使用验证分数</text>
+    <text x="987" y="589" text-anchor="middle" class="small">新回答 → 验证 → 更新</text>
+    <text x="987" y="622" text-anchor="middle" class="small">PPO / GRPO</text>
+    <path d="M987,644 V695" class="arrow"/>
+  </g>
+
+  <rect x="48" y="695" width="1104" height="76" rx="18" class="box" fill="#eee9fa"/>
+  <text x="600" y="728" text-anchor="middle" class="head">更新策略参数 θ</text>
+  <text x="600" y="757" text-anchor="middle" class="small">改变后续请求下的回答分布</text>
+  <path d="M600,771 V824" class="arrow"/>
+  <rect x="300" y="824" width="600" height="56" rx="16" class="box" fill="#f2f5f8"/>
+  <text x="600" y="860" text-anchor="middle" class="body">独立评测：正确性、偏好与成本</text>
+  <text x="600" y="918" text-anchor="middle" class="note">原始 RLCD：合成偏好 → 偏好模型 → PPO</text>
 </svg>

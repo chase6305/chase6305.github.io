@@ -1,0 +1,299 @@
+{
+  "repository": "/home/ubuntu/workspace/chase/chase6305.github.io",
+  "head_revision": "0d6f32a910b912d8d9f1d6af4b25a0a829803664",
+  "uncommitted_working_tree": true,
+  "fresh_public_directory": "/tmp/chase-jev-second-hour-20261103-z06l7rke/production-v4",
+  "loopback_base": "http://127.0.0.1:13689",
+  "private_cdp_port": 9244,
+  "application_sources": [
+    {
+      "path": "content/posts/ai/jev-decision-layer/index.md",
+      "bytes": 96108,
+      "sha256": "196c803eb8d854ca3049cf81964e52bd0313fb270cd66a1078bd067f05c5c9af"
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/onejev_examples.py",
+      "bytes": 8296,
+      "sha256": "58fb482b861b7490e2cdd7da3a9cb04343b90b2f20509b7c8ffadf9ac07f67a8"
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/onejev-readme.txt",
+      "bytes": 3044,
+      "sha256": "1a3dbfce854f9b46e008ad747e3482f8624488b297b8e9039c91c585d28d9567"
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/assets/onejev-response-example.json",
+      "bytes": 769,
+      "sha256": "2dc4b4590752a861a1e07ab3aaa94d6a214ad0ea65bb55ab46f509bc23281ba4"
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/onejev-examples.zip",
+      "bytes": 18023,
+      "sha256": "f4437ccdbb9a009253905618dd34020b491de74104118c4aa4c2bbf8231b43f3"
+    },
+    {
+      "path": "scripts/test_onejev_examples.py",
+      "bytes": 11087,
+      "sha256": "08b5f178e2576b4cd65a6d3295d84624b213b8c3b05ae583270fb108f20dbf73"
+    },
+    {
+      "path": "scripts/package_onejev_examples.py",
+      "bytes": 3391,
+      "sha256": "379e7861d2ca6a767609986cba81ed043d3c6e3146d38854dac240aa0f705c42"
+    },
+    {
+      "path": "docs/blog-editorial-review.json",
+      "bytes": 131041,
+      "sha256": "c794292dbd138ca070bb64ee7a1f6eacd0b79bbbb10ff7ae9d8c68def41248ce"
+    }
+  ],
+  "rendered_article": {
+    "path": "/tmp/chase-jev-second-hour-20261103-z06l7rke/production-v4/posts/ai/jev-decision-layer/index.html",
+    "bytes": 435113,
+    "sha256": "5da254a037b77b7887d784b3981a45c19ed9e7f7ab5f85e9227df0bf9134dee9"
+  },
+  "native_pdf_html_sources_match": true,
+  "review_artifacts": [
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/README.md",
+      "bytes": 6412,
+      "sha256": "7c0f05758ac18987ca2f1c3ac4ea43fa0f740d0f6fe1ee0b77fdac3d7fae16d4"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/article-changes.patch",
+      "bytes": 17240,
+      "sha256": "1a9d356e39a1ac851a8bc6eb9d51448a45e663be7410c3a4e765cfc5dbbd4f34"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/blog-filter.json",
+      "bytes": 186,
+      "sha256": "ae993437ed52280a67ad6aca91a8a0d7418029eb872b878f6c4aba2e0cf6ff2b"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/browser-runs.json",
+      "bytes": 4112,
+      "sha256": "5cb8fbd3025f40a8859ed4bea6fb9b08ba35ba98d4323730a5807e5523a0e0f9"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/capture_response.cjs",
+      "bytes": 2233,
+      "sha256": "ddac29d39ba71475c685493a5e37a3dca2bdbe4ed2cdcdbad42b5f2d1a102487"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/captures.json",
+      "bytes": 3748,
+      "sha256": "c9f2e3ba3db928b149ff49a50aeec714331327fa0855b94896ea359eae53c661"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/check_figures.cjs",
+      "bytes": 3507,
+      "sha256": "f7d526dabb4574a9f4b9ed3894f7e23465bd17d04f669a767fb058b5ff8914d1"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/check_images.cjs",
+      "bytes": 5839,
+      "sha256": "b0962e4071df55ff35436d16d404fa30146d9357a3448faf2785409dab09837d"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/check_keyboard.cjs",
+      "bytes": 7003,
+      "sha256": "0f9ade95f387d2eec311a07cc38353d9692034eb0b97e3dceaedf6d80b70c604"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/check_print.cjs",
+      "bytes": 8283,
+      "sha256": "f488524a00acbe939eceab2ef1a1cd3381a4bb6d9acd094573c709fc8f85e1ac"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/check_reading.cjs",
+      "bytes": 6019,
+      "sha256": "22f0f7bfa021bb242bec1d2e74d065dd013ad7b43735222fe244ae26916e49d3"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/check_search.cjs",
+      "bytes": 2081,
+      "sha256": "db4a6948d209f366b54eb39085d7cc0a086aba28e8cd5608fcf59ac7c9a69699"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/check_semantics.cjs",
+      "bytes": 3440,
+      "sha256": "e1d06ffe1d3fd0aae2a66adf4a625b5b1ca0d0c5d325dc39e08004c21bce193f"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/code-reading.json.gz",
+      "bytes": 1067,
+      "sha256": "137c626c44be5b2851271d1f1f4afa56a4199393c85e124f25d097d928f7bb9e"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/export_article.cjs",
+      "bytes": 5410,
+      "sha256": "a9988e8514e7809e66efd282067b0b12372ef55af7ed40e331ba4aa8c993273e"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/figures.json.gz",
+      "bytes": 1290,
+      "sha256": "7d3d703c9f13ad7c2b56884276edf68e9d62e1a4792cec45418dbdf91db6d555"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/flide-help.txt",
+      "bytes": 3121,
+      "sha256": "931eeed2c872e97959cc7d22a1644ca988524d1d63413516c7e4eea18771bdaa"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/gguf-availability.json",
+      "bytes": 505,
+      "sha256": "a4cfee832262747450a8a765eb325a1d23b5bd1e1b138c45c3aa13f8a7c0eba6"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/hugo.log",
+      "bytes": 588,
+      "sha256": "9225b683729f9491c9da68f1a92543b9b5b9bc5586782a15502f4127c5d83458"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/images.json.gz",
+      "bytes": 346,
+      "sha256": "921ab9ef24cf85e34cf3364a3f81043dfc024cf1a4e0488c1b966efceae060a9"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/keyboard.json.gz",
+      "bytes": 4188,
+      "sha256": "308a16b90753deec95e8101fc6d148cb57023ac97680bd2bfadd097c24a720f5"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/large-print.json.gz",
+      "bytes": 395,
+      "sha256": "9ff45e30d7f0d173a9a84e578ee0623c7299530a1b625d96f85ae21e779a2877"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/native-exports.json",
+      "bytes": 4629,
+      "sha256": "a32e09d0dffe5e3621b12c1549c1e271344c440cdb235ce91995ed481e475f2b"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/new-task-paths.json",
+      "bytes": 3958,
+      "sha256": "9cd0adb0dfe695f66d5b74c1ea66c221bbe530968cc033bd283c093f4a2c1054"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/onejev-tests.log",
+      "bytes": 106,
+      "sha256": "9d79b45e15485e05b1bd0ce5726d748418ec395f60f8af8c73d4190a64c451b2"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/package-check.log",
+      "bytes": 44,
+      "sha256": "99d8b2bbebd92b7478486d71c7f940dba256c436a9400630b3e53c372a0de680"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/plan-only-cpu.log",
+      "bytes": 3239,
+      "sha256": "f360d9a9621083a629587f37d695c34be5de171cd11a3c1924f0b94f9ca23cbf"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/preservation.json",
+      "bytes": 1062,
+      "sha256": "eddfe750aed2acf33c131f3a5fc1a521002efe9f7f8776fd02a49e76281a411e"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/print.json.gz",
+      "bytes": 396,
+      "sha256": "449de0cbb965f3df39b13481f249ebd1c0cc57a79ebc0a0786fcacbbb6ee7805"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/qev-help.txt",
+      "bytes": 3164,
+      "sha256": "0d8b779f5fc3383c67e5f8004004bf16cf210c1a6da7738a54b315c89196633b"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/reading.json.gz",
+      "bytes": 1565,
+      "sha256": "0d2e8b0b36ff678b532b02b73bf9533a9e833ce87afbe061fd617526c0a68d58"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/search.json.gz",
+      "bytes": 1193,
+      "sha256": "449fff79a07fe89d95add217cb6f6ec04373523e181d849194b79fd6a3778614"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/semantics.json.gz",
+      "bytes": 2151,
+      "sha256": "49275562b5a22e1fc0419c7b7003ba656dcb1b113ef16c1080499b170b655f72"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/task-scope.json",
+      "bytes": 7598,
+      "sha256": "0ef25a2b57ee81b986bd86152250f8070ac201d14b9b9fbfca81a8374c2a48d0"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/toc-check.log",
+      "bytes": 205,
+      "sha256": "9788a6a7f43db9a1bed9872fc5547f49a82900a2c7c9b40b745b2124c15ef212"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/tool-versions.json",
+      "bytes": 584,
+      "sha256": "2b1537da0111b2e9d0ac0968e9fd48e8d7d4f09bb53b10d9fdf8a6adf8c6b35f"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/training-plan-probe.json",
+      "bytes": 2505,
+      "sha256": "74fb1594c492963ea45c7606da04fac228a80e45ce56019e9abf00a1c857d5ef"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/training-target-probe.json",
+      "bytes": 8688,
+      "sha256": "f0d3ff2936e5ab01d816f82b162949c241d958eaf82a45367698f437080ebd92"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/upstream-response-probe.json",
+      "bytes": 1312,
+      "sha256": "c9be8adb63896bc6540a5b4503de7785a1d109cba07e5210c437d796a54c9d27"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/validation.json",
+      "bytes": 554,
+      "sha256": "1a9de5dd6ea1509684e99dc194b50f958c4e4267006f55b1c4353ec70bd3ef43"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/visual/accepted-a4-page-11.png",
+      "bytes": 150253,
+      "sha256": "33ceb31a906261ff3dbd832ad443bc142058a8324e51a3506815e1250d6c91b9"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/visual/accepted-a4-page-12.png",
+      "bytes": 207165,
+      "sha256": "1f86884499c456ad3a4f626f501c38bbdf82cd357c3fe7f0c1b1ec4f6414a33f"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/visual/accepted-a4-page-16.png",
+      "bytes": 233991,
+      "sha256": "e50b6601eb45b4344c5d4961c15778915eb78f132d462289be585d538292440f"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/visual/onejev-response-example-320-100-light.png",
+      "bytes": 81960,
+      "sha256": "6ac356b51e43517ed6de4f11546872bb0cad6b6e2e5b6b6d88c8d9cac14fe261"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/visual/onejev-startup-troubleshooting-320-200-dark.png",
+      "bytes": 70031,
+      "sha256": "e7281119cd5daa55f2742adc9006c11fa686ca7471cb99168f566dd9ee084a3f"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/visual/response-table-left-320-100-light.png",
+      "bytes": 77161,
+      "sha256": "7da32c14c62b817bd08c4aa5fe278b35ac1431c05b6dd2a255c3dbad066ed950"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/visual/response-table-right-320-200-dark.png",
+      "bytes": 76605,
+      "sha256": "ba80728b714fd677d28971e9c535a570b63e461c751d8a83c28133e4a3036bb6"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-jev-onejev-response/visual-review.json",
+      "bytes": 1225,
+      "sha256": "646b1556af6ebb4636e64b4c27fca2f6468d18c2eb225a246adca2d3df5928b2"
+    }
+  ],
+  "scope": "No shared runtime, existing images, workflows, theme submodules, publication date or draft state changed."
+}

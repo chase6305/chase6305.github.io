@@ -1,0 +1,60 @@
+{
+  "scope": "Token comparison ignores only whitespace, aligned layout, delimiter sizing and explicit multiplication dots. No numeric or symbolic term is discarded.",
+  "articles": [
+    {
+      "article": "content/posts/ai/supermimic/index.md",
+      "layout_only_equations": [
+        {
+          "before": "\\mathcal L_{\\mathrm{WM}}(\\omega)=\n\\mathbb E_{\\mathcal B}\\sum_{j=1}^{k}\n\\left[\n\\|\\hat s_j-s_j\\|^2+\n(\\hat r_j-r_j)^2+\n\\|\\hat{\\bar o}_j-\\bar o_j\\|^2+\n\\operatorname{BCE}(\\hat d_j,d_j)\n\\right].",
+          "after": "\\begin{aligned}\n\\mathcal L_{\\mathrm{WM}}(\\omega)\n&=\\mathbb E_{\\mathcal B}\\sum_{j=1}^{k}\\Bigl[\n\\|\\hat s_j-s_j\\|^2\\\\\n&\\quad+(\\hat r_j-r_j)^2\n+\\|\\hat{\\bar o}_j-\\bar o_j\\|^2\\\\\n&\\quad+\\operatorname{BCE}(\\hat d_j,d_j)\\Bigr].\n\\end{aligned}",
+          "mathematical_tokens_preserved": true
+        },
+        {
+          "before": "\\frac{\\mathrm d r(f(a))}{\\mathrm da}=+3.2,\\qquad\n\\frac{\\mathrm d r(\\hat f(a))}{\\mathrm da}=-3.2\n\\quad(a=0.1).",
+          "after": "\\begin{aligned}\n\\frac{\\mathrm d r(f(a))}{\\mathrm da}&=+3.2,\\\\\n\\frac{\\mathrm d r(\\hat f(a))}{\\mathrm da}&=-3.2\n\\quad(a=0.1).\n\\end{aligned}",
+          "mathematical_tokens_preserved": true
+        },
+        {
+          "before": "\\frac{\\mathrm d\\hat s_{t+1}}{\\mathrm d\\theta}\n=\\frac{\\partial f_\\omega}{\\partial s}\n\\frac{\\mathrm d\\hat s_t}{\\mathrm d\\theta}\n+\\frac{\\partial f_\\omega}{\\partial a}\n\\left(\n\\frac{\\partial\\pi_\\theta}{\\partial s}\n\\frac{\\mathrm d\\hat s_t}{\\mathrm d\\theta}\n+\\frac{\\partial\\pi_\\theta}{\\partial\\theta}\n\\right).",
+          "after": "\\begin{aligned}\n\\frac{\\mathrm d\\hat s_{t+1}}{\\mathrm d\\theta}\n&=\\frac{\\partial f_\\omega}{\\partial s}\n\\frac{\\mathrm d\\hat s_t}{\\mathrm d\\theta}\\\\\n&\\quad+\\frac{\\partial f_\\omega}{\\partial a}\n\\left(\n\\frac{\\partial\\pi_\\theta}{\\partial s}\n\\frac{\\mathrm d\\hat s_t}{\\mathrm d\\theta}\n+\\frac{\\partial\\pi_\\theta}{\\partial\\theta}\n\\right).\n\\end{aligned}",
+          "mathematical_tokens_preserved": true
+        },
+        {
+          "before": "\\hat J(\\theta)=\\mathbb E\\left[\n\\sum_{t=0}^{H-1}\\gamma^t\\hat c_t\\hat r_{t+1}\n+\\gamma^H\\hat c_H V_\\psi(\\hat s_H,g_H,\\xi)\n\\right].",
+          "after": "\\begin{aligned}\n\\hat J(\\theta)&=\\mathbb E\\Bigl[\n\\sum_{t=0}^{H-1}\\gamma^t\\hat c_t\\hat r_{t+1}\\\\\n&\\qquad+\\gamma^H\\hat c_H V_\\psi(\\hat s_H,g_H,\\xi)\n\\Bigr].\n\\end{aligned}",
+          "mathematical_tokens_preserved": true
+        },
+        {
+          "before": "s_0=0,\\qquad a_0=a_1=\\theta,\\qquad\ns_{t+1}=s_t+2a_t,\\qquad\nr_{t+1}=-(s_{t+1}-1)^2.",
+          "after": "\\begin{aligned}\ns_0&=0,\\\\\na_0=a_1&=\\theta,\\\\\ns_{t+1}&=s_t+2a_t,\\\\\nr_{t+1}&=-(s_{t+1}-1)^2.\n\\end{aligned}",
+          "mathematical_tokens_preserved": true
+        },
+        {
+          "before": "\\begin{aligned}\n\\hat R_H&=V_\\psi(\\hat s_H,g_H,\\xi),\\\\\n\\hat R_t&=\\hat r_{t+1}+\\gamma(1-\\hat d_{t+1})\n\\left[(1-\\lambda)V_{t+1}+\\lambda\\hat R_{t+1}\\right],\\\\\n\\mathcal L_V(\\psi)&=\\mathbb E\\sum_{t=0}^{H-1}(V_t-\\hat R_t)^2.\n\\end{aligned}",
+          "after": "\\begin{aligned}\n\\hat R_H&=V_\\psi(\\hat s_H,g_H,\\xi),\\\\\n\\hat R_t&=\\hat r_{t+1}+\\gamma(1-\\hat d_{t+1})\\\\\n&\\quad\\cdot\\left[(1-\\lambda)V_{t+1}+\\lambda\\hat R_{t+1}\\right],\\\\\n\\mathcal L_V(\\psi)&=\\mathbb E\\sum_{t=0}^{H-1}(V_t-\\hat R_t)^2.\n\\end{aligned}",
+          "mathematical_tokens_preserved": true
+        },
+        {
+          "before": "z=\\operatorname{enc}_{\\theta,i}(g)\\in\\mathbb R^{32},\\qquad\na=\\operatorname{dec}_\\theta(z,o_{\\mathrm{history}}).",
+          "after": "\\begin{aligned}\nz&=\\operatorname{enc}_{\\theta,i}(g)\\in\\mathbb R^{32},\\\\\na&=\\operatorname{dec}_\\theta(z,o_{\\mathrm{history}}).\n\\end{aligned}",
+          "mathematical_tokens_preserved": true
+        },
+        {
+          "before": "v_x\\in[-1.5,2]\\ \\mathrm{m/s},\\quad\nv_y\\in[-1.32,1.32]\\ \\mathrm{m/s},\\quad\n\\omega_z\\in[-3.35,3.35]\\ \\mathrm{rad/s}.",
+          "after": "\\begin{aligned}\nv_x&\\in[-1.5,2]\\ \\mathrm{m/s},\\\\\nv_y&\\in[-1.32,1.32]\\ \\mathrm{m/s},\\\\\n\\omega_z&\\in[-3.35,3.35]\\ \\mathrm{rad/s}.\n\\end{aligned}",
+          "mathematical_tokens_preserved": true
+        }
+      ]
+    },
+    {
+      "article": "content/posts/ai/rlhf-rlvr-rlcd/index.md",
+      "layout_only_equations": [
+        {
+          "before": "x \\xrightarrow[\\text{违反原则}]{c^-} y^- ,\\qquad\nx \\xrightarrow[\\text{遵循原则}]{c^+} y^+\n\\quad\\Rightarrow\\quad (x,y^+\\succ y^-).",
+          "after": "\\begin{aligned}\nx&\\xrightarrow[\\text{违反原则}]{c^-}y^-,\\\\\nx&\\xrightarrow[\\text{遵循原则}]{c^+}y^+\\\\\n&\\Rightarrow (x,y^+\\succ y^-).\n\\end{aligned}",
+          "mathematical_tokens_preserved": true
+        }
+      ]
+    }
+  ]
+}

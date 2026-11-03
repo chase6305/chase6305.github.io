@@ -1,0 +1,29 @@
+{
+  "captured_at_utc": "2026-11-02T06:27:02.255220+00:00",
+  "sources": [
+    {
+      "name": "rlcd-v3",
+      "url": "https://arxiv.org/pdf/2307.12950v3",
+      "bytes": 873642,
+      "sha256": "3723ddbabbf34f84eece2dc97fd3bab6609889360a89d09a7a9561f8cfc0e46a"
+    },
+    {
+      "name": "instructgpt-v1",
+      "url": "https://arxiv.org/pdf/2203.02155v1",
+      "bytes": 1797405,
+      "sha256": "c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98"
+    },
+    {
+      "name": "deepseek-r1-v1",
+      "url": "https://arxiv.org/pdf/2501.12948v1",
+      "bytes": 1312189,
+      "sha256": "52d8ca3ac93e88cef9944e1fd03b0e04aec5954495a8250fb2fadf8fa20a4dad"
+    },
+    {
+      "name": "supermimic",
+      "url": "https://arxiv.org/pdf/2610.28480v1",
+      "local_supplied_path": "/home/ubuntu/Documents/SuperMimic.pdf",
+      "sha256": "fe213017ab062f4acc3965da89abd3c29969163e144a2628a662b8ce46691009"
+    }
+  ]
+}

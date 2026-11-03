@@ -1,0 +1,116 @@
+{
+  "captures": [
+    {
+      "id": "onejev-response-example",
+      "width": 320,
+      "size": 100,
+      "theme": "light",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/onejev-response-example-320-100-light.png"
+    },
+    {
+      "id": "onejev-startup-troubleshooting",
+      "width": 320,
+      "size": 100,
+      "theme": "light",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/onejev-startup-troubleshooting-320-100-light.png"
+    },
+    {
+      "id": "onejev-data-and-evaluation",
+      "width": 320,
+      "size": 100,
+      "theme": "light",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/onejev-data-and-evaluation-320-100-light.png"
+    },
+    {
+      "id": "response-table",
+      "side": "left",
+      "width": 320,
+      "size": 100,
+      "theme": "light",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/response-table-left-320-100-light.png"
+    },
+    {
+      "id": "response-table",
+      "side": "right",
+      "width": 320,
+      "size": 100,
+      "theme": "light",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/response-table-right-320-100-light.png"
+    },
+    {
+      "id": "onejev-response-example",
+      "width": 320,
+      "size": 200,
+      "theme": "dark",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/onejev-response-example-320-200-dark.png"
+    },
+    {
+      "id": "onejev-startup-troubleshooting",
+      "width": 320,
+      "size": 200,
+      "theme": "dark",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/onejev-startup-troubleshooting-320-200-dark.png"
+    },
+    {
+      "id": "onejev-data-and-evaluation",
+      "width": 320,
+      "size": 200,
+      "theme": "dark",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/onejev-data-and-evaluation-320-200-dark.png"
+    },
+    {
+      "id": "response-table",
+      "side": "left",
+      "width": 320,
+      "size": 200,
+      "theme": "dark",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/response-table-left-320-200-dark.png"
+    },
+    {
+      "id": "response-table",
+      "side": "right",
+      "width": 320,
+      "size": 200,
+      "theme": "dark",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/response-table-right-320-200-dark.png"
+    },
+    {
+      "id": "onejev-response-example",
+      "width": 1440,
+      "size": 100,
+      "theme": "light",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/onejev-response-example-1440-100-light.png"
+    },
+    {
+      "id": "onejev-startup-troubleshooting",
+      "width": 1440,
+      "size": 100,
+      "theme": "light",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/onejev-startup-troubleshooting-1440-100-light.png"
+    },
+    {
+      "id": "onejev-data-and-evaluation",
+      "width": 1440,
+      "size": 100,
+      "theme": "light",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/onejev-data-and-evaluation-1440-100-light.png"
+    },
+    {
+      "id": "response-table",
+      "side": "left",
+      "width": 1440,
+      "size": 100,
+      "theme": "light",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/response-table-left-1440-100-light.png"
+    },
+    {
+      "id": "response-table",
+      "side": "right",
+      "width": 1440,
+      "size": 100,
+      "theme": "light",
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/captures-accepted/response-table-right-1440-100-light.png"
+    }
+  ],
+  "exceptions": []
+}

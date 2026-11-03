@@ -1,0 +1,98 @@
+[
+  {
+    "id": "fig-jev-onejev-deployment",
+    "intrinsic_dimensions": [
+      "1536",
+      "1024"
+    ],
+    "lazy": "lazy",
+    "zoom_original": "/posts/ai/jev-decision-layer/assets/jev-onejev-deployment.png",
+    "original_bytes": 1416127,
+    "responsive": [
+      {
+        "url": "/posts/ai/jev-decision-layer/assets/jev-onejev-deployment_hu_f96bedebc2942cd6.webp",
+        "width": "480w",
+        "bytes": 26426
+      },
+      {
+        "url": "/posts/ai/jev-decision-layer/assets/jev-onejev-deployment_hu_9529f92eb1bafc03.webp",
+        "width": "960w",
+        "bytes": 62944
+      },
+      {
+        "url": "/posts/ai/jev-decision-layer/assets/jev-onejev-deployment_hu_c788ae1937227e11.webp",
+        "width": "1440w",
+        "bytes": 102322
+      },
+      {
+        "url": "/posts/ai/jev-decision-layer/assets/jev-onejev-deployment_hu_34018cb9ab17c378.webp",
+        "width": "1536w",
+        "bytes": 111726
+      }
+    ]
+  },
+  {
+    "id": "fig-onejev-probability-readout",
+    "intrinsic_dimensions": [
+      "2160",
+      "1152"
+    ],
+    "lazy": "lazy",
+    "zoom_original": "/posts/ai/jev-decision-layer/assets/onejev-probability-readout.png",
+    "original_bytes": 174640,
+    "responsive": [
+      {
+        "url": "/posts/ai/jev-decision-layer/assets/onejev-probability-readout_hu_2da8b3453575ab96.webp",
+        "width": "480w",
+        "bytes": 12244
+      },
+      {
+        "url": "/posts/ai/jev-decision-layer/assets/onejev-probability-readout_hu_13903bc55d16bbc8.webp",
+        "width": "960w",
+        "bytes": 30482
+      },
+      {
+        "url": "/posts/ai/jev-decision-layer/assets/onejev-probability-readout_hu_fe13f40385688202.webp",
+        "width": "1440w",
+        "bytes": 47450
+      },
+      {
+        "url": "/posts/ai/jev-decision-layer/assets/onejev-probability-readout_hu_e1a85ec95557d247.webp",
+        "width": "2160w",
+        "bytes": 77814
+      }
+    ]
+  },
+  {
+    "id": "fig-onejev-state-forking",
+    "intrinsic_dimensions": [
+      "1536",
+      "1024"
+    ],
+    "lazy": "lazy",
+    "zoom_original": "/posts/ai/jev-decision-layer/assets/onejev-state-forking.png",
+    "original_bytes": 1416957,
+    "responsive": [
+      {
+        "url": "/posts/ai/jev-decision-layer/assets/onejev-state-forking_hu_4c9b91321f621bf0.webp",
+        "width": "480w",
+        "bytes": 24688
+      },
+      {
+        "url": "/posts/ai/jev-decision-layer/assets/onejev-state-forking_hu_f6a31ba4bc933bd.webp",
+        "width": "960w",
+        "bytes": 60612
+      },
+      {
+        "url": "/posts/ai/jev-decision-layer/assets/onejev-state-forking_hu_616f902abe194056.webp",
+        "width": "1440w",
+        "bytes": 98892
+      },
+      {
+        "url": "/posts/ai/jev-decision-layer/assets/onejev-state-forking_hu_23547b45313a51bb.webp",
+        "width": "1536w",
+        "bytes": 108034
+      }
+    ]
+  }
+]

@@ -1,0 +1,52 @@
+{
+  "checked_at_utc": "2026-11-02T07:12:42.328569+00:00",
+  "torch": "2.8.0+cpu",
+  "device": "cpu",
+  "source_article_sha256": "b3d1edecdb8efa82ecb08257446324e1228d9012460132980db621123217f125",
+  "published_snippet_sha256": "15deaed6f927824dcca165559d989196e3fb4604d1e2e1d2b0d69f08bb3557a5",
+  "published_output": "actor gradient=8.0\nmodel gradient=None\n",
+  "cases": [
+    {
+      "frozen": true,
+      "detach": false,
+      "no_grad": false,
+      "evaluation": false,
+      "return": -1.0,
+      "actor_gradient": 8.0,
+      "model_gradient": null,
+      "output_requires_grad": true
+    },
+    {
+      "frozen": false,
+      "detach": false,
+      "no_grad": false,
+      "evaluation": true,
+      "return": -1.0,
+      "actor_gradient": 8.0,
+      "model_gradient": 0.39999999999999997,
+      "output_requires_grad": true
+    },
+    {
+      "frozen": true,
+      "detach": true,
+      "no_grad": false,
+      "evaluation": false,
+      "return": -1.0,
+      "actor_gradient": 5.6,
+      "model_gradient": null,
+      "output_requires_grad": true
+    },
+    {
+      "frozen": true,
+      "detach": false,
+      "no_grad": true,
+      "evaluation": false,
+      "return": -1.0,
+      "actor_gradient": null,
+      "model_gradient": null,
+      "output_requires_grad": false
+    }
+  ],
+  "optimizer_steps": 0,
+  "scope": "Published scalar snippet and independent Linear-module variations; no learned world model, G1 asset, GPU, robot or training reproduction."
+}

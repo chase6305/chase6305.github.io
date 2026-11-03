@@ -35,6 +35,18 @@ const output = process.argv[4] || '/tmp/chase-overflow-focus';
       const fitting = await b.evaluate(`([...document.querySelectorAll(${JSON.stringify(selector)})]
         .map((e,index)=>({index,width:e.clientWidth,scroll:e.scrollWidth}))
         .filter(e=>e.width>0&&e.scroll<=e.width+1).map(e=>e.index))`);
+      if (mode === 'font' && overflowing.length === 0) {
+        // Reflowed article equations may already fit at 200%. In that case
+        // verify the fitting state instead of requiring an artificial overflow.
+        await transition(mode, true);
+        const regions = await b.evaluate(`([...document.querySelectorAll(${JSON.stringify(selector)})]
+          .filter(e=>e.clientWidth>0).map(e=>({width:e.clientWidth,scroll:e.scrollWidth,
+            tabStop:e.hasAttribute('tabindex'),described:e.hasAttribute('aria-describedby'),
+            hintHidden:!e.matches('.katex-display')||!e.previousElementSibling?.matches('.blog-math-scroll-hint')||e.previousElementSibling.hidden})))`);
+        assert(regions.length && regions.every(r=>r.scroll<=r.width+1&&!r.tabStop&&!r.described&&r.hintHidden), JSON.stringify(regions));
+        report.cases.push({route,theme,mode,allVisibleRegionsFit:true,regions,actualArrowScroll:false,passed:true});
+        continue;
+      }
       const index = overflowing.find(i => fitting.includes(i));
       assert(index !== undefined, JSON.stringify({route, mode, overflowing, fitting}));
       await transition(mode, true);
@@ -59,7 +71,7 @@ const output = process.argv[4] || '/tmp/chase-overflow-focus';
       assert(cleanup.left && cleanup.tabStopRemoved, JSON.stringify(cleanup));
       await transition(mode, true);
       assert(await b.evaluate('__region.tabIndex===0'), 'Overflow must restore keyboard entry');
-      report.cases.push({route, theme, mode, index, initial, after, cleanup, passed: true});
+      report.cases.push({route, theme, mode, index, initial, after, cleanup, actualArrowScroll:true, passed: true});
     }
     assert.equal(b.exceptions.length, 0, JSON.stringify(b.exceptions));
     console.log(JSON.stringify({cases: report.cases.length, exceptions: 0}));

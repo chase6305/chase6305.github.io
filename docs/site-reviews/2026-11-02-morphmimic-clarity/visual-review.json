@@ -1,0 +1,25 @@
+{
+  "manually_inspected": [
+    {
+      "file": "visuals/mobile-dark.png",
+      "scope": "320px dark screen; new five-step workflow and mathematical inline labels."
+    },
+    {
+      "file": "visuals/film-a4.png",
+      "scope": "A4 page 10; constructed FiLM table, arithmetic and alignment equation."
+    },
+    {
+      "file": "visuals/alignment-a4.png",
+      "scope": "A4 page 12; loss-symbol definitions, two-alignment comparison and readable full table."
+    }
+  ],
+  "all_selected_visuals_accepted": true,
+  "pdf_export_pages": [
+    21,
+    59,
+    21,
+    59
+  ],
+  "pdf_pages_total": 160,
+  "all_pdf_pages_manually_reviewed": false
+}

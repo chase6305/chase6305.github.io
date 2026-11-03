@@ -1,0 +1,185 @@
+{
+  "pdfs": [
+    {
+      "route": "/posts/ai/jev-decision-layer/",
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "htmlSha256": "5da254a037b77b7887d784b3981a45c19ed9e7f7ab5f85e9227df0bf9134dee9",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 56
+        },
+        "math": {
+          "same": true,
+          "count": 93
+        },
+        "code": {
+          "same": true,
+          "count": 22
+        },
+        "captions": {
+          "same": true,
+          "count": 8
+        }
+      },
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/accepted-native/jev-decision-layer-true-100-light-a4.pdf",
+      "pages": 43,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "OneJev1.6-0.8B",
+        "0.283144",
+        "94,707",
+        "390,000–440,000",
+        "onejev_examples.py",
+        "0.733333",
+        "constructed-example-not-model-inference",
+        "read-response"
+      ],
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "route": "/posts/ai/jev-decision-layer/",
+      "scripts": true,
+      "size": 200,
+      "theme": "dark",
+      "paper": "a4",
+      "htmlSha256": "5da254a037b77b7887d784b3981a45c19ed9e7f7ab5f85e9227df0bf9134dee9",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 56
+        },
+        "math": {
+          "same": true,
+          "count": 93
+        },
+        "code": {
+          "same": true,
+          "count": 22
+        },
+        "captions": {
+          "same": true,
+          "count": 8
+        }
+      },
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/accepted-native/jev-decision-layer-true-200-dark-a4.pdf",
+      "pages": 114,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "OneJev1.6-0.8B",
+        "0.283144",
+        "94,707",
+        "390,000–440,000",
+        "onejev_examples.py",
+        "0.733333",
+        "constructed-example-not-model-inference",
+        "read-response"
+      ],
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "route": "/posts/ai/jev-decision-layer/",
+      "scripts": false,
+      "size": 100,
+      "theme": "warm",
+      "paper": "a4",
+      "htmlSha256": "5da254a037b77b7887d784b3981a45c19ed9e7f7ab5f85e9227df0bf9134dee9",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 56
+        },
+        "math": {
+          "same": true,
+          "count": 93
+        },
+        "code": {
+          "same": true,
+          "count": 22
+        },
+        "captions": {
+          "same": true,
+          "count": 8
+        }
+      },
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/accepted-native/jev-decision-layer-false-100-warm-a4.pdf",
+      "pages": 42,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "OneJev1.6-0.8B",
+        "0.283144",
+        "94,707",
+        "390,000–440,000",
+        "onejev_examples.py",
+        "0.733333",
+        "constructed-example-not-model-inference",
+        "read-response"
+      ],
+      "scriptExecutionDisabledEntireCase": true
+    },
+    {
+      "route": "/posts/ai/jev-decision-layer/",
+      "scripts": false,
+      "size": 200,
+      "theme": "warm",
+      "paper": "letter",
+      "htmlSha256": "5da254a037b77b7887d784b3981a45c19ed9e7f7ab5f85e9227df0bf9134dee9",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 56
+        },
+        "math": {
+          "same": true,
+          "count": 93
+        },
+        "code": {
+          "same": true,
+          "count": 22
+        },
+        "captions": {
+          "same": true,
+          "count": 8
+        }
+      },
+      "file": "/tmp/chase-jev-second-hour-20261103-z06l7rke/qa/accepted-native/jev-decision-layer-false-200-warm-letter.pdf",
+      "pages": 118,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "OneJev1.6-0.8B",
+        "0.283144",
+        "94,707",
+        "390,000–440,000",
+        "onejev_examples.py",
+        "0.733333",
+        "constructed-example-not-model-inference",
+        "read-response"
+      ],
+      "scriptExecutionDisabledEntireCase": true
+    }
+  ],
+  "exceptions": []
+}

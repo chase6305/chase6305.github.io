@@ -1,0 +1,50 @@
+{
+  "recorded_at_utc": "2026-11-02T11:14:20.999948+00:00",
+  "baseline_revision": "0d6f32a910b912d8d9f1d6af4b25a0a829803664",
+  "files": [
+    {
+      "path": "content/posts/ai/morphmimic/index.md",
+      "sha256": "2d6fd083b27a9028e9dec065682f0e7b4e3938b565e4c060e57bc505addd48f1"
+    },
+    {
+      "path": "content/posts/ai/morphmimic/morphmimic_contracts.py",
+      "sha256": "ee6f9b2252476636ede1e2a231dbfaee15d6e490842f44d6dc266898de7facd2"
+    },
+    {
+      "path": "scripts/test_morphmimic_contracts.py",
+      "sha256": "f09c26a00044655f57ad8b552e706832bd2834415485e0b1ff552d6df1487375"
+    },
+    {
+      "path": "docs/blog-editorial-review.json",
+      "sha256": "1f529ea0e89ebe1cc6dc003368109fede6511801b01e1fbc6136ac4b3714af9d"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-02-morphmimic-clarity/check_images.cjs",
+      "sha256": "7343e2e185ccb1d6fc5f9007a0562388f8a5ee48550063b520ed3ad01eb52d67"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-02-morphmimic-clarity/check_print.cjs",
+      "sha256": "5edc8626b5c9fa4bc32eae7b1a083c1f1619845efb0d5f77f1134d857138611a"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-02-morphmimic-clarity/check_reading.cjs",
+      "sha256": "f77024173c6f8ec764a7f310350cb7306e292e392c4fe6ac5fc53ec0f7b7122c"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-02-morphmimic-clarity/check_search.cjs",
+      "sha256": "7a23b48668fcd35f8d9bb48a80037bad8715a0346813f9e9f4e5bd3b39b5366f"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-02-morphmimic-clarity/check_semantics.cjs",
+      "sha256": "1c6e9cba6cbc636d6384495a4c5c71ffd9570a507386cdbc0d584bb29ae8b61e"
+    },
+    {
+      "path": "docs/site-reviews/2026-11-02-morphmimic-clarity/export_article.cjs",
+      "sha256": "0f32243eef1855eb39a7beeb9e996cb0dbe5f46bbc4cd827383928f81c499ade"
+    }
+  ],
+  "production_article_sha256": "9c042f52248431c302e039a4a3c753513cd7be8e7381a57aca0b26127dbc382a",
+  "build_directory": "/tmp/chase-morphmimic-standalone-20261102-pu3onz95/final-symbols",
+  "base_url": "http://127.0.0.1:13661",
+  "private_cdp_port": 9244
+}

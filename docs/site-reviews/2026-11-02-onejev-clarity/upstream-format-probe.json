@@ -1,0 +1,118 @@
+{
+  "scope": "Actual Flide 0.1.7 request planning and answer assembly from constructed logits; actual published training loss evaluated on one CPU tensor, no model forward, optimizer step or training reproduction.",
+  "model_revision": "c89933c277629b707895bff752c61d2b0664c85e",
+  "format_prompt_version": "onejev-labels-v2",
+  "slot_capacity": 256,
+  "default_temperature": 1.0,
+  "plans": [
+    {
+      "kind": "text",
+      "prefix_tokens": 90,
+      "suffix_tokens": [
+        56,
+        100,
+        79
+      ],
+      "vision_present": false,
+      "answer_kinds": {
+        "done": "noul",
+        "next": "choice",
+        "progress": "score"
+      },
+      "constructed_answers": {
+        "done": {
+          "type": "noul",
+          "noul": 0.8
+        },
+        "next": {
+          "type": "choice",
+          "choice": "enable",
+          "probabilities": {
+            "enable": 0.7,
+            "stop": 0.1,
+            "reobserve": 0.1,
+            "handoff": 0.1
+          },
+          "confidence": 0.6
+        },
+        "progress": {
+          "type": "score",
+          "score": 1.2,
+          "legend": {
+            "0": "Notifications toggle is not available on the screen.",
+            "1": "Notifications toggle is available but notifications are disabled.",
+            "2": "Notifications are enabled."
+          },
+          "probabilities": {
+            "0": 0.1,
+            "1": 0.6,
+            "2": 0.3
+          },
+          "confidence": 0.4
+        }
+      }
+    },
+    {
+      "kind": "image",
+      "prefix_tokens": 287,
+      "suffix_tokens": [
+        56,
+        100,
+        79
+      ],
+      "vision_present": true,
+      "answer_kinds": {
+        "done": "noul",
+        "next": "choice",
+        "progress": "score"
+      },
+      "constructed_answers": {
+        "done": {
+          "type": "noul",
+          "noul": 0.8
+        },
+        "next": {
+          "type": "choice",
+          "choice": "enable",
+          "probabilities": {
+            "enable": 0.7,
+            "stop": 0.1,
+            "reobserve": 0.1,
+            "handoff": 0.1
+          },
+          "confidence": 0.6
+        },
+        "progress": {
+          "type": "score",
+          "score": 1.2,
+          "legend": {
+            "0": "Notifications toggle is not available on the screen.",
+            "1": "Notifications toggle is available but notifications are disabled.",
+            "2": "Notifications are enabled."
+          },
+          "probabilities": {
+            "0": 0.1,
+            "1": 0.6,
+            "2": 0.3
+          },
+          "confidence": 0.4
+        }
+      }
+    }
+  ],
+  "loss": {
+    "total": 0.28314355131420976,
+    "ce": 0.22314355131420976,
+    "brier": 0.06,
+    "logit_gradient": [
+      [
+        -0.29600000000000004,
+        0.14800000000000002,
+        0.14800000000000002
+      ]
+    ]
+  },
+  "constructed_validation_temperature": 0.9999999987211926,
+  "torch": "2.14.1+cu130",
+  "training_source_sha256": "078967fca9a5f57afec662b0f92a273e743a3940cb5c3ec3980ab6797f0f957a"
+}

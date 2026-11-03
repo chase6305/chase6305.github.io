@@ -1,0 +1,134 @@
+[
+  {
+    "name": "reading",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-figures/check_reading.cjs",
+      "http://127.0.0.1:13681",
+      "9244",
+      "/tmp/chase-onejev-figures-20261103-jd1pcwye/qa/final-accepted-reading"
+    ],
+    "started": "2026-11-03T03:37:43.360303+00:00",
+    "finished": "2026-11-03T03:38:21.059821+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "print",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-figures/check_print.cjs",
+      "http://127.0.0.1:13681",
+      "9244",
+      "/tmp/chase-onejev-figures-20261103-jd1pcwye/qa/final-accepted-print"
+    ],
+    "started": "2026-11-03T03:38:21.059940+00:00",
+    "finished": "2026-11-03T03:38:22.649144+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "large-print",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-figures/check_print.cjs",
+      "http://127.0.0.1:13681",
+      "9244",
+      "/tmp/chase-onejev-figures-20261103-jd1pcwye/qa/final-accepted-large-print",
+      "--large-text"
+    ],
+    "started": "2026-11-03T03:38:22.649286+00:00",
+    "finished": "2026-11-03T03:38:24.531198+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "native",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-figures/export_article.cjs",
+      "http://127.0.0.1:13681",
+      "9244",
+      "/tmp/chase-onejev-figures-20261103-jd1pcwye/qa/final-accepted-native"
+    ],
+    "started": "2026-11-03T03:38:24.531374+00:00",
+    "finished": "2026-11-03T03:38:38.453585+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "figures",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-figures/check_figures.cjs",
+      "http://127.0.0.1:13681",
+      "9244",
+      "/tmp/chase-onejev-figures-20261103-jd1pcwye/qa/final-accepted-figures"
+    ],
+    "started": "2026-11-03T03:38:38.453827+00:00",
+    "finished": "2026-11-03T03:38:45.732627+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "semantics",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-figures/check_semantics.cjs",
+      "http://127.0.0.1:13681",
+      "9244",
+      "/tmp/chase-onejev-figures-20261103-jd1pcwye/qa/final-accepted-semantics",
+      "/tmp/chase-opt-20261029-fivehour/a11y/node_modules/axe-core/axe.min.js"
+    ],
+    "started": "2026-11-03T03:39:16.562909+00:00",
+    "finished": "2026-11-03T03:39:21.087989+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "search",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-figures/check_search.cjs",
+      "http://127.0.0.1:13681",
+      "9244",
+      "/tmp/chase-onejev-figures-20261103-jd1pcwye/qa/final-accepted-search"
+    ],
+    "started": "2026-11-03T03:39:21.088073+00:00",
+    "finished": "2026-11-03T03:39:25.111966+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "images",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-figures/check_images.cjs",
+      "http://127.0.0.1:13681",
+      "9244",
+      "/tmp/chase-onejev-figures-20261103-jd1pcwye/qa/final-accepted-images"
+    ],
+    "started": "2026-11-03T03:39:25.112112+00:00",
+    "finished": "2026-11-03T03:39:29.614021+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "keyboard",
+    "args": [
+      "node",
+      "docs/site-reviews/2026-11-03-jev-onejev-figures/check_keyboard.cjs",
+      "http://127.0.0.1:13681",
+      "9244",
+      "/tmp/chase-onejev-figures-20261103-jd1pcwye/qa/final-accepted-keyboard"
+    ],
+    "started": "2026-11-03T03:39:29.614177+00:00",
+    "finished": "2026-11-03T03:39:40.495734+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "lab-loading",
+    "args": [
+      "node",
+      "scripts/check_lab_loading.cjs",
+      "http://127.0.0.1:13675",
+      "9244",
+      "/tmp/chase-onejev-figures-20261103-jd1pcwye/qa/lab-loading"
+    ],
+    "started": "2026-11-03T03:27:08.484819+00:00",
+    "finished": "2026-11-03T03:28:20.069190+00:00",
+    "exit_code": 0
+  }
+]

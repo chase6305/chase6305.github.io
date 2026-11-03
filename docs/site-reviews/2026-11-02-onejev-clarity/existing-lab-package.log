@@ -1,0 +1,32 @@
+test_confidence_is_not_top_probability (__main__.GateTests) ... ok
+test_control_handoffs (__main__.GateTests) ... ok
+test_execution_gate (__main__.GateTests) ... ok
+test_fast_response_can_have_old_observation (__main__.GateTests) ... ok
+test_freshness (__main__.GateTests) ... ok
+test_goal_change_invalidates_semantics (__main__.GateTests) ... ok
+test_invalid_answers (__main__.GateTests) ... ok
+test_invalid_configuration (__main__.GateTests) ... ok
+test_recheck_after_queueing_before_execution (__main__.GateTests) ... ok
+test_request_budget_is_separate_from_observation_age (__main__.GateTests) ... ok
+test_selective_metrics (__main__.GateTests) ... ok
+test_valid_action (__main__.GateTests) ... ok
+test_version_types_and_nonfinite_clock (__main__.GateTests) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.000s
+
+OK
+test_cost_counts_both_calls (__main__.RoutingTests) ... ok
+test_empty_acceptance_is_not_zero_error (__main__.RoutingTests) ... ok
+test_invalid_data (__main__.RoutingTests) ... ok
+test_probability_endpoints_and_wilson_symmetry (__main__.RoutingTests) ... ok
+test_selection_uses_only_validation (__main__.RoutingTests) ... ok
+test_shift_can_reverse_threshold_ordering (__main__.RoutingTests) ... ok
+test_split_counts_and_identity (__main__.RoutingTests) ... ok
+test_subgroup_calibration_is_hidden_by_aggregation (__main__.RoutingTests) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.001s
+
+OK
+jev-decision-lab.zip: 8 members match source

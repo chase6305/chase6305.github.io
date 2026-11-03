@@ -1,0 +1,17 @@
+{
+  "layout_only_token_matches": [
+    {
+      "original": "m_b=S\\!\\left(\n[\\log\\alpha_b,\\log k_{p,b},\\log k_{d,b},\n \\log\\tau^{\\max}_b,\\eta_b]\\right).",
+      "reflowed": "\\begin{aligned}\nm_b&=S\\!\\Bigl([\\log\\alpha_b,\\log k_{p,b},\\\\\n&\\qquad\\log k_{d,b},\\log\\tau^{\\max}_b,\\eta_b]\\Bigr).\n\\end{aligned}"
+    },
+    {
+      "original": "z_t^b=E(\\mathcal N_g^b(g_t^b)),\\qquad\n a_t=D\\bigl(z_t^b,\\mathcal N_o^b(o_{t-9:t}^b),m_b\\bigr).",
+      "reflowed": "\\begin{aligned}\nz_t^b&=E(\\mathcal N_g^b(g_t^b)),\\\\\na_t&=D\\bigl(z_t^b,\\mathcal N_o^b(o_{t-9:t}^b),m_b\\bigr).\n\\end{aligned}"
+    },
+    {
+      "original": "\\bar z_i=\\frac1{|\\mathcal B|}\\sum_b z_b^i,\\qquad\n\\mathcal L^b_{\\mathrm{align}}\n=\\frac1{N_a}\\sum_i\\left\\|z_b^i-\\operatorname{sg}(\\bar z_i)\\right\\|^2.",
+      "reflowed": "\\begin{aligned}\n\\bar z_i&=\\frac1{|\\mathcal B|}\\sum_b z_b^i,\\\\\n\\mathcal L^b_{\\mathrm{align}}\n&=\\frac1{N_a}\\sum_i\\left\\|z_b^i-\\operatorname{sg}(\\bar z_i)\\right\\|^2.\n\\end{aligned}"
+    }
+  ],
+  "keypoint_matching_term": "Named separately as L_match; substitution preserves the original negative-return plus beta times mean squared latent gap."
+}

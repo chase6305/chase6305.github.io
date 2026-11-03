@@ -1,0 +1,345 @@
+{
+  "tables": [
+    {
+      "route": "/posts/ai/supermimic/",
+      "header": "更新的参数",
+      "size": 100,
+      "scripts": true,
+      "before": {
+        "width": 270,
+        "scroll": 401,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "header": "更新的参数",
+      "size": 200,
+      "scripts": true,
+      "before": {
+        "width": 270,
+        "scroll": 801,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "header": "窗口回报",
+      "size": 100,
+      "scripts": true,
+      "before": {
+        "width": 270,
+        "scroll": 545,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "header": "窗口回报",
+      "size": 200,
+      "scripts": true,
+      "before": {
+        "width": 270,
+        "scroll": 1089,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "header": "形成的训练记录",
+      "size": 100,
+      "scripts": true,
+      "before": {
+        "width": 270,
+        "scroll": 401,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "header": "形成的训练记录",
+      "size": 200,
+      "scripts": true,
+      "before": {
+        "width": 270,
+        "scroll": 801,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "header": "在对应训练阶段中怎样使用",
+      "size": 100,
+      "scripts": true,
+      "before": {
+        "width": 270,
+        "scroll": 401,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "header": "在对应训练阶段中怎样使用",
+      "size": 200,
+      "scripts": true,
+      "before": {
+        "width": 270,
+        "scroll": 801,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "header": "更新的参数",
+      "size": 100,
+      "scripts": false,
+      "before": {
+        "width": 270,
+        "scroll": 401,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "header": "更新的参数",
+      "size": 200,
+      "scripts": false,
+      "before": {
+        "width": 270,
+        "scroll": 801,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "header": "窗口回报",
+      "size": 100,
+      "scripts": false,
+      "before": {
+        "width": 270,
+        "scroll": 545,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/supermimic/",
+      "header": "窗口回报",
+      "size": 200,
+      "scripts": false,
+      "before": {
+        "width": 270,
+        "scroll": 1089,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "header": "形成的训练记录",
+      "size": 100,
+      "scripts": false,
+      "before": {
+        "width": 270,
+        "scroll": 401,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "header": "形成的训练记录",
+      "size": 200,
+      "scripts": false,
+      "before": {
+        "width": 270,
+        "scroll": 801,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "header": "在对应训练阶段中怎样使用",
+      "size": 100,
+      "scripts": false,
+      "before": {
+        "width": 270,
+        "scroll": 401,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    },
+    {
+      "route": "/posts/ai/rlhf-rlvr-rlcd/",
+      "header": "在对应训练阶段中怎样使用",
+      "size": 200,
+      "scripts": false,
+      "before": {
+        "width": 270,
+        "scroll": 801,
+        "focused": true,
+        "tabIndex": 0
+      },
+      "after": {
+        "distance": 40,
+        "focused": true,
+        "pageScrollX": 0
+      }
+    }
+  ],
+  "copies": [
+    {
+      "width": 320,
+      "size": 100,
+      "pending": {
+        "count": 1,
+        "focused": true,
+        "disabled": false,
+        "busy": "true"
+      },
+      "exactRenderedText": true,
+      "duplicateRejected": true,
+      "restored": {
+        "laterFocus": true,
+        "busy": false
+      }
+    },
+    {
+      "width": 320,
+      "size": 200,
+      "pending": {
+        "count": 1,
+        "focused": true,
+        "disabled": false,
+        "busy": "true"
+      },
+      "exactRenderedText": true,
+      "duplicateRejected": true,
+      "restored": {
+        "laterFocus": true,
+        "busy": false
+      }
+    },
+    {
+      "width": 1440,
+      "size": 100,
+      "pending": {
+        "count": 1,
+        "focused": true,
+        "disabled": false,
+        "busy": "true"
+      },
+      "exactRenderedText": true,
+      "duplicateRejected": true,
+      "restored": {
+        "laterFocus": true,
+        "busy": false
+      }
+    },
+    {
+      "width": 1440,
+      "size": 200,
+      "pending": {
+        "count": 1,
+        "focused": true,
+        "disabled": false,
+        "busy": "true"
+      },
+      "exactRenderedText": true,
+      "duplicateRejected": true,
+      "restored": {
+        "laterFocus": true,
+        "busy": false
+      }
+    }
+  ],
+  "exceptions": [],
+  "publishedSnippetSha256": "15deaed6f927824dcca165559d989196e3fb4604d1e2e1d2b0d69f08bb3557a5",
+  "sourceFenceTrailingNewlineExcluded": true
+}
