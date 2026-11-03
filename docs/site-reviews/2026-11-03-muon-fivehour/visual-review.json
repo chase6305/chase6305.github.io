@@ -1,0 +1,12 @@
+{
+  "reviewed_on": "2026-11-03",
+  "figures": "All ten source figures inspected; new role diagram labels/arrows match toy_training.py. Seven numerical plots regenerated; larger labels and two-level budget layout accepted.",
+  "pdf_pages": [
+    "visual/toy-groups-pdf.png",
+    "visual/gaussian-probe-pdf.png",
+    "visual/local-budget-pdf.png"
+  ],
+  "pdf_observations": "New diagrams and captions stay readable and complete; matrix/noise numbers, legend patterns, units and local-model assumptions match the text.",
+  "screens": "Mobile/desktop, light/dark, native/enhanced geometry and viewers passed; selected screenshots retained.",
+  "limits": "Browser-emulated layouts and local native PDFs, not physical mobile devices or printer hardware."
+}

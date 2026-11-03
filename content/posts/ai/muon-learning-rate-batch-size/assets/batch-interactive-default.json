@@ -1,0 +1,25 @@
+{
+  "input": {
+    "batchOld": 256,
+    "batchNew": 1024,
+    "criticalBatch": 4096,
+    "lrOld": 0.001,
+    "decayOld": 0.1,
+    "betaOld": 0.95
+  },
+  "result": {
+    "batch_ratio": 4.0,
+    "lr_ratio": 1.8439088914585775,
+    "lr_new": 0.0018439088914585775,
+    "updates_ratio": 0.25,
+    "beta_keep_data": 0.8145062499999999,
+    "decay_keep_step": 0.05423261445466405,
+    "decay_keep_data": 0.21689792041923373
+  },
+  "assumptions": [
+    "fixed parameter position, no momentum or decay in the LR derivation",
+    "fixed Muon shape convention",
+    "momentum conversion preserves old-state retention only",
+    "decay conversions preserve a component, not the full training trajectory"
+  ]
+}

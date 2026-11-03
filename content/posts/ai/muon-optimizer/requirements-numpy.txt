@@ -1,0 +1,2 @@
+# Matrix reference only; the scalar references use the Python standard library.
+numpy==2.2.6

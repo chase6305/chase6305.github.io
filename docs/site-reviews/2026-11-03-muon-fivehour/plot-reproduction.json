@@ -1,0 +1,40 @@
+{
+  "environment": "CPython 3.12 / NumPy 2.2.6 / Matplotlib 3.10.9",
+  "plots": [
+    {
+      "file": "content/posts/ai/muon-optimizer/assets/qk-clip-example.png",
+      "sha256": "d2f6c14005298e419cf101327fc3ecf93b6419cd87022849e0b6db6c2b17e245",
+      "byte_identical": true
+    },
+    {
+      "file": "content/posts/ai/muon-optimizer/assets/spectral-response.png",
+      "sha256": "54dbbb2ee947a151c9e849aae77dc4a0514c9524d9bbf75fa9c33578ca1619b7",
+      "byte_identical": true
+    },
+    {
+      "file": "content/posts/ai/muon-optimizer/assets/shape-scaling.png",
+      "sha256": "27b0742a036854fb9e8eceb437160997e9fbd135e7f789331d7897c335d40c9a",
+      "byte_identical": true
+    },
+    {
+      "file": "content/posts/ai/muon-learning-rate-batch-size/assets/curvature-counterexample.png",
+      "sha256": "c58f83d4ded7ae5cc891511d50bc039c9120da5ae9e6027eac37cb0a6929be01",
+      "byte_identical": true
+    },
+    {
+      "file": "content/posts/ai/muon-learning-rate-batch-size/assets/batch-scaling-law.png",
+      "sha256": "3d50e734f512c361f999d1ffefd3b544c86167ac16e60d44111e965aa851eea6",
+      "byte_identical": true
+    },
+    {
+      "file": "content/posts/ai/muon-learning-rate-batch-size/assets/batch-budget-efficiency.png",
+      "sha256": "07b0c63f0e730d1be24f4c9d0e4d5a6e0ca87324c7c643b87027b1bf3f148bb8",
+      "byte_identical": true
+    },
+    {
+      "file": "content/posts/ai/muon-learning-rate-batch-size/assets/gram-anisotropy.png",
+      "sha256": "58478fad27305901330682548b5b762e3a456e85b6ccbc272599ed028efd907c",
+      "byte_identical": true
+    }
+  ]
+}

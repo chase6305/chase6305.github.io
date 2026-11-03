@@ -1,0 +1,73 @@
+{
+  "torch": "2.14.1+cpu",
+  "device": "cpu",
+  "parameter_dtype": "float32",
+  "steps": 160,
+  "batch": 32,
+  "microbatch": 13,
+  "processed_training_rows": 5120,
+  "initial_mse": {
+    "train": 0.7057051658630371,
+    "validation": 0.6466702818870544
+  },
+  "final_mse": {
+    "train": 0.007180118467658758,
+    "validation": 0.007695902604609728
+  },
+  "last_step": {
+    "hidden_gradient_rms": 0.0021718309726566076,
+    "hidden_gradient_update_rms": 0.0018457185942679644,
+    "hidden_total_relative_update": 0.008581210859119892
+  },
+  "resume_max_parameter_difference": 0.0,
+  "parameter_sha256": "ede1009e196de9e5ffff1afee579f7e6b821412417d00a21919c00445dc66d32",
+  "missing_muon_momentum_max_difference": 0.12801218032836914,
+  "parameter_groups": [
+    {
+      "name": "input.weight",
+      "shape": [
+        12,
+        6
+      ],
+      "optimizer": "AdamW"
+    },
+    {
+      "name": "input.bias",
+      "shape": [
+        12
+      ],
+      "optimizer": "AdamW"
+    },
+    {
+      "name": "hidden.weight",
+      "shape": [
+        12,
+        12
+      ],
+      "optimizer": "Muon"
+    },
+    {
+      "name": "hidden.bias",
+      "shape": [
+        12
+      ],
+      "optimizer": "AdamW"
+    },
+    {
+      "name": "head.weight",
+      "shape": [
+        3,
+        12
+      ],
+      "optimizer": "AdamW"
+    },
+    {
+      "name": "head.bias",
+      "shape": [
+        3
+      ],
+      "optimizer": "AdamW"
+    }
+  ],
+  "scope": "synthetic integration example; no optimizer ranking or GPU reproducibility claim"
+}

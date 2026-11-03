@@ -14,17 +14,32 @@ import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
+DOWNLOADED = (ROOT/"muon-download.json").is_file()
+
+
+def source_path(name, bundle):
+    folder = (ROOT/("optimizer" if bundle == "muon-optimizer" else "batch")
+              if DOWNLOADED else ROOT/"content/posts/ai"/bundle)
+    source = folder/f"{name}.py"
+    if not source.is_file():
+        raise SystemExit("Missing local Muon example source: " + str(source))
+    return source
 
 
 def load(name, bundle):
-    spec = importlib.util.spec_from_file_location(name, ROOT / "content/posts/ai" / bundle / f"{name}.py")
+    spec = importlib.util.spec_from_file_location(name, source_path(name, bundle))
     module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
     spec.loader.exec_module(module)
     return module
 
 
 muon = load("muon_math", "muon-optimizer")
 batch = load("batch_math", "muon-learning-rate-batch-size")
+# A partial download must not silently pass by skipping its optional files.
+source_path("matrix_update", "muon-optimizer")
+source_path("toy_training", "muon-optimizer")
+source_path("mean_field_probe", "muon-learning-rate-batch-size")
 NUMPY = "--numpy" in sys.argv
 if NUMPY:
     sys.argv.remove("--numpy")
@@ -41,6 +56,17 @@ class MuonArticleTests(unittest.TestCase):
                     x = Decimal("3.4445") * x - Decimal("4.775") * x**3 + Decimal("2.0315") * x**5
         self.assertAlmostEqual(muon.ns_response(1, 1), 0.701)
         self.assertNotAlmostEqual(muon.ns_response(0.5), 1)
+
+    def test_normalization_conventions(self):
+        self.assertEqual(muon.normalization_gain(1e-7, 1e-7, "add"), 0.5)
+        self.assertEqual(muon.normalization_gain(1e-7, 1e-7, "clamp"), 1)
+        for name in ("add", "clamp"):
+            self.assertEqual(muon.normalization_gain(0, 0, name), 0)
+            self.assertEqual(muon.normalization_gain(7, 0, name), 1)
+        self.assertEqual(muon.normalization_gain(1e308, 1e308, "add"), 0.5)
+        for norm, eps, name in ((-1, 0, "add"), (1, -1, "add"), (1, 1, "other")):
+            with self.assertRaises(ValueError):
+                muon.normalization_gain(norm, eps, name)
 
     def test_layout_and_rank(self):
         forward = muon.shape_factors(4096, 1024)
@@ -83,6 +109,49 @@ class MuonArticleTests(unittest.TestCase):
         self.assertAlmostEqual(ratio**2, float(Fraction(17, 5)))
         self.assertAlmostEqual(batch.mean_field_lr(1e16, 1), 1)
         self.assertAlmostEqual(batch.mean_field_lr(1e-12, 1) / 1e-6, 1)
+        self.assertEqual(batch.mean_field_lr(7, 0, 0.3), 0.3)
+        self.assertAlmostEqual(batch.mean_field_lr(1e308, 1e308), 1/math.sqrt(2))
+        self.assertGreater(batch.mean_field_lr(1e-300, 1e300), 0)
+        self.assertEqual(batch.gaussian_sign_lr(7, 0, 0.3), 0.3)
+        self.assertEqual(batch.gaussian_curvature(7, 0), {"alignment": 1.0, "curvature": 100.0, "lr": 0.01})
+
+    def test_exact_gaussian_sign_integral(self):
+        # Integrate the scalar Gaussian density independently of erf().
+        panels = 10000
+        for ratio in (0.01, 0.1, 1, 10):
+            endpoint = math.sqrt(ratio)
+            h = endpoint / panels
+            def density(z):
+                return math.exp(-z*z/2) / math.sqrt(2*math.pi)
+            integral = 2*h/3*(density(0)+density(endpoint)+math.fsum(
+                (4 if i%2 else 2)*density(i*h) for i in range(1, panels)))
+            self.assertAlmostEqual(batch.gaussian_sign_lr(ratio, 1), integral, places=12)
+        self.assertNotAlmostEqual(batch.gaussian_sign_lr(1, 1), batch.mean_field_lr(1, 1), places=2)
+
+    def test_effective_counts_from_independent_sign_enumeration(self):
+        # Weighted sum of four iid +/-1 noise values, using exact rational math.
+        weights = [1, 1, 1, 3]
+        values = [sum(Fraction(w*x, sum(weights)) for w, x in zip(weights, eps))
+                  for eps in itertools.product((-1, 1), repeat=4)]
+        variance = sum(x*x for x in values)/len(values)
+        self.assertAlmostEqual(batch.independent_weighted_batch(weights), float(1/variance))
+        self.assertAlmostEqual(batch.independent_weighted_batch([10*w for w in weights]), 3)
+        self.assertAlmostEqual(batch.independent_weighted_batch([1e300*w for w in weights]), 3)
+        self.assertEqual(batch.equicorrelated_batch(16, 0.2), 4)
+        self.assertEqual(batch.equicorrelated_batch(16, 0), 16)
+        self.assertEqual(batch.equicorrelated_batch(16, 1), 1)
+
+    def test_local_budget_score_by_completed_square(self):
+        for B in (256, 1024, 4096):
+            # In a quadratic with b=1 and a^2=B/(B+Bc), the best decrease is a^2/2.
+            a = math.sqrt(B/(B+4096))
+            expected_gain = -(-a*a + 0.5*a*a)
+            scores = batch.local_budget_scores(B, 4096, 256)
+            self.assertAlmostEqual(scores["per_update"], 2*expected_gain)
+            self.assertAlmostEqual(scores["per_cost"], 2*expected_gain/(B+256))
+        peak = batch.local_budget_scores(1024, 4096, 256)["per_cost"]
+        for B in (512, 2048):
+            self.assertGreater(peak, batch.local_budget_scores(B, 4096, 256)["per_cost"])
 
     def test_momentum_as_explicit_filter_weights(self):
         for beta in (0, 0.5, 0.95):
@@ -150,7 +219,9 @@ class MuonArticleTests(unittest.TestCase):
                      lambda: muon.shape_factors(0, 3), lambda: muon.polar_rms(2, 3, 3),
                      lambda: muon.convert_convention(1, 1, 0, 1),
                      lambda: muon.clip_ratio(1, 0), lambda: batch.ema_variance_factor(1),
-                     lambda: batch.mean_field_lr(0, 1), lambda: batch.gaussian_curvature(1, 0),
+                     lambda: batch.mean_field_lr(0, 1), lambda: batch.gaussian_curvature(1, -1),
+                     lambda: batch.mean_field_lr(1, -1), lambda: batch.independent_weighted_batch([0, 0]),
+                     lambda: batch.equicorrelated_batch(0, 0.1),
                      lambda: batch.data_clock_decay(1, 1, 1, 4),
                      lambda: batch.noise_estimate([[1]], 1),
                      lambda: batch.noise_estimate([[1], [float("inf")]], 1)):
@@ -181,6 +252,138 @@ class MuonArticleTests(unittest.TestCase):
         for A in (rng.normal(size=(7, 3)), rng.normal(size=(3, 7))):
             O = polar(A)
             np.testing.assert_allclose(O.T@O if A.shape[0]>A.shape[1] else O@O.T, np.eye(3), atol=1e-12)
+
+
+@unittest.skipUnless(NUMPY, "optional NumPy matrix update reference")
+class MatrixUpdateTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        global np
+        import numpy as np
+        cls.ref = load("matrix_update", "muon-optimizer")
+
+    def test_rotated_directions_and_rank_selection(self):
+        G = np.array([[5.5, 4.5], [4.5, 5.5]])
+        np.testing.assert_allclose(self.ref.polar(G), np.eye(2), atol=1e-14)
+        np.testing.assert_array_equal(np.sign(G), np.ones((2, 2)))
+        np.testing.assert_allclose(np.linalg.svd(G, compute_uv=False), [10, 1])
+        # Rank tolerance is explicit and can change the chosen numerical rank.
+        diagonal = np.diag([1, 1e-16])
+        np.testing.assert_allclose(self.ref.polar(diagonal), np.diag([1, 0]))
+        np.testing.assert_allclose(self.ref.polar(diagonal, relative_cutoff=0), np.eye(2))
+        np.testing.assert_array_equal(self.ref.polar(np.zeros((3, 2))), np.zeros((3, 2)))
+
+    def test_ns_scalar_oracle_and_transpose(self):
+        rng = np.random.default_rng(507)
+        for shape in ((3, 7), (7, 3), (4, 4)):
+            G = rng.normal(size=shape)
+            for norm_kind in ("add", "clamp"):
+                epsilon = np.linalg.norm(G)  # maximally exposes the denominator difference.
+                O = self.ref.fast_ns(G, eps=epsilon, convention=norm_kind)
+                u, s, vh = np.linalg.svd(G, full_matrices=False)
+                denominator = np.linalg.norm(G) + epsilon if norm_kind == "add" else max(np.linalg.norm(G), epsilon)
+                expected = (u * [muon.ns_response(float(z / denominator)) for z in s]) @ vh
+                np.testing.assert_allclose(O, expected, atol=1e-12)
+                np.testing.assert_allclose(O, self.ref.fast_ns(G.T, eps=epsilon, convention=norm_kind).T, atol=1e-12)
+            np.testing.assert_allclose(self.ref.fast_ns(G, eps=0), self.ref.fast_ns(G*3.7, eps=0), atol=1e-12)
+
+    def test_normalization_without_squaring_extreme_entries(self):
+        for scale in (1e-250, 1e250, 1e308):
+            matrix = np.ones((2, 2))*scale
+            np.testing.assert_allclose(self.ref.normalized(matrix, eps=0), np.full((2, 2), 0.5), atol=1e-15)
+            np.testing.assert_allclose(self.ref.normalized(matrix, eps=scale, convention="add"),
+                                       np.full((2, 2), 1/3), atol=1e-15)
+            np.testing.assert_allclose(self.ref.fast_ns(matrix, eps=0),
+                                       self.ref.fast_ns(np.ones((2, 2)), eps=0), atol=1e-12)
+        small = np.eye(2)*1e-250
+        np.testing.assert_allclose(self.ref.normalized(small, eps=1e-7), small/1e-7, rtol=1e-14, atol=0)
+        for epsilon, convention in ((-1, "clamp"), (float("nan"), "add"), (0, "other")):
+            with self.assertRaises(ValueError):
+                self.ref.normalized(np.eye(2), eps=epsilon, convention=convention)
+
+    def test_stateful_diagonal_update_and_input_preservation(self):
+        W, M, G = np.diag([2., 3.]), np.diag([0.4, -0.2]), np.diag([1., 2.])
+        copies = [a.copy() for a in (W, M, G)]
+        trace = self.ref.step(W, M, G, lr=0.1, decay=0.2, beta=0.5, transform="polar")
+        np.testing.assert_allclose(trace["buffer"], np.diag([0.7, 0.9]))
+        np.testing.assert_allclose(trace["transform_input"], np.diag([0.85, 1.45]))
+        np.testing.assert_allclose(trace["transform_output"], np.eye(2))
+        expected = np.diag([1.96, 2.94]) - 0.1*0.2*math.sqrt(2)*np.eye(2)
+        np.testing.assert_allclose(trace["weight"], expected, atol=1e-14)
+        for value, original in zip((W, M, G), copies):
+            np.testing.assert_array_equal(value, original)
+        zero = self.ref.step(trace["weight"], trace["buffer"], np.zeros_like(G),
+                             lr=0.1, decay=0.2, beta=0.5, transform="polar")
+        np.testing.assert_allclose(zero["buffer"], np.diag([0.35, 0.45]))
+        np.testing.assert_allclose(zero["transform_output"], np.eye(2))
+        self.assertGreater(np.linalg.norm(zero["gradient_delta"]), 0)
+        missing = self.ref.step(trace["weight"], trace["buffer"], None)
+        self.assertTrue(missing["skipped"])
+        np.testing.assert_array_equal(missing["weight"], trace["weight"])
+        np.testing.assert_array_equal(missing["buffer"], trace["buffer"])
+
+    def test_zero_buffer_decay_and_rejected_shapes(self):
+        W = np.ones((3, 2))
+        for method in ("ns", "polar"):
+            zero = self.ref.step(W, None, np.zeros_like(W), beta=0, lr=0.2, decay=0.1, transform=method)
+            np.testing.assert_array_equal(zero["transform_output"], np.zeros_like(W))
+            np.testing.assert_allclose(zero["weight"], W*0.98)
+        with self.assertRaises(ValueError):
+            self.ref.step(W, np.zeros((2, 3)), W)
+        with self.assertRaises(ValueError):
+            self.ref.step(W, None, np.zeros((2, 3)))
+
+
+@unittest.skipUnless(NUMPY, "optional Gaussian matrix expectation probe")
+class MeanFieldProbeTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        global np
+        import numpy as np
+        cls.ref = load("mean_field_probe", "muon-learning-rate-batch-size")
+
+    def test_chunked_moments_against_direct_centered_sum(self):
+        values = np.arange(48,dtype=float).reshape(12,2,2)/7
+        stats = self.ref.Moments()
+        for group in np.array_split(values,[3,8]):
+            stats.add(group)
+        np.testing.assert_allclose(stats.mean,values.mean(axis=0),atol=1e-14)
+        expected = np.sqrt(((values-values.mean(axis=0))**2).sum(axis=0)/(12*11))
+        np.testing.assert_allclose(stats.standard_error(),expected,atol=1e-14)
+
+    def test_noise_free_polar_and_stable_ill_conditioned_signal(self):
+        with self.assertRaises(ValueError):
+            self.ref.observe(np.eye(2, dtype=complex), 0, 8, np.random.default_rng(3))
+        for signal in (np.diag([1.,0.1]),np.array([[0.8,-0.6],[0.6,0.8]])@np.diag([1.,1e-10])):
+            result = self.ref.observe(signal,0,8,np.random.default_rng(3),chunk=3)
+            u,s,vh = np.linalg.svd(signal,full_matrices=False)
+            np.testing.assert_allclose(result['mean_polar'],u@vh,atol=1e-14)
+            np.testing.assert_allclose(result['gram_prediction'],u@vh,atol=1e-14)
+            self.assertAlmostEqual(result['eta_ratio_special_curvature'],1)
+            self.assertTrue(np.isfinite(result['gram_prediction']).all())
+            self.assertLess(np.max(result['standard_error']),1e-14)
+
+    def test_seed_and_chunk_size_preserve_the_distribution(self):
+        signal = np.diag([1.,0.1])
+        rows = [self.ref.observe(signal,0.2,1024,np.random.default_rng(71),chunk=k) for k in (1,17,2048)]
+        for row in rows:
+            np.testing.assert_allclose(row['expected_gradient_gram'],np.diag([1.08,0.09]),atol=1e-14)
+            for key in ('mean_polar','standard_error','observed_gradient_gram','eta_ratio_special_curvature'):
+                np.testing.assert_allclose(row[key],rows[0][key],atol=1e-12)
+
+    def test_saved_gaussian_probe_reference(self):
+        path = source_path('mean_field_probe','muon-learning-rate-batch-size').parent/'assets/mean-field-probe-reference.json'
+        import json
+        expected = json.loads(path.read_text())
+        actual = self.ref.report()
+        for name,row in actual['cases'].items():
+            self.assertEqual(row['draws'],200000)
+            self.assertEqual(row['numerically_rank_deficient_draws'],0)
+            for key in ('mean_polar','standard_error','gram_prediction','eta_ratio_special_curvature'):
+                np.testing.assert_allclose(row[key],expected['cases'][name][key],rtol=1e-10,atol=1e-12)
+        flat,uneven = actual['cases']['flat'],actual['cases']['uneven']
+        self.assertGreater(flat['eta_ratio_special_curvature'],uneven['eta_ratio_special_curvature'])
+        self.assertAlmostEqual(flat['eta_ratio_scalar_prediction'],uneven['eta_ratio_scalar_prediction'])
 
 
 if __name__ == "__main__":

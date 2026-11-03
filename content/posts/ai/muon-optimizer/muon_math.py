@@ -19,6 +19,27 @@ def ns_response(x, steps=5):
     return x
 
 
+def normalization_gain(norm, eps=1e-7, convention="clamp"):
+    """Frobenius norm after normalization; a zero matrix stays zero.
+
+    With norm>0 and eps=0 both conventions give one. This function isolates
+    the denominator choice; it does not model BF16 rounding or underflow.
+    """
+    if not all(math.isfinite(x) and x >= 0 for x in (norm, eps)):
+        raise ValueError("norm and eps must be nonnegative and finite")
+    if convention not in ("add", "clamp"):
+        raise ValueError("convention must be add or clamp")
+    if norm == 0:
+        return 0.0
+    if convention == "clamp":
+        return 1.0 if norm >= eps else norm/eps
+    # Avoid overflowing norm+eps for finite large inputs.
+    if norm >= eps:
+        return 1/(1+eps/norm)
+    ratio = norm/eps
+    return ratio/(1+ratio)
+
+
 def shape_factors(d_out, d_in):
     for d in (d_out, d_in):
         if isinstance(d, bool) or not isinstance(d, int) or d <= 0:
@@ -70,6 +91,11 @@ def reference():
     return {
         "ns_one_at_one": ns_response(1, 1),
         "ns_five_at_half": ns_response(0.5),
+        "at_norm_equal_eps": {
+            name: {"initial_norm": normalization_gain(1e-7, 1e-7, name),
+                   "rank_one_five_step_value": ns_response(normalization_gain(1e-7, 1e-7, name))}
+            for name in ("add", "clamp")
+        },
         "expansion_4096_by_1024": shape_factors(4096, 1024),
         "compression_1024_by_4096": shape_factors(1024, 4096),
         "full_rank_moonlight_rms": 12.8 * polar_rms(4096, 1024),

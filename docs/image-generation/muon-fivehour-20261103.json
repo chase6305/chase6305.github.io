@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-03",
+  "mode": "built-in image_gen",
+  "prompt": "Use case: infographic-diagram. Create a polished technical figure for a Chinese optimization article. Landscape 3:2 composition, white background, thin rounded outlines, restrained pastel blue and purple, generous spacing, large legible English sans-serif text. No application-specific imagery, no robots, no watermark. Title: 'Muon + AdamW: assign by module role'. Main lane heading: 'Forward pass'. Arrange five cards in ONE left-to-right row: 'Inputs' -> 'Input Linear' -> 'Hidden Linear' -> 'Output Head' -> 'Predictions'. Draw only four forward arrows connecting adjacent card boundaries. Label the arrow from Input Linear to Hidden Linear 'Tanh', and the arrow from Hidden Linear to Output Head 'Tanh'. Do not put Tanh after the output head. Inputs and Predictions are neutral pale gray. Input Linear and Output Head are pale blue with the exact internal text 'Weight: AdamW' and 'Bias: AdamW'. Hidden Linear has two clearly separated internal rows: a pastel purple row labeled 'Weight: Muon', and a pale blue row labeled 'Bias: AdamW'. Make the hidden-weight row visually prominent without obscuring the bias row. Below the main lane, place two separate wide state cards side by side. Left purple card: 'Muon state' and below 'Hidden weight momentum'. Right blue card: 'AdamW state' and below 'Input, output and all biases'. Do NOT draw arrows between the forward lane and these state cards. Below both, one wide pale green box says 'Save together' and below 'Model, both optimizers, sampler, position'. Footer: 'Every parameter belongs to exactly one optimizer group'. Use only the specified text. Do not invent shapes, dimensions, equations, summations, losses, backward arrows or extra optimizer branches. Ensure all labels fit within their cards. This diagram depicts this small example's explicit grouping policy, not a universal automatic rule.",
+  "source": "/home/ubuntu/.codex/generated_images/01a187b4-0b96-71f1-a3fa-173629598f77/exec-1fe7e9b4-0e31-4ff0-a75e-744713091065.png",
+  "output": "content/posts/ai/muon-optimizer/assets/toy-optimizer-groups.png",
+  "inspection": "Accepted: four adjacent forward arrows, Tanh only after input and hidden linear layers, hidden weight Muon versus all biases AdamW, distinct optimizer states and a complete checkpoint for this example. No application imagery or fabricated dimensions.",
+  "status": "accepted: source inspection, article loading, zoom and mobile/desktop captions passed",
+  "sha256": "d70e3a05107c4c9eed22152c888f1810386f0a898e26638d927c4797377a07c2",
+  "dimensions": [
+    1536,
+    1024
+  ]
+}

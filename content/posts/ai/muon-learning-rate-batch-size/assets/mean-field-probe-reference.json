@@ -1,0 +1,155 @@
+{
+  "seed": 20261103,
+  "precision": "Float64 SVD",
+  "noise_gram_term": 0.1,
+  "interval": "mean +/- 1.96 standard errors; approximate Monte Carlo interval",
+  "scope": "constructed iid Gaussian gradient distributions; no training trajectory",
+  "cases": {
+    "flat": {
+      "shape": [
+        2,
+        2
+      ],
+      "draws": 200000,
+      "noise_std_per_batch_gradient_entry": 0.22360679774997896,
+      "signal": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "mean_polar": [
+        [
+          0.9872649489772912,
+          -0.00044201472569371905
+        ],
+        [
+          0.00044489464126877,
+          0.9872677981215433
+        ]
+      ],
+      "standard_error": [
+        [
+          4.2842790915930324e-05,
+          0.0003531341865099824
+        ],
+        [
+          0.0003531341684273593,
+          4.251324440322979e-05
+        ]
+      ],
+      "gram_prediction": [
+        [
+          0.9534625892455922,
+          0.0
+        ],
+        [
+          0.0,
+          0.9534625892455922
+        ]
+      ],
+      "expected_gradient_gram": [
+        [
+          1.1,
+          0.0
+        ],
+        [
+          0.0,
+          1.1
+        ]
+      ],
+      "observed_gradient_gram": [
+        [
+          1.0997535815422694,
+          -0.0002640572526900463
+        ],
+        [
+          -0.0002640572526900463,
+          1.099507217600769
+        ]
+      ],
+      "eta_ratio_special_curvature": 0.9872663735494175,
+      "eta_ratio_standard_error": 4.21573291771251e-05,
+      "eta_ratio_gram_prediction": 0.9534625892455922,
+      "eta_ratio_scalar_prediction": 0.9534625892455922,
+      "numerically_rank_deficient_draws": 0
+    },
+    "uneven": {
+      "shape": [
+        2,
+        2
+      ],
+      "draws": 200000,
+      "noise_std_per_batch_gradient_entry": 0.22360679774997896,
+      "signal": [
+        [
+          1.4106735979665885,
+          0.0
+        ],
+        [
+          0.0,
+          0.1
+        ]
+      ],
+      "mean_polar": [
+        [
+          0.977897961316011,
+          0.0005548590973444441
+        ],
+        [
+          0.00044491919582665193,
+          0.33575166196124473
+        ]
+      ],
+      "standard_error": [
+        [
+          7.229241519735254e-05,
+          0.0004618996065369467
+        ],
+        [
+          0.000461900201449804,
+          0.0020549996358790387
+        ]
+      ],
+      "gram_prediction": [
+        [
+          0.9757833315074853,
+          0.0
+        ],
+        [
+          0.0,
+          0.30151134457776363
+        ]
+      ],
+      "expected_gradient_gram": [
+        [
+          2.0900000000000003,
+          0.0
+        ],
+        [
+          0.0,
+          0.10999999999999999
+        ]
+      ],
+      "observed_gradient_gram": [
+        [
+          2.088483262999827,
+          -4.093758736008664e-05
+        ],
+        [
+          -4.093758736008664e-05,
+          0.10999375680328956
+        ]
+      ],
+      "eta_ratio_special_curvature": 0.9353906784576154,
+      "eta_ratio_standard_error": 0.00015595494649089982,
+      "eta_ratio_gram_prediction": 0.9311494683197449,
+      "eta_ratio_scalar_prediction": 0.9534625892455922,
+      "numerically_rank_deficient_draws": 0
+    }
+  }
+}

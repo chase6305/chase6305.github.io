@@ -1,0 +1,50 @@
+{{- $id := printf "muon-batch-%d" .Ordinal -}}
+{{- $reference := (.Page.Resources.Get "assets/batch-interactive-default.json").Content | transform.Unmarshal -}}
+{{- $css := resources.Get "css/muon-batch.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/muon-batch.js" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section id="{{ $id }}" class="muon-batch" data-muon-batch aria-labelledby="{{ $id }}-title">
+  <p id="{{ $id }}-title" class="muon-batch__title"><strong>动手算：Batch、学习率与数据时钟</strong></p>
+  <p id="{{ $id }}-help" class="muon-batch__note">学习率使用本文有条件的平均场公式，Muon 尺寸约定保持不变。动量换算只匹配旧状态保留比例；衰减换算只匹配收缩这一分量。这里不估计真实噪声尺度。</p>
+  <p data-static class="muon-batch__note">默认配置：Batch 从 256 变为 1024，噪声尺度 4096，初始学习率 0.001、衰减 0.1、动量 0.95。脚本不可用时保留下方默认计算值。</p>
+  <div data-controls hidden>
+    <div class="muon-batch__presets" role="group" aria-label="载入并计算构造配置">
+      <button type="button" data-preset="fourfold">Batch 放大四倍</button>
+      <button type="button" data-preset="saturation">接近饱和区</button>
+      <button type="button" data-preset="smaller">减小 Batch</button>
+    </div>
+    <form novalidate aria-label="Batch 迁移的初始配置">
+      <div class="muon-batch__fields">
+        {{- range slice
+          (dict "name" "batchOld" "label" "初始全局 Batch" "min" "1" "max" "100000000" "step" "1" "help" "一次更新的等权独立样本计数")
+          (dict "name" "batchNew" "label" "目标全局 Batch" "min" "1" "max" "100000000" "step" "1" "help" "一次更新的等权独立样本计数")
+          (dict "name" "criticalBatch" "label" "局部噪声尺度 Bc" "min" "0" "max" "1000000000000" "step" "any" "help" "由独立梯度记录估计，允许零噪声")
+          (dict "name" "lrOld" "label" "初始学习率" "min" "0.00000001" "max" "1" "step" "any" "help" "保持同一种 Muon 尺寸缩放约定")
+          (dict "name" "decayOld" "label" "初始衰减系数" "min" "0" "max" "1000" "step" "any" "help" "与初始学习率的乘积小于 1")
+          (dict "name" "betaOld" "label" "初始动量系数" "min" "0" "max" "0.9999999" "step" "any" "help" "EMA 中旧动量的保留比例") -}}
+        <label for="{{ $id }}-{{ .name }}">{{ .label }}
+          <input id="{{ $id }}-{{ .name }}" name="{{ .name }}" type="number" min="{{ .min }}" max="{{ .max }}" step="{{ .step }}" value="{{ index $reference.input .name }}" required aria-describedby="{{ $id }}-help" inputmode="{{ if eq .step "1" }}numeric{{ else }}decimal{{ end }}">
+          <small>{{ .help }}</small>
+        </label>
+        {{- end -}}
+      </div>
+      <button type="submit" class="muon-batch__submit">计算当前配置</button>
+    </form>
+  </div>
+  <p id="{{ $id }}-error" data-error class="muon-batch__error" role="alert" hidden></p>
+  <p data-status class="muon-batch__note" role="status" aria-live="polite" aria-atomic="true"></p>
+  <dl class="muon-batch__results">
+    {{- range slice
+      (dict "key" "batch_ratio" "label" "Batch 倍率")
+      (dict "key" "lr_ratio" "label" "条件公式的学习率倍率")
+      (dict "key" "lr_new" "label" "条件公式的目标学习率")
+      (dict "key" "updates_ratio" "label" "同样本数的更新次数比例")
+      (dict "key" "beta_keep_data" "label" "保持数据量记忆的动量系数")
+      (dict "key" "decay_keep_step" "label" "保持每步收缩的衰减系数")
+      (dict "key" "decay_keep_data" "label" "保持累计收缩的衰减系数") -}}
+    <div><dt id="{{ $id }}-label-{{ .key }}">{{ .label }}</dt><dd><output data-value="{{ .key }}" aria-live="off" aria-labelledby="{{ $id }}-label-{{ .key }}">{{ printf "%.8g" (float (index $reference.result .key)) }}</output></dd></div>
+    {{- end -}}
+  </dl>
+  <p class="muon-batch__note">两种衰减系数对应不同的保持目标，应按实验目的选择。数值是局部公式的换算结果，不能保证完整训练最优；极小动量结果可能在浮点精度下显示为 0。</p>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

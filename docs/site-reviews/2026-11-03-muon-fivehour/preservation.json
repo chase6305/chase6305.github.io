@@ -1,0 +1,43 @@
+{
+  "baseline": "014ccd5e05c94eb9a3938bc55a6ccfc113687d03",
+  "posts": [
+    {
+      "path": "content/posts/ai/muon-optimizer/index.md",
+      "preserved_frontmatter": {
+        "title": true,
+        "date": true,
+        "draft": true,
+        "tags": true,
+        "categories": true,
+        "authors": true,
+        "related_posts": true,
+        "images": true
+      },
+      "old_ids": 39,
+      "new_ids": 43,
+      "missing_ids": [],
+      "baseline_source_sha256": "01e1f59f66a7cc3915d2f4ea1c073745d2d0b8318298791a231aad810dd76e03",
+      "source_sha256": "99a61be88aece43614839030215cbc5a24a37879b3274b20944eb6e030026674"
+    },
+    {
+      "path": "content/posts/ai/muon-learning-rate-batch-size/index.md",
+      "preserved_frontmatter": {
+        "title": true,
+        "date": true,
+        "draft": true,
+        "tags": true,
+        "categories": true,
+        "authors": true,
+        "related_posts": true,
+        "images": true
+      },
+      "old_ids": 38,
+      "new_ids": 60,
+      "missing_ids": [],
+      "baseline_source_sha256": "06ead2a0f0a54c32e3c56551a0fec472da8d046c7ce03a6682ea41f030bd7c5f",
+      "source_sha256": "8d0436ffd5221e6f5ff963b63c4fd7d996ab7a8457686bb41294e5f3c1f94b7d"
+    }
+  ],
+  "other_editorial_records_unchanged": 96,
+  "article_tags_have_no_new_application_labels": true
+}

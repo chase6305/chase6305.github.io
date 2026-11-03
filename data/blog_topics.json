@@ -48,7 +48,7 @@
   {
     "id": "ai",
     "title": "强化学习、生成与多模态模型",
-    "description": "从模型归纳偏置、泛化和数据选择出发，理解策略优化、Agent 系统演化、Transformer、生成模型与多模态训练。",
+    "description": "从模型归纳偏置、泛化和数据选择出发，理解优化器与训练尺度、策略优化、Agent 系统演化、Transformer、生成模型与多模态训练。",
     "posts": [
       "posts/ai/algorithms/overview.md",
       "posts/ai/gymnasium/1/index.md",

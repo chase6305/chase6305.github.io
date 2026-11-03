@@ -1,0 +1,6 @@
+{
+  "format": "muon-examples-v1",
+  "articles": ["muon-optimizer", "muon-learning-rate-batch-size"],
+  "source_layout": {"optimizer": "optimizer", "batch": "batch", "checks": "checks"},
+  "purpose": "Local numerical references and CPU integration examples; no model benchmark"
+}

@@ -1,0 +1,106 @@
+{
+  "precision": "Float64",
+  "transform": "ns",
+  "normalization": "clamp",
+  "shape": [
+    3,
+    2
+  ],
+  "scaling": "moonlight",
+  "rows": [
+    {
+      "label": "first",
+      "skipped": false,
+      "weight_change_norm": 0.028144352530820343,
+      "buffer": [
+        [
+          0.5,
+          0.0
+        ],
+        [
+          0.0,
+          0.05
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "transform_rms": 0.4072377208145121,
+      "scaled_rms": 0.14107128464185692,
+      "singular_values": [
+        0.7086863262826308,
+        0.7020107253206458
+      ]
+    },
+    {
+      "label": "second",
+      "skipped": false,
+      "weight_change_norm": 0.02047905006470609,
+      "buffer": [
+        [
+          0.25,
+          0.5
+        ],
+        [
+          0.05,
+          0.025
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "transform_rms": 0.3994015994312106,
+      "scaled_rms": 0.13835677256782591,
+      "singular_values": [
+        0.7013749406617499,
+        0.6820579289041232
+      ]
+    },
+    {
+      "label": "zero",
+      "skipped": false,
+      "weight_change_norm": 0.02209737123368736,
+      "buffer": [
+        [
+          0.125,
+          0.25
+        ],
+        [
+          0.025,
+          0.0125
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "transform_rms": 0.4948120921880341,
+      "scaled_rms": 0.17140793677382604,
+      "singular_values": [
+        0.9906470862521941,
+        0.698321122373536
+      ]
+    },
+    {
+      "label": "missing",
+      "skipped": true,
+      "weight_change_norm": 0.0,
+      "buffer": [
+        [
+          0.125,
+          0.25
+        ],
+        [
+          0.025,
+          0.0125
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ]
+    }
+  ]
+}

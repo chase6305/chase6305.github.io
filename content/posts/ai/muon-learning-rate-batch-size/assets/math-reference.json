@@ -1,0 +1,62 @@
+{
+  "lr_ratio_256_to_1024_Bc4096": 1.8439088914585775,
+  "one_by_one_gaussian_B_equal_Bc": {
+    "exact_lr_over_limit": 0.6826894921370859,
+    "mean_field_lr_over_limit": 0.7071067811865475
+  },
+  "weighted_batch_1_1_1_3": 3.0,
+  "correlated_batch_16_rho02": 4.0,
+  "local_budget_Bc4096_overhead256": {
+    "256": {
+      "per_update": 0.058823529411764705,
+      "per_sample": 0.00022977941176470588,
+      "per_cost": 0.00011488970588235294
+    },
+    "1024": {
+      "per_update": 0.19999999999999998,
+      "per_sample": 0.00019531249999999998,
+      "per_cost": 0.00015624999999999998
+    },
+    "4096": {
+      "per_update": 0.4999999999999999,
+      "per_sample": 0.00012207031249999997,
+      "per_cost": 0.00011488970588235291
+    }
+  },
+  "ema_noise_factor_beta095": 0.025641025641025664,
+  "nesterov_noise_factor_beta095": 0.030391025641025672,
+  "beta_for_fourfold_batch": 0.8145062499999999,
+  "decay_for_fourfold_batch_double_lr": 0.19997000199995,
+  "noise_estimate": {
+    "signal": 7.333333333333333,
+    "single_sample_noise": 21.333333333333332,
+    "critical_batch_estimate": 2.909090909090909
+  },
+  "gaussian_s100": {
+    "1": {
+      "alignment": 0.04273802453311023,
+      "curvature": 2.230942706609901,
+      "lr": 0.01915693505103685
+    },
+    "10": {
+      "alignment": 0.10612401438054213,
+      "curvature": 4.8266233555979685,
+      "lr": 0.021987216851602556
+    },
+    "100": {
+      "alignment": 0.24426018207703018,
+      "curvature": 12.476697756338286,
+      "lr": 0.019577310186338657
+    },
+    "1000": {
+      "alignment": 0.4922505404343132,
+      "curvature": 32.011965849279555,
+      "lr": 0.015377079394372512
+    },
+    "1000000": {
+      "alignment": 0.9951080784498592,
+      "curvature": 99.03831050702054,
+      "lr": 0.010047708541830576
+    }
+  }
+}

@@ -5,15 +5,15 @@ draft: false
 tags: ["Muon", "Machine Learning", "Deep Learning", "Regularization", "Paper Notes"]
 categories: ["人工智能"]
 authors: ["chase"]
-summary: "从谱范数约束推导 Muon，讲清极分解、Newton–Schulz 近似、四种尺寸缩放、学习率与衰减换算，再分析 Moonlight、QK-Clip、参数分组和分布式实现。"
-description: "从谱范数约束推导 Muon，讲清极分解、Newton–Schulz 近似、四种尺寸缩放、学习率与衰减换算，再分析 Moonlight、QK-Clip、参数分组和分布式实现。"
+summary: "从谱范数约束推导 Muon，讲清极分解、Newton–Schulz、尺寸缩放、Moonlight 与 QK-Clip；通过矩阵单步复算和可恢复的 PyTorch 训练例子，把参数分组、梯度累积和状态管理连起来。"
+description: "从谱范数约束推导 Muon，讲清极分解、Newton–Schulz、尺寸缩放、Moonlight 与 QK-Clip；通过矩阵单步复算和可恢复的 PyTorch 训练例子，把参数分组、梯度累积和状态管理连起来。"
 contentLanguage: "zh-CN"
 math: true
 toc: true
 imageZoom: true
 images: ["assets/muon-update-flow.png"]
-reading_prerequisites: "梯度下降、矩阵乘法与奇异值分解；运行数值复算只需 Python 标准库"
-reading_focus: "先区分更新方向、更新幅度与权重，再理解有限步正交化和四种缩放，最后核对参数分组、QK-Clip 与实现顺序。"
+reading_prerequisites: "梯度下降、矩阵乘法与奇异值分解；标量复算用 Python 标准库，矩阵例子用 NumPy，完整训练例子另需 PyTorch"
+reading_focus: "先分清方向、幅度与权重，再理解有限步谱变换和尺寸缩放；用单步矩阵与完整训练两个例子核对更新、分组和恢复，最后理解 QK-Clip。"
 related_posts:
   - "/posts/ai/muon-learning-rate-batch-size"
   - "/posts/ai/transformer-attention"
@@ -31,6 +31,7 @@ related_posts:
 | 同名 Muon 为什么需要不同学习率 | [四种缩放约定](#scaling) |
 | 0.2 与 Weight Decay 从哪里来 | [Moonlight 的改动](#moonlight) |
 | 怎么分配参数和检查一次更新 | [参数分组与运行示例](#implementation) |
+| 想直接运行一个完整小模型 | [Muon 与 AdamW 联合训练](#toy-training)、[完整下载包](#examples) |
 | QK-Clip 究竟裁剪什么 | [注意力分数与权重缩放](#qk-clip) |
 {.table-readable}
 
@@ -113,6 +114,19 @@ $D_F$ 满足 Frobenius 预算，保留了 10:1 的强弱比例；$D_2$ 满足谱
 
 极分解把每个**非零**奇异值改成 1，保留对应的左右奇异方向；它不等于逐元素取符号。
 
+例如，下面的矩阵所有元素都为正，但它的两个奇异方向分别是坐标的和与差：
+
+$$
+\begin{aligned}
+G&=\begin{pmatrix}5.5&4.5\\4.5&5.5\end{pmatrix},\\
+\operatorname{sign}_{\rm element}(G)
+&=\begin{pmatrix}1&1\\1&1\end{pmatrix},\\
+\operatorname{polar}(G)&=I_2.
+\end{aligned}
+$$
+
+这里 $G$ 的奇异值仍是 10 和 1。逐元素取符号会抹掉两列之间的差异，把矩阵变成秩一；极分解则保留两个奇异方向，只改变各自的幅度。理解 Muon 时，应该看矩阵把哪些输入方向映射到哪些输出方向。
+
 若 $G$ 严格秩亏，零方向保持为零。直接对完整 SVD 的全部列相乘，可能把任意补出的零空间也变成更新，因而要使用紧致的非零部分，或正确解释广义逆。
 
 当 $m\ge n$ 且矩阵满列秩时，极因子 $O$ 满足 $O^\top O=I_n$；满行秩时对应 $OO^\top=I_m$。一般矩形矩阵不能同时满足两式，也不能被称为方形正交矩阵。秩亏时得到的是部分等距映射，最优解在零空间上还可能不唯一。
@@ -175,7 +189,40 @@ $X$ 为 $m\times n$ 时，$XX^\top$ 是 $m\times m$。若 $m>n$，可临时转�
 
 理想情况下，正数 $c$ 满足 $\operatorname{polar}(cH)=\operatorname{polar}(H)$。因此，更新既可能抑制大奇异值，也可能相对放大很弱的非零方向；它不会根据任务语义识别哪个方向是真信号。
 
-固定 $\varepsilon$ 会让 $H$ 与很小的 $cH$ 得到不同初始谱；BF16 的舍入、下溢与有限步迭代也会带来差别。此外，裁剪当前梯度并不等于同时缩放全部历史动量，不能据此断言“梯度裁剪对 Muon 永远没有作用”。
+若采用精确范数、$\varepsilon=0$ 且单独处理零矩阵，**归一化之后的有限步 NS 同样具有正比例不变性**；有限步本身带来的是与精确极分解的幅度差异。固定 $\varepsilon$、BF16 的舍入和下溢才会进一步破坏这项不变性。
+
+实际实现还存在两种常见的分母约定：
+
+| 归一化分母 | 非零输入的初始 Frobenius 范数 | 接近零时的行为 |
+| --- | --- | --- |
+| $\|H\|_F+\varepsilon$ | 范数与“范数加 ε”的比值 | 始终小于 1 |
+| $\max(\|H\|_F,\varepsilon)$ | 范数与截断分母的比值 | 范数达到 ε 后等于 1 |
+{.table-readable}
+
+本文前面的公式使用第一种写法；后文实际运行的 [PyTorch 2.14.1 源码][torch-muon-source]使用第二种。当输入范数恰好等于 $\varepsilon$ 时，两种初始范数分别为 0.5 和 1，五步输出也可能不同。比较实现前，应把归一化方式与系数、精度一起记录。
+
+此外，裁剪当前梯度并不等于同时缩放全部历史动量，不能据此断言“梯度裁剪对 Muon 永远没有作用”。
+
+### 3.4 快在哪里，额外成本又在哪里？ {#cost}
+
+为估计算术量，把矩阵两边尺寸按大小记为 $p\ge q$。使用较小的 Gram 矩阵时，一步 NS 的主要矩阵乘法约需要：
+
+$$
+4pq^2+2q^3
+$$
+
+次浮点运算，$T$ 步就乘 $T$。固定五步时，它与常规稠密 SVD 同为 $O(pq^2)$；两边尺寸同比扩大时才表现为三次量级。实际优势来自固定数量的矩阵乘法、低精度执行和硬件上的高效内核，不能只用“复杂度更低”概括。[原博客的运行成本分析][jordan]
+
+若该线性层在一次全局更新中处理了 $N_{\rm vec}$ 个输入向量，前向与反向的主要矩阵乘法约为 $6pqN_{\rm vec}$。因此 NS 相对于这部分计算的额外比例约为：
+
+$$
+\frac{T(4pq^2+2q^3)}{6pqN_{\rm vec}}
+\le\frac{Tq}{N_{\rm vec}}.
+$$
+
+大 Batch 能摊薄这项与输入数量无关的更新成本，小 Batch 时它可能很明显。这里的输入向量数是算术计数；长序列中的 token 可以增加算术工作，却未必增加同样多的独立梯度信息。分布式通信、内核启动、矩阵分块与实际精度也会改变耗时，FLOPs 比例不能直接当作 wall-clock 比例。
+
+长期优化器状态方面，普通 Muon 为所选矩阵保留一份动量；AdamW 通常保留一、二阶矩两份状态。但 NS 还要临时保存更新矩阵和 Gram 矩阵，峰值显存不由长期状态数量单独决定。判断吞吐与内存收益时，应记录整个训练步骤；[第二篇的预算例子](../muon-learning-rate-batch-size/#local-budget)进一步解释了固定开销与 Batch 的关系。
 
 ## 4. 四种缩放约定决定学习率的数值 {#scaling}
 
@@ -192,6 +239,30 @@ $X$ 为 $m\times n$ 时，$XX^\top$ 是 $m\times m$。若 $m>n$，可临时转�
 {.table-readable}
 
 这里的“μP 形式”指表中的尺寸因子，不代表仅改变这一个系数，就自动完成了整套 maximal update parametrization；初始化、其他参数组及模型参数化仍需一起定义。
+
+<details>
+<summary>为什么会出现输出维度除以输入维度的平方根？</summary>
+
+向量 RMS 是 Euclidean 范数除以元素数量的平方根。因此对固定输入和一次更新 $D$：
+
+$$
+\begin{aligned}
+\|Dx\|_{\rm RMS}
+&\le\sqrt{\frac{d_{\rm in}}{d_{\rm out}}}
+\|D\|_2\|x\|_{\rm RMS}.
+\end{aligned}
+$$
+
+若希望输入 RMS 不超过 1 时，线性层输出的变化不超过 $\eta$，可以约束右侧的算子范数。前面的最速下降方向于是变成：
+
+$$
+D=-\eta\sqrt{\frac{d_{\rm out}}{d_{\rm in}}}
+\operatorname{polar}(G).
+$$
+
+这解释了表中非对称因子的来源：它与输入、输出的 RMS 单位有关；Moonlight 讨论的则是**更新矩阵元素**的 RMS。二者度量的对象不同。完整推导见 Jeremy Bernstein 的 [Deriving Muon][deriving-muon]。
+
+</details>
 
 ### 4.2 形状不能脱离线性层的存储方式
 
@@ -258,13 +329,32 @@ $$
 
 有限步 NS 也不具有单位奇异值谱。直接把实际更新除以其 RMS，再乘 0.2，才是另一种显式 RMS 归一化，两种操作不能逐输入等同。
 
+<details>
+<summary>0.2 与 Adam 的动量降噪有什么联系？</summary>
+
+把一维梯度写成均值为 $\mu$、方差为 $\sigma^2$ 的 iid 序列。Adam 的归一化更新为 $u=m/\sqrt v$。在稳态、忽略偏差修正与 $\varepsilon$，再用 $v$ 的均值近似随机分母时：
+
+$$
+\begin{aligned}
+\mathbb E[u^2]
+&\approx\frac{\mu^2+c\sigma^2}{\mu^2+\sigma^2},\\
+c&=\frac{1-\beta_1}{1+\beta_1}.
+\end{aligned}
+$$
+
+噪声占主导时，取 $\beta_1=0.9$ 得到约 0.2294 的 RMS 量级；信号占主导时，近似值可以趋于 1。这为常见的 0.2 量级提供了一种解释，而没有把它变成普遍常数。
+
+式子没有出现 $\beta_2$，是因为把随机分母替换成了其均值，不能据此证明 $\beta_2$ 对真实 Adam 没有影响。跨步相关、均值漂移与不可忽略的 $\varepsilon$ 也会改变结果。推导与模拟见苏剑林的[Adam Update RMS 分析][adam-rms]。
+
+</details>
+
 ### 5.3 报告证明了什么
 
 Moonlight 技术报告把权重衰减与尺寸缩放结合，并实现分布式矩阵更新。在其 compute-optimal 对照中，报告用约 52% 的训练 FLOPs 达到对应性能；这描述的是该实验的计算效率，不是每个优化器步骤都快一倍。[Moonlight 技术报告][moonlight]
 
 同一报告还比较了不同预训练和微调优化器的组合，显示切换优化器并不总带来优势。更新 RMS 对齐提供调参起点，不能消除初始化、谱结构、数据和任务目标的影响。
 
-## 6. 参数分组与一个可执行的单步例子 {#implementation}
+## 6. 从参数分组到完整训练 {#implementation}
 
 ### 6.1 不能只写 `p.ndim == 2`
 
@@ -314,6 +404,82 @@ $$
 
 张量并行把一个矩阵分成几块后，各块独立正交化通常也不等于原矩阵的 Muon。可以分布式计算整个矩阵所需的运算，或明确定义新的块优化器，但不能仅因最终都调用了 all-reduce 就认为算法相同。
 
+### 6.4 例一：沿状态跟踪矩阵更新 {#matrix-update-example}
+
+[矩阵参考脚本](matrix_update.py)把 EMA、Nesterov、谱变换、尺寸因子和解耦衰减分别返回，便于逐项核对。它使用 NumPy 的 Float64 运算；`polar` 模式用 SVD，`ns` 模式用五步多项式，两者是两个不同的选项。
+
+以对角矩阵为例，设旧权重为 2、3，旧 EMA 动量为 0.4、−0.2，当前梯度为 1、2。取动量系数 0.5、学习率 0.1、衰减系数 0.2：
+
+1. 新 EMA 动量为 0.7、0.9。
+2. Nesterov 输入为 0.85、1.45。
+3. 精确极分解把两个正的奇异值都变成 1。
+4. Moonlight 尺寸因子约为 0.28284；每个对角方向的梯度更新约为 −0.02828。
+5. 先将旧权重乘 0.98，再叠加梯度更新，得到约 1.93172、2.91172。
+
+这些值可以直接运行：
+
+```python
+import numpy as np
+from matrix_update import step
+
+trace = step(
+    np.diag([2.0, 3.0]),
+    np.diag([0.4, -0.2]),
+    np.diag([1.0, 2.0]),
+    lr=0.1, decay=0.2, beta=0.5, transform="polar",
+)
+print(np.diag(trace["buffer"]))
+print(np.diag(trace["transform_input"]))
+print(np.diag(trace["weight"]))
+```
+
+改成 `transform="ns"` 后，第三步不再保证每个奇异值等于 1，最终更新也会变化。脚本的默认演示还会依次输入非零梯度、零梯度与缺失梯度：零梯度可以保留历史动量并继续衰减；缺失梯度则按这里的策略跳过该矩阵，连衰减也跳过。
+
+这里 SVD 的数值秩通过明确的相对阈值选择。严格的数学零方向，与浮点数中一个非常小的非零奇异值，是两个不同问题；脚本不会根据数值大小判断哪个方向是真信号。
+
+### 6.5 例二：两套优化器的训练与恢复 {#toy-training}
+
+[完整 CPU 例子](toy_training.py)使用自动生成的回归数据，不下载模型或数据集。模型包含输入投影、一个隐藏线性层与输出头；本例只把 `hidden.weight` 交给 Muon，其余权重与 bias 交给 AdamW，并检查每个参数恰好属于一个组。
+
+<figure class="article-figure" id="fig-muon-toy-groups">
+  {{< post-image src="assets/toy-optimizer-groups.png" alt="随文回归模型的前向依次经过输入线性层、Tanh、隐藏线性层、Tanh 与输出头；只有隐藏层权重交给 Muon，所有 bias 和输入输出权重交给 AdamW，两套优化器状态与模型、采样器及位置一起保存" >}}
+  <figcaption><span class="article-figure__number">图 4</span><span class="article-figure__text"><strong>按参数角色分组，再按训练状态恢复。</strong>颜色和文字共同标明本例的分配：隐藏层也含使用 AdamW 的 bias。图中的保存项对应这个没有 AMP、调度器与随机前向算子的模型。</span></figcaption>
+</figure>
+
+关键分组代码是：
+
+```python
+muon_parameters = [model.hidden.weight]
+muon_ids = {id(p) for p in muon_parameters}
+adamw_parameters = [
+    p for p in model.parameters() if id(p) not in muon_ids
+]
+```
+
+这段分组适用于随文模型的模块命名。迁移到自己的模型时，需要重新定义哪些模块是内部稠密映射、哪些是输入或输出接口，不能把这里的名称判断直接当作通用分类器。
+
+一次全局更新使用 32 个样本，但 microbatch 为 13，实际分成 13、13、6。每一块的平均损失乘“该块样本数除以 32”后再反向，**三次反向结束才调用一次 Muon 与一次 AdamW**。固定输出维度下，这等于正确的全局平均损失梯度。
+
+程序默认训练 160 次更新，并在中间位置保存模型、两套优化器、采样器状态与更新位置。恢复后继续使用同一采样顺序，检查最终参数是否与连续训练一致；另一个分支只丢掉 Muon 动量，展示“模型权重恢复了”与“训练状态恢复了”的差别。
+
+也可以真的退出一次 Python，再从保存的位置继续。`--steps` 表示累计完成的更新次数，因此第二条命令是从第 80 次继续到第 160 次：
+
+```bash
+python -B toy_training.py --save-checkpoint run.pt --steps 80
+python -B toy_training.py --resume run.pt --steps 160
+```
+
+保存命令拒绝覆盖已有文件；恢复命令保留原来的 Batch 与 microbatch 配置。恢复到第 160 步时输出的参数 SHA-256，应与默认命令连续训练到第 160 步的结果比较；第 80 步检查点的指纹当然不同。这个核对限于同一环境，不承诺不同硬件或 PyTorch 版本之间逐位一致。
+
+这个模型没有 dropout、随机数据增强、AMP 或学习率调度器。若加入这些组件，还需要恢复相应随机数、scaler 与 scheduler 状态；仅保存采样器不能覆盖它们。
+
+```bash
+python -B toy_training.py
+python -B toy_training.py --batch 32 --microbatch 7
+```
+
+输出会列出参数分组、训练与留出集 MSE、最后一步的更新 RMS，以及恢复前后的参数差异。这些数值只验证小例子的接线和状态管理，不用于宣称 Muon 比 AdamW 更好。本文使用的 CPU 环境与运行方法见[数值复算](#examples)。
+
 ## 7. QK-Clip 为什么直接作用于权重 {#qk-clip}
 
 ### 7.1 监控的是 softmax 前的注意力分数
@@ -350,7 +516,7 @@ $$
 
 <figure class="article-figure" id="fig-muon-qk-clip">
   {{< post-image src="assets/qk-clip-example.png" alt="构造例比较逐层与逐头 QK 裁剪，并分解 MLA 中内容项一百二十与旋转项八十；正确缩放后合计一百，只缩放旋转 query 平方根时仍超过一百" >}}
-  <figcaption><span class="article-figure__number">图 4</span><span class="article-figure__text"><strong>共享项决定缩放该放在哪里。</strong>图中采用构造的无 bias、固定输入双线性分数；数值用于复算缩放，不是报告中的训练轨迹。</span></figcaption>
+  <figcaption><span class="article-figure__number">图 5</span><span class="article-figure__text"><strong>共享项决定缩放该放在哪里。</strong>图中采用构造的无 bias、固定输入双线性分数；数值用于复算缩放，不是报告中的训练轨迹。</span></figcaption>
 </figure>
 
 ### 7.3 数学恒等式与真实反馈时序
@@ -363,15 +529,36 @@ $$
 
 报告中的 $\tau=100$ 是其训练配置，不是任意架构都应使用的常数；关于更易发生 logit 增长的谱解释，也应保留为作者提出的机制假设，而不是仅由 Muon 定义就能推出的定理。
 
-## 8. 数值复算与实现核对 {#examples}
+## 8. 下载、运行与实现核对 {#examples}
 
-[随文脚本](muon_math.py)使用标准库复算标量谱多项式、尺寸因子和 QK-Clip 数字：
+[完整下载包](muon-examples.zip)同时包含两篇文章的 Python 例子、依赖文件、参考输出与独立检查；解压后先看 `README.txt`。代码不下载模型或数据集。
+
+只复算标量谱多项式、尺寸因子和 QK-Clip 数字，可以直接下载[标准库脚本](muon_math.py)：
 
 ```bash
 python3 -B muon_math.py
 ```
 
-代码给出数学构造值，不会加载模型。可选的[绘图脚本](make_figures.py)需要 NumPy 与 Matplotlib；将它与 `muon_math.py` 保存在同一目录，再运行 `python3 -B make_figures.py` 即可重画三幅数值图。用独立 SVD 计算检查矩形、秩亏、零矩阵和有限步多项式时，也应将数值精度与设备条件另行记录。
+若使用完整下载包，在解压目录建立独立环境。下面以 Python 3.12 为例：
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r requirements-numpy.txt
+.venv/bin/python -B optimizer/matrix_update.py
+.venv/bin/python -B checks/test_muon_articles.py --numpy
+```
+
+运行完整训练例子时，再安装官方 CPU 版本的 PyTorch：
+
+```bash
+.venv/bin/python -m pip install -r requirements-torch.txt
+.venv/bin/python -B optimizer/toy_training.py
+.venv/bin/python -B checks/test_muon_training.py
+```
+
+本文用 CPython 3.12、NumPy 2.2.6 与 PyTorch 2.14.1+cpu 检查了这些命令。在 Windows 下，将 `.venv/bin/python` 换成 `.venv\Scripts\python.exe`。数学脚本本身不要求这套 PyTorch 环境；只用标准库时，可以先运行 `checks/test_muon_articles.py`，需要 NumPy 的组会明确跳过。
+
+可选的[绘图脚本](make_figures.py)需要 NumPy 与 Matplotlib；完整包提供 `requirements-plots.txt`。原始图表以可复算的公式与构造数据生成，不能替代模型训练对照。
 
 核对实现时，最有用的记录包括：参数分组及共享关系、原始矩阵布局、动量递推、NS 系数和步数、归一化与 $\varepsilon$、尺寸缩放约定、衰减应用位置、全局梯度聚合方式，以及 QK-Clip 的测量时刻。
 
@@ -393,6 +580,36 @@ python3 -B muon_math.py
 14. 为什么 MLA 的 rotary query 使用完整裁剪比例？
 15. 用旧分数裁剪新权重，能否保证任何新输入都满足阈值？
 16. Moonlight 报告的约两倍计算效率能否写成每步快两倍？
+17. 范数恰好等于 ε 时，加 ε 与 clamp 两种归一化是否相同？
+18. 固定五步 NS 是否改变了稠密矩阵相对于 SVD 的渐近计算阶数？
+19. 动量非零时，全零梯度与缺失梯度是否会产生相同的参数变化？
+20. 为什么训练恢复还需要另一套优化器状态与采样位置？
+
+<details>
+<summary>展开核对答案</summary>
+
+1. 作用在梯度或动量形成的更新方向上，权重不被约束成正交矩阵。
+2. 两个约束使用不同的单位球；谱预算让每个非零奇异方向都能达到同一幅度。
+3. 不应。本文采用零空间为零的规范极因子；完整 SVD 任意补出的方向可能造成额外更新。
+4. 满列秩时是 $O^\top O=I$；满行秩时相应换成 $OO^\top=I$。
+5. 快速多项式改变奇异值，但五步后一般没有把它们精确变成 1。
+6. 不能。临时转置只改变计算路径，尺寸因子仍对应原始权重布局。
+7. 实际位移取决于 $\eta s(W)$；相同数字不保证相同更新。
+8. 既要保持 $\eta s(W)$，也要保持每步乘法收缩中的 $\eta\lambda$。
+9. 不是。它是特定统计与配置下的对齐尺度；有均值信号时，Adam 的更新 RMS 也会改变。
+10. 秩决定理想极因子的 Frobenius 范数，有限步响应还会改变非零奇异值的幅度。
+11. 参数角色与共享关系也重要；输入、输出和 hidden weight 不能仅靠二维形状区分。
+12. 一般不同，极分解是非线性变换。
+13. QK-Clip 在更新后缩放权重；梯度裁剪改变优化器输入，QK-Norm 改变前向中的 Q/K。
+14. 因为共享 rotary key 保持不变，完整比例必须由 query 一侧承担。
+15. 不能；同比例恒等式需要相同输入与相同权重快照。
+16. 不能。计算预算下达到目标的效率与单步耗时是两个量。
+17. 不同。初始归一化范数分别为 $1/2$ 和 1，后续有限步谱响应也可不同。
+18. 不改变固定步数下的稠密渐近阶数；实际优势来自矩阵乘法、精度与硬件执行等因素。
+19. 本文例子里不同：零梯度仍可通过历史动量移动参数并触发衰减；缺失梯度跳过该矩阵。
+20. 下一步还依赖 AdamW 的历史和将读到的数据；只恢复模型与 Muon 动量无法重现这条训练路径。
+
+</details>
 
 ## 资料与继续阅读
 
@@ -409,3 +626,6 @@ python3 -B muon_math.py
 [qk-blog]: https://kexue.fm/archives/11126
 [kimi]: https://arxiv.org/html/2507.20534v1#S2.SS1
 [torch-muon]: https://docs.pytorch.org/docs/2.14/generated/torch.optim.Muon.html
+[torch-muon-source]: https://github.com/pytorch/pytorch/blob/v2.14.1/torch/optim/_muon.py
+[deriving-muon]: https://jeremybernste.in/writing/deriving-muon
+[adam-rms]: https://kexue.fm/archives/11267

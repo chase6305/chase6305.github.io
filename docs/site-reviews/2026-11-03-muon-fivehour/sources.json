@@ -1,0 +1,83 @@
+{
+  "checked_on": "2026-11-03",
+  "sources": [
+    {
+      "url": "https://kexue.fm/archives/11416",
+      "access": "Primary article via public Jina text proxy after original host returned 403; formulas independently recomputed",
+      "local": "/tmp/chase-muon-fivehour-20261103-7235a3f5/sources/su11416-reader.txt",
+      "sha256": "10e056d5c797a2894e613ed0a4c04f4dd3486d47fc8c946362d4dc422c6c4b9c"
+    },
+    {
+      "url": "https://kexue.fm/archives/10739",
+      "access": "Primary article via public Jina text proxy after original host returned 403; formulas independently recomputed",
+      "local": "/tmp/chase-muon-fivehour-20261103-7235a3f5/sources/su10739-reader.txt",
+      "sha256": "79905a6fc849ccdabea42a9f965be5c5f34f46d979f9334c7e0a87b0cf68a7b8"
+    },
+    {
+      "url": "https://kexue.fm/archives/11285",
+      "access": "Primary article via public Jina text proxy after original host returned 403; formulas independently recomputed",
+      "local": "/tmp/chase-muon-fivehour-20261103-7235a3f5/sources/su11285-reader.txt",
+      "sha256": "baaf674f5af885e4b739891f40bb2cc81eff08457c3d8f74abd619fe411131df"
+    },
+    {
+      "url": "https://kexue.fm/archives/11126",
+      "access": "Primary article via public Jina text proxy after original host returned 403; formulas independently recomputed",
+      "local": "/tmp/chase-muon-fivehour-20261103-7235a3f5/sources/su11126-reader.txt",
+      "sha256": "1b57137dfbee30e2f11f7b1712268fc04a0bda33c5df75d20567bbe6f23b15e3"
+    },
+    {
+      "url": "https://kexue.fm/archives/11267",
+      "access": "Primary article via public Jina text proxy after original host returned 403; formulas independently recomputed",
+      "local": "/tmp/chase-muon-fivehour-20261103-7235a3f5/sources/su11267-reader.txt",
+      "sha256": "dcb45933fbb058cacdab49e97e2975e52094aa2cbbe9d38f1a72ff6da5bed088"
+    },
+    {
+      "url": "https://kellerjordan.github.io/posts/muon/",
+      "access": "Primary HTML inspected with web tool",
+      "purpose": "Polynomial coefficients, parameter roles, relation to Shampoo and update arithmetic"
+    },
+    {
+      "url": "https://arxiv.org/html/2502.16982v1",
+      "access": "Primary HTML inspected with web tool",
+      "purpose": "Shape RMS alignment, decay and compute-budget experimental scope"
+    },
+    {
+      "url": "https://jeremybernste.in/writing/deriving-muon",
+      "access": "Primary HTML inspected with web tool",
+      "purpose": "RMS-to-RMS operator norm and asymmetric shape factor"
+    },
+    {
+      "url": "https://docs.pytorch.org/docs/2.14/generated/torch.optim.Muon.html",
+      "access": "Primary HTML inspected with web tool",
+      "purpose": "Versioned Muon API and adjust_lr_fn"
+    },
+    {
+      "url": "https://docs.pytorch.org/docs/2.14/notes/serialization.html",
+      "access": "Primary HTML inspected with web tool",
+      "purpose": "Model and optimizer state restoration"
+    },
+    {
+      "url": "https://docs.pytorch.org/docs/2.14/notes/randomness.html",
+      "access": "Primary HTML inspected with web tool",
+      "purpose": "Reproducibility limits across environments"
+    },
+    {
+      "url": "https://arxiv.org/html/1812.06162",
+      "access": "Primary HTML inspected with web tool",
+      "purpose": "Context for data/time efficiency and local gradient-noise measures"
+    },
+    {
+      "version": "2.14.1",
+      "url": "https://github.com/pytorch/pytorch/blob/v2.14.1/torch/optim/_muon.py",
+      "raw_sha256": "c17abbb8af4c935d125b189c38d3cbaec295f1cfd232d2712bdb75e13184b972",
+      "installed_sha256": "c17abbb8af4c935d125b189c38d3cbaec295f1cfd232d2712bdb75e13184b972",
+      "matches_installed": true
+    }
+  ],
+  "cpu_wheel": {
+    "url": "https://download-r2.pytorch.org/whl/cpu/torch-2.14.1%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl#sha256=5a6363570c753812540a05eb82380e329469cbe668643e88111414c12627711f",
+    "sha256": "5a6363570c753812540a05eb82380e329469cbe668643e88111414c12627711f",
+    "bytes": 196253677
+  },
+  "scope": "General Muon and Batch scaling analysis; constructed local numerical checks and a synthetic CPU integration example, without application-specific labels or performance ranking."
+}
