@@ -1,0 +1,20 @@
+{
+  "manual_visual_review": "8 selected figure/caption and code pages plus4 actual corrected formula pages viewed; no clipped labels/arrows/code or formula terms.",
+  "diagram_caption_pairs_same_page": 4,
+  "source": "accepted-production",
+  "exports": 6,
+  "tagged": true,
+  "sizes": [
+    100,
+    200
+  ],
+  "formats": [
+    "A4",
+    "Letter"
+  ],
+  "scripts": [
+    true,
+    false
+  ],
+  "reading_state_restored": true
+}

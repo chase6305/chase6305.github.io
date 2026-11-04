@@ -175,6 +175,59 @@ const output = process.argv[4] || '/tmp/chase-site-search';
     assert(await browser.evaluate(`!!document.querySelector('#hextra-search-results a[href="/posts/ai/pion-muon-vla-rlvr/"]')`));
     report.chineseDiscovery = true;
 
+    report.resultLanguages = [];
+    for (const [route, uiLanguage] of [['/', 'en'], ['/zh-cn/', 'zh-cn']]) {
+      await browser.navigate(base + route);
+      await browser.evaluate(`document.querySelector('[data-search-open]').click()`);
+      await query('MorphMimic');
+      const actual = await browser.evaluate(`(() => {
+        const dialog=document.getElementById('hextra-search-dialog');
+        const articles=[...dialog.querySelectorAll('a[role=option]')].filter(a=>new URL(a.href).pathname.startsWith('/posts/'));
+        return {interface:dialog.closest('[lang]').getAttribute('lang'),
+          input:dialog.querySelector('input').closest('[lang]').getAttribute('lang'),
+          languages:articles.map(a=>a.getAttribute('lang'))};
+      })()`);
+      assert.equal(actual.interface, uiLanguage);
+      assert.equal(actual.input, uiLanguage, 'Article metadata must not relabel the search interface');
+      assert(actual.languages.length && actual.languages.every(language=>language==='zh-CN'),
+        'Published Chinese page and chapter options retain their content language');
+
+      // Exercise mixed parent languages and old UI fixtures through the actual
+      // renderer. Missing breadcrumb metadata must not inherit a Chinese option.
+      await browser.evaluate(`(() => {
+        window.__languageSearchOriginal=window.hextraSearch.search;
+        window.hextraSearch.search=async()=>[
+          {id:'language-page',route:'/posts/language-fixture/',title:'中文标题',language:'zh-CN',
+            breadcrumbs:['English parent','中文父级'],breadcrumbLanguages:['en','zh-CN'],
+            matches:[{id:'language-chapter',route:'/posts/language-fixture/#chapter',title:'中文章节',content:'中文内容'}]},
+          {id:'language-old-crumb',route:'/posts/language-old-crumb/',title:'中文标题',language:'zh-CN',
+            breadcrumbs:['Legacy parent'],matches:[]},
+          {id:'language-legacy',route:'/legacy-language-fixture/',title:'Legacy title',
+            breadcrumbs:['Legacy parent'],
+            matches:[{id:'language-legacy-chapter',route:'/legacy-language-fixture/#chapter',title:'Legacy chapter',content:'Legacy content'}]}
+        ];
+      })()`);
+      await query('language-fixture');
+      const fixture = await browser.evaluate(`(() => {
+        const language=id=>document.getElementById(id).getAttribute('lang');
+        const crumbs=id=>[...document.getElementById(id).querySelectorAll('.hextra-search-crumb>span')].map(s=>s.getAttribute('lang'));
+        return {page:language('language-page'),chapter:language('language-chapter'),
+          mixedCrumbs:crumbs('language-page'),oldCrumbPage:language('language-old-crumb'),
+          oldCrumbs:crumbs('language-old-crumb'),legacy:language('language-legacy'),
+          legacyChapter:language('language-legacy-chapter'),legacyCrumbs:crumbs('language-legacy'),
+          interface:document.getElementById('hextra-search-dialog').closest('[lang]').getAttribute('lang')};
+      })()`);
+      assert.deepEqual(fixture, {page:'zh-CN',chapter:'zh-CN',mixedCrumbs:['en','zh-CN'],
+        oldCrumbPage:'zh-CN',oldCrumbs:[uiLanguage],legacy:uiLanguage,
+        legacyChapter:uiLanguage,legacyCrumbs:[uiLanguage],interface:uiLanguage});
+      await browser.evaluate(`window.hextraSearch.search=window.__languageSearchOriginal;delete window.__languageSearchOriginal`);
+      await query('MorphMimic');
+      await browser.key('Escape','Escape',27);
+      await wait(`!document.getElementById('hextra-search-dialog').open`);
+      report.resultLanguages.push({route,uiLanguage,actualOptions:actual.languages.length,
+        mixedBreadcrumbs:true,oldDataFallback:true,interfaceUnchanged:true});
+    }
+
     const restore = savedTheme === null ? `localStorage.removeItem('color-theme')` : `localStorage.setItem('color-theme',${JSON.stringify(savedTheme)})`;
     await browser.evaluate(restore);
     const failures = report.layouts.filter(row => row.contrast.issues.length || row.emptyContrast.issues.length);

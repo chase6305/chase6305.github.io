@@ -1,0 +1,80 @@
+{
+  "reviewed_on": "2026-11-04",
+  "method": "deterministic code-native SVG from checked arithmetic, tensor shapes and per-token routing",
+  "generator": "scripts/render_transformer_figures.py",
+  "generator_sha256": "888ff879e711562467cd9b6b0fafd1c205d46f67a53b7c972cb6a146c9aec208",
+  "runtime_dependencies": "Python standard library only; CairoSVG 2.8.2 used only for temporary independent PNG previews",
+  "source": "https://arxiv.org/html/1706.03762v7#S3.SS2.SSS2",
+  "notation": "Article code follows PyTorch W[out,in] and row-batched X W^T + b; single scoring vectors are locally defined as columns.",
+  "assumptions": [
+    "Fixed Softmax score examples; unrounded normalization with three-decimal display",
+    "MHA C=48,H=8,Dh=6; valid query rows shown; padding/all-masked handling omitted from figure",
+    "Causal mask fixed5x5 scores, allowed key j<=query i; future -infinity scores yield exact0 weights",
+    "MoE constructed4token/4expert one-hot inputs and shared E_j(x)=j*x; only selected logits normalized; capacity,dispatch kernels and training balancing loss outside this example",
+    "Four scoring rules are alternatives; common order Scores→Mask→row Softmax→weighted Value; cosine requires nonzero vectors"
+  ],
+  "artifacts": [
+    {
+      "asset": "content/posts/ai/transformer-attention/assets/softmax-row-calculation.svg",
+      "sha256": "532ee071826f53ea45851e8a5558d7dbc77845f9dcc2f599f590e42ff60c0255",
+      "bytes": 7914,
+      "width": "1400",
+      "height": "770",
+      "viewBox": "0 0 1400 770",
+      "legacy_asset_retained": "content/posts/ai/transformer-attention/assets/softmax-step-by-step.webp",
+      "legacy_sha256": "dd95806bceeffb2b962c83e30793e93f88c46c19ab4aea4a0618a1afb809e356"
+    },
+    {
+      "asset": "content/posts/ai/transformer-attention/assets/multi-head-shapes.svg",
+      "sha256": "cb512535611f2b95bfbc1dea0775b10fa86e53978eab98b496ca8dddcd05af4c",
+      "bytes": 12101,
+      "width": "1400",
+      "height": "1390",
+      "viewBox": "0 0 1400 1390",
+      "legacy_asset_retained": "content/posts/ai/transformer-attention/assets/multi-head-attention-flow.webp",
+      "legacy_sha256": "3f8d8f19aae679ead0f934ddf810aa99a0ccf18239d571ca362ef8e47c81f811"
+    },
+    {
+      "asset": "content/posts/ai/transformer-attention/assets/causal-mask-calculation.svg",
+      "sha256": "2dc9544d1c1065c421de0de6209e6b5254c507b2cb0a841df97e42d31aa78add",
+      "bytes": 24620,
+      "width": "1600",
+      "height": "750",
+      "viewBox": "0 0 1600 750",
+      "legacy_asset_retained": "content/posts/ai/transformer-attention/assets/causal-mask.webp",
+      "legacy_sha256": "b366e7d8430dc33226ff69c25551bc17c528d28413da095455b94af1a44dcc47"
+    },
+    {
+      "asset": "content/posts/ai/transformer-attention/assets/moe-token-routing.svg",
+      "sha256": "a69fb3ca800dab159415ac4b5aebcd22cba28f1ec3c255cef446c3c6602a960e",
+      "bytes": 15377,
+      "width": "1600",
+      "height": "1140",
+      "viewBox": "0 0 1600 1140",
+      "legacy_asset_retained": "content/posts/ai/transformer-attention/assets/moe-routing.webp",
+      "legacy_sha256": "e1798a53d60792980496f4ae1fdff86f6ced5124a12eac0ef422c4ba309bdd5e"
+    },
+    {
+      "asset": "content/posts/ai/transformer-attention/assets/attention-scoring-pipeline.svg",
+      "sha256": "9306f1a23856755db0ea8d604ef4ce391cd538f3913ae301753ad69d4e61f0bf",
+      "bytes": 10704,
+      "width": "1600",
+      "height": "1000",
+      "viewBox": "0 0 1600 1000",
+      "legacy_asset_retained": "content/posts/ai/transformer-attention/assets/attention-scoring-functions.webp",
+      "legacy_sha256": "1cc2fd74aa42fb86901425f34e1c774a37fea92d3c4e210de8882114ff5e2a30"
+    }
+  ],
+  "validation": {
+    "generator": "--check verifies independent numerical/shape/DAG invariants and actual repository UTF-8 text synchronization",
+    "raw_bytes": "Separate read_bytes==render.encode(UTF-8) passed for all five",
+    "independent_review": "Five SVGs and PNG previews independently reviewed:231 assertions without importing generator. Subsequent browser and print checks passed; see browser and print fields.",
+    "browser": "24layouts/120imagechecks/48equations/20realkeyboardoverflowcases/10originalSVGkeyboardzooms passed,0exceptions; current formula-layout reflow18cases and latestsearch12passed.",
+    "print": "12A4geometrylayouts at100%/200% passed;4native/taggedA4/LetterPDFs,all20SVG-title/captionpairs samepage; all5normalA4+largeLetterfigurepages manuallyviewed."
+  },
+  "file_size_comparison": {
+    "new_svg_bytes": 70716,
+    "old_webp_bytes": 612936,
+    "scope": "file sizes only; no network or rendering performance conclusion"
+  }
+}

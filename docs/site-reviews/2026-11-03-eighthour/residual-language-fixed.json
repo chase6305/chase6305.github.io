@@ -1,0 +1,49 @@
+{
+  "result": "complete; source frozen",
+  "canonical_production": "/tmp/chase-site-eight-hour-20261103/residual-language-production-final2",
+  "canonical_home": "https://chase6305.github.io/",
+  "Hugo_version": "0.165.0",
+  "final_build_ms": 1982,
+  "HTTP_loopback_port": 13845,
+  "CDP_9240_released": true,
+  "source_files_sha256": {
+    "data/taxonomy_languages.yaml": "9eefdf1e20b1adb8ad5ab2e50030581ff5a6e00504bcd3f1f210c8e85c923f8b",
+    "layouts/_partials/blog/term-language.html": "0437a83be0ffebe4ead87f2a0ff26638e1616618591ed39306990e5a738aaf26",
+    "layouts/term.html": "d4864ef7323857af4302e1ba0c53bb8370d841b67c5423b3b6f42a8d6bcd0ff5",
+    "layouts/taxonomy.html": "151ac9488f8dc043b720ad08fe1e57b1f9467741fd5645f50c49018a24f00020",
+    "layouts/_partials/language-switch.html": "cfd1d7a336b918332f9a4bb1589cdb52e8d5f357f71afb7bcc1c49543ece984c",
+    "scripts/check_language_menu.cjs": "bdc4f9c38a374fc8d0b7a33361a73b53767cc3a4e08a05cdeaef7011b2a453cb",
+    "docs/theme-overrides.json": "4ca14b0fef2473b1ea5ad383792a8e889b08742a23ae36df6cf325a7e11db938"
+  },
+  "HTML_pages": 324,
+  "mapped_fields": 16,
+  "menu_options": 1908,
+  "only_expected_language_attributes_changed": 1924,
+  "all_other_DOM_and_text_equal": true,
+  "nonHTML_files_byte_identical": 2004,
+  "unmapped_fields_preserved": 389,
+  "source_guard_files": 890,
+  "browser": {
+    "cases": 108,
+    "nestedCases": 12,
+    "optionLanguageChecks": 232,
+    "exceptions": 0
+  },
+  "assets": {
+    "pinned_packages": 3,
+    "pinned_files": 29,
+    "active_pinned_packages": 2,
+    "native_image_viewers": 1,
+    "verified_integrity_assets": 27,
+    "html_pages_checked": 324,
+    "manifest_icons_checked": 2,
+    "theme_overrides": 17,
+    "core_renderer_overrides": 1,
+    "local_math_fonts": 20
+  },
+  "remaining_Chinese_text_inheriting_English": 0,
+  "open_menu_DOM_and_AX_routes": 3,
+  "no_article_or_Muon_edits": true,
+  "old_before_evidence_preserved": true,
+  "finished_UTC": "2026-11-03T17:45:42.540357+00:00"
+}

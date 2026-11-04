@@ -1,0 +1,49 @@
+{
+  "runner_pid": 114625,
+  "updated_utc": "2026-11-03T17:55:20.973828+00:00",
+  "complete": true,
+  "passed": true,
+  "steps": [
+    {
+      "name": "release-semantics-interactive",
+      "pid": 114631,
+      "proc_stat": "114631 (node) R 114625 114625 114625 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 46539192 107749376 0 18446744073709551615 14905344 54527057 140729754722896 0 0 0 0 0 0 0 0 0 17 11 0 0 0 0 0 112298208 112479056 750915584 140729754731511 140729754731818 140729754731818 140729754738630 0\n",
+      "started_utc": "2026-11-03T17:49:33.206694+00:00",
+      "command": [
+        "node",
+        "scripts/check_site_semantics.cjs",
+        "http://127.0.0.1:13845",
+        "9240",
+        "/tmp/chase-site-eight-hour-20261103/release-semantics-interactive",
+        "--axe",
+        "/tmp/chase-opt-20261029-fivehour/a11y/node_modules/axe-core/axe.min.js",
+        "--interactive",
+        "--all-pages",
+        "/tmp/chase-site-eight-hour-20261103/residual-language-production-final2"
+      ],
+      "exit_code": 0,
+      "seconds": 184.75757362897275
+    },
+    {
+      "name": "release-semantics-native",
+      "pid": 141722,
+      "proc_stat": "141722 (node) R 114625 114625 114625 0 -1 4194304 12 0 0 0 0 0 0 0 20 0 1 0 46557667 107749376 0 18446744073709551615 14905344 54527057 140730223826544 0 0 0 0 0 0 0 0 0 17 12 0 0 0 0 0 112298208 112479056 128458752 140730223829996 140730223830314 140730223830314 140730223837126 0\n",
+      "started_utc": "2026-11-03T17:52:37.964642+00:00",
+      "command": [
+        "node",
+        "scripts/check_site_semantics.cjs",
+        "http://127.0.0.1:13845",
+        "9240",
+        "/tmp/chase-site-eight-hour-20261103/release-semantics-native",
+        "--axe",
+        "/tmp/chase-opt-20261029-fivehour/a11y/node_modules/axe-core/axe.min.js",
+        "--scripts-off",
+        "--native-scroll",
+        "--all-pages",
+        "/tmp/chase-site-eight-hour-20261103/residual-language-production-final2"
+      ],
+      "exit_code": 0,
+      "seconds": 163.0092753280187
+    }
+  ]
+}

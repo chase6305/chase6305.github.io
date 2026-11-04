@@ -351,6 +351,7 @@ print(x.grad.numpy())
 | 原子操作                | `wp.atomic_add()`, `wp.atomic_max()` | 线程安全的原子操作               |
 | 数学函数                | `wp.sqrt()`, `wp.sin()`              | 支持 GPU 加速的数学函数          |
 | 自动微分                | `wp.Tape()`                          | 记录计算图并计算梯度             |
+{.table-readable}
 
 ---
 

@@ -482,11 +482,19 @@
     return svg;
   }
 
-  function appendBreadcrumb(container, parts) {
+  function languageOrUI(value) {
+    if (typeof value === 'string' && value.trim()) return value.trim();
+    return dialog.closest('[lang]')?.getAttribute('lang') || document.documentElement.lang;
+  }
+
+  function appendBreadcrumb(container, parts, languages) {
     for (let i = 0; i < parts.length; i++) {
       if (i > 0) container.appendChild(createBreadcrumbSeparator());
 
       const part = document.createElement('span');
+      // Breadcrumbs can come from a differently localized parent page. Old
+      // data without this metadata retains the surrounding interface language.
+      part.lang = languageOrUI(Array.isArray(languages) ? languages[i] : undefined);
       part.textContent = parts[i];
       container.appendChild(part);
     }
@@ -523,6 +531,7 @@
       const link = document.createElement('a');
       link.id = result.id;
       link.href = result.route;
+      link.lang = languageOrUI(result.language);
       link.setAttribute('role', 'option');
       link.setAttribute('aria-selected', isFirstOption ? 'true' : 'false');
       isFirstOption = false;
@@ -531,7 +540,7 @@
       if (result.breadcrumbs && result.breadcrumbs.length) {
         const crumb = document.createElement('div');
         crumb.className = 'hextra-search-crumb';
-        appendBreadcrumb(crumb, result.breadcrumbs);
+        appendBreadcrumb(crumb, result.breadcrumbs, result.breadcrumbLanguages);
         link.appendChild(crumb);
       }
 
@@ -556,6 +565,7 @@
         const excerptLink = document.createElement('a');
         excerptLink.id = match.id;
         excerptLink.href = match.route;
+        excerptLink.lang = languageOrUI(match.language || result.language);
         excerptLink.setAttribute('role', 'option');
         excerptLink.setAttribute('aria-describedby', title.id);
         excerptLink.setAttribute('aria-selected', isFirstOption ? 'true' : 'false');

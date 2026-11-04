@@ -47,8 +47,11 @@ $$
 也就是落在以肩、腕为球心的两个球面上。在 $|a-b|<d<a+b$ 时，它们相交成一个圆。令肩腕方向 $\hat u=(W-S)/d$，从肩沿该方向到圆心的距离为
 
 $$
-x=\frac{a^2-b^2+d^2}{2d},\qquad
-C=S+x\hat u,\qquad \rho=\sqrt{a^2-x^2}.
+\begin{gathered}
+x=\frac{a^2-b^2+d^2}{2d},\\
+C=S+x\hat u,\\
+\rho=\sqrt{a^2-x^2}.
+\end{gathered}
 $$
 
 选取垂直于 $\hat u$ 的两个正交单位向量 $v,w$，圆上的肘部可以写成
@@ -166,7 +169,8 @@ class SRSKinSolver:
         joints[3] = elbow_GC4 * np.arccos(np.clip(elbow_cos_angle, -1.0, 1.0))
 
         # Calculate joint 1
-        if np.linalg.norm(P_s_to_w[:2]) > 1e-6:
+        # Any nonzero projection retains its azimuth, even near the vertical axis.
+        if np.hypot(P_s_to_w[0], P_s_to_w[1]) > 0:
             joints[0] = np.arctan2(P_s_to_w[1], P_s_to_w[0])
         else:
             joints[0] = 0

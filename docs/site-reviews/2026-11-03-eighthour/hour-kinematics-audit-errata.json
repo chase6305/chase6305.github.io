@@ -1,0 +1,16 @@
+{
+  "scope": "Correction to the independent audit annotation; original audit retained unchanged.",
+  "source": "kinematics-precision-review/results.json",
+  "entry": "six_dof.wrist_counterexamples[name=singular_pi_branch].known_q4_q5_q6_rad",
+  "original_annotation": [
+    0,
+    "pi",
+    0
+  ],
+  "correct_reachable_example_for_identity_R36": [
+    "pi",
+    "pi",
+    0
+  ],
+  "reason": "For Rz(q4)Rx(pi/2)Rz(q5)Rx(pi/2)Rz(q6), (0,pi,0) yields diag(-1,-1,1); (pi,pi,0) yields I. The I-target counterexample and old Rzz=+1 failure remain valid. Adopted regression uses independent forward matrix products for every actual generated target, not that annotation."
+}

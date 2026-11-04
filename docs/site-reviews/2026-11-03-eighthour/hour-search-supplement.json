@@ -1,0 +1,118 @@
+{
+  "cases": [
+    {
+      "entrance": "/",
+      "width": 320,
+      "query": "coupled_angle",
+      "expected": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "results": [
+        "/posts/robotics/kinematics/six-dof-kinematics/"
+      ]
+    },
+    {
+      "entrance": "/",
+      "width": 320,
+      "query": "timestep_embedding",
+      "expected": "/posts/ai/diffusion-models/",
+      "results": [
+        "/posts/ai/diffusion-models/"
+      ]
+    },
+    {
+      "entrance": "/",
+      "width": 320,
+      "query": "azimuth",
+      "expected": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "results": [
+        "/posts/robotics/kinematics/seven-dof-kinematics/"
+      ]
+    },
+    {
+      "entrance": "/",
+      "width": 1440,
+      "query": "coupled_angle",
+      "expected": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "results": [
+        "/posts/robotics/kinematics/six-dof-kinematics/"
+      ]
+    },
+    {
+      "entrance": "/",
+      "width": 1440,
+      "query": "timestep_embedding",
+      "expected": "/posts/ai/diffusion-models/",
+      "results": [
+        "/posts/ai/diffusion-models/"
+      ]
+    },
+    {
+      "entrance": "/",
+      "width": 1440,
+      "query": "azimuth",
+      "expected": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "results": [
+        "/posts/robotics/kinematics/seven-dof-kinematics/"
+      ]
+    },
+    {
+      "entrance": "/zh-cn/",
+      "width": 320,
+      "query": "coupled_angle",
+      "expected": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "results": [
+        "/posts/robotics/kinematics/six-dof-kinematics/"
+      ]
+    },
+    {
+      "entrance": "/zh-cn/",
+      "width": 320,
+      "query": "timestep_embedding",
+      "expected": "/posts/ai/diffusion-models/",
+      "results": [
+        "/posts/ai/diffusion-models/"
+      ]
+    },
+    {
+      "entrance": "/zh-cn/",
+      "width": 320,
+      "query": "azimuth",
+      "expected": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "results": [
+        "/posts/robotics/kinematics/seven-dof-kinematics/"
+      ]
+    },
+    {
+      "entrance": "/zh-cn/",
+      "width": 1440,
+      "query": "coupled_angle",
+      "expected": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "results": [
+        "/posts/robotics/kinematics/six-dof-kinematics/"
+      ]
+    },
+    {
+      "entrance": "/zh-cn/",
+      "width": 1440,
+      "query": "timestep_embedding",
+      "expected": "/posts/ai/diffusion-models/",
+      "results": [
+        "/posts/ai/diffusion-models/"
+      ]
+    },
+    {
+      "entrance": "/zh-cn/",
+      "width": 1440,
+      "query": "azimuth",
+      "expected": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "results": [
+        "/posts/robotics/kinematics/seven-dof-kinematics/"
+      ]
+    }
+  ],
+  "exceptions": [],
+  "summary": {
+    "cases": 12,
+    "multiTermNegativeCases": 4,
+    "exceptions": 0
+  }
+}

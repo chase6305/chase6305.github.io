@@ -1,0 +1,14 @@
+[
+  {
+    "path": "content/posts/ai/diffusion-models/index.md",
+    "display_blocks": 19,
+    "changed_blocks": 3,
+    "same_math_tokens_after_removing_layout": true
+  },
+  {
+    "path": "content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+    "display_blocks": 3,
+    "changed_blocks": 1,
+    "same_math_tokens_after_removing_layout": true
+  }
+]

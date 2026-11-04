@@ -1,0 +1,193 @@
+{
+  "scope": "37 existing pages from the200% print sweep; baseline-drafts vsaccepted-drafts",
+  "all37_rendered_math_annotations_equal_to_initial_build": true,
+  "repository_CSS_unchanged": true,
+  "checks": [
+    {
+      "route": "/posts/ai/algorithms/astar/astar-cpp/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 4
+    },
+    {
+      "route": "/posts/ai/distributed-training-memory/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 36
+    },
+    {
+      "route": "/posts/calibration/kinematics/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 38
+    },
+    {
+      "route": "/posts/calibration/model/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 63
+    },
+    {
+      "route": "/posts/calibration/zero/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 29
+    },
+    {
+      "route": "/posts/casadi/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 20
+    },
+    {
+      "route": "/posts/open3d/introduction/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 37
+    },
+    {
+      "route": "/posts/pid/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 26
+    },
+    {
+      "route": "/posts/pink/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 20
+    },
+    {
+      "route": "/posts/planner/to_mpc_wbc/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 131
+    },
+    {
+      "route": "/posts/rl/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 354
+    },
+    {
+      "route": "/posts/robotics/control/impedance-control/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 586
+    },
+    {
+      "route": "/posts/robotics/dynamics/parameter-identification/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 237
+    },
+    {
+      "route": "/posts/robotics/kinematics/jacobian/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 127
+    },
+    {
+      "route": "/posts/robotics/kinematics/kinematics-introduction/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 31
+    },
+    {
+      "route": "/posts/robotics/kinematics/pytorch/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 10
+    },
+    {
+      "route": "/posts/robotics/workspace/whole-workspace/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 14
+    },
+    {
+      "route": "/posts/thesis/coacd/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 27
+    },
+    {
+      "route": "/posts/trajectory/toppra/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 42
+    },
+    {
+      "route": "/posts/ai/rynnbrain/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 69
+    },
+    {
+      "route": "/posts/ai/internvl-3-5/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 77
+    },
+    {
+      "route": "/posts/ai/ppo-dpo-grpo/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 107
+    },
+    {
+      "route": "/posts/ai/gspo/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 56
+    },
+    {
+      "route": "/posts/ai/gen-1-5/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 25
+    },
+    {
+      "route": "/posts/thesis/elmp/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 27
+    },
+    {
+      "route": "/posts/ai/x-vla/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 214
+    },
+    {
+      "route": "/posts/ai/real-time-chunking/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 209
+    },
+    {
+      "route": "/posts/ai/light-loco-parkour/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 93
+    },
+    {
+      "route": "/posts/ai/llm-training-metrics/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 129
+    },
+    {
+      "route": "/posts/robotics/control/robot-filters/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 175
+    },
+    {
+      "route": "/posts/ai/vla-survey/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 59
+    },
+    {
+      "route": "/posts/ai/foundations-modern-ai/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 86
+    },
+    {
+      "route": "/posts/ai/behavior-prompting/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 6
+    },
+    {
+      "route": "/posts/ai/stable-hand/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 63
+    },
+    {
+      "route": "/posts/ai/video-to-data/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 55
+    },
+    {
+      "route": "/posts/ai/rrsi/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 101
+    },
+    {
+      "route": "/posts/ai/cosmos3/",
+      "all_rendered_math_annotations_unchanged": true,
+      "math_annotations": 117
+    }
+  ],
+  "emitted_CSS_files_byte_identical": 13
+}

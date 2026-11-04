@@ -1,0 +1,32 @@
+{{- /* Decode a rendered HTML attribute, where a semicolonless named reference
+  followed by '=' or an ASCII letter/digit remains literal (WHATWG 13.2.5.78).
+  Maximal ASCII-name tokens retain that following letter/digit. A complete named
+  reference expands to one or two Unicode code points; a partially decoded
+  legacy prefix leaves a suffix plus ';', so has at least three. */ -}}
+{{- $result := . -}}
+{{- if in $result "&" -}}
+  {{- /* Hugo 0.165.0's decoder omits these two HTML5 names. */ -}}
+  {{- $compat := dict "&nGt;" "≫⃒" "&nLt;" "≪⃒" -}}
+  {{- $chunks := `(?s)(.*?)(&#[xX][0-9A-Fa-f]+;?|&#[0-9]+;?|&[A-Za-z][A-Za-z0-9]*;?|$)(=?)` -}}
+  {{- $pieces := slice -}}
+  {{- range findRESubmatch $chunks $result -}}
+    {{- $prefix := index . 1 -}}
+    {{- $token := index . 2 -}}
+    {{- $equals := index . 3 -}}
+    {{- $decoded := $token -}}
+    {{- if hasPrefix $token "&#" -}}
+      {{- $decoded = htmlUnescape $token -}}
+    {{- else if hasPrefix $token "&" -}}
+      {{- $terminated := printf "%s;" (replaceRE `;$` "" $token) -}}
+      {{- $expanded := htmlUnescape $terminated -}}
+      {{- with index $compat $terminated -}}{{- $expanded = . -}}{{- end -}}
+      {{- $complete := and (ne $expanded $terminated) (le (len (findRE `(?s).` $expanded 3)) 2) -}}
+      {{- if and $complete (or (hasSuffix $token ";") (and (ne $equals "=") (eq (htmlUnescape $token) $expanded))) -}}
+        {{- $decoded = $expanded -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $pieces = $pieces | append $prefix $decoded $equals -}}
+  {{- end -}}
+  {{- $result = delimit $pieces "" -}}
+{{- end -}}
+{{- return $result -}}

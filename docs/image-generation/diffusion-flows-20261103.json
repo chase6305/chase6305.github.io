@@ -1,0 +1,62 @@
+{
+  "method": "Deterministic repository-owned SVG graph rendering; no raster edits",
+  "generator": "scripts/render_diffusion_flows.py",
+  "sources": [
+    {
+      "title": "Latent Diffusion Models §3.3",
+      "url": "https://arxiv.org/html/2112.10752v2#S3.SS3",
+      "scope": "Q from image features;K/V from conditions"
+    },
+    {
+      "title": "DDPM §3.4 and Algorithms1/2",
+      "url": "https://arxiv.org/html/2006.11239v2#S3.SS4",
+      "scope": "Noise prediction conditioned on xt,t; reverse mean and variance update"
+    }
+  ],
+  "simplifications": [
+    "U-Net only one intermediate attention block, no fixed layer count or tensor dimensions",
+    "No conditional training path, CFG, VAE or optimizer internals in DDPM diagram",
+    "Full discrete T-step DDPM shown; not a claim about accelerated samplers"
+  ],
+  "assets": [
+    {
+      "path": "content/posts/ai/diffusion-models/assets/time-conditioned-unet-flow.svg",
+      "sha256": "1aa54830ea52fa0e5a1869f96390499b71b561a164351aee9cad5eaff2808d6e",
+      "bytes": 4509,
+      "old_retained": false
+    },
+    {
+      "path": "content/posts/ai/diffusion-models/assets/training-vs-sampling-flow.svg",
+      "sha256": "17d20e5580280b12aed9337d28cd1d8bd0701dfccd359853d45059856c8d1724",
+      "bytes": 7438,
+      "old_retained": false
+    },
+    {
+      "path": "content/posts/ai/diffusion-models/assets/time-conditioned-unet.webp",
+      "sha256": "8ca001dc5b363c29c15b8bf4995c0524a4e22ebeb276d2495a931f1315c38dd4",
+      "bytes": 103292,
+      "old_retained": true
+    },
+    {
+      "path": "content/posts/ai/diffusion-models/assets/training-vs-sampling.webp",
+      "sha256": "4d4387d44abe04c046b25e3e121631b7b6eefe611e2e49b94ed09e4b16bf12ee",
+      "bytes": 99744,
+      "old_retained": true
+    }
+  ],
+  "validation": {
+    "source_graph": "explicit emitted data-from/data-to edges checked; not an independent physics oracle",
+    "visual_review": "Both complete final SVGs rasterized in Chrome and manually inspected: labels, directed endpoints, timestep dashes, feature Q,condition KV, decoder-to-head and stochastic reverse update.",
+    "browser": {
+      "layouts": 24,
+      "figure_inspections": 48,
+      "keyboard_original_zoom_sessions": 4,
+      "runtime_exceptions": 0,
+      "scope": "Only two replaced figures; formulas separately print-checked."
+    },
+    "print": "Passed6 ordinary+6 large-text A4 geometry cases after3 equivalent formula reflows. Two accepted native PDFs(A4 scripted100%,Letter scripts-off200%) keep both SVGs and captions on the same pages. Actual SVG labels/arrows/captions and4 corrected math regions manually inspected in native PDFs.",
+    "native_report": "docs/site-reviews/2026-11-03-eighthour/hour-native-final.json",
+    "embedding": "54 CPU PyTorch2.14.1 cases vs independent scalar math, including dim1 and empty batches; no training validation."
+  },
+  "generator_sha256": "228eb41b6f942deaecb76574abe35b26e92531ce73f7f340b24b63da79987ca5"
+}

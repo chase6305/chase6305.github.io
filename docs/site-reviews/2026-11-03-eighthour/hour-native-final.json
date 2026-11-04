@@ -1,0 +1,249 @@
+{
+  "exports": [
+    {
+      "route": "/posts/ai/diffusion-models/",
+      "slug": "diffusion",
+      "phrases": [
+        "图4",
+        "图5",
+        "Query",
+        "Key/Value"
+      ],
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "file": "/tmp/chase-site-eight-hour-20261103/accepted-native-pdfs/diffusion-true-100-light-a4.pdf",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 42
+        },
+        "math": {
+          "same": true,
+          "count": 50
+        },
+        "code": {
+          "same": true,
+          "count": 9
+        },
+        "captions": {
+          "same": true,
+          "count": 7
+        }
+      },
+      "htmlSha256": "9f576aa76a9669c4867ad757038eaeb8015d1394a5a3fbcb4a7928c353966216",
+      "pages": 27,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "7dcae678d3bf875be54f5f55a836cbd4b393deaa4e071bc9a1bee87c8ebd1428"
+    },
+    {
+      "route": "/posts/ai/diffusion-models/",
+      "slug": "diffusion",
+      "phrases": [
+        "图4",
+        "图5",
+        "Query",
+        "Key/Value"
+      ],
+      "scripts": false,
+      "size": 200,
+      "theme": "warm",
+      "paper": "letter",
+      "file": "/tmp/chase-site-eight-hour-20261103/accepted-native-pdfs/diffusion-false-200-warm-letter.pdf",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 42
+        },
+        "math": {
+          "same": true,
+          "count": 50
+        },
+        "code": {
+          "same": true,
+          "count": 9
+        },
+        "captions": {
+          "same": true,
+          "count": 7
+        }
+      },
+      "htmlSha256": "9f576aa76a9669c4867ad757038eaeb8015d1394a5a3fbcb4a7928c353966216",
+      "pages": 59,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "84cd4d818c7c655a3dc2458a939e66bb940da9fca15f63bcd79b7df5ec0bbf29"
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "slug": "six-dof",
+      "phrases": [
+        "std::hypot",
+        "coupled_angle"
+      ],
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "file": "/tmp/chase-site-eight-hour-20261103/accepted-native-pdfs/six-dof-true-100-light-a4.pdf",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 11
+        },
+        "math": {
+          "same": true,
+          "count": 28
+        },
+        "code": {
+          "same": true,
+          "count": 3
+        },
+        "captions": {
+          "same": true,
+          "count": 1
+        }
+      },
+      "htmlSha256": "52fb6d95ddade8c632cfc35137841c2e8a4b655295c7051a03c071448f269c22",
+      "pages": 14,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "c36d974399e668de058beb63f86c054f3f4e7566b907d91831566326c66faf0a"
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "slug": "six-dof",
+      "phrases": [
+        "std::hypot",
+        "coupled_angle"
+      ],
+      "scripts": false,
+      "size": 200,
+      "theme": "warm",
+      "paper": "letter",
+      "file": "/tmp/chase-site-eight-hour-20261103/accepted-native-pdfs/six-dof-false-200-warm-letter.pdf",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 11
+        },
+        "math": {
+          "same": true,
+          "count": 28
+        },
+        "code": {
+          "same": true,
+          "count": 3
+        },
+        "captions": {
+          "same": true,
+          "count": 1
+        }
+      },
+      "htmlSha256": "52fb6d95ddade8c632cfc35137841c2e8a4b655295c7051a03c071448f269c22",
+      "pages": 25,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "495f2dc9a60a0426a37f2049aadf9d0023d28ec5dad76c2a8426803f41dd10d7"
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "slug": "seven-dof",
+      "phrases": [
+        "SRSKinSolver",
+        "np.hypot"
+      ],
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "file": "/tmp/chase-site-eight-hour-20261103/accepted-native-pdfs/seven-dof-true-100-light-a4.pdf",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 9
+        },
+        "math": {
+          "same": true,
+          "count": 28
+        },
+        "code": {
+          "same": true,
+          "count": 1
+        },
+        "captions": {
+          "same": true,
+          "count": 0
+        }
+      },
+      "htmlSha256": "188116ffde70a258ad0dd46fa318d3101a17450c21c1c7db7a71b1c1c7e31db8",
+      "pages": 9,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "6c3a47a2ae2698e512b469f377267b58fe8b1ee6e3b2b4e260aa80542e73f501"
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "slug": "seven-dof",
+      "phrases": [
+        "SRSKinSolver",
+        "np.hypot"
+      ],
+      "scripts": false,
+      "size": 200,
+      "theme": "warm",
+      "paper": "letter",
+      "file": "/tmp/chase-site-eight-hour-20261103/accepted-native-pdfs/seven-dof-false-200-warm-letter.pdf",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 9
+        },
+        "math": {
+          "same": true,
+          "count": 28
+        },
+        "code": {
+          "same": true,
+          "count": 1
+        },
+        "captions": {
+          "same": true,
+          "count": 0
+        }
+      },
+      "htmlSha256": "188116ffde70a258ad0dd46fa318d3101a17450c21c1c7db7a71b1c1c7e31db8",
+      "pages": 15,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "703e7ee153288667c7ca9486d8bfd6f214d37252baa824dceae1e80c910e0dec"
+    }
+  ],
+  "exceptions": []
+}

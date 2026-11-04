@@ -1,0 +1,39 @@
+{
+  "filterReference": [
+    {
+      "method": "oneEuro",
+      "errors": {
+        "jitter": 8.770761894538737e-15,
+        "lag": 1.7763568394002505e-14,
+        "rmse": 3.9968028886505635e-15
+      }
+    },
+    {
+      "method": "butterworth",
+      "errors": {
+        "jitter": 9.2148511043888e-15,
+        "lag": 2.036415480688447e-11,
+        "rmse": 3.304023721284466e-13
+      }
+    },
+    {
+      "method": "wma",
+      "errors": {
+        "jitter": 0,
+        "lag": 3.863576125695545e-14,
+        "rmse": 4.440892098500626e-15
+      }
+    },
+    {
+      "method": "msd",
+      "errors": {
+        "jitter": 1.2545520178264269e-14,
+        "lag": 5.115907697472721e-13,
+        "rmse": 3.552713678800501e-15
+      }
+    }
+  ],
+  "filterControlGridCases": 2435,
+  "routingReferenceCases": 15,
+  "routingControlGridCases": 12120
+}

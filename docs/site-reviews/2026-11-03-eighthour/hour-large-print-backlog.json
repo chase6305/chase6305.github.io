@@ -1,0 +1,1091 @@
+{
+  "/posts/ai/algorithms/astar/astar-cpp/": {
+    "math": [
+      {
+        "tex": "\nf(n)=g(n)+h(n),\\qquad h(n)=\\|n-\\mathrm{goal}\\|_2.\n",
+        "width": 750.625,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/distributed-training-memory/": {
+    "math": [
+      {
+        "tex": "\nM_{\\text{live}}(t)=M_P(t)+M_G(t)+M_O(t)+M_A(t)+M_T(t)+M_C(t),\n",
+        "width": 1050.625,
+        "available": 716
+      },
+      {
+        "tex": "\nM_{\\mathrm{state}}=\nN b_P+N_{\\mathrm{train}}(b_G+b_{\\mathrm{master}}+b_m+b_v).\n",
+        "width": 757.3125,
+        "available": 716
+      },
+      {
+        "tex": "\nM_{\\mathrm{state}}=2+0.01(2+4+4+4)=2.14\\ \\mathrm{GB}.\n",
+        "width": 732.203125,
+        "available": 716
+      },
+      {
+        "tex": "\nV_{RS}\\approx\\frac{K-1}{K}M,\\quad\nV_{AG}\\approx\\frac{K-1}{K}M,\\quad\nV_{AR}\\approx2\\frac{K-1}{K}M\n",
+        "width": 941.203125,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/calibration/kinematics/": {
+    "math": [
+      {
+        "tex": "\nr_i(\\phi)=p_i^{\\mathrm{meas}}-p(q_i,\\phi),\\qquad\nJ_{\\phi,i}=\\frac{\\partial p(q_i,\\phi)}{\\partial\\phi}\\in\\mathbb R^{3\\times k}.\n",
+        "width": 870.40625,
+        "available": 716
+      },
+      {
+        "tex": "\na=q_1+\\beta+\\delta_1,\\qquad b=a+q_2+\\delta_2,\n\\qquad\np=\\begin{bmatrix}l_1\\cos a+l_2\\cos b\\\\l_1\\sin a+l_2\\sin b\\end{bmatrix}.\n",
+        "width": 1091.328125,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/calibration/model/": {
+    "math": [
+      {
+        "tex": "G_iX'C_i=G_iDXC_i=DG_iXC_i=DY=Y'.",
+        "width": 744.921875,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/calibration/zero/": {
+    "math": [
+      {
+        "tex": "\nY=\\begin{bmatrix}p_1^{\\mathrm{meas}}-p(q_1)\\\\ \\vdots\\\\p_n^{\\mathrm{meas}}-p(q_n)\\end{bmatrix},\n\\qquad\nB=\\begin{bmatrix}J_p(q_1)\\\\ \\vdots\\\\J_p(q_n)\\end{bmatrix},\n\\qquad B\\phi\\approx Y.\n",
+        "width": 932.375,
+        "available": 716
+      },
+      {
+        "tex": "\n[J_p(q_i)-J_p(q_1)]\\phi\n\\approx p(q_1)-p(q_i),\\qquad i=2,\\dots,n.\n",
+        "width": 846.359375,
+        "available": 716
+      },
+      {
+        "tex": "\np(q_i+\\phi+\\alpha e_1)=R(\\alpha)p(q_i+\\phi),\\qquad\nP'=R(\\alpha)P.\n",
+        "width": 850.859375,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/casadi/": {
+    "math": [
+      {
+        "tex": "\n\\min_{x,y}\\;(x-1)^2+(y-2)^2,\\qquad x\\ge0,\\quad y\\le1.\n",
+        "width": 735.5,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/open3d/introduction/": {
+    "math": [
+      {
+        "tex": "\n\\delta y_i=\\delta t+\\delta\\theta\\times y_i,\\qquad\nJ_i=\\begin{bmatrix}n_i^T&(y_i\\times n_i)^T\\end{bmatrix}.\n",
+        "width": 771.734375,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/pid/": {
+    "math": [
+      {
+        "tex": "\nu_{\\mathrm{PD}} = K_p e + K_d \\dot e,\n\\qquad\nu_{\\mathrm{PID}} = K_p e + K_i\\int_0^t e(\\tau)\\,d\\tau + K_d\\dot e.\n",
+        "width": 978.5625,
+        "available": 716
+      },
+      {
+        "tex": "\nI_k^{\\mathrm{candidate}}=I_{k-1}+K_i e_k\\Delta t,\\qquad\nu_k^{\\mathrm{candidate}}=K_p e_k+I_k^{\\mathrm{candidate}}-K_d\\hat{\\dot y}_k.\n",
+        "width": 1125.390625,
+        "available": 716
+      },
+      {
+        "tex": "\n\\alpha=\\frac{\\Delta t}{\\tau+\\Delta t},\\qquad\n\\hat{\\dot y}_k=(1-\\alpha)\\hat{\\dot y}_{k-1}\n+\\alpha\\frac{y_k-y_{k-1}}{\\Delta t}.\n",
+        "width": 823.8125,
+        "available": 716
+      },
+      {
+        "tex": "\nm\\ddot q+b\\dot q+kq=u+d,\\quad\nm=1\\;\\mathrm{kg},\\quad b=2\\;\\mathrm{N\\,s/m},\\quad\nk=4\\;\\mathrm{N/m},\\quad d=-1\\;\\mathrm N.\n",
+        "width": 1300.03125,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/pink/": {
+    "math": [
+      {
+        "tex": "\n\\min_{\\Delta q}\\frac12\\|J_e\\Delta q+\\alpha e\\|_W^2\n+\\frac{\\lambda}{2}\\|\\Delta q\\|^2,\n\\quad A\\Delta q\\le b.\n",
+        "width": 746.078125,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/planner/to_mpc_wbc/": {
+    "math": [
+      {
+        "tex": "\n\\begin{aligned}\nL(u)&=\\frac12\\sum_i(J_i u-b_i)^TW_i(J_i u-b_i)\n+\\frac\\rho2 u^Tu,\\\\\nH&=\\sum_i J_i^TW_iJ_i+\\rho I,\\\\\ng&=-\\sum_i J_i^TW_i b_i.\n\\end{aligned}\n",
+        "width": 764.40625,
+        "available": 716
+      },
+      {
+        "tex": "\n\\max\\left(-v_{\\max},\\frac{q_{\\min}-q}{\\Delta t},v-a_{\\max}\\Delta t\\right)\n\\le u\\le\n\\min\\left(v_{\\max},\\frac{q_{\\max}-q}{\\Delta t},v+a_{\\max}\\Delta t\\right).\n",
+        "width": 1305.09375,
+        "available": 716
+      },
+      {
+        "tex": "\nQ=\\bar q+BU,\\qquad\nB=\\Delta t\\,\\operatorname{tril}(\\mathbf 1_{N\\times N})\\otimes I_n,\n\\qquad \\bar q=\\mathbf 1_N\\otimes q_0.\n",
+        "width": 1010.84375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\begin{aligned}\n\\frac12\\|\\bar q+BU-Q^\\star\\|_W^2+\\frac12 U^TRU\n&=\\frac12 U^THU+g^TU+\\text{const},\\\\\nH&=B^TWB+R,\\\\\ng&=B^TW(\\bar q-Q^\\star).\n\\end{aligned}\n",
+        "width": 972.75,
+        "available": 716
+      },
+      {
+        "tex": "\nq_1=q_0+0.1u_0,\\qquad\nq_2=q_0+0.1u_0+0.1u_1.\n",
+        "width": 742.9375,
+        "available": 716
+      },
+      {
+        "tex": "\nJ=\\frac12\\left[10(q_1-0.3)^2+30(q_2-0.3)^2\n+0.1(u_0^2+u_1^2)\\right].\n",
+        "width": 885.984375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\begin{aligned}\nL(u)&=\\frac12\\left[4(u_1+u_2-1)^2+(u_1-u_2)^2\n+0.1(u_1^2+u_2^2)\\right],\\\\\nH&=\\begin{bmatrix}5.1&3\\\\3&5.1\\end{bmatrix},\\qquad\ng=\\begin{bmatrix}-4\\\\-4\\end{bmatrix}.\n\\end{aligned}\n",
+        "width": 934.046875,
+        "available": 716
+      },
+      {
+        "tex": "\nL_w=\\frac12\\left[w(u_1+u_2-0.6)^2+(u_1-u_2)^2\n+0.1(u_1^2+u_2^2)\\right].\n",
+        "width": 943.34375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\max(-0.2,0.6-0.8)\\le t\\le\\min(0.2,0.6+0.8),\n",
+        "width": 780.953125,
+        "available": 716
+      },
+      {
+        "tex": "\n\\max(-0.2,1-0.8)\\le t\\le\\min(0.2,1+0.8),\n",
+        "width": 720.703125,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/rl/": {
+    "math": [
+      {
+        "tex": "\np(X_{t+1}=x_{t+1}|X_{0:t}=x_{0:t})=p(X_{t+1}=x_{t+1}|X_{t}=x_{t})\n",
+        "width": 870.125,
+        "available": 716
+      },
+      {
+        "tex": "\n\\tau = (s_0, a_0, r_1, s_1, a_1, r_2, \\ldots, s_{T-1}, a_{T-1}, s_T)\n",
+        "width": 705.53125,
+        "available": 668
+      },
+      {
+        "tex": "\nG_t = R_{t+1} + \\gamma R_{t+2} + \\gamma^2 R_{t+3} + \\cdots\n= \\sum_{k=0}^{\\infty} \\gamma^k R_{t+k+1}\n",
+        "width": 833.0625,
+        "available": 668
+      },
+      {
+        "tex": "V^{\\pi}(s) = \\mathbb{E}_{a \\sim \\pi,\\, s' \\sim P} \\left[ R_{t+1} + \\gamma V^{\\pi}(S_{t+1}) \\mid S_t = s \\right]\n",
+        "width": 764.578125,
+        "available": 716
+      },
+      {
+        "tex": "\nQ^{\\pi}(s, a) = \\mathbb{E}_{S_{t+1},R_{t+1},\\,A_{t+1}\\sim\\pi(\\cdot\\mid S_{t+1})} \\left[ R_{t+1} + \\gamma Q^{\\pi}(S_{t+1}, A_{t+1}) \\mid S_t = s, A_t = a \\right]\n",
+        "width": 1199.890625,
+        "available": 668
+      },
+      {
+        "tex": "\nQ^*(s, a) = \\mathbb{E}_{s' \\sim P}\\left[\nR_{t+1} + \\gamma \\max_{a'} Q^*(s', a')\n\\mid S_t = s, A_t = a\n\\right]\n",
+        "width": 965.390625,
+        "available": 716
+      },
+      {
+        "tex": "\nV(S_t) \\leftarrow V(S_t) + \\alpha\\left[R_{t+1} + \\gamma V(S_{t+1}) - V(S_t)\\right]\n",
+        "width": 772.5,
+        "available": 668
+      },
+      {
+        "tex": "\nQ(S_t, A_t) \\leftarrow Q(S_t, A_t) + \\alpha\\left[\nR_{t+1} + \\gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t)\n\\right]\n",
+        "width": 1039.03125,
+        "available": 668
+      },
+      {
+        "tex": "\ny=r+\\gamma(1-d)\\max_{a'}Q(s',a'),\\qquad\nQ(s,a)\\leftarrow Q(s,a)+\\alpha\\bigl(y-Q(s,a)\\bigr).\n",
+        "width": 1188.265625,
+        "available": 716
+      },
+      {
+        "tex": "\nQ^*(s,a)=\\mathbb E\\!\\left[R_{t+1}+\\gamma\\max_{a'}Q^*(S_{t+1},a')\\mid S_t=s,A_t=a\\right],\n",
+        "width": 954.5625,
+        "available": 716
+      },
+      {
+        "tex": "\nQ(s,a)\\leftarrow Q(s,a)+\\alpha\\left[r+\\gamma(1-d)\\max_{a'}Q(s',a')-Q(s,a)\\right]\n",
+        "width": 998.046875,
+        "available": 668
+      },
+      {
+        "tex": "\n\\mathbb E\\!\\left[\\max_{a'}Q^d(s',a')\\right]\n\\geq \\max_{a'}\\mathbb E\\!\\left[Q^d(s',a')\\right]\n=\\max_{a'}Q^*(s',a').\n",
+        "width": 923.765625,
+        "available": 716
+      },
+      {
+        "tex": "\nJ(\\theta)=\\mathbb E_{\\tau\\sim p_\\theta}\\!\\left[\\sum_{t=0}^{T-1}\\gamma^t r_t\\right],\n\\qquad G_t=\\sum_{k=t}^{T-1}\\gamma^{k-t}r_k.\n",
+        "width": 758.09375,
+        "available": 716
+      },
+      {
+        "tex": "\nA^{(n)}(s_t,a_t)=∑^{n−1}_{k=0} \\gamma^k r_{t+k}+\\gamma^n V(s_{t+n})−V(s_t)\n",
+        "width": 750.78125,
+        "available": 668
+      },
+      {
+        "tex": "\n\\delta_t=r_t+\\gamma b_tV(s_{t+1}^{\\mathrm{final}})-V(s_t),\\qquad\n\\hat A_t=\\delta_t+\\gamma\\lambda c_t\\hat A_{t+1}.\n",
+        "width": 899.90625,
+        "available": 716
+      },
+      {
+        "tex": "\n\\rho_\\pi(s)=\\sum_{t=0}^{\\infty}\\gamma^tP(s_t=s\\mid\\pi),\n\\qquad d_\\pi(s)=(1-\\gamma)\\rho_\\pi(s),\\quad 0\\leq\\gamma<1.\n",
+        "width": 1119.9375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\eta(\\tilde\\pi)-\\eta(\\pi)\n=\\sum_s\\rho_{\\tilde\\pi}(s)\\sum_a\\tilde\\pi(a\\mid s)A_\\pi(s,a).\n",
+        "width": 733.875,
+        "available": 716
+      },
+      {
+        "tex": "\nL_\\pi(\\tilde\\pi)=\\eta(\\pi)+\n\\sum_s\\rho_\\pi(s)\\sum_a\\tilde\\pi(a\\mid s)A_\\pi(s,a).\n",
+        "width": 757.96875,
+        "available": 716
+      },
+      {
+        "tex": "\n\\eta(\\tilde\\pi)\\geq L_\\pi(\\tilde\\pi)\n-\\frac{4\\epsilon_A\\gamma}{(1-\\gamma)^2}\n\\left[D_{\\mathrm{TV}}^{\\max}(\\pi,\\tilde\\pi)\\right]^2,\n\\quad \\epsilon_A=\\max_{s,a}|A_\\pi(s,a)|.\n",
+        "width": 1034.578125,
+        "available": 716
+      },
+      {
+        "tex": "\n\\text{subject to}\\quad\n\\mathbb E_{s\\sim d_{\\mathrm{old}}}\n\\left[D_{\\mathrm{KL}}(\\pi_{\\mathrm{old}}(\\cdot\\mid s)\n\\parallel\\pi_\\theta(\\cdot\\mid s))\\right]\\leq\\delta.\n",
+        "width": 838.125,
+        "available": 716
+      },
+      {
+        "tex": "\n      L^{\\mathrm{CLIP}}(\\theta)=\\mathbb{E}_t\\!\\left[\\min\\left(r_t(\\theta)\\hat A_t,\\;\\operatorname{clip}(r_t(\\theta),1-\\epsilon,1+\\epsilon)\\hat A_t\\right)\\right]\n",
+        "width": 941.515625,
+        "available": 668
+      },
+      {
+        "tex": "\nL^{\\mathrm{KLPEN}}(\\theta)=\\hat{\\mathbb E}_t\\!\\left[\nr_t(\\theta)\\hat A_t-\\beta\\,\nD_{\\mathrm{KL}}\\bigl(\\pi_{\\mathrm{old}}(\\cdot\\mid s_t)\n\\parallel\\pi_\\theta(\\cdot\\mid s_t)\\bigr)\n\\right].\n",
+        "width": 964.84375,
+        "available": 716
+      },
+      {
+        "tex": "\nJ(\\theta)=\\mathbb E_t\\left[L_t^{\\mathrm{CLIP}}(\\theta)-c_1(V_\\theta(s_t)-V_t^{\\mathrm{target}})^2+c_2\\mathcal H(\\pi_\\theta(\\cdot\\mid s_t))\\right].\n",
+        "width": 1019.703125,
+        "available": 716
+      },
+      {
+        "tex": "\nL_t^{\\mathrm{CLIP}}(\\theta)=\\min\\left(r_t(\\theta)\\hat A_t,\\operatorname{clip}(r_t(\\theta),1-\\epsilon,1+\\epsilon)\\hat A_t\\right).\n",
+        "width": 873.890625,
+        "available": 716
+      },
+      {
+        "tex": "\ny_i=\\operatorname{stopgrad}\\!\\left[\nr_i+\\gamma(1-d_i)\nQ_{\\bar\\phi}\\bigl(s_i',\\mu_{\\bar\\theta}(s_i')\\bigr)\n\\right],\\qquad\nL_Q(\\phi)=\\frac1N\\sum_i\\bigl(Q_\\phi(s_i,a_i)-y_i\\bigr)^2.\n",
+        "width": 1375.71875,
+        "available": 716
+      },
+      {
+        "tex": "\n\\nabla_\\theta L_\\mu\n=-\\frac1N\\sum_i\n\\left(\\frac{\\partial\\mu_\\theta(s_i)}{\\partial\\theta}\\right)^T\n\\left.\\nabla_aQ_\\phi(s_i,a)\\right|_{a=\\mu_\\theta(s_i)}.\n",
+        "width": 837.5625,
+        "available": 716
+      },
+      {
+        "tex": "\n\\bar\\phi\\leftarrow\\tau\\phi+(1-\\tau)\\bar\\phi,\\qquad\n\\bar\\theta\\leftarrow\\tau\\theta+(1-\\tau)\\bar\\theta.\n",
+        "width": 726.203125,
+        "available": 716
+      },
+      {
+        "tex": "\n\\epsilon\\sim\\mathcal N(0,\\sigma^2I),\\qquad\n\\tilde a=\\operatorname{clip}\\!\\left(\n\\mu_{\\bar\\theta}(s')+\\operatorname{clip}(\\epsilon,-c,c),\na_{\\min},a_{\\max}\\right),\n",
+        "width": 1027.734375,
+        "available": 716
+      },
+      {
+        "tex": "\np_Q(a\\mid s)=\\frac{\\exp(Q(s,a)/\\alpha)}{Z(s)},\n\\qquad Z(s)=\\int\\exp(Q(s,a)/\\alpha)\\,da.\n",
+        "width": 1032.0625,
+        "available": 716
+      },
+      {
+        "tex": "\n\\alpha D_{\\mathrm{KL}}(\\pi_\\phi(\\cdot\\mid s)\\parallel p_Q(\\cdot\\mid s))\n=\\mathbb E_{a\\sim\\pi_\\phi}[\\alpha\\log\\pi_\\phi(a\\mid s)-Q(s,a)]\n+\\alpha\\log Z(s).\n",
+        "width": 1215.265625,
+        "available": 716
+      },
+      {
+        "tex": "\nu=\\mu_\\phi(s)+\\sigma_\\phi(s)\\odot\\epsilon,\n\\qquad\\epsilon\\sim\\mathcal N(0,I),\n\\qquad a=c+b\\odot\\tanh(u).\n",
+        "width": 1083.921875,
+        "available": 716
+      },
+      {
+        "tex": "\ny=r+\\gamma(1-d)\\left[\n\\min_{j=1,2}Q_{\\bar\\theta_j}(s',a')\n-\\alpha\\log\\pi_\\phi(a'\\mid s')\n\\right].\n",
+        "width": 872.59375,
+        "available": 716
+      },
+      {
+        "tex": "\nL_\\pi=\\mathbb E_{s,\\epsilon}\\left[\n\\alpha\\log\\pi_\\phi(a_\\phi(s,\\epsilon)\\mid s)\n-\\min_i Q_{\\theta_i}(s,a_\\phi(s,\\epsilon))\n\\right].\n",
+        "width": 901.515625,
+        "available": 716
+      },
+      {
+        "tex": "\n\\log\\pi(a\\mid s)=\\sum_i\\left[\n\\log\\mathcal N(u_i;\\mu_i,\\sigma_i^2)\n-\\log b_i-\\log(1-\\tanh^2u_i)\n\\right].\n",
+        "width": 1068.671875,
+        "available": 716
+      },
+      {
+        "tex": "\nJ=p_0+2\\gamma p_1,\\qquad\n\\nabla_\\theta J=[p_0(1-p_0),\\;2\\gamma p_1(1-p_1)].\n",
+        "width": 890.015625,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/robotics/control/impedance-control/": {
+    "math": [
+      {
+        "tex": "M_d\\delta\\ddot x+D_d\\delta\\dot x+K_d\\delta x=F_{ext},\n\\qquad \\delta x=x-x_d",
+        "width": 778.71875,
+        "available": 716
+      },
+      {
+        "tex": "\ne_s=\\begin{bmatrix}e_p\\\\ \\ell e_R\\end{bmatrix},\\qquad\nv_s=\\begin{bmatrix}v\\\\ \\ell\\omega\\end{bmatrix},\\qquad\nF_s=\\begin{bmatrix}f\\\\ \\mu/\\ell\\end{bmatrix}\n",
+        "width": 742.875,
+        "available": 716
+      },
+      {
+        "tex": "\nS=\\operatorname{diag}(1,1,0,1,1,1),\\qquad\nF=S F_{imp}+(I-S)F_{force}\n",
+        "width": 921.1875,
+        "available": 716
+      },
+      {
+        "tex": "\nf_{force,z}=f_{ff,z}+k_{pf}(f_{z,d}-\\hat f_z)\n+k_{if}\\int(f_{z,d}-\\hat f_z)\\,dt\n",
+        "width": 848.453125,
+        "available": 716
+      },
+      {
+        "tex": "\nM_d=M_d^T\\succ0,\\qquad\nK_d=K_d^T\\succeq0,\\qquad\nD_d=D_d^T\\succeq0\n",
+        "width": 882.734375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\Delta\\tau_k=\\operatorname{clip}\n\\left(\\tau_{raw,k}-\\tau_{cmd,k-1},\n-\\dot\\tau_{max}\\Delta t,\\dot\\tau_{max}\\Delta t\\right)\n",
+        "width": 778.28125,
+        "available": 716
+      },
+      {
+        "tex": "\n\\frac{\\tau_{min,i}-\\tau_{fixed,i}}{c_i}\n\\le f\\le\n\\frac{\\tau_{max,i}-\\tau_{fixed,i}}{c_i},\\qquad c_i>0\n",
+        "width": 814.859375,
+        "available": 716
+      },
+      {
+        "tex": "\n[\\tau_{lower,k},\\tau_{upper,k}]\n=[\\tau_{min},\\tau_{max}]\n\\cap[\\tau_{cmd,k-1}-\\dot\\tau_{max}\\Delta t,\n      \\tau_{cmd,k-1}+\\dot\\tau_{max}\\Delta t]\n",
+        "width": 1153.5,
+        "available": 716
+      },
+      {
+        "tex": "\n\\eta_k=\\operatorname{clip}\n\\left(\\eta_{k-1}+e_k\\Delta t,-\\eta_{max},\\eta_{max}\\right),\n\\qquad F_i=K_i\\eta_k\n",
+        "width": 867.25,
+        "available": 716
+      },
+      {
+        "tex": "\n\\dot q_k^{raw}=\\frac{q_k-q_{k-1}}{\\Delta t_k},\\qquad\n\\dot q_k^f=\\alpha_k\\dot q_{k-1}^f+(1-\\alpha_k)\\dot q_k^{raw}\n",
+        "width": 826.578125,
+        "available": 716
+      },
+      {
+        "tex": "\nf_n=\\frac{1}{2\\pi}\\sqrt{\\frac{K_d}{M_d}}\n\\approx3.56\\,\\mathrm{Hz},\\qquad\n\\zeta=\\frac{D_d}{2\\sqrt{M_dK_d}}\\approx0.894\n",
+        "width": 884.90625,
+        "available": 716
+      },
+      {
+        "tex": "\nu_k=u_{k-1}+\\operatorname{clip}\n\\left(u_k^{target}-u_{k-1},-\\Delta u_{max},\\Delta u_{max}\\right)\n",
+        "width": 816.859375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\begin{aligned}\n\\text{enter contact}:&\\quad |f_n|>F_{on}\n\\text{ 持续 }T_{on}\\\\\n\\text{leave contact}:&\\quad |f_n|<F_{off}\n\\text{ 持续 }T_{off},\\qquad F_{off}<F_{on}\n\\end{aligned}\n",
+        "width": 896.515625,
+        "available": 716
+      },
+      {
+        "tex": "\n\\frac{1}{2}m_{eff}v_0^2\\approx\\frac{F_{peak}^2}{2K_{eq}},\n\\qquad\nF_{peak}\\approx v_0\\sqrt{m_{eff}K_{eq}}\n",
+        "width": 725.796875,
+        "available": 716
+      },
+      {
+        "tex": "\nm\\ddot x+d\\dot x+k(t)x=F_{ext},\\qquad\nV=\\frac12m\\dot x^2+\\frac12k(t)x^2.\n",
+        "width": 864.703125,
+        "available": 716
+      },
+      {
+        "tex": "\n\\Delta k_{allowed}=\\min\\!\\left(\\Delta k_{requested},\n\\frac{2\\max(0,E-E_{min})}{x^2}\\right),\\qquad\nE^+=E-\\frac12x^2\\Delta k_{allowed}.\n",
+        "width": 1344.421875,
+        "available": 716
+      },
+      {
+        "tex": "\n\\hat C=\\frac{\\sum_k(F_k-\\bar F)(\\Delta x_k-\\overline{\\Delta x})}\n{\\sum_k(F_k-\\bar F)^2},\\qquad\n\\hat K=\\hat C^{-1}\n",
+        "width": 750.765625,
+        "available": 716
+      },
+      {
+        "tex": "\nF(t)=F_0\\sin(\\omega t),\\qquad\n\\delta x(t)=X_0\\sin(\\omega t-\\phi)\n",
+        "width": 762.671875,
+        "available": 716
+      },
+      {
+        "tex": "M(q)\\ddot q+h(q,\\dot q)=\\tau_{act}+\\tau_{ext},\\qquad\n\\tau_{ext}=J^TF_{ext}.",
+        "width": 799.1875,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/robotics/dynamics/parameter-identification/": {
+    "math": [
+      {
+        "tex": "\\hat\\theta_{ridge}=\\arg\\min_\\theta\\left(\\|W^{1/2}(\\bar Y\\theta-\\bar\\tau)\\|_2^2+\\lambda_r\\|L\\theta\\|_2^2\\right)",
+        "width": 785.1875,
+        "available": 716
+      },
+      {
+        "tex": "\nA=(\\bar Y^TW\\bar Y)^{-1}\\bar Y^TW,\\qquad\n\\operatorname{Cov}(\\hat\\theta)=A\\Sigma A^T.\n",
+        "width": 749.78125,
+        "available": 716
+      },
+      {
+        "tex": "x_{k+1}=f(x_k,u_k,\\theta_k)+w_k,\\qquad y_k=h(x_k,\\theta_k)+v_k",
+        "width": 827.015625,
+        "available": 716
+      },
+      {
+        "tex": "\n\\theta_i=\\begin{bmatrix}\nm & mc_x & mc_y & mc_z & I_{xx}^{O} & I_{xy}^{O} & I_{yy}^{O} & I_{xz}^{O} & I_{yz}^{O} & I_{zz}^{O}\n\\end{bmatrix}^{T}.\n",
+        "width": 1021.03125,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/robotics/kinematics/jacobian/": {
+    "math": [
+      {
+        "tex": "\nJ(q)\\in\\mathbb{R}^{6\\times7},\\qquad\n\\begin{bmatrix}v_x\\\\v_y\\\\v_z\\\\\\omega_x\\\\\\omega_y\\\\\\omega_z\\end{bmatrix} = \\underbrace{\\begin{bmatrix}\nJ_{11}&\\cdots&J_{17}\\\\\n\\vdots&&\\vdots\\\\\nJ_{61}&\\cdots&J_{67}\n\\end{bmatrix}}_{6\\text{ 行、7 列}}\n\\begin{bmatrix}\\dot q_1\\\\\\dot q_2\\\\\\vdots\\\\\\dot q_7\\end{bmatrix}.\n",
+        "width": 822.359375,
+        "available": 716
+      },
+      {
+        "tex": "J_{:,4}=[0.35,\\;-0.12,\\;0.00,\\;0.00,\\;0.00,\\;1.00]^T.",
+        "width": 740.515625,
+        "available": 716
+      },
+      {
+        "tex": "\nJ_p(q)=\n\\begin{bmatrix}\n-l_1\\sin q_1-l_2\\sin(q_1+q_2) & -l_2\\sin(q_1+q_2)\\\\\nl_1\\cos q_1+l_2\\cos(q_1+q_2) & +l_2\\cos(q_1+q_2)\n\\end{bmatrix}.\n",
+        "width": 914.265625,
+        "available": 716
+      },
+      {
+        "tex": "\nJ_{LWA}=\\begin{bmatrix}R&0\\\\0&R\\end{bmatrix}J_L,\n\\qquad\nJ_W=\\begin{bmatrix}R&[p]_\\times R\\\\0&R\\end{bmatrix}J_L.\n",
+        "width": 791.640625,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/robotics/kinematics/kinematics-introduction/": {
+    "math": [
+      {
+        "tex": "\nx=l_1\\cos q_1+l_2\\cos(q_1+q_2),\\qquad\ny=l_1\\sin q_1+l_2\\sin(q_1+q_2).\n",
+        "width": 1042.6875,
+        "available": 716
+      },
+      {
+        "tex": "\nc_2=\\frac{x^2+y^2-l_1^2-l_2^2}{2l_1l_2},\\qquad\nq_2=\\operatorname{atan2}\\left(\\pm\\sqrt{1-c_2^2},c_2\\right),\n",
+        "width": 935.640625,
+        "available": 716
+      },
+      {
+        "tex": "\nq_1=\\operatorname{atan2}(y,x)\n-\\operatorname{atan2}(l_2\\sin q_2,l_1+l_2\\cos q_2).\n",
+        "width": 788.03125,
+        "available": 716
+      },
+      {
+        "tex": "\n\\begin{bmatrix}\\dot x\\\\\\dot y\\end{bmatrix}=\n\\underbrace{\\begin{bmatrix}\n-l_1\\sin q_1-l_2\\sin(q_1+q_2)&-l_2\\sin(q_1+q_2)\\\\\nl_1\\cos q_1+l_2\\cos(q_1+q_2)&l_2\\cos(q_1+q_2)\n\\end{bmatrix}}_{J(q)}\n\\begin{bmatrix}\\dot q_1\\\\\\dot q_2\\end{bmatrix}.\n",
+        "width": 967.328125,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/robotics/kinematics/pytorch/": {
+    "math": [
+      {
+        "tex": "\n\\nabla_qL=J_p^T(p-p_*),\\qquad\n\\nabla_q^2L=J_p^TJ_p+\\sum_i(p_i-p_{*,i})\\nabla_q^2p_i.\n",
+        "width": 960.578125,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/robotics/workspace/whole-workspace/": {
+    "math": [
+      {
+        "tex": "\nF_{\\mathrm{area}}(r)=\\frac{r^2-r_{\\min}^2}{r_{\\max}^2-r_{\\min}^2},\\qquad\nr=\\sqrt{U(r_{\\min}^2,r_{\\max}^2)}.\n",
+        "width": 794.609375,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/thesis/coacd/": {
+    "math": [
+      {
+        "tex": "\nH(A,B)=\\max\\left\\{\\sup_{a\\in A}\\inf_{b\\in B}\\|a-b\\|,\n\\sup_{b\\in B}\\inf_{a\\in A}\\|b-a\\|\\right\\}.\n",
+        "width": 858.828125,
+        "available": 716
+      },
+      {
+        "tex": "\n\\Delta V=\\operatorname{Vol}(K)-\\operatorname{Vol}(C),\\qquad\nR_v=\\left(\\frac{3\\Delta V}{4\\pi}\\right)^{1/3}.\n",
+        "width": 807.625,
+        "available": 716
+      },
+      {
+        "tex": "\nC_L=C\\cap\\{x:n^Tx\\leq b\\},\\qquad\nC_R=C\\cap\\{x:n^Tx\\geq b\\}.\n",
+        "width": 910.625,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/trajectory/toppra/": {
+    "math": [
+      {
+        "tex": "\nx(s)=x_i+2u(s-s_i),\\qquad\n\\dot q_j^2=q_j'(s)^2x(s),\\qquad\n\\ddot q_j=q_j''(s)x(s)+q_j'(s)u.\n",
+        "width": 1208.84375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\gamma\\ge\\max\\!\\left(1,\n\\max_j\\frac{\\max_t|\\dot q_j|}{v_{j,\\max}},\n\\sqrt{\\max_j\\frac{\\max_t|\\ddot q_j|}{a_{j,\\max}}}\\right).\n",
+        "width": 779.90625,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/rynnbrain/": {
+    "math": [
+      {
+        "tex": "\nZ=\\frac{r}{\\sqrt{1+((u-c_x)/f_x)^2+((v-c_y)/f_y)^2}}.\n",
+        "width": 719.375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\ell=\\frac{\\sum_{h,d}m_d(\\hat u_{h,d}-u_{h,d})^2}\n{H\\sum_d m_d},\\qquad \\sum_d m_d>0.\n",
+        "width": 717.953125,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/internvl-3-5/": {
+    "math": [
+      {
+        "tex": "\ns_i(\\theta)=\\exp\\left[\n\\frac{1}{|y_i|}\\sum_t\n\\left(\\log\\pi_\\theta(y_{i,t}\\mid x,y_{i,<t})\n-\\log\\pi_{\\mathrm{old}}(y_{i,t}\\mid x,y_{i,<t})\\right)\n\\right].\n",
+        "width": 1112.4375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\mathcal L_{\\mathrm{consistency}}\n=\\mathbb E\\left[\\mathrm{KL}\n\\left(p_{\\mathrm{ref}}(\\cdot\\mid I,Q,y_{<t})\n\\;\\|\\;p_\\theta(\\cdot\\mid I_{\\mathrm{compressed}},Q,y_{<t})\\right)\\right].\n",
+        "width": 1059.65625,
+        "available": 716
+      },
+      {
+        "tex": "\nM_{\\mathrm{weights}}=8{,}528{,}318{,}464\\times2\n\\approx17.06\\ \\mathrm{GB}\\approx15.89\\ \\mathrm{GiB}.\n",
+        "width": 908.8125,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/ppo-dpo-grpo/": {
+    "math": [
+      {
+        "tex": "\n\\rho_t(\\theta)=\n\\frac{\\pi_\\theta(a_t\\mid s_t)}\n{\\pi_{\\mathrm{old}}(a_t\\mid s_t)}\n=\\exp(\\log\\pi_\\theta-\\log\\pi_{\\mathrm{old}}).\n",
+        "width": 736.171875,
+        "available": 716
+      },
+      {
+        "tex": "\nD_{\\mathrm{KL}}(\\pi_\\theta\\Vert\\pi_{\\mathrm{ref}})\n=\\sum_a\\pi_\\theta(a)\\left(\\log\\pi_\\theta(a)-\\log\\pi_{\\mathrm{ref}}(a)\\right).\n",
+        "width": 827.859375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\nabla_\\theta\\mathbb E_{a\\sim p_\\theta}[f_\\theta(a)]\n=\\mathbb E_{a\\sim p_\\theta}\\!\\left[\n\\nabla_\\theta f_\\theta(a)+f_\\theta(a)\\nabla_\\theta\\log p_\\theta(a)\n\\right].\n",
+        "width": 882.296875,
+        "available": 716
+      },
+      {
+        "tex": "p=[0.79,0.11,0.10],\\qquad q=[0.50,0.10,0.40].",
+        "width": 771.8125,
+        "available": 716
+      },
+      {
+        "tex": "\nR_{\\mathrm{shaped}}=\nR-\\beta_{\\mathrm{KL}}\n(\\log\\pi_{\\mathrm{old}}(a\\mid x)-\\log\\pi_{\\mathrm{ref}}(a\\mid x)).\n",
+        "width": 831.65625,
+        "available": 716
+      },
+      {
+        "tex": "\n\\delta_1=1,\\qquad \\delta_0=0,\\qquad\n\\hat A_1=1,\\qquad \\hat A_0=0+1\\times0.95\\times1=0.95.\n",
+        "width": 1103.015625,
+        "available": 716
+      },
+      {
+        "tex": "\n\\begin{aligned}\nS_{i,t}\n&=\\min\\left(\\rho_{i,t}\\hat A_i,\n\\operatorname{clip}(\\rho_{i,t},1-\\epsilon,1+\\epsilon)\\hat A_i\\right),\\\\\nJ_{\\mathrm{GRPO}}\n&=\\frac1G\\sum_i\\frac1{T_i}\n\\sum_{t=1}^{T_i}(S_{i,t}-\\beta k_{i,t}).\n\\end{aligned}\n",
+        "width": 775.046875,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/gspo/": {
+    "math": [
+      {
+        "tex": "\n\\nabla F(\\theta)=\\mathbb E_{x\\sim D,\\,y\\sim\\pi_\\theta(\\cdot\\mid x)}\n\\left[r(x,y)\\sum_t\\nabla\\log\\pi_\\theta(y_t\\mid x,y_{<t})\\right].\n",
+        "width": 940.859375,
+        "available": 716
+      },
+      {
+        "tex": "\np_{i,t}=\\pi_\\theta(y_{i,t}\\mid x,y_{i,<t}),\\qquad\np^{\\mathrm{old}}_{i,t}=\\pi_{\\theta_{\\mathrm{old}}}(y_{i,t}\\mid x,y_{i,<t}).\n",
+        "width": 852.359375,
+        "available": 716
+      },
+      {
+        "tex": "\ns_i=R_i^{1/L_i}\n=\\exp\\left(\\frac1{L_i}\\sum_{t=1}^{L_i}\n\\big[\\log p_{i,t}-\\log p^{\\mathrm{old}}_{i,t}\\big]\\right).\n",
+        "width": 783.09375,
+        "available": 716
+      },
+      {
+        "tex": "\nJ_{\\mathrm{GSPO}}=\n\\mathbb E\\left[\\frac1G\\sum_{i=1}^{G}\n\\min\\left(s_i\\widehat A_i,\n\\operatorname{clip}(s_i,1-\\epsilon,1+\\epsilon)\\widehat A_i\\right)\\right].\n",
+        "width": 917.78125,
+        "available": 716
+      },
+      {
+        "tex": "\n\\mathbb E[(r_i-\\bar r)z_i]\n=\\mathbb E[r_i z_i]-\\frac1G\\mathbb E[r_i z_i]\n=\\left(1-\\frac1G\\right)\\nabla_\\theta F.\n",
+        "width": 860.96875,
+        "available": 716
+      },
+      {
+        "tex": "\n\\mathbb E_{y\\sim\\pi_\\theta}[r(x,y)]\n=\\mathbb E_{y\\sim\\pi_{\\mathrm{old}}}\n\\left[\\frac{\\pi_\\theta(y\\mid x)}{\\pi_{\\mathrm{old}}(y\\mid x)}r(x,y)\\right].\n",
+        "width": 725.25,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/gen-1-5/": {
+    "math": [
+      {
+        "tex": "\nP(S_1\\cap\\cdots\\cap S_{10})\n=P(S_1)\\prod_{k=2}^{10}P(S_k\\mid S_1,\\ldots,S_{k-1})\n=0.9^{10}\\approx0.3487.\n",
+        "width": 1131.609375,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/thesis/elmp/": {
+    "math": [
+      {
+        "tex": "\n\\Delta q_t=\\pi_\\theta(q_t,P_t,T_{\\mathrm{target}}),\\qquad q_{t+1}=\\operatorname{clamp}(q_t+\\Delta q_t).\n",
+        "width": 865.28125,
+        "available": 716
+      },
+      {
+        "tex": "\nL_{\\mathrm{BC}}=\\lambda_{\\mathrm{action}}\\|\\Delta q_{\\mathrm{pred}}-\\Delta q_{\\mathrm{gt}}\\|_2^2+\\lambda_{\\mathrm{fk}}\\sum_{i=1}^{M}\\|\\mathrm{FK}_i(q_{\\mathrm{pred}})-\\mathrm{FK}_i(q_{\\mathrm{gt}})\\|_2.\n",
+        "width": 1081.203125,
+        "available": 716
+      },
+      {
+        "tex": "\nL_{\\mathrm{APG}}=w_{\\mathrm{target}}L_{\\mathrm{target}}+w_{\\mathrm{col}}(L_{\\mathrm{env}}+L_{\\mathrm{self}})+w_{\\mathrm{smooth}}L_{\\mathrm{smooth}}.\n",
+        "width": 954.03125,
+        "available": 716
+      },
+      {
+        "tex": "\nL_{\\mathrm{env}}=\\sum_{t=0}^{H}\\sum_{k=1}^{K}\\operatorname{ReLU}\\bigl(\\epsilon_{\\mathrm{margin}}-\\Phi_{\\mathrm{env}}(x_k(q_t))\\bigr).\n",
+        "width": 739.4375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\nabla_q\\ell=-J_k(q)^T\\nabla_x\\Phi_{\\mathrm{env}}(x_k(q)),\\qquad J_k=\\frac{\\partial x_k}{\\partial q}.\n",
+        "width": 759.609375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\phi_{\\mathrm{box}}(x)=\\|\\max(|x|-h,0)\\|_2+\\min\\bigl(\\max_i(|x_i|-h_i),0\\bigr).\n",
+        "width": 917.28125,
+        "available": 716
+      },
+      {
+        "tex": "\nL_{\\mathrm{smooth}}=\\frac{\\lambda_v}{H}\\sum_{t=0}^{H-1}\\|\\Delta q_t\\|^2+\\frac{\\lambda_a}{H-1}\\sum_{t=0}^{H-2}\\|\\Delta q_{t+1}-\\Delta q_t\\|^2.\n",
+        "width": 901.703125,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/x-vla/": {
+    "math": [
+      {
+        "tex": "\na=[p_1;u_1;g_1;p_2;u_2;g_2],\n\\qquad 20=2\\times(3+6+1).\n",
+        "width": 838.0625,
+        "available": 716
+      },
+      {
+        "tex": "\n\\mathcal L=\n500\\sum_{j=1}^{2}\\operatorname{MSE}(\\widehat p_j,p_j)\n+10\\sum_{j=1}^{2}\\operatorname{MSE}(\\widehat u_j,u_j)\n+\\frac12\\sum_{j=1}^{2}\\operatorname{BCEWithLogits}(\\widehat g_j,g_j).\n",
+        "width": 1305.484375,
+        "available": 716
+      },
+      {
+        "tex": "\nT_{request}=T_{capture}+T_{encode}+T_{network}\n+T_{policy}+T_{decode}.\n",
+        "width": 906.8125,
+        "available": 716
+      },
+      {
+        "tex": "\nQ=\\min(qdur,u_{end}-u_0),\\qquad\nq_j=u_0+\\frac{jQ}{H},\\quad j=0,\\ldots,H.\n",
+        "width": 1024.328125,
+        "available": 716
+      },
+      {
+        "tex": "\n\\theta_{err}=\\arccos\\left(\n\\operatorname{clip}\\left(\n\\frac{\\operatorname{tr}(R_{true}^{\\mathsf T}R_{pred})-1}{2},-1,1\n\\right)\\right).\n",
+        "width": 823.203125,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/real-time-chunking/": {
+    "math": [
+      {
+        "tex": "\nx^\\tau=(1-\\tau)\\epsilon+\\tau A,\n\\qquad\nu^\\tau=\\frac{\\mathrm dx^\\tau}{\\mathrm d\\tau}=A-\\epsilon.\n",
+        "width": 731.640625,
+        "available": 716
+      },
+      {
+        "tex": "\nx^{\\tau+\\Delta\\tau}=x^\\tau+\n\\Delta\\tau\\,v_\\theta(x^\\tau,o,\\tau),\\qquad\n\\Delta\\tau=1/N.\n",
+        "width": 757.9375,
+        "available": 716
+      },
+      {
+        "tex": "\nc_i=\\frac{e-i}{e-d+1},\n\\qquad\nW_i=\n\\begin{cases}\n1,&0\\le i<d,\\\\\nc_i\\dfrac{\\exp(c_i)-1}{\\exp(1)-1},&d\\le i<e,\\\\\n0,&e\\le i<H.\n\\end{cases}\n",
+        "width": 925.890625,
+        "available": 716
+      },
+      {
+        "tex": "\n\\tau_i=\n\\begin{cases}\n1,&i<d,\\\\\n\\tau,&i\\ge d.\n\\end{cases}\n\\qquad\nx_i=(1-\\tau_i)\\epsilon_i+\\tau_i A_i.\n",
+        "width": 729.9375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\mathcal L_{suffix}=\\mathbb E\\left[\n\\frac{\\sum_{i=d}^{H-1}\\sum_{j=1}^{D}\n\\big(v_\\theta(x,o,\\boldsymbol\\tau)_{ij}-(A_{ij}-\\epsilon_{ij})\\big)^2}\n{(H-d)D}\\right].\n",
+        "width": 929.46875,
+        "available": 716
+      },
+      {
+        "tex": "\nA_{obs}=t_{install}-t_{capture}\n=(t_{send}-t_{capture})+(t_{install}-t_{send}).\n",
+        "width": 976.8125,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/light-loco-parkour/": {
+    "math": [
+      {
+        "tex": "\ne_t=\\sum_i\\max(\\|a_i\\|-\\bar a,0),\\qquad\n\\widetilde e_t=\\alpha\\widetilde e_{t-1}+e_t,\n\\quad \\alpha=e^{-\\Delta t/\\tau}.\n",
+        "width": 1008.328125,
+        "available": 716
+      },
+      {
+        "tex": "\n\\mathcal L_{DAgger}=\n\\mathbb E_{s\\sim d_{\\pi_S}}\n\\left[\\|\\pi_E(o_E(s))-\\pi_S(o_S(s))\\|^2\\right].\n",
+        "width": 762.890625,
+        "available": 716
+      },
+      {
+        "tex": "\nr_{AMP}(z)=-\\log(1-D_\\phi(z))\n=\\operatorname{softplus}(\\ell_\\phi(z)).\n",
+        "width": 779.15625,
+        "available": 716
+      },
+      {
+        "tex": "\ns_j(x)=\\sigma(\\beta(x-p_j)),\\qquad\nw_0=1-s_0,\\quad w_j=s_{j-1}-s_j,\\quad w_K=s_{K-1}.\n",
+        "width": 1187.9375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\delta_t=r_t+\\gamma m_tV_{t+1}-V_t,\n\\qquad A_t=\\delta_t+\\gamma\\lambda m_tA_{t+1},\n\\qquad R_t=A_t+V_t.\n",
+        "width": 1122.90625,
+        "available": 716
+      },
+      {
+        "tex": "\n\\rho_t=\\exp\\big(\\log\\pi_\\theta(a_t\\mid o_{\\le t})-\n\\log\\pi_{old}(a_t\\mid o_{\\le t})\\big).\n",
+        "width": 751.546875,
+        "available": 716
+      },
+      {
+        "tex": "\n\\widehat h_{t+1}=h_t+f_\\psi(h_t,a_t),\\qquad\n\\mathcal L_{latent}=2-2\\cos\\big(P\\widehat h_{t+1},P\\operatorname{sg}(h_{t+1})\\big).\n",
+        "width": 1084.734375,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/llm-training-metrics/": {
+    "math": [
+      {
+        "tex": "\n\\begin{aligned}\nM_{\\mathrm{train}}={}&M_W+M_{\\mathrm{grad}}+M_{\\mathrm{optimizer}}\\\\\n&+M_{\\mathrm{activations}}+M_{\\mathrm{workspace}}+M_{\\mathrm{other}}.\n\\end{aligned}\n",
+        "width": 731.640625,
+        "available": 716
+      },
+      {
+        "tex": "\nq=\\prod_{i=0}^{m-1}\\left(1-\\frac{M}{n-i}\\right),\n\\qquad \\widehat{\\mathrm{pass@}k}=1-q.\n",
+        "width": 723.796875,
+        "available": 716
+      },
+      {
+        "tex": "\n\\operatorname{Var}_{boot}(\\bar d_{group})=\\frac{s_G^2}{G},\\qquad\n\\operatorname{Var}_{boot}(\\bar d_{row})=\\frac{s_G^2}{Gm}.\n",
+        "width": 777.734375,
+        "available": 716
+      },
+      {
+        "tex": "\n\\Delta_{question}=\\frac{\\sum_g n_g\\bar d_g}{\\sum_g n_g},\\qquad\n\\Delta_{group}=\\frac1G\\sum_g\\bar d_g.\n",
+        "width": 739.921875,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/robotics/control/robot-filters/": {
+    "math": [
+      {
+        "tex": "\nm\\ddot q+b\\dot q+kq=u,\n\\qquad m=1\\ \\mathrm{kg},\\quad b=2\\ \\mathrm{N\\,s/m},\\quad k=4\\ \\mathrm{N/m}.\n",
+        "width": 1051.125,
+        "available": 716
+      },
+      {
+        "tex": "\n\\begin{aligned}\n\\bar q_k&=\\bar q_{k-1}+\\alpha(q_k-\\bar q_{k-1}),\n&\\alpha&=1-e^{-2\\pi f_c h},\\\\\nu_k&=K_p(r_k-\\bar q_k)-K_d\\frac{\\bar q_k-\\bar q_{k-1}}{h}.\n\\end{aligned}\n",
+        "width": 854.5625,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/vla-survey/": {
+    "math": [
+      {
+        "tex": "\n\\mathcal L_{\\mathrm{I\\to T}}\n=-\\frac1B\\sum_{i=1}^B\n\\log\\frac{\\exp(\\operatorname{sim}(v_i,l_i)/\\tau)}\n{\\sum_{j=1}^B\\exp(\\operatorname{sim}(v_i,l_j)/\\tau)}.\n",
+        "width": 741.234375,
+        "available": 716
+      },
+      {
+        "tex": "\nA^{(1)},\\ldots,A^{(M)}\\sim\\pi_\\theta(\\cdot\\mid c),\n\\qquad\nA^*=\\arg\\max_{A^{(i)}} S_\\omega(c,A^{(i)}).\n",
+        "width": 922.203125,
+        "available": 716
+      },
+      {
+        "tex": "\nS_{\\mathrm{micro}}=\\frac{90+1}{100+10}\\approx82.7\\%,\n\\qquad\nS_{\\mathrm{macro}}=\\frac{90\\%+10\\%}{2}=50\\%.\n",
+        "width": 1025.953125,
+        "available": 716
+      },
+      {
+        "tex": "\nT_{\\mathrm{age}}=\nT_{\\mathrm{capture}}+T_{\\mathrm{preprocess}}+\nT_{\\mathrm{queue}}+T_{\\mathrm{model}}+\nT_{\\mathrm{transfer}}+T_{\\mathrm{actuate}}.\n",
+        "width": 1039.109375,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/foundations-modern-ai/": {
+    "math": [
+      {
+        "tex": "\n\\hat f = \\arg\\min_{a_0,\\ldots,a_K}\n\\left[\\frac{1}{n}\\sum_{i=1}^{n}(y_i-f(x_i))^2\n+\\lambda\\sum_{k=0}^{K}w_k a_k^2\\right],\n\\qquad w_k\\text{ 随 }k\\text{ 增大}.\n",
+        "width": 1142.765625,
+        "available": 716
+      },
+      {
+        "tex": "\nL(X)\\approx L(\\text{学到的模型/结构})+\nL(X\\mid\\text{该模型}).\n",
+        "width": 788.203125,
+        "available": 716
+      },
+      {
+        "tex": "\nL_{\\mathrm{req}}\\approx\\sum_{i=1}^{N}\\mathbb E_{Z_i\\sim Q_i}\\!\\left[\\log_2\\frac{Q_i(Z_i)}{P_i^s(Z_i)}\\right]\n=\\sum_{i=1}^{N}D_{\\mathrm{KL}}^{(2)}(Q_i\\Vert P_i^s),\n",
+        "width": 853.1875,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/behavior-prompting/": {
+    "math": [
+      {
+        "tex": "\n\\mathrm{CD}(A,B)=\\frac{1}{|A|}\\sum_{a\\in A}\\min_{b\\in B}\\|a-b\\|_2\n+\\frac{1}{|B|}\\sum_{b\\in B}\\min_{a\\in A}\\|b-a\\|_2\n",
+        "width": 943.078125,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/stable-hand/": {
+    "math": [
+      {
+        "tex": "\nx_\\tau=\\alpha\\odot x_1+(1-\\alpha)\\odot\\epsilon,\\qquad\nu_\\tau=(1-\\tilde q)\\odot(x_1-\\epsilon)\n",
+        "width": 911.375,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/video-to-data/": {
+    "math": [
+      {
+        "tex": "\n\\min_q\\;\\sum_i w_i\\left\\|f_i(q)-\\hat x_i\\right\\|^2\n+\\lambda\\left\\|q-q_{\\mathrm{prev}}\\right\\|^2,\n\\qquad q_{\\min}\\le q\\le q_{\\max}.\n",
+        "width": 1039.515625,
+        "available": 716
+      },
+      {
+        "tex": "\nw_{ij}=\\begin{bmatrix}f_{ij}\\\\(p_i\\times f_{ij})/r_c\\end{bmatrix},\n\\qquad\ns_k=\\max\\left(0,\\max_{i,j}b_k^\\top w_{ij}\\right).\n",
+        "width": 892.890625,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/rrsi/": {
+    "math": [
+      {
+        "tex": "\nS(H;D)=\\mathbb E_{x\\sim D,\\,\\tau\\sim(\\pi,H)}[r(x,\\tau)],\n\\qquad\nC(H;D)=\\mathbb E_{x\\sim D,\\,\\tau\\sim(\\pi,H)}[c(\\tau)].\n",
+        "width": 1129.515625,
+        "available": 716
+      },
+      {
+        "tex": "\n\\Delta S=\\hat S(H')-\\hat S(H_t),\n\\qquad\n\\Delta C=\\frac{\\hat C(H')-\\hat C(H_t)}{\\hat C(H_t)}.\n",
+        "width": 844.0625,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  },
+  "/posts/ai/cosmos3/": {
+    "math": [
+      {
+        "tex": "\n\\mathcal L_{\\mathrm{gen}}\n=\\sum_m\\lambda_m\\,\n\\operatorname{MSE}_{\\mathrm{target},m}\n\\bigl(v_{\\theta,m},\\epsilon_m-x_{0,m}\\bigr).\n",
+        "width": 718.6875,
+        "available": 716
+      },
+      {
+        "tex": "\n\\mathrm{SAV}=0.60\\,\\mathrm{SA}+0.30\\,\\mathrm{AVAlign}+0.10\\,\\mathrm{VisualSupport}.\n",
+        "width": 905.59375,
+        "available": 716
+      }
+    ],
+    "code": 0,
+    "tables": 0,
+    "other": []
+  }
+}

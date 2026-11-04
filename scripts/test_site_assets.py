@@ -8,7 +8,9 @@ import re
 import subprocess
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import unquote, urlsplit
+from urllib.parse import quote, unquote, urljoin, urlsplit
+
+from site_asset_references import local_reference, manifest_icon_files, resolve_reference_url
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -17,19 +19,65 @@ class Assets(HTMLParser):
     def __init__(self, source):
         super().__init__()
         self.links = []
+        self.manifests = []
         self.feed(source)
 
     def handle_starttag(self, tag, pairs):
         attrs = dict(pairs)
         if tag == 'script' and attrs.get('src'):
             self.links.append((attrs['src'], attrs.get('integrity')))
-        elif tag == 'link' and attrs.get('rel') == 'stylesheet':
-            self.links.append((attrs['href'], attrs.get('integrity')))
+        elif tag == 'link' and attrs.get('href'):
+            relations = set((attrs.get('rel') or '').lower().split())
+            if 'stylesheet' in relations:
+                self.links.append((attrs['href'], attrs.get('integrity')))
+            if 'manifest' in relations:
+                self.manifests.append(attrs['href'])
+
+
+def check_asset_references(public, base='https://chase6305.github.io/'):
+    """Check every HTML page, including recovery pages, with no network I/O."""
+    public = public.resolve()
+    base = base.rstrip('/') + '/'
+    checked = set()
+    viewer_scripts = set()
+    manifests = set()
+    icons = set()
+    html_pages = 0
+    for html in sorted(public.rglob('*.html')):
+        html_pages += 1
+        relative = html.relative_to(public).as_posix()
+        page_url = urljoin(base, quote(relative, safe='/+-._'))
+        references = Assets(html.read_text(encoding='utf-8'))
+        for href, integrity in references.links:
+            parts = urlsplit(href)
+            assert not parts.scheme and not parts.netloc, f'External script/style: {html}: {href}'
+            target = local_reference(public, base, page_url, href)
+            assert target is not None and target.is_file(), f'Missing script/style: {html}: {href}'
+            assert 'medium-zoom' not in href, f'Retired image dependency is still loaded: {href}'
+            if '/js/image-viewer' in href:
+                assert integrity, 'Image viewer must have integrity metadata'
+                viewer_scripts.add(href)
+            if integrity and (target, integrity) not in checked:
+                for token in integrity.split():
+                    algorithm, expected = token.split('-', 1)
+                    actual = base64.b64encode(hashlib.new(algorithm, target.read_bytes()).digest()).decode()
+                    assert actual == expected, f'Invalid integrity: {html}: {href}'
+                checked.add((target, integrity))
+        for reference in references.manifests:
+            manifest_url = resolve_reference_url(page_url, reference)
+            if manifest_url not in manifests:
+                icons.update(manifest_icon_files(public, base, manifest_url))
+                manifests.add(manifest_url)
+    return {'native_image_viewers': len(viewer_scripts),
+            'verified_integrity_assets': len(checked),
+            'html_pages_checked': html_pages, 'manifest_icons_checked': len(icons)}
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--public', type=Path, default=ROOT / 'public')
+    parser.add_argument('--base-url', default='https://chase6305.github.io/',
+                        help='Published site URL, including an optional project prefix')
     args = parser.parse_args()
     public = args.public.resolve()
     manifest = json.loads((ROOT / 'docs/vendor-assets.json').read_text())
@@ -81,31 +129,14 @@ def main():
     assert hashlib.sha256(renderer_license.read_bytes()).hexdigest() == renderer['license_sha256']
     assert (public / renderer_license.relative_to(ROOT / 'static')).read_bytes() == renderer_license.read_bytes()
 
-    checked = set()
-    viewer_scripts = set()
-    for html in public.rglob('index.html'):
-        for href, integrity in Assets(html.read_text()).links:
-            parts = urlsplit(href)
-            assert not parts.scheme and not parts.netloc, f'External script/style: {html}: {href}'
-            target = public / unquote(parts.path).lstrip('/')
-            assert target.is_file(), f'Missing script/style: {html}: {href}'
-            assert 'medium-zoom' not in href, f'Retired image dependency is still loaded: {href}'
-            if '/js/image-viewer' in href:
-                assert integrity, 'Image viewer must have integrity metadata'
-                viewer_scripts.add(href)
-            if integrity and (href, integrity) not in checked:
-                for token in integrity.split():
-                    algorithm, expected = token.split('-', 1)
-                    actual = base64.b64encode(hashlib.new(algorithm, target.read_bytes()).digest()).decode()
-                    assert actual == expected, f'Invalid integrity: {href}'
-                checked.add((href, integrity))
-    assert len(viewer_scripts) == 1, 'Expected one shared native image-viewer asset'
+    references = check_asset_references(public, args.base_url)
+    assert references['native_image_viewers'] == 1, 'Expected one shared native image-viewer asset'
     print(json.dumps({'pinned_packages': len(manifest), 'pinned_files': pinned_files,
                       'active_pinned_packages': sum(item.get('runtime', True) for item in manifest),
-                      'native_image_viewers': len(viewer_scripts),
+                      **references,
                       'theme_overrides': len(overrides['overrides']),
                       'core_renderer_overrides': 1,
-                      'local_math_fonts': len(font_paths), 'verified_integrity_assets': len(checked)}, indent=2))
+                      'local_math_fonts': len(font_paths)}, indent=2))
 
 
 if __name__ == '__main__':

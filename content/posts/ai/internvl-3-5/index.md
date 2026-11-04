@@ -672,6 +672,7 @@ print(input_tokens, cache_gib)  # 4096 1.125
 | --- | --- | --- |
 | 原始自定义格式 | `AutoModel`、`model.chat()` | 自定义图块处理、Tokenizer、图像 token 对应 |
 | `-HF` 原生格式 | `AutoModelForImageTextToText`、`AutoProcessor` | 由匹配的 Processor 与 chat template 构造输入 |
+{.table-readable}
 
 下载第二条路线的 [infer_image.py](infer_image.py)，进入文件所在目录。脚本固定使用 `OpenGVLab/InternVL3_5-8B-HF` 及 revision `741a7d03020411e666c6109218ab71e08151ef86`，不执行远程自定义代码。[HF 模型卡](https://huggingface.co/OpenGVLab/InternVL3_5-8B-HF)、[Transformers 原生接口](https://huggingface.co/docs/transformers/model_doc/internvl)
 

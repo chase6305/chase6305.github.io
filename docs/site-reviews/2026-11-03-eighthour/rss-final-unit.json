@@ -1,0 +1,14 @@
+{
+  "command": "python3 -B scripts/test_blog_rss.py --hugo /tmp/chase-opt-20261029-fivehour/tools/hugo",
+  "exit_code": 0,
+  "base_url_variants": 2,
+  "url_and_preservation_checks": 66,
+  "original_url_and_preservation_checks_retained": 54,
+  "attribute_entity_cases_per_base_url": 2452,
+  "upstream_full_feed_limit": 50,
+  "configured_summary_feed_limit": 3,
+  "article_html_and_summary_feed": "unchanged",
+  "xml_and_html_parsed": true,
+  "url_oracle": "Node WHATWG URL",
+  "attribute_oracle": "Python standard-library HTML5 named-reference table and explicit attribute-context cases"
+}

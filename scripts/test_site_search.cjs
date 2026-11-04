@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 // Exercise the exact vendored search library with independent article fixtures.
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
 const FlexSearch = require('../assets/vendor/flexsearch/flexsearch.bundle.min.js');
 const {normalize, queryTerms, encode, pageIndexFields} = require('../assets/js/core/search-terms.js');
 
@@ -123,5 +126,73 @@ for (let n = 0; n < 400; n++) {
   assert.equal(ids.length, new Set(ids).size, query);
   assert.deepEqual(new Set(ids), new Set(bodyIds(whole, query)), query);
 }
-console.log(JSON.stringify({library: 'FlexSearch 0.8.143', checks:
-  'NFKC, CJK bigrams and final characters, supplementary Unicode, technical punctuation, no partial-term suggestions, field-specific ranking, chapter intersections, unique limited results and 400 whole-text oracle queries passed'}));
+async function checkLanguageMetadata() {
+  // Execute the real data plane with only its four runtime Hugo strings filled
+  // in. The vendored index and actual chapter append/search paths stay intact.
+  let templateStrings = 0;
+  const plane = fs.readFileSync(path.join(__dirname, '../assets/js/flexsearch.js'), 'utf8')
+    .replace(/^\/\/.*$/gm, '')
+    .replace(/\{\{[\s\S]*?\}\}/g, expression => {
+      templateStrings++;
+      if (expression.includes('$searchData.RelPermalink')) return '/fixture-search.json';
+      if (expression.includes('tokenize')) return 'forward';
+      if (expression.includes('maxPageResults')) return '20';
+      if (expression.includes('maxSectionResults')) return '10';
+      throw Error('Unexpected data-plane template string: ' + expression);
+    });
+  assert.equal(templateStrings, 4);
+  const data = {
+    '/manual/': {title: 'English manual', language: 'en', data: {'': 'General reference'}},
+    '/manual/zh/': {title: '中文分组', language: 'zh-CN', data: {'': '章节目录'}},
+    '/manual/zh/guide/': {title: '中文控制', language: 'zh-CN', data: {
+      'first#起点': 'qk 独立验证', 'second#终点': 'norm 跨章验证'}},
+    '/manual/legacy/': {title: 'Legacy reference', data: {'setup#Setup': 'qk norm legacy fixture'}},
+  };
+  const librarySource = fs.readFileSync(path.join(__dirname, '../assets/vendor/flexsearch/flexsearch.bundle.min.js'), 'utf8');
+  const termsSource = fs.readFileSync(path.join(__dirname, '../assets/js/core/search-terms.js'), 'utf8');
+  const load = (fixture, uiLanguage) => {
+    const context = {document: {documentElement: {lang: uiLanguage}}, performance: {now: () => 0},
+      console: {debug() {}}, setTimeout, clearTimeout,
+      fetch: async () => ({ok: true, json: async () => fixture})};
+    context.window = context;
+    vm.createContext(context);
+    // The index library and its option arrays must share a browser-like realm.
+    for (const source of [librarySource, termsSource, plane]) vm.runInContext(source, context, {timeout: 10000});
+    return async query => JSON.parse(JSON.stringify(await context.window.hextraSearch.search(query)));
+  };
+  const oldData = JSON.parse(JSON.stringify(data));
+  for (const page of Object.values(oldData)) delete page.language;
+  const withoutLanguages = groups => groups.map(({language, breadcrumbLanguages, matches, ...group}) => ({
+    ...group, matches: matches.map(({language, ...match}) => match)
+  }));
+  for (const uiLanguage of ['en', 'zh-cn']) {
+    const search = load(data, uiLanguage), oldSearch = load(oldData, uiLanguage);
+    const groups = await search('qk');
+    const chinese = groups.find(group => group.route === '/manual/zh/guide/');
+    assert(chinese && chinese.matches.length, 'Chinese chapter fixture was not returned');
+    assert.equal(chinese.language, 'zh-CN');
+    assert.deepEqual(chinese.breadcrumbs, ['English manual', '中文分组']);
+    assert.deepEqual(chinese.breadcrumbLanguages, ['en', 'zh-CN']);
+    assert(chinese.matches.every(match => match.language === 'zh-CN'));
+    const legacy = groups.find(group => group.route === '/manual/legacy/');
+    assert.equal(legacy.language, uiLanguage, 'Old page data falls back to the interface language');
+    assert(legacy.matches.every(match => match.language === uiLanguage));
+    assert.deepEqual(legacy.breadcrumbLanguages, ['en'], 'A declared parent keeps its own language');
+    assert((await search('qk norm')).some(group => group.route === '/manual/zh/guide/'),
+      'Stored metadata must not break a cross-chapter term intersection');
+    assert.deepEqual(await search('zh-CN'), [], 'Language metadata must not enter relevance fields');
+    for (const query of ['qk', 'norm', 'qk norm', 'manual']) {
+      assert.deepEqual(withoutLanguages(await search(query)), withoutLanguages(await oldSearch(query)),
+        'Language metadata changed ranking, destinations or matches: ' + query);
+    }
+    const oldChinese = (await oldSearch('qk')).find(group => group.route === '/manual/zh/guide/');
+    assert.equal(oldChinese.language, uiLanguage);
+    assert.deepEqual(oldChinese.breadcrumbLanguages, [uiLanguage, uiLanguage]);
+  }
+  return {uiLanguages: 2, fixturePages: 4, storedMetadataOnly: true, oldDataFallback: true};
+}
+
+checkLanguageMetadata().then(languageMetadata => {
+  console.log(JSON.stringify({library: 'FlexSearch 0.8.143', languageMetadata, checks:
+    'NFKC, CJK bigrams and final characters, supplementary Unicode, technical punctuation, no partial-term suggestions, field-specific ranking, chapter intersections, unique limited results and 400 whole-text oracle queries passed'}));
+}).catch(error => {console.error(error); process.exitCode = 1;});

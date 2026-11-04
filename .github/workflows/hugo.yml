@@ -59,6 +59,8 @@ jobs:
             --python-snippets \
             --structured-snippets \
             --strict-math
+          python3 -B scripts/test_blog_validation.py
+          python3 -B scripts/test_blog_rss.py
           node scripts/test_blog_filter.cjs public
           node scripts/test_site_search.cjs
           node scripts/test_multiview_geometry_lab.cjs
@@ -78,6 +80,9 @@ jobs:
           python3 -B scripts/test_pid_examples.py
           python3 -B scripts/test_blog_round5.py
           python3 -B scripts/test_llm_metrics.py
+          python3 -B scripts/plot_distributed_overlap.py --check
+          python3 -B scripts/render_transformer_figures.py --check
+          python3 -B scripts/render_diffusion_flows.py --check
           python3 -B scripts/package_llm_metrics_lab.py --check
           python3 -B scripts/test_parkour_examples.py
           python3 -B scripts/test_act_examples.py
@@ -97,10 +102,12 @@ jobs:
           python3 -B scripts/package_gspo_gen_labs.py --check
           python3 -B scripts/test_deploy.py
           python3 -B scripts/test_site_release.py
+          python3 -B scripts/test_asset_references.py
           python3 -B scripts/test_site_assets.py --public public
       - name: Test portable C++ and loopback examples
         run: |
           python3 -B scripts/test_blog_examples.py --only cpp cmake modbus network
+          python3 -B scripts/test_kinematics_fragments.py
       - name: Set up Python for offline identification examples
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:

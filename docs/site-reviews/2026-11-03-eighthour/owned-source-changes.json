@@ -1,0 +1,418 @@
+{
+  "scope": "Source and supporting docs only; audit evidence and main progress report are separate. Existing initial dirty changes excluded using exact backups. No source commit/index/ref mutation.",
+  "files": [
+    {
+      "path": ".github/workflows/hugo.yml",
+      "before_sha256": "b59a89219e5fd7b3231036d4b91b8936743b6eb3f78832380ca544dfc9007885",
+      "after_sha256": "b1e5754db635f07192439dc7b26d1ee624544131406cc61f68b08ae075f73c9b",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "AGENTS.md",
+      "before_sha256": "79c8c85821905278f0a5d827491bd1170ee4eb29b977b056cbe84d1cfa45ed02",
+      "after_sha256": "1a851a756087be1fc13bf4310bb5210b2abee409bc7298169a569bd1d316b8a7",
+      "baseline": "initial exact backup"
+    },
+    {
+      "path": "assets/js/core/theme.js",
+      "before_sha256": "f42f0c2583adc9dc7fac18f5f33c94ecf30353e7721d3872cb3e5ae993ba92d5",
+      "after_sha256": "12380d97e760aa122cad8ed3d822b24f00d959ed9648e2e391a366df16c1fc51",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "assets/js/flexsearch.js",
+      "before_sha256": "c64513382cfef8773df6571483f4e37c9d844b5de4e30033da8f747b7a41d7ff",
+      "after_sha256": "3f2198611920c2286425d0aae82bcbd6f0f988b867b73a0a2f6dc132633555a1",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "assets/js/search-dialog.js",
+      "before_sha256": "0f240642c0a26e6415187d64ce9aae2ff2d90c0c7731bfb8ca9aa584d4942a04",
+      "after_sha256": "f5f9087c4a580b772201143c7de82f3d27e901f70059b1524a2f83972da054f9",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "assets/json/search-data.json",
+      "before_sha256": "53f1c6f7555cd4c62475ac07cbd31c859df6ed350a954b1998ad5e1f25dbb6e8",
+      "after_sha256": "645acd49918f0402d68a97fd755eacb74c131eba98f97427a281ebede18be047",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/learning-paths.md",
+      "before_sha256": "04f43dbc3e3804535ae88fcc46e05e62e3a08a10f72c2f701f0e8758c7a7fb5b",
+      "after_sha256": "cb928031d15c40b80a1d3246b98ab5950a8e3e358b69088910415dba54cfcbf3",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/posts/ai/diffusion-models/assets/time-conditioned-unet-flow.svg",
+      "before_sha256": null,
+      "after_sha256": "1aa54830ea52fa0e5a1869f96390499b71b561a164351aee9cad5eaff2808d6e",
+      "baseline": "new file"
+    },
+    {
+      "path": "content/posts/ai/diffusion-models/assets/training-vs-sampling-flow.svg",
+      "before_sha256": null,
+      "after_sha256": "17d20e5580280b12aed9337d28cd1d8bd0701dfccd359853d45059856c8d1724",
+      "baseline": "new file"
+    },
+    {
+      "path": "content/posts/ai/diffusion-models/index.md",
+      "before_sha256": "9cd7e97a2cbcc68d289f79362b3fd9c434a1c282b808a9ef3ad7d219aed22785",
+      "after_sha256": "b243cb97ea91cce2cfc3896c051e89d75ce0c635e046a09b52948c94f7b823dd",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/posts/ai/distributed-training-memory/assets/compute-communication-overlap.webp",
+      "before_sha256": "08dca9b46a2b30da58d5f2c50f79c3b1c32e6787be1830dfc211b0c63d6f2fe8",
+      "after_sha256": "85f6a0e7609e19de3b21d341f7b92dca951da3e517c214071b913d5b806caa22",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/posts/ai/distributed-training-memory/index.md",
+      "before_sha256": "d6e0fbea52be7c25790ed535612ab9d4e173332e2a1e1b01705041a6588bf657",
+      "after_sha256": "f3ca330d8f860fa59aecd370aabf8b8c06bbbf7fd4d1dd96c38bbcd7401c6447",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/posts/ai/internvl-3-5/index.md",
+      "before_sha256": "e75e637fde785f80f116d7c72c64de5fe92a100862e855fce29e960b3462c874",
+      "after_sha256": "3d135c779aa83b96f8ed464bfa8232004ccfe7b0b047e617039a31575a64c87a",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/posts/ai/llm-training-metrics/index.md",
+      "before_sha256": "9d7f2a078723bbd1dfa4f1b3b61946e6334ab23a791231bfc2f59fded469eb78",
+      "after_sha256": "4333ad2547280669819824995e7863b83796d1088f64a15f73d2e60f9b5d413d",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/posts/ai/real-time-chunking/index.md",
+      "before_sha256": "80e5266593de32a4a4d29cb05976e515288806a4ca24010febfb990c54172dd9",
+      "after_sha256": "e61c747335935fb21c08217a370cb95a14f4e26bd308ebc42d4fe6dcb129e298",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/assets/attention-scoring-pipeline.svg",
+      "before_sha256": null,
+      "after_sha256": "9306f1a23856755db0ea8d604ef4ce391cd538f3913ae301753ad69d4e61f0bf",
+      "baseline": "new file"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/assets/causal-mask-calculation.svg",
+      "before_sha256": null,
+      "after_sha256": "2dc9544d1c1065c421de0de6209e6b5254c507b2cb0a841df97e42d31aa78add",
+      "baseline": "new file"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/assets/moe-token-routing.svg",
+      "before_sha256": null,
+      "after_sha256": "a69fb3ca800dab159415ac4b5aebcd22cba28f1ec3c255cef446c3c6602a960e",
+      "baseline": "new file"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/assets/multi-head-shapes.svg",
+      "before_sha256": null,
+      "after_sha256": "cb512535611f2b95bfbc1dea0775b10fa86e53978eab98b496ca8dddcd05af4c",
+      "baseline": "new file"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/assets/softmax-row-calculation.svg",
+      "before_sha256": null,
+      "after_sha256": "532ee071826f53ea45851e8a5558d7dbc77845f9dcc2f599f590e42ff60c0255",
+      "baseline": "new file"
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/index.md",
+      "before_sha256": "9a98abc1ac63735e5a8f002601ddbb62f8558d39f91d2b3a529c05befaf3e277",
+      "after_sha256": "d29de999d77b46d3303d31a40deddbb4f6e34c71c808f5895798896c12268bbc",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/posts/ai/x-vla/index.md",
+      "before_sha256": "a7b032e73b642186ca299f61af3644c66cf2d1726131ba1a78ee19c06d816834",
+      "after_sha256": "5bc887465a0974bf08c1ba2e075458e6b41997162822c067c71e776d97da3bbb",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/posts/calibration/cctag/index.md",
+      "before_sha256": "b31a1e59da744bb061d210afb532d89848fe88ca5664a3b32db67bc3731fdb01",
+      "after_sha256": "e19595c71ba1924be9a3018d0fdb1d766e35f46953662408adda8728209e9e98",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/posts/cuda/warp/index.md",
+      "before_sha256": "4b0474dc4ed2a84907eb860cf0fc7d29b1948a56de0dead4956be7887168967f",
+      "after_sha256": "34ec3641ea5919b5d3b3ce74058612c7984b9fe94481242ac4ba762c0deb1351",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/posts/rl/index.md",
+      "before_sha256": "5ea6b1cb14b66ccfed17613a9d9914ca34b4748a7596299a4793a6e8502e29f9",
+      "after_sha256": "63735c3c7a213a3795ac5867a23dc03fe658cdd1e55cf9ee45098da6195a5c3e",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/jacobian/index.md",
+      "before_sha256": "5b9dc500c93f19d3e06a1253c3ad766f31b07c2f04c8775cbde1eff0aa849db2",
+      "after_sha256": "113d116a1f835e18dfd95afd50bf7e277b40b5c4247a47fbe78f9b327af5cfcf",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+      "before_sha256": "47ca6d070a88cf3eb49feb04a7b8147caf5e57fe4779d53e3242913d1e0a2c18",
+      "after_sha256": "bac296da254c4c1340057dd4ecdd42d1d482c064dfaaca3c9636ad405988e3e8",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+      "before_sha256": "f46b6fbf455904e12bf5c7ffd0ad99465943e56c024f9656d232668ad232cfc2",
+      "after_sha256": "ee64cd175451359167003c7563fb6eda58fb627dd02fc8a62a4846db2d287da3",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "data/taxonomy_languages.yaml",
+      "before_sha256": null,
+      "after_sha256": "9eefdf1e20b1adb8ad5ab2e50030581ff5a6e00504bcd3f1f210c8e85c923f8b",
+      "baseline": "new file"
+    },
+    {
+      "path": "docs/blog-editorial-review.json",
+      "before_sha256": "bef04c184eddc4b65418a70c794db2b2466a8f1d7ed9a30bc765a22213eee6f1",
+      "after_sha256": "f6fdcaafd27e53a4c11ecd61d80f31f5e9908d63be92a43a605141b3f8434bb1",
+      "baseline": "initial exact backup"
+    },
+    {
+      "path": "docs/blog-second-pass.json",
+      "before_sha256": "276dbeae13cf9b6af0c41e9d6729edbeafc596ccea30dd80da5d1df983d0e40b",
+      "after_sha256": "c3e0cb164c886b20190ce7a384c379634ec467fa378ba0186a733b2ca63c5110",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "docs/image-generation/diffusion-flows-20261103.json",
+      "before_sha256": null,
+      "after_sha256": "63199be641c34f74699d7bc0a629299fc4e6ba528864fb1832300d1dcc306e2a",
+      "baseline": "new file"
+    },
+    {
+      "path": "docs/image-generation/distributed-overlap-20261103.json",
+      "before_sha256": null,
+      "after_sha256": "5e0468e43854939bcee3e3acdab466117dae7e87543598af96fa94051c077ace",
+      "baseline": "new file"
+    },
+    {
+      "path": "docs/image-generation/transformer-figures-20261103.json",
+      "before_sha256": null,
+      "after_sha256": "e44da3670b3a5449d70933ec83b7205b406f7753891b1d74b7aa4466f2a20bd1",
+      "baseline": "new file"
+    },
+    {
+      "path": "docs/release-verification.md",
+      "before_sha256": "f495773fba897c562da06f3d3253a3b1a055efa476264ffe5104003b1e46c404",
+      "after_sha256": "76ade689eade493faa58c8a80f6ea76cefd916c893e3497d25d49049c916cda7",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "docs/theme-overrides.json",
+      "before_sha256": "ff19bba8259c5f4c2402adfaa3c7786ffb0075935f76982df6f670b3d2f826ea",
+      "after_sha256": "4ca14b0fef2473b1ea5ad383792a8e889b08742a23ae36df6cf325a7e11db938",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "layouts/_partials/blog/rss-attribute.html",
+      "before_sha256": null,
+      "after_sha256": "45b403ff82bab40b92f544a64ce16981e662c46b20401b387965ae8fc4e76a6f",
+      "baseline": "new file"
+    },
+    {
+      "path": "layouts/_partials/blog/rss-content.html",
+      "before_sha256": null,
+      "after_sha256": "72fc7e452c15c54851a38c966386beb95d0d380f8d4e2303309641073e5eed07",
+      "baseline": "new file"
+    },
+    {
+      "path": "layouts/_partials/blog/rss-srcset.html",
+      "before_sha256": null,
+      "after_sha256": "26508f00c2cefdab92e5553c3993509954373fca91d12ee9e69cfa44c73959f7",
+      "baseline": "new file"
+    },
+    {
+      "path": "layouts/_partials/blog/rss-url.html",
+      "before_sha256": null,
+      "after_sha256": "4b54a5a10fc09b4212502b171ffe111e043611904e48cf8f4b663c7b9023c676",
+      "baseline": "new file"
+    },
+    {
+      "path": "layouts/_partials/blog/term-language.html",
+      "before_sha256": null,
+      "after_sha256": "0437a83be0ffebe4ead87f2a0ff26638e1616618591ed39306990e5a738aaf26",
+      "baseline": "new file"
+    },
+    {
+      "path": "layouts/_partials/language-switch.html",
+      "before_sha256": "d674bc375be6a514f13b3ea1fb1df77d18a4af9ad0efb98ecd52f42d9da0b211",
+      "after_sha256": "cfd1d7a336b918332f9a4bb1589cdb52e8d5f357f71afb7bcc1c49543ece984c",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "layouts/_partials/toc.html",
+      "before_sha256": "a3009512b028b241841c6c8ff1118d617e104e4315fb39fbe7802fa7a33e73a8",
+      "after_sha256": "f7e3c280b7bf37bf334c4fecdceb898f40f782c91eea6536bb17cfcab02061bb",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "layouts/archives.html",
+      "before_sha256": "e2e8b92dbeb5609b412c8c8b340ae7ec548e7b5598e8f71098d306aeb0cc0252",
+      "after_sha256": "201ec31d54471f05bf6ce38ef89987fe554986b9c53955b05e95c32b4570903c",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "layouts/list.rss.xml",
+      "before_sha256": null,
+      "after_sha256": "0aa5c2ed61b672ea8f9ff09942fdd39f0b5a850ff014b0f844d490437c5ee774",
+      "baseline": "new file"
+    },
+    {
+      "path": "layouts/single.html",
+      "before_sha256": null,
+      "after_sha256": "3b2c0b7ba9c1a0e1d8675b3820932390734c3a68cdee49b64d27ba09cc1309ac",
+      "baseline": "new file"
+    },
+    {
+      "path": "layouts/taxonomy.html",
+      "before_sha256": "6b9dbc785b360e8abdd7bc0a02f0e4f610a5e18cc216ef7c980cf9b783a4b210",
+      "after_sha256": "151ac9488f8dc043b720ad08fe1e57b1f9467741fd5645f50c49018a24f00020",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "layouts/term.html",
+      "before_sha256": "e717aafc3b607661ea21f51c24ed6bfb3aa3032e878a6557d0f70932251073df",
+      "after_sha256": "d4864ef7323857af4302e1ba0c53bb8370d841b67c5423b3b6f42a8d6bcd0ff5",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "scripts/check_language_menu.cjs",
+      "before_sha256": "ccde145e2507f3f63c1a142d25d41afd7bcac6704221dddb5c63772b0fbcb8dd",
+      "after_sha256": "bdc4f9c38a374fc8d0b7a33361a73b53767cc3a4e08a05cdeaef7011b2a453cb",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "scripts/check_site_accessibility.cjs",
+      "before_sha256": "3ee36fca98ff74bc72fc833ce68713425973fb6af8c8d5029a251d3e8a3549a0",
+      "after_sha256": "e0491a53f57fff4dfc1dfe72eb97d267703ac858d96fcf1716a4bc5c7769cda1",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "scripts/check_site_readability.cjs",
+      "before_sha256": "ee11231c79d044cbfd91833c76ceff7ded4d2ffcc00a7b38548ee9c6a6d3ce8d",
+      "after_sha256": "7e40fb43ecd6c49fe0d6dc5af721a01b58736b0cb5117470d6df5cb9d50166cc",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "scripts/check_site_reflow.cjs",
+      "before_sha256": "8830f36dad71e801915a3e892c8bcc110f1495af3ca4b5522a6a006030f3c3af",
+      "after_sha256": "2d6f6e7e1ec5a6ba0fa96430dda6a7d03e0bd57ddc796322d04b3d8479331ae7",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "scripts/check_site_release.py",
+      "before_sha256": "3b5feddaea75afa8c0502e8aeca45b995e99b1ed2eb8aea6a9404da1b6d7f0d5",
+      "after_sha256": "87b729495e1c34d1eee3ae3f975caa866cd345dbb2d33605eede6c9aee4bde54",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "scripts/check_site_search.cjs",
+      "before_sha256": "431f65a169da7fc63111bc1bec3ffa60918e3c0dc02cf2dc9194318b21856021",
+      "after_sha256": "f1ec726380c90875b89c1c94ca01cf4a953fe3f4b5f26c074f6b466d56643f16",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "scripts/plot_distributed_overlap.py",
+      "before_sha256": null,
+      "after_sha256": "cd9b19b8af4806e01fafd18dc245381fc481c33040b74c0119c25e78c370f6de",
+      "baseline": "new file"
+    },
+    {
+      "path": "scripts/render_diffusion_flows.py",
+      "before_sha256": null,
+      "after_sha256": "228eb41b6f942deaecb76574abe35b26e92531ce73f7f340b24b63da79987ca5",
+      "baseline": "new file"
+    },
+    {
+      "path": "scripts/render_transformer_figures.py",
+      "before_sha256": null,
+      "after_sha256": "888ff879e711562467cd9b6b0fafd1c205d46f67a53b7c972cb6a146c9aec208",
+      "baseline": "new file"
+    },
+    {
+      "path": "scripts/site_asset_references.py",
+      "before_sha256": null,
+      "after_sha256": "c69c218ae882edb15175b31c006d61407cca7e81b6796642c8784b736003373a",
+      "baseline": "new file"
+    },
+    {
+      "path": "scripts/test_asset_references.py",
+      "before_sha256": null,
+      "after_sha256": "1f297ef00ab78636aeaecd14afe4c7fc58f82d4e28dd3ed6c579a6b86e192c95",
+      "baseline": "new file"
+    },
+    {
+      "path": "scripts/test_blog_rss.py",
+      "before_sha256": null,
+      "after_sha256": "f9cf8123e2aee2bc1032f388042c7a42850c561142a1f94a9da2b8d55ca4c76a",
+      "baseline": "new file"
+    },
+    {
+      "path": "scripts/test_blog_toc.py",
+      "before_sha256": "bd6a0fe9f00c6825b61ac01f8f6607761eb4cf3e8ed438ac80474b4af666a96f",
+      "after_sha256": "4c8c26f9accc35562c3a49597d7cff73cdb5c8640d7b2754ac808628a9b34d16",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "scripts/test_blog_validation.py",
+      "before_sha256": null,
+      "after_sha256": "b07f92dded327f7d6f1206f852f928672c06fdc2bfed930de2962dc2e9b914aa",
+      "baseline": "new file"
+    },
+    {
+      "path": "scripts/test_diffusion_embedding.py",
+      "before_sha256": null,
+      "after_sha256": "6733dfcd76b9b22868d82d53e7421c5b9fe99f36ee5dd161735c15e6e6cecb71",
+      "baseline": "new file"
+    },
+    {
+      "path": "scripts/test_kinematics_fragments.py",
+      "before_sha256": null,
+      "after_sha256": "dcbff1b5089eaac8ebc0c2a9f99e48bb7d27828302432a3111ca9cbc82f75963",
+      "baseline": "new file"
+    },
+    {
+      "path": "scripts/test_site_assets.py",
+      "before_sha256": "2e7d6479cb07859d9fef62c0b1741ed9fcd46d7186f7116bf2b0cb6553572d5e",
+      "after_sha256": "287b4c378c1339a1ca4f23fb306ba646485fcfda172e9baa3378e9bb67054310",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "scripts/test_site_release.py",
+      "before_sha256": "ef5902a0a345b58f434796f2bb6c5972c571c3801907c73edb4e807d24fbbcdf",
+      "after_sha256": "b7257f6f0a142245fb965884f9a60b0d248721b3610371deb9854e9d27d64364",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "scripts/test_site_search.cjs",
+      "before_sha256": "effef77031f86fdf873dcd8689977ee70be129c9d76e8705c849c66bcce858c8",
+      "after_sha256": "588e501600224d3c7b549d0ca773ad3d532fdb0b55532a9bd022db06231e9b1d",
+      "baseline": "HEAD"
+    },
+    {
+      "path": "scripts/validate_blog.py",
+      "before_sha256": "c71cf07700a448138be95083761459ba40a7a4a8318853d19c7f1fee667ff95b",
+      "after_sha256": "7e0b2183ccc444be8b1a88198cd093600cd05007b4f3ea28592edfc72fde3c17",
+      "baseline": "HEAD"
+    }
+  ],
+  "patch": "/tmp/chase-site-eight-hour-20261103/owned-source-changes.patch",
+  "patch_sha256": "fd64d17d0e726afeab20ad7ecfb81c1a9e670ddc6257ae8f2f8bb6a6170c51a6",
+  "patch_bytes": 515337,
+  "replay_against_initial_bytes": "passed",
+  "whitespace_validation": "passed isolated git diff --check"
+}

@@ -1,6 +1,7 @@
 ---
 title: 技术博客学习路线
 description: 按机器人运动学、规划控制、标定、AI 和工程工具组织博客，提供建议阅读顺序与专题入口。
+contentLanguage: zh-CN
 layout: default
 toc: false
 ---

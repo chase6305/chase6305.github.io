@@ -1,0 +1,10 @@
+{
+  "base_url_variants": 2,
+  "url_and_preservation_checks": 54,
+  "upstream_full_feed_limit": 50,
+  "configured_summary_feed_limit": 3,
+  "xml_and_html_parsed": true,
+  "url_oracle": "Node WHATWG URL",
+  "article_html_and_summary_feed": "unchanged",
+  "protected_blocks_and_svg_local_references": "unchanged"
+}

@@ -1,0 +1,89 @@
+{
+  "status": "complete",
+  "code_version_scope": {
+    "phase": "post attribute-context / CDATA / exact-tag-boundary fixes",
+    "source_update_hashes": "source-update-hashes.json",
+    "only_variant_layout_difference": "list.rss.xml",
+    "pre_repair_experiment": "../report.json",
+    "production_content": "Preserved original content snapshot; later unrelated repository table classes are excluded."
+  },
+  "snapshot": {
+    "manifest_sha256": "6ca5132a7499b0bb2af4c1481a2a148490ce0642bcc29a3ca7c8263319fa293c",
+    "files": 1425,
+    "bytes": 162938193,
+    "matches_original_copy": true,
+    "shared_inode_paths": [],
+    "layout_differences": [
+      "list.rss.xml"
+    ],
+    "summary_feed_sha256": "d914ba2bcc98d5f832eb359d67fe679f2f542bc9ada66d26f412db46a3418dff"
+  },
+  "summary": {
+    "OLD": {
+      "cpu_seconds": {
+        "mean": 12.0097705,
+        "median": 12.0097705,
+        "min": 11.714039,
+        "max": 12.305502
+      },
+      "wall_seconds": {
+        "mean": 15.824214471533196,
+        "median": 15.824214471533196,
+        "min": 13.7799547490431,
+        "max": 17.868474194023293
+      }
+    },
+    "CURRENT": {
+      "cpu_seconds": {
+        "mean": 15.8225005,
+        "median": 15.8225005,
+        "min": 15.736161,
+        "max": 15.90884
+      },
+      "wall_seconds": {
+        "mean": 19.854645982501097,
+        "median": 19.854645982501097,
+        "min": 19.793331619002856,
+        "max": 19.915960345999338
+      }
+    },
+    "paired_current_minus_old_cpu_seconds": {
+      "values": [
+        4.194801,
+        3.4306589999999986
+      ],
+      "mean": 3.8127299999999993,
+      "median": 3.8127299999999993,
+      "min": 3.4306589999999986,
+      "max": 4.194801
+    },
+    "paired_current_minus_old_wall_seconds": {
+      "values": [
+        6.013376869959757,
+        2.047486151976045
+      ],
+      "mean": 4.030431510967901,
+      "median": 4.030431510967901,
+      "min": 2.047486151976045,
+      "max": 6.013376869959757
+    },
+    "current_cpu_mean_percent_over_old": 31.746901408315843
+  },
+  "snapshot_bytes_unchanged_during_builds": true,
+  "cache_bytes_unchanged_during_measurement": true,
+  "cross_stage_output_comparison": {
+    "scope": "Preserved production content snapshot, identical config/assets/content apart from new RSS templates and copied test-fixture provenance. Compare pre-fix CURRENT and post-fix CURRENT complete output manifests.",
+    "files_before": 2338,
+    "files_after": 2338,
+    "changed_paths": [],
+    "all_outputs_identical": true
+  },
+  "limits": [
+    "A single local snapshot and Hugo binary; not a general ranking or CI prediction.",
+    "Concurrent parent browser tests and other host activity are not controlled; wall time includes scheduling and I/O contention.",
+    "Hugo process CPU excludes browser CPU, but CPU/cache contention can still affect the amount of CPU needed.",
+    "Warm disk/resource caches; OS page cache is not flushed. Counterbalancing limits, but does not eliminate, order effects.",
+    "The old implementation has known relative-URI defects; this comparison is a cost measurement, not a recommendation to restore it.",
+    "The earlier four-pair stage used the pre-repair helper and different host load. Differences between stage means do not establish improvement from this repair."
+  ]
+}

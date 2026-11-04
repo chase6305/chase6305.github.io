@@ -1,0 +1,39 @@
+{
+  "snapshots": [
+    {
+      "mode": "scripted",
+      "summary": {
+        "cases": 6,
+        "failingCases": 0,
+        "incompleteNodes": 40,
+        "exceptions": 0
+      },
+      "incomplete_rules": {
+        "aria-valid-attr-value": 40
+      },
+      "missing_id_references": 0
+    },
+    {
+      "mode": "native",
+      "summary": {
+        "cases": 6,
+        "failingCases": 0,
+        "incompleteNodes": 0,
+        "exceptions": 0
+      },
+      "incomplete_rules": {},
+      "missing_id_references": 0
+    }
+  ],
+  "review": "Keep all incomplete items; same closed-popup aria-controls manual case as global final2 audit. Open menus/dialogs separately verified.",
+  "canonical": "final-reviewed-production",
+  "manual_classification": {
+    "nodes": 40,
+    "popup_types": {
+      "menu": 12,
+      "dialog": 28
+    },
+    "missing_id_references": 0,
+    "note": "Menu controls are collapsed; dialog openers do not need aria-expanded. Keep engine incomplete records."
+  }
+}

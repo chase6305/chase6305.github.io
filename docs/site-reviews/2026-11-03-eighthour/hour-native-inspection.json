@@ -1,0 +1,62 @@
+[
+  {
+    "pdf": "diffusion-true-100-light-a4.pdf",
+    "page": 11,
+    "PNG": "diffusion-100-unet-p11.png",
+    "kind": "unet",
+    "text_size": 100,
+    "short_caption_same_page": true
+  },
+  {
+    "pdf": "diffusion-true-100-light-a4.pdf",
+    "page": 13,
+    "PNG": "diffusion-100-train-p13.png",
+    "kind": "train",
+    "text_size": 100,
+    "short_caption_same_page": true
+  },
+  {
+    "pdf": "diffusion-false-200-warm-letter.pdf",
+    "page": 20,
+    "PNG": "diffusion-200-unet-p20.png",
+    "kind": "unet",
+    "text_size": 200,
+    "short_caption_same_page": true
+  },
+  {
+    "pdf": "diffusion-false-200-warm-letter.pdf",
+    "page": 26,
+    "PNG": "diffusion-200-train-p26.png",
+    "kind": "train",
+    "text_size": 200,
+    "short_caption_same_page": true
+  },
+  {
+    "pdf": "six-dof-true-100-light-a4.pdf",
+    "page": 10,
+    "PNG": "six-dof-100-wrist-p10.png",
+    "kind": "wrist",
+    "text_size": 100
+  },
+  {
+    "pdf": "six-dof-false-200-warm-letter.pdf",
+    "page": 20,
+    "PNG": "six-dof-200-wrist-p20.png",
+    "kind": "wrist",
+    "text_size": 200
+  },
+  {
+    "pdf": "seven-dof-true-100-light-a4.pdf",
+    "page": 5,
+    "PNG": "seven-dof-100-projection-p5.png",
+    "kind": "projection",
+    "text_size": 100
+  },
+  {
+    "pdf": "seven-dof-false-200-warm-letter.pdf",
+    "page": 10,
+    "PNG": "seven-dof-200-projection-p10.png",
+    "kind": "projection",
+    "text_size": 200
+  }
+]

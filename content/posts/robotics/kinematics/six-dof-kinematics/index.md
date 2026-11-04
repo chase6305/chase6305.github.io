@@ -181,7 +181,7 @@ $$
 
 ### C++ 工程片段
 
-以下片段使用原项目常量与工具外参，不与上面的教学 DH 表自动等价。先验证三角不等式和三角函数定义域，单独处理腕部奇异，再筛选限位；最后对每个候选执行 FK，检查位置与旋转角残差。无效候选不可因“距离当前角度最近”而被返回。
+以下片段使用原项目常量与工具外参，不与上面的教学 DH 表自动等价。 其中 `M_PI_set` 表示 π，关节角为弧度；`lim` 假定有限输入和有效的有限限位区间。腕部按 `Rz(q4) Rx(π/2) Rz(q5) Rx(π/2) Rz(q6)` 分解，奇异时保留当前 q4，用带象限的 `atan2` 求耦合角，并只按 2π 周期展开 q6。先验证三角不等式和三角函数定义域，单独处理腕部奇异，再筛选限位；最后对每个候选执行 FK，检查位置与旋转角残差。无效候选不可因“距离当前角度最近”而被返回。
 
 
 
@@ -370,28 +370,12 @@ void Kinematics::computeIKUpperAngles(
     RotationMatrix R06 = T06.topLeftCorner(3,3);
     RotationMatrix R36 = R03_inv * R06;
 
-    // // 关节5
-    // sol_up.angles[4] = acos(R36(2,2));
-    // sol_down.angles[4] = -sol_up.angles[4];
-    // 所以一个非常危险的可能性是c4，s4，c5，s5，c6或s6中的任何一个都可能出现在分母中。
-    // 如果c5为零，将使方程退化。
-    if(  R36(2,2) == 1 )
-    {
-        sol_up.angles[4] = atan2( sqrt(pow(R36(1,2),2) + pow(R36(0,2),2)) , R36(2,2));
-        sol_down.angles[4] = -sol_up.angles[4];
-    }
-    else if(R36(2,2) == 0 )
-    {
-        sol_up.angles[4] = atan2( sqrt(pow(R36(1,2),2) + pow(R36(0,2),2)) , -R36(2,2));
-        sol_down.angles[4] = -sol_up.angles[4];
-    }
-    else
-    {
-        sol_up.angles[4] = atan2( sqrt(pow(R36(1,2),2) + pow(R36(0,2),2)) , -R36(2,2));
-        sol_down.angles[4] = -sol_up.angles[4];
-    }
+    // 本片段的腕部约定满足 R36(2,2) = -cos(q5)。
+    // hypot 保留两个 sin(q5) 分量；包括 Rzz=+1 时的 q5=pi 分支。
+    sol_up.angles[4] = atan2(std::hypot(R36(1,2), R36(0,2)), -R36(2,2));
+    sol_down.angles[4] = -sol_up.angles[4];
 
-    // 4.计算angle5 atan2值域[-180,180]
+    // atan2 返回弧度，范围 [-pi, pi]。
 
 
     // 判断象限
@@ -401,39 +385,39 @@ void Kinematics::computeIKUpperAngles(
 
     double cos_angle4_1 = cos(sol_up.angles[4]);
     // 5-6.计算angle4和angle6
-    // 如果angle5 手腕为0度，则有无数个解（奇异），这需要特殊处理，使角度保持在当前位置附近
+    // q5 为 0 或 pi 时腕部奇异，需要固定一个角，再解耦合角。
     if ( pow(sin_angle4_1 , 2) < floatPrecision)
     {
         // 保持angle4（弯头）稳定，仅移动其他角度 或 直接为零
         sol_up.angles[3] = current[3] == 0 ? 0 : current[3];
         sol_down.angles[3] = current[3] == 0 ? 0 : current[3];
 
-        //  [-pi/2,+pi/2] 当angle5为0
-        double asinR36_10 ;
+        // q5=0 时 q4-q6 耦合；q5=pi 时 q4+q6 耦合。
+        double coupled_angle;
         if( cos_angle4_1 > 0 ) 	// angle5 = 0
         {
-            asinR36_10 = asin(R36(1, 0)); // [-pi/2,+pi/2]
-            sol_up.angles[5] = sol_up.angles[3] - asinR36_10;
-            sol_down.angles[5]= sol_down.angles[3] - asinR36_10;
+            coupled_angle = atan2(R36(1, 0), R36(0, 0)); // q4-q6，保留象限
+            sol_up.angles[5] = sol_up.angles[3] - coupled_angle;
+            sol_down.angles[5]= sol_down.angles[3] - coupled_angle;
         }
-        else		// angle5 = 180
+        else		// q5 = pi（180度）
         {
-            asinR36_10 = asin( - R36(1, 0)); // [-pi/2,+pi/2]
-            sol_up.angles[5]  = asinR36_10  - sol_up.angles[3];
-            sol_down.angles[5]= asinR36_10  - sol_down.angles[3];
+            coupled_angle = atan2(-R36(1, 0), -R36(0, 0)); // q4+q6，保留象限
+            sol_up.angles[5]  = coupled_angle  - sol_up.angles[3];
+            sol_down.angles[5]= coupled_angle  - sol_down.angles[3];
         }
-        // 通过将其置于-PI和PI区间来归一化角度
-        while ((abs( sol_up.angles[5] - current[5]) > abs( sol_up.angles[5] + M_PI_set - current[5]))
-            && (sol_up.angles[5] + M_PI_set <= actuatorConfigType[5].maxAngle))
+        // 只按完整 2pi 周期寻找更接近当前值的代表；pi 会改变姿态
+        while ((abs( sol_up.angles[5] - current[5]) > abs( sol_up.angles[5] + (2 * M_PI_set) - current[5]))
+            && (sol_up.angles[5] + (2 * M_PI_set) <= actuatorConfigType[5].maxAngle))
         {
-            sol_up.angles[5]   += M_PI_set;
-            sol_down.angles[5] += M_PI_set;
+            sol_up.angles[5]   += (2 * M_PI_set);
+            sol_down.angles[5] += (2 * M_PI_set);
         }
-        while ((abs( sol_up.angles[5] - current[5]) > abs( sol_up.angles[5] - M_PI_set - current[5]))
-           && (sol_up.angles[5] - M_PI_set >= actuatorConfigType[5].minAngle))
+        while ((abs( sol_up.angles[5] - current[5]) > abs( sol_up.angles[5] - (2 * M_PI_set) - current[5]))
+           && (sol_up.angles[5] - (2 * M_PI_set) >= actuatorConfigType[5].minAngle))
         {
-            sol_up.angles[5]   -= M_PI_set;
-            sol_down.angles[5] -= M_PI_set;
+            sol_up.angles[5]   -= (2 * M_PI_set);
+            sol_down.angles[5] -= (2 * M_PI_set);
         }
     }
     else
@@ -499,14 +483,14 @@ std::vector<double> Kinematics::lim(const double &max_position,const double &min
     std::vector<double> results;
 
     // 判断关节角越界问题,将越界的解 正负2 PI 缩回到关节角范围内
-    if (joint > max_position)
+    if (joint >= max_position)
     {
-        while (joint > max_position)
+        while (joint >= max_position)
         {
             joint -= 2 * M_PI_set;
         }
 
-        while (joint > min_position)
+        while (joint >= min_position)
         {
             results.push_back(joint);
             joint -= 2 * M_PI_set;
@@ -531,7 +515,7 @@ std::vector<double> Kinematics::lim(const double &max_position,const double &min
         results.push_back(joint);
 
         double joint_tmp = joint - 2 * M_PI_set;
-        while (joint_tmp > min_position)
+        while (joint_tmp >= min_position)
         {
             results.push_back(joint_tmp);
             joint_tmp -= 2 * M_PI_set;

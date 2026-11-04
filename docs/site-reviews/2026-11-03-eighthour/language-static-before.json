@@ -1,0 +1,169 @@
+{
+  "production": "/tmp/chase-site-eight-hour-20261103/figure-production",
+  "published_posts": 95,
+  "posts_with_chinese_toc": 95,
+  "toc_links": 2480,
+  "toc_links_inherited_non_zh": 2480,
+  "post_examples": [
+    {
+      "route": "/posts/ai/algorithms/astar/astar-cpp/",
+      "chinese_toc_links": 6,
+      "wrong_lang": 6,
+      "examples": [
+        {
+          "text": "实现范围与不变量",
+          "language": "en",
+          "href": "#%e5%ae%9e%e7%8e%b0%e8%8c%83%e5%9b%b4%e4%b8%8e%e4%b8%8d%e5%8f%98%e9%87%8f"
+        },
+        {
+          "text": "完整代码：astar_demo.cpp",
+          "language": "en",
+          "href": "#%e5%ae%8c%e6%95%b4%e4%bb%a3%e7%a0%81astar_democpp"
+        }
+      ]
+    },
+    {
+      "route": "/posts/ai/algorithms/astar/astar-introduction/",
+      "chinese_toc_links": 10,
+      "wrong_lang": 10,
+      "examples": [
+        {
+          "text": "先分清搜索与路径裁剪",
+          "language": "en",
+          "href": "#%e5%85%88%e5%88%86%e6%b8%85%e6%90%9c%e7%b4%a2%e4%b8%8e%e8%b7%af%e5%be%84%e8%a3%81%e5%89%aa"
+        },
+        {
+          "text": "标准 A* 的代价与终止条件",
+          "language": "en",
+          "href": "#%e6%a0%87%e5%87%86-a-%e7%9a%84%e4%bb%a3%e4%bb%b7%e4%b8%8e%e7%bb%88%e6%ad%a2%e6%9d%a1%e4%bb%b6"
+        }
+      ]
+    },
+    {
+      "route": "/posts/ai/diffusion-models/",
+      "chinese_toc_links": 40,
+      "wrong_lang": 40,
+      "examples": [
+        {
+          "text": "阅读路线",
+          "language": "en",
+          "href": "#%e9%98%85%e8%af%bb%e8%b7%af%e7%ba%bf"
+        },
+        {
+          "text": "快速目录",
+          "language": "en",
+          "href": "#%e5%bf%ab%e9%80%9f%e7%9b%ae%e5%bd%95"
+        }
+      ]
+    },
+    {
+      "route": "/posts/ai/distributed-training-memory/",
+      "chinese_toc_links": 49,
+      "wrong_lang": 49,
+      "examples": [
+        {
+          "text": "阅读路线",
+          "language": "en",
+          "href": "#%e9%98%85%e8%af%bb%e8%b7%af%e7%ba%bf"
+        },
+        {
+          "text": "1. 先建立训练显存账本",
+          "language": "en",
+          "href": "#1-%e5%85%88%e5%bb%ba%e7%ab%8b%e8%ae%ad%e7%bb%83%e6%98%be%e5%ad%98%e8%b4%a6%e6%9c%ac"
+        }
+      ]
+    }
+  ],
+  "archives_chinese_title_links": 95,
+  "archives_non_zh": 95,
+  "archives_examples": [
+    {
+      "text": "Nov 03\nMuon 的学习率与 Batch Size：缩放规律、噪声与训练预算",
+      "language": "en",
+      "href": "/posts/ai/muon-learning-rate-batch-size/"
+    },
+    {
+      "text": "Nov 03\nMuon 优化器详解：原理、实现与关键细节",
+      "language": "en",
+      "href": "/posts/ai/muon-optimizer/"
+    },
+    {
+      "text": "Oct 30\nPion 详解：Muon 在 VLA 与 RLVR 中的谱失效与高通修正",
+      "language": "en",
+      "href": "/posts/ai/pion-muon-vla-rlvr/"
+    }
+  ],
+  "english_search_index": "/tmp/chase-site-eight-hour-20261103/figure-production/en.search-data.min.a603efa342bf82456723405437f5056d92b798ded4726efc1cb4fab1359d40df.json",
+  "search_chinese_post_entries": 96,
+  "search_fields": [
+    [
+      "data",
+      "title"
+    ]
+  ],
+  "search_examples": [
+    {
+      "route": "/posts/",
+      "title": "技术博客",
+      "fields": [
+        "data",
+        "title"
+      ]
+    },
+    {
+      "route": "/posts/ai/algorithms/astar/astar-cpp/",
+      "title": "基于三维栅格空间的A*算法流程C++实现",
+      "fields": [
+        "data",
+        "title"
+      ]
+    },
+    {
+      "route": "/posts/ai/algorithms/astar/astar-introduction/",
+      "title": "基于三维栅格空间的A*算法裁剪流程",
+      "fields": [
+        "data",
+        "title"
+      ]
+    }
+  ],
+  "feeds": [
+    {
+      "path": "posts/index.xml",
+      "language": "zh-CN",
+      "items": 95,
+      "example_title": "Muon 的学习率与 Batch Size：缩放规律、噪声与训练预算"
+    },
+    {
+      "path": "categories/人工智能/index.xml",
+      "language": "en-US",
+      "items": 37,
+      "example_title": "Muon 优化器详解：原理、实现与关键细节"
+    },
+    {
+      "path": "tags/transformer/index.xml",
+      "language": "en-US",
+      "items": 3,
+      "example_title": "视觉 Transformer 全景：从 ViT、Swin、CMT 到 DiT 与 SiT"
+    }
+  ],
+  "read_only": true,
+  "browser_checks": false,
+  "sources": [
+    {
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/language-of-parts.html",
+      "supports": "Unmarked passages inherit page language; language parts guide pronunciation. Accessible names flatten language structure, so language on the focused link helps simple cases."
+    },
+    {
+      "url": "https://www.w3.org/International/questions/qa-html-language-declarations",
+      "supports": "HTML lang is inherited; language changes should be marked on surrounding elements; mixed-language attributes need structure or consistent naming."
+    }
+  ],
+  "probe": "audit_static_language.py --public <fresh-public-directory>",
+  "limitations": [
+    "No CDP or screen-reader audio; actual HTML ancestry and source-created option nodes were inspected.",
+    "Archive/TOC inheritance is directly emitted markup. Dynamic search language loss is established from the emitted data schema and renderer without a browser run.",
+    "Proper names/technical terms are not automatically treated as language changes.",
+    "RSS channel-language mismatch is recorded as lower-priority evidence; this audit did not change the newly preserved RSS metadata."
+  ]
+}

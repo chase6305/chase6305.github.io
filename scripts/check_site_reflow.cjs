@@ -21,12 +21,20 @@ styles['text-200-spacing'] = styles['text-200'] + styles.spacing;
 (async () => {
   fs.mkdirSync(output, {recursive: true});
   const browser = await connect(port);
-  const report = {layouts: [], exceptions: browser.exceptions};
-  const stress = async mode => {
+  const report = {layouts: [], exceptions: browser.exceptions,
+    layoutWait: {fontLayout: true, scriptedAnimationFrames: 2}};
+  const stress = async (mode, scripts = true) => {
     await browser.evaluate(`(() => {const style=document.createElement('style');
       style.textContent=${JSON.stringify(styles[mode])};document.head.append(style);})()`);
-    await browser.evaluate('document.fonts.ready');
-    await browser.pause(150);
+    // Discover any fonts needed by the new style before awaiting them. The
+    // overflow observers then schedule their batched writes for the next frame;
+    // a fixed wall-clock pause can sample between those phases on a long page.
+    await browser.evaluate('document.documentElement.getBoundingClientRect();document.fonts.ready');
+    if (scripts) {
+      await browser.evaluate('new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))');
+    } else {
+      await browser.pause(150);
+    }
   };
   try {
     const routes = new Set(['/', '/zh-cn/', '/posts/', '/posts/page/2/', '/projects/', '/learning-paths/',
@@ -41,7 +49,7 @@ styles['text-200-spacing'] = styles['text-200'] + styles.spacing;
       for (const width of [320, 768, 1440]) for (const route of routes) for (const mode of Object.keys(styles)) {
         await browser.viewport(width);
         await browser.navigate(base + route);
-        await stress(mode);
+        await stress(mode, scripts);
         const state = await browser.evaluate(`(() => {
           const viewport=document.documentElement.clientWidth,nav=document.querySelector('.hextra-nav-container nav');
           const visible=e=>e.getBoundingClientRect().width>0&&getComputedStyle(e).visibility!=='hidden';

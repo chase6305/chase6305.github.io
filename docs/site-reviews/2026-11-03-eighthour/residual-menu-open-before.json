@@ -1,0 +1,20 @@
+{
+  "trigger": "",
+  "expanded": "true",
+  "items": [
+    {
+      "text": "English",
+      "visible": true,
+      "language": "en",
+      "own": "",
+      "href": "http://127.0.0.1:13844/"
+    },
+    {
+      "text": "简体中文",
+      "visible": true,
+      "language": "en",
+      "own": "",
+      "href": "http://127.0.0.1:13844/zh-cn/"
+    }
+  ]
+}

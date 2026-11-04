@@ -1,0 +1,34 @@
+{
+  "reviewed_at_utc": "2026-11-03",
+  "scope": "RSS description URI resolution; this template transforms generated article HTML URLs and does not sanitize arbitrary HTML.",
+  "sources": [
+    {
+      "url": "https://www.rssboard.org/rss-profile#element-channel-item-description",
+      "section": "4.1.1.20.4",
+      "supports": "Absolute URLs in item descriptions avoid aggregators resolving relative references against the channel link."
+    },
+    {
+      "url": "https://gohugo.io/functions/urls/parse/",
+      "supports": "Hugo returns a Go url.URL structure for relative or absolute references."
+    },
+    {
+      "url": "https://pkg.go.dev/net/url#URL.ResolveReference",
+      "supports": "Resolve URI references against each item permalink rather than the site root."
+    },
+    {
+      "url": "https://html.spec.whatwg.org/multipage/images.html#parse-a-srcset-attribute",
+      "supports": "Whitespace delimits URL tokens; embedded commas can belong to a candidate URL, including data URLs."
+    },
+    {
+      "url": "https://url.spec.whatwg.org/#concept-basic-url-parser",
+      "supports": "URL parsing removes leading/trailing C0 controls and ASCII spaces and strips ASCII tabs/newlines; percent escapes and non-ASCII spaces remain significant."
+    }
+  ],
+  "implementation_limits": [
+    "Rewrites the navigation/media attributes actually emitted by this site; it is not a general HTML sanitizer.",
+    "Raw script/style/pre/code/textarea blocks, comments, CSS references and SVG use/defs references remain literal.",
+    "The srcset helper preserves this site’s URL plus width/density-descriptor candidates, including data URLs; it does not validate malformed descriptors.",
+    "Expected relative references are compared with Node’s independent WHATWG URL parser in regression fixtures."
+  ],
+  "evidence": "scripts/test_blog_rss.py"
+}

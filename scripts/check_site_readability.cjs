@@ -16,7 +16,32 @@ const captureOnly = process.argv.includes('--capture-only');
 (async () => {
   fs.mkdirSync(output, {recursive: true});
   const browser = await connect(port);
-  const report = {contrast: [], print: [], exceptions: browser.exceptions};
+  const report = {contrast: [], print: [], exceptions: browser.exceptions,
+    themeWait: 'render frames and completed CSS transitions; 3-second timeout'};
+  const waitForTheme = async () => browser.evaluate(`(async () => {
+    // A timer can expire before a busy page has painted the new theme. Sample
+    // its settled colors without disabling the transitions being exercised.
+    const frame = () => new Promise(resolve => requestAnimationFrame(resolve));
+    let stopped = false, timer;
+    try {
+      await Promise.race([
+        (async () => {
+          document.body.getBoundingClientRect();
+          await frame(); await frame();
+          while (!stopped) {
+            // Re-read live transitions as controls appear/disappear, rather
+            // than retaining promises for animations that may be replaced.
+            const transitions = document.getAnimations().filter(animation =>
+              animation instanceof CSSTransition &&
+              (animation.playState === 'running' || animation.pending));
+            if (!transitions.length) return;
+            await frame();
+          }
+        })(),
+        new Promise((_, reject) => {timer = setTimeout(() => reject(new Error('Theme transitions did not settle')), 3000);})
+      ]);
+    } finally {stopped = true; clearTimeout(timer);}
+  })()`);
   const waitForDisclosures = async expected => {
     await browser.cdp('Page.bringToFront');
     let actual;
@@ -40,7 +65,7 @@ const captureOnly = process.argv.includes('--capture-only');
       await browser.evaluate('document.fonts.ready');
       for (const theme of ['light', 'dark', 'warm']) {
         await browser.evaluate(`document.querySelector('[data-item=${theme}]').click()`);
-        await browser.pause(400);
+        await waitForTheme();
         const audit = await browser.evaluate('(' + contrastAudit.toString() + ')()');
         report.contrast.push({route, theme, ...audit});
       }
@@ -54,7 +79,7 @@ const captureOnly = process.argv.includes('--capture-only');
       let canvasSignature;
       for (const theme of ['light', 'dark', 'warm']) {
         await browser.evaluate(`document.querySelector('[data-item=${theme}]').click()`);
-        await browser.pause(350);
+        await waitForTheme();
         await browser.cdp('Emulation.setEmulatedMedia', {media: 'print'});
         await waitForDisclosures(original.map(()=>true));
         const state = await browser.evaluate(`({

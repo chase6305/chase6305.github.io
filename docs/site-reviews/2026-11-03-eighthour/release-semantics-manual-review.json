@@ -1,0 +1,32 @@
+{
+  "engine": "axe-core4.14.0",
+  "cases": 661,
+  "automatic_violations": 0,
+  "incomplete_rules": {
+    "aria-valid-attr-value": 2609
+  },
+  "actual_missing_id_references": [],
+  "review": "所有需人工判断项均为折叠弹出层的aria-controls确认；独立DOM查找没有缺失ID。展开菜单、搜索和图片对话框已有交互检查；保留引擎原始incomplete，不把它等同自动通过。",
+  "interactive_states": [
+    "filter",
+    "language",
+    "platform-MacIntel",
+    "platform-Win32",
+    "round-history",
+    "search",
+    "sidebar",
+    "theme",
+    "viewer"
+  ],
+  "canonical_build": "residual-language-production-final2",
+  "native_summary": {
+    "cases": 644,
+    "automatic_violations": 0,
+    "incomplete_nodes": 0,
+    "runtime_exceptions": 0,
+    "actual_arrow_scroll_cases": 3,
+    "checklist_accessibility_tree_checked": true
+  },
+  "runner_complete": true,
+  "runner_passed": true
+}

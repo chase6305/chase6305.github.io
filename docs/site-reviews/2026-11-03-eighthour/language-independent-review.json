@@ -1,0 +1,222 @@
+{
+  "scope": "Read-only source comparison; no Hugo build, CDP, or source-file mutation.",
+  "result": "passed",
+  "blocking_findings": [],
+  "checks": [
+    {
+      "name": "manifest_commit_is_actual_pinned_theme",
+      "passed": true,
+      "source_commit": "38d18a5a25d9700dc88888b6e906f1bccf4631b0"
+    },
+    {
+      "name": "published_license_is_exact_pinned_MIT_license",
+      "passed": true,
+      "sha256": "749fbcaf565aeec8feab572b554ad7f4798397521b737a35ee1dbdbfe6b9c1db"
+    },
+    {
+      "name": "provenance_entries_are_unique",
+      "passed": true,
+      "count": 17
+    },
+    {
+      "name": "prior_provenance_entries_and_change_records_retained",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:assets/js/flexsearch.js",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:assets/js/search-dialog.js",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:layouts/_partials/head.html",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:assets/json/search-data.json",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:assets/js/core/code-copy.js",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:layouts/_partials/scripts/medium-zoom.html",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:layouts/_partials/components/search-trigger.html",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:layouts/_partials/language-switch.html",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:layouts/_partials/components/search-dialog.html",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:layouts/_markup/render-passthrough.html",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:assets/js/core/menu.js",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:assets/js/core/theme.js",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:assets/js/core/lang.js",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:layouts/_partials/navbar.html",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:layouts/list.rss.xml",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:layouts/_partials/toc.html",
+      "passed": true
+    },
+    {
+      "name": "provenance_files_exist:layouts/single.html",
+      "passed": true
+    },
+    {
+      "name": "provenance_keeps_required_entry:layouts/single.html",
+      "passed": true
+    },
+    {
+      "name": "provenance_keeps_required_entry:layouts/_partials/toc.html",
+      "passed": true
+    },
+    {
+      "name": "provenance_keeps_required_entry:assets/js/flexsearch.js",
+      "passed": true
+    },
+    {
+      "name": "provenance_keeps_required_entry:assets/js/search-dialog.js",
+      "passed": true
+    },
+    {
+      "name": "provenance_keeps_required_entry:assets/json/search-data.json",
+      "passed": true
+    },
+    {
+      "name": "provenance_keeps_required_entry:assets/js/core/theme.js",
+      "passed": true
+    },
+    {
+      "name": "provenance_keeps_required_entry:layouts/list.rss.xml",
+      "passed": true
+    },
+    {
+      "name": "generic_single_structure_and_visible_output_exact_upstream_after_two_lang_attributes",
+      "passed": true,
+      "upstream_lines": 23,
+      "conditional_attributes": 2
+    },
+    {
+      "name": "toc_only_adds_one_lang_attribute_to_chapter_link",
+      "passed": true
+    },
+    {
+      "name": "archives_only_adds_title_and_draft_label_language_attributes",
+      "passed": true
+    },
+    {
+      "name": "learning_paths_text_metadata_and_routes_otherwise_unchanged",
+      "passed": true
+    },
+    {
+      "name": "search_json_only_adds_language_metadata_no_title_data_or_route_changes",
+      "passed": true
+    },
+    {
+      "name": "shared_single_bucket_and_encoder_file_is_exact_HEAD",
+      "passed": true
+    },
+    {
+      "name": "flexsearch_exact_HEAD_after_removing_stored_passed_language_metadata",
+      "passed": true,
+      "unchanged": [
+        "pageIndexFields()",
+        "section index",
+        "chapter extraction",
+        "pageIndex.append",
+        "query fields",
+        "relevance tiers",
+        "deduplication",
+        "sort",
+        "limits",
+        "IDs",
+        "routes"
+      ]
+    },
+    {
+      "name": "search_dialog_only_adds_language_attributes_and_metadata_fallback",
+      "passed": true,
+      "fallback": "language of dialog ancestor/root UI for absent language and breadcrumb metadata"
+    },
+    {
+      "name": "source_unchanged_during_review:docs/theme-overrides.json",
+      "passed": true
+    },
+    {
+      "name": "source_unchanged_during_review:layouts/single.html",
+      "passed": true
+    },
+    {
+      "name": "source_unchanged_during_review:layouts/_partials/toc.html",
+      "passed": true
+    },
+    {
+      "name": "source_unchanged_during_review:layouts/archives.html",
+      "passed": true
+    },
+    {
+      "name": "source_unchanged_during_review:content/learning-paths.md",
+      "passed": true
+    },
+    {
+      "name": "source_unchanged_during_review:assets/json/search-data.json",
+      "passed": true
+    },
+    {
+      "name": "source_unchanged_during_review:assets/js/core/search-terms.js",
+      "passed": true
+    },
+    {
+      "name": "source_unchanged_during_review:assets/js/flexsearch.js",
+      "passed": true
+    },
+    {
+      "name": "source_unchanged_during_review:assets/js/search-dialog.js",
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "docs/theme-overrides.json": "6666a8ae8e440755b31e399c67054eae177f824601bd534ab8f000f8255bb420",
+    "layouts/single.html": "3b2c0b7ba9c1a0e1d8675b3820932390734c3a68cdee49b64d27ba09cc1309ac",
+    "layouts/_partials/toc.html": "f7e3c280b7bf37bf334c4fecdceb898f40f782c91eea6536bb17cfcab02061bb",
+    "layouts/archives.html": "201ec31d54471f05bf6ce38ef89987fe554986b9c53955b05e95c32b4570903c",
+    "content/learning-paths.md": "cb928031d15c40b80a1d3246b98ab5950a8e3e358b69088910415dba54cfcbf3",
+    "assets/json/search-data.json": "645acd49918f0402d68a97fd755eacb74c131eba98f97427a281ebede18be047",
+    "assets/js/core/search-terms.js": "a8d5f46e71ff787d63d0935e8f7c813db8458fa9e02d11ce9063a1e57f208200",
+    "assets/js/flexsearch.js": "3f2198611920c2286425d0aae82bcbd6f0f988b867b73a0a2f6dc132633555a1",
+    "assets/js/search-dialog.js": "f5f9087c4a580b772201143c7de82f3d27e901f70059b1524a2f83972da054f9"
+  },
+  "limitations": [
+    "Static source equivalence cannot establish screen-reader voice switching.",
+    "Browser language and layout checks belong to the parent serial CDP queue.",
+    "RSS channel language and mixed-language homepage CTA names are outside this patch."
+  ]
+}

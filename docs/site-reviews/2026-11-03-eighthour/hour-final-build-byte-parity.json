@@ -1,0 +1,5 @@
+{
+  "files": 2324,
+  "accepted_production_equals_fresh_after_test_file_whitespace_fix": true,
+  "scope": "The sole later source edit removes an empty trailing line in the unpublished C++ test driver."
+}

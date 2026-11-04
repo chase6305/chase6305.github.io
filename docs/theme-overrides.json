@@ -16,7 +16,8 @@
         "Deduplicate chapter destinations and retain page-only results",
         "Validate HTTP status and data shape before building indexes",
         "Build indexes in cooperatively scheduled chapter-sized batches to keep the dialog responsive",
-        "Use a shared single-bucket page-content descriptor so chapter appends cannot duplicate IDs or lose multi-term intersections; retain title, heading and section scoring"
+        "Use a shared single-bucket page-content descriptor so chapter appends cannot duplicate IDs or lose multi-term intersections; retain title, heading and section scoring",
+        "Carry page and breadcrumb languages as stored metadata without changing relevance fields, chapter appends or ranking"
       ]
     },
     {
@@ -40,7 +41,8 @@
         "Feature-detect native dialog support before enhancing search links",
         "Intercept only plain primary clicks and preserve modified native link activation",
         "Show full-text help only after the search UI is available",
-        "Keep the native link when the search data-plane script failed to load"
+        "Keep the native link when the search data-plane script failed to load",
+        "Apply content language to page/chapter options and each breadcrumb segment, with interface-language fallbacks for old metadata"
       ]
     },
     {
@@ -55,7 +57,8 @@
       "local": "assets/json/search-data.json",
       "changes": [
         "Include the shared canonical blog and learning path in both language search indexes",
-        "Retain language-specific pages, exclusion rules and glossary handling"
+        "Retain language-specific pages, exclusion rules and glossary handling",
+        "Emit each page’s declared content language, falling back to its site locale"
       ]
     },
     {
@@ -91,7 +94,8 @@
       "upstream": "layouts/_partials/language-switch.html",
       "local": "layouts/_partials/language-switch.html",
       "changes": [
-        "Include the visible current-language label in the accessible name while keeping icon-only triggers concise"
+        "Include the visible current-language label in the accessible name while keeping icon-only triggers concise",
+        "Declare each menu option’s language independently while preserving the surrounding interface language"
       ]
     },
     {
@@ -122,6 +126,15 @@
       ]
     },
     {
+      "upstream": "assets/js/core/theme.js",
+      "local": "assets/js/core/theme.js",
+      "changes": [
+        "Support the repository's light, warm, dark and system preferences with keyboard-operable radio menu items",
+        "Retain an open menu when Shift+Tab returns to its trigger, then close it when focus leaves both trigger and options",
+        "Dismiss the theme menu before an enclosing mobile drawer on Escape from its trigger, respecting modal ownership and later reader focus"
+      ]
+    },
+    {
       "upstream": "assets/js/core/lang.js",
       "local": "assets/js/core/lang.js",
       "changes": [
@@ -137,6 +150,31 @@
       "local": "layouts/_partials/navbar.html",
       "changes": [
         "Render a native disclosure with configured navigation and language links before mobile menu enhancement or when core scripts are unavailable"
+      ]
+    },
+    {
+      "upstream": "layouts/list.rss.xml",
+      "local": "layouts/list.rss.xml",
+      "changes": [
+        "Retain upstream full-content item selection, order, metadata and fifty-item limit",
+        "Resolve rendered navigation and media URL references against each article permalink for portable feed reading",
+        "Preserve literal code, raw script/style/text blocks, comments and SVG local-definition references; leave the existing blog summary feed unchanged"
+      ]
+    },
+    {
+      "upstream": "layouts/_partials/toc.html",
+      "local": "layouts/_partials/toc.html",
+      "changes": [
+        "Preserve rendered heading math and native chapter destinations",
+        "Mark chapter links with the article language while keeping surrounding TOC interface labels in the site language"
+      ]
+    },
+    {
+      "upstream": "layouts/single.html",
+      "local": "layouts/single.html",
+      "changes": [
+        "Preserve the upstream generic page structure and all surrounding interface components",
+        "Apply an explicitly declared content language only to the page title and content body; retain inheritance on undeclared pages"
       ]
     }
   ],

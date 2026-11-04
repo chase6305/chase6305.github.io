@@ -1,0 +1,41 @@
+{
+  "result": "fixed and frozen",
+  "source": "content/posts/ai/transformer-attention/index.md",
+  "source_sha256": "d29de999d77b46d3303d31a40deddbb4f6e34c71c808f5895798896c12268bbc",
+  "changed_display_blocks": 11,
+  "unchanged_code_fences": 46,
+  "all_non_display_text_byte_identical": true,
+  "frontmatter_headings_anchors_unchanged": true,
+  "dependencies_unchanged": 106,
+  "independent_equivalence_checks": 25,
+  "Hugo": {
+    "version": "0.165.0",
+    "build_ms": 2196,
+    "production": "/tmp/chase-site-eight-hour-20261103/transformer-print-reflow-production",
+    "base_url": "http://127.0.0.1:13842/"
+  },
+  "print": {
+    "transformer-print-reflow-large": {
+      "layouts": 6,
+      "failures": 0,
+      "textSamples": 38802,
+      "runtimeExceptions": 0
+    },
+    "transformer-print-reflow-normal": {
+      "layouts": 6,
+      "failures": 0,
+      "textSamples": 38802,
+      "runtimeExceptions": 0
+    }
+  },
+  "old_failed_report": {
+    "path": "/tmp/chase-site-eight-hour-20261103/transformer-print-large/results.json",
+    "sha256": "08a8c0c5c253ae1201e2cec1a02b94127cf14b1d8852bbb8cc2e3d3715efebee",
+    "layouts": 6,
+    "failures": 6,
+    "preserved": true
+  },
+  "CDP_9240_released": true,
+  "native_PDF": "Deferred to parent as requested",
+  "review_finished_UTC": "2026-11-03T16:46:25.908451+00:00"
+}

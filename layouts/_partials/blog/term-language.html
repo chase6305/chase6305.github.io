@@ -1,0 +1,5 @@
+{{- $language := .Params.contentLanguage | default "" -}}
+{{- if not $language -}}
+  {{- $language = index hugo.Data.taxonomy_languages .LinkTitle | default "" -}}
+{{- end -}}
+{{- return $language -}}

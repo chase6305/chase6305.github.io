@@ -1,0 +1,436 @@
+{
+  "result": "One confirmed taxonomy-language group, one conditional language-menu candidate.",
+  "html_pages": 324,
+  "text_nodes_considered": 67883,
+  "confirmed_groups": [
+    {
+      "field": "Chinese taxonomy-card labels",
+      "nodes": 8,
+      "pages": 2,
+      "templates": [
+        {
+          "path": "layouts/taxonomy.html",
+          "line": 48
+        },
+        {
+          "path": "layouts/taxonomy.html",
+          "line": 57
+        }
+      ],
+      "selector": "a.taxonomy-card > span",
+      "texts": [
+        "三维视觉",
+        "人工智能",
+        "机器人",
+        "机器人技术",
+        "系统与工具",
+        "编程开发",
+        "规划与控制"
+      ]
+    },
+    {
+      "field": "Chinese term-page H1",
+      "nodes": 8,
+      "pages": 8,
+      "templates": [
+        {
+          "path": "layouts/term.html",
+          "line": 7
+        }
+      ],
+      "selector": "main#content > header.collection-hero > h1",
+      "texts": [
+        "三维视觉",
+        "人工智能",
+        "机器人",
+        "机器人技术",
+        "系统与工具",
+        "编程开发",
+        "规划与控制"
+      ]
+    }
+  ],
+  "confirmed_total_nodes": 16,
+  "confirmed_total_pages": 10,
+  "confirmed_pages": [
+    "categories/index.html",
+    "categories/三维视觉/index.html",
+    "categories/人工智能/index.html",
+    "categories/机器人/index.html",
+    "categories/机器人技术/index.html",
+    "categories/系统与工具/index.html",
+    "categories/编程开发/index.html",
+    "categories/规划与控制/index.html",
+    "tags/index.html",
+    "tags/机器人/index.html"
+  ],
+  "conditional_candidates": [
+    {
+      "text": "简体中文",
+      "nodes": 936,
+      "pages": 312,
+      "instances_per_page": 3,
+      "selector": "ul.hextra-language-options[role=menu] a[role=menuitem]",
+      "template": "layouts/_partials/language-switch.html",
+      "template_lines": [
+        33,
+        42,
+        44,
+        49
+      ],
+      "nearest_language": "en",
+      "initial_state": "hx:hidden popup; visibility not demonstrated by static inspection",
+      "classification": "candidate only; not included in confirmed visible count"
+    }
+  ],
+  "retained_priority_scopes": [
+    "Article breadcrumb Chinese text inherits article lang=zh-CN.",
+    "Desktop navigation visible menu labels match the entrance language; only closed language options remain candidates.",
+    "Related/topic navigation explicitly uses zh-CN.",
+    "Collection return links and both recovery pages use localized UI text.",
+    "Visible home-card title/category/description inherit the card content language; Read remains English UI."
+  ],
+  "exact_fields": [
+    {
+      "page": "categories/index.html",
+      "html_line": 24,
+      "text": "人工智能",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > section.taxonomy-grid > a.taxonomy-card > span",
+      "region": "taxonomy-card",
+      "tag": "span",
+      "classes": [],
+      "href": "/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/",
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/taxonomy.html",
+      "template_line": 57,
+      "selector": "main#content a.taxonomy-card > span (anchor href /categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/)"
+    },
+    {
+      "page": "categories/index.html",
+      "html_line": 25,
+      "text": "机器人技术",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > section.taxonomy-grid > a.taxonomy-card > span",
+      "region": "taxonomy-card",
+      "tag": "span",
+      "classes": [],
+      "href": "/categories/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8A%80%E6%9C%AF/",
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/taxonomy.html",
+      "template_line": 57,
+      "selector": "main#content a.taxonomy-card > span (anchor href /categories/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8A%80%E6%9C%AF/)"
+    },
+    {
+      "page": "categories/index.html",
+      "html_line": 26,
+      "text": "编程开发",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > section.taxonomy-grid > a.taxonomy-card > span",
+      "region": "taxonomy-card",
+      "tag": "span",
+      "classes": [],
+      "href": "/categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/",
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/taxonomy.html",
+      "template_line": 57,
+      "selector": "main#content a.taxonomy-card > span (anchor href /categories/%E7%BC%96%E7%A8%8B%E5%BC%80%E5%8F%91/)"
+    },
+    {
+      "page": "categories/index.html",
+      "html_line": 27,
+      "text": "系统与工具",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > section.taxonomy-grid > a.taxonomy-card > span",
+      "region": "taxonomy-card",
+      "tag": "span",
+      "classes": [],
+      "href": "/categories/%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%B7%A5%E5%85%B7/",
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/taxonomy.html",
+      "template_line": 57,
+      "selector": "main#content a.taxonomy-card > span (anchor href /categories/%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%B7%A5%E5%85%B7/)"
+    },
+    {
+      "page": "categories/index.html",
+      "html_line": 28,
+      "text": "三维视觉",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > section.taxonomy-grid > a.taxonomy-card > span",
+      "region": "taxonomy-card",
+      "tag": "span",
+      "classes": [],
+      "href": "/categories/%E4%B8%89%E7%BB%B4%E8%A7%86%E8%A7%89/",
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/taxonomy.html",
+      "template_line": 57,
+      "selector": "main#content a.taxonomy-card > span (anchor href /categories/%E4%B8%89%E7%BB%B4%E8%A7%86%E8%A7%89/)"
+    },
+    {
+      "page": "categories/index.html",
+      "html_line": 29,
+      "text": "机器人",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > section.taxonomy-grid > a.taxonomy-card > span",
+      "region": "taxonomy-card",
+      "tag": "span",
+      "classes": [],
+      "href": "/categories/%E6%9C%BA%E5%99%A8%E4%BA%BA/",
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/taxonomy.html",
+      "template_line": 57,
+      "selector": "main#content a.taxonomy-card > span (anchor href /categories/%E6%9C%BA%E5%99%A8%E4%BA%BA/)"
+    },
+    {
+      "page": "categories/index.html",
+      "html_line": 30,
+      "text": "规划与控制",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > section.taxonomy-grid > a.taxonomy-card > span",
+      "region": "taxonomy-card",
+      "tag": "span",
+      "classes": [],
+      "href": "/categories/%E8%A7%84%E5%88%92%E4%B8%8E%E6%8E%A7%E5%88%B6/",
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/taxonomy.html",
+      "template_line": 57,
+      "selector": "main#content a.taxonomy-card > span (anchor href /categories/%E8%A7%84%E5%88%92%E4%B8%8E%E6%8E%A7%E5%88%B6/)"
+    },
+    {
+      "page": "categories/三维视觉/index.html",
+      "html_line": 24,
+      "text": "三维视觉",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > header.collection-hero > h1",
+      "region": "collection-hero",
+      "tag": "h1",
+      "classes": [],
+      "href": null,
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/term.html",
+      "template_line": 7,
+      "selector": "main#content > header.collection-hero > h1"
+    },
+    {
+      "page": "categories/人工智能/index.html",
+      "html_line": 24,
+      "text": "人工智能",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > header.collection-hero > h1",
+      "region": "collection-hero",
+      "tag": "h1",
+      "classes": [],
+      "href": null,
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/term.html",
+      "template_line": 7,
+      "selector": "main#content > header.collection-hero > h1"
+    },
+    {
+      "page": "categories/机器人/index.html",
+      "html_line": 24,
+      "text": "机器人",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > header.collection-hero > h1",
+      "region": "collection-hero",
+      "tag": "h1",
+      "classes": [],
+      "href": null,
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/term.html",
+      "template_line": 7,
+      "selector": "main#content > header.collection-hero > h1"
+    },
+    {
+      "page": "categories/机器人技术/index.html",
+      "html_line": 24,
+      "text": "机器人技术",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > header.collection-hero > h1",
+      "region": "collection-hero",
+      "tag": "h1",
+      "classes": [],
+      "href": null,
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/term.html",
+      "template_line": 7,
+      "selector": "main#content > header.collection-hero > h1"
+    },
+    {
+      "page": "categories/系统与工具/index.html",
+      "html_line": 24,
+      "text": "系统与工具",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > header.collection-hero > h1",
+      "region": "collection-hero",
+      "tag": "h1",
+      "classes": [],
+      "href": null,
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/term.html",
+      "template_line": 7,
+      "selector": "main#content > header.collection-hero > h1"
+    },
+    {
+      "page": "categories/编程开发/index.html",
+      "html_line": 24,
+      "text": "编程开发",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > header.collection-hero > h1",
+      "region": "collection-hero",
+      "tag": "h1",
+      "classes": [],
+      "href": null,
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/term.html",
+      "template_line": 7,
+      "selector": "main#content > header.collection-hero > h1"
+    },
+    {
+      "page": "categories/规划与控制/index.html",
+      "html_line": 24,
+      "text": "规划与控制",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > header.collection-hero > h1",
+      "region": "collection-hero",
+      "tag": "h1",
+      "classes": [],
+      "href": null,
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/term.html",
+      "template_line": 7,
+      "selector": "main#content > header.collection-hero > h1"
+    },
+    {
+      "page": "tags/index.html",
+      "html_line": 35,
+      "text": "机器人",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "body > main#content > div.tag-groups > section.tag-group > div.taxonomy-grid > a.taxonomy-card > span",
+      "region": "taxonomy-card",
+      "tag": "span",
+      "classes": [],
+      "href": "/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/",
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/taxonomy.html",
+      "template_line": 48,
+      "selector": "main#content a.taxonomy-card > span (anchor href /tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/)"
+    },
+    {
+      "page": "tags/机器人/index.html",
+      "html_line": 24,
+      "text": "机器人",
+      "nearest_lang": "en",
+      "language_owner": "html",
+      "path": "html > body > main#content > header.collection-hero > h1",
+      "region": "collection-hero",
+      "tag": "h1",
+      "classes": [],
+      "href": null,
+      "conditional_visibility": [],
+      "classification": "static visible-text candidate",
+      "confirmed": "Chinese descriptive label inherits English in final HTML; no hidden/conditional ancestor in source.",
+      "template": "layouts/term.html",
+      "template_line": 7,
+      "selector": "main#content > header.collection-hero > h1"
+    }
+  ],
+  "template_sources": [
+    {
+      "path": "layouts/term.html",
+      "sha256": "e717aafc3b607661ea21f51c24ed6bfb3aa3032e878a6557d0f70932251073df"
+    },
+    {
+      "path": "layouts/taxonomy.html",
+      "sha256": "6b9dbc785b360e8abdd7bc0a02f0e4f610a5e18cc216ef7c980cf9b783a4b210"
+    },
+    {
+      "path": "layouts/_partials/language-switch.html",
+      "sha256": "d674bc375be6a514f13b3ea1fb1df77d18a4af9ad0efb98ecd52f42d9da0b211"
+    },
+    {
+      "path": "layouts/_shortcodes/latest-posts.html",
+      "sha256": "be146c4219cf177618620e8bb30c22fb2a57f735e383dcd8cfb52016adabf42e"
+    },
+    {
+      "path": "layouts/_partials/blog/topic-nav.html",
+      "sha256": "91b4bc412a18352ed8ccc8c109f0cb585a2b686b8458723355700dfcf8964777"
+    },
+    {
+      "path": "layouts/_partials/custom/content-end.html",
+      "sha256": "5e4b2be52122c67b6d917f27d8cbecc7fe91598b85de39b63d6bc81e44c89b3b"
+    },
+    {
+      "path": "layouts/blog/single.html",
+      "sha256": "97f7d530f20267c653ee57872612ff71ad003c3a5197b45f340c9275305b60ed"
+    },
+    {
+      "path": "themes/hextra/layouts/_partials/breadcrumb.html",
+      "sha256": "8994b1168e3ac718eeca7f3d5b433765e6911d03500954648775bf6b8f665b92"
+    },
+    {
+      "path": "layouts/404.html",
+      "sha256": "fe6dcadd4fbd30bb2f5a552895af4123766d24847417b614a4b34c555d59eac8"
+    },
+    {
+      "path": "assets/css/custom.css",
+      "sha256": "53fcce05018cdd6317a5894dd6437686b794ba931cabb245805722f0fb91cf5c"
+    }
+  ],
+  "scope": "Read-only HTMLParser inventory plus manual template/CSS review; no source changes, build or CDP.",
+  "exclusions": [
+    "script/style/head metadata/code/pre/KaTeX/SVG",
+    "Already repaired TOC/search scopes; no repeated report of TOC/archives/learning/search fixes.",
+    "Attributes such as aria-label are not visible text and were not treated as visible-language findings.",
+    "No brand/name-only or non-Chinese proper-name match is included."
+  ],
+  "limitations": [
+    "No computed visibility or actual open-menu state; all hidden/ARIA/conditional cases stay candidates.",
+    "Static inheritance confirmed; no screen-reader voice-switching or blanket WCAG pass/fail claim."
+  ]
+}

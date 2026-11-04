@@ -1,0 +1,858 @@
+{
+  "started_at_utc": "2026-11-03T12:24:40Z",
+  "planned_end_at_utc": "2026-11-03T19:12:32Z",
+  "status": "complete",
+  "scope": "全站可验证的内容、阅读体验和可访问性优化；保持 URL、发布日期和草稿状态，不发布。",
+  "baseline_revision": "00a50db",
+  "baseline_snapshot": "/tmp/chase-site-eight-hour-20261103/initial-worktree.json",
+  "initial_dirty_files": 30,
+  "baseline": {
+    "production_build": "passed; Hugo 0.165.0",
+    "strict_validation": {
+      "html_pages": 324,
+      "local_references": 33349,
+      "errors": 0
+    },
+    "semantic_audit": {
+      "pages": 322,
+      "viewport_widths": [
+        320,
+        1440
+      ],
+      "cases": 644,
+      "violations": 0,
+      "missing_id_references": 0,
+      "runtime_exceptions": 0
+    }
+  },
+  "findings": [
+    {
+      "topic": "主题菜单的键盘退出",
+      "evidence": "320px：打开移动导航、主题菜单，Shift+Tab 回到主题开关再 Escape，外层导航关闭而主题状态仍为 open。",
+      "status": "fixed_full_browser_regression_passed"
+    },
+    {
+      "topic": "发布核对遗漏 XML",
+      "evidence": "基线生产输出共有 211 个 XML，旧清单只收录 2 个，缺少两语言 sitemap 与分类／标签 RSS。",
+      "status": "fixed_local_regression_passed"
+    },
+    {
+      "topic": "中文文章文字的语言归属",
+      "status": "fixed_static_and_real_search_browser_passed",
+      "evidence": "静态检查95篇公开文章的2480个桌面目录链接与95个归档标题继承en；英文入口搜索JSON/结果DOM也缺少原文章language。",
+      "evidence_file": "/tmp/chase-site-eight-hour-20261103/editorial-language-audit/results.json",
+      "scope": "只标文章文字/搜索metadata，不改变界面语言或相关性字段；图片viewer与普通blog cards原已正确。"
+    },
+    {
+      "topic": "重排回归的渲染时序",
+      "status": "test_driver_fixed_full_1962_case_rerun_passed",
+      "evidence": "1962组中RL页768px/200%+spacing有1次在观察器安排的下一帧前采样，得到3个table与11个code临时tabstop缺失；实际下一帧恢复。",
+      "reproduction": "/tmp/chase-site-eight-hour-20261103/reflow-focus-reproduction.json",
+      "fix_evidence": "/tmp/chase-site-eight-hour-20261103/reflow-focus-frames.json",
+      "behavior": "12处解释性表格已修复并完成432布局键盘检查；12-table/language/DDP快照完成全站reading1060、print588、reflow1962，后续Transformer按单篇补测。"
+    },
+    {
+      "area": "contrast test timing",
+      "status": "test_driver_fixed_full_contrast_regression_passed",
+      "observation": "One warm breadcrumb contrast read4.201 during oklab color transition;3 independent dark→warm reproductions show intermediate failures and stable oklch color with0issues. Test now waits real CSS transitions instead of fixed timers, bounds at3s, preserves4.5 contrast standard. No product palette change.",
+      "evidence": "/tmp/chase-site-eight-hour-20261103/warm-contrast-reproduction.json",
+      "regression": "312contrastlayouts,0failures;18printlayouts;0exceptions. LiveCSS transitions polled byactualframes with3s timeout coveringinitialframes andstop flag."
+    },
+    {
+      "area": "Transformer200percentnativeprintformula widths",
+      "status": "fixed",
+      "evidence": "/tmp/chase-site-eight-hour-20261103/transformer-print-large/results.json",
+      "cases": 6,
+      "failing_formulas_per_case": 11,
+      "available_css_px": 716,
+      "observed_width_css_px": [
+        766.9375,
+        1191.640625
+      ],
+      "behavior": "已完成5张精确SVG替换和11处长公式等价分行，独立核查与单篇浏览器、原生PDF检查通过。",
+      "verification": "11displayblocks reflowed equivalently; independent25checks,106dependencychecks,6large+6normalprintlayouts passed. Four native PDFs exported; all20figure/caption pairs sharepages."
+    }
+  ],
+  "changes": [
+    {
+      "paths": [
+        "scripts/check_site_release.py",
+        "scripts/test_site_release.py",
+        "docs/release-verification.md"
+      ],
+      "behavior": "发布核对自动枚举全部 XML；扩展后的20项本地fixtures包含未链接XML、陈旧200响应和缺失404响应。",
+      "remote_requests": false
+    },
+    {
+      "paths": [
+        "assets/js/core/theme.js",
+        "scripts/check_site_accessibility.cjs",
+        "docs/theme-overrides.json"
+      ],
+      "behavior": "主题开关接收 Shift+Tab 后，Escape 先关闭内层菜单；离开开关与菜单时收起展开；保留其他弹窗和后续焦点。"
+    },
+    {
+      "paths": [
+        "scripts/validate_blog.py",
+        "scripts/test_blog_validation.py",
+        ".github/workflows/hugo.yml",
+        "AGENTS.md"
+      ],
+      "behavior": "通用 HTML 验证覆盖全部页面，集合页专属筛选逻辑保持；6项独立fixture回归进入CI。",
+      "fresh_build_validation": {
+        "html_pages_checked": 324,
+        "local_references_checked": 33778,
+        "errors": 0
+      },
+      "counterexample": "真实生产副本仅删除首页orca-avatar.webp，正确以状态1报告两语言首页缺图。"
+    },
+    {
+      "paths": [
+        "layouts/list.rss.xml",
+        "layouts/_partials/blog/rss-content.html",
+        "layouts/_partials/blog/rss-url.html",
+        "layouts/_partials/blog/rss-srcset.html",
+        "scripts/test_blog_rss.py",
+        ".github/workflows/hugo.yml",
+        "AGENTS.md",
+        "docs/theme-overrides.json",
+        "layouts/_partials/blog/rss-attribute.html"
+      ],
+      "behavior": "全文RSS中导航、下载、章节及媒体地址按每篇文章解析为绝对URL；保留原全文、元数据、item选择和顺序、上游50项限制及主posts摘要。",
+      "fixture_cases": 66,
+      "source_review": "docs/site-reviews/2026-11-03-eighthour/rss-sources.json",
+      "real_feed_audit": "/tmp/chase-site-eight-hour-20261103/rss-reference-after.json",
+      "output_diff": "/tmp/chase-site-eight-hour-20261103/rss-output-diff.json",
+      "limits": "仅处理站点实际生成的HTML导航/媒体属性，不承担通用HTML清洗或无效srcset描述符验证。",
+      "performance_note": "最终2对受控构建，增加Hugo CPU平均3.81273秒，约31.75%；主机负载不同，不与较早4对阶段作加速比较。完整taxonomy RSS内容和保护代码片段的正确性带来构建成本。",
+      "attribute_entity_cases_per_base_url": 2452,
+      "independent_followup": "Valid HTML attribute-context named references, SVG CDATA and exact protected tag names fixed after independent temporary fixtures. No current article uses the reproduced edge constructs; final production/draft output byte-identical to preceding snapshot."
+    },
+    {
+      "paths": [
+        "content/posts/ai/distributed-training-memory/index.md",
+        "content/posts/ai/internvl-3-5/index.md",
+        "content/posts/ai/llm-training-metrics/index.md",
+        "content/posts/ai/x-vla/index.md",
+        "content/posts/cuda/warp/index.md",
+        "docs/blog-second-pass.json",
+        "docs/blog-editorial-review.json"
+      ],
+      "behavior": "根据320px实测和截图，仅给5张首列近逐字竖排的说明表加已有table-readable类；其余6张候选未改，保持数值表紧凑。既有验收来源只更新对应reviewed_on。",
+      "evidence": "/tmp/chase-site-eight-hour-20261103/table-layout-audit/results.json",
+      "browser_verification": {
+        "targeted_cases": 180,
+        "keyboard_scroll_cases": 108,
+        "runtime_exceptions": 0,
+        "source": "/tmp/chase-site-eight-hour-20261103/reading-table-checks/results.json",
+        "all_site_reading_reflow_print": "passed on 12-table/language/DDP snapshot; Transformer later supplemented separately"
+      }
+    },
+    {
+      "paths": [
+        "scripts/site_asset_references.py",
+        "scripts/test_site_assets.py",
+        "scripts/check_site_release.py",
+        "scripts/test_asset_references.py",
+        "scripts/test_site_release.py",
+        ".github/workflows/hugo.yml",
+        "AGENTS.md",
+        "docs/release-verification.md"
+      ],
+      "behavior": "JS/CSS/SRI资源验证覆盖全部HTML，包括404；共享manifest解析按其URL解析本地图标并检查存在性，默认发布清单纳入2个间接图标。",
+      "asset_fixture_tests": 10,
+      "release_fixture_tests": 20,
+      "real_build_asset_check": {
+        "html_pages": 324,
+        "SRI_assets": 27,
+        "manifest_icons": 2
+      },
+      "counterexamples": "实际404 CSS错指和manifest图标删除副本现在均失败；原生产树保持完整。",
+      "evidence": "/tmp/chase-site-eight-hour-20261103/asset-reference-audit/implementation-summary.json",
+      "limits": "按既有只读本地范围跳过外域、data URL和项目prefix以外图标，不请求远端。",
+      "URL_semantics_review": "ASCII/C0、path反斜线和host/default-port同源规范化；10组独立Node URL对照，%20/NBSP与路径大小写保留。",
+      "latest_evidence": "/tmp/chase-site-eight-hour-20261103/asset-gate-independent-review/implementation-summary.json"
+    },
+    {
+      "paths": [
+        "content/posts/ai/distributed-training-memory/index.md",
+        "content/posts/ai/distributed-training-memory/assets/compute-communication-overlap.webp",
+        "scripts/plot_distributed_overlap.py",
+        "docs/image-generation/distributed-overlap-20261103.json",
+        ".github/workflows/hugo.yml",
+        "AGENTS.md"
+      ],
+      "behavior": "通信重叠图改为同刻度的固定时长时间线；每层梯度完整就绪后才启动通信，完整标出8–9ms暴露尾部。正文说明只统计反向与归约，构造时长及省略项可选择阅读。原图URL、图8编号、章节与发表信息保留。",
+      "arithmetic": {
+        "serial_ms": 12,
+        "overlapped_ms": 9,
+        "exposed_ms": 1
+      },
+      "independent_review": "另以FIFO双流时钟计算全部区间；图中箭头从计算末端出发，Exposed箭头移离L1文字。",
+      "plot_checks": "python3 -B scripts/plot_distributed_overlap.py --check passed; check also added to CI",
+      "source_review": "docs/image-generation/distributed-overlap-20261103.json",
+      "browser_verification": "32screenlayouts/16keyboardoriginalzooms;7nativePDFs include100%/200%communicationfigure;allsite588printlayouts passed;captions/axes/arrows manuallyinspected."
+    },
+    {
+      "paths": [
+        "layouts/_partials/toc.html",
+        "layouts/archives.html",
+        "layouts/single.html",
+        "content/learning-paths.md",
+        "assets/json/search-data.json",
+        "assets/js/flexsearch.js",
+        "assets/js/search-dialog.js",
+        "scripts/test_blog_toc.py",
+        "scripts/test_site_search.cjs",
+        "scripts/check_site_search.cjs",
+        "docs/theme-overrides.json"
+      ],
+      "behavior": "文章目录、归档标题与学习路线标题/正文按内容标语言；保留英文UI/日期。搜索存储并传递页面与各级breadcrumb语言，兼容旧数据回退，索引字段与相关性排名不改。",
+      "static_scope": {
+        "public_articles": 95,
+        "desktop_TOC_links": 2500,
+        "archive_titles": 95,
+        "search_entrances": 2,
+        "entries_per_search_index": 98,
+        "Chinese_blog_entries_per_index": 96
+      },
+      "proof": "/tmp/chase-site-eight-hour-20261103/editorial-language-audit/implementation-summary.json",
+      "browser_search": "12 layouts plus both entrances actual option/breadcrumb/old-metadata fallback checks passed, no runtime errors",
+      "limits": "DOM语言继承和数据通路已核查，未做特定屏幕阅读器的实听测试。"
+    },
+    {
+      "paths": [
+        "content/posts/ai/real-time-chunking/index.md",
+        "content/posts/ai/x-vla/index.md",
+        "content/posts/calibration/cctag/index.md",
+        "content/posts/rl/index.md",
+        "content/posts/robotics/kinematics/jacobian/index.md",
+        "docs/blog-editorial-review.json",
+        "docs/blog-second-pass.json"
+      ],
+      "behavior": "第二轮30个实际窄屏状态中，再确认7张说明表首列逐字竖排；增加既有table-readable。其余8张候选未改。原验收checks保留，只更新对应reviewed_on。",
+      "evidence": "/tmp/chase-site-eight-hour-20261103/table-layout-second-audit/results.json",
+      "browser_verification": "All12tables432layouts withactualkeyboardscrolling,wholeprint588layouts and1962reflowcases passed; originalstrings/acceptancearrays preserved."
+    },
+    {
+      "paths": [
+        "content/posts/ai/transformer-attention/index.md",
+        "docs/blog-second-pass.json",
+        "scripts/render_transformer_figures.py",
+        "content/posts/ai/transformer-attention/assets/softmax-row-calculation.svg",
+        "content/posts/ai/transformer-attention/assets/multi-head-shapes.svg",
+        "content/posts/ai/transformer-attention/assets/causal-mask-calculation.svg",
+        "content/posts/ai/transformer-attention/assets/moe-token-routing.svg",
+        "content/posts/ai/transformer-attention/assets/attention-scoring-pipeline.svg",
+        "docs/image-generation/transformer-figures-20261103.json"
+      ],
+      "behavior": "已用确定性SVG修复5图数值/维度/路由问题，并将11处长公式等价分行；旧WebP原始URL保留。",
+      "status": "verified",
+      "proof": "/tmp/chase-site-eight-hour-20261103/foundation-content-consistency/results.json",
+      "primary_source": "https://arxiv.org/html/1706.03762v7#S3.SS2.SSS2",
+      "browser_verification": {
+        "final_figures": {
+          "layouts": 24,
+          "figureInspections": 120,
+          "equationInspections": 48,
+          "keyboardOverflowCases": 20,
+          "zooms": 10,
+          "runtimeExceptions": 0
+        },
+        "final_reflow": {
+          "layouts": 18,
+          "failures": 0,
+          "runtimeExceptions": 0
+        },
+        "search": "12latestlayouts/bothentrances passed",
+        "native_PDFs": 4,
+        "tagged": true,
+        "focus_scroll_disclosures_restored": true,
+        "manual_PDF_review": "All5figurepages in100%lightA4 and200%scripts-offwarmLetter viewed; no clipping/incorrect arrows observed; all20SVG-title/caption pairs matchsamepage."
+      },
+      "independent_assertions": 231,
+      "print_reflow": {
+        "display_blocks": 11,
+        "code_fences_unchanged": 46,
+        "headings_and_anchors_unchanged": 100,
+        "equivalence_assertions": 25,
+        "A4_print_cases_100_and_200": 12
+      }
+    },
+    {
+      "paths": [
+        "scripts/check_site_reflow.cjs",
+        "scripts/check_site_readability.cjs"
+      ],
+      "behavior": "Test drivers wait for font-driven layout/render frames and live CSS transitions rather than fixed wall-clock pauses; preserve all focus/overflow/contrast assertions. Transition wait has3s deadline coveringinitialframes andstops polling ontimeout.",
+      "regression": "Full1962reflow and312contrastlayouts passed after independent timing reproductions."
+    },
+    {
+      "paths": [
+        "data/taxonomy_languages.yaml",
+        "layouts/_partials/blog/term-language.html",
+        "layouts/taxonomy.html",
+        "layouts/term.html",
+        "layouts/_partials/language-switch.html",
+        "scripts/check_language_menu.cjs",
+        "docs/theme-overrides.json",
+        "AGENTS.md"
+      ],
+      "behavior": "为7个明确中文分类/标签名称声明语言，16个可见字段正确标注；页面声明优先于精确映射，未知名称保持原样。语言菜单选项按各自语言标记。预计算可选属性，避免空partial触发ZgotmplZ。",
+      "verification": {
+        "HTML_pages": 324,
+        "mapped_fields": 16,
+        "menu_attributes": 1908,
+        "unmapped_fields_preserved": 389,
+        "non_HTML_files_byte_identical": 2004,
+        "menu_cases": 108,
+        "nested_focus_cases": 12,
+        "option_language_checks": 232,
+        "runtime_exceptions": 0,
+        "CJK_visible_text_still_inheriting_en": 0
+      },
+      "source": "/tmp/chase-site-eight-hour-20261103/residual-language-fix-review/results.json"
+    },
+    {
+      "paths": [
+        "content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+        "scripts/test_kinematics_fragments.py",
+        ".github/workflows/hugo.yml",
+        "docs/blog-second-pass.json",
+        "AGENTS.md",
+        "content/posts/robotics/kinematics/seven-dof-kinematics/index.md"
+      ],
+      "behavior": "Fix wrist singular quadrants, Rzz=+1 branch,2pi periodic unfolding and half-open joint-limit endpoints;2028 actual compiled C++ local cases vs independent matrix oracle. Full IK and hardware remain outside scope. Seven-axis nonzero near-vertical projections preserve azimuth;256 branch cases vs independent DH products, max entry error8.33e-16."
+    },
+    {
+      "paths": [
+        "content/posts/ai/diffusion-models/index.md",
+        "content/posts/ai/diffusion-models/assets/time-conditioned-unet-flow.svg",
+        "content/posts/ai/diffusion-models/assets/training-vs-sampling-flow.svg",
+        "scripts/render_diffusion_flows.py",
+        "docs/image-generation/diffusion-flows-20261103.json",
+        ".github/workflows/hugo.yml",
+        "docs/blog-second-pass.json",
+        "scripts/test_diffusion_embedding.py",
+        "AGENTS.md"
+      ],
+      "behavior": "Replace two misleading diffusion flow diagrams with exact SVG paths: feature Q and condition KV, decoder prediction head, training/sampling timestep inputs and reverse-update separation. Old WebP URLs preserved. Fix odd embedding padding at dim1;54 CPU PyTorch2.14.1 cases compare against scalar math;64-dimension values unchanged.",
+      "verification": {
+        "image_layouts": 24,
+        "figure_inspections": 48,
+        "keyboard_zooms": 4,
+        "print_layouts": 12,
+        "reflow_layouts": 18,
+        "runtime_exceptions": 0,
+        "display_math_equivalence": "19 blocks preserved;3 equivalent reflows"
+      }
+    }
+  ],
+  "verification": [
+    {
+      "name": "round1-production",
+      "build": "/tmp/chase-site-eight-hour-20261103/round1-production",
+      "strict_validation": "passed"
+    },
+    {
+      "name": "navigation_theme_zoom",
+      "source": "/tmp/chase-site-eight-hour-20261103/round1-accessibility/results.json",
+      "layouts": 165,
+      "new_theme_keyboard_cases": 8,
+      "runtime_exceptions": 0
+    },
+    {
+      "name": "language_menu",
+      "source": "/tmp/chase-site-eight-hour-20261103/round1-language-menu/results.json",
+      "result": "passed"
+    },
+    {
+      "name": "native_semantics_all_pages",
+      "source": "/tmp/chase-site-eight-hour-20261103/round1-native-semantics-resumed/results.json",
+      "pages": 322,
+      "cases": 644,
+      "violations": 0,
+      "missing_id_references": 0,
+      "runtime_exceptions": 0,
+      "native_scroll_cases": 3,
+      "checkpoint_note": "中断时先保留368组记录；检查生产树未改变后补完余下276组及原生方向键/焦点测试。原始与接续记录均保留。"
+    },
+    {
+      "name": "combined_reading_builds",
+      "source": "/tmp/chase-site-eight-hour-20261103/reading-build-results.json",
+      "production": "passed",
+      "draft_inclusive": "passed",
+      "checks": [
+        "Hugo clean destinations",
+        "strict HTML/formula/python/structured snippet validation",
+        "production pinned assets/integrity/provenance",
+        "production and draft article filter inventory"
+      ]
+    },
+    {
+      "name": "reading_all_articles_and_figures",
+      "source": "/tmp/chase-site-eight-hour-20261103/reading-all-figures/results.json",
+      "build": "reading-drafts (before communication diagram revision)",
+      "cases": 1060,
+      "figure_cases": 668,
+      "failures": 0,
+      "runtime_exceptions": 0
+    },
+    {
+      "name": "new_communication_diagram_production",
+      "source": "/tmp/chase-site-eight-hour-20261103/figure-validation.json",
+      "build_ms": 21052,
+      "strict_validation": "passed",
+      "assets": "324 HTML;27SRI;2manifest icons;all passed",
+      "browser_checks": "32screenlayouts/16originalzooms passed; nativePDFs andwholeprint588passed;manualfigure/captionPDFreview complete."
+    },
+    {
+      "name": "communication_figure_current_browser",
+      "source": "/tmp/chase-site-eight-hour-20261103/communication-figure-browser/results.json",
+      "build": "language-production",
+      "layout_cases": 32,
+      "original_image_zoom_cases": 16,
+      "viewport_widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "root_text_percent": [
+        100,
+        200
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "page_scripts": [
+        true,
+        false
+      ],
+      "failures": 0,
+      "runtime_exceptions": 0,
+      "checked": [
+        "image dimensions and decoded ratio",
+        "caption visibility and numbers",
+        "chapter position after eager images",
+        "original image resolution",
+        "viewer Chinese language/focus/scroll restoration",
+        "native original links"
+      ]
+    },
+    {
+      "name": "search_language_browser",
+      "source": "/tmp/chase-site-eight-hour-20261103/language-search-browser/results.json",
+      "layouts": 12,
+      "runtime_exceptions": 0,
+      "entrances": [
+        "/",
+        "/zh-cn/"
+      ],
+      "DOM_language_checks": [
+        "11 actual page/chapter options per entrance",
+        "mixed breadcrumb languages",
+        "old metadata fallback",
+        "interface language preserved"
+      ],
+      "other_search_checks": [
+        "query AND/ranking/normalization",
+        "native editing",
+        "network retry",
+        "IME",
+        "stale response rejection"
+      ]
+    },
+    {
+      "name": "pre_attribute_fix_controlled_RSS_cost",
+      "source": "/tmp/chase-site-eight-hour-20261103/rss-cost-controlled/summary.json",
+      "paired_builds": 4,
+      "process_limit": "GOMAXPROCS=2; identical independent snapshot/cache; one successful warm-up per variant before measurement",
+      "mean_old_cpu_seconds": 10.85471675,
+      "mean_current_cpu_seconds": 15.009526,
+      "mean_incremental_cpu_seconds": 4.15480925,
+      "incremental_wall_seconds_range": [
+        3.425329902,
+        7.031776242
+      ],
+      "non_XML_files_identical_per_pair": 2127,
+      "actual_changed_RSS_feeds": 199,
+      "independent_URL_attributes_checked": 21903,
+      "limits": [
+        "Measurements are local under concurrent Chrome CPU, not general CI timing guarantees.",
+        "Initial cold-cache OLD warm-up timed out; one bounded recovery with identical HUGO_TIMEOUT=10m for both variants was successful.",
+        "Four old RSS files had one-byte variation in OLD pair2; metadata, parsed structure and per-pair non-XML equality remained valid."
+      ],
+      "code_version_scope": "Historical helper before attribute-context/CDATA/tag-boundary final corrections."
+    },
+    {
+      "name": "pre_transformer_complete_reflow",
+      "source": "/tmp/chase-site-eight-hour-20261103/current-reflow/results.json",
+      "build": "language-drafts",
+      "layouts": 1962,
+      "failures": 0,
+      "runtime_exceptions": 0,
+      "render_wait": "Forced font discovery + document.fonts.ready + 2 animation frames for enhanced pages; native pages keep existing wait; all assertions unchanged.",
+      "snapshot_scope": "12-table/language/DDP snapshot before Transformer SVG/notation/display reflow and residual taxonomy/menu language attributes; subsequent changes have separate supplements."
+    },
+    {
+      "name": "pre_transformer_frontend_builds",
+      "production_html": 324,
+      "draft_inclusive_html": 332,
+      "strict_validation": "passed",
+      "pinned_assets": "passed:27SRI,2manifest icons,17theme overrides",
+      "filter": "passed:95public articles,11topics",
+      "rss_compatibility_followup": "Final RSS build adds attribute-aware decoder/CDATA/tag boundaries; all files in production and draft output byte-identical to prior frozen browser snapshot.",
+      "proof": "/tmp/chase-site-eight-hour-20261103/rss-final-build-comparison.json",
+      "snapshot_scope": "12-table/language/DDP snapshot before Transformer SVG/notation/display reflow and residual taxonomy/menu language attributes; subsequent changes have separate supplements."
+    },
+    {
+      "name": "tables_final_keyboard",
+      "cases": 432,
+      "actual_keyboard_scroll_cases": 210,
+      "runtime_exceptions": 0,
+      "source": "/tmp/chase-site-eight-hour-20261103/reading-tables-final/results.json"
+    },
+    {
+      "name": "native_reading_pdfs",
+      "exports": 7,
+      "source": "/tmp/chase-site-eight-hour-20261103/native-reading-pdfs/results.json",
+      "tagged": true,
+      "focus_scroll_disclosures_restored": true,
+      "visual_review": "Communication figure/caption on A4 pages28(100%) and66(200% dark), and all five target tables including continued header/rows visually inspected; no cropped labels observed."
+    },
+    {
+      "name": "readability_after_real_transition_wait",
+      "summary": {
+        "contrastLayouts": 312,
+        "textSamples": 263616,
+        "contrastFailures": 0,
+        "printLayouts": 18,
+        "runtimeExceptions": 0
+      },
+      "source": "/tmp/chase-site-eight-hour-20261103/final-readability/results.json",
+      "snapshot_scope": "12-table/language/DDP snapshot before Transformer SVG/notation/display reflow and residual taxonomy/menu language attributes; subsequent changes have separate supplements."
+    },
+    {
+      "name": "print_all_articles_before_transformer_illustrations",
+      "summary": {
+        "layouts": 588,
+        "failures": 0,
+        "textSamples": 480393,
+        "runtimeExceptions": 0
+      },
+      "source": "/tmp/chase-site-eight-hour-20261103/final-print/results.json",
+      "scope": "frozen12table/language/DDP snapshot; later Transformer changes get additional targeted print checks",
+      "snapshot_scope": "12-table/language/DDP snapshot before Transformer SVG/notation/display reflow and residual taxonomy/menu language attributes; subsequent changes have separate supplements."
+    },
+    {
+      "name": "chapter_all_articles_before_transformer_illustrations",
+      "articles": 98,
+      "chapter_activations": 10076,
+      "representative_layouts": 36,
+      "modified_click_cases": 5,
+      "legacy_anchor_and_fragment_history": true,
+      "runtime_exceptions": 0,
+      "source": "/tmp/chase-site-eight-hour-20261103/final-chapters/results.json",
+      "snapshot_scope": "12-table/language/DDP snapshot before Transformer SVG/notation/display reflow and residual taxonomy/menu language attributes; subsequent changes have separate supplements."
+    },
+    {
+      "name": "transformer_first_three_independent_svgs",
+      "assertions": 161,
+      "source": "/tmp/chase-site-eight-hour-20261103/transformer-replacement-review/first-three.json",
+      "scope": "actual SVG text/cells/paths andPNG previews reviewed without importing generator; no math/shape/bypass failures"
+    },
+    {
+      "name": "reading_all_figures_before_transformer_replacements",
+      "cases": 1060,
+      "figure_cases": 668,
+      "runtime_exceptions": 0,
+      "source": "/tmp/chase-site-eight-hour-20261103/final-reading/results.json",
+      "scope": "12-table/language/DDP snapshot before Transformer SVG/notation/display reflow and residual taxonomy/menu language attributes; subsequent changes have separate supplements.",
+      "snapshot_scope": "12-table/language/DDP snapshot before Transformer SVG/notation/display reflow and residual taxonomy/menu language attributes; subsequent changes have separate supplements."
+    },
+    {
+      "name": "transformer_final_build",
+      "production": "fresh agentbuild;324HTML33758refs strict clean;27SRI2icons17overrides;95articlefilter passed",
+      "drafts": "Freshdraftinclusivebuild passedstrict332HTML/34427references;newlatermathreflowdefaultURLdraftbuild also passed.",
+      "image_hook_fixtures": "5modes×10images passed including fractional/scientific/multiline SVG viewBox",
+      "legacy_media": "5newSVG and5retainedoriginalWebP paths present in fresh output",
+      "source": "/tmp/chase-site-eight-hour-20261103/transformer-figures-preview/hugo-production.json"
+    },
+    {
+      "name": "transformer_current_image_and_screen_supplement",
+      "image_summary": {
+        "layouts": 24,
+        "figureInspections": 120,
+        "equationInspections": 48,
+        "keyboardOverflowCases": 20,
+        "zooms": 10,
+        "runtimeExceptions": 0
+      },
+      "reflow": {
+        "layouts": 18,
+        "failures": 0,
+        "runtimeExceptions": 0
+      },
+      "print100": {
+        "layouts": 6,
+        "failures": 0,
+        "textSamples": 38802,
+        "runtimeExceptions": 0
+      },
+      "print200": {
+        "layouts": 6,
+        "failures": 0,
+        "textSamples": 38802,
+        "runtimeExceptions": 0
+      },
+      "source": [
+        "transformer-final-figures-browser/results.json",
+        "transformer-final-reflow/results.json",
+        "transformer-print-reflow-normal/results.json",
+        "transformer-print-reflow-large/results.json"
+      ]
+    },
+    {
+      "name": "previous_canonical_before_residual_language",
+      "build_ms": 1990,
+      "production_pages": 324,
+      "local_references": 33758,
+      "strict_errors": 0,
+      "draft_pages": 332,
+      "draft_local_references": 34427,
+      "pinned_assets": 27,
+      "manifest_icons": 2,
+      "source": "/tmp/chase-site-eight-hour-20261103/canonical-final-validation.json",
+      "canonical": "https://chase6305.github.io/",
+      "preview_equivalence": "Alloutputpaths same; all531changedfiles differ only declared loopback→canonicalURL replacement, JS/CSS/font bytes identical.",
+      "proof": "/tmp/chase-site-eight-hour-20261103/canonical-vs-preview-output.json"
+    },
+    {
+      "name": "Transformer_native_final_PDFs",
+      "exports": 4,
+      "pages": [
+        72,
+        142,
+        72,
+        151
+      ],
+      "formats": [
+        "A4",
+        "Letter"
+      ],
+      "text_sizes": [
+        100,
+        200
+      ],
+      "scripts": [
+        true,
+        false
+      ],
+      "tagged": true,
+      "source_signature_and_reading_state_restored": true,
+      "figure_caption_same_page_pairs": 20,
+      "manual_review": "5A4normal +5Letterlargefigurepages visually inspected; complete figures,captions,labels and arrows.",
+      "source": "/tmp/chase-site-eight-hour-20261103/transformer-final-native-pdfs/results.json"
+    },
+    {
+      "name": "post_attribute_fix_controlled_RSS_cost",
+      "pairs": 2,
+      "old_cpu_mean": 12.0097705,
+      "current_cpu_mean": 15.8225005,
+      "paired_increment_cpu_mean": 3.81273,
+      "wall_increment_range": [
+        2.047486151976045,
+        6.013376869959757
+      ],
+      "limits": "Distinct snapshots and host load; difference from earlier phase does not demonstrate speedup. No network/runtime performance claim.",
+      "source": "rss-cost-controlled/post-attribute-fix/summary.json"
+    },
+    {
+      "name": "release_language_final2",
+      "build": "residual-language-production-final2",
+      "build_ms": 1982,
+      "canonical": "https://chase6305.github.io/",
+      "production_html": 324,
+      "local_references": 33758,
+      "draft_html": 332,
+      "draft_local_references": 34427,
+      "strict_errors": 0,
+      "SRI_assets": 27,
+      "manifest_icons": 2,
+      "theme_overrides": 17,
+      "filter": "passed",
+      "source": [
+        "release-final-validation.json",
+        "release-final-drafts-validation.json",
+        "release-final-assets.json",
+        "release-final-filter.json"
+      ]
+    },
+    {
+      "name": "release_semantics_final2",
+      "build": "residual-language-production-final2",
+      "interactive": {
+        "cases": 661,
+        "failingCases": 0,
+        "incompleteNodes": 2609,
+        "exceptions": 0
+      },
+      "native": {
+        "cases": 644,
+        "failingCases": 0,
+        "incompleteNodes": 0,
+        "exceptions": 0,
+        "actual_arrow_scroll_cases": 3
+      },
+      "manual_review": "2609项均为折叠popup aria-controls需人工确认；独立DOM0missing IDs，保留原始incomplete。",
+      "source": "release-semantics-suite-state.json"
+    },
+    {
+      "name": "hour_kinematics_diffusion_supplement",
+      "canonical_build": "hour-print-final-production",
+      "build_ms": 2036,
+      "compiled_Cpp_cases": 2028,
+      "seven_axis_branches": 256,
+      "mutants_rejected": 4,
+      "image_layouts": 24,
+      "image_inspections": 48,
+      "keyboard_zooms": 4,
+      "reflow_layouts": 54,
+      "print_geometry_cases": 36,
+      "all_targeted_passed": true,
+      "scope": "Changed3 articles; semantic supplement before final two C++ comment wording edits. Native PDF exports and strict static gates use accepted-production. Shared IDs/attributes/styles/scripts unchanged by final comment edits.",
+      "limitations": [
+        "Full historical six-axis IK, original floatPrecision tuning and hardware not validated.",
+        "Figures show simplified algorithm structure, not measured model behavior."
+      ],
+      "native_PDFs": 6,
+      "latest_build": "accepted-production",
+      "CPU_embedding_cases": 54,
+      "search_cases": 12,
+      "negative_multi_term_search_cases": 4,
+      "semantic_supplement": {
+        "scripted_cases": 6,
+        "scripted_incomplete": 40,
+        "native_cases": 6,
+        "native_incomplete": 0,
+        "violations": 0,
+        "missing_IDs": 0
+      }
+    }
+  ],
+  "content_audit": {
+    "astar_independent": {
+      "actual_cpp_runs": 32768,
+      "method": "2×2×2 所有占用图 × 6/26邻接 × 所有起终点；独立 Floyd–Warshall 与整段包围盒穿角规则",
+      "passed": true,
+      "evidence": "/tmp/chase-site-eight-hour-20261103/article-audit/astar-independent.json",
+      "limits": "只覆盖有限小栅格，不代表实体机器人碰撞验证"
+    },
+    "lab_numerical": {
+      "evidence": "/tmp/chase-site-eight-hour-20261103/lab-numerical-audit/results.json",
+      "probe": "/tmp/chase-site-eight-hour-20261103/lab-numerical-audit/audit.cjs",
+      "filter_single_control_cases": 2435,
+      "routing_cases": 12120,
+      "routing_reference_cases": 15,
+      "limits": "滤波为逐个控件刻度扫描，非参数组合穷举；比较已保存Python基准，未重跑NumPy/SciPy；不验证DOM或硬件。"
+    },
+    "figure_editorial_audit": {
+      "public_articles": 95,
+      "alts": 342,
+      "captions": 233,
+      "metadata": 475,
+      "confirmed_production_commentary_issues": 0,
+      "scope": "text fields only; scientific pixel audit is separate",
+      "evidence": "/tmp/chase-site-eight-hour-20261103/figure-editorial-audit/results.json"
+    },
+    "distributed_figures": {
+      "reviewed": 3,
+      "confirmed_issues": 0,
+      "independent_assertions": 19,
+      "decision": "Preserve all3;4GPUsharding and8GPUquantities have different explicitly stated assumptions;P2/G2/O12 accounting andexcludedtemporaryallgather/activations/peaks consistent.",
+      "source": "/tmp/chase-site-eight-hour-20261103/distributed-figure-audit/results.json"
+    }
+  },
+  "preservation_checkpoint": {
+    "checked_utc": "2026-11-03T15:36:00Z",
+    "independent_assertions": 393,
+    "identity_scope": "98 article files plus1 section Markdown file; dates,draft,url,slug,aliases and inventory unchanged",
+    "original_dirty_files": 30,
+    "byte_identical_current": 28,
+    "intentionally_extended": [
+      "AGENTS.md",
+      "docs/blog-editorial-review.json"
+    ],
+    "exact_initial_backups": 30,
+    "acceptance_scope": {
+      "articles": 98,
+      "checks": 605,
+      "single_acceptance_source": true,
+      "original_arrays_preserved": true
+    },
+    "table_scope": {
+      "tables": 12,
+      "articles": 9,
+      "existing_wording_preserved": true
+    },
+    "evidence": "/tmp/chase-site-eight-hour-20261103/final-preservation-review/review.json",
+    "owned_source_patch": {
+      "files": 68,
+      "patch": "/tmp/chase-site-eight-hour-20261103/owned-source-changes.patch",
+      "sha256": "fd64d17d0e726afeab20ad7ecfb81c1a9e670ddc6257ae8f2f8bb6a6170c51a6",
+      "initial_dirty_excluded": true,
+      "isolated_forward_reverse_checks_and_replay": "passed",
+      "whitespace": "passed"
+    },
+    "latest_full_frontmatter_heading_entries": 99,
+    "unchanged_initial_dirty_files": 28
+  },
+  "user_duration_update": {
+    "received_utc": "2026-11-03T18:12:32Z",
+    "instruction": "可持续优化1个小时",
+    "interpretation": "继续综合优化一小时，替换原剩余8小时计划",
+    "planned_end_utc": "2026-11-03T19:12:32Z"
+  },
+  "follow_up_findings": [
+    {
+      "name": "existing_large_text_print_math_overflow",
+      "scope": "Full draft-inclusive source snapshot hour-print-final-drafts,200% root text,A4 geometry,three themes,with/without scripts",
+      "layouts": 588,
+      "failing_layouts": 222,
+      "affected_articles": 37,
+      "unique_formulas": 166,
+      "runtime_exceptions": 0,
+      "code_or_table_overflow": 0,
+      "disposition": "Recorded backlog; no shared font shrinking or blanket source reformatting. Changed3 articles pass targeted checks.",
+      "source": "hour-all-print-large/issues-by-page.json",
+      "baseline_proof": "All rendered math annotations on37 affected pages match initial draft build; all emitted CSS byte-identical. See hour-large-print-baseline-proof.json."
+    }
+  ],
+  "original_wall_clock_plan_end_at_utc": "2026-11-03T20:24:40Z",
+  "final_local_builds": {
+    "production": "accepted-production",
+    "drafts": "accepted-drafts",
+    "production_HTML": 324,
+    "production_local_refs": 33750,
+    "draft_HTML": 332,
+    "draft_local_refs": 34419,
+    "strict_errors": 0,
+    "SRI_assets": 27,
+    "manifest_icons": 2,
+    "theme_overrides": 17,
+    "canonical": "https://chase6305.github.io/",
+    "production_build_ms": 1740,
+    "draft_build_ms": 1774,
+    "scope": "Current source after final C++ explanatory comment corrections; docs/provenance edits do not affect emitted site.",
+    "unpublished_test_whitespace_followup": {
+      "build": "whitespace-verified-production",
+      "all2324_emitted_files_equal_to_accepted": true
+    }
+  },
+  "delivery_notes": "docs/site-reviews/2026-11-03-eighthour/README.txt",
+  "completed_at_utc": "2026-11-03T19:13:07.637305+00:00",
+  "completion_basis": "Latest user request supersedes remaining8-hour plan;continued at least1 hour from2026-11-03T18:12:32Z. All adopted changes verified; existing large-print backlog explicitly retained.",
+  "commit_candidate_review": "docs/site-reviews/2026-11-03-eighthour/commit-review.json"
+}

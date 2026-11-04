@@ -23,7 +23,7 @@ related_posts:
 
 > **学习目标**：读完后，你应该能解释 `X → Q/K/V → scores → attn → output` 的全过程，并能独立写出单头和多头自注意力的张量形状。
 
-本文默认读者了解 Python、矩阵乘法和 PyTorch 张量。代码建议使用 Python 3.10+ 与 PyTorch 2.x；除明确标出的训练示例外，CPU 即可运行。公式使用行向量批处理约定，因此 `nn.Linear` 对应写成 `XWᵀ+b`。
+本文默认读者了解 Python、矩阵乘法和 PyTorch 张量。代码建议使用 Python 3.10+ 与 PyTorch 2.x；除明确标出的训练示例外，CPU 即可运行。代码与批处理投影公式采用行向量约定，因此 `nn.Linear` 对应写成 `XWᵀ+b`；单向量打分的列向量记号在对应小节单独说明。
 
 ## 阅读路线
 
@@ -166,7 +166,7 @@ Attention 公式中还会使用以下字母：
 | 方式 | 主要目标 | 优点 | 局限 |
 |---|---|---|---|
 | Single-Head Attention | 用一张注意力图完成一次查找与汇总；也是理解公式的最小实现 | 结构直观、易调试 | 只能在一组表示空间中建立关系 |
-| Multi-Head Attention | 让多个 head 并行学习不同表示子空间和依赖模式 | 表达能力更强；可同时建模多类关系 | 计算和缓存更大；head 不一定具有清晰可解释语义 |
+| Multi-Head Attention | 让多个 head 并行学习不同表示子空间和依赖模式 | 表达能力更强；可同时建模多类关系 | 需处理多头布局与注意力中间量；head 不一定具有清晰可解释语义 |
 | GQA/MQA | 保留多个 Query heads，同时共享部分或全部 K/V heads | 降低 KV Cache 和解码带宽 | K/V 表达自由度低于标准 MHA |
 {.table-readable}
 
@@ -247,9 +247,11 @@ V = self.v_proj(x)
 对每个 token 向量分别计算：
 
 $$
-Q=XW_Q^\top+b_Q,\qquad
-K=XW_K^\top+b_K,\qquad
-V=XW_V^\top+b_V
+\begin{aligned}
+Q&=XW_Q^\top+b_Q,\\
+K&=XW_K^\top+b_K,\\
+V&=XW_V^\top+b_V
+\end{aligned}
 $$
 
 `nn.Linear(C, C)` 只变换最后一维，同一组参数会应用到所有 batch 和 token：
@@ -279,15 +281,18 @@ Q、K、V 不是简单复制出来的。它们输入相同，但使用不同权�
 完整公式为：
 
 $$
-\operatorname{Attention}(Q,K,V)=
-\operatorname{softmax}\left(\frac{QK^\top}{\sqrt C}+M\right)V
+\begin{gathered}
+S=\frac{QK^\top}{\sqrt C},\\
+A=\operatorname{softmax}(S+M),\\
+\operatorname{Attention}(Q,K,V)=AV
+\end{gathered}
 $$
 
 ### 4.1 计算相关性
 
 `Q @ K.transpose(-2, -1)` 得到 `[B, T, T]`。其中第 `i` 行、第 `j` 列表示第 `i` 个 Query 与第 `j` 个 Key 的匹配分数。除以 `sqrt(C)` 可避免维度增大时点积过大、softmax 饱和。
 
-更具体地说，若 $q$ 和 $k$ 的各维近似独立、均值为 0、方差为 1，则点积 $q^\top k$ 是 $C$ 项乘积之和，其方差约为 $C$、标准差约为 $\sqrt C$。除以 $\sqrt C$ 后，分数的典型尺度回到常数量级，Softmax 不容易在初始化阶段过早进入接近 one-hot 的饱和区域。多头中实际点积维度是 $D_h$，因此改除以 $\sqrt{D_h}$。
+更具体地说，若 $q$ 和 $k$ 的各维近似独立、均值为 0、方差为 1，则点积 $\sum_{\ell=1}^{C}q_\ell k_\ell$ 是 $C$ 项乘积之和，其方差约为 $C$、标准差约为 $\sqrt C$。除以 $\sqrt C$ 后，分数的典型尺度回到常数量级，Softmax 不容易在初始化阶段过早进入接近 one-hot 的饱和区域。多头中实际点积维度是 $D_h$，因此改除以 $\sqrt{D_h}$。
 
 | 数学步骤 | 对应代码 | 输出形状 |
 |---|---|---|
@@ -321,10 +326,10 @@ $$
 最后三个权重之和为 1，较大的原始分数获得较大的概率。
 
 <figure class="article-figure">
-  {{< post-image src="assets/softmax-step-by-step.webp" alt="Softmax 数值计算与 Mask 示例" >}}
+  {{< post-image src="assets/softmax-row-calculation.svg" alt="Softmax 对分数 2、1、0 按行归一化，并展示屏蔽第三个键后的重新归一化" >}}
   <figcaption>
     <span class="article-figure__number">图 5</span>
-    <span class="article-figure__text">逐步计算 row-wise Softmax；被 mask 的负无穷位置在指数运算后变为 0。</span>
+    <span class="article-figure__text">逐步计算 row-wise Softmax。[2,1,0] 得到约 [0.665,0.245,0.090]；屏蔽第三项后，概率重新归一化为约 [0.731,0.269,0]。图中小数显示到三位，被 mask 的负无穷位置在指数运算后变为 0。</span>
   </figcaption>
 </figure>
 
@@ -403,10 +408,10 @@ M=\begin{bmatrix}
 $$
 
 <figure class="article-figure">
-  {{< post-image src="assets/causal-mask.webp" alt="因果掩码将未来位置的注意力权重变为零" >}}
+  {{< post-image src="assets/causal-mask-calculation.svg" alt="五乘五因果掩码使上三角权重全为零，每行对当前及历史 Key 重新归一化" >}}
   <figcaption>
     <span class="article-figure__number">图 6</span>
-    <span class="article-figure__text">上三角的未来位置被屏蔽；softmax 后对应权重严格为 0。</span>
+    <span class="article-figure__text">固定 5×5 分数例中，行是 Query、列是 Key；只允许读取当前及历史位置，上三角的未来权重严格为 0。第二行可见分数 [-0.4,1.5]，归一化后约为 [0.130,0.870]。图中各项独立四舍五入到三位小数。</span>
   </figcaption>
 </figure>
 
@@ -423,16 +428,16 @@ $$
 因此必须满足 `C % H == 0`。示例中 `C=48`、`H=8`，所以每头 `Dh=6`。
 
 <figure class="article-figure">
-  {{< post-image src="assets/multi-head-attention-flow.webp" alt="多头注意力的拆分、并行与拼接" >}}
+  {{< post-image src="assets/multi-head-shapes.svg" alt="八头注意力中每头接收自己的 Q、K、V 切片，沿特征轴拼接八个输出后再投影" >}}
   <figcaption>
     <span class="article-figure__number">图 7</span>
-    <span class="article-figure__text">特征维被拆给多个 head，并行计算后再拼回原维度。</span>
+    <span class="article-figure__text">C=48、H=8、Dh=6。每个 head 接收自己的 Qᵢ、Kᵢ、Vᵢ，输出 [B,T,6]；八个输出沿特征末维拼接为 [B,T,48]，再经过输出投影。</span>
   </figcaption>
 </figure>
 
 ### 5.1 先投影，再拆 Head
 
-当前实现先生成完整的 Q、K、V，再依次变形为 `[B,T,H,Dh]` 和 `[B,H,T,Dh]`。上面的多头图完整展示了这条路径。
+当前实现先生成完整的 Q、K、V，再依次变形为 `[B,T,H,Dh]` 和 `[B,H,T,Dh]`。图中展开任意一个 head `i`；`i=1,…,8` 都使用各自的 Q/K/V 切片执行相同结构的注意力计算。
 
 `transpose(1, 2)` 把 head 放到批量维附近。矩阵乘法会将 `B` 和 `H` 都视作批量维，因此不需要编写 Python 循环。
 
@@ -448,8 +453,10 @@ $$
 ### 5.3 拼接与输出投影
 
 $$
-\operatorname{MultiHead}(X)=
-\operatorname{Concat}(\operatorname{head}_1,\ldots,\operatorname{head}_H)W_O^\top+b_O
+\begin{gathered}
+Z=\operatorname{Concat}(\operatorname{head}_1,\ldots,\operatorname{head}_H),\\
+\operatorname{MultiHead}(X)=ZW_O^\top+b_O
+\end{gathered}
 $$
 
 `out_proj` 的作用是混合不同 head 的结果；否则它们只是在特征轴上排列在一起。
@@ -487,6 +494,8 @@ $$
 | Scores 与加权 Value | $O(BT^2C)$ | 序列长度 $T$ |
 
 普通训练实现还可能保存 `[B,H,T,T]` 的分数或概率，Attention 激活显存因而随 $T^2$ 增长。FlashAttention 主要减少这部分中间矩阵的显存读写；它不会消除 Dense Attention 本身的平方级算术量。
+
+KV Cache 要单独计算。固定 $C=H D_h$、batch 与历史长度时，标准 MHA 每层的 K/V 张量合计有 $2BTHD_h=2BTC$ 个元素，单独改变 `H` 不会扩大这部分缓存。第 10.4 节的 GQA/MQA 则通过减少 KV head 数来缩小它。
 
 ## 7. 单头注意力完整示例
 
@@ -649,7 +658,10 @@ Attention 只是 Transformer Block 的一部分。下面继续补齐位置编码
 `nn.Embedding` 把 token ID 映射为向量。由于 Attention 本身不理解顺序，还要加入位置编码：
 
 $$
-X_0=\operatorname{Embedding}(token\_ids)+\operatorname{Position}(0,\ldots,T-1)
+\begin{gathered}
+X_{\mathrm{tok}}=\operatorname{Embedding}(token\_ids),\\
+X_0=X_{\mathrm{tok}}+\operatorname{Position}(0,\ldots,T-1)
+\end{gathered}
 $$
 
 最容易理解的是可学习位置编码：
@@ -693,10 +705,10 @@ class InputEmbedding(nn.Module):
 
 Attention 完成 token 之间的信息聚合后，FFN（Feed-Forward Network）会对每个 token 的特征做进一步变换。它对序列中的每个位置独立应用**同一组参数**，不会在不同 token 之间交换信息，因此也常被称为 position-wise FFN。
 
-设模型维度为 $C$，FFN 的中间维度为 $C_{ff}$，则两层线性变换通常先把特征从 $C$ 维升到 $C_{ff}$ 维，再投影回 $C$ 维：
+设模型维度为 $C$，FFN 的中间维度为 $C_{ff}$。把单个 token 的输入 $x$ 写成形状为 $[1,C]$ 的行向量，两层线性变换通常先把特征从 $C$ 维升到 $C_{ff}$ 维，再投影回 $C$ 维：
 
 $$
-\operatorname{FFN}(x)=W_2\,\sigma(W_1x+b_1)+b_2
+\operatorname{FFN}(x)=\sigma(xW_1^\top+b_1)W_2^\top+b_2
 $$
 
 其中：
@@ -705,6 +717,8 @@ $$
 - $W_2\in\mathbb{R}^{C\times C_{ff}}$，负责降维；
 - $\sigma$ 是非线性激活函数，例如 ReLU 或 GELU；
 - $C_{ff}$ 通常大于 $C$，原始 Transformer 常取 $C_{ff}=4C$。
+
+批量输入 `[B,T,C]` 也沿最后一维执行这些投影，bias 按该维广播，与下面的 `nn.Linear` 一致。
 
 升维给网络提供了更大的中间特征空间，非线性激活使它能够组合和筛选不同语义特征；最后降回 $C$ 维，是为了与残差分支的输入保持相同形状。
 
@@ -719,9 +733,10 @@ $$
 其中 $\Phi(x)$ 是标准正态分布的累积分布函数。也可以用下面的近似式计算：
 
 $$
-\operatorname{GELU}(x)\approx\frac{x}{2}
-\left(1+\tanh\left[\sqrt{\frac{2}{\pi}}
-\left(x+0.044715x^3\right)\right]\right)
+\begin{gathered}
+u(x)=\sqrt{\frac{2}{\pi}}\left(x+0.044715x^3\right),\\
+\operatorname{GELU}(x)\approx\frac{x}{2}\left(1+\tanh u(x)\right)
+\end{gathered}
 $$
 
 可以把 $\Phi(x)\in(0,1)$ 理解成一个由输入大小决定的**软门控系数**：较大的正输入接近原样通过，较大的负输入逐渐趋近于 0，中间区域则被平滑缩放。这里的“概率式门控”只是数学直觉，`nn.GELU()` 的前向计算本身是确定性的，并不会随机采样。
@@ -746,9 +761,12 @@ class FeedForward(nn.Module):
 对输入 `x: [B,T,C]`，`nn.Linear` 只作用于最后一个维度。它等价于对全部 `B × T` 个 token 分别执行相同的 MLP，只是 PyTorch 将这些计算并行完成：
 
 $$
-[B,T,C]\xrightarrow{W_1}[B,T,C_{ff}]
+\begin{gathered}
+[B,T,C]\xrightarrow{W_1}[B,T,C_{ff}],\\
+[B,T,C_{ff}]
 \xrightarrow{\operatorname{GELU}}[B,T,C_{ff}]
 \xrightarrow{W_2}[B,T,C]
+\end{gathered}
 $$
 
 <figure class="article-figure">
@@ -895,8 +913,10 @@ print(out.shape)  # [2, 4, 12]
 可学习位置编码简单直观，但位置范围受训练时的 `max_seq_len` 限制。经典 Transformer 使用固定的正弦/余弦函数：
 
 $$
-PE(pos,2i)=\sin\left(\frac{pos}{10000^{2i/C}}\right),\qquad
+\begin{gathered}
+PE(pos,2i)=\sin\left(\frac{pos}{10000^{2i/C}}\right),\\
 PE(pos,2i+1)=\cos\left(\frac{pos}{10000^{2i/C}}\right)
+\end{gathered}
 $$
 
 ```python
@@ -1068,7 +1088,10 @@ $$
 多层 Transformer 输出 `[B,T,C]` 的隐藏状态。语言模型用线性层把每个位置映射到词表 logits：
 
 $$
-logits=HW_{vocab}^\top+b,\qquad logits\in\mathbb{R}^{B\times T\times V_{vocab}}
+\begin{gathered}
+logits=HW_{vocab}^\top+b,\\
+logits\in\mathbb{R}^{B\times T\times V_{vocab}}
+\end{gathered}
 $$
 
 ```python
@@ -1170,8 +1193,10 @@ RMSNorm 保持输入输出形状不变。显式用 float 计算归一化可提�
 SwiGLU 使用一条门控分支和一条值分支：
 
 $$
-\operatorname{SwiGLU}(x)=
-W_{down}\left(\operatorname{SiLU}(W_gx)\odot W_vx\right)
+\begin{aligned}
+g&=\operatorname{SiLU}(xW_g^\top),\qquad v=xW_v^\top,\\
+\operatorname{SwiGLU}(x)&=(g\odot v)W_{down}^\top
+\end{aligned}
 $$
 
 ```python
@@ -1315,22 +1340,23 @@ python -B cache_mask_check.py --output cache-mask-results.json
 
 普通 Transformer 的每个 token 都经过同一个 FFN。MoE 准备多个专家 FFN，由 Router 为每个 token 选择少量专家：
 
-设 Router logits 为 $r_t=W_rx_t$，选中的专家集合为 $I_t=\operatorname{TopK}(r_t)$。本文代码只在入选专家之间重新归一化：
+对 token 行向量 $x_t$，设 Router logits 为 $r_t=x_tW_r^\top$，选中的专家集合为 $I_t=\operatorname{TopK}(r_t)$。本文代码只在入选专家之间重新归一化：
 
 $$
+\begin{gathered}
 \widetilde p_{t,i}=
-\frac{e^{r_{t,i}}}{\sum_{j\in I_t}e^{r_{t,j}}},\quad i\in I_t,
-\qquad
+\frac{e^{r_{t,i}}}{\sum_{j\in I_t}e^{r_{t,j}}},\quad i\in I_t,\\
 y_t=\sum_{i\in I_t}\widetilde p_{t,i}E_i(x_t)
+\end{gathered}
 $$
 
 也有实现先对所有专家做 Softmax，再截取 Top-K，并选择是否重新归一化；阅读具体模型时需要确认这一细节。
 
 <figure class="article-figure">
-  {{< post-image src="assets/moe-routing.webp" alt="MoE Router 与 Top-2 专家路由" >}}
+  {{< post-image src="assets/moe-token-routing.svg" alt="四个 token 分别选择两个专家，并各自按归一化权重合并专家输出" >}}
   <figcaption>
     <span class="article-figure__number">图 17</span>
-    <span class="article-figure__text">Top-2 MoE 路由。Router 为每个 token 选择两个专家；专家结果按 token 分别加权求和，不会混合不同 token，最后恢复原顺序。</span>
+    <span class="article-figure__text">固定四 token、四专家的 Top-2 路由例。每一行只为该 token 选择两个专家，权重在入选专家间归一化，再分别加权合并输出。重复出现的专家名称表示共享同一组参数；实际路由的负载分布仍需另行检查。</span>
   </figcaption>
 </figure>
 
@@ -1410,8 +1436,10 @@ MoE 增加模型总参数量，但每个 token 只激活少量专家。训练时
 对称量化的基本思想是用缩放因子把浮点值映射到有限整数范围：
 
 $$
-s=\frac{\max|x|}{q_{max}},\qquad
+\begin{gathered}
+s=\frac{\max|x|}{q_{max}},\\
 q=\operatorname{clamp}(\operatorname{round}(x/s),-q_{max},q_{max})
+\end{gathered}
 $$
 
 ```python
@@ -1914,24 +1942,28 @@ scheduler.step()
 
 ### 18.2 四种常见打分函数
 
-设单个 Query 为 \(q_i\)，单个 Key 为 \(k_j\)，打分结果 \(e_{ij}\) 表示二者的匹配程度：
+这一小节把单个 Query \(q_i\)、单个 Key \(k_j\) 与打分向量 \(v_a\) 记作列向量，打分结果 \(e_{ij}\) 表示二者的匹配程度。下面代码将这些向量按行批量存储，因此线性层仍执行右乘权重转置：
 
 \[
-\begin{aligned}
-\text{Additive:}\quad &e_{ij}=v_a^\top\tanh(W_q q_i+W_k k_j+b) \\
-\text{Dot Product:}\quad &e_{ij}=q_i^\top k_j \\
-\text{Scaled Dot Product:}\quad &e_{ij}=\frac{q_i^\top k_j}{\sqrt{D_h}} \\
-\text{Cosine:}\quad &e_{ij}=\frac{q_i^\top k_j}{\lVert q_i\rVert_2\lVert k_j\rVert_2}
-\end{aligned}
+\begin{gathered}
+\text{Additive:}\\
+e_{ij}=v_a^\top\tanh(W_q q_i+W_k k_j+b)\\
+\text{Dot Product:}\\
+e_{ij}=q_i^\top k_j\\
+\text{Scaled Dot Product:}\\
+e_{ij}=\frac{q_i^\top k_j}{\sqrt{D_h}}\\
+\text{Cosine:}\\
+e_{ij}=\frac{q_i^\top k_j}{\lVert q_i\rVert_2\lVert k_j\rVert_2}
+\end{gathered}
 \]
 
 Additive Attention 用一个小网络学习匹配函数；点积可以直接用矩阵乘法；缩放点积抑制维度增大造成的分数过大；Cosine 只比较方向。无论采用哪一种，后续通常仍是 `mask → Softmax → 加权汇总 V`。
 
 <figure class="article-figure">
-  {{< post-image src="assets/attention-scoring-functions.webp" alt="Attention 打分函数对比" >}}
+  {{< post-image src="assets/attention-scoring-pipeline.svg" alt="四种打分函数只使用 Query 和 Key 生成分数，再依次经 Mask、Softmax 和 Value 加权汇总" >}}
   <figcaption>
     <span class="article-figure__number">图 24</span>
-    <span class="article-figure__text">四类 Attention 打分函数。它们改变 Query-Key 相关性分数的计算方式；Mask、按 Key 归一化和 Value 加权汇总的后续流程可以保持一致。</span>
+    <span class="article-figure__text">四种规则择一生成 Query-Key 相关性分数。分数经过 Mask 后，按 Key 维执行 Softmax，最后用这些权重汇总 Value；这条顺序由四种打分规则共享。</span>
   </figcaption>
 </figure>
 

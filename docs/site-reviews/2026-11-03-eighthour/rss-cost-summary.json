@@ -1,0 +1,121 @@
+{
+  "status": "complete",
+  "summary": {
+    "OLD": {
+      "cpu_seconds": {
+        "mean": 10.85471675,
+        "median": 10.992629,
+        "min": 10.181601,
+        "max": 11.252008
+      },
+      "wall_seconds": {
+        "mean": 11.522067832251196,
+        "median": 11.50873841100838,
+        "min": 10.880591942986939,
+        "max": 12.190202564001083
+      }
+    },
+    "CURRENT": {
+      "cpu_seconds": {
+        "mean": 15.009526,
+        "median": 15.088894499999999,
+        "min": 14.506558,
+        "max": 15.353757
+      },
+      "wall_seconds": {
+        "mean": 16.460367056002724,
+        "median": 15.71574523000163,
+        "min": 15.36777086200891,
+        "max": 19.042206901998725
+      }
+    },
+    "paired_current_minus_old_cpu_seconds": {
+      "values": [
+        4.267405999999999,
+        4.3249569999999995,
+        4.281124,
+        3.7457499999999992
+      ],
+      "mean": 4.15480925,
+      "median": 4.274265,
+      "min": 3.7457499999999992,
+      "max": 4.3249569999999995
+    },
+    "paired_current_minus_old_wall_seconds": {
+      "values": [
+        7.031776241958141,
+        4.4871789190219715,
+        4.808911831991281,
+        3.4253299020347185
+      ],
+      "mean": 4.938299223751528,
+      "median": 4.648045375506626,
+      "min": 3.4253299020347185,
+      "max": 7.031776241958141
+    },
+    "current_cpu_mean_percent_over_old": 38.27653310253352
+  },
+  "snapshot": {
+    "manifest_sha256": "fb0d358755b8d8f6c17e23f60ace36f1b8f63685ee99cd42e7ad3173ef7f141f",
+    "files": 1422,
+    "bytes": 162919210,
+    "matches_original_copy": true,
+    "shared_inode_paths": [],
+    "layout_differences": [
+      "list.rss.xml"
+    ],
+    "summary_feed_sha256": "d914ba2bcc98d5f832eb359d67fe679f2f542bc9ada66d26f412db46a3418dff"
+  },
+  "non_xml_identical_all_pairs": true,
+  "snapshot_bytes_unchanged": true,
+  "warmed_cache_bytes_unchanged": true,
+  "description_audit": {
+    "report": "feed-difference-audit.json",
+    "counts": {
+      "rss_feeds": 199,
+      "item_occurrences": 480,
+      "unchanged_non_url_html_tokens": 480,
+      "url_attributes": 39293,
+      "unchanged_url_attributes": 17390,
+      "resolved_url_attributes": 21903
+    },
+    "failures": 0,
+    "scope": "Retained first measured pair, all 199 changed RSS feeds. HTML token comparison ignores only participating URL attribute values and outer description whitespace. Python urllib independently checks changed actual URL attributes; repository fixtures cover additional WHATWG/data/srcset cases."
+  },
+  "cross_pair_xml_variation": {
+    "OLD": {
+      "pair-2": [
+        {
+          "path": "categories/机器人技术/index.xml",
+          "pair_1_bytes": 6759214,
+          "this_pair_bytes": 6759213
+        },
+        {
+          "path": "tags/motion-planning/index.xml",
+          "pair_1_bytes": 1626234,
+          "this_pair_bytes": 1626233
+        },
+        {
+          "path": "tags/mpc/index.xml",
+          "pair_1_bytes": 692628,
+          "this_pair_bytes": 692627
+        },
+        {
+          "path": "tags/whole-body-control/index.xml",
+          "pair_1_bytes": 1717440,
+          "this_pair_bytes": 1717439
+        }
+      ]
+    },
+    "CURRENT": {},
+    "scope": "OLD pair 2 differs by one byte in four RSS files from the other OLD runs; all non-XML pair comparisons and RSS metadata/structure checks passed. No unmeasured rebuild was added to investigate this."
+  },
+  "limits": [
+    "A single local snapshot and Hugo binary; not a general ranking or CI prediction.",
+    "Concurrent parent browser tests and other host activity are not controlled; wall time includes scheduling and I/O contention.",
+    "Hugo process CPU excludes browser CPU, but CPU/cache contention can still affect the amount of CPU needed.",
+    "Warm disk/resource caches; OS page cache is not flushed. Counterbalancing limits, but does not eliminate, order effects.",
+    "The old implementation has known relative-URI defects; this comparison is a cost measurement, not a recommendation to restore it.",
+    "OLD pair 2 has a one-byte difference in four RSS outputs versus the other OLD pairs. All non-XML outputs still match, and RSS structures outside item description bodies still match their paired CURRENT builds. The retained first-pair XML allows independent description auditing; other pairs retain complete byte manifests."
+  ]
+}

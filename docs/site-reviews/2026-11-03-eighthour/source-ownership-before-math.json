@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "findings": [],
+  "baseline_revision": "00a50db1f60c5980c6d823a75c3b95383835ca9e",
+  "initial_backup_count": 30,
+  "initial_backup_hashes_exact": true,
+  "current_initial_files_byte_identical": 28,
+  "documented_extensions": [
+    "AGENTS.md",
+    "docs/blog-editorial-review.json"
+  ],
+  "editorial_extension_only_four_reviewed_on_fields": true,
+  "Markdown_identity_and_complete_front_matter_unchanged": 99,
+  "articles": 98,
+  "section_pages": 1,
+  "Transformer_codefences_byte_identical_to_HEAD": 46,
+  "legacy_WebP_byte_identical_to_HEAD": 5,
+  "new_SVGs_provenance_and_generator_raw_bytes_exact": 5,
+  "CI_only_five_added_validation_commands": true,
+  "added_CI_commands": [
+    "python3 -B scripts/test_blog_validation.py",
+    "python3 -B scripts/test_blog_rss.py",
+    "python3 -B scripts/plot_distributed_overlap.py --check",
+    "python3 -B scripts/render_transformer_figures.py --check",
+    "python3 -B scripts/test_asset_references.py"
+  ],
+  "Hugo_version": "0.165.0",
+  "protected_config_pins_and_theme_unchanged": true,
+  "ownership_checks": 341,
+  "ownership_failures": 0,
+  "scope_note": "Thirty paths were already dirty at arrival; their existing HEAD diff is pre-existing work. Only the two documented files have additions relative to that dirty snapshot. Separate root progress docs may continue changing.",
+  "reports": [
+    "source-preservation.json",
+    "ci-svg-agent/report.json",
+    "current-change-inventory.json"
+  ]
+}

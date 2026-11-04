@@ -1,0 +1,48 @@
+{
+  "status": "fixed_and_source_frozen",
+  "finished_utc": "2026-11-03T15:43:14.020120+00:00",
+  "hugo_version": "v0.165.0-76a5e1880ab46688155b02e99bab9be2a6134492+extended linux/amd64",
+  "changed_source_sha256": {
+    "layouts/_partials/blog/rss-content.html": "72fc7e452c15c54851a38c966386beb95d0d380f8d4e2303309641073e5eed07",
+    "layouts/_partials/blog/rss-attribute.html": "45b403ff82bab40b92f544a64ce16981e662c46b20401b387965ae8fc4e76a6f",
+    "scripts/test_blog_rss.py": "f9cf8123e2aee2bc1032f388042c7a42850c561142a1f94a9da2b8d55ca4c76a"
+  },
+  "unit": {
+    "command": "python3 -B scripts/test_blog_rss.py --hugo /tmp/chase-opt-20261029-fivehour/tools/hugo",
+    "exit_code": 0,
+    "base_url_variants": 2,
+    "url_and_preservation_checks": 66,
+    "original_url_and_preservation_checks_retained": 54,
+    "attribute_entity_cases_per_base_url": 2452,
+    "upstream_full_feed_limit": 50,
+    "configured_summary_feed_limit": 3,
+    "article_html_and_summary_feed": "unchanged",
+    "xml_and_html_parsed": true,
+    "url_oracle": "Node WHATWG URL",
+    "attribute_oracle": "Python standard-library HTML5 named-reference table and explicit attribute-context cases"
+  },
+  "fixed_categories": [
+    "HTML attribute-context named-reference decoding",
+    "SVG CDATA literal-text preservation",
+    "Exact protected tag-name boundaries"
+  ],
+  "independent_protection_checks": 34,
+  "independent_protection_failures": 0,
+  "actual_attribute_partial_html5lib_cases": 35323,
+  "actual_attribute_partial_html5lib_failures": 0,
+  "primary_specification": "https://html.spec.whatwg.org/multipage/parsing.html#named-character-reference-state",
+  "compatibility_evidence": "srcset-agent/entity-plan/report.json",
+  "compatibility_names": {
+    "&nGt;": "≫⃒",
+    "&nLt;": "≪⃒"
+  },
+  "corpus_output_comparison": "corpus-output-comparison.json",
+  "known_scope_boundaries": [
+    "Nested raw code elements are not parsed as a stack; ordinary escaped/fenced code remains protected.",
+    "iframe fallback raw text is outside the existing protected-element list.",
+    "Malformed srcset leading commas or unescaped percent characters are documented separately, not sanitizer requirements."
+  ],
+  "post_fix_measurement": "../rss-cost-controlled/post-attribute-fix/report.json",
+  "no_cdp": true,
+  "no_other_repository_files_edited": true
+}

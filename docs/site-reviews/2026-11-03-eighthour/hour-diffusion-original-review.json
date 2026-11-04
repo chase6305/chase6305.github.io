@@ -1,0 +1,171 @@
+{
+  "reviewed_utc": "2026-11-03T18:15:05.674208+00:00",
+  "scope": [
+    "content/posts/ai/diffusion-models/index.md",
+    "content/posts/ai/vision-transformers/index.md"
+  ],
+  "reviewed_lines": 1386,
+  "published_fenced_code_blocks": 11,
+  "published_images_actually_viewed": 10,
+  "standard_library_oracle_groups": 29,
+  "standard_library_oracle_passed": 29,
+  "findings": [
+    {
+      "id": "diffusion-unet-image-feature-output-disconnected",
+      "priority": "P2",
+      "kind": "published-image-routing",
+      "source": "content/posts/ai/diffusion-models/index.md",
+      "line": 309,
+      "asset": "content/posts/ai/diffusion-models/assets/time-conditioned-unet.webp",
+      "figure": 4,
+      "problem": "The top decoder has no drawn output path to epsilon_theta. The black output arrow instead starts at the top Cross Attention box, whose drawn input is the condition bus and which has no U-Net feature/query input. The observed graph has a c-to-output path and no x_t-to-output path.",
+      "why_material": "The figure can teach a condition-only noise predictor, contrary to the article contract epsilon_theta(x_t,t,c). In conditional cross-attention, U-Net features supply Q and encoded condition supplies K/V.",
+      "minimal_correction": "Keep a continuous decoder-feature-to-prediction-head path; show image-feature Q and condition K/V entering cross-attention on that feature path. Route the resulting feature into the later decoder/output, rather than exporting a condition-only side branch.",
+      "evidence": "connection-counterexamples.json:unet; actual original pixels were inspected",
+      "primary_reference": "https://arxiv.org/html/2112.10752v2#S3.SS3"
+    },
+    {
+      "id": "diffusion-training-diagram-missing-time-input",
+      "priority": "P2",
+      "kind": "published-image-contract",
+      "source": "content/posts/ai/diffusion-models/index.md",
+      "line": 378,
+      "asset": "content/posts/ai/diffusion-models/assets/training-vs-sampling.webp",
+      "figure": 5,
+      "problem": "Random t points only into Fixed Formula. The Trainable Denoiser receives only x_t; the mandatory separate time-conditioning input is absent.",
+      "why_material": "The same x_t value occurs at different noise levels with different optimal epsilon targets. For independent unit-normal x0 and epsilon, fixing x_t=1 gives E[epsilon|x_t,t]=sqrt(1-alpha_bar_t): 0.316227766 at alpha_bar=.9 versus 0.948683298 at .1. A predictor of x_t alone cannot represent both.",
+      "minimal_correction": "Draw the same sampled t into the denoiser/time-embedding input in addition to the forward noising formula. Keep epsilon target and prediction paths separate from the sampling state update.",
+      "evidence": "connection-counterexamples.json:training; standard-library Gaussian-conditioning counterexample",
+      "primary_reference": "https://arxiv.org/html/2006.11239v2#S3.SS4"
+    }
+  ],
+  "lower_priority_boundary_notes": [
+    {
+      "id": "time-embedding-dim-one-boundary",
+      "priority": "P3 boundary note",
+      "source": "content/posts/ai/diffusion-models/index.md",
+      "line": 275,
+      "problem": "For the generic helper timestep_embedding(t,dim=1), half=0 makes emb width zero and zeros_like(emb[:,:1]) also width zero; result is [B,0] rather than [B,1].",
+      "evidence": "oracle.json:time_embedding_positive_dim_boundary; actual published function compiled against a small standard-library tensor-shape model",
+      "scope": "The article full model fixes D=64 and does not trigger this; no PyTorch numeric execution was performed. Restrict supported dim or create the odd padding column with explicit batch size if general dim=1 support is intended."
+    }
+  ],
+  "image_reviews": [
+    {
+      "post": "diffusion-models",
+      "asset": "diffusion-overview.webp",
+      "status": "overview-abstraction",
+      "notes": "Forward/reverse direction and endpoint labels agree. Prediction plus state update is compressed into the overview; no precise sampler graph or measured reconstruction claim is inferred."
+    },
+    {
+      "post": "diffusion-models",
+      "asset": "forward-noising.webp",
+      "status": "nonblocking-ambiguity",
+      "notes": "The epsilon branch visually starts at x0. Independent Gaussian epsilon is explicit in the surrounding equation; this image does not show that independent source. No numerical coefficient contradiction is claimed because caption defers exact coefficients to the formula."
+    },
+    {
+      "post": "diffusion-models",
+      "asset": "schedule-and-snr.png",
+      "status": "checked",
+      "notes": "Linear/cosine cumulative retention and log-SNR shape/endpoints agree with the published plot construction and independent schedule calculations."
+    },
+    {
+      "post": "diffusion-models",
+      "asset": "time-conditioned-unet.webp",
+      "status": "finding",
+      "finding": "diffusion-unet-image-feature-output-disconnected"
+    },
+    {
+      "post": "diffusion-models",
+      "asset": "training-vs-sampling.webp",
+      "status": "finding",
+      "finding": "diffusion-training-diagram-missing-time-input"
+    },
+    {
+      "post": "diffusion-models",
+      "asset": "latent-diffusion.webp",
+      "status": "space-comparison-abstraction",
+      "notes": "Encoder/compact denoising/decoder order agrees with the stated space comparison. The picture combines training preparation and sampling at a high level; no independent sampling-prior contract is certified from this diagram alone."
+    },
+    {
+      "post": "diffusion-models",
+      "asset": "prediction-sensitivity.png",
+      "status": "checked",
+      "notes": "Both 0.01-error propagation curves agree with sigma/a and sigma factors and the SNR=1e-4 example. Caption correctly excludes a model-quality ranking."
+    },
+    {
+      "post": "diffusion-models",
+      "asset": "ddpm-2d-cosine-cpu.webp",
+      "status": "measured-run-not-repeated",
+      "notes": "Eight clusters and the radius-4 layout are visually consistent with the constructed data. The recorded 4000-point count, finiteness and mean radius 4.046 were not regenerated or certified from the bitmap."
+    },
+    {
+      "post": "vision-transformers",
+      "asset": "vision-transformer-map.webp",
+      "status": "checked",
+      "notes": "Axes are explicitly combinable rather than rowwise mappings; illustrative classification probabilities sum to one. Caption expressly folds sampler update into the Updated latent arrow and decodes after completion."
+    },
+    {
+      "post": "vision-transformers",
+      "asset": "vit-token-shapes-prenorm.webp",
+      "status": "checked",
+      "notes": "224/P16 gives 196 patches, then 197 with CLS; both residual paths fork before LayerNorm and rejoin after the sublayer. CLS -> Norm -> Head matches the code and [B,K] logits."
+    }
+  ],
+  "primary_sources": [
+    {
+      "url": "https://arxiv.org/html/2006.11239v2",
+      "scope": "DDPM Algorithm 1 uses independent x0,t,epsilon and explicit epsilon_theta(noised x0,t); Eq.11/Algorithm2 separates prediction from state update."
+    },
+    {
+      "url": "https://arxiv.org/html/2112.10752v2#S3.SS3",
+      "scope": "Conditional U-Net cross-attention Q comes from U-Net features, K/V from encoded condition."
+    },
+    {
+      "url": "https://arxiv.org/html/2010.02502v4",
+      "scope": "DDIM endpoint and stochasticity conventions."
+    },
+    {
+      "url": "https://arxiv.org/html/2202.00512v2#A4",
+      "scope": "Appendix D angular VP velocity and inverse parameterization."
+    },
+    {
+      "url": "https://arxiv.org/html/2010.11929v2#S3.SS1",
+      "scope": "Patch sequence, CLS and ViT pre-normalization structure."
+    },
+    {
+      "url": "https://arxiv.org/html/2103.14030v2#S3.SS1",
+      "scope": "Swin hierarchical patch merging and window conventions."
+    },
+    {
+      "url": "https://arxiv.org/html/2111.06377v3#S3",
+      "scope": "MAE visible-only encoder and masked-patch reconstruction."
+    },
+    {
+      "url": "https://arxiv.org/html/2212.09748v2#S3.SS2",
+      "scope": "VAE f8 latent 32x32x4 and latent patch tokens."
+    }
+  ],
+  "source_sha256": {
+    "content/posts/ai/diffusion-models/index.md": "9cd7e97a2cbcc68d289f79362b3fd9c434a1c282b808a9ef3ad7d219aed22785",
+    "content/posts/ai/diffusion-models/assets/diffusion-overview.webp": "2060e4bf4f00fa7d4163dcede73df1cef3ca0061fcd68d226df0340af6f6344f",
+    "content/posts/ai/diffusion-models/assets/forward-noising.webp": "d4e2f77f98f8e4bc0f015513f54bb4c959fc9333a9dfe25232795c1545a413a8",
+    "content/posts/ai/diffusion-models/assets/schedule-and-snr.png": "e9fe082cd1032699d2a212ab217145ca2624eaf66cbe6bb6eb1440383db6a9c1",
+    "content/posts/ai/diffusion-models/assets/time-conditioned-unet.webp": "8ca001dc5b363c29c15b8bf4995c0524a4e22ebeb276d2495a931f1315c38dd4",
+    "content/posts/ai/diffusion-models/assets/training-vs-sampling.webp": "4d4387d44abe04c046b25e3e121631b7b6eefe611e2e49b94ed09e4b16bf12ee",
+    "content/posts/ai/diffusion-models/assets/latent-diffusion.webp": "cacd05c328414ebe8475c291a7d1d588c6ce66f7fd200b219dc27c9dd3f91e17",
+    "content/posts/ai/diffusion-models/assets/prediction-sensitivity.png": "2b62d62b19fa0c569ba7f693238ca87e19a4b28173449dac0907da3cd48a4f28",
+    "content/posts/ai/diffusion-models/assets/ddpm-2d-cosine-cpu.webp": "2054eedf74cea2364975c165633271c8bcc48c82a679092c56d23c65ff26ddc7",
+    "content/posts/ai/diffusion-models/parameterization_check.py": "e613b5855d556a438ebb3b9073f3cba415beed88a0385db28a16d508cbf07711",
+    "content/posts/ai/diffusion-models/assets/parameterization-results.json": "3893a8b27e619a918ef1716f19d8dd30c1cd474adcc2411d85dbb9c57b08f8fb",
+    "content/posts/ai/vision-transformers/index.md": "2807b69cd9f6ac4efd6c65e3d8ef8dbdc95199d6a283c28d4edf82918a41d3b5",
+    "content/posts/ai/vision-transformers/assets/vision-transformer-map.webp": "89d0951f2bea3603440b42178a72b4219fddfd79f3ffe8c7278a01c60a7fa63a",
+    "content/posts/ai/vision-transformers/assets/vit-token-shapes-prenorm.webp": "d9e372cb3dcec7711ab2625923f15e7026221acdeac3fcf58d49a45e5c4d7aec"
+  },
+  "scope_limits": [
+    "Read-only; no repo edits, site builds, CDP calls, model training or installed numerical dependencies.",
+    "Static shape modeling of published Torch snippets is not real PyTorch execution.",
+    "Measured training plot/sample mean was not reproduced.",
+    "Qualitative model-family catalog and every cited model version were not exhaustively fact-checked; review prioritizes equations, fixed numbers, tensor shapes and diagram connections."
+  ]
+}

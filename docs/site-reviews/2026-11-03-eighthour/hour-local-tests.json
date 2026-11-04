@@ -1,0 +1,21 @@
+{
+  "kinematics": {
+    "command": "python -B scripts/test_kinematics_fragments.py --numpy",
+    "compiled_Cpp_cases": 2028,
+    "wrist_max_matrix_entry_error": 7.22e-16,
+    "seven_axis_cases": 256,
+    "seven_axis_max_transform_entry_error": 8.33e-16,
+    "Cpp_floatPrecision_in_fixture": 1e-20,
+    "scope": "Exact singular and nonsingular local wrist calculations;half-open limits;ideal SRS near-vertical branches. No full historical solver/original threshold tuning/hardware."
+  },
+  "diffusion_embedding": {
+    "command": "python -B scripts/test_diffusion_embedding.py",
+    "engine": "PyTorch2.14.1+cpu",
+    "cases": 54,
+    "reference": "Independent scalar math.sin/cos/exp;CPU shapes1..65 and empty batches. No training."
+  },
+  "logs": {
+    "final-kinematics-tests.log": "PASS 2028 compiled fragment cases; wrist max matrix-entry error 7.22e-16; full IK not tested\nPASS 256 seven-axis near-vertical branches; max transform-entry error 8.33e-16\n",
+    "final-diffusion-embedding.log": "PASS 54 actual CPU PyTorch embedding cases, including dim=1 and empty batches; no training validation\n"
+  }
+}

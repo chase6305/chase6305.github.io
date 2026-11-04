@@ -1,0 +1,228 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="750" viewBox="0 0 1600 750" role="img" aria-labelledby="title desc">
+<title id="title">Causal mask: fixed scores, masked logits and exact row softmax</title>
+<desc id="desc">Rows are queries and columns are keys. Key j is allowed when j is at most the query index i. Future logits become negative infinity before softmax and their weights are exactly zero. The second row has weights approximately 0.130,0.870,0,0,0.</desc>
+<metadata id="calculation-records">{"scores": [["1.2", "0.7", "-0.3", "0.8", "-1.1"], ["-0.4", "1.5", "0.6", "-0.2", "0.3"], ["0.1", "-0.6", "1.1", "0.4", "-0.7"], ["0.3", "0.2", "-0.5", "1.3", "0.9"], ["-0.2", "0.4", "0.1", "-0.3", "1.0"]], "masked": [["1.2", null, null, null, null], ["-0.4", "1.5", null, null, null], ["0.1", "-0.6", "1.1", null, null], ["0.3", "0.2", "-0.5", "1.3", null], ["-0.2", "0.4", "0.1", "-0.3", "1.0"]], "weights": [["1", "0", "0", "0", "0"], ["0.1301084743629978521553259910741266366155475554525898101345656045470356", "0.8698915256370021478446740089258733633844524445474101898654343954529647", "0E+69", "0E+69", "0E+69"], ["0.2372554029872983092989287075739889748795454960300392795954484122816283", "0.1178175463686008194138657631458307794126997918721548433824377104112555", "0.6449270506441008712872055292801802457077547120978058770221138773071161", "0E+69", "0E+69"], ["0.1971434617918560410718470534809581232161910362363919675978497882118759", "0.1783827809504138683693096266523590123240475058784488380656477277323671", "0.08858226746941772890323543519135652445710619562012972744343047604613312", "0.5358914897883123616556078846753263400026552622650294668930720080096237", "0E+69"], ["0.1190911163868812368039741825152958233288003474901071391037442303089733", "0.2169981621280305247247773643704193351579702378205962824054790052148907", "0.1607561923588905094586300322739426948615441376512720445570896531310115", "0.1077580982625255730952807273779551732971635690672037432660502449920404", "0.3953964308636721559173376934623869733545217079708207906676368663530844"]], "rule": "Key j is allowed iff j &lt;= Query i", "precision_digits": 70}</metadata>
+<defs>
+  <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#536174"/></marker>
+  <style>
+    text { font-family: "DejaVu Sans", Arial, sans-serif; fill: #233148; }
+    .title { font-size: 32px; font-weight: 700; }
+    .subtitle { font-size: 18px; fill: #475569; }
+    .heading { font-size: 20px; font-weight: 700; }
+    .label { font-size: 18px; font-weight: 700; }
+    .value { font-family: "DejaVu Sans Mono", monospace; font-size: 21px; }
+    .small { font-size: 16px; fill: #475569; }
+    .tiny { font-size: 14px; fill: #475569; }
+    .formula { font-size: 23px; }
+    .arrow { stroke: #536174; stroke-width: 2; fill: none; stroke-linejoin: round; marker-end: url(#arrow); }
+  </style>
+</defs>
+<rect width="1600" height="750" fill="#ffffff"/>
+<text x="48" y="49" text-anchor="start" class="title">Causal masking before row-wise Softmax</text>
+<text x="48" y="84" text-anchor="start" class="subtitle">Rows: Query i · Columns: Key j · Allow j ≤ i, including the current token</text>
+<rect x="32" y="144" width="468" height="466" rx="12" fill="#ffffff" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="266" y="180" text-anchor="middle" class="heading">Scores S</text>
+<text x="266" y="207" text-anchor="middle" class="small" style="font-size:15px">Fixed illustrative scores</text>
+<text x="287" y="232" text-anchor="middle" class="small">Key j →</text>
+<text x="60" y="249" text-anchor="middle" class="small">i ↓</text>
+<text x="147.0" y="250" text-anchor="middle" class="small">1</text>
+<text x="217.0" y="250" text-anchor="middle" class="small">2</text>
+<text x="287.0" y="250" text-anchor="middle" class="small">3</text>
+<text x="357.0" y="250" text-anchor="middle" class="small">4</text>
+<text x="427.0" y="250" text-anchor="middle" class="small">5</text>
+<text x="91" y="295" text-anchor="middle" class="small">1</text>
+<rect x="112" y="260" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="147.0" y="295" text-anchor="middle" class="value" id="causal-scores-1-1" style="font-size:17px">1.200</text>
+<rect x="182" y="260" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="217.0" y="295" text-anchor="middle" class="value" id="causal-scores-1-2" style="font-size:17px">0.700</text>
+<rect x="252" y="260" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="287.0" y="295" text-anchor="middle" class="value" id="causal-scores-1-3" style="font-size:17px">-0.300</text>
+<rect x="322" y="260" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="357.0" y="295" text-anchor="middle" class="value" id="causal-scores-1-4" style="font-size:17px">0.800</text>
+<rect x="392" y="260" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="427.0" y="295" text-anchor="middle" class="value" id="causal-scores-1-5" style="font-size:17px">-1.100</text>
+<text x="91" y="351" text-anchor="middle" class="small">2</text>
+<rect x="112" y="316" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="147.0" y="351" text-anchor="middle" class="value" id="causal-scores-2-1" style="font-size:17px">-0.400</text>
+<rect x="182" y="316" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="217.0" y="351" text-anchor="middle" class="value" id="causal-scores-2-2" style="font-size:17px">1.500</text>
+<rect x="252" y="316" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="287.0" y="351" text-anchor="middle" class="value" id="causal-scores-2-3" style="font-size:17px">0.600</text>
+<rect x="322" y="316" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="357.0" y="351" text-anchor="middle" class="value" id="causal-scores-2-4" style="font-size:17px">-0.200</text>
+<rect x="392" y="316" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="427.0" y="351" text-anchor="middle" class="value" id="causal-scores-2-5" style="font-size:17px">0.300</text>
+<text x="91" y="407" text-anchor="middle" class="small">3</text>
+<rect x="112" y="372" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="147.0" y="407" text-anchor="middle" class="value" id="causal-scores-3-1" style="font-size:17px">0.100</text>
+<rect x="182" y="372" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="217.0" y="407" text-anchor="middle" class="value" id="causal-scores-3-2" style="font-size:17px">-0.600</text>
+<rect x="252" y="372" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="287.0" y="407" text-anchor="middle" class="value" id="causal-scores-3-3" style="font-size:17px">1.100</text>
+<rect x="322" y="372" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="357.0" y="407" text-anchor="middle" class="value" id="causal-scores-3-4" style="font-size:17px">0.400</text>
+<rect x="392" y="372" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="427.0" y="407" text-anchor="middle" class="value" id="causal-scores-3-5" style="font-size:17px">-0.700</text>
+<text x="91" y="463" text-anchor="middle" class="small">4</text>
+<rect x="112" y="428" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="147.0" y="463" text-anchor="middle" class="value" id="causal-scores-4-1" style="font-size:17px">0.300</text>
+<rect x="182" y="428" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="217.0" y="463" text-anchor="middle" class="value" id="causal-scores-4-2" style="font-size:17px">0.200</text>
+<rect x="252" y="428" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="287.0" y="463" text-anchor="middle" class="value" id="causal-scores-4-3" style="font-size:17px">-0.500</text>
+<rect x="322" y="428" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="357.0" y="463" text-anchor="middle" class="value" id="causal-scores-4-4" style="font-size:17px">1.300</text>
+<rect x="392" y="428" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="427.0" y="463" text-anchor="middle" class="value" id="causal-scores-4-5" style="font-size:17px">0.900</text>
+<text x="91" y="519" text-anchor="middle" class="small">5</text>
+<rect x="112" y="484" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="147.0" y="519" text-anchor="middle" class="value" id="causal-scores-5-1" style="font-size:17px">-0.200</text>
+<rect x="182" y="484" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="217.0" y="519" text-anchor="middle" class="value" id="causal-scores-5-2" style="font-size:17px">0.400</text>
+<rect x="252" y="484" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="287.0" y="519" text-anchor="middle" class="value" id="causal-scores-5-3" style="font-size:17px">0.100</text>
+<rect x="322" y="484" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="357.0" y="519" text-anchor="middle" class="value" id="causal-scores-5-4" style="font-size:17px">-0.300</text>
+<rect x="392" y="484" width="70" height="56" rx="0" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="427.0" y="519" text-anchor="middle" class="value" id="causal-scores-5-5" style="font-size:17px">1.000</text>
+<text x="266" y="581" text-anchor="middle" class="small" style="font-size:14px">All 25 input scores are shown unchanged.</text>
+<rect x="566" y="144" width="468" height="466" rx="12" fill="#ffffff" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="800" y="180" text-anchor="middle" class="heading">Masked scores S + M</text>
+<text x="800" y="207" text-anchor="middle" class="small" style="font-size:15px">Allowed: M = 0 · Blocked: M = −∞</text>
+<text x="821" y="232" text-anchor="middle" class="small">Key j →</text>
+<text x="594" y="249" text-anchor="middle" class="small">i ↓</text>
+<text x="681.0" y="250" text-anchor="middle" class="small">1</text>
+<text x="751.0" y="250" text-anchor="middle" class="small">2</text>
+<text x="821.0" y="250" text-anchor="middle" class="small">3</text>
+<text x="891.0" y="250" text-anchor="middle" class="small">4</text>
+<text x="961.0" y="250" text-anchor="middle" class="small">5</text>
+<text x="625" y="295" text-anchor="middle" class="small">1</text>
+<rect x="646" y="260" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="681.0" y="295" text-anchor="middle" class="value" id="causal-masked-1-1" style="font-size:17px">1.200</text>
+<rect x="716" y="260" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="751.0" y="295" text-anchor="middle" class="value" id="causal-masked-1-2" style="font-size:17px">−∞</text>
+<rect x="786" y="260" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="821.0" y="295" text-anchor="middle" class="value" id="causal-masked-1-3" style="font-size:17px">−∞</text>
+<rect x="856" y="260" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="891.0" y="295" text-anchor="middle" class="value" id="causal-masked-1-4" style="font-size:17px">−∞</text>
+<rect x="926" y="260" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="961.0" y="295" text-anchor="middle" class="value" id="causal-masked-1-5" style="font-size:17px">−∞</text>
+<text x="625" y="351" text-anchor="middle" class="small">2</text>
+<rect x="646" y="316" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="681.0" y="351" text-anchor="middle" class="value" id="causal-masked-2-1" style="font-size:17px">-0.400</text>
+<rect x="716" y="316" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="751.0" y="351" text-anchor="middle" class="value" id="causal-masked-2-2" style="font-size:17px">1.500</text>
+<rect x="786" y="316" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="821.0" y="351" text-anchor="middle" class="value" id="causal-masked-2-3" style="font-size:17px">−∞</text>
+<rect x="856" y="316" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="891.0" y="351" text-anchor="middle" class="value" id="causal-masked-2-4" style="font-size:17px">−∞</text>
+<rect x="926" y="316" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="961.0" y="351" text-anchor="middle" class="value" id="causal-masked-2-5" style="font-size:17px">−∞</text>
+<text x="625" y="407" text-anchor="middle" class="small">3</text>
+<rect x="646" y="372" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="681.0" y="407" text-anchor="middle" class="value" id="causal-masked-3-1" style="font-size:17px">0.100</text>
+<rect x="716" y="372" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="751.0" y="407" text-anchor="middle" class="value" id="causal-masked-3-2" style="font-size:17px">-0.600</text>
+<rect x="786" y="372" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="821.0" y="407" text-anchor="middle" class="value" id="causal-masked-3-3" style="font-size:17px">1.100</text>
+<rect x="856" y="372" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="891.0" y="407" text-anchor="middle" class="value" id="causal-masked-3-4" style="font-size:17px">−∞</text>
+<rect x="926" y="372" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="961.0" y="407" text-anchor="middle" class="value" id="causal-masked-3-5" style="font-size:17px">−∞</text>
+<text x="625" y="463" text-anchor="middle" class="small">4</text>
+<rect x="646" y="428" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="681.0" y="463" text-anchor="middle" class="value" id="causal-masked-4-1" style="font-size:17px">0.300</text>
+<rect x="716" y="428" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="751.0" y="463" text-anchor="middle" class="value" id="causal-masked-4-2" style="font-size:17px">0.200</text>
+<rect x="786" y="428" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="821.0" y="463" text-anchor="middle" class="value" id="causal-masked-4-3" style="font-size:17px">-0.500</text>
+<rect x="856" y="428" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="891.0" y="463" text-anchor="middle" class="value" id="causal-masked-4-4" style="font-size:17px">1.300</text>
+<rect x="926" y="428" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="961.0" y="463" text-anchor="middle" class="value" id="causal-masked-4-5" style="font-size:17px">−∞</text>
+<text x="625" y="519" text-anchor="middle" class="small">5</text>
+<rect x="646" y="484" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="681.0" y="519" text-anchor="middle" class="value" id="causal-masked-5-1" style="font-size:17px">-0.200</text>
+<rect x="716" y="484" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="751.0" y="519" text-anchor="middle" class="value" id="causal-masked-5-2" style="font-size:17px">0.400</text>
+<rect x="786" y="484" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="821.0" y="519" text-anchor="middle" class="value" id="causal-masked-5-3" style="font-size:17px">0.100</text>
+<rect x="856" y="484" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="891.0" y="519" text-anchor="middle" class="value" id="causal-masked-5-4" style="font-size:17px">-0.300</text>
+<rect x="926" y="484" width="70" height="56" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6"/>
+<text x="961.0" y="519" text-anchor="middle" class="value" id="causal-masked-5-5" style="font-size:17px">1.000</text>
+<text x="800" y="581" text-anchor="middle" class="small" style="font-size:14px">The diagonal and all earlier keys are allowed.</text>
+<rect x="1100" y="144" width="468" height="466" rx="12" fill="#ffffff" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="1334" y="180" text-anchor="middle" class="heading">Weights A</text>
+<text x="1334" y="207" text-anchor="middle" class="small" style="font-size:15px">A = softmax(S + M, dim = −1)</text>
+<text x="1355" y="232" text-anchor="middle" class="small">Key j →</text>
+<text x="1128" y="249" text-anchor="middle" class="small">i ↓</text>
+<text x="1215.0" y="250" text-anchor="middle" class="small">1</text>
+<text x="1285.0" y="250" text-anchor="middle" class="small">2</text>
+<text x="1355.0" y="250" text-anchor="middle" class="small">3</text>
+<text x="1425.0" y="250" text-anchor="middle" class="small">4</text>
+<text x="1495.0" y="250" text-anchor="middle" class="small">5</text>
+<text x="1159" y="295" text-anchor="middle" class="small">1</text>
+<rect x="1180" y="260" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1215.0" y="295" text-anchor="middle" class="value" id="causal-weights-1-1" style="font-size:17px">1.000</text>
+<rect x="1250" y="260" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="1285.0" y="295" text-anchor="middle" class="value" id="causal-weights-1-2" style="font-size:17px">0.000</text>
+<rect x="1320" y="260" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="1355.0" y="295" text-anchor="middle" class="value" id="causal-weights-1-3" style="font-size:17px">0.000</text>
+<rect x="1390" y="260" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="1425.0" y="295" text-anchor="middle" class="value" id="causal-weights-1-4" style="font-size:17px">0.000</text>
+<rect x="1460" y="260" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="1495.0" y="295" text-anchor="middle" class="value" id="causal-weights-1-5" style="font-size:17px">0.000</text>
+<text x="1159" y="351" text-anchor="middle" class="small">2</text>
+<rect x="1180" y="316" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1215.0" y="351" text-anchor="middle" class="value" id="causal-weights-2-1" style="font-size:17px">0.130</text>
+<rect x="1250" y="316" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1285.0" y="351" text-anchor="middle" class="value" id="causal-weights-2-2" style="font-size:17px">0.870</text>
+<rect x="1320" y="316" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="1355.0" y="351" text-anchor="middle" class="value" id="causal-weights-2-3" style="font-size:17px">0.000</text>
+<rect x="1390" y="316" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="1425.0" y="351" text-anchor="middle" class="value" id="causal-weights-2-4" style="font-size:17px">0.000</text>
+<rect x="1460" y="316" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="1495.0" y="351" text-anchor="middle" class="value" id="causal-weights-2-5" style="font-size:17px">0.000</text>
+<text x="1159" y="407" text-anchor="middle" class="small">3</text>
+<rect x="1180" y="372" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1215.0" y="407" text-anchor="middle" class="value" id="causal-weights-3-1" style="font-size:17px">0.237</text>
+<rect x="1250" y="372" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1285.0" y="407" text-anchor="middle" class="value" id="causal-weights-3-2" style="font-size:17px">0.118</text>
+<rect x="1320" y="372" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1355.0" y="407" text-anchor="middle" class="value" id="causal-weights-3-3" style="font-size:17px">0.645</text>
+<rect x="1390" y="372" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="1425.0" y="407" text-anchor="middle" class="value" id="causal-weights-3-4" style="font-size:17px">0.000</text>
+<rect x="1460" y="372" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="1495.0" y="407" text-anchor="middle" class="value" id="causal-weights-3-5" style="font-size:17px">0.000</text>
+<text x="1159" y="463" text-anchor="middle" class="small">4</text>
+<rect x="1180" y="428" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1215.0" y="463" text-anchor="middle" class="value" id="causal-weights-4-1" style="font-size:17px">0.197</text>
+<rect x="1250" y="428" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1285.0" y="463" text-anchor="middle" class="value" id="causal-weights-4-2" style="font-size:17px">0.178</text>
+<rect x="1320" y="428" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1355.0" y="463" text-anchor="middle" class="value" id="causal-weights-4-3" style="font-size:17px">0.089</text>
+<rect x="1390" y="428" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1425.0" y="463" text-anchor="middle" class="value" id="causal-weights-4-4" style="font-size:17px">0.536</text>
+<rect x="1460" y="428" width="70" height="56" rx="0" fill="#f7f9fc" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="1495.0" y="463" text-anchor="middle" class="value" id="causal-weights-4-5" style="font-size:17px">0.000</text>
+<text x="1159" y="519" text-anchor="middle" class="small">5</text>
+<rect x="1180" y="484" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1215.0" y="519" text-anchor="middle" class="value" id="causal-weights-5-1" style="font-size:17px">0.119</text>
+<rect x="1250" y="484" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1285.0" y="519" text-anchor="middle" class="value" id="causal-weights-5-2" style="font-size:17px">0.217</text>
+<rect x="1320" y="484" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1355.0" y="519" text-anchor="middle" class="value" id="causal-weights-5-3" style="font-size:17px">0.161</text>
+<rect x="1390" y="484" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1425.0" y="519" text-anchor="middle" class="value" id="causal-weights-5-4" style="font-size:17px">0.108</text>
+<rect x="1460" y="484" width="70" height="56" rx="0" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<text x="1495.0" y="519" text-anchor="middle" class="value" id="causal-weights-5-5" style="font-size:17px">0.395</text>
+<text x="1334" y="581" text-anchor="middle" class="small" style="font-size:14px">Future weights = 0 exactly; each row sums to 1.</text>
+<path d="M504,391 L562,391" class="arrow" data-from="scores" data-to="masked"/>
+<text x="533" y="367" text-anchor="middle" class="tiny">add M</text>
+<path d="M1038,391 L1096,391" class="arrow" data-from="masked" data-to="weights"/>
+<text x="1067" y="367" text-anchor="middle" class="tiny">softmax</text>
+<text x="48" y="652" text-anchor="start" class="small">Fixed illustrative scores; Decimal probabilities are displayed to 3 decimals. Row sums are 1 before rounding.</text>
+<text x="48" y="687" text-anchor="start" class="small">Row 2: softmax([-0.400, 1.500, −∞, −∞, −∞]) = [0.130, 0.870, 0.000, 0.000, 0.000]</text>
+<text x="48" y="722" text-anchor="start" class="small">Row i reads only keys 1…i. Blocking happens before softmax; future scores never enter its denominator.</text>
+</svg>

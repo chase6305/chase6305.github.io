@@ -1,0 +1,25 @@
+{
+  "cases": [
+    {
+      "mutation": "wrong_Rzz_sign",
+      "compiled_and_rejected": true,
+      "exit": 1
+    },
+    {
+      "mutation": "lost_quadrant",
+      "compiled_and_rejected": true,
+      "exit": 1
+    },
+    {
+      "mutation": "half_period",
+      "compiled_and_rejected": true,
+      "exit": 1
+    },
+    {
+      "mutation": "closed_upper_limit",
+      "compiled_and_rejected": true,
+      "exit": 1
+    }
+  ],
+  "original_tests_passed": 2028
+}

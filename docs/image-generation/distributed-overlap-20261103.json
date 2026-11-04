@@ -1,0 +1,134 @@
+{
+  "reviewed_on": "2026-11-03",
+  "asset": "content/posts/ai/distributed-training-memory/assets/compute-communication-overlap.webp",
+  "method": "deterministic quantitative plot from fixed illustrative durations",
+  "generator": "scripts/plot_distributed_overlap.py",
+  "generator_environment": {
+    "matplotlib": "3.11.2",
+    "pillow": "13.0.0"
+  },
+  "assumptions": [
+    "Backward order L4 to L1; one bucket per layer; same communication order on all ranks",
+    "2 ms per layer backward; 1 ms per all-reduce; one compute and one communication stream",
+    "Causal launch after the corresponding complete gradient; no stream overlaps with itself",
+    "Only backward and gradient communication; no forward, optimizer, launch overhead or contention; no hardware measurements",
+    "Ranks have identical illustrated ready times; no stragglers are modeled."
+  ],
+  "results": {
+    "Serial": {
+      "rows": [
+        {
+          "layer": 4,
+          "compute": [
+            0,
+            2
+          ],
+          "communication": [
+            2,
+            3
+          ]
+        },
+        {
+          "layer": 3,
+          "compute": [
+            3,
+            5
+          ],
+          "communication": [
+            5,
+            6
+          ]
+        },
+        {
+          "layer": 2,
+          "compute": [
+            6,
+            8
+          ],
+          "communication": [
+            8,
+            9
+          ]
+        },
+        {
+          "layer": 1,
+          "compute": [
+            9,
+            11
+          ],
+          "communication": [
+            11,
+            12
+          ]
+        }
+      ],
+      "finish_ms": 12,
+      "last_compute_ms": 11,
+      "communication_after_compute_ms": 1
+    },
+    "Overlap": {
+      "rows": [
+        {
+          "layer": 4,
+          "compute": [
+            0,
+            2
+          ],
+          "communication": [
+            2,
+            3
+          ]
+        },
+        {
+          "layer": 3,
+          "compute": [
+            2,
+            4
+          ],
+          "communication": [
+            4,
+            5
+          ]
+        },
+        {
+          "layer": 2,
+          "compute": [
+            4,
+            6
+          ],
+          "communication": [
+            6,
+            7
+          ]
+        },
+        {
+          "layer": 1,
+          "compute": [
+            6,
+            8
+          ],
+          "communication": [
+            8,
+            9
+          ]
+        }
+      ],
+      "finish_ms": 9,
+      "last_compute_ms": 8,
+      "communication_after_compute_ms": 1
+    }
+  },
+  "primary_source": {
+    "url": "https://docs.pytorch.org/docs/2.8/notes/ddp.html#internal-design",
+    "supports": "All gradients in a bucket must be ready before its asynchronous all-reduce starts; collective order is consistent across ranks."
+  },
+  "original_asset_sha256": "08dca9b46a2b30da58d5f2c50f79c3b1c32e6787be1830dfc211b0c63d6f2fe8",
+  "replacement_asset_sha256": "85f6a0e7609e19de3b21d341f7b92dca951da3e517c214071b913d5b806caa22",
+  "independent_review": "FIFO dual-stream calculation matched all eight compute/communication intervals; arrow tip moved off L1 text; both axes use the same ms scale.",
+  "reference_style_reviewed": [
+    "content/posts/ai/transformer-attention/assets/training-lifecycle.webp",
+    "content/posts/ai/transformer-attention/assets/transformer-block-overview.webp",
+    "content/posts/ai/transformer-attention/assets/training-vs-kv-cache-inference.webp"
+  ],
+  "validation_command": "python3 -B scripts/plot_distributed_overlap.py --check"
+}

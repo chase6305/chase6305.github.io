@@ -45,7 +45,8 @@
             <h2 id="{{ $group.id }}">{{ if $zh }}{{ $group.nameZh }}{{ else }}{{ $group.name }}{{ end }}</h2>
             <div class="taxonomy-grid">
               {{ range $term := $group.terms }}
-                  <a class="taxonomy-card" href="{{ $term.Page.RelPermalink }}"><span>{{ $term.Page.LinkTitle }}</span><strong>{{ $term.Count }}</strong></a>
+                {{- $termLanguage := partial "blog/term-language.html" $term.Page -}}
+                  <a class="taxonomy-card" href="{{ $term.Page.RelPermalink }}"><span {{ with $termLanguage }}lang="{{ . }}"{{ end }}>{{ $term.Page.LinkTitle }}</span><strong>{{ $term.Count }}</strong></a>
               {{ end }}
             </div>
           </section>
@@ -54,7 +55,8 @@
     {{ else }}
       <section class="taxonomy-grid" aria-label="{{ .Title }}">
         {{ range .Data.Terms.ByCount }}
-          <a class="taxonomy-card" href="{{ .Page.RelPermalink }}"><span>{{ .Page.LinkTitle }}</span><strong>{{ .Count }}</strong></a>
+          {{- $termLanguage := partial "blog/term-language.html" .Page -}}
+          <a class="taxonomy-card" href="{{ .Page.RelPermalink }}"><span {{ with $termLanguage }}lang="{{ . }}"{{ end }}>{{ .Page.LinkTitle }}</span><strong>{{ .Count }}</strong></a>
         {{ end }}
       </section>
     {{ end }}

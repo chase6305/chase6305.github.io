@@ -1,0 +1,74 @@
+{
+  "identified_pages": [
+    {
+      "file": "distributed-true-100-light-a4.pdf",
+      "table_header_pages": [
+        31
+      ]
+    },
+    {
+      "file": "distributed-true-200-dark-a4.pdf",
+      "table_header_pages": [
+        75,
+        76
+      ]
+    },
+    {
+      "file": "distributed-false-100-warm-a4.pdf",
+      "table_header_pages": [
+        31
+      ]
+    },
+    {
+      "file": "internvl-true-100-light-a4.pdf",
+      "table_header_pages": [
+        22,
+        24
+      ]
+    },
+    {
+      "file": "llm-metrics-true-100-light-a4.pdf",
+      "table_header_pages": [
+        16,
+        17
+      ]
+    },
+    {
+      "file": "x-vla-true-100-light-a4.pdf",
+      "table_header_pages": [
+        16
+      ]
+    },
+    {
+      "file": "warp-true-100-light-a4.pdf",
+      "table_header_pages": [
+        9,
+        10
+      ]
+    }
+  ],
+  "visually_reviewed": [
+    {
+      "figure": "distributed timeline",
+      "pages": [
+        28,
+        66
+      ],
+      "states": [
+        "100% light A4",
+        "200% dark A4"
+      ],
+      "result": "axes,causal arrows,1ms tail,full caption visible"
+    },
+    {
+      "tables": [
+        "distributed31",
+        "internvl22",
+        "llm16-17",
+        "xvla16",
+        "warp9-10"
+      ],
+      "result": "five representative changed tables; continuing rows/headers retained, wrapping intact; no cropped labels observed"
+    }
+  ]
+}

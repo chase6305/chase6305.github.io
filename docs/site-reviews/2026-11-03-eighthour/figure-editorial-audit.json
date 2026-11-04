@@ -1,0 +1,26 @@
+{
+  "result": "no confirmed findings",
+  "published_articles": 95,
+  "reader_metadata_values": 475,
+  "captions": 233,
+  "image_alternatives": 342,
+  "generic_or_empty_alternatives": 0,
+  "production_wording_candidates": 0,
+  "broad_contexts_reviewed": 108,
+  "manual_decisions": [
+    {
+      "path": "content/posts/ai/vla-world-model-data/index.md",
+      "line": 588,
+      "wording": "画面是教学示例，不是模型预测或实测结果。",
+      "decision": "Retain: distinguishes constructed scenes from predictions and measured results; no production tool or style-source claim."
+    },
+    {
+      "path": "content/posts/ai/light-loco-parkour/index.md",
+      "line": 322,
+      "wording": "AMP discriminator 区分参考运动与策略运动，用来提供风格奖励。",
+      "decision": "Retain: technical discussion of AMP style reward, not image-production commentary."
+    }
+  ],
+  "findings": [],
+  "scope": "Read-only published-article wording review; no source edits, build or CDP."
+}

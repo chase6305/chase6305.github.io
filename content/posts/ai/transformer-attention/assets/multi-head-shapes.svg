@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1390" viewBox="0 0 1400 1390" role="img" aria-labelledby="title desc">
+<title id="title">Multi-head self-attention shapes: C=48, H=8, Dh=6</title>
+<desc id="desc">The same input X feeds three independent linear projections. Each projected tensor is reshaped and transposed to B,8,T,6. Every head i receives its own Qi, Ki and Vi, producing B,T,6. Eight head outputs concatenate along the last feature axis to B,T,48 before the output linear projection.</desc>
+<metadata id="calculation-records">{"C": 48, "H": 8, "Dh": 6, "input": ["B", "T", 48], "weight": [48, 48], "bias": [48], "projected": ["B", "T", 48], "reshaped": ["B", "T", 8, 6], "permutation": [0, 2, 1, 3], "split": ["B", 8, "T", 6], "selected": ["B", "T", 6], "scores": ["B", "T", "T"], "head_output": ["B", "T", 6], "merged": ["B", "T", 48], "output": ["B", "T", 48], "concat_axis": -1, "concat": [{"head": 1, "shape": ["B", "T", 6], "start": 0, "stop": 6}, {"head": 2, "shape": ["B", "T", 6], "start": 6, "stop": 12}, {"head": 3, "shape": ["B", "T", 6], "start": 12, "stop": 18}, {"head": 4, "shape": ["B", "T", 6], "start": 18, "stop": 24}, {"head": 5, "shape": ["B", "T", 6], "start": 24, "stop": 30}, {"head": 6, "shape": ["B", "T", 6], "start": 30, "stop": 36}, {"head": 7, "shape": ["B", "T", 6], "start": 36, "stop": 42}, {"head": 8, "shape": ["B", "T", 6], "start": 42, "stop": 48}]}</metadata>
+<defs>
+  <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#536174"/></marker>
+  <style>
+    text { font-family: "DejaVu Sans", Arial, sans-serif; fill: #233148; }
+    .title { font-size: 32px; font-weight: 700; }
+    .subtitle { font-size: 18px; fill: #475569; }
+    .heading { font-size: 20px; font-weight: 700; }
+    .label { font-size: 18px; font-weight: 700; }
+    .value { font-family: "DejaVu Sans Mono", monospace; font-size: 21px; }
+    .small { font-size: 16px; fill: #475569; }
+    .tiny { font-size: 14px; fill: #475569; }
+    .formula { font-size: 23px; }
+    .arrow { stroke: #536174; stroke-width: 2; fill: none; stroke-linejoin: round; marker-end: url(#arrow); }
+  </style>
+</defs>
+<rect width="1400" height="1390" fill="#ffffff"/>
+<text x="48" y="48" text-anchor="start" class="title">Multi-head self-attention</text>
+<text x="48" y="81" text-anchor="start" class="subtitle">C = 48 · H = 8 · Dh = C / H = 6 · B = batch · T = tokens</text>
+<text x="1352" y="81" text-anchor="end" class="small">Three independent learned projections</text>
+<rect x="575" y="110" width="250" height="70" rx="12" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6" id="x"/>
+<text x="700" y="138" text-anchor="middle" class="label">Input X</text>
+<text x="700" y="166" text-anchor="middle" class="value">[B,T,48]</text>
+<path d="M700,180 L700,206 L240,206 L240,234" class="arrow" data-from="x" data-to="q-project"/>
+<rect x="75" y="234" width="330" height="96" rx="12" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6" id="q-project"/>
+<text x="240" y="263" text-anchor="middle" class="heading">Q = X Wqᵀ + bq</text>
+<text x="240" y="289" text-anchor="middle" class="tiny">Wq [48,48]; bq [48]</text>
+<text x="240" y="316" text-anchor="middle" class="value">[B,T,48]</text>
+<path d="M240,330 L240,368" class="arrow" data-from="q-project" data-to="q-split"/>
+<rect x="75" y="368" width="330" height="122" rx="12" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6" id="q-split"/>
+<text x="240" y="398" text-anchor="middle" class="small">reshape → [B,T,8,6]</text>
+<text x="240" y="426" text-anchor="middle" class="small">transpose(1,2)</text>
+<text x="240" y="461" text-anchor="middle" class="value">Q [B,8,T,6]</text>
+<path d="M700,180 L700,206 L700,206 L700,234" class="arrow" data-from="x" data-to="k-project"/>
+<rect x="535" y="234" width="330" height="96" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6" id="k-project"/>
+<text x="700" y="263" text-anchor="middle" class="heading">K = X Wkᵀ + bk</text>
+<text x="700" y="289" text-anchor="middle" class="tiny">Wk [48,48]; bk [48]</text>
+<text x="700" y="316" text-anchor="middle" class="value">[B,T,48]</text>
+<path d="M700,330 L700,368" class="arrow" data-from="k-project" data-to="k-split"/>
+<rect x="535" y="368" width="330" height="122" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6" id="k-split"/>
+<text x="700" y="398" text-anchor="middle" class="small">reshape → [B,T,8,6]</text>
+<text x="700" y="426" text-anchor="middle" class="small">transpose(1,2)</text>
+<text x="700" y="461" text-anchor="middle" class="value">K [B,8,T,6]</text>
+<path d="M700,180 L700,206 L1160,206 L1160,234" class="arrow" data-from="x" data-to="v-project"/>
+<rect x="995" y="234" width="330" height="96" rx="12" fill="#fff3e5" stroke="#c49a6b" stroke-width="1.6" id="v-project"/>
+<text x="1160" y="263" text-anchor="middle" class="heading">V = X Wvᵀ + bv</text>
+<text x="1160" y="289" text-anchor="middle" class="tiny">Wv [48,48]; bv [48]</text>
+<text x="1160" y="316" text-anchor="middle" class="value">[B,T,48]</text>
+<path d="M1160,330 L1160,368" class="arrow" data-from="v-project" data-to="v-split"/>
+<rect x="995" y="368" width="330" height="122" rx="12" fill="#fff3e5" stroke="#c49a6b" stroke-width="1.6" id="v-split"/>
+<text x="1160" y="398" text-anchor="middle" class="small">reshape → [B,T,8,6]</text>
+<text x="1160" y="426" text-anchor="middle" class="small">transpose(1,2)</text>
+<text x="1160" y="461" text-anchor="middle" class="value">V [B,8,T,6]</text>
+<rect x="56" y="550" width="1288" height="356" rx="12" fill="#ffffff" stroke="#c9d2df" stroke-width="1.6" id="head-template"/>
+<text x="1308" y="575" text-anchor="end" class="label">Any head i</text>
+<text x="1308" y="597" text-anchor="end" class="small">i = 1…8</text>
+<path d="M240,490 L240,610" class="arrow" data-from="q-split" data-to="q-i"/>
+<text x="253" y="524" text-anchor="start" class="tiny">select i</text>
+<rect x="120" y="610" width="240" height="62" rx="12" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6" id="q-i"/>
+<text x="240" y="636" text-anchor="middle" class="heading">Q_i</text>
+<text x="240" y="660" text-anchor="middle" class="value" style="font-size:19px">[B,T,6]</text>
+<path d="M700,490 L700,610" class="arrow" data-from="k-split" data-to="k-i"/>
+<text x="713" y="524" text-anchor="start" class="tiny">select i</text>
+<rect x="580" y="610" width="240" height="62" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6" id="k-i"/>
+<text x="700" y="636" text-anchor="middle" class="heading">K_i</text>
+<text x="700" y="660" text-anchor="middle" class="value" style="font-size:19px">[B,T,6]</text>
+<path d="M1160,490 L1160,610" class="arrow" data-from="v-split" data-to="v-i"/>
+<text x="1173" y="524" text-anchor="start" class="tiny">select i</text>
+<rect x="1040" y="610" width="240" height="62" rx="12" fill="#fff3e5" stroke="#c49a6b" stroke-width="1.6" id="v-i"/>
+<text x="1160" y="636" text-anchor="middle" class="heading">V_i</text>
+<text x="1160" y="660" text-anchor="middle" class="value" style="font-size:19px">[B,T,6]</text>
+<path d="M240,672 L240,752 L370,752" class="arrow" data-from="q-i" data-to="attention"/>
+<path d="M700,672 L700,708" class="arrow" data-from="k-i" data-to="attention"/>
+<path d="M1160,672 L1160,752 L1030,752" class="arrow" data-from="v-i" data-to="attention"/>
+<rect x="370" y="708" width="660" height="98" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6" id="attention"/>
+<text x="700" y="738" text-anchor="middle" class="heading">Scaled dot-product attention</text>
+<text x="700" y="777" text-anchor="middle" class="formula">softmax(Q_i K_iᵀ / √6 + M) V_i</text>
+<path d="M700,806 L700,834" class="arrow" data-from="attention" data-to="head-i-output"/>
+<rect x="540" y="834" width="320" height="54" rx="12" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6" id="head-i-output"/>
+<text x="700" y="868" text-anchor="middle" class="value">head_i [B,T,6]</text>
+<text x="80" y="937" text-anchor="start" class="small">Repeat with each head’s own Q_i, K_i, V_i</text>
+<text x="1320" y="937" text-anchor="end" class="small">Concat on the last feature axis (dim = −1)</text>
+<path d="M700,888 L700,966" class="arrow" data-from="head-family" data-to="concat" stroke-dasharray="5 4"/>
+<rect x="72" y="966" width="1256" height="78" rx="12" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6" id="concat"/>
+<rect x="72" y="966" width="157" height="78" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6" id="head-output-1"/>
+<text x="150.5" y="996" text-anchor="middle" class="label" style="font-size:17px">head 1</text>
+<text x="150.5" y="1027" text-anchor="middle" class="value" style="font-size:16px">[B,T,6]</text>
+<rect x="229" y="966" width="157" height="78" rx="0" fill="#f7fbf8" stroke="#83aa90" stroke-width="1.6" id="head-output-2"/>
+<text x="307.5" y="996" text-anchor="middle" class="label" style="font-size:17px">head 2</text>
+<text x="307.5" y="1027" text-anchor="middle" class="value" style="font-size:16px">[B,T,6]</text>
+<rect x="386" y="966" width="157" height="78" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6" id="head-output-3"/>
+<text x="464.5" y="996" text-anchor="middle" class="label" style="font-size:17px">head 3</text>
+<text x="464.5" y="1027" text-anchor="middle" class="value" style="font-size:16px">[B,T,6]</text>
+<rect x="543" y="966" width="157" height="78" rx="0" fill="#f7fbf8" stroke="#83aa90" stroke-width="1.6" id="head-output-4"/>
+<text x="621.5" y="996" text-anchor="middle" class="label" style="font-size:17px">head 4</text>
+<text x="621.5" y="1027" text-anchor="middle" class="value" style="font-size:16px">[B,T,6]</text>
+<rect x="700" y="966" width="157" height="78" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6" id="head-output-5"/>
+<text x="778.5" y="996" text-anchor="middle" class="label" style="font-size:17px">head 5</text>
+<text x="778.5" y="1027" text-anchor="middle" class="value" style="font-size:16px">[B,T,6]</text>
+<rect x="857" y="966" width="157" height="78" rx="0" fill="#f7fbf8" stroke="#83aa90" stroke-width="1.6" id="head-output-6"/>
+<text x="935.5" y="996" text-anchor="middle" class="label" style="font-size:17px">head 6</text>
+<text x="935.5" y="1027" text-anchor="middle" class="value" style="font-size:16px">[B,T,6]</text>
+<rect x="1014" y="966" width="157" height="78" rx="0" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6" id="head-output-7"/>
+<text x="1092.5" y="996" text-anchor="middle" class="label" style="font-size:17px">head 7</text>
+<text x="1092.5" y="1027" text-anchor="middle" class="value" style="font-size:16px">[B,T,6]</text>
+<rect x="1171" y="966" width="157" height="78" rx="0" fill="#f7fbf8" stroke="#83aa90" stroke-width="1.6" id="head-output-8"/>
+<text x="1249.5" y="996" text-anchor="middle" class="label" style="font-size:17px">head 8</text>
+<text x="1249.5" y="1027" text-anchor="middle" class="value" style="font-size:16px">[B,T,6]</text>
+<path d="M95,1072 L1305,1072" class="arrow"/>
+<text x="700" y="1103" text-anchor="middle" class="small">6 + 6 + 6 + 6 + 6 + 6 + 6 + 6 = 48 features</text>
+<text x="700" y="1136" text-anchor="middle" class="value" style="font-size:20px">Concat(head_1,…,head_8) → [B,T,48]</text>
+<path d="M700,1146 L700,1178" class="arrow" data-from="concat" data-to="output-linear"/>
+<rect x="425" y="1178" width="550" height="84" rx="12" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6" id="output-linear"/>
+<text x="700" y="1209" text-anchor="middle" class="heading">Output linear: Y = Concat W_oᵀ + b_o</text>
+<text x="700" y="1242" text-anchor="middle" class="value">[B,T,48] → [B,T,48]</text>
+<text x="700" y="1300" text-anchor="middle" class="small">Batched merge: [B,8,T,6] → transpose(1,2) → [B,T,8,6] → reshape → [B,T,48]</text>
+<text x="700" y="1333" text-anchor="middle" class="small">PyTorch W uses [out,in]. M is an optional [T,T] additive mask, broadcast over batch and heads.</text>
+<text x="700" y="1363" text-anchor="middle" class="small">Valid query rows shown; padding/all-masked handling omitted.</text>
+</svg>

@@ -114,6 +114,71 @@ class InventoryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Linked download missing"):
             self.inventory()
 
+    def test_unlinked_nested_sitemaps_and_taxonomy_feeds(self):
+        files = {
+            "sitemap.xml": b"<sitemapindex/>",
+            "en/sitemap.xml": b"<urlset><url>English</url></urlset>",
+            "zh-cn/sitemap.xml": b"<urlset><url>Chinese</url></urlset>",
+            "tags/cpp/index.xml": b"<rss><channel>cpp</channel></rss>",
+            "categories/robotics/index.xml": b"<rss><channel>robotics</channel></rss>",
+        }
+        for name, body in files.items():
+            self.write(name, body)
+        # None of the XML files are linked from the fixture's HTML pages.
+        rows = {row.route: row for row in self.inventory()}
+        for name, body in files.items():
+            route = "/project/" + name
+            self.assertEqual(rows[route], target(route, body))
+
+    def test_manifest_declared_icons_are_default_frozen_targets(self):
+        self.write('index.html', b'<link rel="manifest" href="config/site.webmanifest?v=1">')
+        self.write('config/site.webmanifest', json.dumps({'icons': [
+            {'src': '../icons/install.png?v=2'}, {'src': '/project/icons/root.png'},
+            {'src': 'https://elsewhere.invalid/external.png'},
+            {'src': '/outside-project/outside.png'}, None, {'src': ''},
+        ]}).encode())
+        self.write('icons/install.png', b'install icon')
+        self.write('icons/root.png', b'root icon')
+        rows = {row.route: row for row in self.inventory()}
+        expected = target('/project/icons/install.png', b'install icon')
+        self.assertEqual(rows[expected.route], expected)
+        self.assertEqual(rows['/project/icons/root.png'], target('/project/icons/root.png', b'root icon'))
+        self.write('icons/install.png', b'changed after snapshot')
+        self.assertEqual(rows[expected.route], expected)
+        (self.public / 'icons/root.png').unlink()
+        with self.assertRaisesRegex(ValueError, 'Manifest icon missing'):
+            self.inventory()
+
+    def test_manifest_icon_internal_symlink_keeps_its_declared_route(self):
+        self.write('index.html', b'<link rel="manifest" href="site.webmanifest">')
+        self.write('site.webmanifest', b'{"icons":[{"src":"alias.png"}]}')
+        actual = self.write('actual.png', b'icon bytes')
+        (self.public / 'alias.png').symlink_to(actual)
+        rows = {row.route: row for row in self.inventory()}
+        self.assertEqual(rows['/project/alias.png'], target('/project/alias.png', b'icon bytes'))
+        (self.public / 'manifest-alias.webmanifest').symlink_to(self.public / 'site.webmanifest')
+        self.write('index.html', b'<link rel="manifest" href="manifest-alias.webmanifest">')
+        rows = {row.route: row for row in self.inventory()}
+        self.assertEqual(rows['/project/manifest-alias.webmanifest'],
+                         target('/project/manifest-alias.webmanifest', b'{"icons":[{"src":"alias.png"}]}'))
+
+    def test_manifest_href_input_origin_and_missing_icon(self):
+        body = b'{"icons":[{"src":"../icons/Case.png?v=3"}]}'
+        self.write('config/site.webmanifest', body)
+        for reference in (' \tconfig\\site.webmanifest?v=2 \r\n',
+                          'HTTPS://EXAMPLE.TEST:443/project/config/site.webmanifest?v=2'):
+            with self.subTest(reference=reference):
+                self.write('index.html', f'<link rel="manifest" href="{reference}">'.encode())
+                icon = self.write('icons/Case.png', b'icon bytes')
+                rows = {row.route: row for row in self.inventory()}
+                self.assertEqual(rows['/project/config/site.webmanifest'],
+                                 target('/project/config/site.webmanifest', body))
+                self.assertEqual(rows['/project/icons/Case.png'],
+                                 target('/project/icons/Case.png', b'icon bytes'))
+                icon.unlink()
+                with self.assertRaisesRegex(ValueError, 'Manifest icon missing'):
+                    self.inventory()
+
     def test_outside_paths_and_conflicting_fixture(self):
         outside = self.root / "outside.py"
         outside.write_bytes(b"outside")
@@ -184,6 +249,18 @@ class HTTPTests(unittest.TestCase):
                     body = b"stale but status 200"
                 elif self.path == "/always-stale":
                     body = b"wrong"
+                elif self.path == "/project/en/sitemap.xml":
+                    body = b"<urlset><url>current</url></urlset>"
+                elif self.path == "/project/zh-cn/sitemap.xml":
+                    body = b"<urlset><url>stale</url></urlset>"
+                elif self.path == "/project/tags/cpp/index.xml":
+                    status, body = 404, b"not found"
+                elif self.path == '/project/icons/install.png':
+                    body = b'current icon'
+                elif self.path == '/project/icons/stale.png':
+                    body = b'old icon'
+                elif self.path == '/project/icons/missing.png':
+                    status, body = 404, b'not found'
                 elif self.path == "/slow":
                     time.sleep(.12)
                 self.send_response(status)
@@ -246,6 +323,54 @@ class HTTPTests(unittest.TestCase):
         rows = release.audit(expected, self.base, workers=3, retries=0)
         self.assertEqual([row["route"] for row in rows], [row.route for row in expected])
         self.assertTrue(all(row["passed"] for row in rows))
+
+    def test_unlinked_xml_inventory_detects_stale_and_missing_responses(self):
+        with tempfile.TemporaryDirectory(prefix="release-xml-http-") as directory:
+            public = Path(directory)
+            (public / "index.html").write_bytes(b"home without XML links")
+            (public / "404.html").write_bytes(b"not found")
+            body = b"<urlset><url>current</url></urlset>"
+            names = ("en/sitemap.xml", "zh-cn/sitemap.xml", "tags/cpp/index.xml")
+            for name in names:
+                path = public / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(body)
+            base = self.base + "/project/"
+            targets = [row for row in release.inventory(public, base, {"posts": []})
+                       if row.route.endswith(".xml")]
+            self.assertEqual({row.route for row in targets},
+                             {"/project/" + name for name in names})
+            rows = {row["route"]: row for row in release.audit(targets, base, retries=0)}
+            self.assertTrue(rows["/project/en/sitemap.xml"]["passed"])
+            stale = rows["/project/zh-cn/sitemap.xml"]
+            self.assertFalse(stale["passed"])
+            self.assertEqual(stale["attempts"][0]["status"], 200)
+            self.assertNotEqual(stale["attempts"][0]["sha256"], stale["expected_sha256"])
+            missing = rows["/project/tags/cpp/index.xml"]
+            self.assertFalse(missing["passed"])
+            self.assertEqual(missing["attempts"][0]["status"], 404)
+
+    def test_manifest_icon_targets_detect_stale_and_missing_http_bytes(self):
+        with tempfile.TemporaryDirectory(prefix='release-manifest-http-') as directory:
+            public = Path(directory)
+            (public / 'index.html').write_bytes(b'<link rel="manifest" href="site.webmanifest">')
+            (public / '404.html').write_bytes(b'not found')
+            names = ('install.png', 'stale.png', 'missing.png')
+            (public / 'site.webmanifest').write_text(json.dumps({'icons': [
+                {'src': 'icons/' + name} for name in names]}))
+            (public / 'icons').mkdir()
+            for name in names:
+                (public / 'icons' / name).write_bytes(b'current icon')
+            base = self.base + '/project/'
+            targets = [row for row in release.inventory(public, base, {'posts': []})
+                       if row.route.endswith('.png')]
+            self.assertEqual({row.route for row in targets}, {'/project/icons/' + name for name in names})
+            rows = {row['route']: row for row in release.audit(targets, base, retries=0)}
+            self.assertTrue(rows['/project/icons/install.png']['passed'])
+            self.assertFalse(rows['/project/icons/stale.png']['passed'])
+            self.assertEqual(rows['/project/icons/stale.png']['attempts'][0]['status'], 200)
+            self.assertFalse(rows['/project/icons/missing.png']['passed'])
+            self.assertEqual(rows['/project/icons/missing.png']['attempts'][0]['status'], 404)
 
 
 if __name__ == "__main__":

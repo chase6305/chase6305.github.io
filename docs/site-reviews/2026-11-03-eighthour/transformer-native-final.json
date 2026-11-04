@@ -1,0 +1,177 @@
+{
+  "exports": [
+    {
+      "route": "/posts/ai/transformer-attention/",
+      "slug": "transformer",
+      "phrases": [
+        "0.269",
+        "0.130",
+        "0.870",
+        "[B,T,48]",
+        "固定四token"
+      ],
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "file": "/tmp/chase-site-eight-hour-20261103/transformer-final-native-pdfs/transformer-true-100-light-a4.pdf",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 93
+        },
+        "math": {
+          "same": true,
+          "count": 100
+        },
+        "code": {
+          "same": true,
+          "count": 46
+        },
+        "captions": {
+          "same": true,
+          "count": 26
+        }
+      },
+      "htmlSha256": "77f4f77f667eb4dd449cb3024544b5cb468165a04a3ab1d52e1f6ed3bf1a566a",
+      "pages": 72,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "a60018c7e77d9da18c0d9f2fbb3f7b7bf023bc8dd1e3a05a4e9fb8a89c4e4a62"
+    },
+    {
+      "route": "/posts/ai/transformer-attention/",
+      "slug": "transformer",
+      "phrases": [
+        "0.269",
+        "0.130",
+        "0.870",
+        "[B,T,48]",
+        "固定四token"
+      ],
+      "scripts": true,
+      "size": 200,
+      "theme": "dark",
+      "paper": "a4",
+      "file": "/tmp/chase-site-eight-hour-20261103/transformer-final-native-pdfs/transformer-true-200-dark-a4.pdf",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 93
+        },
+        "math": {
+          "same": true,
+          "count": 100
+        },
+        "code": {
+          "same": true,
+          "count": 46
+        },
+        "captions": {
+          "same": true,
+          "count": 26
+        }
+      },
+      "htmlSha256": "77f4f77f667eb4dd449cb3024544b5cb468165a04a3ab1d52e1f6ed3bf1a566a",
+      "pages": 142,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "3ffad7dfaeadcf147268eabac1bc8bda205204b64973b6654048419dd421eec2"
+    },
+    {
+      "route": "/posts/ai/transformer-attention/",
+      "slug": "transformer",
+      "phrases": [
+        "0.269",
+        "0.130",
+        "0.870",
+        "[B,T,48]",
+        "固定四token"
+      ],
+      "scripts": false,
+      "size": 100,
+      "theme": "warm",
+      "paper": "a4",
+      "file": "/tmp/chase-site-eight-hour-20261103/transformer-final-native-pdfs/transformer-false-100-warm-a4.pdf",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 93
+        },
+        "math": {
+          "same": true,
+          "count": 100
+        },
+        "code": {
+          "same": true,
+          "count": 46
+        },
+        "captions": {
+          "same": true,
+          "count": 26
+        }
+      },
+      "htmlSha256": "77f4f77f667eb4dd449cb3024544b5cb468165a04a3ab1d52e1f6ed3bf1a566a",
+      "pages": 72,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "79daa2f4389b588afef315e8ca4a58afadae51d2c52b3937beda647d65f36344"
+    },
+    {
+      "route": "/posts/ai/transformer-attention/",
+      "slug": "transformer",
+      "phrases": [
+        "0.269",
+        "0.130",
+        "0.870",
+        "[B,T,48]",
+        "固定四token"
+      ],
+      "scripts": false,
+      "size": 200,
+      "theme": "warm",
+      "paper": "letter",
+      "file": "/tmp/chase-site-eight-hour-20261103/transformer-final-native-pdfs/transformer-false-200-warm-letter.pdf",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 93
+        },
+        "math": {
+          "same": true,
+          "count": 100
+        },
+        "code": {
+          "same": true,
+          "count": 46
+        },
+        "captions": {
+          "same": true,
+          "count": 26
+        }
+      },
+      "htmlSha256": "77f4f77f667eb4dd449cb3024544b5cb468165a04a3ab1d52e1f6ed3bf1a566a",
+      "pages": 151,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "75eb83e77bf6cf5b60ed82dc65e1f772a64d4b8d05dcad97f5d1f408f98f3464"
+    }
+  ],
+  "exceptions": []
+}

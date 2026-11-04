@@ -88,9 +88,11 @@ related_posts:
 第 `t` 步把上一时刻样本缩小一点，再加入少量高斯噪声：
 
 $$
+\begin{gathered}
 q(x_t\mid x_{t-1})=
-\mathcal N\left(x_t;\sqrt{\alpha_t}x_{t-1},\beta_t I\right),
-\qquad \alpha_t=1-\beta_t
+\mathcal N\left(x_t;\sqrt{\alpha_t}x_{t-1},\beta_t I\right),\\
+\alpha_t=1-\beta_t.
+\end{gathered}
 $$
 
 `βₜ` 太大会让逆过程困难，太小则需要更多步骤。常见调度方式包括 Linear、Cosine 和 Sigmoid schedule。
@@ -282,7 +284,7 @@ def timestep_embedding(t, dim, max_period=10_000):
     angles = t.float()[:, None] * freq[None, :]
     emb = torch.cat([angles.cos(), angles.sin()], dim=-1)
     if dim % 2:
-        emb = torch.cat([emb, torch.zeros_like(emb[:, :1])], dim=-1)
+        emb = torch.cat([emb, emb.new_zeros((emb.shape[0], 1))], dim=-1)
     return emb
 ```
 
@@ -306,12 +308,14 @@ $$
 U-Net 的 Encoder 逐步降低空间分辨率、扩大感受野；Decoder 恢复分辨率；Skip Connection 把高分辨率细节直接送到对应解码层。时间嵌入告诉每个残差块当前噪声等级，文本等条件可以通过 Cross-Attention 注入。
 
 <figure class="article-figure">
-  {{< post-image src="assets/time-conditioned-unet.webp" alt="带时间嵌入和条件注意力的 U-Net" >}}
+  {{< post-image src="assets/time-conditioned-unet-flow.svg" alt="带时间嵌入和条件注意力的 U-Net" >}}
   <figcaption>
     <span class="article-figure__number">图 4</span>
-    <span class="article-figure__text">U-Net 同时利用低分辨率语义、高分辨率细节、时间步以及可选条件。</span>
+    <span class="article-figure__text">图像特征流向噪声预测头；时间与条件分别注入。</span>
   </figcaption>
 </figure>
+
+图 4 中，编码器特征经中间块、解码器和预测头得到噪声预测；同尺度细节通过 Skip 送入解码器。时间嵌入注入各阶段。图中仅展开一处可选 Cross-Attention：Query 来自图像特征，Key/Value 来自条件 c，条件 c 不直接生成输出；省略具体层数、残差块内部及分辨率变化。其输入关系可对照 [LDM §3.3](https://arxiv.org/html/2112.10752v2#S3.SS3)。
 
 ### 5.2 Diffusion Transformer（DiT）
 
@@ -375,12 +379,16 @@ $$
 `NFE` 是 Number of Function Evaluations（去噪网络求值次数），可能小于训练使用的 `T`。例如模型训练了 1000 个离散噪声等级，推理时可以只选其中 20～50 个时间点。采样慢的根本原因是反向步骤互相依赖，不能像训练 batch 那样一次并行完成。
 
 <figure class="article-figure">
-  {{< post-image src="assets/training-vs-sampling.webp" alt="Diffusion 训练迭代与反向采样对照" >}}
+  {{< post-image src="assets/training-vs-sampling-flow.svg" alt="Diffusion 训练迭代与反向采样对照" >}}
   <figcaption>
     <span class="article-figure__number">图 5</span>
-    <span class="article-figure__text">训练对随机 t 做一次监督预测并更新参数；采样冻结参数，沿下降的推理时间表重复去噪。</span>
+    <span class="article-figure__text">训练更新参数；采样固定参数，并逐步减小时间步。</span>
   </figcaption>
 </figure>
+
+图 5 展开基础 DDPM 的 ε 预测路径：同一个随机 t 同时进入加噪公式与训练去噪器；MSE 对照预测噪声和本次采样的 ε。采样时，反向更新同时使用 xₜ、t、预测 ε 与随机 z，再将 t 减一；最后一步令 z=0。
+
+两图的虚线表示时间输入。图 5 省略条件 c、VAE 和具体优化器，逐步采样对应完整离散时间表；其他采样器可选择不同时间点。
 
 ## 7. 条件生成与 Classifier-Free Guidance
 
@@ -527,9 +535,10 @@ $$
 固定 $x_t,t$、且各预测由同一个 $\hat v$ 线性换算时，有
 
 $$
-\|\hat\epsilon-\epsilon\|^2=a_t^2\|\hat v-v_t\|^2,
-\qquad
+\begin{gathered}
+\|\hat\epsilon-\epsilon\|^2=a_t^2\|\hat v-v_t\|^2,\\
 \|\hat x_0-x_0\|^2=\sigma_t^2\|\hat v-v_t\|^2.
+\end{gathered}
 $$
 
 所以三个输出可以换算，**三个未经加权的 MSE 训练目标却不相同**；时间步采样与损失权重共同决定各噪声区间如何参与训练。这里的等式还假定没有额外裁剪、阈值化或其他非线性修正。
@@ -554,9 +563,14 @@ $$
 $$
 
 $$
-x_s=\sqrt{\bar\alpha_s}\,\hat x_0+
-\sqrt{1-\bar\alpha_s-\sigma_{t\to s}^2}\,\hat\epsilon+
-\sigma_{t\to s}z,\qquad z\sim\mathcal N(0,I).
+\begin{gathered}
+\begin{aligned}
+x_s={}&\sqrt{\bar\alpha_s}\,\hat x_0\\
+&+\sqrt{1-\bar\alpha_s-\sigma_{t\to s}^2}\,\hat\epsilon\\
+&+\sigma_{t\to s}z,
+\end{aligned}\\
+z\sim\mathcal N(0,I).
+\end{gathered}
 $$
 
 这里 $\eta=0$ 是确定性更新；$\eta=1$、取原始相邻时间步且使用对应后验方差时，回到本文 DDPM 更新的均值与方差。跳步时须重新使用选定的 $\bar\alpha_t,\bar\alpha_s$，不能只把原 DDPM 循环的步长改大，却继续套单步 $\beta_t$。[DDIM 论文](https://arxiv.org/abs/2010.02502)

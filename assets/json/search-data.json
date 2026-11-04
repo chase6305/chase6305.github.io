@@ -20,8 +20,9 @@
 {{- range $index, $page := $pages -}}
   {{- $pageTitle := $page.LinkTitle | default $page.File.BaseFileName -}}
   {{- $pageLink := $page.RelPermalink -}}
+  {{- $language := $page.Params.contentLanguage | default $page.Language.Locale | default $page.Language.Lang -}}
   {{- $data := partial "utils/fragments" (dict "context" $page "type" $indexType) -}}
-  {{- $output = $output | merge (dict $pageLink (dict "title" $pageTitle "data" $data)) -}}
+  {{- $output = $output | merge (dict $pageLink (dict "title" $pageTitle "language" $language "data" $data)) -}}
 {{- end -}}
 
 {{/* Extract glossary data entries */}}
@@ -36,7 +37,8 @@
 
 {{- with site.GetPage "/glossary" -}}
   {{- $pageTitle := .LinkTitle | default .Title | default "Glossary" -}}
-  {{- $output = $output | merge (dict .RelPermalink (dict "title" $pageTitle "data" $glossaryEntries)) -}}
+  {{- $language := .Params.contentLanguage | default .Language.Locale | default .Language.Lang -}}
+  {{- $output = $output | merge (dict .RelPermalink (dict "title" $pageTitle "language" $language "data" $glossaryEntries)) -}}
 {{- end -}}
 
 {{- $output | jsonify -}}

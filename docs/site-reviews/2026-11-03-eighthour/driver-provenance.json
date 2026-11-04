@@ -1,0 +1,29 @@
+{
+  "drivers": [
+    {
+      "file": "docs/site-reviews/2026-11-03-eighthour/check_transformer_figures.cjs",
+      "source": "check-transformer-figures.cjs",
+      "sha256": "65adf95e13187223af1a69de33e8f93c09856c930133f4201ad2617cb49ea046",
+      "validation": "whole-file syntax and actual dependency/source/metadata prefix loaded without CDP; test assertions otherwise unchanged from executed temporary driver"
+    },
+    {
+      "file": "docs/site-reviews/2026-11-03-eighthour/check_transformer_reflow.cjs",
+      "source": "check-transformer-reflow.cjs",
+      "sha256": "f117dfd8091421d5c5efd700cb13f66875897d817691841e99e8ab5c19ed9052",
+      "validation": "whole-file syntax and actual dependency/source/metadata prefix loaded without CDP; test assertions otherwise unchanged from executed temporary driver"
+    },
+    {
+      "file": "docs/site-reviews/2026-11-03-eighthour/check_transformer_print.cjs",
+      "source": "check-transformer-print.cjs",
+      "sha256": "8e20b983b34f2a44e2a3b3914e26dd7041b74cc5b13a14e3bd24c2bc9cd7ec99",
+      "validation": "whole-file syntax and actual dependency/source/metadata prefix loaded without CDP; test assertions otherwise unchanged from executed temporary driver"
+    },
+    {
+      "file": "docs/site-reviews/2026-11-03-eighthour/export_transformer_native.cjs",
+      "source": "export-transformer-final-native.cjs",
+      "sha256": "87c5eefadc090e82dbd4d965766d0fd8686a483ff32379bf69df1037ad013f1b",
+      "validation": "whole-file syntax and actual dependency/source/metadata prefix loaded without CDP; test assertions otherwise unchanged from executed temporary driver"
+    }
+  ],
+  "usage": "Pass baseURL CDPport outputdirectory. Run serially. Print driver also supports --large-text. Native export requires Poppler pdfinfo/pdftotext/pdfimages."
+}

@@ -1,0 +1,411 @@
+{
+  "scope": "Controls that actually declare aria-controls; that attribute is optional for other menu buttons.",
+  "cases": [
+    {
+      "route": "/posts/ai/diffusion-models/",
+      "width": 320,
+      "controls": [
+        {
+          "popup": "menu",
+          "id": "theme-menu-0",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "hextra-search-dialog",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "menu",
+          "id": "theme-menu-1",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "menu",
+          "id": "theme-menu-2",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        }
+      ]
+    },
+    {
+      "route": "/posts/ai/diffusion-models/",
+      "width": 1440,
+      "controls": [
+        {
+          "popup": "menu",
+          "id": "theme-menu-0",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "hextra-search-dialog",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "menu",
+          "id": "theme-menu-1",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "menu",
+          "id": "theme-menu-2",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        }
+      ]
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 320,
+      "controls": [
+        {
+          "popup": "menu",
+          "id": "theme-menu-0",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "hextra-search-dialog",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "menu",
+          "id": "theme-menu-1",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "menu",
+          "id": "theme-menu-2",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        }
+      ]
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 1440,
+      "controls": [
+        {
+          "popup": "menu",
+          "id": "theme-menu-0",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "hextra-search-dialog",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "menu",
+          "id": "theme-menu-1",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "menu",
+          "id": "theme-menu-2",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        }
+      ]
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 320,
+      "controls": [
+        {
+          "popup": "menu",
+          "id": "theme-menu-0",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "hextra-search-dialog",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "menu",
+          "id": "theme-menu-1",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "menu",
+          "id": "theme-menu-2",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        }
+      ]
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 1440,
+      "controls": [
+        {
+          "popup": "menu",
+          "id": "theme-menu-0",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "hextra-search-dialog",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "menu",
+          "id": "theme-menu-1",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        },
+        {
+          "popup": "dialog",
+          "id": "post-image-viewer",
+          "exists": true,
+          "expanded": null,
+          "tag": "DIALOG",
+          "open": false
+        },
+        {
+          "popup": "menu",
+          "id": "theme-menu-2",
+          "exists": true,
+          "expanded": "false",
+          "tag": "UL",
+          "open": false
+        }
+      ]
+    }
+  ],
+  "exceptions": [],
+  "allDeclaredControlledPopupsClosedAndPresent": true
+}

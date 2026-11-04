@@ -1,0 +1,54 @@
+{
+  "result": "passed",
+  "blocking_findings": [],
+  "independent_checks": 231,
+  "SVGs_viewed": 5,
+  "PNG_previews_viewed": 5,
+  "sources": [
+    {
+      "path": "/home/ubuntu/workspace/chase/chase6305.github.io/content/posts/ai/transformer-attention/assets/softmax-row-calculation.svg",
+      "sha256": "532ee071826f53ea45851e8a5558d7dbc77845f9dcc2f599f590e42ff60c0255"
+    },
+    {
+      "path": "/tmp/chase-site-eight-hour-20261103/transformer-figures-preview/softmax-row-calculation.png",
+      "sha256": "33aa850b173bc890646d070c179cd7c58ca27af2f2b011ce79aaea9d07253ff0"
+    },
+    {
+      "path": "/home/ubuntu/workspace/chase/chase6305.github.io/content/posts/ai/transformer-attention/assets/multi-head-shapes.svg",
+      "sha256": "cb512535611f2b95bfbc1dea0775b10fa86e53978eab98b496ca8dddcd05af4c"
+    },
+    {
+      "path": "/tmp/chase-site-eight-hour-20261103/transformer-figures-preview/multi-head-shapes.png",
+      "sha256": "a208984a5a11fdcb24317fd79303d43f06707c9bd69ca8ddce7f94fb268c4f32"
+    },
+    {
+      "path": "/home/ubuntu/workspace/chase/chase6305.github.io/content/posts/ai/transformer-attention/assets/causal-mask-calculation.svg",
+      "sha256": "2dc9544d1c1065c421de0de6209e6b5254c507b2cb0a841df97e42d31aa78add"
+    },
+    {
+      "path": "/tmp/chase-site-eight-hour-20261103/transformer-figures-preview/causal-mask-calculation.png",
+      "sha256": "647026de85b372e040901775da5a0361b8de7929eb71003bf006e51ab96c2b55"
+    },
+    {
+      "path": "/home/ubuntu/workspace/chase/chase6305.github.io/content/posts/ai/transformer-attention/assets/moe-token-routing.svg",
+      "sha256": "a69fb3ca800dab159415ac4b5aebcd22cba28f1ec3c255cef446c3c6602a960e"
+    },
+    {
+      "path": "/tmp/chase-site-eight-hour-20261103/transformer-figures-preview/moe-token-routing.png",
+      "sha256": "d59319afe6d2383b3a831fd87f36c99c435320f449aa13a82141625ba4dbdd84"
+    },
+    {
+      "path": "/home/ubuntu/workspace/chase/chase6305.github.io/content/posts/ai/transformer-attention/assets/attention-scoring-pipeline.svg",
+      "sha256": "9306f1a23856755db0ea8d604ef4ce391cd538f3913ae301753ad69d4e61f0bf"
+    },
+    {
+      "path": "/tmp/chase-site-eight-hour-20261103/transformer-figures-preview/attention-scoring-pipeline.png",
+      "sha256": "fd18747b32834e9ca51f630973c6ba50eabc9cc624787f179d10e69843936509"
+    }
+  ],
+  "subreports": [
+    "first-three.json",
+    "last-two.json"
+  ],
+  "scope": "Actual SVG/PNG review and independent standard-library arithmetic/shape/edge checks; no renderer import/check, source edits, Hugo build or CDP."
+}

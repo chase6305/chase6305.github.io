@@ -1,0 +1,40 @@
+{
+  "status": "fixed_and_frozen_for_parent_review",
+  "scope": "ASCII URL input cleanup; HTTP(S) path separators; scheme/hostname/effective-port same-origin; manifest call-chain normalization only",
+  "original_helper_sha256": "d87169993e9261243fe950bd52f88d45931f332e460afa1a9ae1b730e8a7ac4f",
+  "files": {
+    "scripts/site_asset_references.py": "c69c218ae882edb15175b31c006d61407cca7e81b6796642c8784b736003373a",
+    "scripts/test_site_assets.py": "287b4c378c1339a1ca4f23fb306ba646485fcfda172e9baa3378e9bb67054310",
+    "scripts/check_site_release.py": "87b729495e1c34d1eee3ae3f975caa866cd345dbb2d33605eede6c9aee4bde54",
+    "scripts/test_asset_references.py": "1f297ef00ab78636aeaecd14afe4c7fc58f82d4e28dd3ed6c579a6b86e192c95",
+    "scripts/test_site_release.py": "b7257f6f0a142245fb965884f9a60b0d248721b3610371deb9854e9d27d64364"
+  },
+  "tests": {
+    "asset_fixture_methods": 10,
+    "release_fixture_methods": 20,
+    "production_html_pages": 324,
+    "integrity_assets": 27,
+    "manifest_icons": 2,
+    "production_release_targets": 888
+  },
+  "independent_url_oracle_cases": 8,
+  "additional_independent_child_review_cases": 10,
+  "artifacts": [
+    "probe_urls.py",
+    "probe_before.py",
+    "url-probe-before.json",
+    "url-probe-after.json",
+    "asset-fixtures-after.log",
+    "release-fixtures-after.log",
+    "current-assets-after.json",
+    "current-manifests.json",
+    "sources.json",
+    "child-review/"
+  ],
+  "limits": [
+    "URL adapter is intentionally limited; it is not a complete WHATWG parser.",
+    "External/data/out-of-project-prefix icon URLs are skipped without fetching.",
+    "Queries/fragments are retained during resolution but expected HTTP bytes still use canonical file paths, as before.",
+    "No CDP, deployment or real production-output mutation."
+  ]
+}

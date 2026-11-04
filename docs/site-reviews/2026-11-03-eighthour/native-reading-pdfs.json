@@ -1,0 +1,181 @@
+{
+  "exports": [
+    {
+      "route": "/posts/ai/distributed-training-memory/",
+      "slug": "distributed",
+      "phrases": [
+        "12ms",
+        "9ms",
+        "1ms",
+        "反向",
+        "归约",
+        "类别",
+        "应记录的字段",
+        "用来排除什么误判"
+      ],
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "file": "/tmp/chase-site-eight-hour-20261103/native-reading-pdfs/distributed-true-100-light-a4.pdf",
+      "htmlSha256": "f961653cbfc1131c9cb38178654f7c7a48bb3c1a32170e2ad7c0fd5cfbc1aed0",
+      "pages": 34,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "3810ba30f485deada62567aab81223e1643bf252494432b3d12dad5839f40b08"
+    },
+    {
+      "route": "/posts/ai/distributed-training-memory/",
+      "slug": "distributed",
+      "phrases": [
+        "12ms",
+        "9ms",
+        "1ms",
+        "反向",
+        "归约",
+        "类别",
+        "应记录的字段",
+        "用来排除什么误判"
+      ],
+      "scripts": true,
+      "size": 200,
+      "theme": "dark",
+      "paper": "a4",
+      "file": "/tmp/chase-site-eight-hour-20261103/native-reading-pdfs/distributed-true-200-dark-a4.pdf",
+      "htmlSha256": "f961653cbfc1131c9cb38178654f7c7a48bb3c1a32170e2ad7c0fd5cfbc1aed0",
+      "pages": 82,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "2c0f4ddaedc78bc2aa241cd4baf114c0d58dbe84ae8688cf211fe9cf2cf234b6"
+    },
+    {
+      "route": "/posts/ai/distributed-training-memory/",
+      "slug": "distributed",
+      "phrases": [
+        "12ms",
+        "9ms",
+        "1ms",
+        "反向",
+        "归约",
+        "类别",
+        "应记录的字段",
+        "用来排除什么误判"
+      ],
+      "scripts": false,
+      "size": 100,
+      "theme": "warm",
+      "paper": "a4",
+      "file": "/tmp/chase-site-eight-hour-20261103/native-reading-pdfs/distributed-false-100-warm-a4.pdf",
+      "htmlSha256": "f961653cbfc1131c9cb38178654f7c7a48bb3c1a32170e2ad7c0fd5cfbc1aed0",
+      "pages": 34,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "eab10aa70b0a80f63065732a32b50ad4ba05914aad11650b3396578a0884108e"
+    },
+    {
+      "route": "/posts/ai/internvl-3-5/",
+      "slug": "internvl",
+      "phrases": [
+        "路线",
+        "常见接口",
+        "输入准备"
+      ],
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "file": "/tmp/chase-site-eight-hour-20261103/native-reading-pdfs/internvl-true-100-light-a4.pdf",
+      "htmlSha256": "91b93d738161b1c1897ed3f0d52ebaa7e29feaec67a264f00a158a58da3c2d93",
+      "pages": 30,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "b7e261a437674e9b5c71ed5f3d530510dcb28420bd4374c59a0b8f9cdd1365c9"
+    },
+    {
+      "route": "/posts/ai/llm-training-metrics/",
+      "slug": "llm-metrics",
+      "phrases": [
+        "层面",
+        "指标",
+        "解释与限制"
+      ],
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "file": "/tmp/chase-site-eight-hour-20261103/native-reading-pdfs/llm-metrics-true-100-light-a4.pdf",
+      "htmlSha256": "f183bdb58cdb1c7c44a1fc2c32d8644e47e7d474badecbf15d74c36d7299f2e1",
+      "pages": 37,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "30d7e303ad511ae32d368b0eaf4a677dfb2c82b87b9dc110d32122b7f850bb53"
+    },
+    {
+      "route": "/posts/ai/x-vla/",
+      "slug": "x-vla",
+      "phrases": [
+        "约定",
+        "六个数的顺序",
+        "本次核对到的代码路径"
+      ],
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "file": "/tmp/chase-site-eight-hour-20261103/native-reading-pdfs/x-vla-true-100-light-a4.pdf",
+      "htmlSha256": "a5d745ab4979108264ec9bcf6ad4666f4e5399cba74ae90ad859ddba64789f46",
+      "pages": 44,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "40076736fd8702c281845e0f8dd4a5cd9fe3ffca4189da6b10cde31605f5571b"
+    },
+    {
+      "route": "/posts/cuda/warp/",
+      "slug": "warp",
+      "phrases": [
+        "功能",
+        "API/语法",
+        "说明"
+      ],
+      "scripts": true,
+      "size": 100,
+      "theme": "light",
+      "paper": "a4",
+      "file": "/tmp/chase-site-eight-hour-20261103/native-reading-pdfs/warp-true-100-light-a4.pdf",
+      "htmlSha256": "86a901626a53fd70e35cb49157bad266d224a89b08a149dcbfba6daab77f3a4e",
+      "pages": 13,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "details": true
+      },
+      "pdfSha256": "7a72be8feddf9822a2520df1d5c8e1df86f90d945dfec62f11b666ef1ff9dd12"
+    }
+  ],
+  "exceptions": []
+}

@@ -187,6 +187,42 @@ class Page(HTMLParser):
             self._filter_text = None
 
 
+def check_html_pages(public, html, *, strict_math=None):
+    """Check shared HTML invariants on every page, including homes and labs."""
+    errors = []
+    math_warnings = []
+    checked = 0
+    for path, page in html.items():
+        relative = path.relative_to(public).as_posix()
+        if page.duplicate_ids:
+            errors.append(f"Duplicate HTML ids: {relative}: {sorted(page.duplicate_ids)}")
+        if page.duplicate_figure_labels:
+            errors.append(f"Duplicate figure labels: {relative}: {sorted(page.duplicate_figure_labels)}")
+        if page.unrendered_math:
+            warning = f"Unrendered display math: {relative}: {page.unrendered_math}"
+            math_warnings.append(warning)
+            if strict_math is not None and (not strict_math or relative in strict_math):
+                errors.append(warning)
+        base = "https://chase6305.github.io/" + relative
+        for destination in page.links:
+            url = urlsplit(urljoin(base, destination))
+            if url.scheme not in ("http", "https") or url.netloc != "chase6305.github.io":
+                continue
+            target = public / unquote(url.path).lstrip("/")
+            if target.is_dir():
+                target = target / "index.html"
+            checked += 1
+            if not target.exists():
+                errors.append(f"Missing local target: {relative} -> {destination}")
+            elif url.fragment and target in html and unquote(url.fragment) not in html[target].ids:
+                errors.append(f"Missing anchor: {relative} -> {destination}")
+        for image in page.images:
+            if "alt" not in image:
+                errors.append(f"Missing image alt: {relative} -> {image.get('src')}")
+    return {"html_pages_checked": len(html), "local_references_checked": checked,
+            "errors": errors, "unrendered_math_warnings": math_warnings}
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--public", type=Path, default=ROOT / "public")
@@ -393,7 +429,6 @@ def main():
                             or schema_image.get("caption") != image.get("alt")):
                         errors.append(f"Inconsistent BlogPosting image: {route}")
                     sharing_image_count += 1
-    checked = 0
     collection_pages = 0
     filter_indexes = 0
     tag_count = 0
@@ -430,38 +465,16 @@ def main():
                         errors.append(f"Incorrect filter draft flag: {relative}: {row['url']}")
                     page.links.append(row["url"])
                     page.links.extend(tag["url"] for tag in row.get("tags", []))
-        if page.duplicate_ids:
-            errors.append(f"Duplicate HTML ids: {relative}: {sorted(page.duplicate_ids)}")
-        if page.duplicate_figure_labels:
-            errors.append(f"Duplicate figure labels: {relative}: {sorted(page.duplicate_figure_labels)}")
-        if page.unrendered_math:
-            warning = f"Unrendered display math: {relative}: {page.unrendered_math}"
-            math_warnings.append(warning)
-            if args.strict_math is not None and (
-                    not args.strict_math or relative in args.strict_math):
-                errors.append(warning)
-        base = "https://chase6305.github.io/" + relative
-        for destination in page.links:
-            url = urlsplit(urljoin(base, destination))
-            if url.scheme not in ("http", "https") or url.netloc != "chase6305.github.io":
-                continue
-            target = public / unquote(url.path).lstrip("/")
-            if target.is_dir():
-                target = target / "index.html"
-            checked += 1
-            if not target.exists():
-                errors.append(f"Missing local target: {relative} -> {destination}")
-            elif url.fragment and target in html and unquote(url.fragment) not in html[target].ids:
-                errors.append(f"Missing anchor: {relative} -> {destination}")
-        for image in page.images:
-            if "alt" not in image:
-                errors.append(f"Missing image alt: {relative} -> {image.get('src')}")
+    page_checks = check_html_pages(public, html, strict_math=args.strict_math)
+    errors.extend(page_checks["errors"])
+    math_warnings.extend(page_checks["unrendered_math_warnings"])
     print(json.dumps({"reviewed_posts": len(expected), "learning_paths": len(topics), "acceptance_checks": sum(map(len, self_checks.values())),
                       "blog_posting_schemas": schema_count, "sharing_images": sharing_image_count,
                       "shared_search_indexes": search_indexes,
                       "classified_tags": tag_count, "code_blocks": block_count,
                       "syntax_checked_by_language": dict(sorted(syntax_counts.items())),
-                      "html_pages": len(html), "local_references_checked": checked,
+                      "html_pages": len(html), "html_pages_checked": page_checks["html_pages_checked"],
+                      "local_references_checked": page_checks["local_references_checked"],
                       "collection_pages_checked": collection_pages, "filter_indexes_checked": filter_indexes,
                       "errors": sorted(set(errors)), "python_fragment_warnings": snippets,
                       "unrendered_math_warnings": math_warnings},

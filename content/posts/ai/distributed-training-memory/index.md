@@ -854,11 +854,15 @@ $$
 
 若某个 Bucket 的通信时间小于其后可并行的计算窗口，它大部分可以被隐藏；最后一个 Bucket、过大的 Collective 或慢网络通常形成 exposed communication tail。
 
+用一个固定时长例核算：反向依次计算 `L4 → L1`，每层用时 2 ms，并各自产生一个耗时 1 ms 的归约 Bucket；假设各 Rank 的对应梯度同时就绪，且通信顺序相同。串行片段共需 12 ms，计算与通信重叠后共需 9 ms。最后一个 Bucket 到第 8 ms 才就绪，归约在第 9 ms 完成，因此还有完整的 1 ms 等待时间。
+
+这里各有一条计算流和通信流，时长为构造输入，只统计反向计算与梯度归约；前向、优化器、通信启动开销和资源争用需在实际 profiling 中另行计入。DDP 在 Bucket 内所有梯度就绪后才启动归约，见 [PyTorch DDP 设计说明](https://docs.pytorch.org/docs/2.8/notes/ddp.html#internal-design)。
+
 <figure class="article-figure">
-  {{< post-image src="assets/compute-communication-overlap.webp" alt="串行通信与计算通信重叠时间线" >}}
+  {{< post-image src="assets/compute-communication-overlap.webp" alt="同刻度的反向计算与梯度归约时间线：每层计算结束后启动对应通信，串行片段为12毫秒，重叠后为9毫秒，最后1毫秒归约无法被计算覆盖" >}}
   <figcaption>
     <span class="article-figure__number">图 8</span>
-    <span class="article-figure__text">Bucket 就绪后立即通信可与后续反向计算重叠；真正增加 Step Time 的主要是未被覆盖的通信尾部。</span>
+    <span class="article-figure__text">固定时长例中的反向与归约片段：串行 12 ms，重叠 9 ms。向下箭头表示对应梯度已全部就绪；红色的完整 1 ms 是计算结束后仍需等待的归约。</span>
   </figcaption>
 </figure>
 
@@ -964,6 +968,7 @@ reserved 显著大于 allocated 只说明保留池里有未被活跃 Tensor 使�
 | 数值正确性 | Loss 归约、梯度范数、optimizer step、学习率 | 扩卡后梯度缩放或 Scheduler 语义改变 |
 | 资源与时间 | 每 Rank 峰值、step 时间、有效 tokens/s、暴露通信 | 只看 Rank 0 或 GPU Utilization |
 | 恢复能力 | Checkpoint 路径、恢复步数、优化器与采样状态 | 权重能加载却无法接续训练 |
+{.table-readable}
 
 扩卡对照还需说明保持的是 global batch 还是每卡 batch：前者接近固定工作量的强扩展，后者增加了每步总工作量。两类实验的 step 时间不能直接解释成同一种扩展效率。
 

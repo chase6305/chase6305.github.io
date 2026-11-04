@@ -23,6 +23,8 @@ from urllib.error import HTTPError
 from urllib.parse import quote, unquote, urljoin, urlsplit
 from urllib.request import build_opener, HTTPRedirectHandler, Request
 
+from site_asset_references import local_reference, manifest_icon_files, resolve_reference_url
+
 ROOT = Path(__file__).resolve().parents[1]
 IMAGES = {'.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.avif', '.ico'}
 
@@ -40,6 +42,7 @@ class References(HTMLParser):
         super().__init__()
         self.urls = []
         self.browser_assets = []
+        self.manifests = []
         self.feed(source)
 
     def handle_starttag(self, tag, pairs):
@@ -51,6 +54,8 @@ class References(HTMLParser):
             for name in ('href', 'data-favicon-light', 'data-favicon-dark'):
                 if attrs.get(name):
                     self.browser_assets.append(attrs[name])
+            if 'manifest' in (attrs.get('rel') or '').lower().split() and attrs.get('href'):
+                self.manifests.append(attrs['href'])
 
 
 def commit_metadata(repository, revision):
@@ -104,16 +109,19 @@ def inventory(public, base, metadata, *, images=False, include=()):
         route = relative.removesuffix('index.html') if file.name == 'index.html' else relative
         paths[urljoin(base, quote(route, safe='/+-._'))] = (200, file)
 
+    manifests = set()
     for file in sorted(public.rglob('*')):
         if not file.is_file():
             continue
-        if file.suffix.lower() in {'.html', '.js', '.css', '.json', '.woff2'} or (images and file.suffix.lower() in IMAGES):
+        if file.suffix.lower() in {'.html', '.js', '.css', '.json', '.xml', '.woff2'} or (images and file.suffix.lower() in IMAGES):
             add(file)
         if file.suffix.lower() == '.html':
             relative = file.relative_to(public).as_posix()
             page_url = urljoin(base, quote(relative, safe='/+-._'))
             references = References(file.read_text(encoding='utf-8'))
             for reference in references.urls + references.browser_assets:
+                if reference in references.manifests:
+                    continue  # Manifest input/origin rules are shared below.
                 parts = urlsplit(urljoin(page_url, reference))
                 site = urlsplit(base)
                 if (parts.scheme, parts.netloc) != (site.scheme, site.netloc):
@@ -135,9 +143,18 @@ def inventory(public, base, metadata, *, images=False, include=()):
                     if not local.is_relative_to(public) or not local.is_file():
                         raise ValueError('Linked download missing: '+path)
                     add(local)
-    for relative in ('robots.txt', 'sitemap.xml', 'index.xml', 'zh-cn/index.xml'):
-        if (public/relative).is_file():
-            add(public/relative)
+            for reference in references.manifests:
+                manifest_url = resolve_reference_url(page_url, reference)
+                if manifest_url not in manifests:
+                    icons = list(manifest_icon_files(public, base, manifest_url))
+                    manifest = local_reference(public, base, page_url, reference)
+                    if manifest is not None:
+                        add(manifest)
+                    for icon in icons:
+                        add(icon)
+                    manifests.add(manifest_url)
+    if (public/'robots.txt').is_file():
+        add(public/'robots.txt')
     for relative in include:
         parts = urlsplit(relative)
         if parts.scheme or parts.netloc or parts.query or parts.fragment:

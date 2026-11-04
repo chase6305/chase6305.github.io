@@ -1,10 +1,11 @@
 {{ define "main" }}
   {{- $zh := eq site.Language.Lang "zh-cn" -}}
+  {{- $termLanguage := partial "blog/term-language.html" . -}}
   {{ partial "sidebar.html" (dict "context" . "disableSidebar" true) }}
   <main id="content" class="collection-page">
     <header class="collection-hero">
       <p class="chase-section__eyebrow">{{ if $zh }}主题{{ else }}Topic{{ end }}</p>
-      <h1>{{ .Title }}</h1>
+      <h1 {{ with $termLanguage }}lang="{{ . }}"{{ end }}>{{ .Title }}</h1>
       <p>{{ if $zh }}{{ len .Pages }} 篇相关文章。{{ else }}{{ len .Pages }} related articles.{{ end }}</p>
       {{ partial "blog/collection-nav.html" . }}
     </header>

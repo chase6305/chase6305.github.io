@@ -1,0 +1,43 @@
+{
+  "initial_dirty_count": 30,
+  "unchanged_initial_dirty_files": [
+    "content/posts/ai/muon-optimizer/assets/gradient-noise-reference.json",
+    "content/posts/ai/muon-optimizer/gradient_noise.py",
+    "docs/site-reviews/2026-11-03-muon-fivehour/gradient-capture-review.json",
+    "docs/site-reviews/2026-11-03-muon-fivehour/gradient-capture-tests.log",
+    "docs/site-reviews/2026-11-03-muon-fivehour/gradient-capture-torch-only.log",
+    "docs/site-reviews/2026-11-03-muon-fivehour/second-deployment.json",
+    "scripts/test_muon_noise.py",
+    "content/posts/ai/muon-learning-rate-batch-size/index.md",
+    "content/posts/ai/muon-optimizer/README.txt",
+    "content/posts/ai/muon-optimizer/index.md",
+    "content/posts/ai/muon-optimizer/muon-examples.zip",
+    "docs/site-reviews/2026-11-03-muon-fivehour/README.md",
+    "docs/site-reviews/2026-11-03-muon-fivehour/check_keyboard.cjs",
+    "docs/site-reviews/2026-11-03-muon-fivehour/check_reading.cjs",
+    "docs/site-reviews/2026-11-03-muon-fivehour/export_article.cjs",
+    "docs/site-reviews/2026-11-03-muon-fivehour/files.json",
+    "docs/site-reviews/2026-11-03-muon-fivehour/full-package.log",
+    "docs/site-reviews/2026-11-03-muon-fivehour/hugo.log",
+    "docs/site-reviews/2026-11-03-muon-fivehour/keyboard.json.gz",
+    "docs/site-reviews/2026-11-03-muon-fivehour/native-exports.json",
+    "docs/site-reviews/2026-11-03-muon-fivehour/preservation.json",
+    "docs/site-reviews/2026-11-03-muon-fivehour/print-large.json.gz",
+    "docs/site-reviews/2026-11-03-muon-fivehour/reading.json.gz",
+    "docs/site-reviews/2026-11-03-muon-fivehour/sources.json",
+    "docs/site-reviews/2026-11-03-muon-fivehour/stdlib-package.log",
+    "docs/site-reviews/2026-11-03-muon-fivehour/validation.json",
+    "scripts/package_muon_examples.py",
+    "scripts/test_muon_articles.py"
+  ],
+  "intentionally_extended_initial_files": [
+    "AGENTS.md",
+    "docs/blog-editorial-review.json"
+  ],
+  "full_frontmatter_and_heading_entries_preserved": 99,
+  "article_count": 98,
+  "section_count": 1,
+  "diffusion_code_change": "Exactly the one odd-width padding line; all other fenced code identical to original.",
+  "revision": "00a50db1f60c5980c6d823a75c3b95383835ca9e",
+  "no_commit_push_deployment": true
+}

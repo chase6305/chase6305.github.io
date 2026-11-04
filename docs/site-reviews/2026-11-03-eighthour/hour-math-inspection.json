@@ -1,0 +1,22 @@
+[
+  {
+    "PDF": "diffusion-false-200-warm-letter.pdf",
+    "page": 8,
+    "PNG": "diffusion-false-200-warm-letter-math-p8.png"
+  },
+  {
+    "PDF": "diffusion-false-200-warm-letter.pdf",
+    "page": 39,
+    "PNG": "diffusion-false-200-warm-letter-math-p39.png"
+  },
+  {
+    "PDF": "diffusion-false-200-warm-letter.pdf",
+    "page": 42,
+    "PNG": "diffusion-false-200-warm-letter-math-p42.png"
+  },
+  {
+    "PDF": "seven-dof-false-200-warm-letter.pdf",
+    "page": 5,
+    "PNG": "seven-dof-math-p5.png"
+  }
+]

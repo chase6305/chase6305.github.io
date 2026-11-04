@@ -1,0 +1,22 @@
+{
+  "post": "content/posts/ai/algorithms/Astar/Astar-cpp/index.md",
+  "algorithm": "Published C++17 A* extracted unchanged except main rename",
+  "maps": 256,
+  "grid": [
+    2,
+    2,
+    2
+  ],
+  "neighborhoods": [
+    6,
+    26
+  ],
+  "start_goal_combinations_per_map": 64,
+  "cases": 32768,
+  "reachable_cases": 8304,
+  "empty_cases": 24464,
+  "oracle": "Independent Floyd\u2013Warshall; all closed lattice bounding-box corners must be free for a diagonal edge",
+  "maximum_path_cost_absolute_error": 0.0,
+  "result": "passed",
+  "scope": "Exhaustive only on 2x2x2 maps. Does not certify unbounded maps, dynamics or physical robot collision."
+}

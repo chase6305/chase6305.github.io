@@ -1,0 +1,7 @@
+{
+  "articles": 95,
+  "drafts": 0,
+  "topics": 11,
+  "metadata_bytes": 60755,
+  "tests": "normalization, literal/AND matching, sorting, immutability, URL state, exact coverage passed"
+}

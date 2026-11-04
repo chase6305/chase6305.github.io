@@ -1,0 +1,189 @@
+{
+  "exports": [
+    {
+      "file": "transformer-true-100-light-a4.pdf",
+      "figures": {
+        "softmax": {
+          "caption_pages": [
+            12
+          ],
+          "svg_title_pages": [
+            12
+          ]
+        },
+        "causal": {
+          "caption_pages": [
+            14
+          ],
+          "svg_title_pages": [
+            14
+          ]
+        },
+        "mha": {
+          "caption_pages": [
+            16
+          ],
+          "svg_title_pages": [
+            16
+          ]
+        },
+        "moe": {
+          "caption_pages": [
+            44
+          ],
+          "svg_title_pages": [
+            44
+          ]
+        },
+        "scoring": {
+          "caption_pages": [
+            63
+          ],
+          "svg_title_pages": [
+            63
+          ]
+        }
+      }
+    },
+    {
+      "file": "transformer-true-200-dark-a4.pdf",
+      "figures": {
+        "softmax": {
+          "caption_pages": [
+            25
+          ],
+          "svg_title_pages": [
+            25
+          ]
+        },
+        "causal": {
+          "caption_pages": [
+            30
+          ],
+          "svg_title_pages": [
+            30
+          ]
+        },
+        "mha": {
+          "caption_pages": [
+            32
+          ],
+          "svg_title_pages": [
+            32
+          ]
+        },
+        "moe": {
+          "caption_pages": [
+            82
+          ],
+          "svg_title_pages": [
+            82
+          ]
+        },
+        "scoring": {
+          "caption_pages": [
+            119
+          ],
+          "svg_title_pages": [
+            119
+          ]
+        }
+      }
+    },
+    {
+      "file": "transformer-false-100-warm-a4.pdf",
+      "figures": {
+        "softmax": {
+          "caption_pages": [
+            12
+          ],
+          "svg_title_pages": [
+            12
+          ]
+        },
+        "causal": {
+          "caption_pages": [
+            14
+          ],
+          "svg_title_pages": [
+            14
+          ]
+        },
+        "mha": {
+          "caption_pages": [
+            16
+          ],
+          "svg_title_pages": [
+            16
+          ]
+        },
+        "moe": {
+          "caption_pages": [
+            44
+          ],
+          "svg_title_pages": [
+            44
+          ]
+        },
+        "scoring": {
+          "caption_pages": [
+            63
+          ],
+          "svg_title_pages": [
+            63
+          ]
+        }
+      }
+    },
+    {
+      "file": "transformer-false-200-warm-letter.pdf",
+      "figures": {
+        "softmax": {
+          "caption_pages": [
+            27
+          ],
+          "svg_title_pages": [
+            27
+          ]
+        },
+        "causal": {
+          "caption_pages": [
+            32
+          ],
+          "svg_title_pages": [
+            32
+          ]
+        },
+        "mha": {
+          "caption_pages": [
+            34
+          ],
+          "svg_title_pages": [
+            34
+          ]
+        },
+        "moe": {
+          "caption_pages": [
+            88
+          ],
+          "svg_title_pages": [
+            88
+          ]
+        },
+        "scoring": {
+          "caption_pages": [
+            127
+          ],
+          "svg_title_pages": [
+            127
+          ]
+        }
+      }
+    }
+  ],
+  "manual_review": {
+    "A4_100_light": "all5pagePNGs viewed",
+    "Letter_200_scripts_off_warm": "all5pagePNGs viewed",
+    "result": "No clipped labels/captions or diagram edges observed; same-page title/caption inall20pairs."
+  }
+}

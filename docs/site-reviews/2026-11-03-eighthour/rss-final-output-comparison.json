@@ -1,0 +1,20 @@
+[
+  {
+    "build": "production",
+    "before_files": 2338,
+    "after_files": 2338,
+    "added": [],
+    "removed": [],
+    "changed": [],
+    "changed_non_xml": []
+  },
+  {
+    "build": "drafts",
+    "before_files": 2351,
+    "after_files": 2351,
+    "added": [],
+    "removed": [],
+    "changed": [],
+    "changed_non_xml": []
+  }
+]

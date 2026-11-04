@@ -1,0 +1,3508 @@
+{
+  "result": "passed",
+  "blocking_findings": [],
+  "checks": [
+    {
+      "name": "initial_dirty_snapshot_has_thirty_unique_files",
+      "passed": true
+    },
+    {
+      "name": "markdown_inventory_unchanged",
+      "passed": true,
+      "entries": 99,
+      "articles": 98,
+      "section_pages": 1
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/_index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/_index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/algorithms/Astar/Astar-cpp/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/algorithms/Astar/Astar-cpp/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/algorithms/Astar/Astar-introduction/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/algorithms/Astar/Astar-introduction/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/algorithms/overview.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/algorithms/overview.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/behavior-prompting/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/behavior-prompting/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/cosmos3/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/cosmos3/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/diffusion-models/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/diffusion-models/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/distributed-training-memory/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/distributed-training-memory/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/foundations-modern-ai/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/foundations-modern-ai/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/gen-1-5/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/gen-1-5/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/gspo/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/gspo/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/gymnasium/1/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/gymnasium/1/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/internvl-3-5/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/internvl-3-5/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/jev-decision-layer/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/jev-decision-layer/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/lerobot-act/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/lerobot-act/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/light-loco-parkour/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/light-loco-parkour/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/llm-training-metrics/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/llm-training-metrics/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/molmo-motion/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/molmo-motion/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/morphmimic/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/morphmimic/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/multiview-geometry/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/multiview-geometry/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/muon-learning-rate-batch-size/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/muon-learning-rate-batch-size/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/muon-optimizer/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/muon-optimizer/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/pion-muon-vla-rlvr/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/pion-muon-vla-rlvr/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/ppo-dpo-grpo/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/ppo-dpo-grpo/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/real-time-chunking/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/real-time-chunking/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/rlhf-rlvr-rlcd/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/rlhf-rlvr-rlcd/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/rrsi/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/rrsi/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/rynnbrain/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/rynnbrain/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/stable-hand/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/stable-hand/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/supermimic/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/supermimic/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/transformer-attention/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/transformer-attention/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/video-to-data/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/video-to-data/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/vision-transformers/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/vision-transformers/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/vla-evolution/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/vla-evolution/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/vla-survey/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/vla-survey/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/vla-world-model-data/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/vla-world-model-data/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/ai/x-vla/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/ai/x-vla/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/calibration/cctag/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/calibration/cctag/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/calibration/kinematics/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/calibration/kinematics/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/calibration/model/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/calibration/model/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/calibration/opencv/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/calibration/opencv/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/calibration/zero/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/calibration/zero/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/casadi/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/casadi/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/cmake/ExternalProject_Add/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/cmake/ExternalProject_Add/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/coacd/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/coacd/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/cpp/gcc/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/cpp/gcc/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/cpp/gccs/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/cpp/gccs/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/cpp/smart-pointer/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/cpp/smart-pointer/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/cpp/std/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/cpp/std/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/cuda/gcc/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/cuda/gcc/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/cuda/warp/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/cuda/warp/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/dialout/dh/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/dialout/dh/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/dialout/udev/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/dialout/udev/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/egl/x11_warnning/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/egl/x11_warnning/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/gui/qt/jetson/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/gui/qt/jetson/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/gui/qt/pyside6/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/gui/qt/pyside6/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/gui/qt/qt5/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/gui/qt/qt5/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/isaaclab/UsdContext/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/isaaclab/UsdContext/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/linux/watch/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/linux/watch/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/meshcat/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/meshcat/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/network-protocol/c++_tcp/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/network-protocol/c++_tcp/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/network-protocol/c++_udp.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/network-protocol/c++_udp.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/network-protocol/fixed_IP.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/network-protocol/fixed_IP.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/network-protocol/tcp-udp-introduction.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/network-protocol/tcp-udp-introduction.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/nvidia/no_devices/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/nvidia/no_devices/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/open3d/introduction/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/open3d/introduction/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/opengl/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/opengl/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/pid/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/pid/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/pink/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/pink/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/planner/task-and-motion-planning/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/planner/task-and-motion-planning/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/planner/to_mpc_wbc/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/planner/to_mpc_wbc/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/process/pid/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/process/pid/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/python/f_string/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/python/f_string/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/python/py39/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/python/py39/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/python/tqdm/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/python/tqdm/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/python/version/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/python/version/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/qt/pyside6_matplotlib/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/qt/pyside6_matplotlib/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/queue/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/queue/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/rl/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/rl/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/robotics/control/impedance-control/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/robotics/control/impedance-control/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/robotics/control/robot-filters/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/robotics/control/robot-filters/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/robotics/dynamics/parameter-identification/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/robotics/dynamics/parameter-identification/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/robotics/kinematics/jacobian/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/robotics/kinematics/jacobian/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/robotics/kinematics/kinematics-introduction.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/robotics/kinematics/kinematics-introduction.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/robotics/kinematics/pinocchio/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/robotics/kinematics/pinocchio/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/robotics/kinematics/pytorch/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/robotics/kinematics/pytorch/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/robotics/workspace/whole-workspace/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/robotics/workspace/whole-workspace/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/thesis/being_0/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/thesis/being_0/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/thesis/coacd/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/thesis/coacd/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/thesis/elmp/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/thesis/elmp/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/trajectory/ruckig/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/trajectory/ruckig/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/trajectory/toppra/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/trajectory/toppra/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/unicode/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/unicode/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/vscode/debug/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/vscode/debug/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/vscode/gdm/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/vscode/gdm/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/vscode/two-env/index.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/vscode/two-env/index.md",
+      "passed": true
+    },
+    {
+      "name": "yaml_front_matter_exists:content/posts/xcb/post_2.md",
+      "passed": true
+    },
+    {
+      "name": "identity_unchanged:content/posts/xcb/post_2.md",
+      "passed": true
+    },
+    {
+      "name": "full_initial_dirty_backup_inventory",
+      "passed": true,
+      "count": 30
+    },
+    {
+      "name": "backup_SHA_matches_initial:content/posts/ai/muon-optimizer/assets/gradient-noise-reference.json",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:content/posts/ai/muon-optimizer/gradient_noise.py",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/gradient-capture-review.json",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/gradient-capture-tests.log",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/gradient-capture-torch-only.log",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/second-deployment.json",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:scripts/test_muon_noise.py",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:AGENTS.md",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:content/posts/ai/muon-learning-rate-batch-size/index.md",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:content/posts/ai/muon-optimizer/README.txt",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:content/posts/ai/muon-optimizer/index.md",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:content/posts/ai/muon-optimizer/muon-examples.zip",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/blog-editorial-review.json",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/README.md",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/check_keyboard.cjs",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/check_reading.cjs",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/export_article.cjs",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/files.json",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/full-package.log",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/hugo.log",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/keyboard.json.gz",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/native-exports.json",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/preservation.json",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/print-large.json.gz",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/reading.json.gz",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/sources.json",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/stdlib-package.log",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:docs/site-reviews/2026-11-03-muon-fivehour/validation.json",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:scripts/package_muon_examples.py",
+      "passed": true
+    },
+    {
+      "name": "backup_SHA_matches_initial:scripts/test_muon_articles.py",
+      "passed": true
+    },
+    {
+      "name": "current_initial_dirty_files_only_change_authorized_exceptions",
+      "passed": true,
+      "total": 30,
+      "unchanged": 28,
+      "exceptions": [
+        "AGENTS.md",
+        "docs/blog-editorial-review.json"
+      ]
+    },
+    {
+      "name": "record_inventory_preserved:docs/blog-editorial-review.json",
+      "passed": true
+    },
+    {
+      "name": "all_original_acceptance_checks_exactly_preserved:docs/blog-editorial-review.json",
+      "passed": true
+    },
+    {
+      "name": "record_inventory_preserved:docs/blog-second-pass.json",
+      "passed": true
+    },
+    {
+      "name": "all_original_acceptance_checks_exactly_preserved:docs/blog-second-pass.json",
+      "passed": true
+    },
+    {
+      "name": "acceptance_source_coverage_and_uniqueness",
+      "passed": true,
+      "articles": 98,
+      "unique_sources": 98
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/rynnbrain/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/internvl-3-5/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/ppo-dpo-grpo/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/gspo/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/gen-1-5/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/thesis/elmp/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/x-vla/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/real-time-chunking/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/light-loco-parkour/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/vla-world-model-data/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/lerobot-act/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/llm-training-metrics/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/vla-evolution/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/molmo-motion/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/robotics/control/robot-filters/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/jev-decision-layer/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/rlhf-rlvr-rlcd/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/vla-survey/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/foundations-modern-ai/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/vision-transformers/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/behavior-prompting/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/stable-hand/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/video-to-data/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/rrsi/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/multiview-geometry/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/supermimic/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/cosmos3/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/morphmimic/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/planner/task-and-motion-planning/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/pion-muon-vla-rlvr/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/muon-optimizer/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/muon-learning-rate-batch-size/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/algorithms/Astar/Astar-cpp/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/algorithms/Astar/Astar-introduction/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/algorithms/overview.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/diffusion-models/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/distributed-training-memory/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/gymnasium/1/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/ai/transformer-attention/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/calibration/cctag/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/calibration/kinematics/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/calibration/model/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/calibration/opencv/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/calibration/zero/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/casadi/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/cmake/ExternalProject_Add/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/coacd/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/cpp/gcc/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/cpp/gccs/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/cpp/smart-pointer/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/cpp/std/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/cuda/gcc/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/cuda/warp/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/dialout/dh/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/dialout/udev/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/egl/x11_warnning/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/gui/qt/jetson/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/gui/qt/pyside6/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/gui/qt/qt5/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/isaaclab/UsdContext/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/linux/watch/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/meshcat/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/network-protocol/c++_tcp/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/network-protocol/c++_udp.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/network-protocol/fixed_IP.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/network-protocol/tcp-udp-introduction.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/nvidia/no_devices/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/open3d/introduction/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/opengl/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/pid/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/pink/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/planner/to_mpc_wbc/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/process/pid/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/python/f_string/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/python/py39/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/python/tqdm/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/python/version/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/qt/pyside6_matplotlib/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/queue/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/rl/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/robotics/control/impedance-control/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/robotics/dynamics/parameter-identification/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/robotics/kinematics/jacobian/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/robotics/kinematics/kinematics-introduction.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/robotics/kinematics/pinocchio/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/robotics/kinematics/pytorch/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/robotics/workspace/whole-workspace/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/thesis/being_0/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/thesis/coacd/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/trajectory/ruckig/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/trajectory/toppra/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/unicode/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/vscode/debug/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/vscode/gdm/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/vscode/two-env/index.md",
+      "passed": true
+    },
+    {
+      "name": "acceptance_sections_and_all_checks_present:content/posts/xcb/post_2.md",
+      "passed": true
+    },
+    {
+      "name": "selected_table_inventory_is_five_plus_seven_unique_tables",
+      "passed": true
+    },
+    {
+      "name": "all_table_text_in_article_preserved:content/posts/ai/distributed-training-memory/index.md",
+      "passed": true
+    },
+    {
+      "name": "selected_table_new_readable_attribute:content/posts/ai/distributed-training-memory/index.md:16",
+      "passed": true
+    },
+    {
+      "name": "all_table_text_in_article_preserved:content/posts/ai/internvl-3-5/index.md",
+      "passed": true
+    },
+    {
+      "name": "selected_table_new_readable_attribute:content/posts/ai/internvl-3-5/index.md:16",
+      "passed": true
+    },
+    {
+      "name": "all_table_text_in_article_preserved:content/posts/ai/llm-training-metrics/index.md",
+      "passed": true
+    },
+    {
+      "name": "selected_table_new_readable_attribute:content/posts/ai/llm-training-metrics/index.md:10",
+      "passed": true
+    },
+    {
+      "name": "all_table_text_in_article_preserved:content/posts/ai/x-vla/index.md",
+      "passed": true
+    },
+    {
+      "name": "selected_table_new_readable_attribute:content/posts/ai/x-vla/index.md:10",
+      "passed": true
+    },
+    {
+      "name": "all_table_text_in_article_preserved:content/posts/cuda/warp/index.md",
+      "passed": true
+    },
+    {
+      "name": "selected_table_new_readable_attribute:content/posts/cuda/warp/index.md:0",
+      "passed": true
+    },
+    {
+      "name": "all_table_text_in_article_preserved:content/posts/ai/real-time-chunking/index.md",
+      "passed": true
+    },
+    {
+      "name": "selected_table_new_readable_attribute:content/posts/ai/real-time-chunking/index.md:18",
+      "passed": true
+    },
+    {
+      "name": "second_selection_exact_table_text:content/posts/ai/real-time-chunking/index.md:18",
+      "passed": true
+    },
+    {
+      "name": "all_table_text_in_article_preserved:content/posts/ai/x-vla/index.md",
+      "passed": true
+    },
+    {
+      "name": "selected_table_new_readable_attribute:content/posts/ai/x-vla/index.md:11",
+      "passed": true
+    },
+    {
+      "name": "second_selection_exact_table_text:content/posts/ai/x-vla/index.md:11",
+      "passed": true
+    },
+    {
+      "name": "all_table_text_in_article_preserved:content/posts/ai/x-vla/index.md",
+      "passed": true
+    },
+    {
+      "name": "selected_table_new_readable_attribute:content/posts/ai/x-vla/index.md:13",
+      "passed": true
+    },
+    {
+      "name": "second_selection_exact_table_text:content/posts/ai/x-vla/index.md:13",
+      "passed": true
+    },
+    {
+      "name": "all_table_text_in_article_preserved:content/posts/ai/x-vla/index.md",
+      "passed": true
+    },
+    {
+      "name": "selected_table_new_readable_attribute:content/posts/ai/x-vla/index.md:26",
+      "passed": true
+    },
+    {
+      "name": "second_selection_exact_table_text:content/posts/ai/x-vla/index.md:26",
+      "passed": true
+    },
+    {
+      "name": "all_table_text_in_article_preserved:content/posts/calibration/cctag/index.md",
+      "passed": true
+    },
+    {
+      "name": "selected_table_new_readable_attribute:content/posts/calibration/cctag/index.md:2",
+      "passed": true
+    },
+    {
+      "name": "second_selection_exact_table_text:content/posts/calibration/cctag/index.md:2",
+      "passed": true
+    },
+    {
+      "name": "all_table_text_in_article_preserved:content/posts/rl/index.md",
+      "passed": true
+    },
+    {
+      "name": "selected_table_new_readable_attribute:content/posts/rl/index.md:14",
+      "passed": true
+    },
+    {
+      "name": "second_selection_exact_table_text:content/posts/rl/index.md:14",
+      "passed": true
+    },
+    {
+      "name": "all_table_text_in_article_preserved:content/posts/robotics/kinematics/jacobian/index.md",
+      "passed": true
+    },
+    {
+      "name": "selected_table_new_readable_attribute:content/posts/robotics/kinematics/jacobian/index.md:3",
+      "passed": true
+    },
+    {
+      "name": "second_selection_exact_table_text:content/posts/robotics/kinematics/jacobian/index.md:3",
+      "passed": true
+    },
+    {
+      "name": "exact_number_of_new_readable_tables:content/posts/ai/distributed-training-memory/index.md",
+      "passed": true,
+      "added": 1
+    },
+    {
+      "name": "table_article_original_acceptance_section_exact:content/posts/ai/distributed-training-memory/index.md",
+      "passed": true
+    },
+    {
+      "name": "exact_number_of_new_readable_tables:content/posts/ai/internvl-3-5/index.md",
+      "passed": true,
+      "added": 1
+    },
+    {
+      "name": "table_article_original_acceptance_section_exact:content/posts/ai/internvl-3-5/index.md",
+      "passed": true
+    },
+    {
+      "name": "exact_number_of_new_readable_tables:content/posts/ai/llm-training-metrics/index.md",
+      "passed": true,
+      "added": 1
+    },
+    {
+      "name": "table_article_original_acceptance_section_exact:content/posts/ai/llm-training-metrics/index.md",
+      "passed": true
+    },
+    {
+      "name": "exact_number_of_new_readable_tables:content/posts/ai/x-vla/index.md",
+      "passed": true,
+      "added": 4
+    },
+    {
+      "name": "table_article_original_acceptance_section_exact:content/posts/ai/x-vla/index.md",
+      "passed": true
+    },
+    {
+      "name": "exact_number_of_new_readable_tables:content/posts/cuda/warp/index.md",
+      "passed": true,
+      "added": 1
+    },
+    {
+      "name": "table_article_original_acceptance_section_exact:content/posts/cuda/warp/index.md",
+      "passed": true
+    },
+    {
+      "name": "exact_number_of_new_readable_tables:content/posts/ai/real-time-chunking/index.md",
+      "passed": true,
+      "added": 1
+    },
+    {
+      "name": "table_article_original_acceptance_section_exact:content/posts/ai/real-time-chunking/index.md",
+      "passed": true
+    },
+    {
+      "name": "exact_number_of_new_readable_tables:content/posts/calibration/cctag/index.md",
+      "passed": true,
+      "added": 1
+    },
+    {
+      "name": "table_article_original_acceptance_section_exact:content/posts/calibration/cctag/index.md",
+      "passed": true
+    },
+    {
+      "name": "exact_number_of_new_readable_tables:content/posts/rl/index.md",
+      "passed": true,
+      "added": 1
+    },
+    {
+      "name": "table_article_original_acceptance_section_exact:content/posts/rl/index.md",
+      "passed": true
+    },
+    {
+      "name": "exact_number_of_new_readable_tables:content/posts/robotics/kinematics/jacobian/index.md",
+      "passed": true,
+      "added": 1
+    },
+    {
+      "name": "table_article_original_acceptance_section_exact:content/posts/robotics/kinematics/jacobian/index.md",
+      "passed": true
+    },
+    {
+      "name": "all_site_new_readable_attributes_are_exactly_the_twelve_selected_tables",
+      "passed": true,
+      "total_added": 12
+    },
+    {
+      "name": "generator_schedule_AST_matches_four_causal_2ms_1ms_layers",
+      "passed": true
+    },
+    {
+      "name": "independent_oracle_is_12ms_serial_9ms_overlap_1ms_exposed",
+      "passed": true
+    },
+    {
+      "name": "figure_provenance_and_generated_intervals_equal_independent_oracle",
+      "passed": true
+    },
+    {
+      "name": "current_figure_asset_matches_recorded_replacement_SHA",
+      "passed": true
+    },
+    {
+      "name": "prose_alt_and_caption_agree_on_12_9_1ms_and_scope",
+      "passed": true
+    },
+    {
+      "name": "generator_labels_use_the_same_12_9_1ms_schedule",
+      "passed": true
+    },
+    {
+      "name": "reviewed_sources_unchanged_during_audit",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "markdown_identity_entries": 99,
+    "articles": 98,
+    "initial_dirty_files": 30,
+    "initial_dirty_unchanged": 28,
+    "initial_backup_exact": 30,
+    "selected_tables": 12,
+    "affected_table_articles": 9,
+    "acceptance_sources": 98,
+    "acceptance_checks": 605,
+    "communication_ms": {
+      "serial": 12,
+      "overlap": 9,
+      "exposed": 1
+    }
+  },
+  "article_identities": [
+    {
+      "path": "content/posts/_index.md",
+      "identity": {
+        "date": [],
+        "draft": [],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/algorithms/Astar/Astar-cpp/index.md",
+      "identity": {
+        "date": [
+          "2022-06-29"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/algorithms/Astar/Astar-introduction/index.md",
+      "identity": {
+        "date": [
+          "2022-06-29"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/algorithms/overview.md",
+      "identity": {
+        "date": [
+          "2024-04-01"
+        ],
+        "draft": [
+          "true"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/behavior-prompting/index.md",
+      "identity": {
+        "date": [
+          "2026-10-13"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/cosmos3/index.md",
+      "identity": {
+        "date": [
+          "2026-10-22"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/diffusion-models/index.md",
+      "identity": {
+        "date": [
+          "2026-08-27"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/distributed-training-memory/index.md",
+      "identity": {
+        "date": [
+          "2026-08-27"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/foundations-modern-ai/index.md",
+      "identity": {
+        "date": [
+          "2026-10-10"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/gen-1-5/index.md",
+      "identity": {
+        "date": [
+          "2026-09-09"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/gspo/index.md",
+      "identity": {
+        "date": [
+          "2026-09-09"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/gymnasium/1/index.md",
+      "identity": {
+        "date": [
+          "2025-03-20"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/internvl-3-5/index.md",
+      "identity": {
+        "date": [
+          "2026-09-05"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/index.md",
+      "identity": {
+        "date": [
+          "2026-09-29"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/lerobot-act/index.md",
+      "identity": {
+        "date": [
+          "2026-09-16"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/light-loco-parkour/index.md",
+      "identity": {
+        "date": [
+          "2026-09-12"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/llm-training-metrics/index.md",
+      "identity": {
+        "date": [
+          "2026-09-17"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/molmo-motion/index.md",
+      "identity": {
+        "date": [
+          "2026-09-25T03:14:26+08:00"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/morphmimic/index.md",
+      "identity": {
+        "date": [
+          "2026-10-27"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/multiview-geometry/index.md",
+      "identity": {
+        "date": [
+          "2026-10-17"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/muon-learning-rate-batch-size/index.md",
+      "identity": {
+        "date": [
+          "2026-11-03"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/muon-optimizer/index.md",
+      "identity": {
+        "date": [
+          "2026-11-03"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/pion-muon-vla-rlvr/index.md",
+      "identity": {
+        "date": [
+          "2026-10-30"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/ppo-dpo-grpo/index.md",
+      "identity": {
+        "date": [
+          "2026-09-08"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/real-time-chunking/index.md",
+      "identity": {
+        "date": [
+          "2026-09-11"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/rlhf-rlvr-rlcd/index.md",
+      "identity": {
+        "date": [
+          "2026-10-07"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/rrsi/index.md",
+      "identity": {
+        "date": [
+          "2026-10-15"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/rynnbrain/index.md",
+      "identity": {
+        "date": [
+          "2026-09-05"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/stable-hand/index.md",
+      "identity": {
+        "date": [
+          "2026-10-13"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/supermimic/index.md",
+      "identity": {
+        "date": [
+          "2026-10-22"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/transformer-attention/index.md",
+      "identity": {
+        "date": [
+          "2026-08-27"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/video-to-data/index.md",
+      "identity": {
+        "date": [
+          "2026-10-15"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/vision-transformers/index.md",
+      "identity": {
+        "date": [
+          "2026-10-12"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/vla-evolution/index.md",
+      "identity": {
+        "date": [
+          "2026-09-19"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/vla-survey/index.md",
+      "identity": {
+        "date": [
+          "2026-10-05"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/vla-world-model-data/index.md",
+      "identity": {
+        "date": [
+          "2026-09-14"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/ai/x-vla/index.md",
+      "identity": {
+        "date": [
+          "2026-09-11"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/calibration/cctag/index.md",
+      "identity": {
+        "date": [
+          "2025-02-27"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/calibration/kinematics/index.md",
+      "identity": {
+        "date": [
+          "2025-04-01"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/calibration/model/index.md",
+      "identity": {
+        "date": [
+          "2025-02-26"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/calibration/opencv/index.md",
+      "identity": {
+        "date": [
+          "2025-02-27"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/calibration/zero/index.md",
+      "identity": {
+        "date": [
+          "2025-04-01"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/casadi/index.md",
+      "identity": {
+        "date": [
+          "2025-04-03"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/cmake/ExternalProject_Add/index.md",
+      "identity": {
+        "date": [
+          "2025-04-08"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/coacd/index.md",
+      "identity": {
+        "date": [
+          "2025-04-03"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/cpp/gcc/index.md",
+      "identity": {
+        "date": [
+          "2025-02-08"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/cpp/gccs/index.md",
+      "identity": {
+        "date": [
+          "2025-03-07"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/cpp/smart-pointer/index.md",
+      "identity": {
+        "date": [
+          "2025-01-27"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/cpp/std/index.md",
+      "identity": {
+        "date": [
+          "2026-02-06"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/cuda/gcc/index.md",
+      "identity": {
+        "date": [
+          "2025-03-28"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/cuda/warp/index.md",
+      "identity": {
+        "date": [
+          "2025-04-11"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/dialout/dh/index.md",
+      "identity": {
+        "date": [
+          "2025-03-01"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/dialout/udev/index.md",
+      "identity": {
+        "date": [
+          "2025-03-07"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/egl/x11_warnning/index.md",
+      "identity": {
+        "date": [
+          "2025-02-27"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/gui/qt/jetson/index.md",
+      "identity": {
+        "date": [
+          "2025-03-06"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/gui/qt/pyside6/index.md",
+      "identity": {
+        "date": [
+          "2022-07-01"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/gui/qt/qt5/index.md",
+      "identity": {
+        "date": [
+          "2025-02-28"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/isaaclab/UsdContext/index.md",
+      "identity": {
+        "date": [
+          "2025-11-17"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/linux/watch/index.md",
+      "identity": {
+        "date": [
+          "2025-03-07"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/meshcat/index.md",
+      "identity": {
+        "date": [
+          "2025-04-01"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/network-protocol/c++_tcp/index.md",
+      "identity": {
+        "date": [
+          "2021-08-08"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/network-protocol/c++_udp.md",
+      "identity": {
+        "date": [
+          "2021-08-08"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/network-protocol/fixed_IP.md",
+      "identity": {
+        "date": [
+          "2025-02-21"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/network-protocol/tcp-udp-introduction.md",
+      "identity": {
+        "date": [
+          "2024-04-01"
+        ],
+        "draft": [
+          "true"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/nvidia/no_devices/index.md",
+      "identity": {
+        "date": [
+          "2025-11-15"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/open3d/introduction/index.md",
+      "identity": {
+        "date": [
+          "2025-03-04"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/opengl/index.md",
+      "identity": {
+        "date": [
+          "2020-10-06"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/pid/index.md",
+      "identity": {
+        "date": [
+          "2025-04-24"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/pink/index.md",
+      "identity": {
+        "date": [
+          "2026-02-14"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/planner/task-and-motion-planning/index.md",
+      "identity": {
+        "date": [
+          "2026-10-29"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/planner/to_mpc_wbc/index.md",
+      "identity": {
+        "date": [
+          "2025-05-06"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/process/pid/index.md",
+      "identity": {
+        "date": [
+          "2025-02-26"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/python/f_string/index.md",
+      "identity": {
+        "date": [
+          "2025-05-03"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/python/py39/index.md",
+      "identity": {
+        "date": [
+          "2025-02-28"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/python/tqdm/index.md",
+      "identity": {
+        "date": [
+          "2025-03-07"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/python/version/index.md",
+      "identity": {
+        "date": [
+          "2025-03-13"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/qt/pyside6_matplotlib/index.md",
+      "identity": {
+        "date": [
+          "2025-08-04"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/queue/index.md",
+      "identity": {
+        "date": [
+          "2025-04-01"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/rl/index.md",
+      "identity": {
+        "date": [
+          "2025-12-08"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/robotics/control/impedance-control/index.md",
+      "identity": {
+        "date": [
+          "2026-09-03"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/robotics/control/robot-filters/index.md",
+      "identity": {
+        "date": [
+          "2026-09-25T03:14:26+08:00"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/robotics/dynamics/parameter-identification/index.md",
+      "identity": {
+        "date": [
+          "2026-09-03"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/robotics/kinematics/jacobian/index.md",
+      "identity": {
+        "date": [
+          "2026-09-03"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/robotics/kinematics/kinematics-introduction.md",
+      "identity": {
+        "date": [
+          "2024-04-01"
+        ],
+        "draft": [
+          "true"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pinocchio/index.md",
+      "identity": {
+        "date": [
+          "2024-08-18"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/robotics/kinematics/pytorch/index.md",
+      "identity": {
+        "date": [
+          "2025-02-26"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/robotics/kinematics/seven-dof-kinematics/index.md",
+      "identity": {
+        "date": [
+          "2025-01-13"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/robotics/kinematics/six-dof-kinematics/index.md",
+      "identity": {
+        "date": [
+          "2021-12-07"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/robotics/workspace/whole-workspace/index.md",
+      "identity": {
+        "date": [
+          "2025-02-27"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/thesis/being_0/index.md",
+      "identity": {
+        "date": [
+          "2025-04-02"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/thesis/coacd/index.md",
+      "identity": {
+        "date": [
+          "2025-04-02"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/thesis/elmp/index.md",
+      "identity": {
+        "date": [
+          "2026-09-10"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/trajectory/ruckig/index.md",
+      "identity": {
+        "date": [
+          "2025-03-15"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/trajectory/toppra/index.md",
+      "identity": {
+        "date": [
+          "2025-03-16"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/unicode/index.md",
+      "identity": {
+        "date": [
+          "2025-02-26"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/vscode/debug/index.md",
+      "identity": {
+        "date": [
+          "2026-01-27"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/vscode/gdm/index.md",
+      "identity": {
+        "date": [
+          "2025-03-11"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/vscode/two-env/index.md",
+      "identity": {
+        "date": [
+          "2025-02-07"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    },
+    {
+      "path": "content/posts/xcb/post_2.md",
+      "identity": {
+        "date": [
+          "2021-08-07"
+        ],
+        "draft": [
+          "false"
+        ],
+        "url": [],
+        "slug": [],
+        "aliases": []
+      }
+    }
+  ],
+  "initial_dirty_files": [
+    {
+      "path": "content/posts/ai/muon-optimizer/assets/gradient-noise-reference.json",
+      "initial_sha256": "66d4148bc616c19039e43858095b8c573c146f6ffae7a15b15e2ba6958f2450e",
+      "backup_sha256": "66d4148bc616c19039e43858095b8c573c146f6ffae7a15b15e2ba6958f2450e",
+      "current_sha256": "66d4148bc616c19039e43858095b8c573c146f6ffae7a15b15e2ba6958f2450e",
+      "unchanged": true
+    },
+    {
+      "path": "content/posts/ai/muon-optimizer/gradient_noise.py",
+      "initial_sha256": "a80d2daad6ed6ad06fc4ce01622a9fa9937593484fdba6b1838e190d5693209a",
+      "backup_sha256": "a80d2daad6ed6ad06fc4ce01622a9fa9937593484fdba6b1838e190d5693209a",
+      "current_sha256": "a80d2daad6ed6ad06fc4ce01622a9fa9937593484fdba6b1838e190d5693209a",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/gradient-capture-review.json",
+      "initial_sha256": "011f55a3842085682baed5b5f43934cb5c2f3308816b666f1a88442c9abda09f",
+      "backup_sha256": "011f55a3842085682baed5b5f43934cb5c2f3308816b666f1a88442c9abda09f",
+      "current_sha256": "011f55a3842085682baed5b5f43934cb5c2f3308816b666f1a88442c9abda09f",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/gradient-capture-tests.log",
+      "initial_sha256": "4505d9017724fb806d95d6a6534f307f52c19b89fcaa95fda91fcd81b465ffb4",
+      "backup_sha256": "4505d9017724fb806d95d6a6534f307f52c19b89fcaa95fda91fcd81b465ffb4",
+      "current_sha256": "4505d9017724fb806d95d6a6534f307f52c19b89fcaa95fda91fcd81b465ffb4",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/gradient-capture-torch-only.log",
+      "initial_sha256": "71800ae2212c5d1db53d090ad8ad4459a7d01ee47d1643403906a75e9290613f",
+      "backup_sha256": "71800ae2212c5d1db53d090ad8ad4459a7d01ee47d1643403906a75e9290613f",
+      "current_sha256": "71800ae2212c5d1db53d090ad8ad4459a7d01ee47d1643403906a75e9290613f",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/second-deployment.json",
+      "initial_sha256": "3055c99c76162774ccc097939f6bb15f60ff39e0cbcd4522d495987b9a7622ed",
+      "backup_sha256": "3055c99c76162774ccc097939f6bb15f60ff39e0cbcd4522d495987b9a7622ed",
+      "current_sha256": "3055c99c76162774ccc097939f6bb15f60ff39e0cbcd4522d495987b9a7622ed",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/test_muon_noise.py",
+      "initial_sha256": "64538dbe787d168921047272f66a685ed57dbaa9ef7c61c34696282d1c1fd837",
+      "backup_sha256": "64538dbe787d168921047272f66a685ed57dbaa9ef7c61c34696282d1c1fd837",
+      "current_sha256": "64538dbe787d168921047272f66a685ed57dbaa9ef7c61c34696282d1c1fd837",
+      "unchanged": true
+    },
+    {
+      "path": "AGENTS.md",
+      "initial_sha256": "79c8c85821905278f0a5d827491bd1170ee4eb29b977b056cbe84d1cfa45ed02",
+      "backup_sha256": "79c8c85821905278f0a5d827491bd1170ee4eb29b977b056cbe84d1cfa45ed02",
+      "current_sha256": "a8bb16fc7671bba4a65a371947be7c6af7c5b64ba92e2b207640b32970d0ce64",
+      "unchanged": false
+    },
+    {
+      "path": "content/posts/ai/muon-learning-rate-batch-size/index.md",
+      "initial_sha256": "643a607ddce06d0d81b7ce1de023962a5dc9c2772923f949515b8333b060e557",
+      "backup_sha256": "643a607ddce06d0d81b7ce1de023962a5dc9c2772923f949515b8333b060e557",
+      "current_sha256": "643a607ddce06d0d81b7ce1de023962a5dc9c2772923f949515b8333b060e557",
+      "unchanged": true
+    },
+    {
+      "path": "content/posts/ai/muon-optimizer/README.txt",
+      "initial_sha256": "bfc9791991a829cd9ac4b19712b26a5752058687f5a1bccf080ed184a361fc05",
+      "backup_sha256": "bfc9791991a829cd9ac4b19712b26a5752058687f5a1bccf080ed184a361fc05",
+      "current_sha256": "bfc9791991a829cd9ac4b19712b26a5752058687f5a1bccf080ed184a361fc05",
+      "unchanged": true
+    },
+    {
+      "path": "content/posts/ai/muon-optimizer/index.md",
+      "initial_sha256": "862ca09bb929c8b9b10ad81d90f124c2b677cf80a206a0693e814dad06391928",
+      "backup_sha256": "862ca09bb929c8b9b10ad81d90f124c2b677cf80a206a0693e814dad06391928",
+      "current_sha256": "862ca09bb929c8b9b10ad81d90f124c2b677cf80a206a0693e814dad06391928",
+      "unchanged": true
+    },
+    {
+      "path": "content/posts/ai/muon-optimizer/muon-examples.zip",
+      "initial_sha256": "e7d304b09e8c3434d0ff0964d5295e891cad3cf4c4df14ff03342a0dd670af9b",
+      "backup_sha256": "e7d304b09e8c3434d0ff0964d5295e891cad3cf4c4df14ff03342a0dd670af9b",
+      "current_sha256": "e7d304b09e8c3434d0ff0964d5295e891cad3cf4c4df14ff03342a0dd670af9b",
+      "unchanged": true
+    },
+    {
+      "path": "docs/blog-editorial-review.json",
+      "initial_sha256": "bef04c184eddc4b65418a70c794db2b2466a8f1d7ed9a30bc765a22213eee6f1",
+      "backup_sha256": "bef04c184eddc4b65418a70c794db2b2466a8f1d7ed9a30bc765a22213eee6f1",
+      "current_sha256": "f6fdcaafd27e53a4c11ecd61d80f31f5e9908d63be92a43a605141b3f8434bb1",
+      "unchanged": false
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/README.md",
+      "initial_sha256": "5fff329999f6d1f0b5512d3fcaa802483fb7708fd06f07ccb0f4eaf9d99848be",
+      "backup_sha256": "5fff329999f6d1f0b5512d3fcaa802483fb7708fd06f07ccb0f4eaf9d99848be",
+      "current_sha256": "5fff329999f6d1f0b5512d3fcaa802483fb7708fd06f07ccb0f4eaf9d99848be",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/check_keyboard.cjs",
+      "initial_sha256": "754952f8dd66bbc02e486b28906faabbf1172e9da4bb3e830299234fb13e3d3a",
+      "backup_sha256": "754952f8dd66bbc02e486b28906faabbf1172e9da4bb3e830299234fb13e3d3a",
+      "current_sha256": "754952f8dd66bbc02e486b28906faabbf1172e9da4bb3e830299234fb13e3d3a",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/check_reading.cjs",
+      "initial_sha256": "f5a6ac97b2043a0a0251baa1256ed2e29b9dcbbb457d0696ae06817579f2c1d3",
+      "backup_sha256": "f5a6ac97b2043a0a0251baa1256ed2e29b9dcbbb457d0696ae06817579f2c1d3",
+      "current_sha256": "f5a6ac97b2043a0a0251baa1256ed2e29b9dcbbb457d0696ae06817579f2c1d3",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/export_article.cjs",
+      "initial_sha256": "04d5765d11d607d5ac99984d7484153c2226469be13865274fbd1fa617404d76",
+      "backup_sha256": "04d5765d11d607d5ac99984d7484153c2226469be13865274fbd1fa617404d76",
+      "current_sha256": "04d5765d11d607d5ac99984d7484153c2226469be13865274fbd1fa617404d76",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/files.json",
+      "initial_sha256": "02652df7bd023f22ba60cef81659347c87a772aeb56599012668bb66c9f605a1",
+      "backup_sha256": "02652df7bd023f22ba60cef81659347c87a772aeb56599012668bb66c9f605a1",
+      "current_sha256": "02652df7bd023f22ba60cef81659347c87a772aeb56599012668bb66c9f605a1",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/full-package.log",
+      "initial_sha256": "a913105ebaed114b86b5fb90e17df1dbcbb58e4c3567bcb00bb662e195277d91",
+      "backup_sha256": "a913105ebaed114b86b5fb90e17df1dbcbb58e4c3567bcb00bb662e195277d91",
+      "current_sha256": "a913105ebaed114b86b5fb90e17df1dbcbb58e4c3567bcb00bb662e195277d91",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/hugo.log",
+      "initial_sha256": "230133a0dd59507ec67319bc0356f170b95261bec04ea25dd99b209290df6f47",
+      "backup_sha256": "230133a0dd59507ec67319bc0356f170b95261bec04ea25dd99b209290df6f47",
+      "current_sha256": "230133a0dd59507ec67319bc0356f170b95261bec04ea25dd99b209290df6f47",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/keyboard.json.gz",
+      "initial_sha256": "28165b7a76f3249a4948f3897f18dd086c3a2f5d3f680b5260c0699e6a68787d",
+      "backup_sha256": "28165b7a76f3249a4948f3897f18dd086c3a2f5d3f680b5260c0699e6a68787d",
+      "current_sha256": "28165b7a76f3249a4948f3897f18dd086c3a2f5d3f680b5260c0699e6a68787d",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/native-exports.json",
+      "initial_sha256": "74189a81b14c185967a72d647402839dd205e5f6d96c6e2ea9d6c69dda25d6a7",
+      "backup_sha256": "74189a81b14c185967a72d647402839dd205e5f6d96c6e2ea9d6c69dda25d6a7",
+      "current_sha256": "74189a81b14c185967a72d647402839dd205e5f6d96c6e2ea9d6c69dda25d6a7",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/preservation.json",
+      "initial_sha256": "5a3220e1f81aa69ae09e832110321a7baa8cb517be51545a2fd3f3ebb421299f",
+      "backup_sha256": "5a3220e1f81aa69ae09e832110321a7baa8cb517be51545a2fd3f3ebb421299f",
+      "current_sha256": "5a3220e1f81aa69ae09e832110321a7baa8cb517be51545a2fd3f3ebb421299f",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/print-large.json.gz",
+      "initial_sha256": "9b1d46f336420b67c76e6c5784b427863dc7410ce9894b2fd3250e74da9c8383",
+      "backup_sha256": "9b1d46f336420b67c76e6c5784b427863dc7410ce9894b2fd3250e74da9c8383",
+      "current_sha256": "9b1d46f336420b67c76e6c5784b427863dc7410ce9894b2fd3250e74da9c8383",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/reading.json.gz",
+      "initial_sha256": "16ffa3e7329284b9ad02f60b3593c0ca4856938dc41d175ba62e1abfb50286c8",
+      "backup_sha256": "16ffa3e7329284b9ad02f60b3593c0ca4856938dc41d175ba62e1abfb50286c8",
+      "current_sha256": "16ffa3e7329284b9ad02f60b3593c0ca4856938dc41d175ba62e1abfb50286c8",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/sources.json",
+      "initial_sha256": "97e80b7912be1458a792812555a65c94465b132a4d61e0678db49f3e46bfab30",
+      "backup_sha256": "97e80b7912be1458a792812555a65c94465b132a4d61e0678db49f3e46bfab30",
+      "current_sha256": "97e80b7912be1458a792812555a65c94465b132a4d61e0678db49f3e46bfab30",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/stdlib-package.log",
+      "initial_sha256": "7ac8bf9e1759914705f6430285c6571af21984e672478c74d32f7e707c68adaf",
+      "backup_sha256": "7ac8bf9e1759914705f6430285c6571af21984e672478c74d32f7e707c68adaf",
+      "current_sha256": "7ac8bf9e1759914705f6430285c6571af21984e672478c74d32f7e707c68adaf",
+      "unchanged": true
+    },
+    {
+      "path": "docs/site-reviews/2026-11-03-muon-fivehour/validation.json",
+      "initial_sha256": "14d4dc2683d708805987251897c0270f12a08441fb2ad6eb7d309eb8efad0adf",
+      "backup_sha256": "14d4dc2683d708805987251897c0270f12a08441fb2ad6eb7d309eb8efad0adf",
+      "current_sha256": "14d4dc2683d708805987251897c0270f12a08441fb2ad6eb7d309eb8efad0adf",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/package_muon_examples.py",
+      "initial_sha256": "a2d4c573a83afaa0d5ca4a2d76856dcfd2a099c92dfb3e444b8cd207f000507d",
+      "backup_sha256": "a2d4c573a83afaa0d5ca4a2d76856dcfd2a099c92dfb3e444b8cd207f000507d",
+      "current_sha256": "a2d4c573a83afaa0d5ca4a2d76856dcfd2a099c92dfb3e444b8cd207f000507d",
+      "unchanged": true
+    },
+    {
+      "path": "scripts/test_muon_articles.py",
+      "initial_sha256": "ab5dd8624adbb9064818b320a7a3b73344ddba4116798aa97f55569f5faea587",
+      "backup_sha256": "ab5dd8624adbb9064818b320a7a3b73344ddba4116798aa97f55569f5faea587",
+      "current_sha256": "ab5dd8624adbb9064818b320a7a3b73344ddba4116798aa97f55569f5faea587",
+      "unchanged": true
+    }
+  ],
+  "selected_tables": [
+    {
+      "source": "content/posts/ai/distributed-training-memory/index.md",
+      "index": 16,
+      "batch": 1,
+      "current_line": 964,
+      "header": "| 类别 | 应记录的字段 | 用来排除什么误判 |"
+    },
+    {
+      "source": "content/posts/ai/internvl-3-5/index.md",
+      "index": 16,
+      "batch": 1,
+      "current_line": 671,
+      "header": "| 路线 | 常见接口 | 输入准备 |"
+    },
+    {
+      "source": "content/posts/ai/llm-training-metrics/index.md",
+      "index": 10,
+      "batch": 1,
+      "current_line": 345,
+      "header": "| 层面 | 指标 | 解释与限制 |"
+    },
+    {
+      "source": "content/posts/ai/x-vla/index.md",
+      "index": 10,
+      "batch": 1,
+      "current_line": 402,
+      "header": "| 约定 | 六个数的顺序 | 本次核对到的代码路径 |"
+    },
+    {
+      "source": "content/posts/cuda/warp/index.md",
+      "index": 0,
+      "batch": 1,
+      "current_line": 346,
+      "header": "| **功能**                | **API/语法**                         | **说明**                         |"
+    },
+    {
+      "source": "content/posts/ai/real-time-chunking/index.md",
+      "index": 18,
+      "batch": 2,
+      "current_line": 937,
+      "header": "| 数据 | 表示什么 | 对 RTC 的作用 |"
+    },
+    {
+      "source": "content/posts/ai/x-vla/index.md",
+      "index": 11,
+      "batch": 2,
+      "current_line": 482,
+      "header": "| 发生变化的位置 | 为什么还需要单独处理 |"
+    },
+    {
+      "source": "content/posts/ai/x-vla/index.md",
+      "index": 13,
+      "batch": 2,
+      "current_line": 573,
+      "header": "| 层次 | X-VLA 接入时需要核对的内容 |"
+    },
+    {
+      "source": "content/posts/ai/x-vla/index.md",
+      "index": 26,
+      "batch": 2,
+      "current_line": 1063,
+      "header": "| 记录项 | 最小内容 | 可以排除的混淆 |"
+    },
+    {
+      "source": "content/posts/calibration/cctag/index.md",
+      "index": 2,
+      "batch": 2,
+      "current_line": 78,
+      "header": "| 输出阶段 | 建议保留的信息 | 下一步能做什么 |"
+    },
+    {
+      "source": "content/posts/rl/index.md",
+      "index": 14,
+      "batch": 2,
+      "current_line": 1255,
+      "header": "| 问题现象 | 可能原因 | 解决方案 |"
+    },
+    {
+      "source": "content/posts/robotics/kinematics/jacobian/index.md",
+      "index": 3,
+      "batch": 2,
+      "current_line": 298,
+      "header": "| 用途 | 典型关系 | 说明 |"
+    }
+  ],
+  "independent_stream_oracle": {
+    "Serial": {
+      "rows": [
+        {
+          "layer": 4,
+          "compute": [
+            0,
+            2
+          ],
+          "communication": [
+            2,
+            3
+          ]
+        },
+        {
+          "layer": 3,
+          "compute": [
+            3,
+            5
+          ],
+          "communication": [
+            5,
+            6
+          ]
+        },
+        {
+          "layer": 2,
+          "compute": [
+            6,
+            8
+          ],
+          "communication": [
+            8,
+            9
+          ]
+        },
+        {
+          "layer": 1,
+          "compute": [
+            9,
+            11
+          ],
+          "communication": [
+            11,
+            12
+          ]
+        }
+      ],
+      "finish_ms": 12,
+      "last_compute_ms": 11,
+      "communication_after_compute_ms": 1
+    },
+    "Overlap": {
+      "rows": [
+        {
+          "layer": 4,
+          "compute": [
+            0,
+            2
+          ],
+          "communication": [
+            2,
+            3
+          ]
+        },
+        {
+          "layer": 3,
+          "compute": [
+            2,
+            4
+          ],
+          "communication": [
+            4,
+            5
+          ]
+        },
+        {
+          "layer": 2,
+          "compute": [
+            4,
+            6
+          ],
+          "communication": [
+            6,
+            7
+          ]
+        },
+        {
+          "layer": 1,
+          "compute": [
+            6,
+            8
+          ],
+          "communication": [
+            8,
+            9
+          ]
+        }
+      ],
+      "finish_ms": 9,
+      "last_compute_ms": 8,
+      "communication_after_compute_ms": 1
+    }
+  },
+  "source_sha256": {
+    "content/posts/_index.md": "8a6de46776039ee6c533995ce15ac517c0bfc5a63524b6d4d4825b494515742a",
+    "content/posts/ai/algorithms/Astar/Astar-cpp/index.md": "d033bc678049523be0bb667f8a2b0c6d42f66127b701ee0a006521b16ffe0194",
+    "content/posts/ai/algorithms/Astar/Astar-introduction/index.md": "32309cc4c10a9da1923b20c3e743d7d58c035398657aa8c31d76cf7a84c50d5c",
+    "content/posts/ai/algorithms/overview.md": "3adfe1edaeaf6fa75a39393886fea16dcc5009a5e4563dcb18418610b3fda02e",
+    "content/posts/ai/behavior-prompting/index.md": "66e50bdbecac6c5203aa5081617df78e52b3fe45f6d214bdb0bc740d144e4951",
+    "content/posts/ai/cosmos3/index.md": "651f1d7064792f311ad4f19c1e463fce62015fa9e7c306c7b601041f35fa9808",
+    "content/posts/ai/diffusion-models/index.md": "9cd7e97a2cbcc68d289f79362b3fd9c434a1c282b808a9ef3ad7d219aed22785",
+    "content/posts/ai/distributed-training-memory/index.md": "f3ca330d8f860fa59aecd370aabf8b8c06bbbf7fd4d1dd96c38bbcd7401c6447",
+    "content/posts/ai/foundations-modern-ai/index.md": "6b7e646e52ea59fccc2eb7e4c81564d1aab9670c2bc32ec64467c7262113a341",
+    "content/posts/ai/gen-1-5/index.md": "bb32ac710a8595f9bccaf2c9c2cf493476cbe8d2785c1fb528e9e86b73154b5c",
+    "content/posts/ai/gspo/index.md": "1d2cef3b571fb92f5257148b5a788b047965ac81df06a9becffa18a92b80fc21",
+    "content/posts/ai/gymnasium/1/index.md": "7466f7372698dfffc786bccc31476b39e176a686951f7130736c5105791b27fc",
+    "content/posts/ai/internvl-3-5/index.md": "3d135c779aa83b96f8ed464bfa8232004ccfe7b0b047e617039a31575a64c87a",
+    "content/posts/ai/jev-decision-layer/index.md": "196c803eb8d854ca3049cf81964e52bd0313fb270cd66a1078bd067f05c5c9af",
+    "content/posts/ai/lerobot-act/index.md": "a5329c9a886373fdb55edd01db188c1884b95a0b03fd3aa32ef039779f8bfe91",
+    "content/posts/ai/light-loco-parkour/index.md": "771af933df77d8cba6f85e8d8773cd1bcf52851c01ad929d2cae55fe65ec22f5",
+    "content/posts/ai/llm-training-metrics/index.md": "4333ad2547280669819824995e7863b83796d1088f64a15f73d2e60f9b5d413d",
+    "content/posts/ai/molmo-motion/index.md": "66d5cb51419512b0b13a4d02ddf1ad2fb4d7fe21983a755710a0e9bb2f044633",
+    "content/posts/ai/morphmimic/index.md": "2d6fd083b27a9028e9dec065682f0e7b4e3938b565e4c060e57bc505addd48f1",
+    "content/posts/ai/multiview-geometry/index.md": "383b9328fb9b171a8bf99cae4305f6ccc5f6b6b038ef78e7978bd2ab4995c8b9",
+    "content/posts/ai/muon-learning-rate-batch-size/index.md": "643a607ddce06d0d81b7ce1de023962a5dc9c2772923f949515b8333b060e557",
+    "content/posts/ai/muon-optimizer/index.md": "862ca09bb929c8b9b10ad81d90f124c2b677cf80a206a0693e814dad06391928",
+    "content/posts/ai/pion-muon-vla-rlvr/index.md": "568865d58aed4f8d876fb7e644251c0db261f6f5fdf19cad4be008e07bd074e7",
+    "content/posts/ai/ppo-dpo-grpo/index.md": "d0339ffeb2bf78577fa05126ec8c974f8e304fbc39734bb0b74a793f3642fd2a",
+    "content/posts/ai/real-time-chunking/index.md": "e61c747335935fb21c08217a370cb95a14f4e26bd308ebc42d4fe6dcb129e298",
+    "content/posts/ai/rlhf-rlvr-rlcd/index.md": "1c0f69727507c66fc083d52428c201a4db16838fec2bcedc1dcf8074fdd0ed88",
+    "content/posts/ai/rrsi/index.md": "7e43846fb861f9ab6de7bfb9a47a862c15a29bcab54faeda850db47fc2632832",
+    "content/posts/ai/rynnbrain/index.md": "d3fd3029a50adf9735286ef2cc238b85aa770c983b9dbd6d21bcc6b6298f01a6",
+    "content/posts/ai/stable-hand/index.md": "77f04dd412116fd1af4cee5203d2c03a5ea0b412728ef750af19671ae13b2b82",
+    "content/posts/ai/supermimic/index.md": "6993e14860b83af9eaefebcdf5b8c693f4898a4aa20892c0a8543a9f10f5d895",
+    "content/posts/ai/transformer-attention/index.md": "9a98abc1ac63735e5a8f002601ddbb62f8558d39f91d2b3a529c05befaf3e277",
+    "content/posts/ai/video-to-data/index.md": "ee91239f2f13d4c7e0e30a3c2da2146f63428bb7f86ae9bbc150370846a5936c",
+    "content/posts/ai/vision-transformers/index.md": "2807b69cd9f6ac4efd6c65e3d8ef8dbdc95199d6a283c28d4edf82918a41d3b5",
+    "content/posts/ai/vla-evolution/index.md": "58128597bd0c304149f079c5d878ba316c19f3e932bfd785c189b0f52dd329fd",
+    "content/posts/ai/vla-survey/index.md": "0f7311e68b0f42da03586fa68ac858a49556a5ab7b778ad52bdcd9991e62f784",
+    "content/posts/ai/vla-world-model-data/index.md": "35c6f60cbfb5b35fa49e6750f49d400bca079795dffb12e6753c599c96c4f54b",
+    "content/posts/ai/x-vla/index.md": "5bc887465a0974bf08c1ba2e075458e6b41997162822c067c71e776d97da3bbb",
+    "content/posts/calibration/cctag/index.md": "e19595c71ba1924be9a3018d0fdb1d766e35f46953662408adda8728209e9e98",
+    "content/posts/calibration/kinematics/index.md": "fc8e68b99ad5407cac87b32daca0f67efcd670baf640dea978333fcf18ca87db",
+    "content/posts/calibration/model/index.md": "037411d0179747928d7d6eaebd3eda19c3f0c63dc7cdcc04d9fdd3d5e0cc54d9",
+    "content/posts/calibration/opencv/index.md": "1fb396adce8f609879a7304e57d193cbb8c01808b970ca6bd42bec0a2bb8810e",
+    "content/posts/calibration/zero/index.md": "df70f51ac20e6632a2b686f3814f05b6d89a139fc2ceb66ee9e9b2edd233b584",
+    "content/posts/casadi/index.md": "4b354c8ec1938c9a7025923321d2c59d78a7aee5382f8810e0a915f385fabb97",
+    "content/posts/cmake/ExternalProject_Add/index.md": "1e62b25a97d84658ba2e8d656b3a94503a3d2547e4410cdea9f8485c42acce02",
+    "content/posts/coacd/index.md": "68b9473cb5456914ed75d4ed811d69fa5ea77683d738c1b278d17c17bdfcca2e",
+    "content/posts/cpp/gcc/index.md": "fd8e86f2b7339fb5d7f712ee455f5e174a1538a3a05b7aa680fe622db6419af3",
+    "content/posts/cpp/gccs/index.md": "85504d1e91d02b6c1f0a0b123da76c04f853d7103847378b3ebf5bd5d7bd8446",
+    "content/posts/cpp/smart-pointer/index.md": "d6029b5c98eaf4ca1db2adcdcdcc2922272ce22a9fe90c7df37e7c2c8982d636",
+    "content/posts/cpp/std/index.md": "bb03771940e1cc25b145f090b81250218a985557a98ca790a5c3cc45726a40db",
+    "content/posts/cuda/gcc/index.md": "ef2156e6bd484f75e596df1728e995c37537b6f1681cd09cc1d21e3a3f71fce9",
+    "content/posts/cuda/warp/index.md": "34ec3641ea5919b5d3b3ce74058612c7984b9fe94481242ac4ba762c0deb1351",
+    "content/posts/dialout/dh/index.md": "63c178049ae042626a2d3aa310b059f191753e398e329f622e2f89c0e7e6d315",
+    "content/posts/dialout/udev/index.md": "be3564785b2ea33342f8066becf6726be443a7992f5354ffa21d5cda7f12d96d",
+    "content/posts/egl/x11_warnning/index.md": "8f1e8e7d744f571df5fbf9ef4375d186396cd3737211c3a89f6ecb758ac7b8ba",
+    "content/posts/gui/qt/jetson/index.md": "a4fee9c0d8d7a5b0efb72b973e494d72b5facadf9dbc607a79942049b0ac2a19",
+    "content/posts/gui/qt/pyside6/index.md": "3cc728e3f1a4a89cf0034c1cd24a7f38c688dabcb9af6f4c612b60e8b66b3e97",
+    "content/posts/gui/qt/qt5/index.md": "e25ce5b1863e46f25f769b57ffbd97148eda2777a275351602cfa16bc27340ec",
+    "content/posts/isaaclab/UsdContext/index.md": "98cdd2e2e735dd5f988dd0920341b4033bdf018fa09ea823b93042b34b836d9c",
+    "content/posts/linux/watch/index.md": "af6de19438aaf0a2a80dff7b09875caeda05bb05fa066ea0dced95a30d0e4903",
+    "content/posts/meshcat/index.md": "85fea5310be5a442cc0f3fff50b63c3110619a4220bd25f250f7b76ddcc732bd",
+    "content/posts/network-protocol/c++_tcp/index.md": "7fa93b2ec0f39efba863aa3c50751feb1d8974a5fb539d17dd59991be930f028",
+    "content/posts/network-protocol/c++_udp.md": "5f46d50665372c8b2e5f276b024f308ac93e4da72dc7673181386b2933f93748",
+    "content/posts/network-protocol/fixed_IP.md": "05295ec216c8d0236383f4bd1dfb77068c489528976cb11b01c3fd122417d17f",
+    "content/posts/network-protocol/tcp-udp-introduction.md": "a41d35ddb95bd2f3f2948445cd5e9dfa96975a38bcfcbd84adb13b39e355bd05",
+    "content/posts/nvidia/no_devices/index.md": "b06344d86b823c855800198f6fb685f60854b2bcf4d76a69460f7ad33463812e",
+    "content/posts/open3d/introduction/index.md": "ff9ae5c1d0b7b73d2b08c7305780180e1c1e136f75f0ba628cc8acfa4d0ec90b",
+    "content/posts/opengl/index.md": "df2e56468936ed9b812552f8c2cc6f576dfa7204123a4ffa679f74ea327a1594",
+    "content/posts/pid/index.md": "583c4af85ec5e867932c4f9666e6164daeac8d51fec31ac4a510812403e07f6f",
+    "content/posts/pink/index.md": "7f3f4dc962ad0b5ba66dcf62608df086a93a37bfa030680361a7702705c50c78",
+    "content/posts/planner/task-and-motion-planning/index.md": "0beba972e123f5f5a7ba42184251c37ec44d88cf502308bf878cd756ae02aeaa",
+    "content/posts/planner/to_mpc_wbc/index.md": "e79b21eacf530efedf96d8750ca28df3bce6e41f61c66b21fc8c7c1d3f625ab2",
+    "content/posts/process/pid/index.md": "625f486690bf71533eabe5409c599598998193000ae80d4100831ef4ca353eca",
+    "content/posts/python/f_string/index.md": "e1c74341d82b37dd25715905124bf9db4597cf1428cee43125b024975d5d1311",
+    "content/posts/python/py39/index.md": "f8a7d8915b2afeaedb94f9f72423d218217c5d7b41ee6bb4dd2bcbbaaddfbae7",
+    "content/posts/python/tqdm/index.md": "6c969fa890ddb9cdf284e95cebec83be1c8768db6d03cac20ca0883ee6ee8ab6",
+    "content/posts/python/version/index.md": "9dab04939749ac10f99c307077ca10c52dfa00505c7f25da8087473f2417b0dd",
+    "content/posts/qt/pyside6_matplotlib/index.md": "85b887929f452aeefe6fd9019dc0358e24a23117ca17c4a9acf6a3870f063274",
+    "content/posts/queue/index.md": "f3dc120c1b10382982a9d18a4bad3cf80a2e2fea0f6ad29cb0471bbe2aeec8bc",
+    "content/posts/rl/index.md": "63735c3c7a213a3795ac5867a23dc03fe658cdd1e55cf9ee45098da6195a5c3e",
+    "content/posts/robotics/control/impedance-control/index.md": "5f5518468b04c7a23ca97507b57758314c6aa8706f2cdf237cce1617e192e5cc",
+    "content/posts/robotics/control/robot-filters/index.md": "357c240bfcfff858b8a69c04409f71288c3a814d8b0954139be7e3fee52a5c53",
+    "content/posts/robotics/dynamics/parameter-identification/index.md": "cdd689e552a81c8d47eae173e1d9306b47b8b24f0b42d6be97477818e7718e35",
+    "content/posts/robotics/kinematics/jacobian/index.md": "113d116a1f835e18dfd95afd50bf7e277b40b5c4247a47fbe78f9b327af5cfcf",
+    "content/posts/robotics/kinematics/kinematics-introduction.md": "dbac0d65a6bffe8800ebbdcad95fde5e1f7239ec5f82ad7507aeaa8c7889e62f",
+    "content/posts/robotics/kinematics/pinocchio/index.md": "ddf0da7c350359358792542978db09a902e6c2ca3fcc471f821c40406cd7503d",
+    "content/posts/robotics/kinematics/pytorch/index.md": "86c2bf04533683297fdc6a427e8db1ae88c0de8c6867c6fceceeed83edc472ca",
+    "content/posts/robotics/kinematics/seven-dof-kinematics/index.md": "47ca6d070a88cf3eb49feb04a7b8147caf5e57fe4779d53e3242913d1e0a2c18",
+    "content/posts/robotics/kinematics/six-dof-kinematics/index.md": "f46b6fbf455904e12bf5c7ffd0ad99465943e56c024f9656d232668ad232cfc2",
+    "content/posts/robotics/workspace/whole-workspace/index.md": "d21aff58a0ebae7da8876017afe8378fb5af4be39525377335f42e0c74cf41b6",
+    "content/posts/thesis/being_0/index.md": "f5b2231f62b782a436931cee341e641ad3d7ce8675e9162663a90a30db6b644a",
+    "content/posts/thesis/coacd/index.md": "877f0156164252a4577fe7d46b163c9143aed56f89b597324c277398db7d07a9",
+    "content/posts/thesis/elmp/index.md": "73dbd513681fd17b6a0855b8ca5b6bb432d2b9f0d8b0d5b03cf6abb5f5c85648",
+    "content/posts/trajectory/ruckig/index.md": "e2b42292b81d6a7d8cffd5cd5ea47d369eac7391b0548e79f8d2fd0690e6206f",
+    "content/posts/trajectory/toppra/index.md": "d9d0239bc919b440b5374ef24844936b387720797b65c205623cdc63954d85c4",
+    "content/posts/unicode/index.md": "506b1caa5332416af2b497ae46a5a672b4198d1e51707c4184ba20789df2c6e4",
+    "content/posts/vscode/debug/index.md": "dea50818d1204071cc5dff39a48c16557d865e9417d16513a4a6acca7b5266d1",
+    "content/posts/vscode/gdm/index.md": "3c43bec518fe040e8b2a789ec3997b28450c9b14a7f4a348d78d1d407083c398",
+    "content/posts/vscode/two-env/index.md": "7bcef0886b9533cac91ee402f041001af6b9d6635b111ad07270d2e5592b5d51",
+    "content/posts/xcb/post_2.md": "7fdd8286a0e0c72899293bcaf41b1c1b66bf6fcb2db6c87822f8f5952603cfba",
+    "docs/blog-editorial-review.json": "f6fdcaafd27e53a4c11ecd61d80f31f5e9908d63be92a43a605141b3f8434bb1",
+    "docs/blog-second-pass.json": "141f557a364dc4e3d09a1dbdc317ce8d67045f0c527d5d486ef22367d8125a4f",
+    "scripts/plot_distributed_overlap.py": "cd9b19b8af4806e01fafd18dc245381fc481c33040b74c0119c25e78c370f6de",
+    "docs/image-generation/distributed-overlap-20261103.json": "5e0468e43854939bcee3e3acdab466117dae7e87543598af96fa94051c077ace"
+  },
+  "scope": "Read-only static checks; no source edits, Hugo build, site-code execution or CDP."
+}

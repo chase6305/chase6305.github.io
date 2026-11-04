@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+<title id="title">Four Q-Key scoring choices followed by one masked attention pipeline</title>
+<desc id="desc">Each scoring alternative takes only a query and a key. Choose one alternative to construct scores, then apply mask, row softmax, multiply the resulting weights by Value V, and return the output. Value V enters only the weighted-value stage. Cosine requires nonzero vectors; individual query and key vectors are columns.</desc>
+<metadata id="calculation-records">{"methods": ["additive", "dot", "scaled", "cosine"], "Q": ["B", "Tq", "Dh"], "K": ["B", "Tk", "Dh"], "V": ["B", "Tk", "Dv"], "scores": ["B", "Tq", "Tk"], "weights": ["B", "Tq", "Tk"], "output": ["B", "Tq", "Dv"], "column_vectors": {"q_i": ["Dh", 1], "k_j": ["Dh", 1], "W_q": ["A", "Dh"], "W_k": ["A", "Dh"], "v_a": ["A", 1], "b": ["A", 1]}, "cosine_requires_nonzero_vectors": true}</metadata>
+<defs>
+  <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#536174"/></marker>
+  <style>
+    text { font-family: "DejaVu Sans", Arial, sans-serif; fill: #233148; }
+    .title { font-size: 32px; font-weight: 700; }
+    .subtitle { font-size: 18px; fill: #475569; }
+    .heading { font-size: 20px; font-weight: 700; }
+    .label { font-size: 18px; font-weight: 700; }
+    .value { font-family: "DejaVu Sans Mono", monospace; font-size: 21px; }
+    .small { font-size: 16px; fill: #475569; }
+    .tiny { font-size: 14px; fill: #475569; }
+    .formula { font-size: 23px; }
+    .arrow { stroke: #536174; stroke-width: 2; fill: none; stroke-linejoin: round; marker-end: url(#arrow); }
+  </style>
+</defs>
+<rect width="1600" height="1000" fill="#ffffff"/>
+<text x="48" y="48" text-anchor="start" class="title">Attention scores: choose one rule, then share one pipeline</text>
+<text x="48" y="82" text-anchor="start" class="subtitle">Column vectors q_i, k_j ∈ R^Dh · batch tensors Q and K store those vectors as rows</text>
+<rect x="48" y="128" width="340" height="300" rx="12" fill="#ffffff" stroke="#9b87bb" stroke-width="1.6" id="score-additive"/>
+<text x="218" y="161" text-anchor="middle" class="heading">Additive</text>
+<rect x="80" y="184" width="110" height="48" rx="12" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<rect x="246" y="184" width="110" height="48" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="135" y="215" text-anchor="middle" class="value" style="font-size:20px">q_i</text>
+<text x="301" y="215" text-anchor="middle" class="value" style="font-size:20px">k_j</text>
+<path d="M135,232 L135,248 L168,248 L168,266" class="arrow" data-from="Q" data-to="score-additive"/>
+<path d="M301,232 L301,248 L268,248 L268,266" class="arrow" data-from="K" data-to="score-additive"/>
+<rect x="68" y="266" width="300" height="112" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="218" y="295" text-anchor="middle" class="formula" style="font-size:21px">v_aᵀ tanh(</text>
+<text x="218" y="326" text-anchor="middle" class="formula" style="font-size:19px">W_q q_i + W_k k_j + b)</text>
+<text x="218" y="360" text-anchor="middle" class="small">e_ij ∈ R</text>
+<text x="218" y="405" text-anchor="middle" class="tiny">v_a is a learned scoring vector</text>
+<path d="M218,428 L218,470 L650,470 L650,492" class="arrow" data-from="score-additive" data-to="choose" stroke-dasharray="5 4"/>
+<rect x="436" y="128" width="340" height="300" rx="12" fill="#ffffff" stroke="#9b87bb" stroke-width="1.6" id="score-dot"/>
+<text x="606" y="161" text-anchor="middle" class="heading">Dot product</text>
+<rect x="468" y="184" width="110" height="48" rx="12" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<rect x="634" y="184" width="110" height="48" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="523" y="215" text-anchor="middle" class="value" style="font-size:20px">q_i</text>
+<text x="689" y="215" text-anchor="middle" class="value" style="font-size:20px">k_j</text>
+<path d="M523,232 L523,248 L556,248 L556,266" class="arrow" data-from="Q" data-to="score-dot"/>
+<path d="M689,232 L689,248 L656,248 L656,266" class="arrow" data-from="K" data-to="score-dot"/>
+<rect x="456" y="266" width="300" height="112" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="606" y="315" text-anchor="middle" class="formula">q_iᵀ k_j</text>
+<text x="606" y="360" text-anchor="middle" class="small">e_ij ∈ R</text>
+<path d="M606,428 L606,452 L750,452 L750,492" class="arrow" data-from="score-dot" data-to="choose" stroke-dasharray="5 4"/>
+<rect x="824" y="128" width="340" height="300" rx="12" fill="#ffffff" stroke="#9b87bb" stroke-width="1.6" id="score-scaled"/>
+<text x="994" y="161" text-anchor="middle" class="heading">Scaled dot product</text>
+<rect x="856" y="184" width="110" height="48" rx="12" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<rect x="1022" y="184" width="110" height="48" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="911" y="215" text-anchor="middle" class="value" style="font-size:20px">q_i</text>
+<text x="1077" y="215" text-anchor="middle" class="value" style="font-size:20px">k_j</text>
+<path d="M911,232 L911,248 L944,248 L944,266" class="arrow" data-from="Q" data-to="score-scaled"/>
+<path d="M1077,232 L1077,248 L1044,248 L1044,266" class="arrow" data-from="K" data-to="score-scaled"/>
+<rect x="844" y="266" width="300" height="112" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="994" y="315" text-anchor="middle" class="formula">q_iᵀ k_j / √(Dh)</text>
+<text x="994" y="360" text-anchor="middle" class="small">e_ij ∈ R</text>
+<path d="M994,428 L994,452 L850,452 L850,492" class="arrow" data-from="score-scaled" data-to="choose" stroke-dasharray="5 4"/>
+<rect x="1212" y="128" width="340" height="300" rx="12" fill="#ffffff" stroke="#9b87bb" stroke-width="1.6" id="score-cosine"/>
+<text x="1382" y="161" text-anchor="middle" class="heading">Cosine</text>
+<rect x="1244" y="184" width="110" height="48" rx="12" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6"/>
+<rect x="1410" y="184" width="110" height="48" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="1299" y="215" text-anchor="middle" class="value" style="font-size:20px">q_i</text>
+<text x="1465" y="215" text-anchor="middle" class="value" style="font-size:20px">k_j</text>
+<path d="M1299,232 L1299,248 L1332,248 L1332,266" class="arrow" data-from="Q" data-to="score-cosine"/>
+<path d="M1465,232 L1465,248 L1432,248 L1432,266" class="arrow" data-from="K" data-to="score-cosine"/>
+<rect x="1232" y="266" width="300" height="112" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6"/>
+<text x="1382" y="299" text-anchor="middle" class="formula" style="font-size:21px">q_iᵀ k_j</text>
+<path d="M1272,311 H1492" stroke="#536174" stroke-width="1.4"/>
+<text x="1382" y="338" text-anchor="middle" class="formula" style="font-size:18px">||q_i||₂ ||k_j||₂</text>
+<text x="1382" y="365" text-anchor="middle" class="tiny">e_ij ∈ R</text>
+<text x="1382" y="405" text-anchor="middle" class="tiny">q_i and k_j must both be nonzero</text>
+<path d="M1382,428 L1382,470 L950,470 L950,492" class="arrow" data-from="score-cosine" data-to="choose" stroke-dasharray="5 4"/>
+<rect x="590" y="492" width="420" height="76" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6" id="choose"/>
+<text x="800" y="523" text-anchor="middle" class="heading">Choose ONE scoring rule</text>
+<text x="800" y="551" text-anchor="middle" class="small">One alternative supplies the score matrix</text>
+<path d="M800,568 L800,625 L174,625 L174,720" class="arrow" data-from="choose" data-to="scores"/>
+<rect x="48" y="720" width="252" height="110" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6" id="scores"/>
+<text x="174" y="754" text-anchor="middle" class="heading">Scores S</text>
+<rect x="361" y="720" width="252" height="110" rx="12" fill="#fff3e5" stroke="#c49a6b" stroke-width="1.6" id="mask"/>
+<text x="487" y="754" text-anchor="middle" class="heading">Apply Mask</text>
+<rect x="674" y="720" width="252" height="110" rx="12" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6" id="softmax"/>
+<text x="800" y="754" text-anchor="middle" class="heading">row Softmax</text>
+<rect x="987" y="720" width="252" height="110" rx="12" fill="#fff3e5" stroke="#c49a6b" stroke-width="1.6" id="weighted-v"/>
+<text x="1113" y="754" text-anchor="middle" class="heading">Weighted V</text>
+<rect x="1300" y="720" width="252" height="110" rx="12" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6" id="output"/>
+<text x="1426" y="754" text-anchor="middle" class="heading">Output</text>
+<text x="174" y="790" text-anchor="middle" class="value" style="font-size:20px">[B,Tq,Tk]</text>
+<text x="174" y="816" text-anchor="middle" class="tiny">chosen scoring rule</text>
+<text x="487" y="789" text-anchor="middle" class="formula">S + M</text>
+<text x="487" y="816" text-anchor="middle" class="small">[B,Tq,Tk]</text>
+<text x="800" y="788" text-anchor="middle" class="small">A = softmax(S + M)</text>
+<text x="800" y="816" text-anchor="middle" class="tiny">normalize over Key axis Tk</text>
+<text x="1113" y="789" text-anchor="middle" class="formula">A @ V</text>
+<text x="1113" y="816" text-anchor="middle" class="small">[B,Tq,Dv]</text>
+<text x="1426" y="791" text-anchor="middle" class="value" style="font-size:20px">[B,Tq,Dv]</text>
+<text x="1426" y="816" text-anchor="middle" class="tiny">one vector per query</text>
+<path d="M300,775 L361,775" class="arrow" data-from="scores" data-to="mask"/>
+<path d="M613,775 L674,775" class="arrow" data-from="mask" data-to="softmax"/>
+<path d="M926,775 L987,775" class="arrow" data-from="softmax" data-to="weighted-v"/>
+<path d="M1239,775 L1300,775" class="arrow" data-from="weighted-v" data-to="output"/>
+<rect x="987" y="900" width="252" height="72" rx="12" fill="#fff3e5" stroke="#c49a6b" stroke-width="1.6" id="value-input"/>
+<text x="1113" y="930" text-anchor="middle" class="label">Value V</text>
+<text x="1113" y="957" text-anchor="middle" class="value" style="font-size:19px">[B,Tk,Dv]</text>
+<path d="M1113,900 L1113,830" class="arrow" data-from="V" data-to="weighted-v"/>
+<text x="48" y="901" text-anchor="start" class="small">Additive: W_q,W_k ∈ R^(A×Dh); v_a,b ∈ R^A.</text>
+<text x="48" y="932" text-anchor="start" class="small">q_i and k_j are columns. The article’s additive example uses b = 0.</text>
+<text x="48" y="963" text-anchor="start" class="small">Nonempty visible-key rows shown; mask choice and head sharing are separate choices.</text>
+</svg>

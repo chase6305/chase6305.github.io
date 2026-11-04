@@ -1,0 +1,28 @@
+{{- /* URL tokens can contain commas; only descriptor commas separate candidates. */ -}}
+{{- $remaining := .value -}}
+{{- $candidates := slice -}}
+{{- $base := .base -}}
+{{- $count := len (findRE `\S+` $remaining) -}}
+{{- if gt $count 0 -}}
+  {{- range seq $count -}}
+    {{- with findRESubmatch `(?s)^\s*(\S+)(.*)$` $remaining 1 -}}
+      {{- $reference := index (index . 0) 1 -}}
+      {{- $tail := index (index . 0) 2 -}}
+      {{- $descriptor := "" -}}
+      {{- if hasSuffix $reference "," -}}
+        {{- $reference = replaceRE `,+$` "" $reference -}}
+        {{- $remaining = $tail -}}
+      {{- else -}}
+        {{- $parts := index (findRESubmatch `(?s)^([^,]*)(?:,(.*))?$` $tail 1) 0 -}}
+        {{- $descriptor = strings.TrimSpace (index $parts 1) -}}
+        {{- $remaining = index $parts 2 -}}
+      {{- end -}}
+      {{- if $reference -}}
+        {{- $candidate := partial "blog/rss-url.html" (dict "base" $base "reference" $reference) -}}
+        {{- with $descriptor -}}{{- $candidate = printf "%s %s" $candidate . -}}{{- end -}}
+        {{- $candidates = $candidates | append $candidate -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return (delimit $candidates ", ") -}}

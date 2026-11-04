@@ -1,0 +1,36 @@
+{
+  "production": "/tmp/chase-site-eight-hour-20261103/language-production",
+  "desktop_toc_pages": 95,
+  "desktop_toc_links": 2500,
+  "toc_non_zh": [],
+  "archive_title_languages": [
+    "zh-CN"
+  ],
+  "archive_titles": 95,
+  "archive_date_languages": [
+    "en"
+  ],
+  "learning_title_and_body": [
+    "zh-CN",
+    "zh-CN"
+  ],
+  "learning_ui_language": "en",
+  "generic_template_structure_identical": true,
+  "search": [
+    {
+      "entrance": "en",
+      "entries": 98,
+      "chinese_blog_entries": 96,
+      "searchable_text_and_routes_unchanged": true,
+      "learning_path_language": "zh-CN"
+    },
+    {
+      "entrance": "zh-cn",
+      "entries": 98,
+      "chinese_blog_entries": 96,
+      "searchable_text_and_routes_unchanged": true,
+      "learning_path_language": "zh-CN"
+    }
+  ],
+  "browser_driver": "Added actual DOM language/mixed-breadcrumb/old-data fallback assertions; not run by this agent."
+}

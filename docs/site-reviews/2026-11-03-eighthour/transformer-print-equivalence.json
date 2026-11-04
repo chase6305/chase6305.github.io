@@ -1,0 +1,279 @@
+{
+  "result": "passed",
+  "confirmed_findings": [],
+  "manual_check_candidates": [],
+  "checks": [
+    {
+      "name": "display block inventory",
+      "passed": true
+    },
+    {
+      "name": "exactly eleven expected display blocks changed",
+      "passed": true,
+      "indices": [
+        2,
+        4,
+        13,
+        15,
+        18,
+        19,
+        25,
+        27,
+        30,
+        31,
+        35
+      ]
+    },
+    {
+      "name": "Q/K/V projection only layout tokens change",
+      "passed": true,
+      "index": 2
+    },
+    {
+      "name": "two sinusoidal PE equations only layout tokens change",
+      "passed": true,
+      "index": 25
+    },
+    {
+      "name": "logits and shape only layout tokens change",
+      "passed": true,
+      "index": 27
+    },
+    {
+      "name": "MoE normalized selected weights and sum only layout tokens change",
+      "passed": true,
+      "index": 30
+    },
+    {
+      "name": "quantization scale and clamp only layout tokens change",
+      "passed": true,
+      "index": 31
+    },
+    {
+      "name": "all four attention scores and labels only layout tokens change",
+      "passed": true,
+      "index": 35
+    },
+    {
+      "name": "attention contains exactly S, A, AV definitions",
+      "passed": true
+    },
+    {
+      "name": "S and A substitutions reproduce original attention",
+      "passed": true,
+      "explanation": "S is the original scaled QK transpose; A adds the same M before softmax; V remains right multiplied."
+    },
+    {
+      "name": "multihead contains exactly Z concat then output projection",
+      "passed": true
+    },
+    {
+      "name": "Z substitution reproduces original concat/projection/bias",
+      "passed": true
+    },
+    {
+      "name": "embedding contains exactly Xtok then same position sum",
+      "passed": true
+    },
+    {
+      "name": "Xtok substitution reproduces original embedding/position equation",
+      "passed": true
+    },
+    {
+      "name": "GELU contains exactly the former inner tanh argument as u(x)",
+      "passed": true
+    },
+    {
+      "name": "original GELU inner argument preserved",
+      "passed": true
+    },
+    {
+      "name": "GELU substitution arithmetic spot checks",
+      "passed": true,
+      "samples": [
+        {
+          "x": -20,
+          "original": -0.0,
+          "decomposed": -0.0
+        },
+        {
+          "x": -5,
+          "original": -2.2917961972623857e-07,
+          "decomposed": -2.2917961972623857e-07
+        },
+        {
+          "x": -1,
+          "original": -0.15880800939172324,
+          "decomposed": -0.15880800939172324
+        },
+        {
+          "x": -0.01,
+          "original": -0.0049601064401444276,
+          "decomposed": -0.0049601064401444276
+        },
+        {
+          "x": 0,
+          "original": 0.0,
+          "decomposed": 0.0
+        },
+        {
+          "x": 0.01,
+          "original": 0.005039893559855573,
+          "decomposed": 0.005039893559855573
+        },
+        {
+          "x": 1,
+          "original": 0.8411919906082768,
+          "decomposed": 0.8411919906082768
+        },
+        {
+          "x": 5,
+          "original": 4.999999770820381,
+          "decomposed": 4.999999770820381
+        },
+        {
+          "x": 20,
+          "original": 20.0,
+          "decomposed": 20.0
+        }
+      ]
+    },
+    {
+      "name": "shape continuation repeats exactly the preceding endpoint",
+      "passed": true
+    },
+    {
+      "name": "shape-chain reconnection reproduces old chain",
+      "passed": true,
+      "operations": [
+        "W1",
+        "GELU",
+        "W2"
+      ],
+      "unchanged_axes": [
+        "B",
+        "T"
+      ],
+      "feature_chain": [
+        "C",
+        "Cff",
+        "Cff",
+        "C"
+      ]
+    },
+    {
+      "name": "whole article reconstructed exactly after reverting only eleven blocks",
+      "passed": true
+    },
+    {
+      "name": "front matter byte exact",
+      "passed": true
+    },
+    {
+      "name": "all headings unchanged",
+      "passed": true,
+      "count": 100
+    },
+    {
+      "name": "all explicit anchors unchanged",
+      "passed": true,
+      "count": 2
+    },
+    {
+      "name": "46 complete fenced code blocks byte exact",
+      "passed": true,
+      "blocks": 46,
+      "delimiter_lines": 92
+    },
+    {
+      "name": "corrected FFN and SwiGLU formulas untouched",
+      "passed": true,
+      "indices": [
+        16,
+        29
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "index": 2,
+      "before_line": 249,
+      "after_line": 249,
+      "before": "$$\nQ=XW_Q^\\top+b_Q,\\qquad\nK=XW_K^\\top+b_K,\\qquad\nV=XW_V^\\top+b_V\n$$",
+      "after": "$$\n\\begin{aligned}\nQ&=XW_Q^\\top+b_Q,\\\\\nK&=XW_K^\\top+b_K,\\\\\nV&=XW_V^\\top+b_V\n\\end{aligned}\n$$"
+    },
+    {
+      "index": 4,
+      "before_line": 281,
+      "after_line": 283,
+      "before": "$$\n\\operatorname{Attention}(Q,K,V)=\n\\operatorname{softmax}\\left(\\frac{QK^\\top}{\\sqrt C}+M\\right)V\n$$",
+      "after": "$$\n\\begin{gathered}\nS=\\frac{QK^\\top}{\\sqrt C},\\\\\nA=\\operatorname{softmax}(S+M),\\\\\n\\operatorname{Attention}(Q,K,V)=AV\n\\end{gathered}\n$$"
+    },
+    {
+      "index": 13,
+      "before_line": 450,
+      "after_line": 455,
+      "before": "$$\n\\operatorname{MultiHead}(X)=\n\\operatorname{Concat}(\\operatorname{head}_1,\\ldots,\\operatorname{head}_H)W_O^\\top+b_O\n$$",
+      "after": "$$\n\\begin{gathered}\nZ=\\operatorname{Concat}(\\operatorname{head}_1,\\ldots,\\operatorname{head}_H),\\\\\n\\operatorname{MultiHead}(X)=ZW_O^\\top+b_O\n\\end{gathered}\n$$"
+    },
+    {
+      "index": 15,
+      "before_line": 653,
+      "after_line": 660,
+      "before": "$$\nX_0=\\operatorname{Embedding}(token\\_ids)+\\operatorname{Position}(0,\\ldots,T-1)\n$$",
+      "after": "$$\n\\begin{gathered}\nX_{\\mathrm{tok}}=\\operatorname{Embedding}(token\\_ids),\\\\\nX_0=X_{\\mathrm{tok}}+\\operatorname{Position}(0,\\ldots,T-1)\n\\end{gathered}\n$$"
+    },
+    {
+      "index": 18,
+      "before_line": 725,
+      "after_line": 735,
+      "before": "$$\n\\operatorname{GELU}(x)\\approx\\frac{x}{2}\n\\left(1+\\tanh\\left[\\sqrt{\\frac{2}{\\pi}}\n\\left(x+0.044715x^3\\right)\\right]\\right)\n$$",
+      "after": "$$\n\\begin{gathered}\nu(x)=\\sqrt{\\frac{2}{\\pi}}\\left(x+0.044715x^3\\right),\\\\\n\\operatorname{GELU}(x)\\approx\\frac{x}{2}\\left(1+\\tanh u(x)\\right)\n\\end{gathered}\n$$"
+    },
+    {
+      "index": 19,
+      "before_line": 752,
+      "after_line": 763,
+      "before": "$$\n[B,T,C]\\xrightarrow{W_1}[B,T,C_{ff}]\n\\xrightarrow{\\operatorname{GELU}}[B,T,C_{ff}]\n\\xrightarrow{W_2}[B,T,C]\n$$",
+      "after": "$$\n\\begin{gathered}\n[B,T,C]\\xrightarrow{W_1}[B,T,C_{ff}],\\\\\n[B,T,C_{ff}]\n\\xrightarrow{\\operatorname{GELU}}[B,T,C_{ff}]\n\\xrightarrow{W_2}[B,T,C]\n\\end{gathered}\n$$"
+    },
+    {
+      "index": 25,
+      "before_line": 901,
+      "after_line": 915,
+      "before": "$$\nPE(pos,2i)=\\sin\\left(\\frac{pos}{10000^{2i/C}}\\right),\\qquad\nPE(pos,2i+1)=\\cos\\left(\\frac{pos}{10000^{2i/C}}\\right)\n$$",
+      "after": "$$\n\\begin{gathered}\nPE(pos,2i)=\\sin\\left(\\frac{pos}{10000^{2i/C}}\\right),\\\\\nPE(pos,2i+1)=\\cos\\left(\\frac{pos}{10000^{2i/C}}\\right)\n\\end{gathered}\n$$"
+    },
+    {
+      "index": 27,
+      "before_line": 1074,
+      "after_line": 1090,
+      "before": "$$\nlogits=HW_{vocab}^\\top+b,\\qquad logits\\in\\mathbb{R}^{B\\times T\\times V_{vocab}}\n$$",
+      "after": "$$\n\\begin{gathered}\nlogits=HW_{vocab}^\\top+b,\\\\\nlogits\\in\\mathbb{R}^{B\\times T\\times V_{vocab}}\n\\end{gathered}\n$$"
+    },
+    {
+      "index": 30,
+      "before_line": 1326,
+      "after_line": 1345,
+      "before": "$$\n\\widetilde p_{t,i}=\n\\frac{e^{r_{t,i}}}{\\sum_{j\\in I_t}e^{r_{t,j}}},\\quad i\\in I_t,\n\\qquad\ny_t=\\sum_{i\\in I_t}\\widetilde p_{t,i}E_i(x_t)\n$$",
+      "after": "$$\n\\begin{gathered}\n\\widetilde p_{t,i}=\n\\frac{e^{r_{t,i}}}{\\sum_{j\\in I_t}e^{r_{t,j}}},\\quad i\\in I_t,\\\\\ny_t=\\sum_{i\\in I_t}\\widetilde p_{t,i}E_i(x_t)\n\\end{gathered}\n$$"
+    },
+    {
+      "index": 31,
+      "before_line": 1418,
+      "after_line": 1438,
+      "before": "$$\ns=\\frac{\\max|x|}{q_{max}},\\qquad\nq=\\operatorname{clamp}(\\operatorname{round}(x/s),-q_{max},q_{max})\n$$",
+      "after": "$$\n\\begin{gathered}\ns=\\frac{\\max|x|}{q_{max}},\\\\\nq=\\operatorname{clamp}(\\operatorname{round}(x/s),-q_{max},q_{max})\n\\end{gathered}\n$$"
+    },
+    {
+      "index": 35,
+      "before_line": 1925,
+      "after_line": 1947,
+      "before": "\\[\n\\begin{aligned}\n\\text{Additive:}\\quad &e_{ij}=v_a^\\top\\tanh(W_q q_i+W_k k_j+b) \\\\\n\\text{Dot Product:}\\quad &e_{ij}=q_i^\\top k_j \\\\\n\\text{Scaled Dot Product:}\\quad &e_{ij}=\\frac{q_i^\\top k_j}{\\sqrt{D_h}} \\\\\n\\text{Cosine:}\\quad &e_{ij}=\\frac{q_i^\\top k_j}{\\lVert q_i\\rVert_2\\lVert k_j\\rVert_2}\n\\end{aligned}\n\\]",
+      "after": "\\[\n\\begin{gathered}\n\\text{Additive:}\\\\\ne_{ij}=v_a^\\top\\tanh(W_q q_i+W_k k_j+b)\\\\\n\\text{Dot Product:}\\\\\ne_{ij}=q_i^\\top k_j\\\\\n\\text{Scaled Dot Product:}\\\\\ne_{ij}=\\frac{q_i^\\top k_j}{\\sqrt{D_h}}\\\\\n\\text{Cosine:}\\\\\ne_{ij}=\\frac{q_i^\\top k_j}{\\lVert q_i\\rVert_2\\lVert k_j\\rVert_2}\n\\end{gathered}\n\\]"
+    }
+  ],
+  "before_sha256": "2d5f68b5571b6aa71de5a01ce557129ae24e3c38cec6235f31ce0842426a7015",
+  "after_sha256": "d29de999d77b46d3303d31a40deddbb4f6e34c71c808f5895798896c12268bbc",
+  "scope": "Read-only static comparison and standard-library arithmetic; no source edit, build or CDP."
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "file": "check_diffusion_figures.cjs",
+    "executed_source": "diffusion-figures.cjs",
+    "executed_sha256": "d3214faf42939e708ee1003e382492997720e8c1d1583d9de693f7a561340317",
+    "portable_sha256": "7053ec9f5d17d0e702b47f99ff8994053800ec818cdccc5ebf3c0b82fc027908",
+    "change_scope": "Relative require/source paths and diagnostic counts only; assertions unchanged."
+  },
+  {
+    "file": "check_diffusion_print.cjs",
+    "executed_source": "diffusion-print.cjs",
+    "executed_sha256": "dd100160bd0ceb66b0d7e9ea6cfa6411b5132c6938081170de4dd3d81b353e8c",
+    "portable_sha256": "0aa3dae8f43248c96f1d9a4e9b5ea9d3674bfe88512a27168d68ee39065ad1c0",
+    "change_scope": "Relative require/source paths and diagnostic counts only; assertions unchanged."
+  },
+  {
+    "file": "check_kinematics_print.cjs",
+    "executed_source": "kinematics-print.cjs",
+    "executed_sha256": "1dc5ba569890bd956611b07c0987704e72ddc69c1842a3218a2c575ec03af1a9",
+    "portable_sha256": "4c7fe3abede6f113799e55bbbc344e110603e099e92ecfff89bb3ef9a5113c8f",
+    "change_scope": "Relative require/source paths and diagnostic counts only; assertions unchanged."
+  },
+  {
+    "file": "check_kinematics_reflow.cjs",
+    "executed_source": "kinematics-reflow.cjs",
+    "executed_sha256": "21b5d9f69d2f98e62cf2c8fb2c2d2318cd90560f7c0b4599f8e796b0b2fd3959",
+    "portable_sha256": "43bf8eae7e31e2110c1100eab1e1ee4295467085a7612708b6b1a8734031a5f3",
+    "change_scope": "Relative require/source paths and diagnostic counts only; assertions unchanged."
+  },
+  {
+    "file": "export_hour_native.cjs",
+    "executed_source": "export-hour-final-native.cjs",
+    "executed_sha256": "c78688d3c7959ad754ae4b053bfbf3724cb9dab4fa980d4afbb40110bbd92014",
+    "portable_sha256": "8ae2618cc5eda2077b7ae893d5a6eaa34c7c60439c4cbc7e62ee1e878fcdcdd9",
+    "change_scope": "Relative require/source paths and diagnostic counts only; assertions unchanged."
+  }
+]

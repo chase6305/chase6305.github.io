@@ -1,0 +1,355 @@
+{
+  "reviewed_utc": "2026-11-03T18:03:00.375627+00:00",
+  "mode": "read-only; no source edits; no CDP; no builds",
+  "inputs": [
+    {
+      "path": "docs/site-wide-review-2026-11-03-eighthour.json",
+      "sha256": "4c7df5eda03c1874d1a2760f7d7304dbf39953d896bc9ac8e15256705d58de45"
+    },
+    {
+      "path": "docs/image-generation/transformer-figures-20261103.json",
+      "sha256": "a9519ab09d8d20289ef227f1d67ab0e243da559c8d37ee8e2aadbf5d20132462"
+    }
+  ],
+  "required_corrections": [
+    {
+      "id": "R1",
+      "file": "docs/site-wide-review-2026-11-03-eighthour.json",
+      "fields": [
+        "changes[9].behavior",
+        "findings[5].behavior",
+        "verification[18].scope"
+      ],
+      "problem": "旧状态仍称正在生成SVG／长公式需要改／新内容仍需补测，与已通过字段矛盾。",
+      "suggestion": "将5SVG生成、11display等价分行、后续单篇补测均改为完成状态；原始问题和失败证据保留。",
+      "evidence": [
+        "transformer-replacement-review/results.json",
+        "transformer-print-reflow-review/results.json",
+        "transformer-final-figures-browser/results.json",
+        "transformer-final-reflow/results.json"
+      ]
+    },
+    {
+      "id": "R2",
+      "file": "docs/site-wide-review-2026-11-03-eighthour.json",
+      "fields": [
+        "verification[20].print200",
+        "verification[20].source"
+      ],
+      "problem": "仍称6failures/fix in progress；source指向16:35失败并停止的原suite-state。",
+      "suggestion": {
+        "print100": {
+          "layouts": 6,
+          "failures": 0,
+          "textSamples": 38802,
+          "runtimeExceptions": 0,
+          "source": "/tmp/chase-site-eight-hour-20261103/transformer-print-reflow-normal/results.json"
+        },
+        "print200": {
+          "layouts": 6,
+          "failures": 0,
+          "textSamples": 38802,
+          "runtimeExceptions": 0,
+          "source": "/tmp/chase-site-eight-hour-20261103/transformer-print-reflow-large/results.json"
+        },
+        "source_scope": "图片/重排分别引用transformer-final-figures-browser与transformer-final-reflow。原suite-state仅作为历史失败过程，不能作为最新通过状态。"
+      },
+      "evidence": [
+        "transformer-supplement-suite-state.json",
+        "transformer-print-reflow-normal/results.json",
+        "transformer-print-reflow-large/results.json",
+        "transformer-final-figures-browser/results.json",
+        "transformer-final-reflow/results.json"
+      ]
+    },
+    {
+      "id": "R3",
+      "file": "docs/site-wide-review-2026-11-03-eighthour.json",
+      "fields": [
+        "findings[3].behavior",
+        "changes[4].browser_verification.all_site_reading_reflow_print"
+      ],
+      "problem": "仍写全站重跑正在进行／running。",
+      "suggestion": "改为对应旧快照全站回归已完成；明确588print、1962reflow、1060reading来自12-table/language/DDP快照，后续Transformer另行补测。",
+      "evidence": [
+        "final-reading-suite-state.json",
+        "final-print/results.json",
+        "final-reflow/results.json",
+        "final-reading/results.json"
+      ]
+    },
+    {
+      "id": "R4",
+      "file": "docs/site-wide-review-2026-11-03-eighthour.json",
+      "fields": [
+        "verification[10].name",
+        "verification[10].build",
+        "changes[8].browser_verification",
+        "changes[10].regression",
+        "changes[6].browser_verification",
+        "verification[11].name"
+      ],
+      "problem": "current_complete_reflow／final_frontend_builds及无快照限定的全站计数容易被误读为最终source全量重跑。",
+      "suggestion": "为这些旧结果补snapshot_scope：12-table/language/DDP，before Transformer SVG/notation/display reflow and residual taxonomy/menu lang；接续列出Transformer24图布局、18重排、12打印几何布局及4nativePDF。保留原build/source路径及历史计数，不合并不同快照计数。verification[5]/[14]/[15]/[16]/[18]已有范围提示可保留。",
+      "evidence": [
+        "current-reflow/results.json",
+        "final-reading-suite-state.json",
+        "transformer-final-figures-browser/results.json",
+        "transformer-final-reflow/results.json"
+      ]
+    },
+    {
+      "id": "R5",
+      "file": "docs/site-wide-review-2026-11-03-eighthour.json",
+      "fields": [
+        "verification[21].name",
+        "verification[21].build_ms",
+        "verification[21].source",
+        "verification[21].proof"
+      ],
+      "problem": "canonical_final_build仍指16:57的after-math-final-production和旧preview URL比较；1990ms不是final2的1982ms。",
+      "suggestion": {
+        "historical_entry": "将原项重命名previous_canonical_before_residual_language，保留531文件URL替换证明。",
+        "final_entry": {
+          "canonical_production": "/tmp/chase-site-eight-hour-20261103/residual-language-production-final2",
+          "build_ms": 1982,
+          "canonical": "https://chase6305.github.io/",
+          "production_html": 324,
+          "production_local_refs": 33758,
+          "production_strict_errors": 0,
+          "draft_html": 332,
+          "draft_local_refs": 34427,
+          "draft_strict_errors": 0,
+          "assets": "27SRI/2icons/17overrides",
+          "filter": "passed"
+        },
+        "final_sources": [
+          "residual-language-fix-review/results.json",
+          "release-final-validation.json",
+          "release-final-drafts-validation.json",
+          "release-final-assets.json",
+          "release-final-filter.json"
+        ]
+      },
+      "evidence": [
+        "canonical-vs-preview-output.json",
+        "residual-language-fix-review/results.json",
+        "release-final-validation.json",
+        "release-final-drafts-validation.json"
+      ]
+    },
+    {
+      "id": "R6",
+      "file": "docs/site-wide-review-2026-11-03-eighthour.json",
+      "fields": [
+        "verification (add final interactive/native semantic records)"
+      ],
+      "problem": "目前只记录round1语义结果；最终native现已完成。",
+      "suggestion": {
+        "production": "/tmp/chase-site-eight-hour-20261103/residual-language-production-final2",
+        "axe": "4.14.0",
+        "interactive": {
+          "cases": 661,
+          "failingCases": 0,
+          "incompleteNodes": 2609,
+          "exceptions": 0,
+          "missing_id_references": 0
+        },
+        "native": {
+          "cases": 644,
+          "failingCases": 0,
+          "incompleteNodes": 0,
+          "exceptions": 0,
+          "native_scroll_cases": 3
+        },
+        "manual_scope": "2609项全部aria-valid-attr-value，折叠popup aria-controls需人工确认；独立DOM没有missing IDs，保留incomplete原始记录，不写成0。",
+        "suite_complete_utc": "2026-11-03T17:55:20.973828+00:00"
+      },
+      "evidence": [
+        "release-semantics-suite-state.json",
+        "release-semantics-interactive/results.json",
+        "release-semantics-native/results.json",
+        "release-semantic-manual-review.json"
+      ]
+    },
+    {
+      "id": "R7",
+      "file": "docs/site-wide-review-2026-11-03-eighthour.json",
+      "fields": [
+        "verification[9].name",
+        "verification[9] (add code_version_scope)",
+        "changes[3].performance_note",
+        "verification (add post-attribute-fix RSS cost phase)"
+      ],
+      "problem": "4-pair数值正确，但CURRENT是attribute-context/CDATA/tag-boundary修复之前的helper；最终helper的2-pair阶段缺失。",
+      "suggestion": {
+        "phase1": {
+          "name": "pre-attribute-fix controlled RSS cost",
+          "paired_builds": 4,
+          "old_cpu_mean": 10.85471675,
+          "current_cpu_mean": 15.009526,
+          "paired_increment_cpu_mean": 4.15480925,
+          "source": "/tmp/chase-site-eight-hour-20261103/rss-cost-controlled/summary.json"
+        },
+        "phase2": {
+          "name": "post-attribute-fix controlled RSS cost",
+          "paired_builds": 2,
+          "old_cpu_mean": 12.0097705,
+          "current_cpu_mean": 15.8225005,
+          "paired_increment_cpu_mean": 3.81273,
+          "paired_increment_wall_range": [
+            2.047486151976045,
+            6.013376869959757
+          ],
+          "source": "/tmp/chase-site-eight-hour-20261103/rss-cost-controlled/post-attribute-fix/summary.json"
+        },
+        "limits": "两个阶段主机负载及独立快照不同，4.1548到3.81273秒不证明修复加速；1.8/146/20/16.1秒只能作为历史实现的观察，不能与受控CPU比较。相同保留语料下前后2338个输出byte-identical。"
+      },
+      "evidence": [
+        "rss-cost-controlled/summary.json",
+        "rss-cost-controlled/post-attribute-fix/summary.json",
+        "rss-cost-controlled/post-attribute-fix/README.md"
+      ]
+    },
+    {
+      "id": "R8",
+      "file": "docs/site-wide-review-2026-11-03-eighthour.json",
+      "fields": [
+        "preservation_checkpoint (add current owned_source_patch)",
+        "initial_dirty_files"
+      ],
+      "problem": "需明确初始30脏文件与本任务53/59文件patch隔离；工作树相对HEAD总diff不能全部归因本任务。",
+      "suggestion": {
+        "owned_source_patch_files": 59,
+        "owned_manifest": "/tmp/chase-site-eight-hour-20261103/owned-source-changes.json",
+        "patch_sha256": "217b4f85ac867153ab2b218bf4f53728979639fe404938d152a0e61a1877f85e",
+        "scope": "source/supporting docs only; audit evidence and main progress report separate; initial dirty bytes excluded using exact backups",
+        "initial_dirty_files": 30,
+        "unchanged_initial_current_files": 28,
+        "intentionally_extended_initial_files": [
+          "AGENTS.md",
+          "docs/blog-editorial-review.json"
+        ],
+        "extended_files_baseline": "initial exact backup, not HEAD",
+        "old_53_count": "仅为最终taxonomy/menu语言补丁前的历史checkpoint；当前清单59，本审查只重新核对当前59。"
+      },
+      "evidence": [
+        "owned-source-changes.json",
+        "initial-worktree.json",
+        "final-preservation-review/review.json"
+      ]
+    },
+    {
+      "id": "R9",
+      "file": "docs/image-generation/transformer-figures-20261103.json",
+      "fields": [
+        "validation.independent_review"
+      ],
+      "problem": "末句仍写Browser/print target checks pending，与后两个字段已通过直接矛盾。",
+      "suggestion": "Actual five SVGs and five PNG previews independently reviewed;231 numerical/shape/path/text assertions passed without importing generator. Subsequent browser and print checks passed; see validation.browser and validation.print.",
+      "evidence": [
+        "transformer-replacement-review/results.json",
+        "transformer-final-figures-browser/results.json",
+        "transformer-print-reflow-large/results.json",
+        "transformer-final-native-pdfs/results.json"
+      ]
+    },
+    {
+      "id": "R10",
+      "file": "docs/site-wide-review-2026-11-03-eighthour.json",
+      "fields": [
+        "planned_end_at_utc",
+        "status (retain in_progress; add effective completion condition)"
+      ],
+      "problem": "20:24:40UTC是开始时间加8小时的原wall-clock计划；约37分钟系统中断不计任务运行，不能当实际结束时刻。",
+      "suggestion": {
+        "status": "in_progress",
+        "planned_end_at_utc": "可保留为原始wall-clock计划但标明historical，或另设original_wall_clock_plan_end_at_utc。",
+        "actual_completion_condition": "goal.timeUsedSeconds >= 28800；系统中断时间不计入。",
+        "estimated_effective_end_utc": "约2026-11-03T21:01至21:03Z，仍以goal计时为准，不由本审查标完成。"
+      },
+      "evidence": [
+        "parent latest steering; root owns live goal state"
+      ]
+    }
+  ],
+  "optional_precision": [
+    {
+      "file": "docs/image-generation/transformer-figures-20261103.json",
+      "field": "validation.generator",
+      "suggestion": "--check verifies numerical/shape/DAG invariants and repository UTF-8 synchronization; separate independent review below.",
+      "reason": "同生成器内部检查与231条外部独立核查分开表述。"
+    },
+    {
+      "file": "docs/site-wide-review-2026-11-03-eighthour.json",
+      "field": "findings[2].evidence",
+      "suggestion": "2480个含中文目录标签；完整桌面TOC核查共2500个链接。",
+      "reason": "2480为含中文标签的早期统计，2500为全部链接。"
+    }
+  ],
+  "confirmed_preserve": {
+    "status": "in_progress",
+    "identity_scope": "98 articles +1 section Markdown, not99 articles",
+    "generator_sha_match": true,
+    "artifact_checks": [
+      {
+        "asset": "content/posts/ai/transformer-attention/assets/softmax-row-calculation.svg",
+        "sha_match": true,
+        "bytes_match": true,
+        "old_sha_match": true
+      },
+      {
+        "asset": "content/posts/ai/transformer-attention/assets/multi-head-shapes.svg",
+        "sha_match": true,
+        "bytes_match": true,
+        "old_sha_match": true
+      },
+      {
+        "asset": "content/posts/ai/transformer-attention/assets/causal-mask-calculation.svg",
+        "sha_match": true,
+        "bytes_match": true,
+        "old_sha_match": true
+      },
+      {
+        "asset": "content/posts/ai/transformer-attention/assets/moe-token-routing.svg",
+        "sha_match": true,
+        "bytes_match": true,
+        "old_sha_match": true
+      },
+      {
+        "asset": "content/posts/ai/transformer-attention/assets/attention-scoring-pipeline.svg",
+        "sha_match": true,
+        "bytes_match": true,
+        "old_sha_match": true
+      }
+    ],
+    "new_svg_bytes": 70716,
+    "old_webp_bytes": 612936,
+    "file_size_scope": "no network/render performance conclusion",
+    "current_owned_patch_files": 59,
+    "owned_after_hash_mismatches": [],
+    "patch_sha_match": true,
+    "final_semantics": {
+      "interactive": {
+        "summary": {
+          "cases": 661,
+          "failingCases": 0,
+          "incompleteNodes": 2609,
+          "exceptions": 0
+        },
+        "missing_ids": 0,
+        "violation_rules": 0
+      },
+      "native": {
+        "summary": {
+          "cases": 644,
+          "failingCases": 0,
+          "incompleteNodes": 0,
+          "exceptions": 0
+        },
+        "missing_ids": 0,
+        "violation_rules": 0
+      }
+    }
+  }
+}

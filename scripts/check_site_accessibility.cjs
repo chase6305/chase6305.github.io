@@ -45,8 +45,8 @@ async function main() {
     }
     throw Error('Navigation timeout: ' + route);
   };
-  const key = async (key, code, value) => {
-    const params = {key, code, windowsVirtualKeyCode: value};
+  const key = async (key, code, value, modifiers = 0) => {
+    const params = {key, code, windowsVirtualKeyCode: value, modifiers};
     const text = key === 'Enter' ? {text: '\r', unmodifiedText: '\r'} : {};
     await cdp('Input.dispatchKeyEvent', {type: 'keyDown', ...params, ...text});
     await cdp('Input.dispatchKeyEvent', {type: 'keyUp', ...params});
@@ -191,6 +191,58 @@ async function main() {
     await key('Tab', 'Tab', 9);
     assert(await evaluate("document.querySelector('.hextra-theme-toggle').getAttribute('aria-expanded') === 'false' && !document.activeElement.closest('.hextra-theme-toggle-options')"));
     report.themeKeyboard = true;
+
+    report.themeTriggerDismissal = [];
+    for (const route of ['/', '/zh-cn/']) for (const width of [320, 1440]) for (const size of ['100%', '200%']) {
+      await cdp('Emulation.setDeviceMetricsOverride', {width, height: 1000, deviceScaleFactor: 1, mobile: width < 768});
+      await navigate(route);
+      await evaluate(`document.documentElement.style.fontSize=${JSON.stringify(size)}`);
+      if (width < 768) {
+        await evaluate("document.querySelector('.hextra-hamburger-menu').focus()");
+        await key('Enter', 'Enter', 13);
+      }
+      const selector = width < 768 ? '.hextra-sidebar-container .hextra-theme-toggle' : '.hextra-nav-container .hextra-theme-toggle';
+      await evaluate(`window.__themeTrigger=document.querySelector(${JSON.stringify(selector)});__themeTrigger.focus()`);
+      await key('ArrowDown', 'ArrowDown', 40);
+      await key('Tab', 'Tab', 9, 8);
+      assert(await evaluate("document.activeElement===__themeTrigger && __themeTrigger.getAttribute('aria-expanded')==='true'"), 'Shift+Tab returns to the open theme trigger');
+      await key('Escape', 'Escape', 27);
+      assert(await evaluate("document.activeElement===__themeTrigger && __themeTrigger.getAttribute('aria-expanded')==='false'"), 'Escape from the trigger closes its theme menu');
+      if (width < 768) assert(await evaluate("document.querySelector('.hextra-hamburger-menu').getAttribute('aria-expanded')==='true'"), 'Theme Escape must retain the mobile drawer');
+
+      for (const direction of [0, 8]) {
+        await evaluate('__themeTrigger.focus()');
+        await key('ArrowDown', 'ArrowDown', 40);
+        await key('Tab', 'Tab', 9, 8);
+        await key('Tab', 'Tab', 9, direction);
+        assert(await evaluate("__themeTrigger.getAttribute('aria-expanded')==='false' && document.activeElement!==__themeTrigger && !__themeTrigger.nextElementSibling.contains(document.activeElement)"), 'Leaving the theme trigger dismisses the menu and retains later keyboard focus');
+      }
+
+      // Focus loss can have no related target (for example, leaving the tab).
+      // A subsequent modal must own Escape even while that menu remains open.
+      await evaluate('__themeTrigger.focus()');
+      await key('ArrowDown', 'ArrowDown', 40);
+      await evaluate('document.activeElement.blur()');
+      await key('k', 'KeyK', 75, 2);
+      assert(await evaluate("document.querySelector('#hextra-search-dialog').open && __themeTrigger.getAttribute('aria-expanded')==='true'"));
+      await key('Escape', 'Escape', 27);
+      const closeDeadline = Date.now() + 5000;
+      while (await evaluate("document.querySelector('#hextra-search-dialog').open")) {
+        assert(Date.now() < closeDeadline, 'Search did not close after Escape');
+        await delay(40);
+      }
+      assert(await evaluate("__themeTrigger.getAttribute('aria-expanded')==='true'"), 'Modal Escape must leave the underlying theme menu alone');
+      await evaluate("window.__laterThemeFocus=document.querySelector('.hextra-nav-container a');__laterThemeFocus.focus()");
+      await key('Escape', 'Escape', 27);
+      assert(await evaluate("__themeTrigger.getAttribute('aria-expanded')==='false' && document.activeElement===__laterThemeFocus"), 'Dismissing a retained theme menu must preserve later reader focus');
+      if (width < 768) {
+        assert(await evaluate("document.querySelector('.hextra-hamburger-menu').getAttribute('aria-expanded')==='true'"));
+        await key('Escape', 'Escape', 27);
+        assert(await evaluate("document.querySelector('.hextra-hamburger-menu').getAttribute('aria-expanded')==='false'"));
+      }
+      report.themeTriggerDismissal.push({route, width, size, triggerEscape: true, leaveTrigger: true, modalEscape: true, laterFocus: true});
+    }
+    await evaluate("document.documentElement.style.fontSize=''");
     await cdp('Emulation.setEmulatedMedia', {features: [{name: 'prefers-color-scheme', value: 'dark'}]});
     await evaluate("document.querySelector('[data-item=system]').click()");
     assert(await evaluate("document.documentElement.classList.contains('dark')"));
@@ -285,7 +337,7 @@ async function main() {
     assert(blockedExternal.includes(externalProbe), 'External resource blocker was not exercised');
     report.sameOriginFeatures = {fonts, requests: requests.length, search: true, zoom: true, blockedExternal};
     assert.equal(exceptions.length, 0, JSON.stringify(exceptions));
-    console.log(JSON.stringify({layouts: layouts.length, yearLinks: report.yearLinks.length, mobileMenuFocus: report.mobileMenuFocus, themeKeyboard: report.themeKeyboard, systemAndCrossTabTheme: report.systemAndCrossTabTheme, blockedStorage: report.blockedStorage, keyboardZoom: report.keyboardZoom, sameOriginFeatures: report.sameOriginFeatures, exceptions: exceptions.length, output}, null, 2));
+    console.log(JSON.stringify({layouts: layouts.length, yearLinks: report.yearLinks.length, mobileMenuFocus: report.mobileMenuFocus, themeKeyboard: report.themeKeyboard, themeTriggerDismissal: report.themeTriggerDismissal.length, systemAndCrossTabTheme: report.systemAndCrossTabTheme, blockedStorage: report.blockedStorage, keyboardZoom: report.keyboardZoom, sameOriginFeatures: report.sameOriginFeatures, exceptions: exceptions.length, output}, null, 2));
   } finally {
     fs.writeFileSync(path.join(output, 'results.json'), JSON.stringify(report, null, 2));
     if (savedTheme !== undefined) {

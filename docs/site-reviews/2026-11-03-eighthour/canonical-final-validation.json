@@ -1,0 +1,26 @@
+{
+  "reviewed_posts": 98,
+  "learning_paths": 11,
+  "acceptance_checks": 605,
+  "blog_posting_schemas": 95,
+  "sharing_images": 57,
+  "shared_search_indexes": 2,
+  "classified_tags": 192,
+  "code_blocks": 645,
+  "syntax_checked_by_language": {
+    "bash": 273,
+    "json": 12,
+    "jsonc": 6,
+    "python": 217,
+    "sh": 10,
+    "xml": 1
+  },
+  "html_pages": 324,
+  "html_pages_checked": 324,
+  "local_references_checked": 33758,
+  "collection_pages_checked": 310,
+  "filter_indexes_checked": 10,
+  "errors": [],
+  "python_fragment_warnings": [],
+  "unrendered_math_warnings": []
+}

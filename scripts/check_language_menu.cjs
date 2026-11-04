@@ -6,7 +6,7 @@ const base=process.argv[2]||'http://127.0.0.1:13143',port=Number(process.argv[3]
 const output=process.argv[4]||'/tmp/chase-language-menu';
 
 (async()=>{
-  fs.mkdirSync(output,{recursive:true});const b=await connect(port),report={cases:[],nested:[],exceptions:b.exceptions};let savedTheme;
+  fs.mkdirSync(output,{recursive:true});const b=await connect(port),report={cases:[],nested:[],optionLanguages:[],exceptions:b.exceptions};let savedTheme;
   const wait=async expression=>{const end=Date.now()+15000;while(Date.now()<end){if(await b.evaluate(expression))return;await b.pause(40)}throw Error('Condition timed out: '+expression)};
   const load=async(route,width,theme)=>{
     await b.viewport(width);await b.navigate(base+route);
@@ -16,6 +16,16 @@ const output=process.argv[4]||'/tmp/chase-language-menu';
   const select=async selector=>b.evaluate(`window.__language=document.querySelector(${JSON.stringify(selector)});
     window.__options=__language.nextElementSibling;__language.focus()`);
   const closed=async()=>assert(await b.evaluate("__language.getAttribute('aria-expanded')==='false'&&__options.classList.contains('hx:hidden')"));
+  const checkOptionLanguages=async context=>{
+    const items=await b.evaluate("[...__options.querySelectorAll('[role=menuitem]')].map(item=>({text:item.textContent.trim(),language:item.lang,href:item.href,visible:item.checkVisibility()}))");
+    assert.equal(items.length,2,JSON.stringify({context,items}));
+    for(const item of items){
+      const expected={English:'en','简体中文':'zh-cn'}[item.text];
+      assert(expected,'Unexpected real language option: '+JSON.stringify(item));
+      assert.equal(item.language,expected,JSON.stringify({context,item}));assert(item.visible,JSON.stringify({context,item}));
+    }
+    report.optionLanguages.push({context,items});
+  };
   try{
     for(const route of ['/','/zh-cn/','/posts/ai/supermimic/'])for(const width of[320,768,1440])
       for(const theme of['light','dark','warm'])for(const size of['100%','200%'])for(const activation of['Enter','Space']){
@@ -23,6 +33,7 @@ const output=process.argv[4]||'/tmp/chase-language-menu';
         await select('.hextra-nav-container .hextra-language-switcher');
         await b.key(activation==='Enter'?'Enter':' ',activation,activation==='Enter'?13:32);
         assert(await b.evaluate("__language.getAttribute('aria-expanded')==='true'&&document.activeElement===__options.querySelector('[role=menuitem]')"),'Keyboard opening must focus the first item');
+        await checkOptionLanguages({route,width,theme,size,activation,location:'top'});
         await b.key('End','End',35);assert(await b.evaluate("document.activeElement===[...__options.querySelectorAll('[role=menuitem]')].at(-1)"));
         await b.key('Home','Home',36);assert(await b.evaluate("document.activeElement===__options.querySelector('[role=menuitem]')"));
         await b.key('Escape','Escape',27);await closed();assert(await b.evaluate('document.activeElement===__language'));
@@ -35,6 +46,7 @@ const output=process.argv[4]||'/tmp/chase-language-menu';
       await b.cdp('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...point});
       await b.cdp('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...point});
       assert(await b.evaluate("__language.getAttribute('aria-expanded')==='true'&&document.activeElement===__language"));
+      await checkOptionLanguages({route:'/',width,state:'pointer-escape',location:'top'});
       await b.key('Escape','Escape',27);await closed();report.nested.push({width,state:'pointer-escape',passed:true});
 
       await b.key('ArrowDown','ArrowDown',40);
@@ -54,6 +66,7 @@ const output=process.argv[4]||'/tmp/chase-language-menu';
       await load(route,320,theme);
       await b.evaluate("document.querySelector('.hextra-hamburger-menu').focus()");await b.key('Enter','Enter',13);
       await select('.hextra-sidebar-container .hextra-language-switcher');await b.key('Enter','Enter',13);
+      await checkOptionLanguages({route,width:320,theme,location:'sidebar'});
       await b.key('Escape','Escape',27);await closed();
       assert(await b.evaluate("document.querySelector('.hextra-hamburger-menu').getAttribute('aria-expanded')==='true'&&document.querySelector('#content').inert"));
       await b.key('Escape','Escape',27);
@@ -65,7 +78,7 @@ const output=process.argv[4]||'/tmp/chase-language-menu';
       controls[0].click();controls.at(-1).click()`);
     assert.equal(await b.evaluate("document.querySelectorAll('.hextra-language-switcher[aria-expanded=true]').length"),1);
     report.singleOpenMenu=true;
-    assert.equal(b.exceptions.length,0,JSON.stringify(b.exceptions));report.summary={cases:report.cases.length,nestedCases:report.nested.length,exceptions:0};console.log(JSON.stringify(report.summary));
+    assert.equal(b.exceptions.length,0,JSON.stringify(b.exceptions));report.summary={cases:report.cases.length,nestedCases:report.nested.length,optionLanguageChecks:report.optionLanguages.reduce((n,row)=>n+row.items.length,0),exceptions:0};console.log(JSON.stringify(report.summary));
   }finally{
     if(savedTheme!==undefined)await b.evaluate(savedTheme===null?"localStorage.removeItem('color-theme')":`localStorage.setItem('color-theme',${JSON.stringify(savedTheme)})`).catch(()=>{});
     fs.writeFileSync(path.join(output,'results.json'),JSON.stringify(report,null,2)+'\n');await b.close();

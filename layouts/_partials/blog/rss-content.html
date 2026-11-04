@@ -1,0 +1,52 @@
+{{- /* Resolve URL attributes in rendered RSS HTML. This is not an HTML sanitizer.
+  Preserve text/comments/CDATA and raw script/style/pre/code/textarea blocks verbatim;
+  only HTML navigation/media attributes below participate. SVG use/defs references
+  and CSS url(#...) remain local. This targets Hugo's rendered article markup. */ -}}
+{{- $base := urls.Parse .Permalink -}}
+{{- $allowed := dict "a" (slice "href") "area" (slice "href")
+  "img" (slice "src" "srcset") "source" (slice "src" "srcset")
+  "audio" (slice "src") "video" (slice "src" "poster") "track" (slice "src") -}}
+{{- /* A tag name ends at ASCII whitespace, '/' or '>'; a word boundary also
+  matches names such as script-note and would incorrectly swallow their links. */ -}}
+{{- $tagEnd := `(?:\s(?:[^"'<>]|"[^"]*"|'[^']*')*|/?)>` -}}
+{{- $protected := printf `<!\[CDATA\[.*?\]\]>|<!--.*?-->|<script%s.*?</script\s*>|<style%s.*?</style\s*>|<pre%s.*?</pre\s*>|<code%s.*?</code\s*>|<textarea%s.*?</textarea\s*>` $tagEnd $tagEnd $tagEnd $tagEnd $tagEnd -}}
+{{- $urlTag := printf `<(?:a|area|img|source|audio|video|track)%s` $tagEnd -}}
+{{- /* Keep ordinary tags (including their quoted attributes) inside the raw
+  prefix. Regex scans KaTeX spans once; templates only visit URL-bearing tags. */ -}}
+{{- $ordinary := `</?[A-Za-z][A-Za-z0-9:-]*(?:[^"'<>]|"[^"]*"|'[^']*')*>|[^<]+|<` -}}
+{{- $chunks := printf `(?is)((?:%s)*?)(%s|%s|$)` $ordinary $protected $urlTag -}}
+{{- $attributes := `\s+[^\s"'<>/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'=< >\x60]+))?|\s+|/?>|.` -}}
+{{- $assignment := `(?s)^(\s+)([^\s"'<>/=]+)(\s*=\s*)(?:"([^"]*)"|'([^']*)'|([^\s"'=<>\x60]+))$` -}}
+{{- $pieces := slice -}}
+{{- range findRESubmatch $chunks (string .Content) -}}
+  {{- $pieces = $pieces | append (index . 1) -}}
+  {{- $tag := index . 2 -}}
+  {{- with findRESubmatch `^<([A-Za-z][A-Za-z0-9:-]*)` $tag 1 -}}
+    {{- $start := index (index . 0) 0 -}}
+    {{- $names := index $allowed (lower (index (index . 0) 1)) -}}
+    {{- if $names -}}
+      {{- $parts := slice -}}
+      {{- range findRE $attributes (substr $tag (len $start)) -}}
+        {{- $attribute := . -}}
+        {{- with findRESubmatch $assignment $attribute 1 -}}
+          {{- $groups := index . 0 -}}
+          {{- $name := lower (index $groups 2) -}}
+          {{- if in $names $name -}}
+            {{- $reference := partial "blog/rss-attribute.html" (or (index $groups 4) (index $groups 5) (index $groups 6)) -}}
+            {{- $resolved := "" -}}
+            {{- if eq $name "srcset" -}}
+              {{- $resolved = partial "blog/rss-srcset.html" (dict "base" $base "value" $reference) -}}
+            {{- else -}}
+              {{- $resolved = partial "blog/rss-url.html" (dict "base" $base "reference" $reference) -}}
+            {{- end -}}
+            {{- $attribute = printf `%s%s%s"%s"` (index $groups 1) (index $groups 2) (index $groups 3) ($resolved | htmlEscape) -}}
+          {{- end -}}
+        {{- end -}}
+        {{- $parts = $parts | append $attribute -}}
+      {{- end -}}
+      {{- $tag = printf "%s%s" $start (delimit $parts "") -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $pieces = $pieces | append $tag -}}
+{{- end -}}
+{{- return (delimit $pieces "") -}}

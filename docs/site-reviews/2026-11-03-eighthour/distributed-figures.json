@@ -1,0 +1,356 @@
+{
+  "result": "retain all three; no confirmed error",
+  "confirmed_findings": [],
+  "manual_candidates": [],
+  "checks": [
+    {
+      "name": "one_rendered_reference:collective-communications.webp",
+      "passed": true,
+      "lines": [
+        474
+      ]
+    },
+    {
+      "name": "one_rendered_reference:ddp-zero-sharding.webp",
+      "passed": true,
+      "lines": [
+        640
+      ]
+    },
+    {
+      "name": "one_rendered_reference:zero-memory-comparison.png",
+      "passed": true,
+      "lines": [
+        264
+      ]
+    },
+    {
+      "name": "four_rank_SUM_matches_text",
+      "passed": true,
+      "inputs": [
+        [
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          10,
+          20,
+          30,
+          40
+        ],
+        [
+          100,
+          200,
+          300,
+          400
+        ],
+        [
+          1000,
+          2000,
+          3000,
+          4000
+        ]
+      ],
+      "result": [
+        1111,
+        2222,
+        3333,
+        4444
+      ]
+    },
+    {
+      "name": "AllReduce_owns_complete_reduction_on_every_rank",
+      "passed": true
+    },
+    {
+      "name": "ReduceScatter_owns_different_reduced_quarter_on_each_rank",
+      "passed": true,
+      "rank_shards": [
+        [
+          1111
+        ],
+        [
+          2222
+        ],
+        [
+          3333
+        ],
+        [
+          4444
+        ]
+      ]
+    },
+    {
+      "name": "rank_ordered_AllGather_reconstructs_complete_tensor",
+      "passed": true
+    },
+    {
+      "name": "ReduceScatter_then_AllGather_equals_AllReduce",
+      "passed": true
+    },
+    {
+      "name": "article_keeps_SUM_distinct_from_DDP_average",
+      "passed": true
+    },
+    {
+      "name": "four_GPU_ownership_model_matches_sharding_labels",
+      "passed": true,
+      "category_order": [
+        "P",
+        "G",
+        "O"
+      ],
+      "fractions": {
+        "DDP": [
+          "1",
+          "1",
+          "1"
+        ],
+        "ZeRO-1": [
+          "1",
+          "1",
+          "1/4"
+        ],
+        "ZeRO-2": [
+          "1",
+          "1/4",
+          "1/4"
+        ],
+        "ZeRO-3": [
+          "1/4",
+          "1/4",
+          "1/4"
+        ]
+      }
+    },
+    {
+      "name": "master_weight_belongs_to_O_in_this_ledger",
+      "passed": true,
+      "GB": {
+        "P": 2.0,
+        "G": 2.0,
+        "master": 4.0,
+        "m": 4.0,
+        "v": 4.0,
+        "O": 12.0
+      }
+    },
+    {
+      "name": "eight_GPU_plot_total:DDP",
+      "passed": true,
+      "components_GB": [
+        2.0,
+        2.0,
+        12.0
+      ],
+      "total_GB": 16.0,
+      "printed_label": "16.00 GB"
+    },
+    {
+      "name": "eight_GPU_plot_total:ZeRO-1",
+      "passed": true,
+      "components_GB": [
+        2.0,
+        2.0,
+        1.5
+      ],
+      "total_GB": 5.5,
+      "printed_label": "5.50 GB"
+    },
+    {
+      "name": "eight_GPU_plot_total:ZeRO-2",
+      "passed": true,
+      "components_GB": [
+        2.0,
+        0.25,
+        1.5
+      ],
+      "total_GB": 3.75,
+      "printed_label": "3.75 GB"
+    },
+    {
+      "name": "eight_GPU_plot_total:ZeRO-3",
+      "passed": true,
+      "components_GB": [
+        0.25,
+        0.25,
+        1.5
+      ],
+      "total_GB": 2.0,
+      "printed_label": "2.00 GB"
+    },
+    {
+      "name": "alternative_dtype_examples_do_not_change_plot_assumptions",
+      "passed": true
+    },
+    {
+      "name": "source_plot_arrays_match_independent_components",
+      "passed": true
+    },
+    {
+      "name": "resident_vs_peak_scope_is_explicit",
+      "passed": true
+    },
+    {
+      "name": "all_viewed_sources_remain_byte_identical",
+      "passed": true
+    }
+  ],
+  "sources": [
+    {
+      "path": "content/posts/ai/distributed-training-memory/index.md",
+      "sha256": "f3ca330d8f860fa59aecd370aabf8b8c06bbbf7fd4d1dd96c38bbcd7401c6447"
+    },
+    {
+      "path": "content/posts/ai/distributed-training-memory/assets/collective-communications.webp",
+      "sha256": "3e5133a48e64ea5c1ad4054c99231dbd5cecdc115979e005142e5a8e3a37a2e3"
+    },
+    {
+      "path": "content/posts/ai/distributed-training-memory/assets/ddp-zero-sharding.webp",
+      "sha256": "005ba62048c327917478b7788d110163f1bc105f42f3003a7df9638eacd85679"
+    },
+    {
+      "path": "content/posts/ai/distributed-training-memory/assets/zero-memory-comparison.png",
+      "sha256": "05415e8a86eccebbde82820d972fb84cf9c9fcae29d5fa2e25f4f01ecaceb62d"
+    }
+  ],
+  "source_reference_lines": {
+    "collective-communications.webp": [
+      474
+    ],
+    "ddp-zero-sharding.webp": [
+      640
+    ],
+    "zero-memory-comparison.png": [
+      264
+    ]
+  },
+  "collective_witness": {
+    "inputs": [
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        10,
+        20,
+        30,
+        40
+      ],
+      [
+        100,
+        200,
+        300,
+        400
+      ],
+      [
+        1000,
+        2000,
+        3000,
+        4000
+      ]
+    ],
+    "all_reduce": [
+      [
+        1111,
+        2222,
+        3333,
+        4444
+      ],
+      [
+        1111,
+        2222,
+        3333,
+        4444
+      ],
+      [
+        1111,
+        2222,
+        3333,
+        4444
+      ],
+      [
+        1111,
+        2222,
+        3333,
+        4444
+      ]
+    ],
+    "reduce_scatter": [
+      [
+        1111
+      ],
+      [
+        2222
+      ],
+      [
+        3333
+      ],
+      [
+        4444
+      ]
+    ],
+    "all_gather": [
+      1111,
+      2222,
+      3333,
+      4444
+    ]
+  },
+  "memory_components_GB": {
+    "DDP": [
+      2.0,
+      2.0,
+      12.0
+    ],
+    "ZeRO-1": [
+      2.0,
+      2.0,
+      1.5
+    ],
+    "ZeRO-2": [
+      2.0,
+      0.25,
+      1.5
+    ],
+    "ZeRO-3": [
+      0.25,
+      0.25,
+      1.5
+    ]
+  },
+  "memory_totals_GB": {
+    "DDP": 16.0,
+    "ZeRO-1": 5.5,
+    "ZeRO-2": 3.75,
+    "ZeRO-3": 2.0
+  },
+  "visual_review": {
+    "collective-communications.webp": "Full-to-full reduction, full-to-quarter reduced ownership and quarter-to-full concatenation match the three displayed operations.",
+    "ddp-zero-sharding.webp": "Four GPUs; O quarters at Stage 1, G+O quarters at Stage 2, P+G+O quarters at Stage 3. This is a symbolic ownership figure, not a quantitative area plot.",
+    "zero-memory-comparison.png": "Viewed bar components, four total labels and persistent-model-state/8-GPU title agree with the conditional GB ledger."
+  },
+  "primary_sources": [
+    {
+      "url": "https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html",
+      "supports": "SUM ownership, rank ordering and ReduceScatter+AllGather equivalence."
+    },
+    {
+      "url": "https://deepspeed.readthedocs.io/en/stable/zero3.html",
+      "supports": "Three sharding stages; Stage-1 optimizer grouping includes 32-bit weights and moment estimates."
+    },
+    {
+      "url": "https://docs.pytorch.org/docs/2.8/fsdp.html#torch.distributed.fsdp.ShardingStrategy",
+      "supports": "FULL_SHARD unshards via AllGather before computation and reduces/shards gradients; persistent storage alone does not specify actual peak."
+    }
+  ],
+  "scope": "Read-only actual pixel/source comparison plus independent Fraction arithmetic. No source edits, builds, CDP, published snippet execution, or changes to overlap/Muon files.",
+  "limitations": [
+    "No GPU memory measurement or framework-wide peak prediction.",
+    "No performance, color-polish or new-figure recommendation."
+  ]
+}

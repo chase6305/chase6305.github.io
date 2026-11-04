@@ -65,11 +65,15 @@
         openMenu(toggle, event.key === "ArrowUp");
       }
     });
-    menu.addEventListener("focusout", (event) => {
+    const closeAfterFocusLeaves = (event) => {
       if (event.relatedTarget && !menu.contains(event.relatedTarget) && event.relatedTarget !== toggle) {
         closeMenu(toggle);
       }
-    });
+    };
+    // Shift+Tab can return from an option to its trigger. Keep the menu open
+    // there, then dismiss it if the reader tabs onward to another control.
+    menu.addEventListener("focusout", closeAfterFocusLeaves);
+    toggle.addEventListener("focusout", closeAfterFocusLeaves);
   });
 
   window.addEventListener("resize", () => toggles.forEach(resizeMenu));
@@ -77,6 +81,18 @@
     if (event.target.closest(".hextra-theme-toggle") === null) {
       toggles.forEach(toggle => closeMenu(toggle));
     }
+  });
+
+  // The trigger can retain an open menu after Shift+Tab. Dismiss this menu
+  // before an enclosing mobile drawer, without reclaiming later reader focus.
+  // A modal owns Escape while it is open.
+  document.addEventListener("keydown", event => {
+    if (event.defaultPrevented || event.key !== "Escape" || document.querySelector("dialog[open]")) return;
+    const open = [...toggles].filter(toggle => toggle.dataset.state === "open");
+    if (!open.length) return;
+    event.preventDefault();
+    open.forEach(toggle => closeMenu(toggle,
+      toggle === document.activeElement || toggle.nextElementSibling.contains(document.activeElement)));
   });
 
   document.querySelectorAll('.hextra-theme-toggle-options[role="menu"]').forEach((menu) => {

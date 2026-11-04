@@ -1,0 +1,29 @@
+{
+  "missing-404-css": {
+    "asset_exit_code": 1,
+    "asset_error": "AssertionError: Missing script/style: /tmp/chase-site-eight-hour-20261103/asset-reference-audit/missing-404-css/404.html: /css/compiled/main.min.820306363499a3418da732626c3ac4b89ccb28ce8a1a8998569ede77d89dbc84.css.missing",
+    "inventory_error": null
+  },
+  "missing-manifest-icons": {
+    "asset_exit_code": 1,
+    "asset_error": "ValueError: Manifest icon missing: https://chase6305.github.io/android-chrome-192x192.png?v=orca-1",
+    "inventory_error": "Manifest icon missing: https://chase6305.github.io/android-chrome-192x192.png?v=orca-1"
+  },
+  "current_production": {
+    "targets": 888,
+    "manifest_icons": [
+      {
+        "route": "/android-chrome-192x192.png",
+        "status": 200,
+        "sha256": "2cda8a308d5d4c9d60cc191189e74347ecd1204c569aeb16f91eadb0c8e50940",
+        "size": 15724
+      },
+      {
+        "route": "/android-chrome-512x512.png",
+        "status": 200,
+        "sha256": "739ccb03d76bdc7fa770892afdfd7474376b32a0c40dc882e3b7f898fde559f6",
+        "size": 50333
+      }
+    ]
+  }
+}

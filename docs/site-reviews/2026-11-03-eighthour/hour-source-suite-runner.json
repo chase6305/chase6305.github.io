@@ -1,0 +1,31 @@
+{
+  "complete": true,
+  "steps": [
+    {
+      "name": "diffusion-source-final-figures",
+      "exit": 0,
+      "seconds": 12.977301293984056
+    },
+    {
+      "name": "diffusion-source-final-print-large",
+      "exit": 0,
+      "seconds": 1.6857303099823184
+    },
+    {
+      "name": "diffusion-source-final-print-normal",
+      "exit": 0,
+      "seconds": 1.4896659119985998
+    },
+    {
+      "name": "diffusion-source-final-reflow",
+      "exit": 0,
+      "seconds": 9.674582914041821
+    },
+    {
+      "name": "hour-final-native-pdfs-caption",
+      "exit": 0,
+      "seconds": 12.28902485803701
+    }
+  ],
+  "passed": true
+}

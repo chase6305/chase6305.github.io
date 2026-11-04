@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1140" viewBox="0 0 1600 1140" role="img" aria-labelledby="title desc">
+<title id="title">Constructed top-two MoE routing with separate token outputs</title>
+<desc id="desc">Four one-hot token inputs route to four shared toy experts. Each token selects exactly two experts and applies softmax only to those two logits. Each lane combines its own two expert results; repeated expert labels refer to the same function E_j(x)=j x.</desc>
+<metadata id="calculation-records">{"tokens": [{"token": 1, "x": ["1", "0", "0", "0"], "logits": ["2", "1", "0", "-1"], "chosen": [{"expert": 1, "weight": "0.7310585786300048792511592418218362743651446401650565192763659079190402", "gain": 1}, {"expert": 2, "weight": "0.2689414213699951207488407581781637256348553598349434807236340920809595", "gain": 2}], "gain": "1.268941421369995120748840758178163725634855359834943480723634092080959", "output": ["1.268941421369995120748840758178163725634855359834943480723634092080959", "0E-69", "0E-69", "0E-69"]}, {"token": 2, "x": ["0", "1", "0", "0"], "logits": ["0", "3", "1", "2"], "chosen": [{"expert": 2, "weight": "0.7310585786300048792511592418218362743651446401650565192763659079190402", "gain": 2}, {"expert": 4, "weight": "0.2689414213699951207488407581781637256348553598349434807236340920809595", "gain": 4}], "gain": "2.537882842739990241497681516356327451269710719669886961447268184161918", "output": ["0E-69", "2.537882842739990241497681516356327451269710719669886961447268184161918", "0E-69", "0E-69"]}, {"token": 3, "x": ["0", "0", "1", "0"], "logits": ["1", "-1", "3", "0"], "chosen": [{"expert": 3, "weight": "0.8807970779778824440597291413023967952063842986289682757984052500609769", "gain": 3}, {"expert": 1, "weight": "0.1192029220221175559402708586976032047936157013710317242015947499390234", "gain": 1}], "gain": "2.761594155955764888119458282604793590412768597257936551596810500121954", "output": ["0E-69", "0E-69", "2.761594155955764888119458282604793590412768597257936551596810500121954", "0E-69"]}, {"token": 4, "x": ["0", "0", "0", "1"], "logits": ["-1", "0", "1", "3"], "chosen": [{"expert": 4, "weight": "0.8807970779778824440597291413023967952063842986289682757984052500609769", "gain": 4}, {"expert": 3, "weight": "0.1192029220221175559402708586976032047936157013710317242015947499390234", "gain": 3}], "gain": "3.880797077977882444059729141302396795206384298628968275798405250060978", "output": ["0E-69", "0E-69", "0E-69", "3.880797077977882444059729141302396795206384298628968275798405250060978"]}], "top_k": 2, "expert_gains": [1, 2, 3, 4], "router_weight": [["2", "0", "1", "-1"], ["1", "3", "-1", "0"], ["0", "1", "3", "1"], ["-1", "2", "0", "3"]], "construction": "x_t=e_t in R4; router W_r transpose equals the displayed logits rows; E_j(x)=j*x"}</metadata>
+<defs>
+  <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#536174"/></marker>
+  <style>
+    text { font-family: "DejaVu Sans", Arial, sans-serif; fill: #233148; }
+    .title { font-size: 32px; font-weight: 700; }
+    .subtitle { font-size: 18px; fill: #475569; }
+    .heading { font-size: 20px; font-weight: 700; }
+    .label { font-size: 18px; font-weight: 700; }
+    .value { font-family: "DejaVu Sans Mono", monospace; font-size: 21px; }
+    .small { font-size: 16px; fill: #475569; }
+    .tiny { font-size: 14px; fill: #475569; }
+    .formula { font-size: 23px; }
+    .arrow { stroke: #536174; stroke-width: 2; fill: none; stroke-linejoin: round; marker-end: url(#arrow); }
+  </style>
+</defs>
+<rect width="1600" height="1140" fill="#ffffff"/>
+<text x="48" y="48" text-anchor="start" class="title">Top-2 MoE routing: one independent output per token</text>
+<text x="48" y="82" text-anchor="start" class="subtitle">Constructed 4-token / 4-expert example · normalize only the two selected logits</text>
+<rect x="32" y="107" width="1536" height="68" rx="12" fill="#ffffff" stroke="#c9d2df" stroke-width="1.6"/>
+<text x="800" y="134" text-anchor="middle" class="small">x_t = e_t ∈ R⁴ · E1(x) = x · E2(x) = 2x · E3(x) = 3x · E4(x) = 4x</text>
+<text x="800" y="160" text-anchor="middle" class="small">The four logits rows define W_rᵀ, so r_t = x_t W_rᵀ. Repeated expert names share the same parameters.</text>
+<text x="121" y="209" text-anchor="middle" class="label" style="font-size:17px">Token</text>
+<text x="420" y="209" text-anchor="middle" class="label" style="font-size:17px">Router logits: [E1,E2,E3,E4]</text>
+<text x="880" y="209" text-anchor="middle" class="label" style="font-size:17px">Two chosen experts</text>
+<text x="1309" y="209" text-anchor="middle" class="label" style="font-size:17px">This token’s weighted output</text>
+<rect x="32" y="228" width="1536" height="190" rx="12" fill="#ffffff" stroke="#c9d2df" stroke-width="1.6"/>
+<rect x="56" y="286" width="130" height="72" rx="12" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6" id="token-1"/>
+<text x="121" y="315" text-anchor="middle" class="label">Token 1</text>
+<text x="121" y="342" text-anchor="middle" class="small">x_1 = e_1</text>
+<path d="M186,322 L220,322" class="arrow" data-from="token-1" data-to="router-1"/>
+<rect x="220" y="268" width="400" height="106" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6" id="router-1"/>
+<text x="420" y="298" text-anchor="middle" class="label">r_1 = x_1 W_rᵀ</text>
+<text x="420" y="335" text-anchor="middle" class="value" id="moe-logits-1" style="font-size:16px">[2.000, 1.000, 0.000, -1.000]</text>
+<text x="420" y="361" text-anchor="middle" class="tiny">Top-2 → selected-only softmax</text>
+<rect x="1110" y="268" width="398" height="106" rx="12" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6" id="output-1"/>
+<rect x="720" y="248" width="320" height="64" rx="12" fill="#fff3e5" stroke="#c49a6b" stroke-width="1.6" id="token-1-expert-1"/>
+<text x="880" y="276" text-anchor="middle" class="label" style="font-size:18px">E1(x_1) = 1x_1</text>
+<text x="880" y="302" text-anchor="middle" class="value" id="moe-weight-1-1" style="font-size:18px">weight = 0.731</text>
+<path d="M620,322 L666,322 L666,280 L720,280" class="arrow" data-from="router-1" data-to="token-1-expert-1"/>
+<path d="M1040,280 L1072,280 L1072,322 L1110,322" class="arrow" data-from="token-1-expert-1" data-to="output-1"/>
+<rect x="720" y="336" width="320" height="64" rx="12" fill="#fff3e5" stroke="#c49a6b" stroke-width="1.6" id="token-1-expert-2"/>
+<text x="880" y="364" text-anchor="middle" class="label" style="font-size:18px">E2(x_1) = 2x_1</text>
+<text x="880" y="390" text-anchor="middle" class="value" id="moe-weight-1-2" style="font-size:18px">weight = 0.269</text>
+<path d="M620,322 L666,322 L666,368 L720,368" class="arrow" data-from="router-1" data-to="token-1-expert-2"/>
+<path d="M1040,368 L1072,368 L1072,322 L1110,322" class="arrow" data-from="token-1-expert-2" data-to="output-1"/>
+<text x="1309" y="294" text-anchor="middle" class="small">y_1 = 0.731 E1(x_1)</text>
+<text x="1309" y="321" text-anchor="middle" class="small">+ 0.269 E2(x_1)</text>
+<text x="1309" y="356" text-anchor="middle" class="value" id="moe-output-1" style="font-size:21px">= 1.269 x_1</text>
+<text x="420" y="406" text-anchor="middle" class="tiny">Chosen: E1, E2; unselected experts receive zero weight.</text>
+<rect x="32" y="438" width="1536" height="190" rx="12" fill="#ffffff" stroke="#c9d2df" stroke-width="1.6"/>
+<rect x="56" y="496" width="130" height="72" rx="12" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6" id="token-2"/>
+<text x="121" y="525" text-anchor="middle" class="label">Token 2</text>
+<text x="121" y="552" text-anchor="middle" class="small">x_2 = e_2</text>
+<path d="M186,532 L220,532" class="arrow" data-from="token-2" data-to="router-2"/>
+<rect x="220" y="478" width="400" height="106" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6" id="router-2"/>
+<text x="420" y="508" text-anchor="middle" class="label">r_2 = x_2 W_rᵀ</text>
+<text x="420" y="545" text-anchor="middle" class="value" id="moe-logits-2" style="font-size:16px">[0.000, 3.000, 1.000, 2.000]</text>
+<text x="420" y="571" text-anchor="middle" class="tiny">Top-2 → selected-only softmax</text>
+<rect x="1110" y="478" width="398" height="106" rx="12" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6" id="output-2"/>
+<rect x="720" y="458" width="320" height="64" rx="12" fill="#fff3e5" stroke="#c49a6b" stroke-width="1.6" id="token-2-expert-2"/>
+<text x="880" y="486" text-anchor="middle" class="label" style="font-size:18px">E2(x_2) = 2x_2</text>
+<text x="880" y="512" text-anchor="middle" class="value" id="moe-weight-2-2" style="font-size:18px">weight = 0.731</text>
+<path d="M620,532 L666,532 L666,490 L720,490" class="arrow" data-from="router-2" data-to="token-2-expert-2"/>
+<path d="M1040,490 L1072,490 L1072,532 L1110,532" class="arrow" data-from="token-2-expert-2" data-to="output-2"/>
+<rect x="720" y="546" width="320" height="64" rx="12" fill="#fff3e5" stroke="#c49a6b" stroke-width="1.6" id="token-2-expert-4"/>
+<text x="880" y="574" text-anchor="middle" class="label" style="font-size:18px">E4(x_2) = 4x_2</text>
+<text x="880" y="600" text-anchor="middle" class="value" id="moe-weight-2-4" style="font-size:18px">weight = 0.269</text>
+<path d="M620,532 L666,532 L666,578 L720,578" class="arrow" data-from="router-2" data-to="token-2-expert-4"/>
+<path d="M1040,578 L1072,578 L1072,532 L1110,532" class="arrow" data-from="token-2-expert-4" data-to="output-2"/>
+<text x="1309" y="504" text-anchor="middle" class="small">y_2 = 0.731 E2(x_2)</text>
+<text x="1309" y="531" text-anchor="middle" class="small">+ 0.269 E4(x_2)</text>
+<text x="1309" y="566" text-anchor="middle" class="value" id="moe-output-2" style="font-size:21px">= 2.538 x_2</text>
+<text x="420" y="616" text-anchor="middle" class="tiny">Chosen: E2, E4; unselected experts receive zero weight.</text>
+<rect x="32" y="648" width="1536" height="190" rx="12" fill="#ffffff" stroke="#c9d2df" stroke-width="1.6"/>
+<rect x="56" y="706" width="130" height="72" rx="12" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6" id="token-3"/>
+<text x="121" y="735" text-anchor="middle" class="label">Token 3</text>
+<text x="121" y="762" text-anchor="middle" class="small">x_3 = e_3</text>
+<path d="M186,742 L220,742" class="arrow" data-from="token-3" data-to="router-3"/>
+<rect x="220" y="688" width="400" height="106" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6" id="router-3"/>
+<text x="420" y="718" text-anchor="middle" class="label">r_3 = x_3 W_rᵀ</text>
+<text x="420" y="755" text-anchor="middle" class="value" id="moe-logits-3" style="font-size:16px">[1.000, -1.000, 3.000, 0.000]</text>
+<text x="420" y="781" text-anchor="middle" class="tiny">Top-2 → selected-only softmax</text>
+<rect x="1110" y="688" width="398" height="106" rx="12" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6" id="output-3"/>
+<rect x="720" y="668" width="320" height="64" rx="12" fill="#fff3e5" stroke="#c49a6b" stroke-width="1.6" id="token-3-expert-3"/>
+<text x="880" y="696" text-anchor="middle" class="label" style="font-size:18px">E3(x_3) = 3x_3</text>
+<text x="880" y="722" text-anchor="middle" class="value" id="moe-weight-3-3" style="font-size:18px">weight = 0.881</text>
+<path d="M620,742 L666,742 L666,700 L720,700" class="arrow" data-from="router-3" data-to="token-3-expert-3"/>
+<path d="M1040,700 L1072,700 L1072,742 L1110,742" class="arrow" data-from="token-3-expert-3" data-to="output-3"/>
+<rect x="720" y="756" width="320" height="64" rx="12" fill="#fff3e5" stroke="#c49a6b" stroke-width="1.6" id="token-3-expert-1"/>
+<text x="880" y="784" text-anchor="middle" class="label" style="font-size:18px">E1(x_3) = 1x_3</text>
+<text x="880" y="810" text-anchor="middle" class="value" id="moe-weight-3-1" style="font-size:18px">weight = 0.119</text>
+<path d="M620,742 L666,742 L666,788 L720,788" class="arrow" data-from="router-3" data-to="token-3-expert-1"/>
+<path d="M1040,788 L1072,788 L1072,742 L1110,742" class="arrow" data-from="token-3-expert-1" data-to="output-3"/>
+<text x="1309" y="714" text-anchor="middle" class="small">y_3 = 0.881 E3(x_3)</text>
+<text x="1309" y="741" text-anchor="middle" class="small">+ 0.119 E1(x_3)</text>
+<text x="1309" y="776" text-anchor="middle" class="value" id="moe-output-3" style="font-size:21px">= 2.762 x_3</text>
+<text x="420" y="826" text-anchor="middle" class="tiny">Chosen: E3, E1; unselected experts receive zero weight.</text>
+<rect x="32" y="858" width="1536" height="190" rx="12" fill="#ffffff" stroke="#c9d2df" stroke-width="1.6"/>
+<rect x="56" y="916" width="130" height="72" rx="12" fill="#edf5ff" stroke="#7299c6" stroke-width="1.6" id="token-4"/>
+<text x="121" y="945" text-anchor="middle" class="label">Token 4</text>
+<text x="121" y="972" text-anchor="middle" class="small">x_4 = e_4</text>
+<path d="M186,952 L220,952" class="arrow" data-from="token-4" data-to="router-4"/>
+<rect x="220" y="898" width="400" height="106" rx="12" fill="#f3effb" stroke="#9b87bb" stroke-width="1.6" id="router-4"/>
+<text x="420" y="928" text-anchor="middle" class="label">r_4 = x_4 W_rᵀ</text>
+<text x="420" y="965" text-anchor="middle" class="value" id="moe-logits-4" style="font-size:16px">[-1.000, 0.000, 1.000, 3.000]</text>
+<text x="420" y="991" text-anchor="middle" class="tiny">Top-2 → selected-only softmax</text>
+<rect x="1110" y="898" width="398" height="106" rx="12" fill="#edf7ef" stroke="#83aa90" stroke-width="1.6" id="output-4"/>
+<rect x="720" y="878" width="320" height="64" rx="12" fill="#fff3e5" stroke="#c49a6b" stroke-width="1.6" id="token-4-expert-4"/>
+<text x="880" y="906" text-anchor="middle" class="label" style="font-size:18px">E4(x_4) = 4x_4</text>
+<text x="880" y="932" text-anchor="middle" class="value" id="moe-weight-4-4" style="font-size:18px">weight = 0.881</text>
+<path d="M620,952 L666,952 L666,910 L720,910" class="arrow" data-from="router-4" data-to="token-4-expert-4"/>
+<path d="M1040,910 L1072,910 L1072,952 L1110,952" class="arrow" data-from="token-4-expert-4" data-to="output-4"/>
+<rect x="720" y="966" width="320" height="64" rx="12" fill="#fff3e5" stroke="#c49a6b" stroke-width="1.6" id="token-4-expert-3"/>
+<text x="880" y="994" text-anchor="middle" class="label" style="font-size:18px">E3(x_4) = 3x_4</text>
+<text x="880" y="1020" text-anchor="middle" class="value" id="moe-weight-4-3" style="font-size:18px">weight = 0.119</text>
+<path d="M620,952 L666,952 L666,998 L720,998" class="arrow" data-from="router-4" data-to="token-4-expert-3"/>
+<path d="M1040,998 L1072,998 L1072,952 L1110,952" class="arrow" data-from="token-4-expert-3" data-to="output-4"/>
+<text x="1309" y="924" text-anchor="middle" class="small">y_4 = 0.881 E4(x_4)</text>
+<text x="1309" y="951" text-anchor="middle" class="small">+ 0.119 E3(x_4)</text>
+<text x="1309" y="986" text-anchor="middle" class="value" id="moe-output-4" style="font-size:21px">= 3.881 x_4</text>
+<text x="420" y="1036" text-anchor="middle" class="tiny">Chosen: E4, E3; unselected experts receive zero weight.</text>
+<text x="48" y="1084" text-anchor="start" class="small">Weights and output coefficients are rounded to 3 decimals; the weighted sums use unrounded weights.</text>
+<text x="48" y="1116" text-anchor="start" class="small">Token positions stay separate. Capacity limits, dispatch kernels and balancing losses are outside this example.</text>
+</svg>

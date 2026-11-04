@@ -1,0 +1,8 @@
+{{- /* Resolve a rendered HTML URL, not a sanitizer. Absolute schemes remain intact. */ -}}
+{{- /* HTML URL parsing strips edge C0 controls/spaces and embedded ASCII
+  tabs/newlines. Keep percent escapes and non-ASCII spaces significant. */ -}}
+{{- $result := .reference | replaceRE `^[\x00-\x20]+|[\x00-\x20]+$` "" | replaceRE `[\t\n\r]` "" -}}
+{{- if not (findRE `^[A-Za-z][A-Za-z0-9+.-]*:` $result 1) -}}
+  {{- $result = (.base.ResolveReference (urls.Parse $result)).String -}}
+{{- end -}}
+{{- return $result -}}

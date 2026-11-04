@@ -1,0 +1,1839 @@
+{
+  "layouts": [
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 320,
+      "scripts": true,
+      "mode": "text-200",
+      "passed": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "nav": {
+        "left": 0,
+        "right": 320,
+        "width": 320,
+        "height": 128
+      },
+      "offset": 128,
+      "controls": [
+        {
+          "left": 212.8125,
+          "right": 264,
+          "width": 51.1875,
+          "height": 51.1875
+        },
+        {
+          "left": 264,
+          "right": 304,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 168,
+          "right": 232,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 232,
+          "right": 272,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 272,
+          "right": 312,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 320,
+      "scripts": true,
+      "mode": "spacing",
+      "passed": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "nav": {
+        "left": 0,
+        "right": 320,
+        "width": 320,
+        "height": 64
+      },
+      "offset": 64,
+      "controls": [
+        {
+          "left": 116,
+          "right": 156,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 156,
+          "right": 196,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 196,
+          "right": 236,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 236,
+          "right": 276,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 276,
+          "right": 316,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 320,
+      "scripts": true,
+      "mode": "text-200-spacing",
+      "passed": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "nav": {
+        "left": 0,
+        "right": 320,
+        "width": 320,
+        "height": 128
+      },
+      "offset": 128,
+      "controls": [
+        {
+          "left": 212.8125,
+          "right": 264,
+          "width": 51.1875,
+          "height": 51.1875
+        },
+        {
+          "left": 264,
+          "right": 304,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 168,
+          "right": 232,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 232,
+          "right": 272,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 272,
+          "right": 312,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 320,
+      "scripts": true,
+      "mode": "text-200",
+      "passed": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "nav": {
+        "left": 0,
+        "right": 320,
+        "width": 320,
+        "height": 128
+      },
+      "offset": 128,
+      "controls": [
+        {
+          "left": 212.8125,
+          "right": 264,
+          "width": 51.1875,
+          "height": 51.1875
+        },
+        {
+          "left": 264,
+          "right": 304,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 168,
+          "right": 232,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 232,
+          "right": 272,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 272,
+          "right": 312,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 320,
+      "scripts": true,
+      "mode": "spacing",
+      "passed": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "nav": {
+        "left": 0,
+        "right": 320,
+        "width": 320,
+        "height": 64
+      },
+      "offset": 64,
+      "controls": [
+        {
+          "left": 116,
+          "right": 156,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 156,
+          "right": 196,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 196,
+          "right": 236,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 236,
+          "right": 276,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 276,
+          "right": 316,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 320,
+      "scripts": true,
+      "mode": "text-200-spacing",
+      "passed": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "nav": {
+        "left": 0,
+        "right": 320,
+        "width": 320,
+        "height": 128
+      },
+      "offset": 128,
+      "controls": [
+        {
+          "left": 212.8125,
+          "right": 264,
+          "width": 51.1875,
+          "height": 51.1875
+        },
+        {
+          "left": 264,
+          "right": 304,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 168,
+          "right": 232,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 232,
+          "right": 272,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 272,
+          "right": 312,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 768,
+      "scripts": true,
+      "mode": "text-200",
+      "passed": true,
+      "viewport": 753,
+      "scrollWidth": 753,
+      "nav": {
+        "left": 0,
+        "right": 753,
+        "width": 753,
+        "height": 132
+      },
+      "offset": 132,
+      "controls": [
+        {
+          "left": 175.0625,
+          "right": 312.859375,
+          "width": 137.796875,
+          "height": 72
+        },
+        {
+          "left": 300.859375,
+          "right": 391.96875,
+          "width": 91.109375,
+          "height": 72
+        },
+        {
+          "left": 379.96875,
+          "right": 529.8125,
+          "width": 149.84375,
+          "height": 72
+        },
+        {
+          "left": 533.8125,
+          "right": 601,
+          "width": 67.1875,
+          "height": 67.1875
+        },
+        {
+          "left": 605,
+          "right": 661,
+          "width": 56,
+          "height": 56
+        },
+        {
+          "left": 665,
+          "right": 745,
+          "width": 80,
+          "height": 64
+        },
+        {
+          "left": 689,
+          "right": 745,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 768,
+      "scripts": true,
+      "mode": "spacing",
+      "passed": true,
+      "viewport": 753,
+      "scrollWidth": 753,
+      "nav": {
+        "left": 0,
+        "right": 753,
+        "width": 753,
+        "height": 64
+      },
+      "offset": 64,
+      "controls": [
+        {
+          "left": 349.6875,
+          "right": 432.03125,
+          "width": 82.34375,
+          "height": 40
+        },
+        {
+          "left": 428.03125,
+          "right": 480.3125,
+          "width": 52.28125,
+          "height": 40
+        },
+        {
+          "left": 476.3125,
+          "right": 569,
+          "width": 92.6875,
+          "height": 40
+        },
+        {
+          "left": 573,
+          "right": 613,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 617,
+          "right": 657,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 661,
+          "right": 701,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 705,
+          "right": 745,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 768,
+      "scripts": true,
+      "mode": "text-200-spacing",
+      "passed": true,
+      "viewport": 753,
+      "scrollWidth": 753,
+      "nav": {
+        "left": 0,
+        "right": 753,
+        "width": 753,
+        "height": 142
+      },
+      "offset": 142,
+      "controls": [
+        {
+          "left": 195.21875,
+          "right": 359.890625,
+          "width": 164.671875,
+          "height": 74
+        },
+        {
+          "left": 347.890625,
+          "right": 452.453125,
+          "width": 104.5625,
+          "height": 74
+        },
+        {
+          "left": 440.453125,
+          "right": 613.8125,
+          "width": 173.359375,
+          "height": 74
+        },
+        {
+          "left": 617.8125,
+          "right": 685,
+          "width": 67.1875,
+          "height": 67.1875
+        },
+        {
+          "left": 689,
+          "right": 745,
+          "width": 56,
+          "height": 56
+        },
+        {
+          "left": 605,
+          "right": 685,
+          "width": 80,
+          "height": 64
+        },
+        {
+          "left": 689,
+          "right": 745,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 768,
+      "scripts": true,
+      "mode": "text-200",
+      "passed": true,
+      "viewport": 753,
+      "scrollWidth": 753,
+      "nav": {
+        "left": 0,
+        "right": 753,
+        "width": 753,
+        "height": 132
+      },
+      "offset": 132,
+      "controls": [
+        {
+          "left": 175.0625,
+          "right": 312.859375,
+          "width": 137.796875,
+          "height": 72
+        },
+        {
+          "left": 300.859375,
+          "right": 391.96875,
+          "width": 91.109375,
+          "height": 72
+        },
+        {
+          "left": 379.96875,
+          "right": 529.8125,
+          "width": 149.84375,
+          "height": 72
+        },
+        {
+          "left": 533.8125,
+          "right": 601,
+          "width": 67.1875,
+          "height": 67.1875
+        },
+        {
+          "left": 605,
+          "right": 661,
+          "width": 56,
+          "height": 56
+        },
+        {
+          "left": 665,
+          "right": 745,
+          "width": 80,
+          "height": 64
+        },
+        {
+          "left": 689,
+          "right": 745,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 768,
+      "scripts": true,
+      "mode": "spacing",
+      "passed": true,
+      "viewport": 753,
+      "scrollWidth": 753,
+      "nav": {
+        "left": 0,
+        "right": 753,
+        "width": 753,
+        "height": 64
+      },
+      "offset": 64,
+      "controls": [
+        {
+          "left": 349.6875,
+          "right": 432.03125,
+          "width": 82.34375,
+          "height": 40
+        },
+        {
+          "left": 428.03125,
+          "right": 480.3125,
+          "width": 52.28125,
+          "height": 40
+        },
+        {
+          "left": 476.3125,
+          "right": 569,
+          "width": 92.6875,
+          "height": 40
+        },
+        {
+          "left": 573,
+          "right": 613,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 617,
+          "right": 657,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 661,
+          "right": 701,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 705,
+          "right": 745,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 768,
+      "scripts": true,
+      "mode": "text-200-spacing",
+      "passed": true,
+      "viewport": 753,
+      "scrollWidth": 753,
+      "nav": {
+        "left": 0,
+        "right": 753,
+        "width": 753,
+        "height": 142
+      },
+      "offset": 142,
+      "controls": [
+        {
+          "left": 195.21875,
+          "right": 359.890625,
+          "width": 164.671875,
+          "height": 74
+        },
+        {
+          "left": 347.890625,
+          "right": 452.453125,
+          "width": 104.5625,
+          "height": 74
+        },
+        {
+          "left": 440.453125,
+          "right": 613.8125,
+          "width": 173.359375,
+          "height": 74
+        },
+        {
+          "left": 617.8125,
+          "right": 685,
+          "width": 67.1875,
+          "height": 67.1875
+        },
+        {
+          "left": 689,
+          "right": 745,
+          "width": 56,
+          "height": 56
+        },
+        {
+          "left": 605,
+          "right": 685,
+          "width": 80,
+          "height": 64
+        },
+        {
+          "left": 689,
+          "right": 745,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 1440,
+      "scripts": true,
+      "mode": "text-200",
+      "passed": true,
+      "viewport": 1425,
+      "scrollWidth": 1425,
+      "nav": {
+        "left": 0,
+        "right": 1425,
+        "width": 1425,
+        "height": 128
+      },
+      "offset": 128,
+      "controls": [
+        {
+          "left": 371.0625,
+          "right": 508.859375,
+          "width": 137.796875,
+          "height": 72
+        },
+        {
+          "left": 508.859375,
+          "right": 599.96875,
+          "width": 91.109375,
+          "height": 72
+        },
+        {
+          "left": 599.96875,
+          "right": 749.8125,
+          "width": 149.84375,
+          "height": 72
+        },
+        {
+          "left": 765.8125,
+          "right": 833,
+          "width": 67.1875,
+          "height": 67.1875
+        },
+        {
+          "left": 849,
+          "right": 905,
+          "width": 56,
+          "height": 56
+        },
+        {
+          "left": 921,
+          "right": 1305,
+          "width": 384,
+          "height": 67
+        },
+        {
+          "left": 1321,
+          "right": 1377,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 1440,
+      "scripts": true,
+      "mode": "spacing",
+      "passed": true,
+      "viewport": 1425,
+      "scrollWidth": 1425,
+      "nav": {
+        "left": 0,
+        "right": 1425,
+        "width": 1425,
+        "height": 64
+      },
+      "offset": 64,
+      "controls": [
+        {
+          "left": 829.6875,
+          "right": 912.03125,
+          "width": 82.34375,
+          "height": 40
+        },
+        {
+          "left": 912.03125,
+          "right": 964.3125,
+          "width": 52.28125,
+          "height": 40
+        },
+        {
+          "left": 964.3125,
+          "right": 1057,
+          "width": 92.6875,
+          "height": 40
+        },
+        {
+          "left": 1065,
+          "right": 1105,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 1113,
+          "right": 1153,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 1161,
+          "right": 1353,
+          "width": 192,
+          "height": 40
+        },
+        {
+          "left": 1361,
+          "right": 1401,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 1440,
+      "scripts": true,
+      "mode": "text-200-spacing",
+      "passed": true,
+      "viewport": 1425,
+      "scrollWidth": 1425,
+      "nav": {
+        "left": 0,
+        "right": 1425,
+        "width": 1425,
+        "height": 128
+      },
+      "offset": 128,
+      "controls": [
+        {
+          "left": 307.21875,
+          "right": 471.890625,
+          "width": 164.671875,
+          "height": 74
+        },
+        {
+          "left": 471.890625,
+          "right": 576.453125,
+          "width": 104.5625,
+          "height": 74
+        },
+        {
+          "left": 576.453125,
+          "right": 749.8125,
+          "width": 173.359375,
+          "height": 74
+        },
+        {
+          "left": 765.8125,
+          "right": 833,
+          "width": 67.1875,
+          "height": 67.1875
+        },
+        {
+          "left": 849,
+          "right": 905,
+          "width": 56,
+          "height": 56
+        },
+        {
+          "left": 921,
+          "right": 1305,
+          "width": 384,
+          "height": 74
+        },
+        {
+          "left": 1321,
+          "right": 1377,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 1440,
+      "scripts": true,
+      "mode": "text-200",
+      "passed": true,
+      "viewport": 1425,
+      "scrollWidth": 1425,
+      "nav": {
+        "left": 0,
+        "right": 1425,
+        "width": 1425,
+        "height": 128
+      },
+      "offset": 128,
+      "controls": [
+        {
+          "left": 371.0625,
+          "right": 508.859375,
+          "width": 137.796875,
+          "height": 72
+        },
+        {
+          "left": 508.859375,
+          "right": 599.96875,
+          "width": 91.109375,
+          "height": 72
+        },
+        {
+          "left": 599.96875,
+          "right": 749.8125,
+          "width": 149.84375,
+          "height": 72
+        },
+        {
+          "left": 765.8125,
+          "right": 833,
+          "width": 67.1875,
+          "height": 67.1875
+        },
+        {
+          "left": 849,
+          "right": 905,
+          "width": 56,
+          "height": 56
+        },
+        {
+          "left": 921,
+          "right": 1305,
+          "width": 384,
+          "height": 67
+        },
+        {
+          "left": 1321,
+          "right": 1377,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 1440,
+      "scripts": true,
+      "mode": "spacing",
+      "passed": true,
+      "viewport": 1425,
+      "scrollWidth": 1425,
+      "nav": {
+        "left": 0,
+        "right": 1425,
+        "width": 1425,
+        "height": 64
+      },
+      "offset": 64,
+      "controls": [
+        {
+          "left": 829.6875,
+          "right": 912.03125,
+          "width": 82.34375,
+          "height": 40
+        },
+        {
+          "left": 912.03125,
+          "right": 964.3125,
+          "width": 52.28125,
+          "height": 40
+        },
+        {
+          "left": 964.3125,
+          "right": 1057,
+          "width": 92.6875,
+          "height": 40
+        },
+        {
+          "left": 1065,
+          "right": 1105,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 1113,
+          "right": 1153,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 1161,
+          "right": 1353,
+          "width": 192,
+          "height": 40
+        },
+        {
+          "left": 1361,
+          "right": 1401,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 1440,
+      "scripts": true,
+      "mode": "text-200-spacing",
+      "passed": true,
+      "viewport": 1425,
+      "scrollWidth": 1425,
+      "nav": {
+        "left": 0,
+        "right": 1425,
+        "width": 1425,
+        "height": 128
+      },
+      "offset": 128,
+      "controls": [
+        {
+          "left": 307.21875,
+          "right": 471.890625,
+          "width": 164.671875,
+          "height": 74
+        },
+        {
+          "left": 471.890625,
+          "right": 576.453125,
+          "width": 104.5625,
+          "height": 74
+        },
+        {
+          "left": 576.453125,
+          "right": 749.8125,
+          "width": 173.359375,
+          "height": 74
+        },
+        {
+          "left": 765.8125,
+          "right": 833,
+          "width": 67.1875,
+          "height": 67.1875
+        },
+        {
+          "left": 849,
+          "right": 905,
+          "width": 56,
+          "height": 56
+        },
+        {
+          "left": 921,
+          "right": 1305,
+          "width": 384,
+          "height": 74
+        },
+        {
+          "left": 1321,
+          "right": 1377,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 320,
+      "scripts": false,
+      "mode": "text-200",
+      "passed": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "nav": {
+        "left": 0,
+        "right": 320,
+        "width": 320,
+        "height": 138
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 200,
+          "right": 264,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 264,
+          "right": 304,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 320,
+      "scripts": false,
+      "mode": "spacing",
+      "passed": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "nav": {
+        "left": 0,
+        "right": 320,
+        "width": 320,
+        "height": 64
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 142.640625,
+          "right": 182.640625,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 182.640625,
+          "right": 222.640625,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 320,
+      "scripts": false,
+      "mode": "text-200-spacing",
+      "passed": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "nav": {
+        "left": 0,
+        "right": 320,
+        "width": 320,
+        "height": 138
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 200,
+          "right": 264,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 264,
+          "right": 304,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 320,
+      "scripts": false,
+      "mode": "text-200",
+      "passed": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "nav": {
+        "left": 0,
+        "right": 320,
+        "width": 320,
+        "height": 138
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 200,
+          "right": 264,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 264,
+          "right": 304,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 320,
+      "scripts": false,
+      "mode": "spacing",
+      "passed": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "nav": {
+        "left": 0,
+        "right": 320,
+        "width": 320,
+        "height": 64
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 142.640625,
+          "right": 182.640625,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 182.640625,
+          "right": 222.640625,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 320,
+      "scripts": false,
+      "mode": "text-200-spacing",
+      "passed": true,
+      "viewport": 320,
+      "scrollWidth": 320,
+      "nav": {
+        "left": 0,
+        "right": 320,
+        "width": 320,
+        "height": 138
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 200,
+          "right": 264,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 264,
+          "right": 304,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 768,
+      "scripts": false,
+      "mode": "text-200",
+      "passed": true,
+      "viewport": 753,
+      "scrollWidth": 753,
+      "nav": {
+        "left": 0,
+        "right": 753,
+        "width": 753,
+        "height": 128
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 209.546875,
+          "right": 347.34375,
+          "width": 137.796875,
+          "height": 72
+        },
+        {
+          "left": 335.34375,
+          "right": 426.453125,
+          "width": 91.109375,
+          "height": 72
+        },
+        {
+          "left": 442.453125,
+          "right": 522.453125,
+          "width": 80,
+          "height": 64
+        },
+        {
+          "left": 526.453125,
+          "right": 582.453125,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 768,
+      "scripts": false,
+      "mode": "spacing",
+      "passed": true,
+      "viewport": 753,
+      "scrollWidth": 753,
+      "nav": {
+        "left": 0,
+        "right": 753,
+        "width": 753,
+        "height": 64
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 421.015625,
+          "right": 503.359375,
+          "width": 82.34375,
+          "height": 40
+        },
+        {
+          "left": 499.359375,
+          "right": 551.640625,
+          "width": 52.28125,
+          "height": 40
+        },
+        {
+          "left": 567.640625,
+          "right": 607.640625,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 611.640625,
+          "right": 651.640625,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 768,
+      "scripts": false,
+      "mode": "text-200-spacing",
+      "passed": true,
+      "viewport": 753,
+      "scrollWidth": 753,
+      "nav": {
+        "left": 0,
+        "right": 753,
+        "width": 753,
+        "height": 152
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 331.765625,
+          "right": 496.4375,
+          "width": 164.671875,
+          "height": 74
+        },
+        {
+          "left": 484.4375,
+          "right": 589,
+          "width": 104.5625,
+          "height": 74
+        },
+        {
+          "left": 605,
+          "right": 685,
+          "width": 80,
+          "height": 64
+        },
+        {
+          "left": 689,
+          "right": 745,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 768,
+      "scripts": false,
+      "mode": "text-200",
+      "passed": true,
+      "viewport": 753,
+      "scrollWidth": 753,
+      "nav": {
+        "left": 0,
+        "right": 753,
+        "width": 753,
+        "height": 128
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 209.546875,
+          "right": 347.34375,
+          "width": 137.796875,
+          "height": 72
+        },
+        {
+          "left": 335.34375,
+          "right": 426.453125,
+          "width": 91.109375,
+          "height": 72
+        },
+        {
+          "left": 442.453125,
+          "right": 522.453125,
+          "width": 80,
+          "height": 64
+        },
+        {
+          "left": 526.453125,
+          "right": 582.453125,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 768,
+      "scripts": false,
+      "mode": "spacing",
+      "passed": true,
+      "viewport": 753,
+      "scrollWidth": 753,
+      "nav": {
+        "left": 0,
+        "right": 753,
+        "width": 753,
+        "height": 64
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 421.015625,
+          "right": 503.359375,
+          "width": 82.34375,
+          "height": 40
+        },
+        {
+          "left": 499.359375,
+          "right": 551.640625,
+          "width": 52.28125,
+          "height": 40
+        },
+        {
+          "left": 567.640625,
+          "right": 607.640625,
+          "width": 40,
+          "height": 40
+        },
+        {
+          "left": 611.640625,
+          "right": 651.640625,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 768,
+      "scripts": false,
+      "mode": "text-200-spacing",
+      "passed": true,
+      "viewport": 753,
+      "scrollWidth": 753,
+      "nav": {
+        "left": 0,
+        "right": 753,
+        "width": 753,
+        "height": 152
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 331.765625,
+          "right": 496.4375,
+          "width": 164.671875,
+          "height": 74
+        },
+        {
+          "left": 484.4375,
+          "right": 589,
+          "width": 104.5625,
+          "height": 74
+        },
+        {
+          "left": 605,
+          "right": 685,
+          "width": 80,
+          "height": 64
+        },
+        {
+          "left": 689,
+          "right": 745,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 1440,
+      "scripts": false,
+      "mode": "text-200",
+      "passed": true,
+      "viewport": 1425,
+      "scrollWidth": 1425,
+      "nav": {
+        "left": 0,
+        "right": 1425,
+        "width": 1425,
+        "height": 128
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 453.546875,
+          "right": 591.34375,
+          "width": 137.796875,
+          "height": 72
+        },
+        {
+          "left": 591.34375,
+          "right": 682.453125,
+          "width": 91.109375,
+          "height": 72
+        },
+        {
+          "left": 746.453125,
+          "right": 1130.453125,
+          "width": 384,
+          "height": 67
+        },
+        {
+          "left": 1146.453125,
+          "right": 1202.453125,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 1440,
+      "scripts": false,
+      "mode": "spacing",
+      "passed": true,
+      "viewport": 1425,
+      "scrollWidth": 1425,
+      "nav": {
+        "left": 0,
+        "right": 1425,
+        "width": 1425,
+        "height": 64
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 897.015625,
+          "right": 979.359375,
+          "width": 82.34375,
+          "height": 40
+        },
+        {
+          "left": 979.359375,
+          "right": 1031.640625,
+          "width": 52.28125,
+          "height": 40
+        },
+        {
+          "left": 1063.640625,
+          "right": 1255.640625,
+          "width": 192,
+          "height": 40
+        },
+        {
+          "left": 1263.640625,
+          "right": 1303.640625,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/six-dof-kinematics/",
+      "width": 1440,
+      "scripts": false,
+      "mode": "text-200-spacing",
+      "passed": true,
+      "viewport": 1425,
+      "scrollWidth": 1425,
+      "nav": {
+        "left": 0,
+        "right": 1425,
+        "width": 1425,
+        "height": 128
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 393.0625,
+          "right": 557.734375,
+          "width": 164.671875,
+          "height": 74
+        },
+        {
+          "left": 557.734375,
+          "right": 662.296875,
+          "width": 104.5625,
+          "height": 74
+        },
+        {
+          "left": 726.296875,
+          "right": 1110.296875,
+          "width": 384,
+          "height": 74
+        },
+        {
+          "left": 1126.296875,
+          "right": 1182.296875,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 1440,
+      "scripts": false,
+      "mode": "text-200",
+      "passed": true,
+      "viewport": 1425,
+      "scrollWidth": 1425,
+      "nav": {
+        "left": 0,
+        "right": 1425,
+        "width": 1425,
+        "height": 128
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 453.546875,
+          "right": 591.34375,
+          "width": 137.796875,
+          "height": 72
+        },
+        {
+          "left": 591.34375,
+          "right": 682.453125,
+          "width": 91.109375,
+          "height": 72
+        },
+        {
+          "left": 746.453125,
+          "right": 1130.453125,
+          "width": 384,
+          "height": 67
+        },
+        {
+          "left": 1146.453125,
+          "right": 1202.453125,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 1440,
+      "scripts": false,
+      "mode": "spacing",
+      "passed": true,
+      "viewport": 1425,
+      "scrollWidth": 1425,
+      "nav": {
+        "left": 0,
+        "right": 1425,
+        "width": 1425,
+        "height": 64
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 897.015625,
+          "right": 979.359375,
+          "width": 82.34375,
+          "height": 40
+        },
+        {
+          "left": 979.359375,
+          "right": 1031.640625,
+          "width": 52.28125,
+          "height": 40
+        },
+        {
+          "left": 1063.640625,
+          "right": 1255.640625,
+          "width": 192,
+          "height": 40
+        },
+        {
+          "left": 1263.640625,
+          "right": 1303.640625,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    },
+    {
+      "route": "/posts/robotics/kinematics/seven-dof-kinematics/",
+      "width": 1440,
+      "scripts": false,
+      "mode": "text-200-spacing",
+      "passed": true,
+      "viewport": 1425,
+      "scrollWidth": 1425,
+      "nav": {
+        "left": 0,
+        "right": 1425,
+        "width": 1425,
+        "height": 128
+      },
+      "offset": 3.5,
+      "controls": [
+        {
+          "left": 393.0625,
+          "right": 557.734375,
+          "width": 164.671875,
+          "height": 74
+        },
+        {
+          "left": 557.734375,
+          "right": 662.296875,
+          "width": 104.5625,
+          "height": 74
+        },
+        {
+          "left": 726.296875,
+          "right": 1110.296875,
+          "width": 384,
+          "height": 74
+        },
+        {
+          "left": 1126.296875,
+          "right": 1182.296875,
+          "width": 56,
+          "height": 56
+        }
+      ],
+      "overflow": false,
+      "tableFocusIssues": 0,
+      "codeFocusIssues": 0
+    }
+  ],
+  "exceptions": [],
+  "layoutWait": {
+    "fontLayout": true,
+    "scriptedAnimationFrames": 2
+  },
+  "tableKeyboard": [
+    {
+      "route": "/posts/ai/cosmos3/",
+      "focused": true,
+      "scrollLeft": 160,
+      "clientWidth": 270,
+      "scrollWidth": 801
+    },
+    {
+      "route": "/posts/open3d/introduction/",
+      "focused": true,
+      "scrollLeft": 7,
+      "clientWidth": 270,
+      "scrollWidth": 277
+    },
+    {
+      "route": "/posts/rl/",
+      "focused": true,
+      "scrollLeft": 81,
+      "clientWidth": 270,
+      "scrollWidth": 351
+    }
+  ],
+  "notFoundMenu": true,
+  "searchInput": true,
+  "summary": {
+    "layouts": 36,
+    "failures": 0,
+    "runtimeExceptions": 0
+  }
+}

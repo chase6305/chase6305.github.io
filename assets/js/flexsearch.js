@@ -35,7 +35,7 @@
         cache: 100,
         document: {
           id: 'id',
-          store: ['title', 'breadcrumbs', 'route'],
+          store: ['title', 'breadcrumbs', 'breadcrumbLanguages', 'route', 'language'],
           index: pageIndexFields()
         }
       });
@@ -64,6 +64,8 @@
         throw new Error('Invalid search data');
       }
       let pageId = 0;
+      const languageFor = page => typeof page.language === 'string' && page.language.trim()
+        ? page.language.trim() : document.documentElement.lang;
       let sliceStarted = performance.now();
       const yieldIfNeeded = async () => {
         if (performance.now() - sliceStarted < 12) return;
@@ -79,6 +81,7 @@
 
         let crumb = '';
         const crumbParts = [];
+        const crumbLanguages = [];
         let searchUrl = '/';
         for (let i = 0; i < urlParts.length; i++) {
           const urlPart = urlParts[i];
@@ -95,6 +98,7 @@
             title = urlPart.split("-").map(x => x).join(" ");
           }
           crumbParts.push(title);
+          crumbLanguages.push(languageFor(crumbData));
           crumb += title;
 
           if (i < urlParts.length - 1) {
@@ -143,13 +147,15 @@
           id: pageId,
           title: data[route].title,
           route,
+          language: languageFor(data[route]),
           headings: pageHeadings,
           breadcrumbs: crumbParts.slice(0, -1),
+          breadcrumbLanguages: crumbLanguages.slice(0, -1),
           content: ''
         });
         // Append one chapter at a time so a long article does not become one
         // multi-second indexing task on a slower device. The document store
-        // (title/route/breadcrumbs) stays intact across these partial appends.
+        // (title/route/breadcrumbs/language) stays intact across these partial appends.
         for (const content of pageParts) {
           pageIndex.append({id: pageId, content});
           await yieldIfNeeded();
@@ -171,7 +177,7 @@
   /**
    * Run the actual FlexSearch query and return sorted, deduped page groups.
    * @param {string} query
-   * @returns {Array<{id: string, route: string, title: string, breadcrumbs: string[], matches: Array<{id: string, route: string, title: string, content: string}>}>}
+   * @returns {Array<{id: string, route: string, title: string, language: string, breadcrumbs: string[], breadcrumbLanguages: string[], matches: Array<{id: string, route: string, title: string, content: string, language: string}>}>}
    */
   function performSearch(query) {
     const maxPageResults = parseInt('{{- site.Params.search.flexsearch.maxPageResults | default 20 -}}', 10);
@@ -206,7 +212,9 @@
         _page_tier: result.tier,
         route: result.doc.route,
         title: result.doc.title,
+        language: result.doc.language,
         breadcrumbs: result.doc.breadcrumbs || [],
+        breadcrumbLanguages: result.doc.breadcrumbLanguages || [],
         matches: []
       };
 
@@ -221,7 +229,8 @@
         group.matches.push({
           route: url,
           title,
-          content
+          content,
+          language: group.language
         });
       }
 
@@ -242,12 +251,15 @@
         id: `hextra-search-opt-${optionId++}`,
         route: res.route,
         title: res.title,
+        language: res.language,
         breadcrumbs: res.breadcrumbs,
+        breadcrumbLanguages: res.breadcrumbLanguages,
         matches: res.matches.map((match) => ({
           id: `hextra-search-opt-${optionId++}`,
           route: match.route,
           title: match.title,
-          content: match.content
+          content: match.content,
+          language: match.language
         }))
       }));
   }

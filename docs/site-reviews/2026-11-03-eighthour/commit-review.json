@@ -1,0 +1,66 @@
+{
+  "reviewed_at_utc": "2026-11-04T03:06:04.600289+00:00",
+  "base_revision": "00a50db1f60c5980c6d823a75c3b95383835ca9e",
+  "scope": "Only site optimization source/supporting docs plus its audit evidence. Initial Muon work remains uncommitted.",
+  "isolated_worktree": "/tmp/chase-commit-review-k8rn6rov/tree",
+  "overlap_resolution": "Applied only initial-to-final optimization delta onto HEAD using a clean three-way merge for AGENTS.md and docs/blog-editorial-review.json.",
+  "overlap_candidate_sha256": {
+    "AGENTS.md": "c49ed08f164cf164f608cd0913205af943ecebf67bcf18f1a35edd05c58e37cf",
+    "docs/blog-editorial-review.json": "94b3abaa91d21670397f3432b727f0310e4e86f499cd63348b59b2623a8a5b9d"
+  },
+  "production_validation": {
+    "reviewed_posts": 98,
+    "learning_paths": 11,
+    "acceptance_checks": 604,
+    "blog_posting_schemas": 95,
+    "sharing_images": 57,
+    "shared_search_indexes": 2,
+    "classified_tags": 192,
+    "code_blocks": 643,
+    "syntax_checked_by_language": {
+      "bash": 272,
+      "json": 12,
+      "jsonc": 6,
+      "python": 216,
+      "sh": 10,
+      "xml": 1
+    },
+    "html_pages": 324,
+    "html_pages_checked": 324,
+    "local_references_checked": 33742,
+    "collection_pages_checked": 310,
+    "filter_indexes_checked": 10,
+    "errors": [],
+    "python_fragment_warnings": [],
+    "unrendered_math_warnings": []
+  },
+  "assets": {
+    "pinned_packages": 3,
+    "pinned_files": 29,
+    "active_pinned_packages": 2,
+    "native_image_viewers": 1,
+    "verified_integrity_assets": 27,
+    "html_pages_checked": 324,
+    "manifest_icons_checked": 2,
+    "theme_overrides": 17,
+    "core_renderer_overrides": 1,
+    "local_math_fonts": 20
+  },
+  "regression_results": {
+    "release_fixtures": 20,
+    "asset_reference_fixtures": 10,
+    "HTML_validator_fixtures": 6,
+    "RSS_base_variants": 2,
+    "RSS_URL_protection_cases": 66,
+    "RSS_entity_cases_per_variant": 2452,
+    "toc_variants": 6,
+    "search_oracle_queries": 400,
+    "compiled_Cpp_cases": 2028,
+    "seven_axis_branches": 256,
+    "CPU_embedding_cases": 54,
+    "figure_generators": "Transformer/diffusion/DDP all passed",
+    "article_filter": "95 public articles/11topics;passed"
+  },
+  "known_nonblocking_issue": "37 pre-existing pages overflow long formulas at200% A4 printing;math and CSS match initial build. Recorded in existing audit.",
+  "build_note": "These committed-source results supersede the optimization-worktree build counts for release purposes; the earlier audit also included existing pending Muon work."
+}

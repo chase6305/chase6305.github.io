@@ -1,0 +1,79 @@
+{
+  "scope": "Read-only consistency review; no source edits, CDP, builds or article-code execution.",
+  "confirmed_findings": [
+    {
+      "id": "softmax-figure-wrong-masked-sum",
+      "source_lines": [
+        324,
+        327,
+        362,
+        369
+      ],
+      "asset": "content/posts/ai/transformer-attention/assets/softmax-step-by-step.webp",
+      "asset_sha256": "dd95806bceeffb2b962c83e30793e93f88c46c19ab4aea4a0618a1afb809e356",
+      "observation": "The bottom-right green Sum=1 panel prints 0.731 + 0.249 + 0.000 = 1.000. The probability column in the same image correctly prints 0.269, as do the article formula and code output.",
+      "minimal_counterexample": "0.731 + 0.249 + 0.000 = 0.980. Exact softmax([2,1,-infinity]) is approximately [0.73105858,0.26894142,0].",
+      "impact": "A displayed hand-calculation contradicts the probability column and claimed normalization.",
+      "minimal_resolution": "Correct the figure's 0.249 to 0.269, retaining the existing numerical example and scope."
+    },
+    {
+      "id": "MHA-figure-missing-triplet-paths-and-head-width",
+      "source_lines": [
+        426,
+        429,
+        435,
+        464,
+        466,
+        470
+      ],
+      "asset": "content/posts/ai/transformer-attention/assets/multi-head-attention-flow.webp",
+      "asset_sha256": "3f8d8f19aae679ead0f934ddf810aa99a0ccf18239d571ca362ef8e47c81f811",
+      "observation": "The image links only the Q split to Head 1 and K split to Head 2. The V split has no outgoing connection, while Head 3/4 input arrows begin in empty space. The bracket below a single-head output is labeled C, although the image uses H=4 and labels split width C/4. Concat is drawn as vertically stacked head blocks despite the input/output matrices using horizontal C features.",
+      "minimal_counterexample": "For T=3,C=8,H=4, every head must receive Q_h,K_h,V_h of shape [3,2], and each head outputs [3,2]. Concatenating features yields [3,8]; stacking token axes would yield [12,2].",
+      "impact": "The figure does not supply the complete Q/K/V-to-each-head route claimed by line 435 and gives the wrong per-head output width. Its concat layout also obscures the feature axis preserved by the prose and code.",
+      "minimal_resolution": "Show the three split streams reaching every head and feature-axis concatenation; label individual head output C/4. Preserve the code, tensor definitions, existing figure number and scientific scope."
+    }
+  ],
+  "manual_candidates": [
+    {
+      "id": "local-column-vector-notation-with-global-row-convention",
+      "source_lines": [
+        26,
+        699,
+        704,
+        705,
+        1174,
+        1318,
+        1921
+      ],
+      "observation": "The opening declares row-vector/batched formulas XW^T+b. FFN, SwiGLU, MoE router and scalar scoring examples use the familiar column-vector notation without explicitly stating a local convention switch.",
+      "minimal_counterexample": "With declared row x of shape [1,2] and W1 [3,2], written W1*x is dimensionally invalid; x*W1^T yields [1,3]. The same FFN formula is valid when local x is a [2,1] column.",
+      "classification": "Notation scope candidate, not evidence that the implementation or mathematical operation is wrong.",
+      "minimal_resolution_if_desired": "State the local column-vector convention or consistently transpose the affected equations."
+    },
+    {
+      "id": "introductory-MHA-cost-table-cache-ambiguity",
+      "source_lines": [
+        169,
+        474,
+        484,
+        489,
+        1061
+      ],
+      "observation": "The introductory table says multi-head attention has larger compute and cache, while later sections hold C=H*Dh fixed and correctly distinguish attention activation storage from KV cache.",
+      "minimal_counterexample": "At fixed C=8,L=1,B=1,Tcache=16 and two bytes per element, H=1 and H=4 both require 512 KV bytes because H*Dh=C. Explicit [B,H,T,T] attention activation storage can nevertheless grow with H.",
+      "classification": "Ambiguous comparison baseline/meaning of cache; do not classify as a universal algorithm error.",
+      "minimal_resolution_if_desired": "Specify that intermediate attention-weight storage may grow, or state the comparison assumptions."
+    }
+  ],
+  "transformer_arithmetic_checks": 12,
+  "metrics_result": "no confirmed inconsistencies found",
+  "metrics_arithmetic_groups": 34,
+  "metrics_actual_figures_viewed": 7,
+  "sources": [
+    "transformer-agent/sources.json",
+    "transformer-agent/findings.json",
+    "transformer-agent/arithmetic.json",
+    "metrics-agent/review.json"
+  ]
+}

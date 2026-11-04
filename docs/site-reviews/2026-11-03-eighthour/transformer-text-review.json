@@ -1,0 +1,162 @@
+{
+  "result": "passed",
+  "blocking_findings": [],
+  "checks": [
+    {
+      "name": "all_46_code_fences_are_byte_identical",
+      "passed": true,
+      "count": 46
+    },
+    {
+      "name": "fence_inventory_is_complete",
+      "passed": true
+    },
+    {
+      "name": "entire_front_matter_unchanged",
+      "passed": true
+    },
+    {
+      "name": "all_headings_unchanged",
+      "passed": true
+    },
+    {
+      "name": "explicit_anchors_unchanged",
+      "passed": true
+    },
+    {
+      "name": "original_acceptance_section_unchanged",
+      "passed": true
+    },
+    {
+      "name": "intro_allows_explicit_local_column_convention",
+      "passed": true
+    },
+    {
+      "name": "FFN_formula_and_row_shape_are_landed",
+      "passed": true
+    },
+    {
+      "name": "FFN_weight_shapes_are_unchanged",
+      "passed": true
+    },
+    {
+      "name": "SwiGLU_two_row_branches_and_output_are_landed",
+      "passed": true
+    },
+    {
+      "name": "router_row_formula_is_landed",
+      "passed": true
+    },
+    {
+      "name": "single_vector_scoring_convention_is_explicit",
+      "passed": true
+    },
+    {
+      "name": "dot_product_variance_text_uses_component_sum",
+      "passed": true
+    },
+    {
+      "name": "introductory_cost_table_no_longer_conflates_KV_cache_and_head_count",
+      "passed": true
+    },
+    {
+      "name": "new_KV_paragraph_has_fixed_C_and_per_layer_scope",
+      "passed": true
+    },
+    {
+      "name": "rectangular_FFN_with_bias_keeps_old_column_operation_and_row_code_semantics",
+      "passed": true,
+      "x_shape": [
+        1,
+        2
+      ],
+      "W1_shape": [
+        3,
+        2
+      ],
+      "W2_shape": [
+        2,
+        3
+      ],
+      "output": [
+        [
+          4.649172033289113,
+          5.967817115800437
+        ]
+      ]
+    },
+    {
+      "name": "rectangular_SwiGLU_preserves_gate_value_and_down_projection",
+      "passed": true,
+      "output": [
+        [
+          8.5731671414019,
+          12.096355453313429
+        ]
+      ]
+    },
+    {
+      "name": "router_shape_and_logits_preserved",
+      "passed": true,
+      "input": [
+        1,
+        2
+      ],
+      "Wr": [
+        3,
+        2
+      ],
+      "output": [
+        1,
+        3
+      ]
+    },
+    {
+      "name": "fixed_C_KV_identity_is_exact",
+      "passed": true,
+      "elements_by_heads": {
+        "1": 960,
+        "2": 960,
+        "3": 960,
+        "4": 960,
+        "6": 960,
+        "8": 960,
+        "12": 960,
+        "16": 960,
+        "24": 960,
+        "48": 960
+      }
+    },
+    {
+      "name": "new_softmax_caption_matches_independent_probabilities",
+      "passed": true
+    },
+    {
+      "name": "new_MHA_caption_matches_article_configuration_and_feature_concat",
+      "passed": true
+    },
+    {
+      "name": "new_figure_references_are_exactly_the_expected_two",
+      "passed": true
+    },
+    {
+      "name": "old_WebP_URL_resources_are_retained",
+      "passed": true
+    },
+    {
+      "name": "Transformer_acceptance_record_only_updates_review_date",
+      "passed": true
+    },
+    {
+      "name": "article_did_not_change_during_review",
+      "passed": true
+    }
+  ],
+  "before_sha256": "9a98abc1ac63735e5a8f002601ddbb62f8558d39f91d2b3a529c05befaf3e277",
+  "after_sha256": "d9ae135b00b8d8b065569eb36257a9760148241daf7d695c8774081916d81ec0",
+  "unchanged_code_fences": 46,
+  "limitations": [
+    "The replacement SVG files and rendered output are deliberately outside this text-only review."
+  ],
+  "scope": "Read-only current-source diff and independent shape/arithmetic checks; no source edits, Hugo build or CDP."
+}
