@@ -2,8 +2,13 @@
   "files": [
     {
       "path": "content/posts/ai/muon-optimizer/README.txt",
-      "bytes": 5862,
-      "sha256": "84e0ae2eb177c4e6116c1c618dee8e8f47d6a63e0ac2120f17def76e94c4bf5b"
+      "bytes": 7594,
+      "sha256": "bfc9791991a829cd9ac4b19712b26a5752058687f5a1bccf080ed184a361fc05"
+    },
+    {
+      "path": "content/posts/ai/muon-optimizer/assets/gradient-noise-reference.json",
+      "bytes": 668,
+      "sha256": "66d4148bc616c19039e43858095b8c573c146f6ffae7a15b15e2ba6958f2450e"
     },
     {
       "path": "content/posts/ai/muon-optimizer/assets/math-reference.json",
@@ -51,9 +56,14 @@
       "sha256": "3442cd6eed4217b8d520c785945084d2bbc05e3f69ee05144a5139646b36437a"
     },
     {
+      "path": "content/posts/ai/muon-optimizer/gradient_noise.py",
+      "bytes": 8512,
+      "sha256": "a80d2daad6ed6ad06fc4ce01622a9fa9937593484fdba6b1838e190d5693209a"
+    },
+    {
       "path": "content/posts/ai/muon-optimizer/index.md",
-      "bytes": 38170,
-      "sha256": "49350901c4498111ec97bd8e641960f7b45751f9e59e1069c5f35634000b9a10"
+      "bytes": 38543,
+      "sha256": "4db50e55daf15e94f7a3d85381522e795df91f0584eb1b26064abd7a9d4c7f53"
     },
     {
       "path": "content/posts/ai/muon-optimizer/make_figures.py",
@@ -72,8 +82,8 @@
     },
     {
       "path": "content/posts/ai/muon-optimizer/muon-examples.zip",
-      "bytes": 35422,
-      "sha256": "a3539590aa9302a345e7bff334d1e40099b7872a35209b61e16f9c1e20d782fd"
+      "bytes": 42264,
+      "sha256": "e7d304b09e8c3434d0ff0964d5295e891cad3cf4c4df14ff03342a0dd670af9b"
     },
     {
       "path": "content/posts/ai/muon-optimizer/muon_math.py",
@@ -147,8 +157,8 @@
     },
     {
       "path": "content/posts/ai/muon-learning-rate-batch-size/index.md",
-      "bytes": 34264,
-      "sha256": "bff416e0eb93c556ba343af802028cad5590683a514d49805fc94dd6cf8e299b"
+      "bytes": 37617,
+      "sha256": "707c2afd39f43a5a614a740c2ef12272c723987421fec6935afd8440962d0d18"
     },
     {
       "path": "content/posts/ai/muon-learning-rate-batch-size/make_figures.py",
@@ -177,13 +187,18 @@
     },
     {
       "path": "scripts/test_muon_articles.py",
-      "bytes": 22406,
-      "sha256": "22f3f258ed6e321f7f6afd2f67c0b58a3ea2e9fc80c6ce290435a2d944135d42"
+      "bytes": 23894,
+      "sha256": "ab5dd8624adbb9064818b320a7a3b73344ddba4116798aa97f55569f5faea587"
     },
     {
       "path": "scripts/test_muon_training.py",
       "bytes": 6159,
       "sha256": "efce83735025baafca544871923b90cd2171a5a8117e12c63c031f1c5ccbf548"
+    },
+    {
+      "path": "scripts/test_muon_noise.py",
+      "bytes": 5612,
+      "sha256": "64538dbe787d168921047272f66a685ed57dbaa9ef7c61c34696282d1c1fd837"
     },
     {
       "path": "scripts/test_muon_batch.cjs",
@@ -192,8 +207,8 @@
     },
     {
       "path": "scripts/package_muon_examples.py",
-      "bytes": 5838,
-      "sha256": "e292345f8a3ed5ef9d2d590588f8b9e5f684bc2ff7988914adbc234a8a32ff12"
+      "bytes": 6128,
+      "sha256": "a2d4c573a83afaa0d5ca4a2d76856dcfd2a099c92dfb3e444b8cd207f000507d"
     }
   ]
 }

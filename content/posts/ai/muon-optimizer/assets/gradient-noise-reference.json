@@ -1,0 +1,21 @@
+{
+  "batch_count": 64,
+  "batch_size": 16,
+  "dataset_rows": 512,
+  "layer": "hidden.weight",
+  "parameter_shape": [
+    12,
+    12
+  ],
+  "sampling": "iid-with-replacement",
+  "torch_recorded": "2.14.1+cpu",
+  "model_parameter_sha256": "382ca854dc3af9d6dccbfa7641a0041b8fe262ec9439965af856c96e725e87c8",
+  "observed_batch_gradient_variance": 0.029394385389004844,
+  "observed_mean_gradient_power": 0.08157179512160333,
+  "estimate": {
+    "signal": 0.08111250784990012,
+    "single_sample_noise": 0.4703101662240775,
+    "critical_batch_estimate": 5.7982446689281675
+  },
+  "scope": "fixed synthetic model; raw gradients before momentum or NS; no optimal-LR claim"
+}

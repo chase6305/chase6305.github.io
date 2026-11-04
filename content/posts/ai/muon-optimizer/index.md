@@ -32,6 +32,7 @@ related_posts:
 | 0.2 与 Weight Decay 从哪里来 | [Moonlight 的改动](#moonlight) |
 | 怎么分配参数和检查一次更新 | [参数分组与运行示例](#implementation) |
 | 想直接运行一个完整小模型 | [Muon 与 AdamW 联合训练](#toy-training)、[完整下载包](#examples) |
+| 想记录梯度并估计噪声尺度 | [固定参数位置的采集例子](../muon-learning-rate-batch-size/#noise-capture) |
 | QK-Clip 究竟裁剪什么 | [注意力分数与权重缩放](#qk-clip) |
 {.table-readable}
 
@@ -62,7 +63,7 @@ $$
 
 第二行分别对应普通动量与一种 Nesterov 形式；$s(W)$ 是后文讨论的尺寸缩放。这里的 Weight Decay 是独立的乘法收缩，不能先把 $\lambda W$ 加入梯度，再一起送入非线性的极分解。
 
-有些实现改用 EMA：$M_t=\beta M_{t-1}+(1-\beta)G_t$。从零状态开始、固定 $\beta$ 时，两种动量只差固定的正比例；若 Nesterov 也一致换算，理想极分解会消去这个比例。固定 $\varepsilon$、有限精度和动态变更动量时，仍应逐行核对实现，而不是仅对照变量名。
+有些实现改用指数移动平均（EMA）：$M_t=\beta M_{t-1}+(1-\beta)G_t$。从零状态开始、固定 $\beta$ 时，两种动量只差固定的正比例；若 Nesterov 也一致换算，理想极分解会消去这个比例。固定 $\varepsilon$、有限精度和动态变更动量时，仍应逐行核对实现，而不是仅对照变量名。
 
 ## 2. 为什么是谱范数下的最速下降 {#geometry}
 
@@ -87,7 +88,7 @@ $$
 \min_{\|D\|_2\le\eta}\langle G,D\rangle.
 $$
 
-把非零奇异值对应的紧致 SVD 写为 $G=U_r\Sigma_rV_r^\top$。谱范数与核范数的对偶关系给出：
+把非零奇异值对应的紧致奇异值分解（SVD）写为 $G=U_r\Sigma_rV_r^\top$。谱范数与核范数的对偶关系给出：
 
 $$
 \langle G,D\rangle\ge-\|G\|_*\|D\|_2
@@ -168,7 +169,7 @@ $$
 
 ### 3.1 从矩阵多项式变成标量谱映射
 
-反复做 SVD 的代价较高。Muon 使用以矩阵乘法为主的多项式迭代。先按 Frobenius 范数归一化，再做：
+反复做 SVD 的代价较高。Muon 使用以矩阵乘法为主的 Newton–Schulz（NS）多项式迭代。先按 Frobenius 范数归一化，再做：
 
 $$
 \begin{aligned}
@@ -256,7 +257,7 @@ $$
 | 朴素版 | $1$ | 不做额外尺寸缩放 |
 | Jordan 约定 | $\sqrt{\max(1,d_{\rm out}/d_{\rm in})}$ | 输出维度小于输入维度时不继续缩小 |
 | 指南中的 μP 形式 | $\sqrt{d_{\rm out}/d_{\rm in}}$ | 保留输入、输出维度的非对称性 |
-| Moonlight 约定 | $0.2\sqrt{\max(d_{\rm out},d_{\rm in})}$ | 以更新 RMS 对齐为出发点 |
+| Moonlight 约定 | $0.2\sqrt{\max(d_{\rm out},d_{\rm in})}$ | 以更新均方根（RMS）对齐为出发点 |
 {.table-readable}
 
 这里的“μP 形式”指表中的尺寸因子，不代表仅改变这一个系数，就自动完成了整套 maximal update parametrization；初始化、其他参数组及模型参数化仍需一起定义。
@@ -501,6 +502,8 @@ python -B toy_training.py --batch 32 --microbatch 7
 
 输出会列出参数分组、训练与留出集 MSE、最后一步的更新 RMS，以及恢复前后的参数差异。这些数值只验证小例子的接线和状态管理，不用于宣称 Muon 比 AdamW 更好。本文使用的 CPU 环境与运行方法见[数值复算](#examples)。
 
+同一个小模型还可以固定在初始化位置，用于[采集原始梯度并估计噪声](../muon-learning-rate-batch-size/#noise-capture)。这个采集例子不执行训练更新，便于把梯度统计与优化器状态分开核对。
+
 ## 7. QK-Clip 为什么直接作用于权重 {#qk-clip}
 
 ### 7.1 监控的是 softmax 前的注意力分数
@@ -523,7 +526,7 @@ QK-Clip 监控有效 token 对、样本及必要的并行分片上的最大分�
 
 若两个头的最大分数是 200、50，目标阈值为 100，只应处理第一个头。对全层统一缩放会把第二个头也压到 25，产生额外干预。
 
-MLA 还需区分头独立与共享的部分。若分数由 content 项与 rotary 项相加组成，报告采用：
+多头潜在注意力（Multi-head Latent Attention，MLA）还需区分头独立与共享的部分。若分数由 content 项与 rotary 项相加组成，报告采用：
 
 $$
 \begin{aligned}
@@ -546,7 +549,7 @@ $$
 
 例如，旧统计为 200，优化器更新后同一输入的未裁剪最大分数变成 400，仍按旧统计取 $\gamma=1/2$，缩放后是 200 而非 100。精确的同比例结论必须保留“测量与缩放基于同一快照”的条件。
 
-实现时还要确认是否包含 $1/\sqrt{d_h}$、是否排除 mask 位置、如何跨分片归约，以及共享 key 的分组关系。GQA 的共享 key 也不能被多个 query 头按不同比例重复缩放。对带 bias 或额外加性分数的结构，缩放权重是否仍让整个 logit 同比变化，需要重新推导。
+实现时还要确认是否包含 $1/\sqrt{d_h}$、是否排除 mask 位置、如何跨分片归约，以及共享 key 的分组关系。分组查询注意力（GQA）的共享 key 也不能被多个 query 头按不同比例重复缩放。对带 bias 或额外加性分数的结构，缩放权重是否仍让整个 logit 同比变化，需要重新推导。
 
 报告中的 $\tau=100$ 是其训练配置，不是任意架构都应使用的常数；关于更易发生 logit 增长的谱解释，也应保留为作者提出的机制假设，而不是仅由 Muon 定义就能推出的定理。
 

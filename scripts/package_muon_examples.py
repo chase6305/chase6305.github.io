@@ -19,14 +19,16 @@ FILES = [
     ("muon-download.json", OPTIMIZER/"muon-download.json"),
     *[(name, OPTIMIZER/name) for name in ("requirements-numpy.txt", "requirements-torch.txt", "requirements-plots.txt")],
     *[("optimizer/"+name, OPTIMIZER/name) for name in (
-        "muon_math.py", "matrix_update.py", "toy_training.py", "make_figures.py",
+        "muon_math.py", "matrix_update.py", "toy_training.py", "gradient_noise.py", "make_figures.py",
         "assets/math-reference.json", "assets/matrix-ns-reference.json",
-        "assets/matrix-polar-reference.json", "assets/toy-training-reference.json")],
+        "assets/matrix-polar-reference.json", "assets/toy-training-reference.json",
+        "assets/gradient-noise-reference.json")],
     *[("batch/"+name, BATCH/name) for name in (
         "batch_math.py", "mean_field_probe.py", "make_figures.py", "assets/math-reference.json",
         "assets/batch-interactive-default.json", "assets/mean-field-probe-reference.json")],
     ("checks/test_muon_articles.py", ROOT/"scripts/test_muon_articles.py"),
     ("checks/test_muon_training.py", ROOT/"scripts/test_muon_training.py"),
+    ("checks/test_muon_noise.py", ROOT/"scripts/test_muon_noise.py"),
 ]
 
 
@@ -76,6 +78,7 @@ def main():
             subprocess.run(command, cwd=folder, check=True, timeout=45)
             if args.torch:
                 subprocess.run([sys.executable, "-B", "checks/test_muon_training.py"], cwd=folder, check=True, timeout=90)
+                subprocess.run([sys.executable, "-B", "checks/test_muon_noise.py"], cwd=folder, check=True, timeout=90)
             checks = [("optimizer/muon_math.py", "optimizer/assets/math-reference.json", []),
                       ("batch/batch_math.py", "batch/assets/math-reference.json", [])]
             if args.numpy:
@@ -85,7 +88,7 @@ def main():
                 actual = json.loads(subprocess.check_output([sys.executable, "-B", script]+flags, cwd=folder, timeout=30))
                 if not equivalent(actual, json.loads((folder/reference).read_text())):
                     raise SystemExit("Muon numerical reference is stale: " + reference)
-            for relative in ("optimizer/muon_math.py", "optimizer/matrix_update.py", "optimizer/toy_training.py", "batch/batch_math.py", "batch/mean_field_probe.py"):
+            for relative in ("optimizer/muon_math.py", "optimizer/matrix_update.py", "optimizer/toy_training.py", "optimizer/gradient_noise.py", "batch/batch_math.py", "batch/mean_field_probe.py"):
                 source = folder/relative
                 saved = source.read_bytes()
                 fallback = Path(parent)/"fallback"

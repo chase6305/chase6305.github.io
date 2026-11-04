@@ -6,7 +6,7 @@
       "size": 100,
       "theme": "light",
       "paper": "a4",
-      "htmlSha256": "c2dd80a1783c09ab2e42398220f3c7dfcfd3957259e82041750f9efde0a3989c",
+      "htmlSha256": "f5f35f37d8e1acfbd3f8ce7bd5940c2a65d4835b0b6f1d20c07e01ea116917f8",
       "sourceCheck": {
         "headings": {
           "same": true,
@@ -25,7 +25,7 @@
           "count": 5
         }
       },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-optimizer-true-100-light-a4.pdf",
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/noise-final-exports/muon-optimizer-true-100-light-a4.pdf",
       "pages": 21,
       "tagged": true,
       "restored": {
@@ -51,7 +51,7 @@
       "size": 200,
       "theme": "dark",
       "paper": "a4",
-      "htmlSha256": "c2dd80a1783c09ab2e42398220f3c7dfcfd3957259e82041750f9efde0a3989c",
+      "htmlSha256": "f5f35f37d8e1acfbd3f8ce7bd5940c2a65d4835b0b6f1d20c07e01ea116917f8",
       "sourceCheck": {
         "headings": {
           "same": true,
@@ -70,7 +70,7 @@
           "count": 5
         }
       },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-optimizer-true-200-dark-a4.pdf",
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/noise-final-exports/muon-optimizer-true-200-dark-a4.pdf",
       "pages": 54,
       "tagged": true,
       "restored": {
@@ -96,7 +96,7 @@
       "size": 100,
       "theme": "warm",
       "paper": "a4",
-      "htmlSha256": "c2dd80a1783c09ab2e42398220f3c7dfcfd3957259e82041750f9efde0a3989c",
+      "htmlSha256": "f5f35f37d8e1acfbd3f8ce7bd5940c2a65d4835b0b6f1d20c07e01ea116917f8",
       "sourceCheck": {
         "headings": {
           "same": true,
@@ -115,7 +115,7 @@
           "count": 5
         }
       },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-optimizer-false-100-warm-a4.pdf",
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/noise-final-exports/muon-optimizer-false-100-warm-a4.pdf",
       "pages": 21,
       "tagged": true,
       "restored": {
@@ -141,7 +141,7 @@
       "size": 200,
       "theme": "warm",
       "paper": "letter",
-      "htmlSha256": "c2dd80a1783c09ab2e42398220f3c7dfcfd3957259e82041750f9efde0a3989c",
+      "htmlSha256": "f5f35f37d8e1acfbd3f8ce7bd5940c2a65d4835b0b6f1d20c07e01ea116917f8",
       "sourceCheck": {
         "headings": {
           "same": true,
@@ -160,7 +160,7 @@
           "count": 5
         }
       },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-optimizer-false-200-warm-letter.pdf",
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/noise-final-exports/muon-optimizer-false-200-warm-letter.pdf",
       "pages": 56,
       "tagged": true,
       "restored": {
@@ -186,27 +186,27 @@
       "size": 100,
       "theme": "light",
       "paper": "a4",
-      "htmlSha256": "29769f706909b4b391763adb0d957cbb1afd14c97c60c4f6eeadd19604b6768b",
+      "htmlSha256": "de5e036556d307ed78f1a9620bdff6f9d9fcd8865fc4cc16a3ead4b306a19696",
       "sourceCheck": {
         "headings": {
           "same": true,
-          "count": 32
+          "count": 33
         },
         "math": {
           "same": true,
-          "count": 179
+          "count": 189
         },
         "code": {
           "same": true,
-          "count": 1
+          "count": 3
         },
         "captions": {
           "same": true,
           "count": 5
         }
       },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-learning-rate-batch-size-true-100-light-a4.pdf",
-      "pages": 22,
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/noise-final-exports/muon-learning-rate-batch-size-true-100-light-a4.pdf",
+      "pages": 23,
       "tagged": true,
       "restored": {
         "scrollError": 0,
@@ -221,7 +221,10 @@
         "EMA",
         "0.68269",
         "mean_field_probe.py",
-        "保持累计收缩的衰减系数"
+        "保持累计收缩的衰减系数",
+        "gradient_noise.py",
+        "2.9091",
+        "5.7982"
       ],
       "scriptExecutionDisabledEntireCase": false
     },
@@ -231,116 +234,26 @@
       "size": 200,
       "theme": "dark",
       "paper": "a4",
-      "htmlSha256": "29769f706909b4b391763adb0d957cbb1afd14c97c60c4f6eeadd19604b6768b",
+      "htmlSha256": "de5e036556d307ed78f1a9620bdff6f9d9fcd8865fc4cc16a3ead4b306a19696",
       "sourceCheck": {
         "headings": {
           "same": true,
-          "count": 32
+          "count": 33
         },
         "math": {
           "same": true,
-          "count": 179
+          "count": 189
         },
         "code": {
           "same": true,
-          "count": 1
+          "count": 3
         },
         "captions": {
           "same": true,
           "count": 5
         }
       },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-learning-rate-batch-size-true-200-dark-a4.pdf",
-      "pages": 55,
-      "tagged": true,
-      "restored": {
-        "scrollError": 0,
-        "focus": true,
-        "disclosures": true
-      },
-      "requiredPhrases": [
-        "BatchSize",
-        "0.02199",
-        "batch_math.py",
-        "Hessian",
-        "EMA",
-        "0.68269",
-        "mean_field_probe.py",
-        "保持累计收缩的衰减系数"
-      ],
-      "scriptExecutionDisabledEntireCase": false
-    },
-    {
-      "route": "/posts/ai/muon-learning-rate-batch-size/",
-      "scripts": false,
-      "size": 100,
-      "theme": "warm",
-      "paper": "a4",
-      "htmlSha256": "29769f706909b4b391763adb0d957cbb1afd14c97c60c4f6eeadd19604b6768b",
-      "sourceCheck": {
-        "headings": {
-          "same": true,
-          "count": 32
-        },
-        "math": {
-          "same": true,
-          "count": 179
-        },
-        "code": {
-          "same": true,
-          "count": 1
-        },
-        "captions": {
-          "same": true,
-          "count": 5
-        }
-      },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-learning-rate-batch-size-false-100-warm-a4.pdf",
-      "pages": 21,
-      "tagged": true,
-      "restored": {
-        "scrollError": 0,
-        "focus": true,
-        "disclosures": true
-      },
-      "requiredPhrases": [
-        "BatchSize",
-        "0.02199",
-        "batch_math.py",
-        "Hessian",
-        "EMA",
-        "0.68269",
-        "mean_field_probe.py",
-        "保持累计收缩的衰减系数"
-      ],
-      "scriptExecutionDisabledEntireCase": true
-    },
-    {
-      "route": "/posts/ai/muon-learning-rate-batch-size/",
-      "scripts": false,
-      "size": 200,
-      "theme": "warm",
-      "paper": "letter",
-      "htmlSha256": "29769f706909b4b391763adb0d957cbb1afd14c97c60c4f6eeadd19604b6768b",
-      "sourceCheck": {
-        "headings": {
-          "same": true,
-          "count": 32
-        },
-        "math": {
-          "same": true,
-          "count": 179
-        },
-        "code": {
-          "same": true,
-          "count": 1
-        },
-        "captions": {
-          "same": true,
-          "count": 5
-        }
-      },
-      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/final-exports/muon-learning-rate-batch-size-false-200-warm-letter.pdf",
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/noise-final-exports/muon-learning-rate-batch-size-true-200-dark-a4.pdf",
       "pages": 58,
       "tagged": true,
       "restored": {
@@ -356,7 +269,106 @@
         "EMA",
         "0.68269",
         "mean_field_probe.py",
-        "保持累计收缩的衰减系数"
+        "保持累计收缩的衰减系数",
+        "gradient_noise.py",
+        "2.9091",
+        "5.7982"
+      ],
+      "scriptExecutionDisabledEntireCase": false
+    },
+    {
+      "route": "/posts/ai/muon-learning-rate-batch-size/",
+      "scripts": false,
+      "size": 100,
+      "theme": "warm",
+      "paper": "a4",
+      "htmlSha256": "de5e036556d307ed78f1a9620bdff6f9d9fcd8865fc4cc16a3ead4b306a19696",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 33
+        },
+        "math": {
+          "same": true,
+          "count": 189
+        },
+        "code": {
+          "same": true,
+          "count": 3
+        },
+        "captions": {
+          "same": true,
+          "count": 5
+        }
+      },
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/noise-final-exports/muon-learning-rate-batch-size-false-100-warm-a4.pdf",
+      "pages": 23,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "BatchSize",
+        "0.02199",
+        "batch_math.py",
+        "Hessian",
+        "EMA",
+        "0.68269",
+        "mean_field_probe.py",
+        "保持累计收缩的衰减系数",
+        "gradient_noise.py",
+        "2.9091",
+        "5.7982"
+      ],
+      "scriptExecutionDisabledEntireCase": true
+    },
+    {
+      "route": "/posts/ai/muon-learning-rate-batch-size/",
+      "scripts": false,
+      "size": 200,
+      "theme": "warm",
+      "paper": "letter",
+      "htmlSha256": "de5e036556d307ed78f1a9620bdff6f9d9fcd8865fc4cc16a3ead4b306a19696",
+      "sourceCheck": {
+        "headings": {
+          "same": true,
+          "count": 33
+        },
+        "math": {
+          "same": true,
+          "count": 189
+        },
+        "code": {
+          "same": true,
+          "count": 3
+        },
+        "captions": {
+          "same": true,
+          "count": 5
+        }
+      },
+      "file": "/tmp/chase-muon-fivehour-20261103-7235a3f5/noise-final-exports/muon-learning-rate-batch-size-false-200-warm-letter.pdf",
+      "pages": 61,
+      "tagged": true,
+      "restored": {
+        "scrollError": 0,
+        "focus": true,
+        "disclosures": true
+      },
+      "requiredPhrases": [
+        "BatchSize",
+        "0.02199",
+        "batch_math.py",
+        "Hessian",
+        "EMA",
+        "0.68269",
+        "mean_field_probe.py",
+        "保持累计收缩的衰减系数",
+        "gradient_noise.py",
+        "2.9091",
+        "5.7982"
       ],
       "scriptExecutionDisabledEntireCase": true
     }

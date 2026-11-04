@@ -43,7 +43,7 @@ const routes = ['/posts/ai/muon-optimizer/','/posts/ai/muon-learning-rate-batch-
     await b.cdp('Emulation.setScriptExecutionDisabled', {value: false});
     const source = fs.readFileSync(path.join(__dirname, '../../../content'+route+'index.md'), 'utf8');
     const blocks = [...source.matchAll(/```(?:bash|python)\n([\s\S]*?)```/g)].map(m => m[1]);
-    for (const marker of (route.includes('batch-size') ? ['python3 -B batch_math.py'] : ['import torch','from matrix_update import step','muon_parameters =','--save-checkpoint run.pt','python3 -B muon_math.py','python3.12 -m venv .venv','requirements-torch.txt'])) {
+    for (const marker of (route.includes('batch-size') ? ['python3 -B batch_math.py','from batch_math import noise_estimate','--save-records gradients.json'] : ['import torch','from matrix_update import step','muon_parameters =','--save-checkpoint run.pt','python3 -B muon_math.py','python3.12 -m venv .venv','requirements-torch.txt'])) {
       const snippet = blocks.find(s => s.includes(marker)); assert(snippet);
       const expected = snippet.replace(/\n$/, '');
       for (const width of [320, 1440]) for (const size of [100, 200]) {
@@ -54,6 +54,8 @@ const routes = ['/posts/ai/muon-optimizer/','/posts/ai/muon-learning-rate-batch-
           window.__copies=[];Object.defineProperty(navigator,'clipboard',{configurable:true,value:{
             writeText:text=>{__copies.push(text);return new Promise(resolve=>{window.__finishCopy=resolve})}}});
           const block=[...document.querySelectorAll('.hextra-code-block')].find(e=>e.querySelector('code')?.textContent===${JSON.stringify(expected)});
+          if(!block)throw Error('Missing current code block');
+          for(let parent=block.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;
           window.__button=block.querySelector('.hextra-code-copy-btn');
           __button.scrollIntoView({block:'center'});__button.focus();})()`);
         await b.key('Enter', 'Enter', 13); await b.pause(70);

@@ -8,7 +8,7 @@ const {connect} = require('../../../scripts/lib/browser.cjs');
 const [base, portText, out] = process.argv.slice(2);
 const articles = [
  {slug:'muon-optimizer',focus:'.content a[href="#implementation"]',tokens:['geometry','implementation','qk-clip'],phrases:['Newton–Schulz','4096','12.8','muon_math.py','QK-Clip','toy_training.py','matrix_update.py','SHA-256']},
- {slug:'muon-learning-rate-batch-size',focus:'.content a[href="../muon-optimizer/"]',tokens:['mean-field','spectrum','weight-decay'],phrases:['BatchSize','0.02199','batch_math.py','Hessian','EMA','0.68269','mean_field_probe.py','保持累计收缩的衰减系数']},
+ {slug:'muon-learning-rate-batch-size',focus:'.content a[href="../muon-optimizer/"]',tokens:['mean-field','spectrum','weight-decay'],phrases:['BatchSize','0.02199','batch_math.py','Hessian','EMA','0.68269','mean_field_probe.py','保持累计收缩的衰减系数','gradient_noise.py','2.9091','5.7982']},
 ];
 (async () => {
   fs.mkdirSync(out, {recursive: true});

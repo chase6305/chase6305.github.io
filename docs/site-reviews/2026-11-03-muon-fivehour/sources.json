@@ -77,6 +77,11 @@
       "url": "https://proceedings.mlr.press/v80/gupta18a.html",
       "access": "Primary PMLR page inspected; instantaneous inverse-quarter identity also independently checked against SVD",
       "purpose": "Historical preconditioner accumulation versus the instantaneous polar factor"
+    },
+    {
+      "url": "https://docs.pytorch.org/docs/2.14/generated/torch.autograd.grad.html",
+      "access": "Versioned primary API inspected",
+      "purpose": "Returns selected gradients without accumulating into leaf .grad; checked against independent linear derivatives"
     }
   ],
   "cpu_wheel": {

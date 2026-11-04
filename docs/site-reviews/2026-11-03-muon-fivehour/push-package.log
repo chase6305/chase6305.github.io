@@ -1,0 +1,55 @@
+test_instantaneous_shampoo_identity_and_history (__main__.MatrixUpdateTests.test_instantaneous_shampoo_identity_and_history) ... ok
+test_normalization_without_squaring_extreme_entries (__main__.MatrixUpdateTests.test_normalization_without_squaring_extreme_entries) ... ok
+test_ns_scalar_oracle_and_transpose (__main__.MatrixUpdateTests.test_ns_scalar_oracle_and_transpose) ... ok
+test_rotated_directions_and_rank_selection (__main__.MatrixUpdateTests.test_rotated_directions_and_rank_selection) ... ok
+test_stateful_diagonal_update_and_input_preservation (__main__.MatrixUpdateTests.test_stateful_diagonal_update_and_input_preservation) ... ok
+test_zero_buffer_decay_and_rejected_shapes (__main__.MatrixUpdateTests.test_zero_buffer_decay_and_rejected_shapes) ... ok
+test_chunked_moments_against_direct_centered_sum (__main__.MeanFieldProbeTests.test_chunked_moments_against_direct_centered_sum) ... ok
+test_noise_free_polar_and_stable_ill_conditioned_signal (__main__.MeanFieldProbeTests.test_noise_free_polar_and_stable_ill_conditioned_signal) ... ok
+test_saved_gaussian_probe_reference (__main__.MeanFieldProbeTests.test_saved_gaussian_probe_reference) ... ok
+test_seed_and_chunk_size_preserve_the_distribution (__main__.MeanFieldProbeTests.test_seed_and_chunk_size_preserve_the_distribution) ... ok
+test_batch_ratio_and_limits (__main__.MuonArticleTests.test_batch_ratio_and_limits) ... ok
+test_decay_equal_sample_budget (__main__.MuonArticleTests.test_decay_equal_sample_budget) ... ok
+test_effective_counts_from_independent_sign_enumeration (__main__.MuonArticleTests.test_effective_counts_from_independent_sign_enumeration) ... ok
+test_exact_gaussian_sign_integral (__main__.MuonArticleTests.test_exact_gaussian_sign_integral) ... ok
+test_gaussian_integral_independent_quadrature (__main__.MuonArticleTests.test_gaussian_integral_independent_quadrature) ... ok
+test_invalid_inputs (__main__.MuonArticleTests.test_invalid_inputs) ... ok
+test_layout_and_rank (__main__.MuonArticleTests.test_layout_and_rank) ... ok
+test_local_budget_score_by_completed_square (__main__.MuonArticleTests.test_local_budget_score_by_completed_square) ... ok
+test_matrix_polynomial_svd_and_accumulation (__main__.MuonArticleTests.test_matrix_polynomial_svd_and_accumulation) ... ok
+test_momentum_as_explicit_filter_weights (__main__.MuonArticleTests.test_momentum_as_explicit_filter_weights) ... ok
+test_noise_estimator_exact_enumeration (__main__.MuonArticleTests.test_noise_estimator_exact_enumeration) ... ok
+test_normalization_conventions (__main__.MuonArticleTests.test_normalization_conventions) ... ok
+test_qk_bilinear_and_shared_key (__main__.MuonArticleTests.test_qk_bilinear_and_shared_key) ... ok
+test_same_parameter_update_after_conversion (__main__.MuonArticleTests.test_same_parameter_update_after_conversion) ... ok
+test_saved_gradient_record_without_ml_imports (__main__.MuonArticleTests.test_saved_gradient_record_without_ml_imports) ... ok
+test_scalar_response_decimal (__main__.MuonArticleTests.test_scalar_response_decimal) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 0.613s
+
+OK
+test_checkpoint_round_trip_and_missing_momentum (__main__.NativeMuonTrainingTests.test_checkpoint_round_trip_and_missing_momentum) ... ok
+test_cli_rejects_zero_instead_of_using_defaults (__main__.NativeMuonTrainingTests.test_cli_rejects_zero_instead_of_using_defaults) ... ok
+test_missing_gradient_and_explicit_zero (__main__.NativeMuonTrainingTests.test_missing_gradient_and_explicit_zero) ... ok
+test_nonlinear_gradients_before_ns (__main__.NativeMuonTrainingTests.test_nonlinear_gradients_before_ns) ... ok
+test_pinned_source (__main__.NativeMuonTrainingTests.test_pinned_source) ... ok
+test_real_process_resume_and_file_preservation (__main__.NativeMuonTrainingTests.test_real_process_resume_and_file_preservation) ... ok
+test_semantic_groups_and_shared_role_rejection (__main__.NativeMuonTrainingTests.test_semantic_groups_and_shared_role_rejection) ... ok
+test_uneven_microbatch_against_linear_derivative (__main__.NativeMuonTrainingTests.test_uneven_microbatch_against_linear_derivative) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 3.891s
+
+OK
+test_default_capture_and_recorded_reference (__main__.GradientNoiseTests.test_default_capture_and_recorded_reference) ... ok
+test_malformed_records_and_invalid_capture_settings (__main__.GradientNoiseTests.test_malformed_records_and_invalid_capture_settings) ... ok
+test_parameters_grads_and_rng_are_preserved (__main__.GradientNoiseTests.test_parameters_grads_and_rng_are_preserved) ... ok
+test_replay_without_any_site_packages_and_file_preservation (__main__.GradientNoiseTests.test_replay_without_any_site_packages_and_file_preservation) ... ok
+test_sample_mean_against_independent_linear_derivative (__main__.GradientNoiseTests.test_sample_mean_against_independent_linear_derivative) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.055s
+
+OK
+Muon download matches source; extracted checks passed

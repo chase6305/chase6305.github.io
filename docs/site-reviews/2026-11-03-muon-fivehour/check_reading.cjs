@@ -9,7 +9,7 @@ const articles = [
   {route: '/posts/ai/muon-optimizer/', anchors: ['update','geometry','newton-schulz','scaling','moonlight','implementation','qk-clip','examples',
     'cost','matrix-update-example','toy-training','fig-muon-toy-groups','fig-muon-update-flow','fig-muon-spectral-response','fig-muon-shape-scaling','fig-muon-qk-clip']},
   {route: '/posts/ai/muon-learning-rate-batch-size/', anchors: ['conventions','local-step','mean-field','scaling-rule','spectrum','momentum','weight-decay','accumulation','measurement','procedure',
-    'effective-batch','gaussian-sign-check','batch-calculator','local-budget','fig-muon-batch-budget','fig-muon-batch-clocks','fig-muon-batch-rule','fig-muon-anisotropy','fig-muon-curvature-counterexample']},
+    'effective-batch','gaussian-sign-check','noise-capture','batch-calculator','local-budget','fig-muon-batch-budget','fig-muon-batch-clocks','fig-muon-batch-rule','fig-muon-anisotropy','fig-muon-curvature-counterexample']},
 ];
 (async () => {
   fs.mkdirSync(out, {recursive: true});

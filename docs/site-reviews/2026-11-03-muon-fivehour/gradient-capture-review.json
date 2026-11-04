@@ -1,0 +1,35 @@
+{
+  "reviewed_on": "2026-11-03",
+  "collection": "gradient_noise.py at frozen initial toy model; 64 independent with-replacement batches of 16 rows",
+  "statistics": "raw Float32-autograd gradients, flattened per 12x12 hidden matrix; standard-library variance and corrected signal",
+  "verification": [
+    "independent linear derivative",
+    "parameters and existing .grad preserved",
+    "global RNG preserved by the collection function",
+    "record schema and exclusive file creation",
+    "isolated subprocess replay with -I -S and no third-party packages",
+    "complete independently extracted archive checks"
+  ],
+  "model_state": "The toy has no dropout or mutable running statistics; extending the collector requires matching the intended objective and state.",
+  "sampling": "Repeated IID outcomes are allowed; copying an existing gradient or replaying a file adds no observations.",
+  "interface_issue_fixed": "Native #noise-capture on details had top 0 behind the 64px nav. A standard h4 now has 96px scroll margin and native top approximately 96px.",
+  "first_probe": {
+    "batch_count": 64,
+    "batch_size": 16,
+    "dataset_rows": 512,
+    "layer": "hidden.weight",
+    "parameter_shape": [
+      12,
+      12
+    ],
+    "sampling": "iid-with-replacement",
+    "torch_recorded": "2.14.1+cpu",
+    "model_parameter_sha256": "382ca854dc3af9d6dccbfa7641a0041b8fe262ec9439965af856c96e725e87c8",
+    "estimate": {
+      "signal": 0.08111250784990012,
+      "single_sample_noise": 0.4703101662240775,
+      "critical_batch_estimate": 5.7982446689281675
+    },
+    "scope": "fixed synthetic model; raw gradients before momentum or NS; no optimal-LR claim"
+  }
+}

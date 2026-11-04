@@ -1,0 +1,10 @@
+test_default_capture_and_recorded_reference (__main__.GradientNoiseTests.test_default_capture_and_recorded_reference) ... ok
+test_malformed_records_and_invalid_capture_settings (__main__.GradientNoiseTests.test_malformed_records_and_invalid_capture_settings) ... ok
+test_parameters_grads_and_rng_are_preserved (__main__.GradientNoiseTests.test_parameters_grads_and_rng_are_preserved) ... ok
+test_replay_without_any_site_packages_and_file_preservation (__main__.GradientNoiseTests.test_replay_without_any_site_packages_and_file_preservation) ... ok
+test_sample_mean_against_independent_linear_derivative (__main__.GradientNoiseTests.test_sample_mean_against_independent_linear_derivative) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.063s
+
+OK

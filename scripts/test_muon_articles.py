@@ -39,6 +39,7 @@ batch = load("batch_math", "muon-learning-rate-batch-size")
 # A partial download must not silently pass by skipping its optional files.
 source_path("matrix_update", "muon-optimizer")
 source_path("toy_training", "muon-optimizer")
+source_path("gradient_noise", "muon-optimizer")
 source_path("mean_field_probe", "muon-learning-rate-batch-size")
 NUMPY = "--numpy" in sys.argv
 if NUMPY:
@@ -46,6 +47,31 @@ if NUMPY:
 
 
 class MuonArticleTests(unittest.TestCase):
+    def test_saved_gradient_record_without_ml_imports(self):
+        import tempfile
+        noise = load("gradient_noise", "muon-optimizer")
+        record = {
+            "format":"muon-gradient-records-v1", "sampling":"iid-with-replacement",
+            "layer":"constructed.matrix", "torch":"not-used-in-standard-library-fixture",
+            "parameter_shape":[2,1], "dataset_rows":32, "batch_size":8, "batch_count":4,
+            "parameter_sha256_before":"0"*64, "parameter_sha256_after":"0"*64,
+            "gradients":[[3,1],[1,3],[3,3],[1,1]],
+            "sampled_indices":[list(range(8*k,8*k+8)) for k in range(4)],
+        }
+        result = noise.summarize(record)
+        self.assertAlmostEqual(result["observed_batch_gradient_variance"],8/3)
+        self.assertAlmostEqual(result["observed_mean_gradient_power"],8)
+        self.assertAlmostEqual(result["estimate"]["signal"],22/3)
+        self.assertAlmostEqual(result["estimate"]["single_sample_noise"],64/3)
+        self.assertAlmostEqual(result["estimate"]["critical_batch_estimate"],32/11)
+        with tempfile.TemporaryDirectory(prefix="muon-gradient-record-") as folder:
+            target = Path(folder)/"record.json"
+            noise.save_records(target,record)
+            before = target.read_bytes()
+            with self.assertRaises(FileExistsError):
+                noise.save_records(target,record)
+            self.assertEqual(target.read_bytes(),before)
+
     def test_scalar_response_decimal(self):
         with localcontext() as ctx:
             ctx.prec = 65

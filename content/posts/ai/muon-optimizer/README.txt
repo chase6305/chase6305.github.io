@@ -96,7 +96,34 @@ steps 是累计完成的更新次数。保存拒绝覆盖任何已有文件；�
 还需要恢复对应随机数、scaler 和 scheduler 等状态。仅保存本例的
 采样器状态不足以覆盖所有随机来源。
 
-4. 可选重画图表
+4. 固定参数位置采集梯度
+-----------------------
+
+安装过同一 CPU PyTorch 环境后，可在解压目录运行：
+
+  .venv/bin/python -B optimizer/gradient_noise.py --save-records gradients.json
+  python3 -I -S -B optimizer/gradient_noise.py --replay gradients.json
+  .venv/bin/python -B checks/test_muon_noise.py
+
+默认固定在上述模型的初始化位置，记录 hidden.weight 的 64 份梯度；
+每份独立、有放回地抽取 16 行数据，损失同时平均行与输出坐标。
+这里 K=64 是重复观测次数，b=16 是每份记录的样本数，不执行训练更新。
+
+autograd.grad 返回原始梯度，不向已有 .grad 累积；采集前后核对全部
+参数指纹。Float32 模型求导后才转换成 Python 浮点数做统计，转换
+不会把前向/反向变成 Float64。模型没有 dropout 或运行统计；扩展到
+其他模型时，还需固定相应状态并明确采样与损失目标。
+
+记录含参数形状、抽样索引、原始梯度和参数指纹。保存拒绝覆盖已有
+文件；回放只读，不重新采样。第二条命令禁用所有第三方包，统计
+仍可复算。这个脚本需要完整包中的本地 batch/batch_math.py；
+不会搜索父级 checkout 或 PYTHONPATH 来补齐缺失文件。
+
+默认输出见 optimizer/assets/gradient-noise-reference.json。它是当前
+矩阵、当前参数位置的探索性噪声尺度估计，不自动确定最优学习率。
+记录格式的检查也不能证明真实采样独立或真实模型状态已固定。
+
+5. 可选重画图表
 ---------------
 
   .venv/bin/python -m pip install -r requirements-plots.txt
@@ -106,13 +133,15 @@ steps 是累计完成的更新次数。保存拒绝覆盖任何已有文件；�
 图像写入各自 assets/。构造数据和局部模型不会变成实测训练结果。
 概念图不在此包内；文章已提供对应文字、图注和可放大的图片。
 
-5. 独立验证的范围
+6. 独立验证的范围
 -----------------
 
 数值检查包括高精度 Decimal、显式 EMA/Nesterov 权重、独立参数更新、
 噪声符号穷举、固定网格 Simpson、高斯闭式二阶矩和 NumPy SVD。
 PyTorch 检查还验证模块分组、不等 microbatch 的解析梯度、共享角色
 冲突、零/缺失梯度、两套状态的恢复与固定版本的源码 SHA-256。
+梯度采集检查另含独立线性导数、已有梯度/参数/随机状态保留、记录
+契约、已有文件保留，以及不加载任何第三方包的独立进程回放。
 
-不验证真实数据的独立性、自动噪声尺度估计、模型训练优劣、GPU
-精度、并行通信、真实吞吐或任意模型的最优 Batch/学习率。
+不验证真实数据的独立性、真实训练中的噪声识别与统计稳定性、模型
+训练优劣、GPU 精度、并行通信、真实吞吐或通用最优 Batch/学习率。

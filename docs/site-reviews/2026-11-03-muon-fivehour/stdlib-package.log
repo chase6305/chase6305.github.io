@@ -22,10 +22,11 @@ test_noise_estimator_exact_enumeration (__main__.MuonArticleTests.test_noise_est
 test_normalization_conventions (__main__.MuonArticleTests.test_normalization_conventions) ... ok
 test_qk_bilinear_and_shared_key (__main__.MuonArticleTests.test_qk_bilinear_and_shared_key) ... ok
 test_same_parameter_update_after_conversion (__main__.MuonArticleTests.test_same_parameter_update_after_conversion) ... ok
+test_saved_gradient_record_without_ml_imports (__main__.MuonArticleTests.test_saved_gradient_record_without_ml_imports) ... ok
 test_scalar_response_decimal (__main__.MuonArticleTests.test_scalar_response_decimal) ... ok
 
 ----------------------------------------------------------------------
-Ran 25 tests in 0.130s
+Ran 26 tests in 0.184s
 
 OK (skipped=11)
 Muon download matches source; extracted checks passed

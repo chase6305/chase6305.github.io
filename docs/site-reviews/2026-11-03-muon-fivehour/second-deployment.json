@@ -1,0 +1,56 @@
+{
+  "revision": "00a50db1f60c5980c6d823a75c3b95383835ca9e",
+  "workflow": "https://github.com/chase6305/chase6305.github.io/actions/runs/41622178891",
+  "workflow_result": "success",
+  "checked_urls": 725,
+  "initial_download_timeouts": 2,
+  "targeted_retries": [
+    {
+      "route": "/posts/ai/muon-learning-rate-batch-size/assets/batch-three-clocks.png",
+      "passed": true,
+      "attempts": [
+        {
+          "number": 1,
+          "error": "TimeoutError: The read operation timed out",
+          "passed": false
+        },
+        {
+          "number": 2,
+          "status": 200,
+          "sha256": "80798df59571a9f2f2f7b3c0c5f6b00a5c8cf75b187da7eba0a64acbfe69668d",
+          "bytes": 1400300,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "route": "/posts/ai/muon-optimizer/assets/toy-optimizer-groups.png",
+      "passed": true,
+      "attempts": [
+        {
+          "number": 1,
+          "status": 200,
+          "sha256": "d70e3a05107c4c9eed22152c888f1810386f0a898e26638d927c4797377a07c2",
+          "bytes": 1469323,
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "remaining_failures": 0,
+  "served_archive": {
+    "revision": "00a50db1f60c5980c6d823a75c3b95383835ca9e",
+    "archive_bytes": 35422,
+    "sha256": "a3539590aa9302a345e7bff334d1e40099b7872a35209b61e16f9c1e20d782fd",
+    "checks": [
+      {
+        "check": "test_muon_articles.py",
+        "passed": true
+      },
+      {
+        "check": "test_muon_training.py",
+        "passed": true
+      }
+    ]
+  }
+}

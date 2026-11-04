@@ -22,10 +22,11 @@ test_noise_estimator_exact_enumeration (__main__.MuonArticleTests.test_noise_est
 test_normalization_conventions (__main__.MuonArticleTests.test_normalization_conventions) ... ok
 test_qk_bilinear_and_shared_key (__main__.MuonArticleTests.test_qk_bilinear_and_shared_key) ... ok
 test_same_parameter_update_after_conversion (__main__.MuonArticleTests.test_same_parameter_update_after_conversion) ... ok
+test_saved_gradient_record_without_ml_imports (__main__.MuonArticleTests.test_saved_gradient_record_without_ml_imports) ... ok
 test_scalar_response_decimal (__main__.MuonArticleTests.test_scalar_response_decimal) ... ok
 
 ----------------------------------------------------------------------
-Ran 25 tests in 0.676s
+Ran 26 tests in 1.414s
 
 OK
 test_checkpoint_round_trip_and_missing_momentum (__main__.NativeMuonTrainingTests.test_checkpoint_round_trip_and_missing_momentum) ... ok
@@ -38,7 +39,17 @@ test_semantic_groups_and_shared_role_rejection (__main__.NativeMuonTrainingTests
 test_uneven_microbatch_against_linear_derivative (__main__.NativeMuonTrainingTests.test_uneven_microbatch_against_linear_derivative) ... ok
 
 ----------------------------------------------------------------------
-Ran 8 tests in 4.441s
+Ran 8 tests in 7.722s
+
+OK
+test_default_capture_and_recorded_reference (__main__.GradientNoiseTests.test_default_capture_and_recorded_reference) ... ok
+test_malformed_records_and_invalid_capture_settings (__main__.GradientNoiseTests.test_malformed_records_and_invalid_capture_settings) ... ok
+test_parameters_grads_and_rng_are_preserved (__main__.GradientNoiseTests.test_parameters_grads_and_rng_are_preserved) ... ok
+test_replay_without_any_site_packages_and_file_preservation (__main__.GradientNoiseTests.test_replay_without_any_site_packages_and_file_preservation) ... ok
+test_sample_mean_against_independent_linear_derivative (__main__.GradientNoiseTests.test_sample_mean_against_independent_linear_derivative) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.108s
 
 OK
 Muon download matches source; extracted checks passed
