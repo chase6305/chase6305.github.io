@@ -1,0 +1,82 @@
+{
+  "setup": "Selected already-installed distribution files copied into a separate CPython 3.11 venv after online wheel downloads timed out. This is dependency isolation, not a successful fresh online pip installation.",
+  "packages": [
+    {
+      "distribution": "numpy",
+      "version": "2.4.6",
+      "copied_files": 1044,
+      "bytes": 57359508,
+      "file_manifest_sha256": "3dd5409b3c4b0f484979375adfe65a147a61ce6ae5f7f943ef9ab22bf684f539"
+    },
+    {
+      "distribution": "matplotlib",
+      "version": "3.11.1",
+      "copied_files": 603,
+      "bytes": 25532674,
+      "file_manifest_sha256": "bbb5674ff649f9a6abc1c8f922982535e618991056663ff2c7934a3fd2333f32"
+    },
+    {
+      "distribution": "contourpy",
+      "version": "1.3.3",
+      "copied_files": 26,
+      "bytes": 1065438,
+      "file_manifest_sha256": "ca745e8016f91f921dbbd59030e206df3c8c06f4157688a4983db01c384975af"
+    },
+    {
+      "distribution": "cycler",
+      "version": "0.12.1",
+      "copied_files": 9,
+      "bytes": 22790,
+      "file_manifest_sha256": "069966cdf2b3ea0fdf503422274884804d19cbcfaa768b6ceb266a9dfbe92c6f"
+    },
+    {
+      "distribution": "fonttools",
+      "version": "4.63.0",
+      "copied_files": 360,
+      "bytes": 21603914,
+      "file_manifest_sha256": "2aeb69f62b0e787ba50c0791d40eaf1fab184a561530e393281f30bab565b5a2"
+    },
+    {
+      "distribution": "kiwisolver",
+      "version": "1.5.0",
+      "copied_files": 12,
+      "bytes": 5588515,
+      "file_manifest_sha256": "79be75525ce7a59da87341caeb4478129fa80907da15a8f7a303458b1add5715"
+    },
+    {
+      "distribution": "packaging",
+      "version": "26.3",
+      "copied_files": 31,
+      "bytes": 499357,
+      "file_manifest_sha256": "f9ff5366ce58d93a87cb53a02cfefc5c10669df007d541efa191979bb18a99e4"
+    },
+    {
+      "distribution": "pillow",
+      "version": "12.3.0",
+      "copied_files": 142,
+      "bytes": 19639912,
+      "file_manifest_sha256": "0d539392ded4a76870f49ce85e64f1faefde00fa38c37ab2edc7153bd5d31521"
+    },
+    {
+      "distribution": "pyparsing",
+      "version": "3.3.2",
+      "copied_files": 25,
+      "bytes": 464187,
+      "file_manifest_sha256": "d629a6050b41d4d9c9b666669c2349f87718641637cbd56441f0a31567dfafcf"
+    },
+    {
+      "distribution": "python-dateutil",
+      "version": "2.9.0.post0",
+      "copied_files": 27,
+      "bytes": 441783,
+      "file_manifest_sha256": "89e0be16123ac6eca867108cecd73963a6bd30cac9ccb7245b93b16590edc1c4"
+    },
+    {
+      "distribution": "six",
+      "version": "1.17.0",
+      "copied_files": 8,
+      "bytes": 38145,
+      "file_manifest_sha256": "c2138b896a763a6bd94f7d0c5d24654f981f87c8a5ac08a6df3f756639cabfa7"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{{- $id := .Get "id" | default (printf "omnicalib-prior-%d" .Ordinal) -}}
+{{- $css := resources.Get "css/omnicalib-prior.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/omnicalib-prior.js" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section class="omnicalib-prior" data-omnicalib-prior aria-labelledby="{{ $id }}-title">
+  <p id="{{ $id }}-title"><strong>动手看：更强的先验会让错误结果更确定吗</strong></p>
+  <p>构造真值 k = 0.2°、a = −0.1°。第一项观测偏置和 y₁ = k + a = 0.1°；第二项观测 y₂ = ε(k − a) = 0.3ε°，用 ε 调整独立激励。两项噪声独立、标准差均设为 0.02°；观测值取无噪声均值。膝关节采用均值 b、标准差 σₚ 的高斯先验。</p>
+  <p data-static-result>默认 b = 0.4°、σₚ = 0.02°：估计 k = 0.4°、a = −0.3°，误差分别为 +0.2°、−0.2°；局部标准差为 0.0200°、0.0283°。数据矩阵的秩仍为 1；加入先验后总信息矩阵的秩为 2。</p>
+  <div data-interactive hidden>
+    <div class="omnicalib-prior__presets" role="group" aria-label="比较先验偏差和强度">
+      <button type="button" data-preset="aligned">对齐先验</button>
+      <button type="button" data-preset="biased">偏置先验</button>
+      <button type="button" data-preset="confident">偏置且更自信</button>
+      <button type="button" data-preset="excited">增加独立激励</button>
+    </div>
+    <form novalidate aria-label="膝关节先验设置">
+      <div class="omnicalib-prior__fields">
+        <label for="{{ $id }}-mean">先验均值 b（°）
+          <input id="{{ $id }}-mean" name="mean" type="number" min="-0.5" max="0.5" step="any" value="0.4" required inputmode="decimal" aria-describedby="{{ $id }}-help" aria-errormessage="{{ $id }}-error">
+        </label>
+        <label for="{{ $id }}-std">先验标准差 σₚ（°）
+          <input id="{{ $id }}-std" name="std" type="number" min="0.005" max="0.3" step="any" value="0.02" required inputmode="decimal" aria-describedby="{{ $id }}-help" aria-errormessage="{{ $id }}-error">
+        </label>
+        <label for="{{ $id }}-excitation">独立激励 ε（无量纲）
+          <input id="{{ $id }}-excitation" name="excitation" type="number" min="0" max="1" step="any" value="0" required inputmode="decimal" aria-describedby="{{ $id }}-help" aria-errormessage="{{ $id }}-error">
+        </label>
+      </div>
+      <p id="{{ $id }}-help" class="omnicalib-prior__detail">均值范围 −0.5° 到 0.5°，标准差范围 0.005° 到 0.3°，激励范围 0 到 1。ε = 0 时第二项没有参数信息；ε = 1 时两个数据方向等强。标准差越小，先验精度越高。结果保留四位小数。</p>
+    </form>
+    <p id="{{ $id }}-error" data-error role="alert" class="omnicalib-prior__error" hidden></p>
+    <div data-computed>
+      <dl class="omnicalib-prior__results" aria-live="polite" aria-atomic="true">
+        <div><dt>膝偏置估计（°）</dt><dd><output data-value="knee" aria-label="膝偏置估计，度">0.4000</output></dd></div>
+        <div><dt>踝偏置估计（°）</dt><dd><output data-value="ankle" aria-label="踝偏置估计，度">−0.3000</output></dd></div>
+        <div><dt>膝实际误差（°）</dt><dd><output data-value="kneeError" aria-label="膝实际误差，度">+0.2000</output></dd></div>
+        <div><dt>踝实际误差（°）</dt><dd><output data-value="ankleError" aria-label="踝实际误差，度">−0.2000</output></dd></div>
+        <div><dt>膝局部标准差（°）</dt><dd><output data-value="kneeStd" aria-label="膝局部标准差，度">0.0200</output></dd></div>
+        <div><dt>踝局部标准差（°）</dt><dd><output data-value="ankleStd" aria-label="踝局部标准差，度">0.0283</output></dd></div>
+      </dl>
+      <div class="omnicalib-prior__plot">
+        <p><strong>膝偏置</strong></p>
+        <svg data-chart="knee" viewBox="0 0 400 60" role="img" aria-label="膝偏置估计及局部标准差，与构造真值比较"></svg>
+        <p><strong>踝偏置</strong></p>
+        <svg data-chart="ankle" viewBox="0 0 400 60" role="img" aria-label="踝偏置估计及局部标准差，与构造真值比较"></svg>
+        <p class="omnicalib-prior__axis"><span>−1.0°</span><span>0°</span><span>+1.0°</span></p>
+        <p class="omnicalib-prior__detail">圆点为估计值，横线为局部 ±σ，竖虚线为构造真值；两行共用横轴。标准差属于给定模型和先验，不保证覆盖实际误差。</p>
+      </div>
+      <p data-note class="omnicalib-prior__detail"></p>
+    </div>
+  </div>
+  <p class="omnicalib-prior__limits">这个线性小系统说明先验、激励与可观测性的区别，不使用 OmniCalib 的机器人数据。ε = 0 时，重复采集相同方向不能拆开膝、踝偏置；ε &gt; 0 提高数据秩，但精度还取决于激励强度、噪声和先验偏差。</p>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

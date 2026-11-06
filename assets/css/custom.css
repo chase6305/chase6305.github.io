@@ -1829,6 +1829,9 @@ article main#content > .content {
 
 /* Printed articles are independent of the reader's screen color preference. */
 @media print {
+  /* Native PDF margins otherwise retain the dark forced-color canvas. */
+  @page { background: #fff !important; }
+
   :root,
   :root.dark,
   :root.warm {

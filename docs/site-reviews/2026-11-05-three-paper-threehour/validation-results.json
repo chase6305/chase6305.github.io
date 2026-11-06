@@ -1,0 +1,124 @@
+{
+  "status": "complete",
+  "window": {
+    "started_utc": "2026-11-05 11:28:00",
+    "target_end_utc": "2026-11-05 14:28:00",
+    "completed_utc": "2026-11-05 14:57:12",
+    "elapsed_seconds": 12552
+  },
+  "scope": [
+    "LAST v1",
+    "OmniCalib v2",
+    "Machine Learning for Robotics review"
+  ],
+  "source_results": "source-results.json",
+  "production": {
+    "directory": "/tmp/chase-threehour-release-production-20261105",
+    "reviewed_posts": 103,
+    "published_posts": 100,
+    "html_pages": 335,
+    "local_references": 35713,
+    "acceptance_checks": 678,
+    "strict_math_errors": 0,
+    "snippet_errors": 0,
+    "asset_integrity_files": 33,
+    "formula_fonts": 20,
+    "closing_build_directory": "/tmp/chase-threehour-completed-production-20261105"
+  },
+  "arithmetic": {
+    "browser_cases": 840,
+    "numeric_values": 4704,
+    "selection_comparisons": 672,
+    "invalid_argument_cases": 22,
+    "independent_numpy_scipy_comparisons": 1969,
+    "scope": "Constructed numerical checks; no training or calibration accuracy reproduction."
+  },
+  "suresim": {
+    "constructed_cases": 12,
+    "wealth_checks": 40,
+    "endpoint_checks": 24,
+    "maximum_log_wealth_error": 8.881784197001252e-16,
+    "maximum_normalized_endpoint_error": 1.8414984855815398e-06,
+    "dependency_setup": "minimal-dependency-manifest.json",
+    "scope": "Fixed-array source arithmetic, not hardware benchmarks or coverage validation."
+  },
+  "browser": {
+    "full_suite_checks": 13,
+    "all_passed": true,
+    "full_suite_unchanged_sources": true,
+    "suite_directory": "/tmp/threehour-final-verified-browser-20261105",
+    "final_reading_layouts": 162,
+    "image_zooms": 7,
+    "actual_table_keyboard_checks": 6,
+    "svg_label_checks": 4,
+    "widget_layouts": 36,
+    "static_fallback_modes": 6,
+    "axe_audits": 10,
+    "axe_violations": 0,
+    "axe_incomplete": "Three page-level aria-valid-attr-value manual-review records concern closed theme/search/image popups; no widget incomplete results. Existing popup IDs and keyboard opening were reviewed in the initial article acceptance.",
+    "touch_layouts": 24,
+    "horizontal_table_touch_gestures": 7,
+    "touch_scope": "Chrome-emulated touch, not physical devices.",
+    "chapter_activations": 416,
+    "chapter_layouts": 36,
+    "overflow_focus_cases": 18,
+    "large_text_print_layouts": 60,
+    "native_print_position_cases": 36,
+    "later_reader_actions": 9,
+    "background_tab_preserved": true
+  },
+  "printing": {
+    "default_exports": 42,
+    "default_pages": 1523,
+    "default_result_label_value_pairs": 77,
+    "edited_and_invalid_exports": 32,
+    "edited_and_invalid_pages": 1536,
+    "edited_result_label_value_pairs": 132,
+    "canvas_exports": 30,
+    "white_paper_edge_samples": 240,
+    "root_only_negative_control_detected": true,
+    "raster_checked_pdfs": 104,
+    "raster_checked_pages": 3649,
+    "horizontal_outside": 0,
+    "vertical_font_metric_pages": 400,
+    "affected_paper_edges_with_ink": 0,
+    "full_site_ordinary_print_cases": 618,
+    "full_site_forced_print_cases": 618,
+    "scope": "Type-3 font metrics are separated from raster ink checks; no PDF/UA certification is claimed."
+  },
+  "supplemental_omnicalib_after_wording_correction": {
+    "native_directory": "/tmp/threehour-release-omni-native",
+    "native_exports": 14,
+    "native_pages": 457,
+    "reading_matrix_rerun": true,
+    "raster_checked_pages": 457,
+    "affected_edges_with_ink": 0
+  },
+  "all_site_deep_reading": {
+    "status": "passed",
+    "cases": 1132,
+    "figure_cases": 720,
+    "exceptions": 0,
+    "directory": "/tmp/threehour-release-deep-reading"
+  },
+  "tool_versions": {
+    "hugo": "0.165.0",
+    "chrome": "155.0.8059.84",
+    "node": "22.23.1",
+    "system_python": "3.10.0",
+    "numerical_python": "3.11.15",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "matplotlib": "3.11.1",
+    "pillow": "12.3.0",
+    "poppler": "22.02.0"
+  },
+  "manual_visual": {
+    "record": "manual-visual-results.json",
+    "native_pdf_pages": 8,
+    "mobile_figure_captures": 7,
+    "mobile_large_text_calculators": 2,
+    "published_source_hashes_verified": 24,
+    "all_passed": true
+  }
+}

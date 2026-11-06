@@ -1,0 +1,167 @@
+{
+  "checked_utc": "2026-11-05T14:21:56+00:00",
+  "method": "Manual raster inspection of native A4 PDF pages at 200% root text size, from a dark screen theme; supplemented by automated bounds, label/value and paper-edge checks.",
+  "published_source_hashes_verified": 24,
+  "published_source_hash_mismatches": [],
+  "pages": [
+    {
+      "keyword": "单位球",
+      "pdf": "/tmp/threehour-final-verified-browser-20261105/native/last-scripts-dark-200-A4.pdf",
+      "page": 45,
+      "png": "/tmp/threehour-final-visual-last-scripts-dark-200-A4-45.png",
+      "image_sha256": "7aa1cc63a9e8be61461fbc1fa7c568bbf555c0227bc5d9fb22e2fc3c0176a184",
+      "pdf_sha256": "7f01cf7a8d61dfff36e2ec09f618ff32c4668426dd79f9c4c427a1a43f8524b0",
+      "finding": "The residual bound and positive-regularization assumptions remain legible; the inverse and transpose marks are distinct.",
+      "passed": true
+    },
+    {
+      "keyword": "白化度量选择",
+      "pdf": "/tmp/threehour-final-verified-browser-20261105/native/last-scripts-dark-200-A4.pdf",
+      "page": 26,
+      "png": "/tmp/threehour-final-visual-last-scripts-dark-200-A4-26.png",
+      "image_sha256": "9542d8b5a457776118061e50407f2c551e32cde9df263cc4377f42f009034e79",
+      "pdf_sha256": "7f01cf7a8d61dfff36e2ec09f618ff32c4668426dd79f9c4c427a1a43f8524b0",
+      "finding": "All three visible result labels stay with their values; original-coordinate B and whitened A are consistent with the default example.",
+      "passed": true
+    },
+    {
+      "keyword": "时间流对齐是",
+      "pdf": "/tmp/threehour-release-omni-native/omnicalib-scripts-dark-200-A4.pdf",
+      "page": 7,
+      "png": "/tmp/threehour-final-visual-omnicalib-scripts-dark-200-A4-7.png",
+      "image_sha256": "130c0cb8ff88e917fb1ad353d398a4543b7bb8ca54fd38e3c7bd254a24c003e7",
+      "pdf_sha256": "3c65038a3fb3f9038b8bd5989dcbce2b939e1adcc3769f962feda4c096645bcf",
+      "finding": "The corrected parameter/preprocessing distinction and surrounding formulas are fully visible.",
+      "passed": true
+    },
+    {
+      "keyword": "膝局部标准差",
+      "pdf": "/tmp/threehour-release-omni-native/omnicalib-scripts-dark-200-A4.pdf",
+      "page": 13,
+      "png": "/tmp/threehour-final-visual-omnicalib-scripts-dark-200-A4-13.png",
+      "image_sha256": "f5f560a0dfdca9de14d0773e4c0a0757c59d72c4c0d88d9ffd88540b0d741b56",
+      "pdf_sha256": "3c65038a3fb3f9038b8bd5989dcbce2b939e1adcc3769f962feda4c096645bcf",
+      "finding": "Joint estimates, signed actual errors and the local standard deviation retain their degree units and complete values.",
+      "passed": true
+    },
+    {
+      "keyword": "16.8",
+      "pdf": "/tmp/threehour-release-omni-native/omnicalib-scripts-dark-200-A4.pdf",
+      "page": 16,
+      "png": "/tmp/threehour-final-visual-omnicalib-scripts-dark-200-A4-16.png",
+      "image_sha256": "0c0b4887eed0e5e228f765ed54beeeb0221cab6e2b511eaa5b0dcbba653e42fc",
+      "pdf_sha256": "3c65038a3fb3f9038b8bd5989dcbce2b939e1adcc3769f962feda4c096645bcf",
+      "finding": "The variance formula, 2.44 standard-error ratio and 16.8 effective-sample example are visible with their independent-model caveat.",
+      "passed": true
+    },
+    {
+      "keyword": "扩展K类函数",
+      "pdf": "/tmp/threehour-final-verified-browser-20261105/native/robotics-ml-review-scripts-dark-200-A4.pdf",
+      "page": 25,
+      "png": "/tmp/threehour-final-visual-robotics-ml-review-scripts-dark-200-A4-25.png",
+      "image_sha256": "7a6bed78efe152bad6d40c1ff759372e93578ce42219d80c2ab72d95b819af34",
+      "pdf_sha256": "5de07aad336967fe347bc35716892e3f85259576d11eada5107b728ef9c6a2a6",
+      "finding": "The extended class-K definition and quadratic-program constraints are legible.",
+      "passed": true
+    },
+    {
+      "keyword": "2995",
+      "pdf": "/tmp/threehour-final-verified-browser-20261105/native/robotics-ml-review-scripts-dark-200-A4.pdf",
+      "page": 40,
+      "png": "/tmp/threehour-final-visual-robotics-ml-review-scripts-dark-200-A4-40.png",
+      "image_sha256": "d351ff11561eecd093f2c3e2ba79a472a21ce4f68e9aeb68939abae4d2f3d50b",
+      "pdf_sha256": "5de07aad336967fe347bc35716892e3f85259576d11eada5107b728ef9c6a2a6",
+      "finding": "The ceiling formula and fixed-policy IID interpretation are visible; the 2995-trial statement is complete.",
+      "passed": true
+    },
+    {
+      "keyword": "66.6",
+      "pdf": "/tmp/threehour-final-verified-browser-20261105/native/robotics-ml-review-scripts-dark-200-A4.pdf",
+      "page": 42,
+      "png": "/tmp/threehour-final-visual-robotics-ml-review-scripts-dark-200-A4-42.png",
+      "image_sha256": "3d4ecf9ecd73f8107d0961aeba05cfb1fa05e762a2428ef05d077d782a50cb8a",
+      "pdf_sha256": "5de07aad336967fe347bc35716892e3f85259576d11eada5107b728ef9c6a2a6",
+      "finding": "The NeME table distinguishes classifier F1, policy meta-F1 and actual success; all cells fit and remain legible.",
+      "passed": true
+    }
+  ],
+  "scope": "Selected high-risk pages, not exhaustive visual review of every exported page or PDF/UA certification.",
+  "mobile_figures": [
+    {
+      "image": "/tmp/threehour-release-reading/last-dark-320-figure-1.png",
+      "sha256": "c4c0eb6cdea21160c4dd83acc78456ec65035ddcb1d32d696211bb26bca1b73a",
+      "viewport_width": 320,
+      "theme": "dark",
+      "passed": true,
+      "finding": "The full caption is visible and fits its figure container. Dense figure labels remain available through image zoom; nearby overflowing formulas and tables remain within their native scrolling regions."
+    },
+    {
+      "image": "/tmp/threehour-release-reading/last-dark-320-figure-2.png",
+      "sha256": "191af6ce145da3487429a116df0082d2ca095962008ae6929acbd0a22b4e293f",
+      "viewport_width": 320,
+      "theme": "dark",
+      "passed": true,
+      "finding": "The full caption is visible and fits its figure container. Dense figure labels remain available through image zoom; nearby overflowing formulas and tables remain within their native scrolling regions."
+    },
+    {
+      "image": "/tmp/threehour-release-reading/omnicalib-dark-320-figure-1.png",
+      "sha256": "8c33880995184c2c5a93467ff06455b257b253dcd633ed351c5f337c35c980b8",
+      "viewport_width": 320,
+      "theme": "dark",
+      "passed": true,
+      "finding": "The full caption is visible and fits its figure container. Dense figure labels remain available through image zoom; nearby overflowing formulas and tables remain within their native scrolling regions."
+    },
+    {
+      "image": "/tmp/threehour-release-reading/omnicalib-dark-320-figure-2.png",
+      "sha256": "66f09bf212829a57437461923ecac36231e5e6feac0ca16384604dc5c0c33f5d",
+      "viewport_width": 320,
+      "theme": "dark",
+      "passed": true,
+      "finding": "The full caption is visible and fits its figure container. Dense figure labels remain available through image zoom; nearby overflowing formulas and tables remain within their native scrolling regions."
+    },
+    {
+      "image": "/tmp/threehour-release-reading/robotics-ml-review-dark-320-figure-1.png",
+      "sha256": "fd3f947f07dc96e6affeb3d120543d96853416015ab4897c31c2041e359afb6a",
+      "viewport_width": 320,
+      "theme": "dark",
+      "passed": true,
+      "finding": "The full caption is visible and fits its figure container. Dense figure labels remain available through image zoom; nearby overflowing formulas and tables remain within their native scrolling regions."
+    },
+    {
+      "image": "/tmp/threehour-release-reading/robotics-ml-review-dark-320-figure-2.png",
+      "sha256": "c223829c1900397e84a4365f120be16838dc470b6dbf7bda75eaf5ffb70c4af0",
+      "viewport_width": 320,
+      "theme": "dark",
+      "passed": true,
+      "finding": "The full caption is visible and fits its figure container. Dense figure labels remain available through image zoom; nearby overflowing formulas and tables remain within their native scrolling regions."
+    },
+    {
+      "image": "/tmp/threehour-release-reading/robotics-ml-review-dark-320-figure-3.png",
+      "sha256": "138b8166cbe8899a28337822292761d8dacb8e539ba1c5b658e64c8f631d6534",
+      "viewport_width": 320,
+      "theme": "dark",
+      "passed": true,
+      "finding": "The full caption is visible and fits its figure container. Dense figure labels remain available through image zoom; nearby overflowing formulas and tables remain within their native scrolling regions."
+    }
+  ],
+  "mobile_large_text_calculators": [
+    {
+      "image": "/tmp/threehour-final-verified-browser-20261105/whitening/whitening-mobile-dark-large.png",
+      "sha256": "56ccc765944d34a4c8b04f3fb3ab821f5864a29475bf70761617fe9fa608f89b",
+      "viewport_width": 320,
+      "root_text_percent": 200,
+      "theme": "dark",
+      "passed": true,
+      "finding": "Heading and introductory model text wrap within the calculator container without horizontal page overflow; subsequent inputs and result values are covered by the recorded keyboard/reflow checks."
+    },
+    {
+      "image": "/tmp/threehour-final-verified-browser-20261105/prior/prior-mobile-dark-large.png",
+      "sha256": "6d708e0a3898d152b66580e9ad8421d8e6561c2b5cfc78af44269a40ada8ac14",
+      "viewport_width": 320,
+      "root_text_percent": 200,
+      "theme": "dark",
+      "passed": true,
+      "finding": "Heading and introductory model text wrap within the calculator container without horizontal page overflow; subsequent inputs and result values are covered by the recorded keyboard/reflow checks."
+    }
+  ]
+}

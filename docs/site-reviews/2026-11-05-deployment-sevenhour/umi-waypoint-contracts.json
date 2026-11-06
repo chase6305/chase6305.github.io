@@ -1,0 +1,10 @@
+{
+  "wrong_revision_before_site_packages": true,
+  "wrong_expected_hash_before_site_packages": true,
+  "existing_output_preserved": true,
+  "fresh_output_matches_stdout": true,
+  "source_checkout_unchanged": true,
+  "published_probe_unchanged": true,
+  "probe_sha256": "ff383d61e7f60e80bfd19af0fc50f63b8738b050b965c037576043280dae1c46",
+  "source_origin": "immutable Git objects"
+}

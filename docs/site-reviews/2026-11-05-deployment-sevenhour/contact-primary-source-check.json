@@ -1,0 +1,31 @@
+{
+  "checked_utc": "2026-11-05T19:01:32.935623+00:00",
+  "purpose": "Seek primary implementation or clarification for v1 Eq7 parameter convention.",
+  "primary_sources": [
+    {
+      "url": "https://robotpilab.github.io/publications.html",
+      "data_url": "https://robotpilab.github.io/data/publications.js",
+      "matching_entry": "Interactive Robot-Environment Self-Calibration via Compliant Exploratory Actions",
+      "links": [
+        {
+          "label": "PDF",
+          "url": "https://arxiv.org/abs/2403.13144"
+        },
+        {
+          "label": "Video",
+          "url": "https://youtu.be/NiDBvtswzV4"
+        }
+      ]
+    },
+    {
+      "url": "https://api.github.com/users/robotpilab/repos?per_page=100",
+      "finding": "The listed public account repositories did not identify this method implementation."
+    },
+    {
+      "url": "https://api.github.com/users/podshara/repos?per_page=100",
+      "finding": "The listed public account repositories did not identify this method implementation."
+    }
+  ],
+  "conclusion": "No implementation was identified through these checked primary entries. This limited search does not establish global absence or resolve which Eq7 convention an unseen implementation used.",
+  "handling": "Retain literal PDF/HTML equation, explicit alternative standard-deviation convention, and scoped constructed examples. Link the primary lab publication directory without claiming to have reviewed the inaccessible video content."
+}

@@ -1,0 +1,51 @@
+{
+  "source_revision": "b29a8c2ee6869585bb05b056b9ab53b9c0753106",
+  "source_file": "/tmp/chase-curobo-v2-fast-source/curobo/__init__.py",
+  "gpu": "NVIDIA GeForce RTX 5090 D v2",
+  "torch": "2.13.0+cu130",
+  "robot": "franka.yml",
+  "scene": "collision_test.yml",
+  "graph_planner_algorithm": "rrt",
+  "enable_timeopt": true,
+  "cuda_graphs": true,
+  "success": [
+    [
+      true
+    ]
+  ],
+  "trajectory_source": "trajopt",
+  "shape": [
+    1,
+    1,
+    10,
+    9
+  ],
+  "actuated_joint_names": [
+    "panda_joint1",
+    "panda_joint2",
+    "panda_joint3",
+    "panda_joint4",
+    "panda_joint5",
+    "panda_joint6",
+    "panda_joint7"
+  ],
+  "trajectory_joint_names": [
+    "panda_joint1",
+    "panda_joint2",
+    "panda_joint3",
+    "panda_joint4",
+    "panda_joint5",
+    "panda_joint6",
+    "panda_joint7",
+    "panda_finger_joint1",
+    "panda_finger_joint2"
+  ],
+  "trajectory_dt": [
+    [
+      0.023786047473549843
+    ]
+  ],
+  "solver_reported_seconds": 0.004351904153823852,
+  "synchronized_single_call_seconds": 0.9277912949910387,
+  "note": "One smoke query, possible first-layout setup overhead; not a benchmark or physical-robot validation"
+}

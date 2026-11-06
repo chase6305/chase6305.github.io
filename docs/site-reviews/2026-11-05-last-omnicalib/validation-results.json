@@ -1,0 +1,99 @@
+{
+  "reviewed_on": "2026-11-05",
+  "hugo": "0.165.0",
+  "chrome": "155.0.8059.84",
+  "axe": "4.14.0",
+  "article_sha256": {
+    "content/posts/ai/last-action-tokenizer/index.md": "c59a8459cb2bdbc9602551e7fbe780dc7fb4313cfff90d396eb49c099ff7f502",
+    "content/posts/calibration/omnicalib/index.md": "5aa2d3777a4730fbe657f2f62c597c084ba3333d13549b4fc005b98c18b7c9cc",
+    "content/posts/ai/machine-learning-for-robotics/index.md": "ed4194220623be8806c7dafa7b4bf243ce26c4ea4b3c5590f5165af0858a2c51"
+  },
+  "production": {
+    "directory": "/tmp/chase-five-article-final-verified-production-20261105",
+    "reviewed_posts": 103,
+    "published_articles": 100,
+    "html_pages": 335,
+    "local_references": 35698,
+    "errors": [],
+    "unrendered_math_warnings": [],
+    "assets_integrity": "passed",
+    "filter_inventory": "passed",
+    "toc_fixtures": "passed",
+    "native_reading_fixtures": "passed"
+  },
+  "reading": {
+    "layouts": 162,
+    "keyboard_table_scrolls": 6,
+    "image_viewers": 7,
+    "semantic_audits": 6,
+    "downloads": 6,
+    "svg_bounds": 4,
+    "runtime_exceptions": 0,
+    "overflow_reference": "layout clientWidth"
+  },
+  "numerical": {
+    "standard_library_examples": "passed",
+    "optional_numpy_scipy_comparisons": 684,
+    "javascript_python_cases": 63,
+    "javascript_python_values": 378,
+    "rejected_ui_input_cases": 9,
+    "svg_generation": "exact byte checks passed"
+  },
+  "print": {
+    "ordinary_whole_site": {
+      "layouts": 618,
+      "failures": 0,
+      "textSamples": 496227,
+      "runtimeExceptions": 0
+    },
+    "added_articles_200_percent": 30,
+    "added_articles_200_percent_forced_colors": 30,
+    "native_exports": 42,
+    "native_pages": 1325,
+    "outside_page_text": 0,
+    "result_label_value_pairs": 42,
+    "native_scroll_drift_cases": 0,
+    "tagged_pdfs": true
+  },
+  "manual_review": {
+    "closed_popup_id_references": [
+      {
+        "selector": "button[data-location=\"top\"]",
+        "id": "theme-menu-0",
+        "exists": true,
+        "visible": true
+      },
+      {
+        "selector": "button[data-location=\"bottom\"]",
+        "id": "theme-menu-2",
+        "exists": true,
+        "visible": true
+      },
+      {
+        "selector": ".hextra-search-trigger",
+        "id": "hextra-search-dialog",
+        "exists": true,
+        "visible": true
+      },
+      {
+        "selector": "#figure-1 .post-image-link",
+        "id": "post-image-viewer",
+        "exists": true,
+        "visible": true
+      }
+    ],
+    "figure_labels_arrows_and_captions": "reviewed on screen and selected native PDF pages",
+    "prior_input_labels": "both labels remain with values at 200 percent A4"
+  },
+  "limits": [
+    "No LAST training, robot calibration, clinical testing, or SureSim WSR implementation was reproduced.",
+    "Browser emulation is not physical-device testing.",
+    "An optional whole-site 200 percent scan found legacy formula overflow outside the five additions; current additions pass targeted ordinary/forced-color stress checks."
+  ],
+  "prior_experiment": {
+    "layouts": 12,
+    "fallbacks": 3,
+    "semantic_audits": 2,
+    "runtime_exceptions": 0
+  }
+}

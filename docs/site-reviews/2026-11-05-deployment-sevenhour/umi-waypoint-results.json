@@ -1,0 +1,234 @@
+{
+  "commit": "d095ba9590df789df5189eea5ee7e431689038a6",
+  "source_sha256": {
+    "umi/common/pose_trajectory_interpolator.py": "34662c3e495ef6a22f47055784b7a2c7dc37b11c8ecbd393244fb69778cbce23",
+    "umi/real_world/franka_interpolation_controller.py": "a3e058338782796dc2f1d30ac04c58d8553767fa7b18b297250eeb1a33f9f24b",
+    "umi/real_world/rtde_interpolation_controller.py": "6a4bb56ea8ce660eb00afac29b5e5f5d5caf29c7f038a1f5afeb65dc5b32e5b3",
+    "umi/real_world/wsg_controller.py": "627fe6867ddb2d012c4a6a408fa1ba438a54e6903b8802dbda4e06cfb56cb6fd"
+  },
+  "source_origin": "Verified immutable Git objects",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "controller_branch_cases": 21,
+  "pure_interpolator": {
+    "past_and_equal_return_original": true,
+    "requested_time": 4.3,
+    "current_time": 4.01,
+    "position_speed": 0.2,
+    "realized_end": 8.96,
+    "independent_1d_samples": 19
+  },
+  "cases": [
+    {
+      "controller": "franka",
+      "clock_offset": 0.0,
+      "requested_wall_time": 3.91,
+      "current_wall_time_equivalent": 4.01,
+      "interpolator_same_object": true,
+      "actual_interpolator_end_wall_equivalent": 4.5,
+      "recorded_last_requested_wall_equivalent": 3.91,
+      "finite_speed_argument": null
+    },
+    {
+      "controller": "franka",
+      "clock_offset": 0.0,
+      "requested_wall_time": 4.3,
+      "current_wall_time_equivalent": 4.01,
+      "interpolator_same_object": false,
+      "actual_interpolator_end_wall_equivalent": 4.3,
+      "recorded_last_requested_wall_equivalent": 4.3,
+      "finite_speed_argument": null
+    },
+    {
+      "controller": "franka",
+      "clock_offset": 0.0,
+      "requested_wall_time": 4.8,
+      "current_wall_time_equivalent": 4.01,
+      "interpolator_same_object": false,
+      "actual_interpolator_end_wall_equivalent": 4.8,
+      "recorded_last_requested_wall_equivalent": 4.8,
+      "finite_speed_argument": null
+    },
+    {
+      "controller": "franka",
+      "clock_offset": 0.0,
+      "requested_wall_time": 4.01,
+      "current_wall_time_equivalent": 4.01,
+      "interpolator_same_object": true,
+      "actual_interpolator_end_wall_equivalent": 4.5,
+      "recorded_last_requested_wall_equivalent": 4.01,
+      "finite_speed_argument": null
+    },
+    {
+      "controller": "franka",
+      "clock_offset": 100.0,
+      "requested_wall_time": 3.91,
+      "current_wall_time_equivalent": 4.01,
+      "interpolator_same_object": true,
+      "actual_interpolator_end_wall_equivalent": 4.5,
+      "recorded_last_requested_wall_equivalent": 3.9099999999999966,
+      "finite_speed_argument": null
+    },
+    {
+      "controller": "franka",
+      "clock_offset": 100.0,
+      "requested_wall_time": 4.3,
+      "current_wall_time_equivalent": 4.01,
+      "interpolator_same_object": false,
+      "actual_interpolator_end_wall_equivalent": 4.299999999999997,
+      "recorded_last_requested_wall_equivalent": 4.299999999999997,
+      "finite_speed_argument": null
+    },
+    {
+      "controller": "franka",
+      "clock_offset": 100.0,
+      "requested_wall_time": 4.8,
+      "current_wall_time_equivalent": 4.01,
+      "interpolator_same_object": false,
+      "actual_interpolator_end_wall_equivalent": 4.799999999999997,
+      "recorded_last_requested_wall_equivalent": 4.799999999999997,
+      "finite_speed_argument": null
+    },
+    {
+      "controller": "rtde",
+      "clock_offset": 0.0,
+      "requested_wall_time": 3.91,
+      "current_wall_time_equivalent": 4.01,
+      "interpolator_same_object": true,
+      "actual_interpolator_end_wall_equivalent": 4.5,
+      "recorded_last_requested_wall_equivalent": 3.91,
+      "finite_speed_argument": 0.2
+    },
+    {
+      "controller": "rtde",
+      "clock_offset": 0.0,
+      "requested_wall_time": 4.3,
+      "current_wall_time_equivalent": 4.01,
+      "interpolator_same_object": false,
+      "actual_interpolator_end_wall_equivalent": 8.96,
+      "recorded_last_requested_wall_equivalent": 4.3,
+      "finite_speed_argument": 0.2
+    },
+    {
+      "controller": "rtde",
+      "clock_offset": 0.0,
+      "requested_wall_time": 4.8,
+      "current_wall_time_equivalent": 4.01,
+      "interpolator_same_object": false,
+      "actual_interpolator_end_wall_equivalent": 7.0,
+      "recorded_last_requested_wall_equivalent": 4.8,
+      "finite_speed_argument": 0.2
+    },
+    {
+      "controller": "rtde",
+      "clock_offset": 0.0,
+      "requested_wall_time": 4.01,
+      "current_wall_time_equivalent": 4.01,
+      "interpolator_same_object": true,
+      "actual_interpolator_end_wall_equivalent": 4.5,
+      "recorded_last_requested_wall_equivalent": 4.01,
+      "finite_speed_argument": 0.2
+    },
+    {
+      "controller": "rtde",
+      "clock_offset": 100.0,
+      "requested_wall_time": 3.91,
+      "current_wall_time_equivalent": 4.01,
+      "interpolator_same_object": true,
+      "actual_interpolator_end_wall_equivalent": 4.5,
+      "recorded_last_requested_wall_equivalent": 3.9099999999999966,
+      "finite_speed_argument": 0.2
+    },
+    {
+      "controller": "rtde",
+      "clock_offset": 100.0,
+      "requested_wall_time": 4.3,
+      "current_wall_time_equivalent": 4.01,
+      "interpolator_same_object": false,
+      "actual_interpolator_end_wall_equivalent": 8.95999999999998,
+      "recorded_last_requested_wall_equivalent": 4.299999999999997,
+      "finite_speed_argument": 0.2
+    },
+    {
+      "controller": "rtde",
+      "clock_offset": 100.0,
+      "requested_wall_time": 4.8,
+      "current_wall_time_equivalent": 4.01,
+      "interpolator_same_object": false,
+      "actual_interpolator_end_wall_equivalent": 7.0,
+      "recorded_last_requested_wall_equivalent": 4.799999999999997,
+      "finite_speed_argument": 0.2
+    },
+    {
+      "controller": "wsg",
+      "clock_offset": 0.0,
+      "requested_wall_time": 3.91,
+      "current_wall_time_equivalent": 4.0,
+      "interpolator_same_object": true,
+      "actual_interpolator_end_wall_equivalent": 4.5,
+      "recorded_last_requested_wall_equivalent": 3.91,
+      "finite_speed_argument": 0.4
+    },
+    {
+      "controller": "wsg",
+      "clock_offset": 0.0,
+      "requested_wall_time": 4.3,
+      "current_wall_time_equivalent": 4.0,
+      "interpolator_same_object": false,
+      "actual_interpolator_end_wall_equivalent": 6.5,
+      "recorded_last_requested_wall_equivalent": 4.3,
+      "finite_speed_argument": 0.4
+    },
+    {
+      "controller": "wsg",
+      "clock_offset": 0.0,
+      "requested_wall_time": 4.8,
+      "current_wall_time_equivalent": 4.0,
+      "interpolator_same_object": false,
+      "actual_interpolator_end_wall_equivalent": 5.75,
+      "recorded_last_requested_wall_equivalent": 4.8,
+      "finite_speed_argument": 0.4
+    },
+    {
+      "controller": "wsg",
+      "clock_offset": 0.0,
+      "requested_wall_time": 4.0,
+      "current_wall_time_equivalent": 4.0,
+      "interpolator_same_object": true,
+      "actual_interpolator_end_wall_equivalent": 4.5,
+      "recorded_last_requested_wall_equivalent": 4.0,
+      "finite_speed_argument": 0.4
+    },
+    {
+      "controller": "wsg",
+      "clock_offset": 100.0,
+      "requested_wall_time": 3.91,
+      "current_wall_time_equivalent": 4.0,
+      "interpolator_same_object": true,
+      "actual_interpolator_end_wall_equivalent": 4.5,
+      "recorded_last_requested_wall_equivalent": 3.9099999999999966,
+      "finite_speed_argument": 0.4
+    },
+    {
+      "controller": "wsg",
+      "clock_offset": 100.0,
+      "requested_wall_time": 4.3,
+      "current_wall_time_equivalent": 4.0,
+      "interpolator_same_object": false,
+      "actual_interpolator_end_wall_equivalent": 6.5,
+      "recorded_last_requested_wall_equivalent": 4.299999999999997,
+      "finite_speed_argument": 0.4
+    },
+    {
+      "controller": "wsg",
+      "clock_offset": 100.0,
+      "requested_wall_time": 4.8,
+      "current_wall_time_equivalent": 4.0,
+      "interpolator_same_object": false,
+      "actual_interpolator_end_wall_equivalent": 5.75,
+      "recorded_last_requested_wall_equivalent": 4.799999999999997,
+      "finite_speed_argument": 0.4
+    }
+  ],
+  "scope": "Extracted branch replay and pure interpolation only. No controller imports, queues, device connection, servo loop, joint dynamics, clock drift or hardware timing validation. WSG branch uses constructed scale=1 position units."
+}

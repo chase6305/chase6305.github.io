@@ -1,0 +1,2 @@
+# Python 3.11; the source-interface probe imports only NumPy.
+numpy==2.4.6

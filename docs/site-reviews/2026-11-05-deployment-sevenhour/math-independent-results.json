@@ -1,0 +1,56 @@
+{
+  "environment": {
+    "python": "3.11.15",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1"
+  },
+  "scope": "Constructed mathematical examples; no model, hardware or paper benchmark.",
+  "convolution_lengths": [
+    50,
+    11,
+    7,
+    3
+  ],
+  "guidance": {
+    "cases": 200,
+    "maximum_absolute_gradient_error": 2.64439841045e-07
+  },
+  "actor_chain_rule": {
+    "cases": 200,
+    "clipped_cases": 95,
+    "maximum_absolute_gradient_error": 2.2029668739889236e-06
+  },
+  "point_plane": {
+    "derivatives": 600,
+    "maximum_absolute_error": 1.5482004567246577e-10,
+    "horizontal_singular_values": [
+      1.9318516525781366,
+      1.0,
+      0.5176380902050415
+    ],
+    "diverse_singular_values": [
+      1.9318516525781364,
+      1.6180339887498947,
+      1.0,
+      1.0,
+      0.6180339887498948,
+      0.5176380902050416
+    ],
+    "horizontal_nullity": 3,
+    "units_note": "Exact fixture coordinates only; these singular values are not a mixed-unit acceptance threshold."
+  },
+  "posterior": {
+    "cases": 20,
+    "maximum_mean_std_error_mm": 1.099120794378905e-14,
+    "maximum_covariance_error_mm_squared": 2.8421709430404007e-13
+  },
+  "printed_kernel": {
+    "cases": 3,
+    "maximum_normalized_weight_error": 4.163336342344337e-16,
+    "scope": "Equal contact counts across particles; shared printed prefactors cancel."
+  },
+  "correlated_observations": {
+    "cases": 20,
+    "maximum_fused_standard_deviation_error": 4.440892098500626e-16
+  }
+}

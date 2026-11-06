@@ -1,0 +1,83 @@
+{
+  "commit": "9296f31d62d5bfeb5779dcb2f9bcf71ca37f448b",
+  "model_sha256": "f59e9479c4fe4386ca027ba1a5c0b4940552adfae8cdb38d177cefec1427482e",
+  "numpy": "2.4.6",
+  "mask_cases": 3384,
+  "source_maximum_absolute_error_against_decimal70": 2.220446049250313e-16,
+  "article_maximum_absolute_error_against_decimal70": 3.3306690738754696e-16,
+  "fixtures": [
+    {
+      "horizon": 8,
+      "stride": 3,
+      "delay": 2,
+      "official_float64_weights": [
+        1.0000000000000002,
+        1.0000000000000002,
+        0.48755099343092045,
+        0.18877033439907276,
+        0.04132404416778001,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decimal_70_weights": [
+        1.0,
+        1.0,
+        0.4875509934309205,
+        0.18877033439907273,
+        0.04132404416778,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "horizon": 16,
+      "stride": 5,
+      "delay": 4,
+      "official_float64_weights": [
+        1.0000000000000002,
+        1.0000000000000002,
+        1.0000000000000002,
+        1.0000000000000002,
+        0.7123487322908535,
+        0.48755099343092045,
+        0.3158118269118814,
+        0.18877033439907276,
+        0.09929790192499394,
+        0.04132404416778001,
+        0.009686162280072082,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decimal_70_weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.7123487322908535,
+        0.4875509934309205,
+        0.31581182691188137,
+        0.18877033439907273,
+        0.09929790192499392,
+        0.04132404416778,
+        0.00968616228007208,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "separate_worker_and_deadline_profile": true,
+  "regression": {
+    "c": 0.5,
+    "correct_weight": 0.18877033439907276,
+    "exponential_only_weight": 0.3775406687981454
+  },
+  "scope": "Verified function body, NumPy Float64 adapter and independent Decimal; no JAX or model execution."
+}

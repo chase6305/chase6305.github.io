@@ -1,0 +1,183 @@
+[
+  {
+    "paper": "2107.04034v1",
+    "needle": "trained in two phases",
+    "pdf_pages": [
+      2
+    ]
+  },
+  {
+    "paper": "2107.04034v1",
+    "needle": "k = 50",
+    "pdf_pages": [
+      5
+    ]
+  },
+  {
+    "paper": "2107.04034v1",
+    "needle": "15, 000",
+    "pdf_pages": [
+      6,
+      12,
+      13
+    ]
+  },
+  {
+    "paper": "2107.04034v1",
+    "needle": "100 Hz",
+    "pdf_pages": [
+      2,
+      3,
+      5,
+      13
+    ]
+  },
+  {
+    "paper": "2107.04034v1",
+    "needle": "1000 episodes",
+    "pdf_pages": [
+      8
+    ]
+  },
+  {
+    "paper": "2402.10329v3",
+    "needle": "PD1. Inference-time latency matching",
+    "pdf_pages": [
+      5
+    ]
+  },
+  {
+    "paper": "2402.10329v3",
+    "needle": "PD2.1)",
+    "pdf_pages": [
+      6
+    ]
+  },
+  {
+    "paper": "2402.10329v3",
+    "needle": "105/120",
+    "pdf_pages": [
+      8
+    ]
+  },
+  {
+    "paper": "2402.10329v3",
+    "needle": "16/20 = 80%",
+    "pdf_pages": [
+      8
+    ]
+  },
+  {
+    "paper": "2402.10329v3",
+    "needle": "5/20 = 25%",
+    "pdf_pages": [
+      8
+    ]
+  },
+  {
+    "paper": "2506.07339v2",
+    "needle": "3.1   Inference-Time",
+    "pdf_pages": [
+      4
+    ]
+  },
+  {
+    "paper": "2506.07339v2",
+    "needle": "3.2   Soft Masking",
+    "pdf_pages": [
+      5
+    ]
+  },
+  {
+    "paper": "2506.07339v2",
+    "needle": "max(Q)",
+    "pdf_pages": [
+      6
+    ]
+  },
+  {
+    "paper": "2506.07339v2",
+    "needle": "76ms",
+    "pdf_pages": [
+      7,
+      24
+    ]
+  },
+  {
+    "paper": "2506.07339v2",
+    "needle": "2048 rollouts",
+    "pdf_pages": [
+      6
+    ]
+  },
+  {
+    "paper": "1812.03201v2",
+    "needle": "A. Residual Reinforcement Learning",
+    "pdf_pages": [
+      3
+    ]
+  },
+  {
+    "paper": "1812.03201v2",
+    "needle": "15/20",
+    "pdf_pages": [
+      5
+    ]
+  },
+  {
+    "paper": "1812.03201v2",
+    "needle": "eight thousand",
+    "pdf_pages": [
+      5
+    ]
+  },
+  {
+    "paper": "1812.03201v2",
+    "needle": "one thousand timesteps",
+    "pdf_pages": [
+      6
+    ]
+  },
+  {
+    "paper": "1812.03201v2",
+    "needle": "joint-space impedance",
+    "pdf_pages": [
+      3
+    ]
+  },
+  {
+    "paper": "2403.13144v1",
+    "needle": "Algorithm 1 Self-Calibration",
+    "pdf_pages": [
+      3
+    ]
+  },
+  {
+    "paper": "2403.13144v1",
+    "needle": "B. Particle Weight Evaluation",
+    "pdf_pages": [
+      4
+    ]
+  },
+  {
+    "paper": "2403.13144v1",
+    "needle": "five consecutive",
+    "pdf_pages": [
+      5
+    ]
+  },
+  {
+    "paper": "2403.13144v1",
+    "needle": "Table(Real)",
+    "pdf_pages": [
+      7
+    ]
+  },
+  {
+    "paper": "2403.13144v1",
+    "needle": "12.4 ± 0.9",
+    "pdf_pages": [
+      7
+    ]
+  }
+]

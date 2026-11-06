@@ -1,0 +1,32 @@
+[
+  {
+    "url": "http://127.0.0.1:13277/posts/ai/last-action-tokenizer/geometry_sanity.py",
+    "file": "geometry_sanity.py",
+    "sha256": "3dd25148c7ee3de3eb3136a3839fa96f94fe5f8de28a432af5556e2e64490208",
+    "download_matches_source": true
+  },
+  {
+    "url": "http://127.0.0.1:13277/posts/calibration/omnicalib/observability_sanity.py",
+    "file": "observability_sanity.py",
+    "sha256": "68a7d3c6dcb3ab007e53537b1306f32acaad132878e72383053d505dc543cfd0",
+    "download_matches_source": true
+  },
+  {
+    "url": "http://127.0.0.1:13277/posts/ai/machine-learning-for-robotics/deployment_sanity.py",
+    "file": "deployment_sanity.py",
+    "sha256": "151cdc4d4558d72f91df514f33c9431360ed9b937a8815794bc1a83e975aa433",
+    "download_matches_source": true
+  },
+  {
+    "url": "http://127.0.0.1:13277/posts/ai/machine-learning-for-robotics/suresim_source_probe.py",
+    "file": "suresim_source_probe.py",
+    "sha256": "c2d2ede50d9a0fd965a1033600422f2867fd65584997af1e88c2f5b0667a17f4",
+    "download_matches_source": true
+  },
+  {
+    "url": "http://127.0.0.1:13277/posts/ai/machine-learning-for-robotics/requirements-suresim.txt",
+    "file": "requirements-suresim.txt",
+    "sha256": "3c451e0c69fb4fe18eaef04355cca91735e185ebed401e006b496c8654ec14df",
+    "download_matches_source": true
+  }
+]

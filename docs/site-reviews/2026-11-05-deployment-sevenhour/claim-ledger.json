@@ -1,0 +1,436 @@
+{
+  "reviewed_utc": "2026-11-05T21:44:37.420861+00:00",
+  "scope": "Selected high-impact paper and pinned-source claims with explicit qualifications. Supplied PDF versions govern paper claims; the code snapshot is separately identified. This is not an exhaustive automatic proof of every prose sentence.",
+  "sources": [
+    {
+      "path": "/home/ubuntu/Documents/2107.04034v1.pdf",
+      "sha256": "d8660da881851756287efab24d85f5c629ba97878f70297eb429a8e8a9a57846"
+    },
+    {
+      "path": "/home/ubuntu/Documents/2402.10329v3.pdf",
+      "sha256": "a9452cbaf9f5d2a77d5f8b631632fa7f45ae4bbc32400be1cc939b91a36e1609"
+    },
+    {
+      "path": "/home/ubuntu/Documents/2506.07339v2.pdf",
+      "sha256": "dd6d602be1f50b894d88517bf68916c4272885b2e29d96cffc426dacff41898f"
+    },
+    {
+      "path": "/home/ubuntu/Documents/1812.03201v2.pdf",
+      "sha256": "c6279120f9e0a799a9d7a943a5624a5738250e588f99c5fc8a9fac28e2039641"
+    },
+    {
+      "path": "/home/ubuntu/Documents/2403.13144v1.pdf",
+      "sha256": "bbe62387e1da54c1dc5c0c8b3b3630791ba8b1abcce8fcfac79a39f6661a329d"
+    }
+  ],
+  "claims": [
+    {
+      "paper": "2107.04034v1",
+      "article_section": "rma",
+      "pdf_pages": [
+        4,
+        5,
+        6
+      ],
+      "fact": "Base policy: state30 + previous action12 + latent8 ->12 target joint positions; privileged environment17 ->latent8.",
+      "qualification": "The article does not expand the ambiguous mass/position subdimension wording into an invented17-element list."
+    },
+    {
+      "paper": "2107.04034v1",
+      "article_section": "rma",
+      "pdf_pages": [
+        5
+      ],
+      "fact": "State:12 joint positions,12 velocities,roll/pitch,4 binary foot contacts. Deployed PD gains55/.8, desired joint velocity0.",
+      "qualification": "This is the original A1 interface; not an arbitrary robot-control head."
+    },
+    {
+      "paper": "2107.04034v1",
+      "article_section": "rma",
+      "pdf_pages": [
+        5,
+        6
+      ],
+      "fact": "Adaptation sees50-step history and is trained on rollouts driven by its own predicted latent.",
+      "qualification": "History formula follows III-B; sampling/dispatch pairing must be explicit. Fig2 and supplementary notation differ."
+    },
+    {
+      "paper": "2107.04034v1",
+      "article_section": "rma",
+      "pdf_pages": [
+        2,
+        5,
+        13
+      ],
+      "fact": "Base policy100Hz, adaptation10Hz; history about.5s.",
+      "qualification": "Article now explicitly identifies the simultaneous simulation dt=.025 statement and100Hz policy frequency as inconsistent without a resolved simulator/control-step contract."
+    },
+    {
+      "paper": "2107.04034v1",
+      "article_section": "rma",
+      "pdf_pages": [
+        6
+      ],
+      "fact": "Base MLP hidden128; encoder256/128; embedding32 then three temporal convolutions(32,32,8,4),(32,32,5,1),(32,32,5,1).",
+      "qualification": "50->11->7->3 and96->8 is conditional no-padding arithmetic, not a claim about an unverified original source checkout."
+    },
+    {
+      "paper": "2107.04034v1",
+      "article_section": "rma",
+      "pdf_pages": [
+        6
+      ],
+      "fact": "PPO15000x80000=1.2B transitions; adaptation1000x80000=80M; learning rate.0005; reported24h+3h on a one-GPU desktop.",
+      "qualification": "Training costs are not deployment hardware requirements."
+    },
+    {
+      "paper": "2107.04034v1",
+      "article_section": "experiments",
+      "pdf_pages": [
+        8,
+        9
+      ],
+      "fact": "Simulation3 initialized policies x1000 episodes;indoor hardware generally5 trials per method,only2 trials then report failure if a method fails drastically;outdoor stair descent70%,cement/pebble80%.",
+      "qualification": "Different physical trial protocols and small sample sizes remain visible."
+    },
+    {
+      "paper": "2402.10329v3",
+      "article_section": "umi",
+      "pdf_pages": [
+        5,
+        6
+      ],
+      "fact": "Relative action trajectories share the current end-effector anchor; pose history and inter-gripper pose are observations.",
+      "qualification": "The article distinguishes the SE(3) increment illustration from the component delta convention in a later source snapshot."
+    },
+    {
+      "paper": "2402.10329v3",
+      "article_section": "umi",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "fact": "Fisheye, side mirrors with digital reflection/swap, continuous gripper information and kinematic filtering support transferable data.",
+      "qualification": "Filtering demonstrations does not prove closed-loop collision or torque feasibility."
+    },
+    {
+      "paper": "2402.10329v3",
+      "article_section": "umi",
+      "pdf_pages": [
+        6
+      ],
+      "fact": "Observation streams align at image capture times; commands are sent ahead and outdated target actions discarded.",
+      "qualification": "The deadline-ceiling example explicitly accepts equality; the pinned source method has a strict greater-than filter."
+    },
+    {
+      "paper": "2402.10329v3",
+      "article_section": "umi",
+      "pdf_pages": [
+        16
+      ],
+      "fact": "Cup/tossing histories2/2 and action horizon6; frequencies10/20Hz and relative execution speed.5x/1x; DDIM50 training-time noise steps and16 inference steps.",
+      "qualification": "These axes are distinct; RTC pi0.5 five-step inference is another configuration."
+    },
+    {
+      "paper": "2402.10329v3",
+      "article_section": "experiments",
+      "pdf_pages": [
+        7,
+        8
+      ],
+      "fact": "UR5 cup relative20/20, delta16/20, absolute5/20; same checkpoint on Franka FR2:18/20, two joint-limit failures.",
+      "qualification": "Absolute baseline calibration error is retained; no general ordering of all absolute versus relative policies is claimed."
+    },
+    {
+      "paper": "2402.10329v3",
+      "article_section": "experiments",
+      "pdf_pages": [
+        8,
+        16
+      ],
+      "fact": "Cup success includes handle orientation within15degrees left; tossing105/120 vs69/120; folding14/20 vs6/20.",
+      "qualification": "Tossing counts individual objects; other task episodes and substep scores are not pooled."
+    },
+    {
+      "paper": "2402.10329v3",
+      "article_section": "experiments",
+      "pdf_pages": [
+        9
+      ],
+      "fact": "Three demonstrators,12person-hours,1400demonstrations,30places,15cups;unseen-environment43/60,split28/40seen cups and15/20novel cups. Same-backbone narrow-data baseline0/10at each of the2environments,total0/20.",
+      "qualification": "Seen cups are still tested in new environments;the baseline uses20rather than60 evaluations. Dataset amount and diversity are not separately identified."
+    },
+    {
+      "paper": "2402.10329v3",
+      "article_section": "umi",
+      "pdf_pages": [
+        10
+      ],
+      "fact": "MoCap benchmark:7 single-gripper and7 bimanual tasks; per-gripper ATE6.1mm/3.5deg; inter-gripper RPE10.1mm/.8deg.",
+      "qualification": "Means, reference definitions and objects of evaluation differ; these are not per-action worst errors or robot tracking guarantees."
+    },
+    {
+      "paper": "2506.07339v2",
+      "article_section": "rtc",
+      "pdf_pages": [
+        3,
+        4
+      ],
+      "fact": "d=floor(delta/Delta t) under a model ignoring sub-timestep synchronization; schedule d<=s<=H-d.",
+      "qualification": "The article labels its deadline ceiling and distinct d_work/d_deadline as constructed extensions with explicit event conventions."
+    },
+    {
+      "paper": "2506.07339v2",
+      "article_section": "rtc",
+      "pdf_pages": [
+        4
+      ],
+      "fact": "Guidance: final estimate Ahat=A+(1-tau)v; VJP J^T diag(W)(Y-Ahat); clipped coefficient with r_tau_squared=(1-tau)^2/(tau^2+(1-tau)^2).",
+      "qualification": "The negative weighted-loss gradient, W versus W-squared and endpoint coefficient limits are independently derived checks."
+    },
+    {
+      "paper": "2506.07339v2",
+      "article_section": "rtc",
+      "pdf_pages": [
+        5
+      ],
+      "fact": "Eq5 transition is c_i*(exp(c_i)-1)/(e-1),c_i=(H-s-i)/(H-s-d+1).",
+      "qualification": "Initial new-draft omission corrected after visual PDF/HTML and official-source comparison. Fixed c=.5 regression and source/Decimal parity added."
+    },
+    {
+      "paper": "2506.07339v2",
+      "article_section": "rtc",
+      "pdf_pages": [
+        5,
+        6
+      ],
+      "fact": "Committed prefix,editable overlap,new future; max recent delay buffer Q forecasts the next delay. Algorithm1 takes initial A_init and d_init; the overlap timeline assumes an initial running chunk.",
+      "qualification": "Guidance is not a numerical hard clamp or a hard upper bound on future latency."
+    },
+    {
+      "paper": "2506.07339v2",
+      "article_section": "experiments",
+      "pdf_pages": [
+        6,
+        7,
+        24
+      ],
+      "fact": "12 Kinetix tasks,6 real tasks; simulated H8 and2048 rollouts per evaluation; real H50,20ms,5 denoising steps,76ms baseline/97ms RTC plus10-20ms LAN; added100/200ms delay.",
+      "qualification": "Force-control simulation and position-control hardware have different waiting behavior; task success, throughput and substep scores stay distinct."
+    },
+    {
+      "paper": "1812.03201v2",
+      "article_section": "decomposition",
+      "pdf_pages": [
+        2,
+        3
+      ],
+      "fact": "Fixed prior controller plus learned residual; reward decomposition does not decouple robot-object dynamics; TD3 is the learning algorithm used.",
+      "qualification": "Induced MDP, scaling, clipping and actor-chain examples are article analyses, not claims about unreported original hyperparameters."
+    },
+    {
+      "paper": "1812.03201v2",
+      "article_section": "mdp",
+      "pdf_pages": [
+        3
+      ],
+      "fact": "Algorithm1 generates residual plus exploration, adds the baseline, and records the learning action.",
+      "qualification": "The complete replay contract also needs reward,termination/truncation and any hidden controller state."
+    },
+    {
+      "paper": "1812.03201v2",
+      "article_section": "experiments",
+      "pdf_pages": [
+        3,
+        4
+      ],
+      "fact": "Simulation uses Cartesian position control and full force/torque observations; Eq6 x_t is the held block position. Real setup uses joint impedance,z-force and camera object state; Eq7 x_t is end-effector position and adds side-block position/yaw penalties.",
+      "qualification": "The block starts already grasped; this is not a full perception/grasp/assembly pipeline."
+    },
+    {
+      "paper": "1812.03201v2",
+      "article_section": "experiments",
+      "pdf_pages": [
+        5
+      ],
+      "fact": "Aligned20/20 both; misaligned15/20 residual vs2/20 prior,side-block rotations +/-20degrees;manual scoring;about8000 samples/3hours.",
+      "qualification": "Hardware sample count and timing remain task-specific; simulation seeds do not become hardware replicate counts."
+    },
+    {
+      "paper": "1812.03201v2",
+      "article_section": "experiments",
+      "pdf_pages": [
+        5,
+        6
+      ],
+      "fact": "V-D uses a policy pretrained by deep RL in the fixed-block simulation as pi_H. Sim-initialized comparison uses fixed side blocks,3 seeds,and fewer than1000 real steps.",
+      "qualification": "Fixed prior may itself be learned; initialization wording does not imply only loading residual-network weights. This differs from the moving-side-block8000-sample experiment; no acceleration ratio is inferred."
+    },
+    {
+      "paper": "2403.13144v1",
+      "article_section": "problem",
+      "pdf_pages": [
+        2,
+        3,
+        4
+      ],
+      "fact": "Eq6 maps end-effector points through X*Gamma(q) into the environment SDF; binary contacts do not measure exact contact position.",
+      "qualification": "The article fixes X=^S T_B using the transformation chain, rather than relying on ambiguous frame-direction prose."
+    },
+    {
+      "paper": "2403.13144v1",
+      "article_section": "measurement",
+      "pdf_pages": [
+        3,
+        4
+      ],
+      "fact": "Distance is minimum SIGNED SDF over a finite end-effector surface point cloud; noncontact weight epsilon only below -delta_P.",
+      "qualification": "Exact sphere and planar-circle calculations isolate signs and sampling; no voxel-grid or physical collision guarantee is inferred."
+    },
+    {
+      "paper": "2403.13144v1",
+      "article_section": "measurement",
+      "pdf_pages": [
+        4,
+        7
+      ],
+      "fact": "Printed Eq7 exponent uses2*sigma_P while prefactor uses sigma_P_squared; IV-B and VII-A.2 variance terminology differs.",
+      "qualification": "Article preserves the printed kernel, separately defines consistent STD sigma and checks both normalized weight conventions."
+    },
+    {
+      "paper": "2403.13144v1",
+      "article_section": "filter",
+      "pdf_pages": [
+        3
+      ],
+      "fact": "Each round perturbs particles,evaluates the current sliding batch,normalizes and resamples.",
+      "qualification": "Pre-resampling weighted and post-resampling equal estimators are distinguished; old weights are not applied a second time."
+    },
+    {
+      "paper": "2403.13144v1",
+      "article_section": "actions",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "fact": "CoACD segments and max-min angular normal diversity select an action; try next feasible candidate or switch segment.",
+      "qualification": "This is a heuristic,not explicit expected entropy maximization. Opposite normals can add no rank."
+    },
+    {
+      "paper": "2403.13144v1",
+      "article_section": "termination",
+      "pdf_pages": [
+        5,
+        6
+      ],
+      "fact": "Confidence,stability and consistency all pass for5 consecutive rounds; Eq12 contact rejects d>delta_E,noncontact rejects d<=-delta_E; Eq13 grows on C&&!V,shrinks on S&&V.",
+      "qualification": "One-sided stopping predicates differ from the squared contact likelihood. Mean rotation and mixed-unit thresholds require explicit implementation contracts."
+    },
+    {
+      "paper": "2403.13144v1",
+      "article_section": "experiments",
+      "pdf_pages": [
+        6
+      ],
+      "fact": "Simulation initial translation +/-15cm,rotation +/-.15rad,100000 particles,5 initial guesses per object; real Franka has a protective printed cover and threshold contact detection.",
+      "qualification": "These are experiment conditions rather than a global convergence basin."
+    },
+    {
+      "paper": "2403.13144v1",
+      "article_section": "experiments",
+      "pdf_pages": [
+        7
+      ],
+      "fact": "TableI times2.7,2.9,5.5,7.8,12.4s for L60,100,600,1000,2000; TableII translationcm,rotation10^-2rad;10 repeats per table/shelf condition.",
+      "qualification": "These are particle evaluation times,not servo periods. Reported +/- terms are not worst-case bounds; TableII values are used rather than contradictory prose action-count approximations."
+    },
+    {
+      "paper": "2403.13144v1",
+      "article_section": "experiments",
+      "pdf_pages": [
+        7
+      ],
+      "fact": "Real table mean5.3mm/.63deg;real shelf7.2mm/.85deg;Baxter-shaped environment example has no ground truth.",
+      "qualification": "Baxter visualization is not pooled into quantitative absolute-error results; beanbag shape is modeled as rigid geometry."
+    },
+    {
+      "paper": "1812.03201v2",
+      "article_section": "experiments",
+      "pdf_pages": [
+        4,
+        6
+      ],
+      "fact": "Fig2 simulation ordinate is success rate,hardware ordinate average return;Fig4 perturbation comparisons use final average return.",
+      "qualification": "Article keeps these metrics distinct and does not turn a return difference into a success-rate percentage."
+    },
+    {
+      "paper": "2402.10329v3",
+      "article_section": "umi",
+      "pdf_pages": [
+        4,
+        5,
+        10
+      ],
+      "fact": "HD2 uses155deg fisheye and raw policy images;HD4 inertial-monocular ORB-SLAM3 recovers metric scale;HD5 continuously tracks finger width with fiducials and uses soft finger deformation.",
+      "qualification": "Transient inertial support does not remove visual texture requirements;continuous width is not an independently measured exact contact force."
+    },
+    {
+      "paper": "2402.10329v3",
+      "article_section": "experiments",
+      "pdf_pages": [
+        9,
+        10
+      ],
+      "fact": "VII throughput compares three methods over15minutes,including resets,randomization and robot faults;cup UMI>3x SpaceMouse and48% barehand;tossing64% barehand,SpaceMouse no successful demonstration.",
+      "qualification": "Paper-reported short-protocol ratios,not current hardware performance or sustainable long-run collection throughput;offline recovery,filtering and training remain separate."
+    },
+    {
+      "paper": "2402.10329v3",
+      "article_section": "experiments",
+      "pdf_pages": [
+        8,
+        9
+      ],
+      "fact": "Dishwashing has7 dependent stages,258 demonstrations including explicit recovery from additional ketchup,CLIP ViT-B/16 policy14/20 and unpretrained ResNet-34 baseline0/10.",
+      "qualification": "Recovery is supported by demonstration data,not deployment weight updates;architecture and pretraining both change in this baseline."
+    },
+    {
+      "paper": "UMI code snapshot d095ba9",
+      "article_section": "waypoint-timing",
+      "source_files": [
+        "umi/common/pose_trajectory_interpolator.py",
+        "umi/real_world/franka_interpolation_controller.py",
+        "umi/real_world/rtde_interpolation_controller.py",
+        "umi/real_world/wsg_controller.py"
+      ],
+      "fact": "Pure helper returns original interpolator for target<=curr_time;controller branches still record last requested time. RTDE andWSG pass speed bounds;Franka branch does not. Constructed x=.01 at4.01s,targetx=1 at4.3s,maxspeed.2 produces endpoint8.96s.",
+      "qualification": "Source branch replay only,not a running IPC/servo/controller or physical hardware result;speed arguments can differ across backends."
+    },
+    {
+      "paper": "1802.09477v3 (supporting TD3 reference)",
+      "article_section": "residual:learning",
+      "primary_source": "https://arxiv.org/html/1802.09477v3#S5.SS3",
+      "location": "Section5.3, Eq14; Algorithm1",
+      "fact": "Target-policy smoothing noise is clipped and chosen independently of the exploration policy; it is sampled for the critic target, not sent as the current physical action.",
+      "qualification": "Added explanatory distinction without attributing the supporting paper’s numerical hyperparameters to the residual-RL robot experiment."
+    },
+    {
+      "paper": "2403.13144v1",
+      "article_section": "contact:experiments",
+      "pdf_pages": [
+        7
+      ],
+      "fact": "TableII table(sim) actions21.8±5.8,table(real)17.2±6.5; nearby VII-B prose instead summarizes table actions as30 real to20 simulation.",
+      "qualification": "Direct page-raster review confirms the mismatch. Article retains exact table entries and flags the prose/table inconsistency without inferring an action-count acceleration ratio."
+    }
+  ],
+  "constructed_analyses": [
+    "SE(2)/SE(3) frame composition and reanchoring",
+    "Deadline/work occupancy and unanticipated-delay gap",
+    "Weighted-loss VJP and clipped coefficient endpoints",
+    "Residual induced MDP,relabeling,scaled/clipped actor gradients,linear scalar stability and bounded-tanh local instability versus ultimate boundedness",
+    "Known point-plane rank,infinite-domain covariance,finite prior truncation,equicorrelated measurement fusion",
+    "Point-sampling/SDF approximation bound and signed circle counterexample",
+    "Pinned controller-branch clock translation and pure trajectory retiming under explicitly constructed finite-speed limits"
+  ]
+}

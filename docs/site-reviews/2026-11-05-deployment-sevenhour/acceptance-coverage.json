@@ -1,0 +1,591 @@
+{
+  "status": "complete",
+  "started_utc": "2026-11-05T21:51:15.047114+00:00",
+  "scope": "Editorial answer-location and evidence-scope review of all58 reader self-check questions. This is not an automatic proof of paper claims or hardware performance.",
+  "source_snapshot": "production9",
+  "questions": [
+    {
+      "post": "deployment",
+      "question_number": 1,
+      "question": "RMA、UMI 和 RTC 分别改变哪个部署接口？",
+      "status": "reviewed",
+      "anchor": "interfaces",
+      "answer_summary": "RMA conditions control on history-inferred context; UMI aligns demonstrations and robot interfaces; RTC aligns generation with ongoing execution.",
+      "evidence_scope": "Paper-specific conceptual scope; figures keep three independent rows and do not claim an experimentally validated combined system.",
+      "reviewed_utc": "2026-11-05T21:51:36.425156+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 2,
+      "question": "RMA 第一阶段的特权信息与第二阶段的历史输入有什么区别？",
+      "status": "reviewed",
+      "anchor": "rma",
+      "answer_summary": "Phase1 uses simulator environment factors in a trainable encoder; phase2 replaces that privileged input with state-action history while encoder and base policy stay frozen.",
+      "evidence_scope": "RMA III-B and training-stage diagram; shape arithmetic checks dimensions but does not train either stage.",
+      "reviewed_utc": "2026-11-05T21:52:45.477538+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 3,
+      "question": "为什么第二阶段需要看到适应模块自身误差产生的轨迹？",
+      "status": "reviewed",
+      "anchor": "rma",
+      "answer_summary": "The current adapter drives simulated rollouts so its own context errors affect the histories used for further supervised adaptation training.",
+      "evidence_scope": "RMA III-B; figure phase2 includes rollout-to-history feedback and an MSE update only to the adapter.",
+      "reviewed_utc": "2026-11-05T21:53:53.478090+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 4,
+      "question": "控制相关潜变量为什么不必等于可解释的物理参数？",
+      "status": "reviewed",
+      "anchor": "rma",
+      "answer_summary": "A control-useful latent need not identify each physical parameter; the alpha/m example exhibits indistinguishable input-output responses.",
+      "evidence_scope": "Conceptual identifiability counterexample, not a physical parameter estimator or measured RMA latent interpretation.",
+      "reviewed_utc": "2026-11-05T21:55:05.907655+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 5,
+      "question": "RMA 的历史窗口、适应更新率和基础策略频率怎样区分？",
+      "status": "reviewed",
+      "anchor": "rma",
+      "answer_summary": "The50-step history covers about0.5s; adaptation publishes at10Hz and the policy runs at100Hz. History alignment and the conflicting simulation-step statement are explicitly qualified.",
+      "evidence_scope": "Paper frequencies and conditional convolution-shape calculation; no measured inference or resolved physics-step claim.",
+      "reviewed_utc": "2026-11-05T21:56:28.836065+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 6,
+      "question": "同一锚点的相对轨迹与逐步增量为什么不能混用？",
+      "status": "reviewed",
+      "anchor": "umi",
+      "answer_summary": "One-anchor relative transforms reconstruct directly from the shared anchor; per-step rigid increments require ordered multiplication. The published legacy rel and delta branches have distinct component conventions.",
+      "evidence_scope": "Standard-library2D composition identities plus600 pinned-source3D pose-matrix comparisons; checkpoint interchange is not certified.",
+      "reviewed_utc": "2026-11-05T21:57:39.018069+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 7,
+      "question": "相对表示消除了哪些参考依赖，又保留哪些工具与双手接口要求？",
+      "status": "reviewed",
+      "anchor": "umi",
+      "answer_summary": "Common world-frame left transforms cancel in relative actions; changing the tool frame conjugates the relative transform. Dual-arm observations still need the inter-gripper relationship.",
+      "evidence_scope": "SE3 algebra, pinned relative-pose source checks and paper dual-arm ablation; no arbitrary embodiment transfer claim.",
+      "reviewed_utc": "2026-11-05T21:59:00.903534+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 8,
+      "question": "观测、推理和执行延迟怎样共同决定过期动作？",
+      "status": "reviewed",
+      "anchor": "umi",
+      "answer_summary": "Observation age,inference time and actuator lead jointly determine which target remains executable; equality and rounding depend on the stated event convention.",
+      "evidence_scope": "805 standard-library deadline cases and pinned exec_actions recording stubs; constructed delays are not measured UMI hardware latency.",
+      "reviewed_utc": "2026-11-05T22:00:15.289815+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 9,
+      "question": "RTC 的三个时间区间各允许怎样修改旧计划？",
+      "status": "reviewed",
+      "anchor": "rtc",
+      "answer_summary": "The new chunk has a committed prefix,editable overlap and newly generated tail; the old chunk is shifted by stride before it supplies reference actions.",
+      "evidence_scope": "H16,s5,d4 diagram and masks; prior running chunk and initial delay estimate are required startup inputs.",
+      "reviewed_utc": "2026-11-05T22:01:35.306931+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 10,
+      "question": "为什么动作块平均与软掩码引导不是同一运算？",
+      "status": "reviewed",
+      "anchor": "rtc",
+      "answer_summary": "Soft-mask weights enter a generation-time weighted mismatch objective; temporal averaging instead combines predicted action values and can mix incompatible modes.",
+      "evidence_scope": "VJP derivation and constructed arithmetic; no collision checking or quantitative hardware continuity claim.",
+      "reviewed_utc": "2026-11-05T22:02:54.428505+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 11,
+      "question": "已承诺执行的前缀为什么不等于生成器中的严格数值硬约束？",
+      "status": "reviewed",
+      "anchor": "rtc",
+      "answer_summary": "Old actions consumed during inference cannot be rewritten; finite-strength guidance only approximates the reference prefix in generated values.",
+      "evidence_scope": "RTC masking discussion; committed execution facts and numerical constraint strength are separated,without claiming derivative-continuity guarantees.",
+      "reviewed_utc": "2026-11-05T22:04:21.210182+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 12,
+      "question": "新旧相对轨迹锚点变化后，怎样表示相同的世界目标？",
+      "status": "reviewed",
+      "anchor": "integration",
+      "answer_summary": "The same world target changes relative expression by Tb inverse times Ta times the old relative transform; tools,normalization,rotation encoding and gripper units must also match.",
+      "evidence_scope": "Independent frame-composition identities and UMI reanchoring figure; no complete RTC-UMI integration is executed.",
+      "reviewed_utc": "2026-11-05T22:05:41.726168+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 13,
+      "question": "三篇实验的任务、评分单位和基线为什么不能混成一个排行榜？",
+      "status": "reviewed",
+      "anchor": "experiments",
+      "answer_summary": "RMA locomotion success,UMI per-object and episode counts,and RTC solve rate or substep scores are different quantities with different protocols and sample sizes.",
+      "evidence_scope": "Version-specific PDF figures and selected-claim ledger; no cross-paper ranking or merged success-rate estimate.",
+      "reviewed_utc": "2026-11-05T22:07:04.865196+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 14,
+      "question": "组合 RMA 思想与既有操作策略，为什么仍需要训练数据和条件接口？",
+      "status": "reviewed",
+      "anchor": "integration",
+      "answer_summary": "An existing policy must be trained to consume an appropriate inferred context; history content,supervision and time-scale assumptions need redesign for manipulation.",
+      "evidence_scope": "Design implication rather than an evaluated RMA-to-VLA transfer; no extra input alone is claimed to add adaptation.",
+      "reviewed_utc": "2026-11-05T22:08:27.273619+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 15,
+      "question": "为什么总目标时间偏移与后台计算占用不一定相等？",
+      "status": "reviewed",
+      "anchor": "rtc",
+      "answer_summary": "Worker occupancy constrains inference throughput,whereas observation-to-actuation deadline offset constrains action coverage; these yield separate stride bounds.",
+      "evidence_scope": "1522 constructed schedules plus timing widget; only zero extra delay and matching conventions collapse both budgets to one d.",
+      "reviewed_utc": "2026-11-05T22:09:49.350981+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 16,
+      "question": "UMI 源码的 rel、relative 与 delta 为什么不能只按名称互换？",
+      "status": "reviewed",
+      "anchor": "examples",
+      "answer_summary": "Pinned UMI relative uses full inverse-base composition; legacy rel and component delta differ,so representation configuration and decoding must match.",
+      "evidence_scope": "NumPy-only source probe verifies commit and both source hashes,with200 random frames and600 matrix comparisons; no model checkpoint interchange is tested.",
+      "reviewed_utc": "2026-11-05T22:11:13.110673+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 17,
+      "question": "历史最大推理延迟为什么不构成下一次的硬上界？",
+      "status": "reviewed",
+      "anchor": "rtc",
+      "answer_summary": "A recent maximum delay estimates the next delay but cannot bound an unseen overrun; H16,s5,20ms gives220ms old coverage versus a constructed240ms return.",
+      "evidence_scope": "Constructed one-step coverage gap,not a reported RTC fault or a hard real-time guarantee.",
+      "reviewed_utc": "2026-11-05T22:12:35.832434+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 18,
+      "question": "软掩码 W 为什么只在加权误差中出现一次，VJP 又为什么不能省略？",
+      "status": "reviewed",
+      "anchor": "rtc",
+      "answer_summary": "The negative gradient of one-half sum W times squared output error is J transpose diagW times residual; squaring a preweighted residual would instead introduce W squared.",
+      "evidence_scope": "Non-diagonal linear-field VJP checks and independent finite differences; this does not benchmark model autodiff cost.",
+      "reviewed_utc": "2026-11-05T22:13:56.873795+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 19,
+      "question": "UMI 的动作块长度、控制频率与去噪步数分别对应哪个时间或计算轴？",
+      "status": "reviewed",
+      "anchor": "umi",
+      "answer_summary": "Action horizon6,environment frequency10 or20Hz,and16 inference denoising updates refer to separate axes; DDIM training uses50 diffusion steps in TableA1.",
+      "evidence_scope": "UMIv3 AppendixA1; RTC five-step pi0.5 configuration is separately attributed and not transferred to UMI.",
+      "reviewed_utc": "2026-11-05T22:15:22.165300+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 20,
+      "question": "观测具有共同时间字段时，为什么仍要检查每路缓存的时间覆盖？",
+      "status": "reviewed",
+      "anchor": "examples",
+      "answer_summary": "A common returned timestamp can coexist with clamped endpoint proprioception when buffers do not cover the camera anchor; interpolation and freshness are different checks.",
+      "evidence_scope": "120 synthetic buffers,560 nearest-frame checks,360 low-dimensional comparisons and7 Slerp/clamping queries; no device-clock calibration is measured.",
+      "reviewed_utc": "2026-11-05T22:16:46.732002+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 21,
+      "question": "RTC 过渡权重中的线性因子 c_i 起什么作用，省略后会怎样改变引导？",
+      "status": "reviewed",
+      "anchor": "rtc",
+      "answer_summary": "The transition includes c times the normalized exponential term; at c0.5 its weight is0.1887703344,and omitting c doubles that example.",
+      "evidence_scope": "Independent Decimal60 browser references and3384 pinned-source profiles against Decimal70; earlier incorrect shared-formula evidence is superseded.",
+      "reviewed_utc": "2026-11-05T22:17:54.401871+00:00"
+    },
+    {
+      "post": "deployment",
+      "question_number": 22,
+      "question": "设备调度时间、插值器终点与实际到达时间，为什么不能默认相同？",
+      "status": "reviewed",
+      "anchor": "waypoint-timing",
+      "answer_summary": "Requested time,retimed interpolator endpoint and physical arrival are distinct; past requests may preserve the interpolator while updating last requested time.",
+      "evidence_scope": "Four immutable source hashes,21 recording-state branch cases,two clock origins and19 independent scalar samples; no controller import,IPC queue or servo loop.",
+      "reviewed_utc": "2026-11-05T22:18:57.120203+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 1,
+      "question": "名义动作、残差动作与实际执行动作各是什么？",
+      "status": "reviewed",
+      "anchor": "decomposition",
+      "answer_summary": "The fixed nominal action and learned residual share a control space; their mapped sum F is the command actually executed.",
+      "evidence_scope": "ResidualRL method plus standard-library action bookkeeping; scaling,units,frames and update timing remain explicit interface choices.",
+      "reviewed_utc": "2026-11-05T22:19:57.217417+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 2,
+      "question": "为什么奖励可以分成两部分，控制目标仍不能独立优化后相加？",
+      "status": "reviewed",
+      "anchor": "decomposition",
+      "answer_summary": "Both controllers affect robot-object coupling,so splitting the reward does not make two independent optimization problems whose solutions can simply be added.",
+      "evidence_scope": "Paper robot/object decomposition and explanatory control coupling; no separate-reward optimality claim.",
+      "reviewed_utc": "2026-11-05T22:20:56.554934+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 3,
+      "question": "残差结构怎样改变探索起点，又在什么情况下需要先抵消基线？",
+      "status": "reviewed",
+      "anchor": "decomposition",
+      "answer_summary": "A useful baseline steers exploration toward task-relevant states; a misleading or overpowering baseline may instead require cancellation beyond available residual authority.",
+      "evidence_scope": "Paper exploration argument and action-headroom construction; sample-efficiency benefit is conditional,not universal.",
+      "reviewed_utc": "2026-11-05T22:21:58.294395+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 4,
+      "question": "怎样从原始环境构造残差 MDP？",
+      "status": "reviewed",
+      "anchor": "mdp",
+      "answer_summary": "Compose the physical transition and action-dependent reward with F to obtain the induced residual MDP; clipping can remain part of that mapping.",
+      "evidence_scope": "500 direct-versus-induced transition/action contracts; synthetic scalar plant only,without TD3 training or contact simulation.",
+      "reviewed_utc": "2026-11-05T22:22:58.573164+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 5,
+      "question": "带积分或模式记忆的固定控制器，对学习状态提出什么要求？",
+      "status": "reviewed",
+      "anchor": "mdp",
+      "answer_summary": "Integral state,mode,phase or hidden targets of a fixed controller must be represented when they change the executed command; otherwise model partial observability explicitly.",
+      "evidence_scope": "Markov-state requirement explained in2.2; no recurrent-policy or hidden-state inference implementation is claimed.",
+      "reviewed_utc": "2026-11-05T22:23:57.535077+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 6,
+      "question": "critic 使用残差动作与使用总动作时，更新公式怎样保持一致？",
+      "status": "reviewed",
+      "anchor": "learning",
+      "answer_summary": "Residual-action critics receive residual targets; physical-action critics receive F-transformed targets and the actor gradient must include F. Replay action meaning must stay consistent.",
+      "evidence_scope": "Synthetic Q-coordinate identities and actor derivatives; target-policy smoothing is separately distinguished from physical exploration noise.",
+      "reviewed_utc": "2026-11-05T22:24:56.602587+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 7,
+      "question": "为什么零残差初始化仍不能消除探索风险？",
+      "status": "reviewed",
+      "anchor": "learning",
+      "answer_summary": "Zero deterministic residual reproduces the nominal baseline only through the same F; exploration noise and baseline task failures still affect executed behavior.",
+      "evidence_scope": "Implementation interpretation,not a safety or task-success guarantee; no exploration policy is run.",
+      "reviewed_utc": "2026-11-05T22:25:55.492421+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 8,
+      "question": "总动作上限怎样变成状态相关的残差余量？",
+      "status": "reviewed",
+      "anchor": "limits",
+      "answer_summary": "Total bounds translate to the state-dependent residual interval [low-b,high-b],intersected with any residual-radius bound; the intersection may be empty.",
+      "evidence_scope": "Feasible-residual arithmetic and headroom SVG; command feasibility alone does not evaluate contact forces or an entire robot trajectory.",
+      "reviewed_utc": "2026-11-05T22:26:55.203791+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 9,
+      "question": "限幅后的命令为什么可能与网络预测的修正不同？",
+      "status": "reviewed",
+      "anchor": "limits",
+      "answer_summary": "Total clipping makes the residual-to-command map many-to-one; separate clipping before addition does not enforce the same total bound.",
+      "evidence_scope": "Nominal0.9 plus residual0.4 example and synthetic saturation cases; training and deployment must share the chosen mapping.",
+      "reviewed_utc": "2026-11-05T22:27:53.866764+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 10,
+      "question": "有界残差和稳定基线为什么一般只给出误差范围？",
+      "status": "reviewed",
+      "anchor": "stability",
+      "answer_summary": "A bounded residual gives an ultimate error region under the scalar assumptions; wrong feedback can destabilize zero even when the residual is globally bounded.",
+      "evidence_scope": "Independent Decimal70 tanh equilibrium,local-slope check and1000 Lyapunov inequalities; continuous scalar analysis is separate from the discrete linear widget.",
+      "reviewed_utc": "2026-11-05T22:28:57.018444+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 11,
+      "question": "原始真机插装实验的观测、奖励和评分与仿真有什么区别？",
+      "status": "reviewed",
+      "anchor": "experiments",
+      "answer_summary": "Simulation and hardware differ in observation and reward terms; hardware retains only end-effector z-force in the stated observation and adds side-block position/yaw penalties.",
+      "evidence_scope": "Original equations and figures; return,success rate,random seeds and human scoring are kept distinct.",
+      "reviewed_utc": "2026-11-05T22:29:57.339543+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 12,
+      "question": "活动侧块实验与固定侧块的仿真初始化实验，为什么不能直接计算统一加速比？",
+      "status": "reviewed",
+      "anchor": "experiments",
+      "answer_summary": "The8000-sample movable-block experiment and sub1000-step simulation-initialized fixed-block experiment change task conditions and the baseline source.",
+      "evidence_scope": "PaperV-D,VI and figure5; no shared acceleration multiplier is inferred across those settings.",
+      "reviewed_utc": "2026-11-05T22:30:57.131947+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 13,
+      "question": "动力学残差、动作残差与环境潜变量各解决什么问题？",
+      "status": "reviewed",
+      "anchor": "comparison",
+      "answer_summary": "A dynamics residual corrects predictions,a control residual corrects actions,and an RMA-style latent conditions a policy on history-inferred context.",
+      "evidence_scope": "Method comparison table and linked articles; these labels do not establish interchangeable data,losses or deployment interfaces.",
+      "reviewed_utc": "2026-11-05T22:31:57.082694+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 14,
+      "question": "连续反馈方向正确时，过大的采样周期为何仍会破坏离散收敛？",
+      "status": "reviewed",
+      "anchor": "stability",
+      "answer_summary": "The discrete scalar recurrence contracts only when the magnitude of1+dt times(alpha-k) is below1; continuous negative feedback alone does not fix the sampling condition.",
+      "evidence_scope": "Four analytic discrete trajectories,independent high-precision recurrences and disturbance bounds; no sampled robot-controller guarantee.",
+      "reviewed_utc": "2026-11-05T22:32:59.776238+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 15,
+      "question": "使用物理动作 critic 时，缩放矩阵和限幅如何进入 actor 的链式梯度？",
+      "status": "reviewed",
+      "anchor": "learning",
+      "answer_summary": "For a fixed physical-action critic and batch,the actor gradient contains actor-Jacobian transpose,scale transpose and physical Q gradient; saturation adds the derivative of the chosen clipping map.",
+      "evidence_scope": "600 actor derivatives with non-diagonal scaling plus independent NumPy/SciPy finite differences; exact clipping kinks are not assigned an inferred derivative.",
+      "reviewed_utc": "2026-11-05T22:33:59.821147+00:00"
+    },
+    {
+      "post": "residual",
+      "question_number": 16,
+      "question": "训练中更新基线后，为什么旧残差记录不一定仍描述当前的动作接口？",
+      "status": "reviewed",
+      "anchor": "mdp",
+      "answer_summary": "Changing the baseline changes the physical meaning of an old residual; simple relabeling preserves the old command only for the stated invertible additive interface.",
+      "evidence_scope": "Baseline relabeling identity in standard-library cases; saturation,hidden memory and state-dependent mappings require separate analysis.",
+      "reviewed_utc": "2026-11-05T22:34:59.911747+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 1,
+      "question": "机器人环境标定与关节零点、连杆参数辨识有什么区别？",
+      "status": "reviewed",
+      "anchor": "problem",
+      "answer_summary": "The unknown is a fixed base-to-environment rigid pose,with known environment geometry and an existing forward-kinematic model; joint and link identification are different unknowns.",
+      "evidence_scope": "Contact-calibration problem statement; no joint-model,tool-shape or unknown-environment reconstruction is implemented.",
+      "reviewed_utc": "2026-11-05T22:35:56.868861+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 2,
+      "question": "怎样定义变换方向，才能把末端点送到环境 SDF 中查询？",
+      "status": "reviewed",
+      "anchor": "problem",
+      "answer_summary": "X is environment-from-base and Gamma is base-from-end-effector,so X Gamma p sends a tool point into the environment SDF frame.",
+      "evidence_scope": "Explicit frame chain and independently computable signed-distance examples; no external calibration measurement is simulated.",
+      "reviewed_utc": "2026-11-05T22:36:52.711057+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 3,
+      "question": "二值接触事件为什么不等于精确接触点测量？",
+      "status": "reviewed",
+      "anchor": "measurement",
+      "answer_summary": "The observation pairs joint configuration with a binary contact event; exact contact location and normal are inferred through geometry rather than independently measured.",
+      "evidence_scope": "Paper observation model and diagram; constructed known-correspondence geometry is explicitly separated from actual available sensing.",
+      "reviewed_utc": "2026-11-05T22:37:46.518662+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 4,
+      "question": "最小有符号距离与最小绝对距离为什么不能混用？",
+      "status": "reviewed",
+      "anchor": "measurement",
+      "answer_summary": "Minimum signed distance retains penetration depth and sign; minimum absolute distance can hide a conflicting interior point.",
+      "evidence_scope": "Sphere SDF,transformation and circle-sampling constructions; finite tool sampling is not a full collision checker.",
+      "reviewed_utc": "2026-11-05T22:38:44.332886+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 5,
+      "question": "接触与非接触的粒子权重分别排除什么假设？",
+      "status": "reviewed",
+      "anchor": "measurement",
+      "answer_summary": "Contact weights prefer near-zero signed distance on both sides; noncontact weights reject deep predicted penetration and do not measure positive clearance.",
+      "evidence_scope": "Literal-v1 and standard-deviation kernels checked separately; compatibility weights are not a normalized Bernoulli probability pair.",
+      "reviewed_utc": "2026-11-05T22:39:39.813254+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 6,
+      "question": "为什么需要在对数域累加观测权重？",
+      "status": "reviewed",
+      "anchor": "filter",
+      "answer_summary": "Sum log compatibility weights,subtract their maximum and normalize exponentials; common contact factors cancel only within the same observation batch.",
+      "evidence_scope": "Independent normalized-weight calculations; scores with different event counts are not treated as directly comparable action values.",
+      "reviewed_utc": "2026-11-05T22:40:34.370694+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 7,
+      "question": "固定基座的粒子预测扰动为什么仍有作用？",
+      "status": "reviewed",
+      "anchor": "filter",
+      "answer_summary": "The true mounting pose is static; added particle perturbations support search and recovery rather than model literal base motion.",
+      "evidence_scope": "Algorithm1 and eight diffusion-logic branches; SE3 perturbation coordinates and translation/rotation scales remain implementation choices.",
+      "reviewed_utc": "2026-11-05T22:41:29.933410+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 8,
+      "question": "法向多样性评分与最大期望信息增益有什么区别？",
+      "status": "reviewed",
+      "anchor": "actions",
+      "answer_summary": "The selected candidate maximizes its nearest angular separation from previous normals within the chosen convex segment; this is a low-cost heuristic,not explicit expected entropy reduction.",
+      "evidence_scope": "PaperV-B and geometric counterexamples; no belief-space action planner is executed.",
+      "reviewed_utc": "2026-11-05T22:42:24.870918+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 9,
+      "question": "无限平面接触为何留下三个局部不可观测方向？",
+      "status": "reviewed",
+      "anchor": "observability",
+      "answer_summary": "For a known point on an infinite horizontal plane,the Jacobian is [0,0,1,y,-x,0],leaving two tangential translations and yaw unobservable.",
+      "evidence_scope": "Exact constructed rank and600 independent rotation derivatives; finite edges,tool geometry and changing SDF minima are outside this local fixed-association analysis.",
+      "reviewed_utc": "2026-11-05T22:43:19.676876+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 10,
+      "question": "粒子集中、有效样本量与几何可观测性为什么不能互相替代？",
+      "status": "reviewed",
+      "anchor": "observability",
+      "answer_summary": "Weight concentration,particle duplication,ESS and geometric rank describe different properties; resampling can concentrate a geometrically ambiguous belief.",
+      "evidence_scope": "Resampling arithmetic,rank examples and finite-grid posterior; neither ESS nor a small covariance is an accuracy certificate.",
+      "reviewed_utc": "2026-11-05T22:44:15.148457+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 11,
+      "question": "三个终止判据分别检查什么，自适应扩散何时增大？",
+      "status": "reviewed",
+      "anchor": "termination",
+      "answer_summary": "Confidence checks spread,stability checks recent variation,and consistency checks new observations; diffusion grows for C and notV,shrinks for S andV,and all three must hold five consecutive rounds to stop.",
+      "evidence_scope": "Eight diffusion combinations,stopping boundary cases and200 histories; the stability-history window remains caller-defined.",
+      "reviewed_utc": "2026-11-05T22:45:09.819937+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 12,
+      "question": "为什么不能逐元素平均齐次矩阵或直接平均跨分支角度？",
+      "status": "reviewed",
+      "anchor": "termination",
+      "answer_summary": "Rigid-transform matrices and cross-branch Euler angles cannot be averaged componentwise without care; concentrated rotations permit an explicitly defined local or manifold mean.",
+      "evidence_scope": "Circular-mean branch example and explanatory SE3 conditions; no unpublished full pose-mean implementation is inferred.",
+      "reviewed_utc": "2026-11-05T22:46:04.684910+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 13,
+      "question": "表 II 的旋转单位和表 I 的耗时分别怎样解释？",
+      "status": "reviewed",
+      "anchor": "experiments",
+      "answer_summary": "TableII rotation is in10^-2 rad,and TableI seconds measure particle evaluation rather than servo period or complete calibration duration.",
+      "evidence_scope": "Direct original PDF table inspection and numerical unit conversion; TableII action counts are retained despite the conflicting nearby prose.",
+      "reviewed_utc": "2026-11-05T22:46:59.267255+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 14,
+      "question": "CAD 偏差、物体变形和对称几何会怎样影响最终估计？",
+      "status": "reviewed",
+      "anchor": "engineering",
+      "answer_summary": "CAD errors,deformation,mismatched tool geometry and symmetry can be absorbed into an incorrect mounting estimate or preserve multiple modes.",
+      "evidence_scope": "Method assumptions and paper hardware observations; no quantitative separation of all real error sources is claimed.",
+      "reviewed_utc": "2026-11-05T22:47:49.684050+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 15,
+      "question": "为什么相反的法向未必增加局部约束的秩？",
+      "status": "reviewed",
+      "anchor": "observability",
+      "answer_summary": "Opposite normals at matching horizontal lever arms can merely negate a Jacobian row,so a180-degree angular difference need not add rank.",
+      "evidence_scope": "Constructed exact-rank counterexample; the normal heuristic remains a proxy and does not replace independent constraint analysis.",
+      "reviewed_utc": "2026-11-05T22:48:38.835045+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 16,
+      "question": "增加表面后有效样本量变小，为什么不单独等于精度改善或粒子退化？",
+      "status": "reviewed",
+      "anchor": "observability",
+      "answer_summary": "A new surface may reduce ESS through legitimate likelihood concentration,while numerical duplication can also reduce diversity; geometry,mean/error and covariance need joint interpretation.",
+      "evidence_scope": "Finite41x41 grid posterior,independent covariance oracle and rank examples; grid truncation and non-Gaussian marginals are explicitly retained.",
+      "reviewed_utc": "2026-11-05T22:49:28.264941+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 17,
+      "question": "v1 式 7 的参数记号存在什么差异，算例采用哪一种明确约定？",
+      "status": "reviewed",
+      "anchor": "measurement",
+      "answer_summary": "Printed Eq7 uses sigmaP squared in the prefactor but2sigmaP in the exponent denominator; examples separately define a consistent standard-deviation sigma.",
+      "evidence_scope": "Direct PDF and HTML agreement,literal versus STD normalized weights,and explicit0.99005 versus0.13534 factor example; unseen implementation convention remains unresolved.",
+      "reviewed_utc": "2026-11-05T22:50:19.500293+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 18,
+      "question": "重采样前后的均值应分别使用哪些权重？",
+      "status": "reviewed",
+      "anchor": "filter",
+      "answer_summary": "Before resampling use candidate weights; after copying particles use equal weights,otherwise original weights are counted again. Rotation averaging has an additional representation requirement.",
+      "evidence_scope": "0/10 population example gives mean1 versus double-weighted0.122,plus resampling checks; generation and observation-batch identities are explicit.",
+      "reviewed_utc": "2026-11-05T22:51:09.719606+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 19,
+      "question": "点云数量为什么不足以单独决定连续几何距离的误差界？",
+      "status": "reviewed",
+      "anchor": "engineering",
+      "answer_summary": "The signed-distance error bound depends on surface coverage epsilon and SDF approximation eta,not point count alone; rigid transforms preserve the coverage distances.",
+      "evidence_scope": "1-Lipschitz derivation and40mm-radius circle with8-point positive2.0448mm versus continuous negative1mm; no hardware accuracy scaling is inferred.",
+      "reviewed_utc": "2026-11-05T22:52:01.363975+00:00"
+    },
+    {
+      "post": "contact",
+      "question_number": 20,
+      "question": "为什么更密集的接触事件可能使粒子过度集中，观测相关性又怎样改变融合精度？",
+      "status": "reviewed",
+      "anchor": "observability",
+      "answer_summary": "Equicorrelated repeated measurements share an error floor; N25,rho0.9 yields about0.951sigma rather than the independent0.2sigma fusion scale.",
+      "evidence_scope": "Independent covariance calculations in20 constructed cases; the example does not estimate actual sensor correlation or validate the full particle filter.",
+      "reviewed_utc": "2026-11-05T22:52:50.981555+00:00"
+    }
+  ],
+  "reviewed_questions": 58,
+  "completed_utc": "2026-11-05T22:53:16.644729+00:00",
+  "answer_anchors_resolve": true
+}

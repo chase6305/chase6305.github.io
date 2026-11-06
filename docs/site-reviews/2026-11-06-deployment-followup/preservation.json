@@ -1,0 +1,33 @@
+[
+  {
+    "route": "/posts/ai/rma-umi-rtc-deployment/",
+    "preserved_anchor_count": 57,
+    "new_anchors": [
+      "action-metric"
+    ],
+    "publication": {
+      "datePublished": "2026-11-06T00:00:00+08:00",
+      "url": "https://chase6305.github.io/posts/ai/rma-umi-rtc-deployment/"
+    }
+  },
+  {
+    "route": "/posts/ai/residual-reinforcement-learning/",
+    "preserved_anchor_count": 49,
+    "new_anchors": [],
+    "publication": {
+      "datePublished": "2026-11-06T00:00:00+08:00",
+      "url": "https://chase6305.github.io/posts/ai/residual-reinforcement-learning/"
+    }
+  },
+  {
+    "route": "/posts/calibration/interactive-contact-calibration/",
+    "preserved_anchor_count": 50,
+    "new_anchors": [
+      "multimodal-mean"
+    ],
+    "publication": {
+      "datePublished": "2026-11-06T00:00:00+08:00",
+      "url": "https://chase6305.github.io/posts/calibration/interactive-contact-calibration/"
+    }
+  }
+]

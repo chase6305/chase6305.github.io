@@ -1,0 +1,35 @@
+{
+  "status": "complete",
+  "reviewed_questions": 61,
+  "previous_review": "../2026-11-05-deployment-sevenhour/acceptance-coverage.json",
+  "scope": "The existing58 answer mappings remain valid;3 added constructed-example questions are mapped below.",
+  "new_questions": [
+    {
+      "post": "deployment",
+      "question_number": 23,
+      "anchor": "action-metric",
+      "answer_summary": "Affine decoding induces a coordinate-dependent metric; tolerance-weighted physical loss has gradient S transpose D^-2 times physical residual. Units must change consistently.",
+      "evidence_scope": "Two-coordinate fixture,200 finite-difference derivatives and100 unit conversions; local affine coordinates only.",
+      "question": "动作归一化怎样改变引导误差的度量，换物理单位时又要同步改变哪些量？",
+      "status": "reviewed"
+    },
+    {
+      "post": "residual",
+      "question_number": 17,
+      "anchor": "limits",
+      "answer_summary": "Clipping symmetric exploration near a bound changes the executed mean: baseline0.9 with equal +/-0.2 yields mean0.85.",
+      "evidence_scope": "126 exact rational mean/variance expectations; constructed two-point noise,not the original robot noise distribution.",
+      "question": "对称的零均值探索噪声经过总动作限幅后，为什么可能产生非零平均修正？",
+      "status": "reviewed"
+    },
+    {
+      "post": "contact",
+      "question_number": 21,
+      "anchor": "multimodal-mean",
+      "answer_summary": "Equal hypotheses touching opposite walls have a mean in the gap; the nonlinear distance at the mean differs from distances of the modes.",
+      "evidence_scope": "Symmetric1D point-tool construction and30 independent Decimal contact factors; not a full calibration run.",
+      "question": "两个粒子都能解释接触时，为什么它们的平均位姿仍可能无法解释同一次接触？",
+      "status": "reviewed"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "recorded_utc": "2026-11-05T22:53:16.644729+00:00",
+  "sources": [
+    {
+      "path": "/home/ubuntu/Documents/2107.04034v1.pdf",
+      "sha256": "d8660da881851756287efab24d85f5c629ba97878f70297eb429a8e8a9a57846",
+      "matches_initial": true
+    },
+    {
+      "path": "/home/ubuntu/Documents/2402.10329v3.pdf",
+      "sha256": "a9452cbaf9f5d2a77d5f8b631632fa7f45ae4bbc32400be1cc939b91a36e1609",
+      "matches_initial": true
+    },
+    {
+      "path": "/home/ubuntu/Documents/2506.07339v2.pdf",
+      "sha256": "dd6d602be1f50b894d88517bf68916c4272885b2e29d96cffc426dacff41898f",
+      "matches_initial": true
+    },
+    {
+      "path": "/home/ubuntu/Documents/1812.03201v2.pdf",
+      "sha256": "c6279120f9e0a799a9d7a943a5624a5738250e588f99c5fc8a9fac28e2039641",
+      "matches_initial": true
+    },
+    {
+      "path": "/home/ubuntu/Documents/2403.13144v1.pdf",
+      "sha256": "bbe62387e1da54c1dc5c0c8b3b3630791ba8b1abcce8fcfac79a39f6661a329d",
+      "matches_initial": true
+    }
+  ]
+}

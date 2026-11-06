@@ -24,6 +24,7 @@
       "posts/planner/task-and-motion-planning/index.md",
       "posts/casadi/index.md",
       "posts/trajectory/toppra/index.md",
+      "posts/robotics/curobo-v2-fast/index.md",
       "posts/trajectory/ruckig/index.md",
       "posts/pid/index.md",
       "posts/robotics/control/robot-filters/index.md",
@@ -36,13 +37,15 @@
   {
     "id": "calibration",
     "title": "视觉与机器人标定",
-    "description": "从可观测的标记点出发，统一相机、工具和基座坐标，再估计零偏与几何参数。",
+    "description": "从相机与机器人坐标关系、零偏和几何参数，走向基于自观测、接触和可观测性的无靶标标定。",
     "posts": [
       "posts/calibration/opencv/index.md",
       "posts/calibration/cctag/index.md",
       "posts/calibration/model/index.md",
       "posts/calibration/zero/index.md",
-      "posts/calibration/kinematics/index.md"
+      "posts/calibration/kinematics/index.md",
+      "posts/calibration/omnicalib/index.md",
+      "posts/calibration/interactive-contact-calibration/index.md"
     ]
   },
   {
@@ -64,6 +67,7 @@
       "posts/ai/foundations-modern-ai/index.md",
       "posts/ai/rrsi/index.md",
       "posts/ai/vision-transformers/index.md",
+      "posts/ai/ultralytics/index.md",
       "posts/ai/internvl-3-5/index.md",
       "posts/ai/diffusion-models/index.md",
       "posts/ai/distributed-training-memory/index.md"
@@ -72,16 +76,20 @@
   {
     "id": "embodied-ai",
     "title": "具身策略与机器人学习",
-    "description": "从示教数据与 ACT 进入 VLA，理解行为提示、视频到仿真数据、实时执行、分层协调、全模态世界模型，以及人形全身控制、可微动力学训练与跨身体网络共享。",
+    "description": "从示教与 ACT 进入 VLA，理解动作表示、动力学适应、残差控制与实时执行，再扩展到世界模型、分层协调和跨身体全身控制。",
     "posts": [
       "posts/ai/lerobot-act/index.md",
       "posts/ai/behavior-prompting/index.md",
       "posts/ai/vla-evolution/index.md",
       "posts/ai/vla-survey/index.md",
+      "posts/ai/machine-learning-for-robotics/index.md",
       "posts/ai/jev-decision-layer/index.md",
       "posts/ai/vla-world-model-data/index.md",
       "posts/ai/cosmos3/index.md",
       "posts/ai/x-vla/index.md",
+      "posts/ai/last-action-tokenizer/index.md",
+      "posts/ai/rma-umi-rtc-deployment/index.md",
+      "posts/ai/residual-reinforcement-learning/index.md",
       "posts/ai/real-time-chunking/index.md",
       "posts/ai/gen-1-5/index.md",
       "posts/ai/molmo-motion/index.md",

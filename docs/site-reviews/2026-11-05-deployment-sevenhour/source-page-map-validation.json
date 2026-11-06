@@ -1,0 +1,293 @@
+{
+  "recorded_utc": "2026-11-05T20:56:16.441060+00:00",
+  "locations": [
+    {
+      "paper": "2107.04034v1",
+      "needle": "trained in two phases",
+      "recorded_pages": [
+        2
+      ],
+      "text_hits": [
+        2
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2107.04034v1",
+      "needle": "k = 50",
+      "recorded_pages": [
+        5
+      ],
+      "text_hits": [
+        5
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2107.04034v1",
+      "needle": "15, 000",
+      "recorded_pages": [
+        6,
+        12,
+        13
+      ],
+      "text_hits": [
+        6,
+        12,
+        13
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2107.04034v1",
+      "needle": "100 Hz",
+      "recorded_pages": [
+        2,
+        3,
+        5,
+        13
+      ],
+      "text_hits": [
+        2,
+        3,
+        5,
+        13
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2107.04034v1",
+      "needle": "1000 episodes",
+      "recorded_pages": [
+        8
+      ],
+      "text_hits": [
+        8
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2402.10329v3",
+      "needle": "PD1. Inference-time latency matching",
+      "recorded_pages": [
+        5
+      ],
+      "text_hits": [
+        5
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2402.10329v3",
+      "needle": "PD2.1)",
+      "recorded_pages": [
+        6
+      ],
+      "text_hits": [
+        6
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2402.10329v3",
+      "needle": "105/120",
+      "recorded_pages": [
+        8
+      ],
+      "text_hits": [
+        8
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2402.10329v3",
+      "needle": "16/20 = 80%",
+      "recorded_pages": [
+        8
+      ],
+      "text_hits": [
+        8
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2402.10329v3",
+      "needle": "5/20 = 25%",
+      "recorded_pages": [
+        8
+      ],
+      "text_hits": [
+        8
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2506.07339v2",
+      "needle": "3.1   Inference-Time",
+      "recorded_pages": [
+        4
+      ],
+      "text_hits": [
+        4
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2506.07339v2",
+      "needle": "3.2   Soft Masking",
+      "recorded_pages": [
+        5
+      ],
+      "text_hits": [
+        5
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2506.07339v2",
+      "needle": "max(Q)",
+      "recorded_pages": [
+        6
+      ],
+      "text_hits": [
+        6
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2506.07339v2",
+      "needle": "76ms",
+      "recorded_pages": [
+        7,
+        24
+      ],
+      "text_hits": [
+        7,
+        24
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2506.07339v2",
+      "needle": "2048 rollouts",
+      "recorded_pages": [
+        6
+      ],
+      "text_hits": [
+        6
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "1812.03201v2",
+      "needle": "A. Residual Reinforcement Learning",
+      "recorded_pages": [
+        3
+      ],
+      "text_hits": [
+        3
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "1812.03201v2",
+      "needle": "15/20",
+      "recorded_pages": [
+        5
+      ],
+      "text_hits": [
+        5
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "1812.03201v2",
+      "needle": "eight thousand",
+      "recorded_pages": [
+        5
+      ],
+      "text_hits": [
+        5
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "1812.03201v2",
+      "needle": "one thousand timesteps",
+      "recorded_pages": [
+        6
+      ],
+      "text_hits": [
+        6
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "1812.03201v2",
+      "needle": "joint-space impedance",
+      "recorded_pages": [
+        3
+      ],
+      "text_hits": [
+        3
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2403.13144v1",
+      "needle": "Algorithm 1 Self-Calibration",
+      "recorded_pages": [
+        3
+      ],
+      "text_hits": [
+        3
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2403.13144v1",
+      "needle": "B. Particle Weight Evaluation",
+      "recorded_pages": [
+        4
+      ],
+      "text_hits": [
+        4
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2403.13144v1",
+      "needle": "five consecutive",
+      "recorded_pages": [
+        5
+      ],
+      "text_hits": [
+        5
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2403.13144v1",
+      "needle": "Table(Real)",
+      "recorded_pages": [
+        7
+      ],
+      "text_hits": [
+        7
+      ],
+      "recorded_locations_match": true
+    },
+    {
+      "paper": "2403.13144v1",
+      "needle": "12.4 ± 0.9",
+      "recorded_pages": [
+        7
+      ],
+      "text_hits": [
+        7
+      ],
+      "recorded_locations_match": true
+    }
+  ],
+  "scope": "Normalized text-needle locations in supplied PDF extractions,not independent verification of prose claims."
+}

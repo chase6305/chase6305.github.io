@@ -1,0 +1,235 @@
+{
+  "source_commit": "1a767da5e58467ab8fbc2407b600b7632033dbc5",
+  "version": "8.4.202",
+  "environment": {
+    "python": "3.10.20",
+    "torch": "2.9.0+cu130 (CPU execution)",
+    "torchvision": "0.24.0+cu130",
+    "numpy": "1.26.4",
+    "onnx": "1.19.1",
+    "onnxruntime": "1.23.2",
+    "onnxslim": "0.1.82",
+    "ml_dtypes": "0.5.3",
+    "protobuf": "4.25.8"
+  },
+  "pretrained": {
+    "sha256": "9b09cc8bf347f0fc8a5f7657480587f25db09b34bf33b0652110fb03a8ad4fef",
+    "source_image": "ultralytics/assets/bus.jpg",
+    "weights_url": "https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26n.pt",
+    "cases": [
+      {
+        "nms": null,
+        "effective_end2end": false,
+        "orig_shape": [
+          1080,
+          810
+        ],
+        "detections": [
+          {
+            "name": "bus",
+            "class": 5,
+            "confidence": 0.903,
+            "box": {
+              "x1": 9.71899,
+              "y1": 230.64409,
+              "x2": 801.05511,
+              "y2": 748.01105
+            }
+          },
+          {
+            "name": "person",
+            "class": 0,
+            "confidence": 0.8548,
+            "box": {
+              "x1": 47.03803,
+              "y1": 397.75049,
+              "x2": 237.68263,
+              "y2": 901.58826
+            }
+          },
+          {
+            "name": "person",
+            "class": 0,
+            "confidence": 0.84501,
+            "box": {
+              "x1": 223.57402,
+              "y1": 406.99786,
+              "x2": 345.86374,
+              "y2": 861.29791
+            }
+          },
+          {
+            "name": "person",
+            "class": 0,
+            "confidence": 0.83731,
+            "box": {
+              "x1": 669.09302,
+              "y1": 387.30511,
+              "x2": 810.0,
+              "y2": 880.09656
+            }
+          },
+          {
+            "name": "person",
+            "class": 0,
+            "confidence": 0.55665,
+            "box": {
+              "x1": 0.0,
+              "y1": 552.99048,
+              "x2": 59.66403,
+              "y2": 872.5954
+            }
+          }
+        ]
+      },
+      {
+        "nms": false,
+        "effective_end2end": true,
+        "orig_shape": [
+          1080,
+          810
+        ],
+        "detections": [
+          {
+            "name": "bus",
+            "class": 5,
+            "confidence": 0.92535,
+            "box": {
+              "x1": 5.57548,
+              "y1": 228.86615,
+              "x2": 807.23309,
+              "y2": 749.23529
+            }
+          },
+          {
+            "name": "person",
+            "class": 0,
+            "confidence": 0.91514,
+            "box": {
+              "x1": 46.56532,
+              "y1": 398.74905,
+              "x2": 236.98784,
+              "y2": 901.74701
+            }
+          },
+          {
+            "name": "person",
+            "class": 0,
+            "confidence": 0.89914,
+            "box": {
+              "x1": 223.06323,
+              "y1": 405.29684,
+              "x2": 345.18628,
+              "y2": 863.11084
+            }
+          },
+          {
+            "name": "person",
+            "class": 0,
+            "confidence": 0.86023,
+            "box": {
+              "x1": 668.61554,
+              "y1": 391.23129,
+              "x2": 810.0,
+              "y2": 879.66852
+            }
+          },
+          {
+            "name": "person",
+            "class": 0,
+            "confidence": 0.52526,
+            "box": {
+              "x1": 0.0,
+              "y1": 553.81818,
+              "x2": 64.83779,
+              "y2": 874.02716
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "onnx": [
+    {
+      "name": "standard",
+      "nms": null,
+      "input_shape": [
+        1,
+        3,
+        640,
+        640
+      ],
+      "output_shapes": [
+        [
+          1,
+          84,
+          8400
+        ]
+      ],
+      "max_absolute_difference": 0.004497528076171875,
+      "retained_boxes": 5
+    },
+    {
+      "name": "e2e",
+      "nms": false,
+      "input_shape": [
+        1,
+        3,
+        640,
+        640
+      ],
+      "output_shapes": [
+        [
+          1,
+          300,
+          6
+        ]
+      ],
+      "max_absolute_difference": 7.62939453125e-05,
+      "retained_boxes": 5
+    }
+  ],
+  "gradient": {
+    "one2one_feature_gradients": [
+      true,
+      true,
+      true
+    ],
+    "one2one_head_has_gradient": true,
+    "one2many_feature_gradients": [
+      true,
+      true,
+      true
+    ],
+    "reg_max1_ciou_loss": 0.5555555820465088,
+    "reg_max1_l1_loss": 0.125,
+    "tiny_gt_candidate_mask": [
+      [
+        [
+          true,
+          true,
+          false
+        ]
+      ]
+    ]
+  },
+  "training": {
+    "data": "8 synthetic training images, 4 separate synthetic validation images; 2 classes; random initialization",
+    "imgsz": 64,
+    "epochs": 3,
+    "optimizer": "SGD",
+    "interrupted_after_epoch": 1,
+    "resumed_start_epoch": 2,
+    "incomplete_checkpoint_optimizer_present": true,
+    "completed_checkpoint_optimizer_present": false,
+    "metrics_note": "mAP was zero; this probes execution/state only, not model accuracy or useful training budget."
+  },
+  "limits": [
+    "single shipped bus image for exported parity",
+    "no full validation dataset parity",
+    "no TensorRT or GPU execution",
+    "no multi-rank training",
+    "E2E numerical comparison uses detections above confidence 0.25; arbitrary low-score Top-K ordering was not compared",
+    "inherited unrelated packages in the isolated environment have unresolved dependency constraints; only listed exercised code paths are verified"
+  ]
+}

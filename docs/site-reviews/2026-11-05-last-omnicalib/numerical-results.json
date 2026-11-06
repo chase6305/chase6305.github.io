@@ -1,0 +1,25 @@
+{
+  "python": "3.11.15",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "seed": 261119582,
+  "counts": {
+    "se3_exp": 120,
+    "se3_log": 120,
+    "so3_rotvec": 120,
+    "whitening": 200,
+    "spline_basis": 12,
+    "spline_ridge": 12,
+    "profiled_derivative": 100
+  },
+  "maximum_absolute_errors": {
+    "se3_exp": 9.875433804040767e-13,
+    "se3_log": 8.927691919069503e-12,
+    "so3_rotvec": 7.210232411125617e-12,
+    "whitening": 2.0099832909181714e-10,
+    "spline_basis": 2.220446049250313e-16,
+    "spline_ridge": 6.2727600891321345e-15,
+    "profiled_derivative": 1.199040866595169e-14
+  },
+  "scope": "Scalar/small-matrix geometry and observability only. No LAST training, sensor fitting, calibration accuracy, or robot behavior is reproduced."
+}

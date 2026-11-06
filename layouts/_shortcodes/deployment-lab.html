@@ -1,0 +1,107 @@
+{{- $kind := .Get "kind" | default "timing" -}}
+{{- $id := .Get "id" | default (printf "deployment-%s-%d" $kind .Ordinal) -}}
+{{- $fields := slice -}}
+{{- $outputs := slice -}}
+{{- $presets := slice -}}
+{{- if eq $kind "timing" -}}
+  {{- $fields = slice
+    (dict "name" "horizon" "label" "预测长度 H（步）" "min" 8 "max" 64 "step" 1 "value" 16)
+    (dict "name" "stride" "label" "执行间隔 s（步）" "min" 1 "max" 64 "step" 1 "value" 5)
+    (dict "name" "period" "label" "控制周期（ms）" "min" 1 "max" 100 "step" 0.1 "value" 20)
+    (dict "name" "observation" "label" "观测滞后（ms）" "min" 0 "max" 1000 "step" 0.1 "value" 0)
+    (dict "name" "inference" "label" "推理延迟（ms）" "min" 0 "max" 1000 "step" 0.1 "value" 80)
+    (dict "name" "execution" "label" "执行提前量（ms）" "min" 0 "max" 1000 "step" 0.1 "value" 0) -}}
+  {{- $outputs = slice
+    (dict "name" "totalDelay" "label" "总时间偏移（ms）" "value" "80.0")
+    (dict "name" "delay" "label" "首个不过期索引 d_deadline" "value" "4")
+    (dict "name" "workDelay" "label" "后台计算占用（步）" "value" "4")
+    (dict "name" "remaining" "label" "旧块剩余覆盖（步）" "value" "11")
+    (dict "name" "schedule" "label" "串行调度条件" "value" "满足")
+    (dict "name" "regions" "label" "已承诺／可修改／新未来（步）" "value" "4／7／5") -}}
+  {{- $presets = slice (dict "name" "default" "label" "图 4 的时间轴") (dict "name" "latencies" "label" "叠加三种延迟") (dict "name" "short" "label" "推理超过执行间隔") (dict "name" "exhausted" "label" "旧块覆盖不足") -}}
+{{- else if eq $kind "residual" -}}
+  {{- $fields = slice
+    (dict "name" "gain" "label" "名义反馈增益 k（s⁻¹）" "min" 0.1 "max" 3 "step" "any" "value" 1)
+    (dict "name" "feedback" "label" "残差反馈增益 α（s⁻¹）" "min" -1 "max" 4 "step" "any" "value" 0)
+    (dict "name" "correction" "label" "常量残差 a₀（误差单位／s）" "min" -1 "max" 1 "step" "any" "value" -0.2)
+    (dict "name" "bias" "label" "外部偏差 d（误差单位／s）" "min" -0.5 "max" 0.5 "step" "any" "value" 0.2)
+    (dict "name" "period" "label" "采样周期 Δt（s）" "min" 0.01 "max" 1 "step" "any" "value" 0.1) -}}
+  {{- $outputs = slice
+    (dict "name" "pole" "label" "离散系数 p" "value" "0.9000")
+    (dict "name" "stable" "label" "收缩条件" "value" "满足 |p|＜1")
+    (dict "name" "forcing" "label" "净常量输入 a₀＋d" "value" "0.0000")
+    (dict "name" "finalError" "label" "第 60 步误差" "value" "0.0018")
+    (dict "name" "duration" "label" "60 步覆盖时间（s）" "value" "6.0000")
+    (dict "name" "fixedPoint" "label" "满足收缩时的定点" "value" "0.0000") -}}
+  {{- $presets = slice (dict "name" "default" "label" "抵消常量偏差") (dict "name" "baseline" "label" "只有名义控制") (dict "name" "wrong" "label" "错误反馈方向") (dict "name" "sampled" "label" "采样周期过大") -}}
+{{- else if eq $kind "contact" -}}
+  {{- $fields = slice
+    (dict "name" "sigma" "label" "接触距离标准差 σ（mm）" "min" 1 "max" 8 "step" "any" "value" 2)
+    (dict "name" "angle" "label" "第二表面法向夹角 θ（°）" "min" 0 "max" 90 "step" "any" "value" 90) -}}
+  {{- $outputs = slice
+    (dict "name" "meanX" "label" "x 平移均值（mm）" "value" "0.0000")
+    (dict "name" "meanY" "label" "y 平移均值（mm）" "value" "−4.0000")
+    (dict "name" "stdX" "label" "x 平移标准差（mm）" "value" "11.8322")
+    (dict "name" "stdY" "label" "y 平移标准差（mm）" "value" "2.0000")
+    (dict "name" "correlation" "label" "两维相关系数" "value" "0.0000")
+    (dict "name" "effectiveSamples" "label" "权重有效样本量" "value" "290.6824") -}}
+  {{- $presets = slice (dict "name" "default" "label" "只接触地面") (dict "name" "parallel" "label" "重复平行表面") (dict "name" "oblique" "label" "夹角 15°") (dict "name" "orthogonal" "label" "夹角 90°") (dict "name" "broad" "label" "增大距离尺度") -}}
+{{- else -}}
+  {{- errorf "Unsupported deployment-lab kind: %s" $kind -}}
+{{- end -}}
+{{- $css := resources.Get "css/deployment-labs.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/deployment-labs.js" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section class="deployment-lab" data-deployment-lab="{{ $kind }}" aria-labelledby="{{ $id }}-title">
+  {{ if eq $kind "timing" }}
+  <p id="{{ $id }}-title"><strong>动手看：延迟会占用多少预测余量</strong></p>
+  <p>固定观测滞后、单个后台工作器和已对齐动作时间。总偏移向上取整得到首个不过期索引 d_deadline，后台推理本身占用 d_work 步；要求 d_work ≤ s ≤ H − d_deadline。允许恰好在截止边界到达，输入时间精确到 0.1 ms。</p>
+  <p data-static-result>默认 H=16、s=5、周期 20 ms，总偏移与后台计算均为 80 ms：d_deadline=d_work=4，旧块剩余 11 步；三段分别为 4、7、5 步，满足调度条件。</p>
+  {{ else if eq $kind "residual" }}
+  <p id="{{ $id }}-title"><strong>动手看：补偿偏差与改变反馈方向</strong></p>
+  <p>构造离散标量系统 eₙ₊₁=eₙ+Δt[(α−k)eₙ+a₀+d]，初始误差为 1。名义反馈为 −ke，残差为 αe+a₀。比较当前残差与同一 k、d、Δt 下的零残差轨迹；不使用动作限幅。</p>
+  <p data-static-result>默认 k=1、α=0、a₀=−0.2、d=0.2、Δt=0.1 s：离散系数 p=0.9，60 步后误差约 0.0018，定点为 0；只有名义控制时同一步误差约 0.2014。</p>
+  {{ else }}
+  <p id="{{ $id }}-title"><strong>动手看：第二个表面增加了哪个方向的信息</strong></p>
+  <p>只估计二维平移，构造真值为 (6, −4) mm。均匀先验是 [−20,20] mm 内间隔 1 mm 的 41×41 网格。地面残差为 y+4，第二残差为 cosθ(y+4)+sinθ(x−6)，两项假设独立且具有相同距离标准差。这里的平面关联已知。</p>
+  <p data-static-result>默认只使用地面、σ=2 mm：平移均值为 (0, −4) mm，标准差为 (11.8322, 2.0000) mm。x 方向仍与均匀先验相同，有效样本量约 290.6824。</p>
+  {{ end }}
+  <div data-interactive hidden>
+    <div class="deployment-lab__presets" role="group" aria-label="比较不同参数">
+      {{ range $presets }}<button type="button" data-preset="{{ .name }}">{{ .label }}</button>{{ end }}
+    </div>
+    <form novalidate aria-label="算例参数">
+      <div class="deployment-lab__fields">
+        {{ range $fields }}
+        <label for="{{ $id }}-{{ .name }}">{{ .label }}
+          <input id="{{ $id }}-{{ .name }}" name="{{ .name }}" type="number" min="{{ .min }}" max="{{ .max }}" step="{{ .step }}" value="{{ .value }}" required inputmode="decimal" aria-describedby="{{ $id }}-help" aria-errormessage="{{ $id }}-error">
+        </label>
+        {{ end }}
+      </div>
+      {{ if eq $kind "contact" }}
+      <label class="deployment-lab__checkbox" for="{{ $id }}-second"><input id="{{ $id }}-second" name="second" type="checkbox">使用第二个表面约束</label>
+      {{ end }}
+      <p id="{{ $id }}-help" class="deployment-lab__detail">
+        {{ if eq $kind "timing" }}H 为 8 到 64 的整数，s 为 1 到 H 的整数；周期 1 到 100 ms，各延迟 0 到 1000 ms，均使用 0.1 ms 的整数倍。时间预算有效但调度不可行时，会显示原因。{{ else if eq $kind "residual" }}k 为 0.1 到 3，α 为 −1 到 4，a₀ 为 −1 到 1，d 为 −0.5 到 0.5，Δt 为 0.01 到 1 s。固定计算 60 步；改变 Δt 也改变总物理时长。{{ else }}σ 为 1 到 8 mm，θ 为 0° 到 90°；未启用第二表面时，θ 不参与计算。有效样本量在此仅表示格点权重集中度，不是独立接触次数。标准差来自有限网格后验，不是实际标定精度或置信区间；分布较宽时会受到先验边界影响。{{ end }}结果保留四位小数，大数采用科学计数法。
+      </p>
+    </form>
+    <p id="{{ $id }}-error" data-error role="alert" class="deployment-lab__error" hidden></p>
+    <div data-computed>
+      <dl class="deployment-lab__results" aria-live="polite" aria-atomic="true">
+        {{ range $outputs }}<div><dt>{{ .label }}</dt><dd><output data-value="{{ .name }}" aria-label="{{ .label }}">{{ .value }}</output></dd></div>{{ end }}
+      </dl>
+      <div class="deployment-lab__plot" data-plot>
+        <svg data-chart viewBox="0 0 400 170" role="img" aria-label="默认参数下的算例曲线"></svg>
+        <p data-axis class="deployment-lab__detail"></p>
+        <p class="deployment-lab__legend">
+          {{ if eq $kind "timing" }}<span><i aria-hidden="true" class="deployment-lab__key deployment-lab__key--one"></i>已承诺</span><span><i aria-hidden="true" class="deployment-lab__key deployment-lab__key--two"></i>可修改</span><span><i aria-hidden="true" class="deployment-lab__key deployment-lab__key--three"></i>新未来</span>{{ else if eq $kind "residual" }}<span><i aria-hidden="true" class="deployment-lab__key deployment-lab__key--one"></i>当前残差</span><span><i aria-hidden="true" class="deployment-lab__key deployment-lab__key--two"></i>零残差</span>{{ else }}<span><i aria-hidden="true" class="deployment-lab__key deployment-lab__key--one"></i>x 边缘质量</span><span><i aria-hidden="true" class="deployment-lab__key deployment-lab__key--two"></i>y 边缘质量</span>{{ end }}
+        </p>
+      </div>
+      <p data-note class="deployment-lab__detail"></p>
+    </div>
+  </div>
+  <p class="deployment-lab__limits">
+    {{ if eq $kind "timing" }}本算例验证理想离散调度和 RTC 权重，没有生成机器人动作。实际系统还需处理时钟、延迟抖动、缓冲和底层执行状态。{{ else if eq $kind "residual" }}这是固定标量模型的控制反例，不训练 RL，也不包含物体接触、执行器或机器人动力学。收缩条件只针对所列离散方程。{{ else }}这是已知平面关联的二维静态估计，不实现完整的六维 SDF 粒子滤波。增加约束可能使权重更集中、有效样本量变小，这本身不代表粒子退化或真实精度已提高。{{ end }}
+  </p>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

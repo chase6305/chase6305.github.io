@@ -1,0 +1,8 @@
+{
+  "date": "2026-11-05",
+  "asset": "content/posts/ai/ultralytics/assets/ultralytics-overview.webp",
+  "tool": "image_gen",
+  "prompt": "Use case: infographic-diagram. Asset: Chinese technical blog overview, landscape 3:2. White background, thin rounded borders, pastel blue/purple/orange/green fills, clear sans serif English labels, generous spacing. Title 'Ultralytics: one API, task-specific engines'. Top row: 'Python / CLI' arrow 'YOLO / Model' arrow 'Task map'. Under Task map show four branches ending in four boxes: 'Trainer', 'Validator', 'Predictor', 'Exporter'. Predictor box has arrow down to a lower standalone row titled 'Detection inference': 'Image / Video' -> 'LetterBox + RGB' -> 'Backbone + Neck + Head' -> 'Postprocess' -> 'Results'. Postprocess box subtitle 'NMS or end-to-end filtering'. Results box subtitle 'Original-image coordinates'. Use precise arrowheads left to right. Trainer, Validator and Exporter must NOT connect into inference row. No performance numbers, no logos, no decorative photos. All labels large and legible. Overall minimal educational diagram.",
+  "source": "/home/ubuntu/.codex/generated_images/01a1aa50-e4f2-7a73-b73f-0c62b9b2595f/exec-ebc2ec0f-7d91-4ef6-bcbb-8e17e0f06a69.png",
+  "review": "All labels inspected. Task map dispatches four executors; only Predictor connects to detection inference. Postprocessing branches are identified without claiming measured performance."
+}

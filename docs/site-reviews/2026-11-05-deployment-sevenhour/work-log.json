@@ -1,0 +1,281 @@
+{
+  "started_utc": "2026-11-05 15:54:51",
+  "target_end_utc": "2026-11-05 22:54:51",
+  "status": "complete",
+  "articles": [
+    {
+      "path": "content/posts/ai/rma-umi-rtc-deployment/index.md",
+      "purpose": "RMA, UMI and RTC as complementary deployment interfaces"
+    },
+    {
+      "path": "content/posts/ai/residual-reinforcement-learning/index.md",
+      "purpose": "Residual Reinforcement Learning for Robot Control, v2"
+    },
+    {
+      "path": "content/posts/calibration/interactive-contact-calibration/index.md",
+      "purpose": "Interactive Robot-Environment Self-Calibration via Compliant Exploratory Actions, v1"
+    }
+  ],
+  "sources": [
+    {
+      "path": "/home/ubuntu/Documents/2107.04034v1.pdf",
+      "sha256": "d8660da881851756287efab24d85f5c629ba97878f70297eb429a8e8a9a57846"
+    },
+    {
+      "path": "/home/ubuntu/Documents/2402.10329v3.pdf",
+      "sha256": "a9452cbaf9f5d2a77d5f8b631632fa7f45ae4bbc32400be1cc939b91a36e1609"
+    },
+    {
+      "path": "/home/ubuntu/Documents/2506.07339v2.pdf",
+      "sha256": "dd6d602be1f50b894d88517bf68916c4272885b2e29d96cffc426dacff41898f"
+    },
+    {
+      "path": "/home/ubuntu/Documents/1812.03201v2.pdf",
+      "sha256": "c6279120f9e0a799a9d7a943a5624a5738250e588f99c5fc8a9fac28e2039641"
+    },
+    {
+      "path": "/home/ubuntu/Documents/2403.13144v1.pdf",
+      "sha256": "bbe62387e1da54c1dc5c0c8b3b3630791ba8b1abcce8fcfac79a39f6661a329d"
+    }
+  ],
+  "constraints": [
+    "Keep previous uncommitted work",
+    "No deployment or commits requested",
+    "Run browser checks serially",
+    "Do not mistake constructed arithmetic for paper experiment reproduction"
+  ],
+  "checkpoints": [
+    {
+      "utc": "2026-11-05T17:04:40+00:00",
+      "stage": "first complete drafts and numerical experiments",
+      "draft_articles": 3,
+      "conceptual_images": 3,
+      "quantitative_svg_figures": 4,
+      "standard_library_helpers": 3,
+      "inline_experiments": 3,
+      "numeric_parameter_cases": 2992,
+      "numeric_values": 126310,
+      "initial_article_layouts_passed": 162,
+      "lab_layouts_passed": 81,
+      "lab_fallback_modes_passed": 9,
+      "lab_runtime_recoveries_passed": 3,
+      "lab_axe_violations": 0,
+      "lab_axe_incomplete": 0,
+      "open_work": [
+        "Complete source-claim review and explanatory refinement",
+        "Fix and recheck large-text print formulas",
+        "Independent numerical and source probes",
+        "Native PDF, touch and chapter tests",
+        "Final publication metadata and production checks"
+      ]
+    },
+    {
+      "utc": "2026-11-05T17:50:33.444105+00:00",
+      "stage": "independent mathematics and touch",
+      "details": [
+        "Independent NumPy/SciPy: 200 VJP cases, 200 actor cases (95 clipped), 600 matrix-exponential point-plane derivatives, 20 truncated Gaussian posteriors, 20 equicorrelated fusion cases and 3 printed-kernel cases passed.",
+        "Touch: 36 viewport/font/theme contexts, 168 verified preset/checkbox taps, 36 chart/table/page gesture triples passed.",
+        "Added baseline-version replay semantics and a correlated-contact fusion counterexample; acceptance lists synchronized.",
+        "Whole-site reading/figure deep-link review is running serially."
+      ]
+    },
+    {
+      "utc": "2026-11-05T18:08:42.744715+00:00",
+      "stage": "publication build and print-state review",
+      "details": [
+        "Three new articles switched to draft:false after draft reading and arithmetic checks. Dates, routes and earlier draft states preserved.",
+        "Fresh production snapshot: 103 BlogPosting schemas, 344 HTML pages, 37515 local references, 733 acceptance checks, no validation errors or warnings; production filter inventory103/drafts0 passes.",
+        "Edited/invalid/unschedulable native lab printing:48 PDFs,2258 pages,216 result label/value pairs,16 print-palette cases; raster audit finds no horizontal overflow or painted edge clipping.",
+        "Initial whole-site figure suite:1172 cases,748 figure cases,one transient seven-image loading failure on SuperMimic during Hugo rebuild,zero exceptions. All seven source resources respond after rebuild. Repeating against an immutable draft-inclusive static snapshot.",
+        "Deployment overview updated through built-in Imagegen edit to explicitly show RMA previous-action and UMI image inputs; original preserved and prompt provenance saved.",
+        "Added literal stopping/consistency/diffusion helper checks: threshold equalities,8 branch combinations and200 independent stop histories."
+      ]
+    },
+    {
+      "utc": "2026-11-05T18:30:02.245988+00:00",
+      "stage": "source fidelity correction and observation interfaces",
+      "details": [
+        "Manual RTC PDF page5 inspection found missing c_i factor in new draft Eq5; official source and the existing dedicated RTC article confirmed c_i*(exp(c_i)-1)/(e-1). Corrected article, Python, JS and SVG. Earlier shared-formula arithmetic checks did not prove fidelity and are superseded.",
+        "Corrected Node/Python/Decimal60 checks pass2992 cases/126310 values. Hash-pinned official function with NumPy Float64 and independent Decimal70 passes3384 configurations; maximum errors2.22e-16 source and3.33e-16 article.",
+        "UMI observation probe passes120 buffer fixtures,560 nearest-frame checks,360 low-dimensional comparisons and7 rotation/clamping queries in a fresh NumPy2.4.6/SciPy1.17.1-only environment; pip check and source-rejection/output-preservation controls pass.",
+        "Immutable whole-site reading1172 cases/748 figures and text-reflow2106 layouts pass. New lab focus108 contexts/972 outlines/36 native spin-control pairs pass, minimum outline contrast4.94.",
+        "UMI original figure8 and appendix TableA1 checked directly; clarified UR5 versus same-checkpoint Franka18/20, folding14/20 versus6/20, data diversity43/60 and ATE/RPE units."
+      ]
+    },
+    {
+      "utc": "2026-11-05T19:27:55.911858+00:00",
+      "stage": "source distinctions and current native PDFs",
+      "details": [
+        "UMI figure12 per-gripper ATE label clarified; RRL PDFpage4 Eq7 exact real-hardware reward and distinct x_t definitions added. V-D learned pi_H prior and success-versus-return metrics made explicit. Claim ledger now35 selected claims.",
+        "Frozen4 ordinary and forced print geometry each18 layouts passed at200%. Native42 exports/1484 pages/126 result pairs passed tagged,tail,pagination and screen geometry checks. Later prose changes require final article/print review.",
+        "Manual PDF inspection covered RMA training arrows/frozen modules,UMI reanchoring axes and both transforms,residual runtime/training branches and complete captions.",
+        "Print-geometry driver stale inherited lab selector replaced with actual deployment-lab SVG paths and explicit print-ink assertion; next run validates it."
+      ]
+    },
+    {
+      "utc": "2026-11-05T19:36:43.786805+00:00",
+      "stage": "manual narrow-table and PDF edge review",
+      "details": [
+        "Frozen5 strict draft build passes106 schemas,735 acceptance checks,352 HTML pages and38209 local references with no errors/snippet/math warnings.",
+        "Frozen4 native raster diagnostics:42 PDFs/1484 pages,151 pages with Type3 vertical font metric overhang,zero actual painted edge clipping or horizontal text overflow. Edited/invalid states:48 PDFs/2400 pages,294 vertical-metric pages,zero edge ink or horizontal overflow. These checks are paper-edge diagnostics,not PDF/UA certification.",
+        "Every-table keyboard driver passes24 page contexts/72 tables. Manual320px200% screenshots found vertical descriptive headers in UMI ATE/RPE and RRL initial-condition tables. Existing table-readable class applied selectively; two-column numerical cost table retained compact.",
+        "UMI table fix passes56 overflowing-table keyboard cases; the enhanced width heuristic correctly identifies the remaining RRL header before its fix. Screenshots capture leftmost initial state after keyboard verification.",
+        "Image-viewer full-site run against snapshot5 was interrupted by SIGTERM together with its HTTP server; it produced no report and is not claimed as passed. A serial rerun is active on quiet threaded snapshot6 server.",
+        "Manual200% PDF review of contact-observability matrix and signed circle sampling diagram confirms rows,rank labels,units,legends,caption layout and continuous versus sampled minima."
+      ]
+    },
+    {
+      "utc": "2026-11-05T19:45:59.021644+00:00",
+      "stage": "paper mechanism coverage and native print state",
+      "details": [
+        "UMI text expanded from primary v3 HD2/HD4/HD5 and VII:155deg raw fisheye,inertial-monocular metric tracking,continuous fiducial gripper width,texture limitation,and15minute collection throughput protocol. Added all four task contexts including seven-stage dishwashing/recovery demonstrations. Source ledger38 selected claims.",
+        "RRL prerequisite neighbor changed from LLM-oriented PPO/DPO/GRPO to the existing general RL article containing DDPG/TD3,with metadata kept synchronized. Explicit Gaussian-noise subscripts avoid confusion with real reward weights.",
+        "Snapshot6 full image-viewer pass:1456 keyboard/viewer cases,76 articles,6 image formats,0 exceptions. Snapshot6 print-position pass:36 native cases,9 subsequent reader actions,immediate reprint and background-tab focus pass.",
+        "Snapshot7 strict draft build:106 schemas,735 acceptance checks,352 HTML pages,38211 local references,no errors/math/snippet warnings. Snapshot7 native print canvas:30 exports,240 actual paper-edge samples white,controlled root-only dark-page negative case detected,0 exceptions.",
+        "Snapshot7 predates only the later dishwashing paragraph; final fresh production and latest full article/PDF review remain pending."
+      ]
+    },
+    {
+      "utc": "2026-11-05T19:51:40.064596+00:00",
+      "stage": "timing source diagrams and complete table pass",
+      "details": [
+        "Manual supplied RMA PDFpages5/13 confirm III-B equal-range history and differently written supplementary Algorithm2 endpoints;article explicitly distinguishes those notations and avoids inferring a frozen original buffer implementation. Simdt=.025 versus100Hz policy discrepancy now visible in the article,not only review notes.",
+        "Snapshot7 every-table pass:24 page contexts,72 table instances,64 native ArrowRight overflow checks,0 long-narrow header/body candidates and0 runtime exceptions. Manual left-edge screenshots confirm readable selected table headers at320px/200%.",
+        "Snapshot7 ordinary and forced print geometry each18 layouts pass after inherited selector fixed to actual deployment-lab paths. Article suite162 layouts/9 zooms/5SVG bounds/6semantic cases passes.",
+        "Latest RMA source-note and UMI dishwashing prose additions still need final immutable build and native-PDF flow check."
+      ]
+    },
+    {
+      "utc": "2026-11-05T20:11:21.153963+00:00",
+      "stage": "UMI scheduler versus interpolator source audit",
+      "details": [
+        "Manual exec_actions audit now explicitly records compensate_latency defaultFalse,policy callerTrue,teleoperationFalse,and10ms caller screening. Caller and extracted method are separately scoped.",
+        "Added optional downloadable umi_waypoint_probe.py. It verifies4 immutable Git-object hashes before numerical imports,imports only pure trajectory code and replays21 extracted Franka/RTDE/WSG branch cases with2 clock origins.19 independent scalar samples confirm constructed x=.01m at4.01s to1m with .2m/s yields8.96s interpolator endpoint,not requested4.3s.",
+        "Past/equal requests leave the interpolator object unchanged,while outer branch still records last requested time. RTDE andWSG pass finite speed limits;the audited Franka branch does not. No controller module,IPC queue,servo loop or device is started.",
+        "Separate contract driver passes wrongrevision/wrongexpectedhash rejection before site packages,existing-output preservation,freshoutput/stdout identity,and unchanged checkout/published probe. Source result and compact guard report retained.",
+        "Article8.3 and an additional synchronized acceptance question added;current total736. Native42 PDF pass on preceding production2:1522 pages,126 result pairs,zero outside text/exceptions. Latest8.3 still requires native-PDF and reading checks."
+      ]
+    },
+    {
+      "utc": "2026-11-05T20:21:53.718541+00:00",
+      "stage": "bounded residual stability distinction and published replay",
+      "details": [
+        "Fresh public filtered clone at/tmp/chase-umi-published-replay-d5q1tpem reproduces the exact sparse-file stages and all3 UMI probes;clean worktree after execution. Source hashes and result hashes retained in umi-published-command-replay.json.",
+        "Production3 artifact check:18 source/build/HTTP byte hashes agree,including9 displayed images,1 preserved original,6 Python downloads and2 requirement files. Production3 article suite162 layouts/9 zooms/5SVG bounds/6semantic cases passes with new waypoint section.",
+        "Added separate continuous bounded residual a_R=.2*tanh(10e) to the RRL analysis:zero local slope+1,nonzero equilibrium.191500804815,ultimate bound.2. This connects the bounded-input inequality with local stability without confusing it with the unchanged discrete linear widget.",
+        "Updated standard-library helper passes an independent70digit Decimal-exp equilibrium calculation,finite-difference local slope and1000 independent Lyapunov-bound cases. Existing500 MDP/4 trajectories/10000 disturbance steps/600 actor derivatives remain unchanged.",
+        "RRL prose/helper are newer than production3 and require a fresh final build and geometry/PDF review."
+      ]
+    },
+    {
+      "utc": "2026-11-05T20:40:51.933560+00:00",
+      "stage": "current production and native print validation",
+      "details": [
+        "Production4 normal-config build passes103 schemas,344 HTML,37535 local references,736 acceptance checks,682 code blocks and no errors/math/snippet warnings. Filter inventory103/drafts0/11 topics passes;35 SRI assets/20 local mathfonts and2 manifest icons verified.",
+        "Latest source/build/HTTP integrity passes18 article assets/downloads after bounded-residual helper change.",
+        "Current native42 exports/1566 pages/126 result label/value pairs pass tagged PDF,tail and screen restoration checks. Raster audit identifies153 Type3 vertical-metric pages butzero actual edge ink or horizontal text overflow.",
+        "Targeted-link harness first selected a hidden mobile-TOC link;DOM inspection showed the visible paragraph link and correct H3 ID. Harness now explicitly requires the visible paragraph link and keyboard focus. No site change needed.",
+        "All8 native/enhanced source-font/width contexts pass body H3 and TD3 cross-post fragment keyboard activation. Search audit initially conflated parent page and intended child chapter excerpt pathnames. Updated assertions check actual DOM IDs,unique parent page groups and per-group excerpt URLs;the full corrected driver is rerunning."
+      ]
+    },
+    {
+      "utc": "2026-11-05T20:58:55.259914+00:00",
+      "stage": "manual large-text pages and production5 evidence",
+      "details": [
+        "Manually inspected200% native pages for the new bounded-tanh analysis,contact filter generation/weight notation,and UMI waypoint timing. Replaced a long visible fully qualified method link label with shorter schedule_waypoint wording;full pinned source URL remains.",
+        "Production5 strict validation/filter/assets reports saved as production-validation.json,production-filter.json and production-assets.json. Counts103 public schemas,344 HTML,37535 refs,736 acceptance checks,zero errors/math/snippet warnings;103 filtered articles/no draft leak;35 SRI assets/20 mathfonts.",
+        "Production5 source/build/HTTP bytes match18 article artifacts;latest default native42 PDFs/1566 pages/126 label-value pairs pass tagged tail/geometry/restoration checks. Raster audit and48 edited/invalid print cases are running serially as appropriate.",
+        "All25 normalized source-page needles resolve at their recorded PDF pages;5 supplied PDF fingerprints still match initial inputs. Escaped plus-minus needle converted to its actual Unicode character for reproducible text lookup.",
+        "Corrected body-link/search driver passes8 contexts/16 keyboard activations and4 body-term searches. Dynamically generated search child fragments resolve to actual waypoint-timing and examples anchors in production4;no shared site change was needed."
+      ]
+    },
+    {
+      "utc": "2026-11-05T21:15:39.307864+00:00",
+      "stage": "shared print regression and caption semantics",
+      "details": [
+        "Mandatory shared check_blog_print on immutable draft-inclusive current source passes636 layouts,502212 text samples,0 failures and0 runtime exceptions. It covers106 articles including the3 preserved older drafts.",
+        "Latest48 edited/invalid/unschedulable native PDFs pass2546 pages/216 label-value pairs/16 print palettes;edge raster audit sees270 vertical-metric pages but0 actual clipped ink or horizontal overflow. Default42 PDF edge audit likewise passes1566 pages/153 metric pages/0 actual clipping.",
+        "RMA diagram caption now says simulated interaction trajectories return to the history buffer,rather than ambiguous replay wording. This preserves the own-current-policy rollout meaning and the diagram itself is unchanged. Final production6 rebuild captures this small caption clarification."
+      ]
+    },
+    {
+      "utc": "2026-11-05T21:38:06.304485+00:00",
+      "stage": "final production7 sample-count qualifications and integrated native PDF review",
+      "production": "/tmp/chase-deployment-sevenhour-production7-8ywharlr",
+      "strict_validation_errors": 0,
+      "public_articles": 103,
+      "acceptance_checks": 736,
+      "artifact_source_build_http_matches": 18,
+      "integrated_native_exports": 14,
+      "integrated_native_pages": 661,
+      "integrated_native_result_pairs": 42,
+      "pdf_horizontal_outside": 0,
+      "pdf_painted_edge_clipping": 0,
+      "manual_pdf_pages": [
+        13,
+        43,
+        45,
+        59
+      ],
+      "open_work": [
+        "Complete current-source reading suite",
+        "Consolidate source-bound validation summary",
+        "Continue final editorial and evidence review until 22:54:51 UTC"
+      ]
+    },
+    {
+      "utc": "2026-11-05T21:42:20.962866+00:00",
+      "stage": "TD3 target-smoothing versus behavior-noise clarification, primary-source review and focused verification",
+      "production": "/tmp/chase-deployment-sevenhour-production8-dao0cg58",
+      "article_layouts": 54,
+      "image_zooms": 2,
+      "semantic_cases": 2,
+      "native_exports": 14,
+      "native_pages": 429,
+      "intact_result_pairs": 42,
+      "strict_validation_errors": 0,
+      "unchanged": [
+        "Integrated and contact manuscripts",
+        "All article figures, numerical helpers, source probes and widget code"
+      ],
+      "open_work": [
+        "Finish source-bound evidence summary",
+        "Continue final editorial review to requested end time"
+      ]
+    },
+    {
+      "utc": "2026-11-05T21:50:31.717168+00:00",
+      "stage": "final primary-figure audit and contact prose/table discrepancy",
+      "production": "/tmp/chase-deployment-sevenhour-production9-08hrkgwi",
+      "selected_claims": 41,
+      "contact_reading_layouts": 54,
+      "contact_native_exports": 14,
+      "contact_native_pages": 497,
+      "contact_native_result_pairs": 42,
+      "contact_pdf_painted_edge_clipping": 0,
+      "source_snapshot_files_unchanged": 26,
+      "current_manuscript_native_totals": {
+        "exports": 42,
+        "pages": 1587,
+        "intact_result_pairs": 126
+      },
+      "open_work": [
+        "Continue editorial/source/acceptance review until requested end time",
+        "Record final source parity and close review after22:54:51UTC"
+      ]
+    },
+    {
+      "utc": "2026-11-05T22:55:11.136818+00:00",
+      "stage": "requested seven-hour review complete",
+      "articles": 3,
+      "reader_self_checks_reviewed": 58,
+      "source_snapshot_files_match": 26,
+      "supplied_pdf_fingerprints_match": 5,
+      "current_native_exports": 42,
+      "current_native_pages": 1587,
+      "intact_native_result_pairs": 126,
+      "open_work": []
+    }
+  ],
+  "completed_utc": "2026-11-05T22:55:11.136818+00:00"
+}

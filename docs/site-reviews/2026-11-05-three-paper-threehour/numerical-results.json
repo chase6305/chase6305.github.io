@@ -1,0 +1,43 @@
+{
+  "python": "3.11.15",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "seed": 261119582,
+  "counts": {
+    "se3_exp": 120,
+    "se3_log": 120,
+    "so3_rotvec": 120,
+    "whitening": 200,
+    "spline_basis": 12,
+    "spline_ridge": 12,
+    "profiled_derivative": 100,
+    "pose_compose": 120,
+    "pose_inverse": 120,
+    "tool_adjoint": 120,
+    "whitening_choice": 200,
+    "excited_joint_mean": 175,
+    "excited_joint_covariance": 175,
+    "held_velocity_projection": 135,
+    "sample_statistic_decomposition": 120,
+    "sample_statistic_norm": 120
+  },
+  "maximum_absolute_errors": {
+    "se3_exp": 9.875433804040767e-13,
+    "se3_log": 8.927691919069503e-12,
+    "so3_rotvec": 7.210232411125617e-12,
+    "whitening": 2.0099832909181714e-10,
+    "spline_basis": 2.220446049250313e-16,
+    "spline_ridge": 6.2727600891321345e-15,
+    "profiled_derivative": 1.199040866595169e-14,
+    "pose_compose": 4.440892098500626e-16,
+    "pose_inverse": 1.7763568394002505e-15,
+    "tool_adjoint": 1.7763568394002505e-15,
+    "whitening_choice": 1.7763568394002505e-15,
+    "excited_joint_mean": 3.885780586188048e-16,
+    "excited_joint_covariance": 7.632783294297951e-17,
+    "held_velocity_projection": 0.0,
+    "sample_statistic_decomposition": 1.4210854715202004e-14,
+    "sample_statistic_norm": 1.1657341758564144e-14
+  },
+  "scope": "Small-matrix geometry, observability, and scalar held-input constraints only. No LAST training, sensor fitting, calibration accuracy, robot behavior, or statistical coverage is reproduced."
+}

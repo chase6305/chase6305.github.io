@@ -82,6 +82,15 @@ jobs:
           python3 -B scripts/test_llm_metrics.py
           python3 -B scripts/plot_distributed_overlap.py --check
           python3 -B scripts/render_transformer_figures.py --check
+          python3 -B scripts/render_last_omnicalib_figures.py --check
+          node scripts/test_last_whitening.cjs
+          node scripts/test_omnicalib_prior.cjs
+          python3 -B scripts/render_robotics_ml_review.py --check
+          python3 -B content/posts/ai/rma-umi-rtc-deployment/deployment_contracts.py --check
+          python3 -B content/posts/ai/residual-reinforcement-learning/residual_control_sanity.py --check
+          python3 -B content/posts/calibration/interactive-contact-calibration/contact_calibration_sanity.py --check
+          python3 -B scripts/render_deployment_figures.py --check
+          node scripts/test_deployment_labs.cjs
           python3 -B scripts/render_diffusion_flows.py --check
           python3 -B scripts/package_llm_metrics_lab.py --check
           python3 -B scripts/test_parkour_examples.py

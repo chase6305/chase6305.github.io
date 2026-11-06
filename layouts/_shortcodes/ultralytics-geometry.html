@@ -1,0 +1,50 @@
+{{- $id := .Get "id" | default (printf "ultralytics-geometry-%d" .Ordinal) -}}
+{{- $css := resources.Get "css/ultralytics-geometry.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/ultralytics-geometry.js" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section id="{{ $id }}" class="ultralytics-geometry" data-ultralytics-geometry aria-labelledby="{{ $id }}-title">
+  <p id="{{ $id }}-title"><strong>动手看：相同比例，不同填充</strong></p>
+  <p>框固定为原图中央的 50% 区域，即左上角在宽高的 25%，右下角在 75%。所有坐标都是连续边界，显示尺寸采用“宽 × 高”；这里不运行神经网络。</p>
+  <p data-static-result>默认原图 1280 × 720，目标 640 × 640：缩放比例 0.5，内容 640 × 360，固定方形上下各补 140，框为 (160, 230, 480, 410)。改用步幅 32 的最小矩形时，输出 640 × 384，上下各补 12，框为 (160, 102, 480, 282)。</p>
+  <div data-interactive hidden>
+    <div class="ultralytics-geometry__presets" role="group" aria-label="LetterBox 配置示例">
+      <button type="button" data-preset="square">横图：固定方形</button>
+      <button type="button" data-preset="minimal">横图：最小矩形</button>
+    </div>
+    <form novalidate aria-label="原图与填充设置">
+      <div class="ultralytics-geometry__fields">
+        <label for="{{ $id }}-width">原图宽度（px）
+          <input id="{{ $id }}-width" name="width" type="number" min="1" max="8192" step="1" value="1280" required inputmode="numeric" aria-errormessage="{{ $id }}-error">
+        </label>
+        <label for="{{ $id }}-height">原图高度（px）
+          <input id="{{ $id }}-height" name="height" type="number" min="1" max="8192" step="1" value="720" required inputmode="numeric" aria-errormessage="{{ $id }}-error">
+        </label>
+        <label for="{{ $id }}-target">目标方形边长（px）
+          <input id="{{ $id }}-target" name="target" type="number" min="32" max="2048" step="32" value="640" required inputmode="numeric" aria-describedby="{{ $id }}-target-help" aria-errormessage="{{ $id }}-error">
+        </label>
+      </div>
+      <p id="{{ $id }}-target-help" class="ultralytics-geometry__detail">原图边长为 1–8192 的整数，目标边长为 32–2048 且是 32 的倍数。允许放大；框逆变换复用本次缩放比例和实际左／上填充，不裁剪坐标。</p>
+      <label class="ultralytics-geometry__checkbox" for="{{ $id }}-minimal">
+        <input id="{{ $id }}-minimal" name="minimal" type="checkbox">使用步幅 32 的最小矩形填充
+      </label>
+    </form>
+    <p id="{{ $id }}-error" data-error class="ultralytics-geometry__error" role="alert" hidden></p>
+    <div data-computed>
+      <dl class="ultralytics-geometry__results" aria-live="polite" aria-atomic="true">
+        <div><dt>缩放比例</dt><dd><output data-value="gain" aria-label="缩放比例"></output></dd></div>
+        <div><dt>缩放后内容（宽 × 高，px）</dt><dd><output data-value="resized" aria-label="缩放后内容宽高，像素"></output></dd></div>
+        <div><dt>实际输入（宽 × 高，px）</dt><dd><output data-value="size" aria-label="实际输入宽高，像素"></output></dd></div>
+        <div><dt>填充（左、上、右、下，px）</dt><dd><output data-value="padding" aria-label="左上右下填充，像素"></output></dd></div>
+        <div><dt>原图框（x1, y1, x2, y2）</dt><dd><output data-value="original" aria-label="原图框坐标"></output></dd></div>
+        <div><dt>网络框（x1, y1, x2, y2）</dt><dd><output data-value="network" aria-label="网络框坐标"></output></dd></div>
+        <div><dt>逆变换后的框</dt><dd><output data-value="restored" aria-label="逆变换后的框坐标"></output></dd></div>
+        <div><dt>填充占输入面积</dt><dd><output data-value="paddingPercent" aria-label="填充面积百分比"></output></dd></div>
+      </dl>
+      <div class="ultralytics-geometry__plot">
+        <svg data-chart role="img" aria-label="本次网络输入的尺寸比例、填充区与目标框；精确数值见前面的结果" xmlns="http://www.w3.org/2000/svg"></svg>
+        <p class="ultralytics-geometry__detail">斜线区为填充；实线矩形为图像内容，虚线矩形为目标框。图中只有边界与面积，图像插值产生的像素值不在这个算例中。</p>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

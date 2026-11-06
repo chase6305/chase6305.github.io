@@ -1,0 +1,30 @@
+{
+  "commit": "d095ba9590df789df5189eea5ee7e431689038a6",
+  "source_sha256": {
+    "umi/real_world/bimanual_umi_env.py": "a25d8d3ae5cea69cfacc7e3f334a96ff985ae621fc42e8a26a4b728dcfba4fb1",
+    "umi/common/interpolation_util.py": "cf53a3edb321a3c31db32a98cf13b74d6ae53b47dcca9cf26e297d2c547fa212"
+  },
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "alignment": {
+    "fixtures": 120,
+    "nearest_frame_checks": 560,
+    "low_dimensional_comparisons": 360,
+    "maximum_absolute_error": 1.3877787807814457e-17,
+    "selected_camera_counts": {
+      "0": 93,
+      "1": 27
+    }
+  },
+  "rotation": {
+    "queries_including_clamped_endpoints": 7,
+    "maximum_matrix_error": 4.458239333260394e-16,
+    "midpoint_abs_z_angle_degrees": 180.0
+  },
+  "stale_proprioception": {
+    "camera_anchor": 100.11966666666666,
+    "last_robot_timestamp": 99.0,
+    "endpoint_clamping_observed": true
+  },
+  "scope": "Synthetic timestamped buffers and verified pure interpolation; no device clocks, network, tracking or physical latency validation."
+}

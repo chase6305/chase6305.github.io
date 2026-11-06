@@ -1,0 +1,53 @@
+{{- $id := .Get "id" | default (printf "last-whitening-%d" .Ordinal) -}}
+{{- $css := resources.Get "css/last-whitening.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/last-whitening.js" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section class="last-whitening" data-last-whitening aria-labelledby="{{ $id }}-title">
+  <p id="{{ $id }}-title"><strong>动手看：白化为什么会改变最近码字</strong></p>
+  <p>固定无量纲残差 r = (2, 0.2)，原坐标中的候选 A = (0, 0.2)、B = (2, 1.2)。原坐标欧氏距离恒为 2 和 1，选择 B。两候选与残差使用同一个白化矩阵；改变协方差的尺度比、主轴方向或正则项，观察白化距离的选择。</p>
+  <p data-static-result>默认主轴标准差比 3∶1、方向 0°、正则项 0：白化距离 A = 0.6667、B = 1.0000，选择 A；正则化后协方差条件数为 9。A 的原坐标误差更大，但白化距离更小。</p>
+  <div data-interactive hidden>
+    <div class="last-whitening__presets" role="group" aria-label="比较不同白化度量">
+      <button type="button" data-preset="default">长轴沿 x</button>
+      <button type="button" data-preset="isotropic">各向同性</button>
+      <button type="button" data-preset="rotated">主轴转 90°</button>
+      <button type="button" data-preset="tie">距离并列</button>
+      <button type="button" data-preset="regularized">增加正则</button>
+    </div>
+    <form novalidate aria-label="白化协方差设置">
+      <div class="last-whitening__fields">
+        <label for="{{ $id }}-ratio">主轴标准差比 ρ
+          <input id="{{ $id }}-ratio" name="ratio" type="number" min="1" max="10" step="any" value="3" required inputmode="decimal" aria-describedby="{{ $id }}-help" aria-errormessage="{{ $id }}-error">
+        </label>
+        <label for="{{ $id }}-angle">长主轴方向 θ（°）
+          <input id="{{ $id }}-angle" name="angle" type="number" min="0" max="90" step="any" value="0" required inputmode="decimal" aria-describedby="{{ $id }}-help" aria-errormessage="{{ $id }}-error">
+        </label>
+        <label for="{{ $id }}-epsilon">协方差正则项 ε
+          <input id="{{ $id }}-epsilon" name="epsilon" type="number" min="0" max="10" step="any" value="0" required inputmode="decimal" aria-describedby="{{ $id }}-help" aria-errormessage="{{ $id }}-error">
+        </label>
+      </div>
+      <p id="{{ $id }}-help" class="last-whitening__detail">ρ 范围 1 到 10，θ 范围 0° 到 90°，ε 范围 0 到 10。协方差为 Q diag(ρ², 1) Qᵀ + εI，Q 为平面旋转。原协方差已正定，允许 ε = 0。结果保留四位小数。</p>
+    </form>
+    <p id="{{ $id }}-error" data-error role="alert" class="last-whitening__error" hidden></p>
+    <div data-computed>
+      <dl class="last-whitening__results" aria-live="polite" aria-atomic="true">
+        <div><dt>A 的白化距离</dt><dd><output data-value="metricA" aria-label="A 的白化距离">0.6667</output></dd></div>
+        <div><dt>B 的白化距离</dt><dd><output data-value="metricB" aria-label="B 的白化距离">1.0000</output></dd></div>
+        <div><dt>原坐标选择</dt><dd><output data-value="euclideanWinner" aria-label="原坐标选择">B</output></dd></div>
+        <div><dt>白化度量选择</dt><dd><output data-value="metricWinner" aria-label="白化度量选择">A</output></dd></div>
+        <div><dt>协方差条件数</dt><dd><output data-value="condition" aria-label="协方差条件数">9.0000</output></dd></div>
+      </dl>
+      <div class="last-whitening__plot">
+        <p><strong>候选 A</strong></p>
+        <svg data-chart="A" viewBox="0 0 400 60" role="img" aria-label="候选 A 的原坐标距离与白化距离"></svg>
+        <p><strong>候选 B</strong></p>
+        <svg data-chart="B" viewBox="0 0 400 60" role="img" aria-label="候选 B 的原坐标距离与白化距离"></svg>
+        <p class="last-whitening__axis"><span>0</span><span>距离 2</span></p>
+        <p class="last-whitening__detail">每组上方空心条为原坐标距离，下方实心条为白化距离；各条共用 0 到 2 的刻度。两种距离采用不同度量，其数值大小不能直接代表任务价值。</p>
+      </div>
+      <p data-note class="last-whitening__detail"></p>
+    </div>
+  </div>
+  <p class="last-whitening__limits">这里固定的是原坐标中的两个候选点，用于单独观察度量变化。它没有重新训练码本，也没有模拟 LAST 的软统计更新或测试机器人任务成功率。</p>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

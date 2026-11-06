@@ -1,0 +1,52 @@
+{
+  "sources_changed_after_full_suite": [
+    "content/posts/calibration/omnicalib/index.md"
+  ],
+  "reason": "Remove time-stream alignment from the optimized parameter list and identify it as preprocessing. Final article reading and OmniCalib native-print checks are rerun.",
+  "source_hashes": {
+    "assets/css/custom.css": "f161a5a0f94dbaa06619d892051e17269addcd187f248b6aabeab2735de39a5a",
+    "assets/css/last-whitening.css": "949d0ac0b3c2ddfa1f43c8654240f08696d9efc482f5ad83efdcb5cb6de5ca26",
+    "assets/css/omnicalib-prior.css": "eefcf99a63de144d3e6c80098614553388d991466694152d5a697050e22c6535",
+    "assets/js/last-whitening.js": "9930f3b20a3ad5b97d37ce0947b97d72614f13e564d1d0a5a588ace3bc035fe5",
+    "assets/js/omnicalib-prior.js": "08150dfa0f0b75fab616cbb76502da59cf16dcfce8b6d9051f28765040d926ab",
+    "content/posts/ai/last-action-tokenizer/assets/last-pipeline.webp": "803ed605b42c93538e4932e8f36582e4953585cd01c9dba657cafe523af1d80e",
+    "content/posts/ai/last-action-tokenizer/assets/local-whitening.svg": "d0a0729dedc2b51776ddadd08161b6588248fbaf66a24aa99eaba16e0fc4cd65",
+    "content/posts/ai/last-action-tokenizer/geometry_sanity.py": "3dd25148c7ee3de3eb3136a3839fa96f94fe5f8de28a432af5556e2e64490208",
+    "content/posts/ai/last-action-tokenizer/index.md": "1bfa6c44e2449baea5ff4d039e0bd54b6fc33eb5df9510d8351a28f1928b13ef",
+    "content/posts/ai/machine-learning-for-robotics/assets/architecture-and-evidence.webp": "9321a53f1468da52bfb3a693db0d62e05b067dc23624db76a185ebf149a154a1",
+    "content/posts/ai/machine-learning-for-robotics/assets/sampled-cbf.svg": "d718626776434967b55aab59fc7811078f88ba420c96d17a1cdff2e21e30e157",
+    "content/posts/ai/machine-learning-for-robotics/assets/zero-failure-bound.svg": "7a5a1c3227af82ebf913706e99e718091d99aa4a0e70f1f483a6fe3de58521b9",
+    "content/posts/ai/machine-learning-for-robotics/deployment_sanity.py": "151cdc4d4558d72f91df514f33c9431360ed9b937a8815794bc1a83e975aa433",
+    "content/posts/ai/machine-learning-for-robotics/index.md": "32fa5b49b5cabbbf9db9ca3039a19d22a37ce3608f3ce27644f1681fdf4182c1",
+    "content/posts/ai/machine-learning-for-robotics/requirements-suresim.txt": "3c451e0c69fb4fe18eaef04355cca91735e185ebed401e006b496c8654ec14df",
+    "content/posts/ai/machine-learning-for-robotics/suresim_source_probe.py": "c2d2ede50d9a0fd965a1033600422f2867fd65584997af1e88c2f5b0667a17f4",
+    "content/posts/calibration/omnicalib/assets/leg-recovery.svg": "742f6634250a3ddfa666fcf84d40c79b2cb9efd62e4b3b0c66bae5273f3bda59",
+    "content/posts/calibration/omnicalib/assets/task-structured-calibration.webp": "b575ac0c0a550d8347ca7a4021533f03dd27f2785d87fe0afe337e85fea76c20",
+    "content/posts/calibration/omnicalib/index.md": "1bcfde43e0bf5bb0949682e67ac6c2bcda2894ac14f06b1e06e9a0ed58a09f13",
+    "content/posts/calibration/omnicalib/observability_sanity.py": "68a7d3c6dcb3ab007e53537b1306f32acaad132878e72383053d505dc543cfd0",
+    "data/blog_topics.json": "81e067670609208fc244f00d81f766f5ad985ab0ff7786e9246902a154e4c662",
+    "docs/blog-editorial-review.json": "b0044e15f2e8102ff2fbcf3ff4421031ee5458f9a231ab245ea4ee2938c12cf8",
+    "layouts/_shortcodes/last-whitening.html": "3de843f429d7b678018944c3a2e51cdf361876fe417400a1247f9f9b4fb256ff",
+    "layouts/_shortcodes/omnicalib-prior.html": "471048ca1fa70ed192df1e0e815a31d18d4b9a5b7460c956d9963da373396200"
+  },
+  "original_dates_and_drafts": [
+    {
+      "path": "content/posts/ai/last-action-tokenizer/index.md",
+      "date": "date: 2026-11-05",
+      "draft": "draft: false",
+      "existing_explicit_anchors_preserved": true
+    },
+    {
+      "path": "content/posts/calibration/omnicalib/index.md",
+      "date": "date: 2026-11-05",
+      "draft": "draft: false",
+      "existing_explicit_anchors_preserved": true
+    },
+    {
+      "path": "content/posts/ai/machine-learning-for-robotics/index.md",
+      "date": "date: 2026-11-05",
+      "draft": "draft: false",
+      "existing_explicit_anchors_preserved": true
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "reviewed_utc": "2026-11-05T21:44:37.420861+00:00",
+  "findings": [
+    {
+      "paper": "2403.13144v1",
+      "location": "PDF page 4 Eq. 7 / arXiv HTML IV-B; page 7 VII-A.2",
+      "finding": "Printed contact prefactor contains sigma_P^2, exponent denominator is 2*sigma_P. IV-B names variance sigma_P^2 while VII-A.2 calls sigma_P variance.",
+      "handling": "Article displays the printed kernel and distinguishes a consistent standard-deviation Gaussian sigma. Default numeric/UI examples explicitly use the latter; literal normalized weights are checked separately. No unseen source implementation is inferred.",
+      "example": {
+        "distance": 0.01,
+        "parameter": 0.005,
+        "literal_factor": 0.9900498337491681,
+        "std_factor": 0.1353352832366127
+      }
+    },
+    {
+      "paper": "2403.13144v1",
+      "location": "PDF page 5 Eq. 12",
+      "finding": "The contact stopping branch rejects d > delta_E; the non-contact branch rejects d <= -delta_E.",
+      "handling": "Retain the one-sided inequalities; do not replace them silently with absolute-distance consistency."
+    },
+    {
+      "paper": "2403.13144v1",
+      "location": "Algorithm 1 / Eq. 3",
+      "finding": "The resampled population and rotation mean need explicit implementation contracts.",
+      "handling": "Article explicitly states action execution -> current batch observations -> proposal perturbation/current weights -> normalization/resampling. Explain pre-resampling weighted versus post-resampling equal estimators and valid rotation means without asserting an unpublished implementation; do not reuse original weights on copied particles."
+    },
+    {
+      "paper": "2107.04034v1",
+      "location": "PDF page 5, Simulation Setup",
+      "finding": "The PDF states a 100 Hz policy and simulation time step 0.025 s.",
+      "handling": "Use the deployment frequencies supported by Fig. 2 and Algorithm 2; do not infer or publish a resolved physics-step contract from this inconsistent statement."
+    },
+    {
+      "paper": "UMI code snapshot",
+      "location": "d095ba9590df789df5189eea5ee7e431689038a6, 2026-05-26",
+      "finding": "relative uses full inverse-base composition; rel is a legacy compatibility branch and delta uses its own component conventions.",
+      "handling": "Pin the source and test interfaces without attributing snapshot defaults to the 2024 paper experiments."
+    },
+    {
+      "paper": "RMA code link",
+      "location": "antonilo/rl_locomotion f71db8195bfb49b6d964bf53be3c5adadb0c11b1",
+      "finding": "All eleven commits in this repository are from 2023; README describes the CMS extension based on RMA.",
+      "handling": "Do not describe this as a frozen original RMA v1 implementation."
+    },
+    {
+      "paper": "2107.04034v1",
+      "location": "III-B / Fig. 2 / supplementary Algorithm 2",
+      "finding": "III-B states equal t-k:t-1 state/action history ranges; the schematic pairs a previous action with each state, while supplementary indices are differently written.",
+      "handling": "The article quotes III-B and requires an explicit sample/dispatch pairing contract; it does not infer a frozen original implementation from these differing notations."
+    },
+    {
+      "paper": "2402.10329v3",
+      "location": "Appendix Table A1",
+      "finding": "Cup arranging/tossing: image horizon2, proprioceptive horizon2, action horizon6, frequencies10/20Hz, execution speed0.5x/1x; all listed tasks use DDIM50 training steps and16 inference steps.",
+      "handling": "Keep action horizon, controller frequency and denoising steps separate, and do not transfer the RTC pi0.5 five-step configuration to UMI."
+    },
+    {
+      "paper": "2506.07339v2",
+      "location": "PDF page5 Eq5; arXiv HTML Eq5; official src/model.py get_prefix_weights line60",
+      "finding": "The soft transition is c_i*(exp(c_i)-1)/(e-1). The initial new draft, helper, JS and figure omitted the leading c_i. Earlier numerical agreement did not establish source fidelity because both adopted the same wrong formula. The existing dedicated RTC article already retained the correct factor.",
+      "handling": "Corrected the new article, shared lab function, Python helper and regenerated quantitative figure. Added a c=1/2 algebraic regression, independent 60-digit Decimal browser references, and a hash-pinned official-function/70-digit Decimal source probe. Earlier timing arithmetic evidence is superseded by the corrected checks."
+    },
+    {
+      "paper": "UMI code snapshot",
+      "location": "get_obs and umi/common/interpolation_util.py at d095ba9",
+      "finding": "PoseInterpolator uses linear position interpolation and Slerp, with interval clamping; low-dimensional observations beyond buffer support hold endpoint values.",
+      "handling": "Add a separate NumPy/SciPy synthetic-buffer probe and explain that the shared timestamp field is not itself a freshness check. No device-clock or physical-latency result is inferred."
+    },
+    {
+      "paper": "UMI code snapshot",
+      "location": "BimanualUmiEnv.exec_actions and eval_real.py at d095ba9",
+      "finding": "compensate_latency defaults False; policy caller sets True,teleoperation sets False. Caller first filters target timestamps with10ms margin,and has a last-target fallback; env method subsequently applies its own strict raw-timestamp filter and optional device lead subtraction.",
+      "handling": "Article distinguishes the method default and caller behavior and scopes recording-stub probe to the extracted method;no lower-level or hardware behavior inferred.",
+      "caller_sha256": "3e3c1bd865fe38b96b87b78c02b575200d5fcf350beeb034789b7ef6c25c4adc"
+    },
+    {
+      "paper": "UMI code snapshot",
+      "location": "PoseTrajectoryInterpolator and extracted Franka/RTDE/WSG SCHEDULE_WAYPOINT branches at d095ba9",
+      "finding": "Past/equal target returns the same interpolator,while controller branch still records requested last_waypoint_time. RTDE and WSG pass finite speed parameters;Franka branch does not. Finite speed can extend the interpolator endpoint beyond requested time.",
+      "handling": "Article8.3 separates requested/realized interpolation/physical times;review uses21 extracted-branch cases,two clock origins and19 independent scalar samples. No controller imports,queue processing,servo loop or hardware timing is tested.",
+      "source_sha256": {
+        "umi/common/pose_trajectory_interpolator.py": "34662c3e495ef6a22f47055784b7a2c7dc37b11c8ecbd393244fb69778cbce23",
+        "umi/real_world/franka_interpolation_controller.py": "a3e058338782796dc2f1d30ac04c58d8553767fa7b18b297250eeb1a33f9f24b",
+        "umi/real_world/rtde_interpolation_controller.py": "6a4bb56ea8ce660eb00afac29b5e5f5d5caf29c7f038a1f5afeb65dc5b32e5b3",
+        "umi/real_world/wsg_controller.py": "627fe6867ddb2d012c4a6a408fa1ba438a54e6903b8802dbda4e06cfb56cb6fd"
+      }
+    },
+    {
+      "paper": "2403.13144v1",
+      "location": "PDF page7, VII-B prose and TableII",
+      "finding": "The prose says table calibration requires around30 actions real versus20 simulation,while TableII records17.2±6.5 real and21.8±5.8 simulation.",
+      "handling": "Retain the table values,explicitly flag the prose/table inconsistency,and avoid deriving an acceleration ratio from the mismatched summary.",
+      "manual_raster": "/tmp/deployment-sevenhour-primary-figures-final/contact-7.png"
+    }
+  ]
+}

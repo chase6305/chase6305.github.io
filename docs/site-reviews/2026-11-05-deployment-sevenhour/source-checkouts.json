@@ -1,0 +1,28 @@
+[
+  {
+    "repository": "https://github.com/real-stanford/universal_manipulation_interface",
+    "commit": "d095ba9590df789df5189eea5ee7e431689038a6",
+    "scope": "Pure relative-pose, recorded actuator scheduling and synthetic observation-buffer alignment; not policy/hardware evaluation",
+    "source_root": "/tmp/chase-sevenhour-umi-source",
+    "source_sha256": {
+      "diffusion_policy/common/pose_repr_util.py": "6438d8746c8ee026a556d7df8a034ad54306746ee17b10973bb25f536894f348",
+      "umi/real_world/bimanual_umi_env.py": "a25d8d3ae5cea69cfacc7e3f334a96ff985ae621fc42e8a26a4b728dcfba4fb1",
+      "umi/common/interpolation_util.py": "cf53a3edb321a3c31db32a98cf13b74d6ae53b47dcca9cf26e297d2c547fa212"
+    }
+  },
+  {
+    "repository": "https://github.com/antonilo/rl_locomotion",
+    "commit": "f71db8195bfb49b6d964bf53be3c5adadb0c11b1",
+    "scope": "README identifies a cross-modal-supervision extension based on RMA, not a frozen original RMA v1 implementation",
+    "source_root": "/tmp/chase-sevenhour-rma-source"
+  },
+  {
+    "repository": "https://github.com/Physical-Intelligence/real-time-chunking-kinetix",
+    "commit": "9296f31d62d5bfeb5779dcb2f9bcf71ca37f448b",
+    "source_root": "/home/ubuntu/workspace/3rdparty/real-time-chunking-kinetix",
+    "scope": "Read-only get_prefix_weights extraction into NumPy Float64, checked against independent Decimal70; not compiled JAX or policy execution",
+    "source_sha256": {
+      "src/model.py": "f59e9479c4fe4386ca027ba1a5c0b4940552adfae8cdb38d177cefec1427482e"
+    }
+  }
+]

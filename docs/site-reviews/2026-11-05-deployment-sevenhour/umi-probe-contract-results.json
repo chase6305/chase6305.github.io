@@ -1,0 +1,22 @@
+{
+  "kind": "action",
+  "checks": [
+    "Source verification works before any NumPy/SciPy/PyTorch import.",
+    "A changed source file is rejected before its top-level code can execute.",
+    "A different revision is rejected before missing or modified source files are inspected.",
+    "An existing output file is preserved and the probe fails explicitly.",
+    "A fresh exclusive output agrees with stdout and contains the pinned source identity."
+  ],
+  "scope": "Source identity, verification order and exclusive output; no hardware.",
+  "successful_probe": {
+    "commit": "d095ba9590df789df5189eea5ee7e431689038a6",
+    "numpy": "2.4.6",
+    "pose_matrix_comparisons": 600,
+    "waypoint_calls": 16
+  },
+  "source_unchanged": true,
+  "source_sha256": {
+    "diffusion_policy/common/pose_repr_util.py": "6438d8746c8ee026a556d7df8a034ad54306746ee17b10973bb25f536894f348",
+    "umi/real_world/bimanual_umi_env.py": "a25d8d3ae5cea69cfacc7e3f334a96ff985ae621fc42e8a26a4b728dcfba4fb1"
+  }
+}

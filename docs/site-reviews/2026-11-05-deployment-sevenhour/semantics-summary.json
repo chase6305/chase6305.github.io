@@ -1,0 +1,12 @@
+{
+  "cases": 717,
+  "violations": 0,
+  "exceptions": 0,
+  "missing_id_references": 0,
+  "incomplete_nodes_by_rule": {
+    "aria-valid-attr-value": 2821
+  },
+  "review": "All incomplete nodes use the same closed-popup aria-controls review rule. Every checked ID resolves. New-article keyboard opening and populated-popup scopes are verified separately in closed-popups-pass2.",
+  "full_report": "/tmp/deployment-sevenhour-whole-semantics/results.json",
+  "popup_report": "/tmp/deployment-sevenhour-closed-popups-pass2/closed-popups.json"
+}

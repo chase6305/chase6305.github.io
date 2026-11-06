@@ -1,0 +1,5965 @@
+{
+  "status": "complete",
+  "recorded_utc": "2026-11-06T02:26:58.675721+00:00",
+  "build": "/tmp/chase-deployment-followup-production-ryofdnr8",
+  "scope": [
+    "Affine action decoding and physical tolerance metric",
+    "Exact expectation after clipping symmetric two-point exploration noise",
+    "Two contact-compatible modes whose mean is not contact-compatible"
+  ],
+  "source_sha256": {
+    "content/posts/ai/rma-umi-rtc-deployment/index.md": "92419c248d88299134b920cda7fd31c071ccc4a2e69e3ee522785a0770dc4153",
+    "content/posts/ai/rma-umi-rtc-deployment/deployment_contracts.py": "e77f5a5695116f5fb46790d29a98445819e8bc4f5c2572678008d0b3d9cdf5c2",
+    "content/posts/ai/residual-reinforcement-learning/index.md": "7fe6962e2e2882660495c2c1d396ea6c2fe5eb9c3baf1ce6c5bafce3070fab64",
+    "content/posts/ai/residual-reinforcement-learning/residual_control_sanity.py": "6f697d9f499b3dc5394cabcbdc715bdb80346dd8d6af5cc44494bd18eeea6a61",
+    "content/posts/calibration/interactive-contact-calibration/index.md": "c0d88367d4a1915ee6459c18db444cf74a000f49dc26ec22d1d8da526955ee37",
+    "content/posts/calibration/interactive-contact-calibration/contact_calibration_sanity.py": "2b6b1a27f97525bc415ec59d50dd44e9b5fcc5a234112101e2ffe422040b371a",
+    "docs/blog-editorial-review.json": "2b246560899b315a2079caf276ebb1f8c3c499435d70e32f52e7406b519fc8e2"
+  },
+  "preserved": [
+    "Publication dates,draft states and existing chapter anchors",
+    "All nine article figures and three browser widgets",
+    "Previous uncommitted work and seven-hour review records"
+  ],
+  "numerical_checks": [
+    {
+      "command": [
+        "python3",
+        "-B",
+        "content/posts/ai/rma-umi-rtc-deployment/deployment_contracts.py",
+        "--check"
+      ],
+      "returncode": 0,
+      "stdout": "PASS: 200 frame contracts, 805 exact deadline cases, 1522 RTC schedules, 24 guidance derivatives, convolution lengths, handover gap, path averaging counterexample\nPASS: affine metric fixture, 200 metric derivatives and 100 unit conversions\n"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "content/posts/ai/residual-reinforcement-learning/residual_control_sanity.py",
+        "--check"
+      ],
+      "returncode": 0,
+      "stdout": "PASS: 500 residual-MDP/action contracts, 4 analytic trajectories, 10000 bounded-disturbance steps, 600 actor derivatives, TD3 terminal targets, 1000 bounded nonlinear Lyapunov cases\nPASS: 126 exact clipped-exploration expectations\n"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "content/posts/calibration/interactive-contact-calibration/contact_calibration_sanity.py",
+        "--check"
+      ],
+      "returncode": 0,
+      "stdout": "PASS: symmetric-contact mixture and 30 independent Decimal contact factors\nPASS: 600 independent rotational derivatives, 150 standard-deviation and 100 printed-kernel direct-product cases, exact ranks 3/6, 2D translation gauge, posterior covariance, resampling weights, correlated observations, signed geometry coverage, consistency thresholds, 8 diffusion branches, 200 stop histories, circular branch\n"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "scripts/render_deployment_figures.py",
+        "--check"
+      ],
+      "returncode": 0,
+      "stdout": "PASS: exact RTC weights, UMI reanchoring, residual intersections, contact ranks and sampling gap, five deterministic SVGs\n"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/test_deployment_labs.cjs"
+      ],
+      "returncode": 0,
+      "stdout": "{\"cases\":2992,\"byKind\":{\"timing\":2496,\"residual\":432,\"posterior\":64},\"numbers\":126310,\"invalidCases\":14,\"maximumNormalizedError\":3.011601431852505e-14,\"maxErrorCase\":{\"label\":\"posterior[4,0,false].effectiveSamples\",\"actual\":581.3442915771216,\"expected\":581.3442915771041}}\n"
+    }
+  ],
+  "preview_url": "http://127.0.0.1:46087",
+  "final_revision_note": "Contact distance now uses dimensional half-gap h=10mm explicitly. Integrated/residual sources and all helpers unchanged from preceding snapshot.",
+  "final_editorial_check": {
+    "recorded_utc": "2026-11-06T02:36:34.386022+00:00",
+    "source_files_match": 7,
+    "self_check_questions": 61,
+    "all_questions_match_metadata": true,
+    "all_answer_anchors_resolve": true,
+    "preserved_anchors": [
+      {
+        "post": "deployment",
+        "old_anchor_count": 57,
+        "new_ids": [
+          "action-metric"
+        ]
+      },
+      {
+        "post": "residual",
+        "old_anchor_count": 49,
+        "new_ids": []
+      },
+      {
+        "post": "contact",
+        "old_anchor_count": 50,
+        "new_ids": [
+          "multimodal-mean"
+        ]
+      }
+    ]
+  },
+  "browser_checks": [
+    {
+      "name": "reading",
+      "report": "/tmp/deployment-followup-articles/articles.json",
+      "sha256": "0c3ff274b76f10b4e7c2d0849a07ec8a518ec6e46b7cd9683c1758bf18ad6e90",
+      "scope": "Integrated/residual current source; contact wording finalized separately.",
+      "counts": {
+        "layouts": 162,
+        "arrows": 6,
+        "svg": 5,
+        "semantics": 6,
+        "zoom": 9,
+        "downloads": 6,
+        "exceptions": 0
+      }
+    },
+    {
+      "name": "contact_reading_final",
+      "report": "/tmp/deployment-followup-contact-final/articles.json",
+      "sha256": "993acc103341d8ed7821a89e747705189f273ecaef92217ae63e58316ff44705",
+      "scope": "Final contact source, explicit dimensional half-gap h.",
+      "counts": {
+        "layouts": 54,
+        "arrows": 2,
+        "svg": 2,
+        "semantics": 2,
+        "zoom": 3,
+        "downloads": 2,
+        "exceptions": 0
+      }
+    },
+    {
+      "name": "new_chapters",
+      "report": "/tmp/deployment-followup-chapters-pass2/chapters.json",
+      "sha256": "dd42f3e2b1ce33ffca3ede93aeaa336c681571c271e680d38ce1513b760f1a90",
+      "scope": "Both new headings and native/mobile focus behavior.",
+      "counts": {
+        "cases": 24,
+        "exceptions": 0
+      }
+    },
+    {
+      "name": "print_geometry",
+      "report": "/tmp/deployment-followup-geometry/geometry.json",
+      "sha256": "b25ce62b33014df0651040402be3ccb8227acd1fb857a695365a07411b6d0f27",
+      "scope": "All current displayed formulas; final contact notation is shorter.",
+      "counts": {
+        "layouts": 18,
+        "exceptions": 0
+      }
+    },
+    {
+      "name": "forced_print_geometry",
+      "report": "/tmp/deployment-followup-geometry-forced/geometry.json",
+      "sha256": "6a5c6ce76b635f33877a20072002d0ff234d2d821ec505eb4a29f78204e738f1",
+      "scope": "Same formulas in forced colors.",
+      "counts": {
+        "layouts": 18,
+        "exceptions": 0
+      }
+    }
+  ],
+  "native_current_source": [
+    {
+      "post": "deployment",
+      "report": "/tmp/deployment-followup-native/native-print.json",
+      "exports": 14,
+      "pages": 682,
+      "intact_result_pairs": 42
+    },
+    {
+      "post": "residual",
+      "report": "/tmp/deployment-followup-native/native-print.json",
+      "exports": 14,
+      "pages": 437,
+      "intact_result_pairs": 42
+    },
+    {
+      "post": "contact",
+      "report": "/tmp/deployment-followup-contact-native-final/native-print.json",
+      "exports": 14,
+      "pages": 505,
+      "intact_result_pairs": 42
+    }
+  ],
+  "native_totals": {
+    "exports": 42,
+    "pages": 1624,
+    "intact_result_pairs": 126
+  },
+  "pdf_edge_checks": [
+    {
+      "report": "/tmp/deployment-followup-native/edge-paint.json",
+      "result": {
+        "pdfs": 42,
+        "pages": 1624,
+        "horizontal_outside": [],
+        "vertical_metric_pages": [
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-dark-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-dark-200-A4.pdf",
+            "page": 7,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-dark-200-A4.pdf",
+            "page": 13,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "粒子滤波怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "粒子滤波怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-dark-200-A4.pdf",
+            "page": 17,
+            "boxes": [
+              {
+                "word": "4.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "为什么沿不同表",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "4.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "为什么沿不同表",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-dark-200-A4.pdf",
+            "page": 19,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "接触几何怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "接触几何怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-dark-200-A4.pdf",
+            "page": 28,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样判断收敛",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样判断收敛",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-dark-200-A4.pdf",
+            "page": 33,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-dark-200-A4.pdf",
+            "page": 38,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 483.114056,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-dark-200-A4.pdf",
+            "page": 44,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-A4.pdf",
+            "page": 7,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-A4.pdf",
+            "page": 13,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "粒子滤波怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "粒子滤波怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-A4.pdf",
+            "page": 17,
+            "boxes": [
+              {
+                "word": "4.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "为什么沿不同表",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "4.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "为什么沿不同表",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-A4.pdf",
+            "page": 19,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "接触几何怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "接触几何怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-A4.pdf",
+            "page": 28,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样判断收敛",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样判断收敛",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-A4.pdf",
+            "page": 33,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-A4.pdf",
+            "page": 38,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 483.114056,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-A4.pdf",
+            "page": 44,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-Letter.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-Letter.pdf",
+            "page": 8,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-Letter.pdf",
+            "page": 14,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "粒子滤波怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "粒子滤波怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-Letter.pdf",
+            "page": 21,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "接触几何怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "接触几何怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-Letter.pdf",
+            "page": 31,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样判断收敛",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样判断收敛",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-light-200-Letter.pdf",
+            "page": 47,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-warm-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-warm-200-A4.pdf",
+            "page": 7,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-warm-200-A4.pdf",
+            "page": 13,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "粒子滤波怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "粒子滤波怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-warm-200-A4.pdf",
+            "page": 17,
+            "boxes": [
+              {
+                "word": "4.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "为什么沿不同表",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "4.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "为什么沿不同表",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-warm-200-A4.pdf",
+            "page": 19,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "接触几何怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "接触几何怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-warm-200-A4.pdf",
+            "page": 28,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样判断收敛",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样判断收敛",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-warm-200-A4.pdf",
+            "page": 33,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-warm-200-A4.pdf",
+            "page": 38,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 483.114056,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-native-warm-200-A4.pdf",
+            "page": 44,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-dark-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-dark-200-A4.pdf",
+            "page": 7,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-dark-200-A4.pdf",
+            "page": 36,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-dark-200-A4.pdf",
+            "page": 41,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 483.114056,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-dark-200-A4.pdf",
+            "page": 47,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-light-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-light-200-A4.pdf",
+            "page": 7,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-light-200-A4.pdf",
+            "page": 36,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-light-200-A4.pdf",
+            "page": 41,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 483.114056,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-light-200-A4.pdf",
+            "page": 47,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-light-200-Letter.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-light-200-Letter.pdf",
+            "page": 8,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-light-200-Letter.pdf",
+            "page": 14,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "粒子滤波怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "粒子滤波怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-light-200-Letter.pdf",
+            "page": 21,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "接触几何怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "接触几何怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-light-200-Letter.pdf",
+            "page": 39,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-light-200-Letter.pdf",
+            "page": 44,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 483.114056,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-light-200-Letter.pdf",
+            "page": 50,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-warm-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-warm-200-A4.pdf",
+            "page": 7,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-warm-200-A4.pdf",
+            "page": 36,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-warm-200-A4.pdf",
+            "page": 41,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 483.114056,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/contact-scripts-warm-200-A4.pdf",
+            "page": 47,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-dark-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "三篇论文分别改",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "三篇论文分别改",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-dark-200-A4.pdf",
+            "page": 16,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "UMI",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 151.566007,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样让示范",
+                "xMin": 159.000016,
+                "yMin": -8.550004,
+                "xMax": 364.800028,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "UMI",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样让示范",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-dark-200-A4.pdf",
+            "page": 26,
+            "boxes": [
+              {
+                "word": "4.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "RTC",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 150.810025,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样让生成",
+                "xMin": 158.244031,
+                "yMin": -8.550004,
+                "xMax": 364.044055,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "4.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "RTC",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样让生成",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-dark-200-A4.pdf",
+            "page": 39,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样阅读三篇的实验",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 442.16403,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样阅读三篇的实验",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-light-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "三篇论文分别改",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "三篇论文分别改",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-light-200-A4.pdf",
+            "page": 16,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "UMI",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 151.566007,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样让示范",
+                "xMin": 159.000016,
+                "yMin": -8.550004,
+                "xMax": 364.800028,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "UMI",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样让示范",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-light-200-A4.pdf",
+            "page": 26,
+            "boxes": [
+              {
+                "word": "4.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "RTC",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 150.810025,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样让生成",
+                "xMin": 158.244031,
+                "yMin": -8.550004,
+                "xMax": 364.044055,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "4.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "RTC",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样让生成",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-light-200-A4.pdf",
+            "page": 39,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样阅读三篇的实验",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 442.16403,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样阅读三篇的实验",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-light-200-Letter.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "三篇论文分别改",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "三篇论文分别改",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-light-200-Letter.pdf",
+            "page": 18,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "UMI",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 151.566007,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样让示范",
+                "xMin": 159.000016,
+                "yMin": -8.550004,
+                "xMax": 364.800028,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "UMI",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样让示范",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-light-200-Letter.pdf",
+            "page": 50,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "三种思想怎样组合",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 401.214027,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "三种思想怎样组合",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-light-200-Letter.pdf",
+            "page": 69,
+            "boxes": [
+              {
+                "word": "参考资料",
+                "xMin": 27.749999,
+                "yMin": -8.551204,
+                "xMax": 192.600008,
+                "yMax": 100.648797
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "参考资料",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-warm-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "三篇论文分别改",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "三篇论文分别改",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-warm-200-A4.pdf",
+            "page": 16,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "UMI",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 151.566007,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样让示范",
+                "xMin": 159.000016,
+                "yMin": -8.550004,
+                "xMax": 364.800028,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "UMI",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样让示范",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-warm-200-A4.pdf",
+            "page": 26,
+            "boxes": [
+              {
+                "word": "4.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "RTC",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 150.810025,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样让生成",
+                "xMin": 158.244031,
+                "yMin": -8.550004,
+                "xMax": 364.044055,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "4.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "RTC",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样让生成",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-native-warm-200-A4.pdf",
+            "page": 39,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样阅读三篇的实验",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 442.16403,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样阅读三篇的实验",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-dark-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "三篇论文分别改",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "三篇论文分别改",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-dark-200-A4.pdf",
+            "page": 16,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "UMI",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 151.566007,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样让示范",
+                "xMin": 159.000016,
+                "yMin": -8.550004,
+                "xMax": 364.800028,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "UMI",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样让示范",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-dark-200-A4.pdf",
+            "page": 26,
+            "boxes": [
+              {
+                "word": "4.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "RTC",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 150.810025,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样让生成",
+                "xMin": 158.244031,
+                "yMin": -8.550004,
+                "xMax": 364.044055,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "4.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "RTC",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样让生成",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-dark-200-A4.pdf",
+            "page": 42,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样阅读三篇的实验",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 442.16403,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样阅读三篇的实验",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-light-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "三篇论文分别改",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "三篇论文分别改",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-light-200-A4.pdf",
+            "page": 16,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "UMI",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 151.566007,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样让示范",
+                "xMin": 159.000016,
+                "yMin": -8.550004,
+                "xMax": 364.800028,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "UMI",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样让示范",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-light-200-A4.pdf",
+            "page": 26,
+            "boxes": [
+              {
+                "word": "4.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "RTC",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 150.810025,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样让生成",
+                "xMin": 158.244031,
+                "yMin": -8.550004,
+                "xMax": 364.044055,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "4.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "RTC",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样让生成",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-light-200-A4.pdf",
+            "page": 42,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样阅读三篇的实验",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 442.16403,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样阅读三篇的实验",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-light-200-Letter.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "三篇论文分别改",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "三篇论文分别改",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-light-200-Letter.pdf",
+            "page": 18,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "UMI",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 151.566007,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样让示范",
+                "xMin": 159.000016,
+                "yMin": -8.550004,
+                "xMax": 364.800028,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "UMI",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样让示范",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-light-200-Letter.pdf",
+            "page": 52,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "三种思想怎样组合",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 401.214027,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "三种思想怎样组合",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-light-200-Letter.pdf",
+            "page": 71,
+            "boxes": [
+              {
+                "word": "参考资料",
+                "xMin": 27.749999,
+                "yMin": -8.551204,
+                "xMax": 192.600008,
+                "yMax": 100.648797
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "参考资料",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-warm-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "三篇论文分别改",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "三篇论文分别改",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-warm-200-A4.pdf",
+            "page": 16,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "UMI",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 151.566007,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样让示范",
+                "xMin": 159.000016,
+                "yMin": -8.550004,
+                "xMax": 364.800028,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "UMI",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样让示范",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-warm-200-A4.pdf",
+            "page": 26,
+            "boxes": [
+              {
+                "word": "4.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "RTC",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 150.810025,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样让生成",
+                "xMin": 158.244031,
+                "yMin": -8.550004,
+                "xMax": 364.044055,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "4.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "RTC",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样让生成",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/deployment-scripts-warm-200-A4.pdf",
+            "page": 42,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样阅读三篇的实验",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 442.16403,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样阅读三篇的实验",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-dark-200-A4.pdf",
+            "page": 3,
+            "boxes": [
+              {
+                "word": "阅读路线",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 192.600008,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读路线",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-dark-200-A4.pdf",
+            "page": 8,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "从残差动作构造",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "从残差动作构造",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-dark-200-A4.pdf",
+            "page": 27,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "原始积木插装",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "原始积木插装",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-dark-200-A4.pdf",
+            "page": 34,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "与其他学习控",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "与其他学习控",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-dark-200-A4.pdf",
+            "page": 37,
+            "boxes": [
+              {
+                "word": "9.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "可运行的控制与限幅算例",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "9.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "可运行的控制与限幅算例",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-light-200-A4.pdf",
+            "page": 3,
+            "boxes": [
+              {
+                "word": "阅读路线",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 192.600008,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读路线",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-light-200-A4.pdf",
+            "page": 8,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "从残差动作构造",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "从残差动作构造",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-light-200-A4.pdf",
+            "page": 27,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "原始积木插装",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "原始积木插装",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-light-200-A4.pdf",
+            "page": 34,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "与其他学习控",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "与其他学习控",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-light-200-A4.pdf",
+            "page": 37,
+            "boxes": [
+              {
+                "word": "9.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "可运行的控制与限幅算例",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "9.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "可运行的控制与限幅算例",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-light-200-Letter.pdf",
+            "page": 3,
+            "boxes": [
+              {
+                "word": "阅读路线",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 192.600008,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读路线",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-light-200-Letter.pdf",
+            "page": 8,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "从残差动作构造",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "从残差动作构造",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-light-200-Letter.pdf",
+            "page": 18,
+            "boxes": [
+              {
+                "word": "4.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "残差动作有多",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "4.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "残差动作有多",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-light-200-Letter.pdf",
+            "page": 28,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "原始积木插装",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "原始积木插装",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-light-200-Letter.pdf",
+            "page": 37,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样建立可解",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样建立可解",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-light-200-Letter.pdf",
+            "page": 40,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-warm-200-A4.pdf",
+            "page": 3,
+            "boxes": [
+              {
+                "word": "阅读路线",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 192.600008,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读路线",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-warm-200-A4.pdf",
+            "page": 8,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "从残差动作构造",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "从残差动作构造",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-warm-200-A4.pdf",
+            "page": 27,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "原始积木插装",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "原始积木插装",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-warm-200-A4.pdf",
+            "page": 34,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "与其他学习控",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "与其他学习控",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-native-warm-200-A4.pdf",
+            "page": 37,
+            "boxes": [
+              {
+                "word": "9.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "可运行的控制与限幅算例",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "9.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "可运行的控制与限幅算例",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-dark-200-A4.pdf",
+            "page": 3,
+            "boxes": [
+              {
+                "word": "阅读路线",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 192.600008,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读路线",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-dark-200-A4.pdf",
+            "page": 8,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "从残差动作构造",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "从残差动作构造",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-dark-200-A4.pdf",
+            "page": 30,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "原始积木插装",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "原始积木插装",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-dark-200-A4.pdf",
+            "page": 37,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "与其他学习控",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "与其他学习控",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-dark-200-A4.pdf",
+            "page": 40,
+            "boxes": [
+              {
+                "word": "9.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "可运行的控制与限幅算例",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "9.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "可运行的控制与限幅算例",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-light-200-A4.pdf",
+            "page": 3,
+            "boxes": [
+              {
+                "word": "阅读路线",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 192.600008,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读路线",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-light-200-A4.pdf",
+            "page": 8,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "从残差动作构造",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "从残差动作构造",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-light-200-A4.pdf",
+            "page": 30,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "原始积木插装",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "原始积木插装",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-light-200-A4.pdf",
+            "page": 37,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "与其他学习控",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "与其他学习控",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-light-200-A4.pdf",
+            "page": 40,
+            "boxes": [
+              {
+                "word": "9.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "可运行的控制与限幅算例",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "9.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "可运行的控制与限幅算例",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-light-200-Letter.pdf",
+            "page": 3,
+            "boxes": [
+              {
+                "word": "阅读路线",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 192.600008,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读路线",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-light-200-Letter.pdf",
+            "page": 8,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "从残差动作构造",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "从残差动作构造",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-light-200-Letter.pdf",
+            "page": 18,
+            "boxes": [
+              {
+                "word": "4.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "残差动作有多",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "4.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "残差动作有多",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-light-200-Letter.pdf",
+            "page": 31,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "原始积木插装",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "原始积木插装",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-light-200-Letter.pdf",
+            "page": 40,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样建立可解",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样建立可解",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-light-200-Letter.pdf",
+            "page": 43,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-warm-200-A4.pdf",
+            "page": 3,
+            "boxes": [
+              {
+                "word": "阅读路线",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 192.600008,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读路线",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-warm-200-A4.pdf",
+            "page": 8,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "从残差动作构造",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "从残差动作构造",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-warm-200-A4.pdf",
+            "page": 30,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "原始积木插装",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "原始积木插装",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-warm-200-A4.pdf",
+            "page": 37,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "与其他学习控",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "与其他学习控",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-native/residual-scripts-warm-200-A4.pdf",
+            "page": 40,
+            "boxes": [
+              {
+                "word": "9.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "可运行的控制与限幅算例",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "9.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "可运行的控制与限幅算例",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          }
+        ],
+        "paint_at_affected_edges": [],
+        "scope": "Font boxes and raster paper-edge checks, not PDF/UA certification or semantic glyph verification."
+      }
+    },
+    {
+      "report": "/tmp/deployment-followup-contact-native-final/edge-paint.json",
+      "result": {
+        "pdfs": 14,
+        "pages": 505,
+        "horizontal_outside": [],
+        "vertical_metric_pages": [
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-dark-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-dark-200-A4.pdf",
+            "page": 7,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-dark-200-A4.pdf",
+            "page": 13,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "粒子滤波怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "粒子滤波怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-dark-200-A4.pdf",
+            "page": 17,
+            "boxes": [
+              {
+                "word": "4.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "为什么沿不同表",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "4.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "为什么沿不同表",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-dark-200-A4.pdf",
+            "page": 19,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "接触几何怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "接触几何怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-dark-200-A4.pdf",
+            "page": 28,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样判断收敛",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样判断收敛",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-dark-200-A4.pdf",
+            "page": 33,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-dark-200-A4.pdf",
+            "page": 38,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 483.114056,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-dark-200-A4.pdf",
+            "page": 44,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-A4.pdf",
+            "page": 7,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-A4.pdf",
+            "page": 13,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "粒子滤波怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "粒子滤波怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-A4.pdf",
+            "page": 17,
+            "boxes": [
+              {
+                "word": "4.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "为什么沿不同表",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "4.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "为什么沿不同表",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-A4.pdf",
+            "page": 19,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "接触几何怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "接触几何怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-A4.pdf",
+            "page": 28,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样判断收敛",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样判断收敛",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-A4.pdf",
+            "page": 33,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-A4.pdf",
+            "page": 38,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 483.114056,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-A4.pdf",
+            "page": 44,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-Letter.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-Letter.pdf",
+            "page": 8,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-Letter.pdf",
+            "page": 14,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "粒子滤波怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "粒子滤波怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-Letter.pdf",
+            "page": 21,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "接触几何怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "接触几何怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-Letter.pdf",
+            "page": 31,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样判断收敛",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样判断收敛",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-light-200-Letter.pdf",
+            "page": 47,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-warm-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-warm-200-A4.pdf",
+            "page": 7,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-warm-200-A4.pdf",
+            "page": 13,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "粒子滤波怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "粒子滤波怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-warm-200-A4.pdf",
+            "page": 17,
+            "boxes": [
+              {
+                "word": "4.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "为什么沿不同表",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 360.264024,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "4.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "为什么沿不同表",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-warm-200-A4.pdf",
+            "page": 19,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "接触几何怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "接触几何怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-warm-200-A4.pdf",
+            "page": 28,
+            "boxes": [
+              {
+                "word": "6.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "怎样判断收敛",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "6.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "怎样判断收敛",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-warm-200-A4.pdf",
+            "page": 33,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-warm-200-A4.pdf",
+            "page": 38,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 483.114056,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-native-warm-200-A4.pdf",
+            "page": 44,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-dark-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-dark-200-A4.pdf",
+            "page": 7,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-dark-200-A4.pdf",
+            "page": 36,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-dark-200-A4.pdf",
+            "page": 41,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 483.114056,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-dark-200-A4.pdf",
+            "page": 47,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-light-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-light-200-A4.pdf",
+            "page": 7,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-light-200-A4.pdf",
+            "page": 36,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-light-200-A4.pdf",
+            "page": 41,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 483.114056,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-light-200-A4.pdf",
+            "page": 47,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-light-200-Letter.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-light-200-Letter.pdf",
+            "page": 8,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-light-200-Letter.pdf",
+            "page": 14,
+            "boxes": [
+              {
+                "word": "3.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "粒子滤波怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "3.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "粒子滤波怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-light-200-Letter.pdf",
+            "page": 21,
+            "boxes": [
+              {
+                "word": "5.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "接触几何怎样",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 319.314022,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "5.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "接触几何怎样",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-light-200-Letter.pdf",
+            "page": 39,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-light-200-Letter.pdf",
+            "page": 44,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 483.114056,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-light-200-Letter.pdf",
+            "page": 50,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-warm-200-A4.pdf",
+            "page": 4,
+            "boxes": [
+              {
+                "word": "1.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "1.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "自标定估计的是哪个变换",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-warm-200-A4.pdf",
+            "page": 7,
+            "boxes": [
+              {
+                "word": "2.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "2.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "触碰和滑动提供什么观测",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-warm-200-A4.pdf",
+            "page": 36,
+            "boxes": [
+              {
+                "word": "7.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 524.064036,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "7.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "实验中的精度与计算代价",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-warm-200-A4.pdf",
+            "page": 41,
+            "boxes": [
+              {
+                "word": "8.",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 65.129997,
+                "yMax": 100.649997
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "xMin": 72.564007,
+                "yMin": -8.550004,
+                "xMax": 483.114056,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "8.",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              },
+              {
+                "word": "方法能迁移到哪些场景",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          },
+          {
+            "file": "/tmp/deployment-followup-contact-native-final/contact-scripts-warm-200-A4.pdf",
+            "page": 47,
+            "boxes": [
+              {
+                "word": "阅读自测与验收",
+                "xMin": 27.749999,
+                "yMin": -8.550004,
+                "xMax": 315.450016,
+                "yMax": 100.649997
+              }
+            ],
+            "raster_edge_checks": [
+              {
+                "word": "阅读自测与验收",
+                "edge": "top",
+                "nonwhite_edge_pixels": 0
+              }
+            ]
+          }
+        ],
+        "paint_at_affected_edges": [],
+        "scope": "Font boxes and raster paper-edge checks, not PDF/UA certification or semantic glyph verification."
+      }
+    }
+  ],
+  "manual_pdf_review": [
+    {
+      "post": "deployment",
+      "pages": [
+        52,
+        53
+      ],
+      "result": "Metric formula,units,gradient values and continuation readable."
+    },
+    {
+      "post": "residual",
+      "pages": [
+        20
+      ],
+      "result": "Clipped-noise values,paragraph and continuation readable."
+    },
+    {
+      "post": "contact",
+      "pages": [
+        35
+      ],
+      "result": "Final half-gap units,signed distance and scientific notation readable."
+    }
+  ],
+  "completed_utc": "2026-11-06T02:36:34.386022+00:00"
+}

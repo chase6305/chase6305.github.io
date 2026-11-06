@@ -1,0 +1,40 @@
+{
+  "commit": "d095ba9590df789df5189eea5ee7e431689038a6",
+  "source_sha256": {
+    "diffusion_policy/common/pose_repr_util.py": "6438d8746c8ee026a556d7df8a034ad54306746ee17b10973bb25f536894f348",
+    "umi/real_world/bimanual_umi_env.py": "a25d8d3ae5cea69cfacc7e3f334a96ff985ae621fc42e8a26a4b728dcfba4fb1"
+  },
+  "numpy": "2.4.6",
+  "pose": {
+    "random_cases": 200,
+    "matrix_comparisons": 600,
+    "maximum_absolute_error": 3.552713678800501e-15,
+    "relative_position": [
+      0.0,
+      -1.0,
+      0.0
+    ],
+    "legacy_rel_position": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "delta_position": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "scope": "The current relative path agrees with rigid-frame composition; rel and componentwise delta have different semantics."
+  },
+  "scheduling": {
+    "modes": 2,
+    "robots_per_mode": 2,
+    "waypoint_calls": 16,
+    "strictly_kept_times": [
+      4.01,
+      4.5
+    ],
+    "equality_at_current_time_rejected": true,
+    "scope": "Only the verified method against recording stubs; no proof of lower-level execution, full caller fallback or physical latency."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "observation",
+  "checks": [
+    "Source verification works before any NumPy/SciPy/PyTorch import.",
+    "A changed source file is rejected before its top-level code can execute.",
+    "A different revision is rejected before missing or modified source files are inspected.",
+    "An existing output file is preserved and the probe fails explicitly.",
+    "A fresh exclusive output agrees with stdout and contains the pinned source identity."
+  ],
+  "scope": "Source identity, verification order and exclusive output; no hardware.",
+  "successful_probe": {
+    "commit": "d095ba9590df789df5189eea5ee7e431689038a6",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "alignment_fixtures": 120,
+    "frame_checks": 560
+  },
+  "source_unchanged": true,
+  "source_sha256": {
+    "umi/real_world/bimanual_umi_env.py": "a25d8d3ae5cea69cfacc7e3f334a96ff985ae621fc42e8a26a4b728dcfba4fb1",
+    "umi/common/interpolation_util.py": "cf53a3edb321a3c31db32a98cf13b74d6ae53b47dcca9cf26e297d2c547fa212"
+  }
+}

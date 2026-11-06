@@ -1,0 +1,152 @@
+{
+  "recorded_utc": "2026-11-06T02:34:38.828332+00:00",
+  "build": "/tmp/chase-deployment-followup-production-ryofdnr8",
+  "base_url": "http://127.0.0.1:46087",
+  "artifacts": [
+    {
+      "source": "content/posts/ai/rma-umi-rtc-deployment/assets/deployment-interfaces-v2.webp",
+      "build_relative": "posts/ai/rma-umi-rtc-deployment/assets/deployment-interfaces-v2.webp",
+      "sha256": "23c098e1e600f02b217543c156e2533f7c7e544878c418d5745bf41f14983e9d",
+      "bytes": 164698,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/ai/rma-umi-rtc-deployment/assets/deployment-interfaces.webp",
+      "build_relative": "posts/ai/rma-umi-rtc-deployment/assets/deployment-interfaces.webp",
+      "sha256": "12f7f3747b870c3ee4afe89c112e356f19aa2e6849a5400bf723ae54bf7c2b91",
+      "bytes": 162782,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/ai/rma-umi-rtc-deployment/assets/rma-training-stages.webp",
+      "build_relative": "posts/ai/rma-umi-rtc-deployment/assets/rma-training-stages.webp",
+      "sha256": "a92435423433bb883376c5a2ad96cf6b8b0080413cb3cade4e7a553c42c6aeca",
+      "bytes": 180388,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/ai/rma-umi-rtc-deployment/assets/rtc-action-timeline.svg",
+      "build_relative": "posts/ai/rma-umi-rtc-deployment/assets/rtc-action-timeline.svg",
+      "sha256": "0526a59c93d2b24174397ea0af699e8b1d502f4293c2f2f4e4edf94128f5c03a",
+      "bytes": 11864,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/ai/rma-umi-rtc-deployment/assets/umi-reanchoring.svg",
+      "build_relative": "posts/ai/rma-umi-rtc-deployment/assets/umi-reanchoring.svg",
+      "sha256": "724d3fdaf08a8027af05ab1f2a1171f1edacb46d6527bc67493cca5754c79620",
+      "bytes": 7877,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/ai/rma-umi-rtc-deployment/deployment_contracts.py",
+      "build_relative": "posts/ai/rma-umi-rtc-deployment/deployment_contracts.py",
+      "sha256": "e77f5a5695116f5fb46790d29a98445819e8bc4f5c2572678008d0b3d9cdf5c2",
+      "bytes": 17792,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/ai/rma-umi-rtc-deployment/requirements-umi-observation.txt",
+      "build_relative": "posts/ai/rma-umi-rtc-deployment/requirements-umi-observation.txt",
+      "sha256": "123f12d160ca06467ede68668def5fd342bf746671438616b279bf8bee6e3aaa",
+      "bytes": 101,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/ai/rma-umi-rtc-deployment/requirements-umi-probe.txt",
+      "build_relative": "posts/ai/rma-umi-rtc-deployment/requirements-umi-probe.txt",
+      "sha256": "9f79bad8428423e6e6fc48c287499cfe9f3da84a8f84651cabdf24a9406f8673",
+      "bytes": 75,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/ai/rma-umi-rtc-deployment/umi_observation_probe.py",
+      "build_relative": "posts/ai/rma-umi-rtc-deployment/umi_observation_probe.py",
+      "sha256": "0e0253e63610027dab8cb62062187a03fdc57b7ae10295c496379c55af6ae345",
+      "bytes": 9768,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/ai/rma-umi-rtc-deployment/umi_source_probe.py",
+      "build_relative": "posts/ai/rma-umi-rtc-deployment/umi_source_probe.py",
+      "sha256": "dd17dc0fb09d8b6f79cad9d804646b7a3d94f81c6e2ece184d18391f4208e018",
+      "bytes": 8168,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/ai/rma-umi-rtc-deployment/umi_waypoint_probe.py",
+      "build_relative": "posts/ai/rma-umi-rtc-deployment/umi_waypoint_probe.py",
+      "sha256": "ff383d61e7f60e80bfd19af0fc50f63b8738b050b965c037576043280dae1c46",
+      "bytes": 7785,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/ai/residual-reinforcement-learning/assets/residual-control-loop.webp",
+      "build_relative": "posts/ai/residual-reinforcement-learning/assets/residual-control-loop.webp",
+      "sha256": "7d1c9fd4ecef245da4b3d2a4b980a944a0cdd9db335ace8d05e39a13517d014a",
+      "bytes": 123660,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/ai/residual-reinforcement-learning/assets/residual-headroom.svg",
+      "build_relative": "posts/ai/residual-reinforcement-learning/assets/residual-headroom.svg",
+      "sha256": "f76086bebfb536d9a5dc511c5870a9dd0b401d30b9c6a15c71f5b23a0ce5fef2",
+      "bytes": 8390,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/ai/residual-reinforcement-learning/residual_control_sanity.py",
+      "build_relative": "posts/ai/residual-reinforcement-learning/residual_control_sanity.py",
+      "sha256": "6f697d9f499b3dc5394cabcbdc715bdb80346dd8d6af5cc44494bd18eeea6a61",
+      "bytes": 15456,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/calibration/interactive-contact-calibration/assets/contact-calibration-loop.webp",
+      "build_relative": "posts/calibration/interactive-contact-calibration/assets/contact-calibration-loop.webp",
+      "sha256": "289b73b505aef477ef2c1070dee8141c4e50899ce99da3d5722d6e9ed1fc1ee1",
+      "bytes": 126242,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/calibration/interactive-contact-calibration/assets/contact-observability.svg",
+      "build_relative": "posts/calibration/interactive-contact-calibration/assets/contact-observability.svg",
+      "sha256": "d5f862e33f2f94e531d8ea2dd80f9e42cf9e8b3fa65bc760417e4390558f9f77",
+      "bytes": 8198,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/calibration/interactive-contact-calibration/assets/contact-sampling-gap.svg",
+      "build_relative": "posts/calibration/interactive-contact-calibration/assets/contact-sampling-gap.svg",
+      "sha256": "1fa35f08607777fbbb4f218efde04d9d55ac493bec0843a9bae7624dd5908274",
+      "bytes": 7276,
+      "build_matches": true,
+      "http_matches": true
+    },
+    {
+      "source": "content/posts/calibration/interactive-contact-calibration/contact_calibration_sanity.py",
+      "build_relative": "posts/calibration/interactive-contact-calibration/contact_calibration_sanity.py",
+      "sha256": "2b6b1a27f97525bc415ec59d50dd44e9b5fcc5a234112101e2ffe422040b371a",
+      "bytes": 28017,
+      "build_matches": true,
+      "http_matches": true
+    }
+  ],
+  "scope": "Local immutable production preview;9 displayed images,1 preserved original,6 Python downloads and2 requirement files. No deployment verification."
+}
