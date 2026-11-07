@@ -22,6 +22,8 @@
       "posts/ai/algorithms/Astar/Astar-introduction/index.md",
       "posts/ai/algorithms/Astar/Astar-cpp/index.md",
       "posts/planner/task-and-motion-planning/index.md",
+      "posts/planner/tampagent/index.md",
+      "posts/robotics/cuarms/index.md",
       "posts/casadi/index.md",
       "posts/trajectory/toppra/index.md",
       "posts/robotics/curobo-v2-fast/index.md",
@@ -60,6 +62,7 @@
       "posts/ai/rlhf-rlvr-rlcd/index.md",
       "posts/ai/gspo/index.md",
       "posts/ai/transformer-attention/index.md",
+      "posts/ai/weight-space-programming/index.md",
       "posts/ai/llm-training-metrics/index.md",
       "posts/ai/muon-optimizer/index.md",
       "posts/ai/muon-learning-rate-batch-size/index.md",
@@ -94,12 +97,14 @@
       "posts/ai/gen-1-5/index.md",
       "posts/ai/molmo-motion/index.md",
       "posts/ai/stable-hand/index.md",
+      "posts/ai/card-retargeting/index.md",
       "posts/ai/video-to-data/index.md",
       "posts/ai/rynnbrain/index.md",
       "posts/thesis/being_0/index.md",
       "posts/ai/light-loco-parkour/index.md",
       "posts/ai/supermimic/index.md",
-      "posts/ai/morphmimic/index.md"
+      "posts/ai/morphmimic/index.md",
+      "posts/ai/vflash/index.md"
     ]
   },
   {

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="620" viewBox="0 0 1100 620" role="img" aria-labelledby="title desc">
+<title id="title">Reported Qwen math accuracy and token-limit share</title><desc id="desc">Four independent settings from the original post; these are not a single editing trajectory.</desc>
+<rect width="1100" height="620" fill="white"/>
+<g font-family="Arial, sans-serif" fill="#202b3c">
+<text x="48" y="48" font-size="26" font-weight="bold">Qwen3.5-0.8B: reported results</text>
+<text x="48" y="80" font-size="18">Separate edit runs; thinking on; 32,768-token output limit</text>
+<text x="235" y="126" font-size="20" font-weight="bold">MATH-500 accuracy (%)</text>
+<line x1="235.0" y1="151" x2="235.0" y2="495" stroke="#dce2eb"/><text x="235.0" y="524" text-anchor="middle" font-size="17">0</text>
+<line x1="325.0" y1="151" x2="325.0" y2="495" stroke="#dce2eb"/><text x="325.0" y="524" text-anchor="middle" font-size="17">25</text>
+<line x1="415.0" y1="151" x2="415.0" y2="495" stroke="#dce2eb"/><text x="415.0" y="524" text-anchor="middle" font-size="17">50</text>
+<line x1="505.0" y1="151" x2="505.0" y2="495" stroke="#dce2eb"/><text x="505.0" y="524" text-anchor="middle" font-size="17">75</text>
+<line x1="595.0" y1="151" x2="595.0" y2="495" stroke="#dce2eb"/><text x="595.0" y="524" text-anchor="middle" font-size="17">100</text>
+<text x="670" y="126" font-size="20" font-weight="bold">Token-limit share (%)</text>
+<line x1="670.0" y1="151" x2="670.0" y2="495" stroke="#dce2eb"/><text x="670.0" y="524" text-anchor="middle" font-size="17">0</text>
+<line x1="760.0" y1="151" x2="760.0" y2="495" stroke="#dce2eb"/><text x="760.0" y="524" text-anchor="middle" font-size="17">25</text>
+<line x1="850.0" y1="151" x2="850.0" y2="495" stroke="#dce2eb"/><text x="850.0" y="524" text-anchor="middle" font-size="17">50</text>
+<line x1="940.0" y1="151" x2="940.0" y2="495" stroke="#dce2eb"/><text x="940.0" y="524" text-anchor="middle" font-size="17">75</text>
+<line x1="1030.0" y1="151" x2="1030.0" y2="495" stroke="#dce2eb"/><text x="1030.0" y="524" text-anchor="middle" font-size="17">100</text>
+<text x="48" y="196" font-size="21">Base</text>
+<rect x="235" y="170" width="28.44" height="40" rx="5" fill="#4676ad"/><text x="272.44" y="197" font-size="21" font-weight="bold">7.9</text>
+<rect x="670" y="170" width="334.8" height="40" rx="5" fill="#a35c33"/><text x="1013.8" y="197" font-size="21" font-weight="bold">93.0</text>
+<text x="48" y="278" font-size="21">10-pass run</text>
+<rect x="235" y="252" width="44.28" height="40" rx="5" fill="#4676ad"/><text x="288.28" y="279" font-size="21" font-weight="bold">12.3</text>
+<rect x="670" y="252" width="313.92" height="40" rx="5" fill="#a35c33"/><text x="992.9200000000001" y="279" font-size="21" font-weight="bold">87.2</text>
+<text x="48" y="360" font-size="21">25-pass run</text>
+<rect x="235" y="334" width="50.76" height="40" rx="5" fill="#4676ad"/><text x="294.76" y="361" font-size="21" font-weight="bold">14.1</text>
+<rect x="670" y="334" width="311.04" height="40" rx="5" fill="#a35c33"/><text x="990.04" y="361" font-size="21" font-weight="bold">86.4</text>
+<text x="48" y="442" font-size="21">50-pass run</text>
+<rect x="235" y="416" width="173.16" height="40" rx="5" fill="#4676ad"/><text x="417.15999999999997" y="443" font-size="21" font-weight="bold">48.1</text>
+<rect x="670" y="416" width="119.16000000000001" height="40" rx="5" fill="#a35c33"/><text x="798.16" y="443" font-size="21" font-weight="bold">33.1</text>
+<text x="48" y="577" font-size="18">Source: Takehi et al., Sparks of Weight-Space Programming, Experiment 8 (2026-11-02).</text>
+</g></svg>

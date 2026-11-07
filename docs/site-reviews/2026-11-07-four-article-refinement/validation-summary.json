@@ -1,0 +1,85 @@
+{
+  "validated_on": "2026-11-07",
+  "production": {
+    "hugo": "0.165.0 extended",
+    "fresh_destination": "/tmp/four-article-refinement-20261107/production-accepted",
+    "html_pages": 352,
+    "local_references": 38913,
+    "published_articles": 107,
+    "acceptance_questions": 798,
+    "errors": [],
+    "python_fragment_warnings": [],
+    "unrendered_math_warnings": []
+  },
+  "numerical_helpers": {
+    "contact": "passed: gates/zero forces, transport, drift, angle scale",
+    "belief": "passed: shared grasp, dependencies, mixed evidence, confirmation",
+    "coordination": "passed: 144 continuous-transition comparisons and 144 queries; fixed-path failure; four-step route",
+    "weight_space": "passed: truth tables, 25 permutations, 27 updates, non-axis projection and invalid inputs"
+  },
+  "ci": "Four standard-library helper checks added once each to the existing Hugo workflow. YAML parsed and commands run locally; remote workflow not triggered.",
+  "toc": "Passed all formula, code, linked-label and Unicode fixtures. All prior heading IDs preserved: CARD23, TAMPAgent26, cuArms31, Weight-Space29.",
+  "browser": {
+    "full_round": {
+      "layouts": 216,
+      "table_keyboard_checks": 48,
+      "formula_keyboard_checks": 92,
+      "zoom_checks": 8,
+      "pdf_exports": 8,
+      "verified_downloads": 8,
+      "semantic_audits": 8
+    },
+    "card_after_compact_labels": {
+      "layouts": 54,
+      "table_keyboard_checks": 14,
+      "formula_keyboard_checks": 30,
+      "zoom_checks": 2,
+      "pdf_exports": 2,
+      "verified_downloads": 2,
+      "semantic_audits": 2
+    },
+    "coverage": "320/768/1440px; light/dark/warm; ordinary, 200% text, 200% text plus spacing; scripts on/off; all overflowing tables and formulas receive real keyboard arrows; served helper bytes match source hashes.",
+    "axe": {
+      "version": "4.14.0",
+      "sha256": "20c09fe157a8a34a30e241aaa1fcdade657734f08ab379ecfbeb7d45cc46e878",
+      "violations": [],
+      "incomplete_rules": [
+        "aria-valid-attr-value"
+      ],
+      "manual_review": "Incomplete nodes concern existing closed/lazy theme, search and image-viewer controls. Article images were opened and closed successfully. New table headings have no empty-header violations. Contrast is excluded from this engine run; no styles or figure colors changed."
+    },
+    "code_reading_regression": {
+      "layouts": 15,
+      "keyboardCopy": true,
+      "pendingTab": true,
+      "controlledDisclosure": true,
+      "exceptions": 0
+    },
+    "manual_inspection": "Reviewed all three new example tables at narrow/enlarged sizes, shortened CARD numeric labels after screenshot review, and inspected printed example text, reference endings and absence of draft notices. Eight main PDFs and two final CARD PDFs exported.",
+    "evidence_directory": "/tmp/four-article-refinement-20261107"
+  },
+  "publication_preservation": "All four URLs, original publication date 2026-11-06 and draft:false unchanged; lastmod=2026-11-07. Existing chapters/figure IDs retained.",
+  "source_hashes": {
+    ".github/workflows/hugo.yml": "e1144777484ab21df4591c45e3e78bb3b1273a7128b6abd6f64b7be22a2072b0",
+    "AGENTS.md": "035a218b6e9da59d95cbf57433be7f44e764ec1c89f3f2179342947a1113d028",
+    "content/posts/ai/card-retargeting/assets/paper-overview.webp": "779bd8d420534b0349f13efc360860ec3ca25719142232a22a013d517085a6de",
+    "content/posts/ai/card-retargeting/assets/paper-tactile-tracker.webp": "278e9123f77a11e47e98fb96a2013f26a2e412c845c01c4b51fa771d741062d2",
+    "content/posts/ai/card-retargeting/contact_sanity.py": "e62cc0695a115fbb4ccfc52371f53f485456772666c66fa85cee5bdc3783106c",
+    "content/posts/ai/card-retargeting/index.md": "946d42aec62ef3c38483a7104c544fe818a02b52b06c9043a51d13531d474537",
+    "content/posts/ai/weight-space-programming/assets/carjump-cover.webp": "824309dfb4bb945a1a48d0e29bfab160b71df12585d63c9e4464ff759fbe398b",
+    "content/posts/ai/weight-space-programming/assets/reported-math-results.svg": "2c70b381b5b694246ddc360bd397b77c72946a4981647d4defdd462c2ca58e89",
+    "content/posts/ai/weight-space-programming/assets/source-carjump-static.svg": "43c36564131064f42c5ace0936dc54f15e959335dad4658dea4fcae7cfeafadb",
+    "content/posts/ai/weight-space-programming/index.md": "153850ed3972af422f94026ecb1f9eb36d2b3c659b095f1f44125b0dde5f1151",
+    "content/posts/ai/weight-space-programming/weight_space_sanity.py": "379cfdd4f4b5ddcea26a6e7ebd6e78d22f55d7667aaa2c0dc9d3f531729d71c6",
+    "content/posts/planner/tampagent/assets/paper-factor-graph.webp": "b664c2aa550d0ac5586541cb802ebb7d7021961392275a28ee6d2c2da320eb60",
+    "content/posts/planner/tampagent/assets/paper-planning-loop.webp": "9d0bfccf53f4460b7373e5d46a4251f5a61e0c396241e40301270b29d2c81c44",
+    "content/posts/planner/tampagent/belief_contract_sanity.py": "ad615054ef9c4a98b7bb67a46b1aa5cced753d525e0dfcf9ad815b471d11ef3f",
+    "content/posts/planner/tampagent/index.md": "72c17e4d8178fdc994e4934ab0110c66b9f1b8e8d0c2941749b78579a2ad5ee0",
+    "content/posts/robotics/cuarms/assets/paper-overview.webp": "2d02a7af014483ecb5ae04032dc903d67b79804c814de7caeefc11ac4c54c282",
+    "content/posts/robotics/cuarms/assets/paper-yielding.webp": "58ce7c3808901e6c8d91a59ef6fbc4cd1ce3e75fb9a14b251bca483f37d3afb8",
+    "content/posts/robotics/cuarms/coordination_sanity.py": "af23a3e73fc5dad71970ff796f508dbf1c999c8f19db368c18ac257b9f4e7209",
+    "content/posts/robotics/cuarms/index.md": "988c6c904cd3dfcd33fcd8ba3cca4ebce32997a3ee72f82711bfbcc356bccedb",
+    "docs/blog-editorial-review.json": "950bbc35f894ec15be29c6bb4ee3738ff3cb52a4a1fb64a8f727b2505cb0881d",
+    "docs/site-reviews/2026-11-06-four-articles/check_articles.cjs": "69c4f798ec422f5115d3f4e91a02374b1df34210d00d73c02d88f5b20ca54169"
+  }
+}

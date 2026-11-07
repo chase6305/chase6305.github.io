@@ -104,6 +104,10 @@ jobs:
           python3 -B content/posts/planner/task-and-motion-planning/tamp_search.py --check
           python3 -B scripts/test_tamp_examples.py
           python3 -B scripts/package_tamp_lab.py --check --test
+          python3 -B content/posts/ai/card-retargeting/contact_sanity.py --check
+          python3 -B content/posts/planner/tampagent/belief_contract_sanity.py --check
+          python3 -B content/posts/robotics/cuarms/coordination_sanity.py --check
+          python3 -B content/posts/ai/weight-space-programming/weight_space_sanity.py --check
           python3 -B scripts/package_parameter_identification.py --check
           python3 -B content/posts/robotics/dynamics/parameter-identification/timing_counterexample.py --check
           python3 -B content/posts/ai/supermimic/survival_credit.py --check

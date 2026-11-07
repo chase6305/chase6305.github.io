@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-08",
+  "paper": "https://research.nvidia.com/labs/lpr/vflash/assets/paper/vflash.pdf",
+  "paper_sha256": "4850e501621a8d3c5d234dacad88a714335f51f887decb795af7616286387b95",
+  "eagle_commit": "783f656d127ee498137b5ff52603ce36c292d317",
+  "changes": [
+    "Target adaptation before frozen drafter training",
+    "537M trainable drafter parameters",
+    "Schema validation and spatial confidence fallback",
+    "Table3 direct versus fallback quality and throughput"
+  ],
+  "validation": {
+    "hugo": "passed",
+    "html_pages": 354,
+    "references": 39208,
+    "errors": [],
+    "toc": "passed",
+    "browser_reading_cases": 8
+  },
+  "limits": "No model training, GPU benchmark reproduction or robot execution performed."
+}

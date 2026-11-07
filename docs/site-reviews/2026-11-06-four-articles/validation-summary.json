@@ -1,0 +1,55 @@
+{
+  "validated_on": "2026-11-07",
+  "hugo": "0.165.0 extended",
+  "production_build": "hugo --minify to a fresh temporary destination; passed",
+  "production_validation": {
+    "html_pages": 352,
+    "local_references": 38898,
+    "published_articles": 107,
+    "learning_paths": 11,
+    "errors": [],
+    "python_fragment_warnings": [],
+    "unrendered_math_warnings": []
+  },
+  "toc_regression": "passed: 2 variants, 3 anchor modes, formula/code/link/Unicode fixtures",
+  "filter_validation": "passed: production 107; drafts 110; exact coverage and summaries",
+  "browser": {
+    "full_final_text": {
+      "layouts": 144,
+      "table_arrow_checks": 8,
+      "image_zoom_checks": 8,
+      "pdf_exports": 8
+    },
+    "after_cover_rasterization": {
+      "layouts": 36,
+      "table_arrow_checks": 2,
+      "image_zoom_checks": 2,
+      "pdf_exports": 2
+    },
+    "coverage": "320/768/1440 pixels; light/dark/warm; 100/200 percent text; page scripts on/off; native keyboard table scrolling; image modal open/Escape; native print with scripts on/off",
+    "console_exceptions": 0,
+    "evidence_directory": "/tmp/three-robotics-papers",
+    "manual_inspection": "Reviewed source figure labels/arrows, cropped figure extents, narrow dark-theme screenshots, raster share cover and rasterized first PDF pages. Extracted final PDF text verifies reference and acceptance endings and absence of draft notices."
+  },
+  "numerical_helper": "passed: Boolean truth table, signed ReLU identity, 25 permutation cases, 27 selected-column cases, unit-direction rejection and nominal edit count; standard library only",
+  "source_hashes": {
+    "content/posts/ai/card-retargeting/assets/paper-overview.webp": "779bd8d420534b0349f13efc360860ec3ca25719142232a22a013d517085a6de",
+    "content/posts/ai/card-retargeting/assets/paper-tactile-tracker.webp": "278e9123f77a11e47e98fb96a2013f26a2e412c845c01c4b51fa771d741062d2",
+    "content/posts/ai/card-retargeting/index.md": "4cdfb3cc3124049deef899d36162f06c9a872afa7ca3eac77f3eb08e8b978418",
+    "content/posts/ai/weight-space-programming/assets/carjump-cover.webp": "824309dfb4bb945a1a48d0e29bfab160b71df12585d63c9e4464ff759fbe398b",
+    "content/posts/ai/weight-space-programming/assets/reported-math-results.svg": "2c70b381b5b694246ddc360bd397b77c72946a4981647d4defdd462c2ca58e89",
+    "content/posts/ai/weight-space-programming/assets/source-carjump-static.svg": "43c36564131064f42c5ace0936dc54f15e959335dad4658dea4fcae7cfeafadb",
+    "content/posts/ai/weight-space-programming/index.md": "f12578bb131a1472ed4c666792e71cec0d0bc45eb54532f015de14dcdbc7b5f7",
+    "content/posts/ai/weight-space-programming/weight_space_sanity.py": "1f06ee7719c93049f3c953ebebc6c47a78915d1c6a55a73082abe71c3a4fd134",
+    "content/posts/planner/tampagent/assets/paper-factor-graph.webp": "b664c2aa550d0ac5586541cb802ebb7d7021961392275a28ee6d2c2da320eb60",
+    "content/posts/planner/tampagent/assets/paper-planning-loop.webp": "9d0bfccf53f4460b7373e5d46a4251f5a61e0c396241e40301270b29d2c81c44",
+    "content/posts/planner/tampagent/index.md": "8ea267185322008d254b01f7edc9d6d54ae89b425250ada82fe258388f4c1e3d",
+    "content/posts/robotics/cuarms/assets/paper-overview.webp": "2d02a7af014483ecb5ae04032dc903d67b79804c814de7caeefc11ac4c54c282",
+    "content/posts/robotics/cuarms/assets/paper-yielding.webp": "58ce7c3808901e6c8d91a59ef6fbc4cd1ce3e75fb9a14b251bca483f37d3afb8",
+    "content/posts/robotics/cuarms/index.md": "7d24046699fbce1e31389180fa4cec879e502ae8623b8c8f17205be4e7893461",
+    "data/blog_topics.json": "0941b3744564129b5c0118795421b847e61f64b9505fac1bbb0624328389435d",
+    "data/tag_groups.yaml": "50341b4ed3e060eb264fb92a7d1b4edd9cca0fc88c5ffd87339bb3ae73126e5e",
+    "docs/blog-editorial-review.json": "9aecc4f6c17b04a4bbbd123f6fd6a457780c786c6f8918cfa85c7de7a494dcfc"
+  },
+  "publication_state": "All four new articles draft:false. Existing publication dates, URLs and draft states preserved. Local source changes; no Git push or deployment performed."
+}

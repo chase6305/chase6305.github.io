@@ -1,0 +1,50 @@
+{
+  "reviewed_on": "2026-11-07",
+  "preservation": "Existing URLs, published date 2026-11-06, draft:false and explicit chapter/figure IDs are preserved; lastmod is 2026-11-07.",
+  "corrections": {
+    "CARD": "Removed incorrect inference that all-zero force necessarily means no active contact. Distinguish empty gate from zero force; explicit fallback rho=1 belongs to the constructed example. Multi-finger feedforward is written as a sum with shared joint indices.",
+    "TAMPAgent": "Certification is not execution or confirmed holding. Distinguish the 3-action conceptual model from the implementation operator list in Appendix G, PDF p27.",
+    "cuArms": "Added finite graph counterexample to fixed-path retiming, with a four-step route and independent lower bound. No optimality or continuous-arm guarantee attributed to cuArms.",
+    "Weight-Space Programming": "Added local edit density (1/56 per selected matrix) and relative Frobenius norm changes from immutable public logs, separate from global parameter sparsity."
+  },
+  "local_sources": [
+    {
+      "name": "CARD v1",
+      "provided_pdf_sha256": "6125df1ff509d192eca62b9ad2ab15f9ad970030974de620af1a6a40ee3d0f55",
+      "locations": [
+        "Main Eq3-4",
+        "Supplement Table5 and AppendixF"
+      ]
+    },
+    {
+      "name": "TAMPAgent v1",
+      "provided_pdf_sha256": "c7880d4d5bfc32c1cb7a89f14d632fbf0ff5d2a6acbd87fd091985daaa4cd589",
+      "locations": [
+        "Main Sec3.2",
+        "AppendixG, FigureA5 and TableA4, PDF p27"
+      ]
+    }
+  ],
+  "remote_sources": {
+    "repository": "https://github.com/RikiyaT/lm_understand-logs",
+    "revision": "4d09ba6d6a7e891dd8063974dfe81b3d78e3494f",
+    "license": "Author repository identifies logs/data as CC BY 4.0; snapshots retain source attribution here.",
+    "snapshots": [
+      {
+        "file": "docs/site-reviews/2026-11-07-four-article-refinement/sources/evaluated-edit-manifest.json",
+        "sha256": "83185c1db46e3dafb34af645f8c5ce033c09cc99d4512b9e1b8e3aba9d269225"
+      },
+      {
+        "file": "docs/site-reviews/2026-11-07-four-article-refinement/sources/submitted-edit-manifest.json",
+        "sha256": "f0a76e3cbebce1dd373a2f5e351368f3fdb51be70c494109edf8adc5452f3564"
+      }
+    ]
+  },
+  "numerical_checks": {
+    "contact_sanity.py": "Empty/zero-force distinction, squared priorities, same and migrated material points, nine old/new rigid poses, half-angle direction identity.",
+    "belief_contract_sanity.py": "Shared grasp, 16 context/grasp combinations, partial evidence reuse, stale start, mixed action/candidate evidence and confirmed holding. No physical factor certification.",
+    "coordination_sanity.py": "144 graph transition comparisons against closest approach under linear point interpolation, 144 start/goal queries, fixed-path retiming failure, four-step/six-move detour. Finite point graph only.",
+    "weight_space_sanity.py": "Boolean gates, signed ReLU, 25 permutation cases, 27 column-update cases, non-axis projection versus independent perpendicular component, shape/finite/index rejection and original matrix preservation."
+  },
+  "semantic_correction": "Axe identified an empty table header on the cuArms numeric t0-only column. Replaced it with descriptive Chinese text and shortened the baseline time header; no shared template/style changes."
+}

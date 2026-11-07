@@ -2795,6 +2795,208 @@
         "为什么更密集的接触事件可能使粒子过度集中，观测相关性又怎样改变融合精度？",
         "两个粒子都能解释接触时，为什么它们的平均位姿仍可能无法解释同一次接触？"
       ]
+    },
+    {
+      "id": 106,
+      "added_on": "2026-11-06",
+      "reviewed_on": "2026-11-07",
+      "summary": "拆解 CARD 的手—接触统一表示、接触点对应、方向与防滑目标、GPU 采样优化和触觉导纳回放，区分视频合成力、接触保真度、真机成功率与物理重定向。",
+      "prerequisites": "机器人正运动学、刚体变换与最小化问题；了解阻抗和导纳控制有助于理解回放",
+      "focus": "先分清手的外形与接触功能，再跟踪接触目标如何进入重定向和触觉反馈；分别阅读几何接触、真机回放与仿真物理实验。",
+      "related": [
+        93,
+        87,
+        48,
+        88,
+        108
+      ],
+      "path": "content/posts/ai/card-retargeting/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/morphmimic",
+        "/posts/ai/stable-hand",
+        "/posts/robotics/control/impedance-control",
+        "/posts/ai/video-to-data",
+        "/posts/robotics/cuarms"
+      ],
+      "image_decision": "手套输入、接触目标与回放链路原图，以及触觉跟踪器原图；保留来源、完整箭头与可选择正文解释。",
+      "image": "assets/paper-overview.webp",
+      "acceptance_checks": [
+        "为什么指尖位置接近仍不等于接触与力得到保留？",
+        "统一接触目标的位置、方向和力分别来自哪里？",
+        "视频合成力为什么不能当作真实力测量？",
+        "接触对应、方向和防滑项各约束什么？",
+        "力权重进入平方后怎样影响接触优先级？",
+        "object-free 与伪物体 SDF 为什么并不矛盾？",
+        "整段预处理和居中平滑怎样限制在线因果使用？",
+        "开环回放中哪些反馈仍在运行？",
+        "主表、消融和真机任务的统计分母有什么区别？",
+        "CARD-physics 为什么不能沿用无物体模型的输入结论？",
+        "跨身体合并接触会丢失哪些独立自由度？",
+        "为什么活动接触的力全为零时，不能直接删除接触？",
+        "指腹刚体转动与接触选点漂移如何通过坐标搬运区分？"
+      ]
+    },
+    {
+      "id": 107,
+      "added_on": "2026-11-06",
+      "reviewed_on": "2026-11-07",
+      "summary": "从混合信念、动作类型与因子图理解 TAMPAgent，追踪智能体如何把遮挡假设转为工具认证的可执行动作，并核对首动作认证、失败恢复和移动操作实验。",
+      "prerequisites": "任务与运动规划、机器人位姿和基本图搜索；了解概率与部分可观测决策有助于理解信念",
+      "focus": "沿苹果被遮挡的例子，区分语言假设、计划因子图和工具计算图；理解未来变量为何可以延后，以及首动作认证能保证什么。",
+      "related": [
+        94,
+        108,
+        81,
+        89,
+        99
+      ],
+      "path": "content/posts/planner/tampagent/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/planner/task-and-motion-planning",
+        "/posts/robotics/cuarms",
+        "/posts/ai/jev-decision-layer",
+        "/posts/ai/rrsi",
+        "/posts/robotics/curobo-v2-fast"
+      ],
+      "image_decision": "保留计划因子图与逐动作闭环原图；图注解释共享变量、延期赋值与实际执行范围。",
+      "image": "assets/paper-planning-loop.webp",
+      "acceptance_checks": [
+        "智能体、规划器与工具分别拥有什么决策权？",
+        "语言信念与工具连续值如何转换？",
+        "Mask 与 RGBD 对行动资格有什么不同？",
+        "detect 的移动认证为什么不保证目标必然可见？",
+        "pick 与 place 为什么必须共享抓法？",
+        "因子图和计算图分别描述什么？",
+        "首动作认证为什么不等于完整计划几何可行？",
+        "局部候选、任务计划和语言假设分别何时修订？",
+        "工具认证依赖哪些场景与感知假设？",
+        "九项厨房任务为何排除 T9？",
+        "三房间实验是否显示优于基线？",
+        "token／模拟分钟为什么不能直接解释现实成本？",
+        "G1 真机展示到底完成到哪一步？",
+        "正文三类动作与附录部署操作集有什么区别？",
+        "认证通过、命令返回与确认抓取效果为什么是三个事件？",
+        "底座或起始构型变化后，哪些证据应重新计算？"
+      ]
+    },
+    {
+      "id": 108,
+      "added_on": "2026-11-06",
+      "reviewed_on": "2026-11-07",
+      "summary": "拆解 cuArms 的单臂多模态路网、模式有效性掩码、LaCAM/PIBT 懒搜索和 GPU 批量冲突表，解释双臂技能、联合捷径优化以及初解时间与完整规划成本的区别。",
+      "prerequisites": "机器人构型空间、碰撞检测、图搜索与任务运动规划；了解 PRM、Dijkstra 和多智能体寻路有助于阅读",
+      "focus": "先固定骨架、模式与技能接口，再理解为何要预计算候选冲突；最后区分路径优化、换骨架、离线路网和在线查询的成本。",
+      "related": [
+        94,
+        107,
+        99,
+        106,
+        60
+      ],
+      "path": "content/posts/robotics/cuarms/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/planner/task-and-motion-planning",
+        "/posts/planner/tampagent",
+        "/posts/robotics/curobo-v2-fast",
+        "/posts/ai/card-retargeting",
+        "/posts/trajectory/toppra"
+      ],
+      "image_decision": "系统三阶段原图与物体交换退让原图；保留算法层次、相互退让及原始计时口径。",
+      "image": "assets/paper-overview.webp",
+      "acceptance_checks": [
+        "固定骨架协调与外层任务分配有什么区别？",
+        "模式为什么会改变同一构型的碰撞有效性？",
+        "单臂路网和模式掩码分别复用什么？",
+        "技能入口出口、时长和包围体积承担什么职责？",
+        "LaCAM 的懒扩展与 PIBT 的优先级继承如何配合？",
+        "为什么提前批量计算冲突比递归时逐次启动 GPU 更有效？",
+        "双臂技能为什么要联合提交？",
+        "只做时间调整为何无法解决空间退让？",
+        "捷径为什么必须重新检查其他臂与活动技能？",
+        "加权目标改善为何不保证 makespan 单调下降？",
+        "离线路网和在线初解在各组实验中怎样计时？",
+        "Shelves 的失败说明了什么路网局限？",
+        "真机展示和编码智能体分别位于哪一层？",
+        "为什么固定路径任意加等待仍无法完成四节点图中的交换？",
+        "小图的最短步数结论为什么不能推广为 cuArms 最优性保证？"
+      ]
+    },
+    {
+      "id": 109,
+      "added_on": "2026-11-06",
+      "reviewed_on": "2026-11-07",
+      "summary": "逐项解读 Weight-Space Programming 的八组实验，从小网络读权重、编写游戏策略到 Qwen 定向去循环；推导神经计算构造与列方向编辑，核对工具预算、失败结果和公开日志。",
+      "prerequisites": "矩阵乘法、MLP 与 Transformer 基础；了解 PPO、模型评估和机制可解释性有助于理解实验",
+      "focus": "先分清读、修、写三类能力与各自工具权限，再理解权重中的计算结构；重点核对 Qwen 去循环的实质、查询预算及不能推广的结论。",
+      "related": [
+        6,
+        89,
+        96,
+        107
+      ],
+      "path": "content/posts/ai/weight-space-programming/index.md",
+      "draft": false,
+      "related_posts": [
+        "/posts/ai/transformer-attention",
+        "/posts/ai/rrsi",
+        "/posts/ai/muon-optimizer",
+        "/posts/planner/tampagent"
+      ],
+      "image_decision": "原文小车动画取静态终态，原始实验表绘制双指标定量图；正文与标准库算例明确输入域、权重列操作及工具预算。",
+      "image": "assets/carjump-cover.webp",
+      "acceptance_checks": [
+        "Weight-Space Programming 的直接操作对象是什么？",
+        "无梯度、无反馈、无数据与无工具为什么不同？",
+        "神经元置换为何让权重语义不唯一？",
+        "读小网络、中间块与谄媚模型的权限有何区别？",
+        "小车案例在编辑前获得了什么行为信息？",
+        "三个 MinAtar 结果是否都超过 500M 步基线？",
+        "围棋零反馈与 50 次预算的比较对象有什么不同？",
+        "Qwen 的名义改动数和 BF16 实际变化数为什么不同？",
+        "三种预算为何不能当作同一条优化轨迹？",
+        "按列去方向如何改变任意输入的网络输出？",
+        "解除输出循环为何不等于获得新的数学能力？",
+        "一次前向请求的批量、墙钟和练习反馈意味着什么？",
+        "Gemma 的负结果与独立重跑分别支持什么？",
+        "精确补丁恢复为何必须锁定基础版本与张量哈希？",
+        "全模型改动占比、局部选列占比与相对 Frobenius 范数分别说明什么？"
+      ]
+    },
+    {
+      "id": 110,
+      "added_on": "2026-11-07",
+      "reviewed_on": "2026-11-08",
+      "path": "content/posts/ai/vflash/index.md",
+      "draft": false,
+      "summary": "详解 VFlash 的完整视觉基元并行预测、坐标位置对齐与冻结 VLM 特征回填，并结合 Eagle/Embodied 的 LocateAnything 实现区分方法关系、部署接口和速度统计。",
+      "prerequisites": "VLM、Transformer 和机器人坐标基础；了解自回归与推测解码有助于阅读",
+      "focus": "先理解完整基元并行预测，再区分文本验证、几何输出与控制特征；对照公开源码和计时范围判断复现条件。",
+      "related_posts": [
+        "/posts/ai/molmo-motion",
+        "/posts/ai/real-time-chunking",
+        "/posts/planner/tampagent"
+      ],
+      "related": [
+        79,
+        73,
+        107
+      ],
+      "image": "assets/overview.webp",
+      "image_decision": "引用官方总览图，正文分别解释基元边界、坐标布局、控制接口和模型阶段计时。",
+      "acceptance_checks": [
+        "为什么基元边界和坐标位置都需要对齐？",
+        "几何路径为什么不要求逐 token 重现 AR 目标？",
+        "目标模型冻结后，为什么仍有特征回填成本？",
+        "视觉计划与真实机器人动作有什么区别？",
+        "十二倍解码加速为什么只得到约五倍流水线加速？",
+        "Eagle/Embodied 当前发布与 VFlash 有什么关系？",
+        "框归一化坐标怎样映射回原图？",
+        "视觉提示训练代码为何不代表公开权重已经支持推理？",
+        "视觉基元直接接受与 AR 回退分别在什么条件下发生？"
+      ]
     }
   ]
 }

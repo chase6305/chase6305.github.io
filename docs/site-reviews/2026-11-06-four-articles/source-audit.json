@@ -1,0 +1,217 @@
+{
+  "reviewed_on": "2026-11-06",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2610.36539v1",
+      "sha256": "6125df1ff509d192eca62b9ad2ab15f9ad970030974de620af1a6a40ee3d0f55",
+      "bytes": 11827751
+    },
+    {
+      "url": "https://arxiv.org/abs/2611.03584v1",
+      "sha256": "c7880d4d5bfc32c1cb7a89f14d632fbf0ff5d2a6acbd87fd091985daaa4cd589",
+      "bytes": 11366838
+    },
+    {
+      "url": "https://cuarms.github.io/assets/paper/cuarms-paper.pdf",
+      "sha256": "0b3c1fdc64e98f5f2e33e750c4af17d984375fd5fe6c28f10132664eafc062e4",
+      "bytes": 1553355
+    },
+    {
+      "url": "https://cuarms.github.io/assets/paper/cuarms-appendix.pdf",
+      "sha256": "05d7ad2185eda1e1d78858e0664daf2cf136f211cad01983f83024982e26d99d",
+      "bytes": 1553527
+    },
+    {
+      "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+      "sha256": "a326bc5b34b3152a93bf38013f412bb140c9e0a299c72491d27fb17b1b7d9cbb",
+      "bytes": 85874
+    },
+    {
+      "url": "https://raw.githubusercontent.com/RikiyaT/lm_understand-logs/main/exp8_math/README.md",
+      "sha256": "473e386ade21ff52240103003b6b125e4362d9fa11010916c1b770ddb0edcbbd",
+      "bytes": 13447
+    },
+    {
+      "url": "https://raw.githubusercontent.com/RikiyaT/lm_understand-logs/main/exp8_math/code/apply_edit.py",
+      "sha256": "d2b627a6cf344f309cca4bcab4ff6ccc6ad1c8f29cabda78d11f99c19d1b1c5d",
+      "bytes": 3005
+    },
+    {
+      "url": "https://raw.githubusercontent.com/RikiyaT/lm_understand-logs/main/exp8_math/runs/p50c/final_answer.md",
+      "sha256": "497ea024210e9bbc10826756997ef41b454dd524390fff1b2d4cdec6782c30d1",
+      "bytes": 1409
+    }
+  ],
+  "claims_reviewed": {
+    "CARD": [
+      "Main text describes 16 regions; supplement Fig.11 lists 18.",
+      "Main Tab.1 and supplement ablation in-cone columns are incompatible under the same denominator; flag ambiguity rather than invent an explanation.",
+      "Anchor-frame, trial and sequence success have different denominators.",
+      "No supplied object model is distinct from an internally fitted pseudo-object.",
+      "10 FPS is solver throughput; full-clip force synthesis and centered smoothing are not a causal streaming pipeline.",
+      "Physics variant requires simulator/object inputs."
+    ],
+    "TAMPAgent": [
+      "First-action certification leaves future values as language hypotheses.",
+      "Observation output may be realized after moving to a viewpoint.",
+      "Nine kitchen tasks exclude T9: 139/180 versus 103/180 and 110/180.",
+      "Three-room methods tie; real G1 run stops before final target grasp."
+    ],
+    "cuArms": [
+      "Fixed skeleton coordination differs from outer skeleton search.",
+      "Base-roadmap setup excluded for RoboBallet and xECBS; included for MRMG.",
+      "Shelves 38% versus xECBS 84%; appendix attributes failure to multi-arm dependencies in PIBT, not specifically roadmap coverage.",
+      "Weighted objective improvement does not imply monotonically decreasing makespan."
+    ],
+    "Weight-Space Programming": [
+      "Blog and logs, not assumed peer-reviewed paper.",
+      "Eight experiments have distinct tool, feedback and prior-information permissions.",
+      "10/25/50 are independent runs with different edits.",
+      "131072 positions touched; 130188 changed after BF16 rounding.",
+      "50-pass run: 158 turns, 80 Python runs, 20.3h including 4.7h service wait.",
+      "Gemma weights-only sycophancy failed; attention-tool variant succeeded.",
+      "Gemma math improvement not established; no general optimizer replacement claimed.",
+      "Full edited MATH-500 rerun contrasted only with 25-question base smoke test; no equal-size independent paired claim."
+    ]
+  },
+  "figure_extraction": {
+    "method": "pdftoppm at 180 dpi, crop using scaled coordinates, Pillow WebP quality92",
+    "coordinate_reference": "Pixel boxes on 1100px-high preview render; x/y scaled together to 180dpi raster",
+    "figures": [
+      {
+        "source": "CARD.pdf",
+        "page": 4,
+        "paper_figure": 2,
+        "box": [
+          152,
+          98,
+          700,
+          380
+        ],
+        "preview_size": [
+          850,
+          1100
+        ],
+        "asset": "content/posts/ai/card-retargeting/assets/paper-overview.webp"
+      },
+      {
+        "source": "CARD.pdf",
+        "page": 5,
+        "paper_figure": 5,
+        "box": [
+          442,
+          402,
+          765,
+          540
+        ],
+        "preview_size": [
+          850,
+          1100
+        ],
+        "asset": "content/posts/ai/card-retargeting/assets/paper-tactile-tracker.webp"
+      },
+      {
+        "source": "TAMPAgent.pdf",
+        "page": 3,
+        "paper_figure": 2,
+        "box": [
+          418,
+          228,
+          698,
+          466
+        ],
+        "preview_size": [
+          778,
+          1100
+        ],
+        "asset": "content/posts/planner/tampagent/assets/paper-factor-graph.webp"
+      },
+      {
+        "source": "TAMPAgent.pdf",
+        "page": 5,
+        "paper_figure": 4,
+        "box": [
+          81,
+          108,
+          695,
+          439
+        ],
+        "preview_size": [
+          778,
+          1100
+        ],
+        "asset": "content/posts/planner/tampagent/assets/paper-planning-loop.webp"
+      },
+      {
+        "source": "cuarms.pdf",
+        "page": 2,
+        "paper_figure": 2,
+        "box": [
+          64,
+          69,
+          790,
+          293
+        ],
+        "preview_size": [
+          850,
+          1100
+        ],
+        "asset": "content/posts/robotics/cuarms/assets/paper-overview.webp"
+      },
+      {
+        "source": "cuarms.pdf",
+        "page": 4,
+        "paper_figure": 4,
+        "box": [
+          64,
+          252,
+          521,
+          370
+        ],
+        "preview_size": [
+          850,
+          1100
+        ],
+        "asset": "content/posts/robotics/cuarms/assets/paper-yielding.webp"
+      }
+    ]
+  },
+  "weight_space_assets": {
+    "carjump": {
+      "source": "https://rikiyat.github.io/blog/weight-space-programming/assets/carjump_scene.svg",
+      "transformation": "Removed SMIL animate/animateTransform elements, preserving original static base attributes (end frame). Original animation remains linked through original post. No new animation runs on our site.",
+      "raster_cover": "Static SVG rendered at 1868x518 using local Chrome, then lossily encoded as WebP quality92. Raster used in article and social metadata; vector source retained."
+    },
+    "chart": {
+      "source": "Original Experiment8 table; not an independent rerun",
+      "rows": [
+        [
+          "Base",
+          7.9,
+          93.0
+        ],
+        [
+          "10-pass run",
+          12.3,
+          87.2
+        ],
+        [
+          "25-pass run",
+          14.1,
+          86.4
+        ],
+        [
+          "50-pass run",
+          48.1,
+          33.1
+        ]
+      ],
+      "columns": [
+        "setting",
+        "math500_accuracy_percent",
+        "math500_token_limit_percent"
+      ]
+    }
+  },
+  "numerical_scope": "Standard-library helper checks only constructed ReLU, permutation and projection algebra; no training, network editing benchmark or robot experiment reproduced."
+}
