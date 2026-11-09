@@ -1,7 +1,7 @@
 ---
 title: "视觉 Transformer 全景：从 ViT、Swin、CMT 到 DiT 与 SiT"
 date: 2026-10-12
-lastmod: 2026-10-14
+lastmod: 2026-11-09
 draft: false
 tags: ["Transformer", "Attention", "Computer Vision", "Diffusion Models", "Generative Models", "Pretraining", "VLM"]
 categories: ["人工智能"]
@@ -479,6 +479,8 @@ DiT（Diffusion Transformer）将扩散模型潜空间中的表示切成 patch t
 
 ## 阅读自测与验收
 
+先独立作答或操作，再核对本节答案；实践结果以实际记录为准。
+
 - **Swin 的窗口移位和 Patch Merging 各改变什么？** 移位让跨窗口 token 交换信息，配合掩码排除循环移位引入的错误邻接；Patch Merging 则降低空间分辨率并增加通道。
 
 - **U-ViT 的 U 形长跳跃连接是否意味着空间多尺度下采样？** 原论文用浅层与深层 block 的长跳跃连接融合特征，不依赖 U-Net 式空间下采样与上采样；跨层融合与层级多尺度是不同结构。
@@ -491,6 +493,9 @@ DiT（Diffusion Transformer）将扩散模型潜空间中的表示切成 patch t
 - **下游系统不止编码器**：检测、分割和视频任务还需要任务头、解码器、提示接口或时序/记忆模块；SAM 系列是系统设计的例子。
 - **生成 Transformer 属于另一条路线**：DiT 是扩散去噪骨干；SiT 基于可扩展插值 Transformer 研究生成过程。噪声过程、目标、条件注入和采样应分开看。
 - **理论成本不能替代实测**：参数量、FLOPs 和注意力复杂度不能单独预测端到端或移动端延迟。
+
+**通过条件：** 手算图像 token 数，能区分骨干结构、训练目标和下游系统；效率比较附分辨率、硬件及计时边界，不把理论注意力复杂度当作实测延迟。
+
 
 ## 13. 自测
 
@@ -556,4 +561,3 @@ DiT（Diffusion Transformer）将扩散模型潜空间中的表示切成 patch t
 - [U-ViT: A ViT Backbone for Diffusion Models](https://arxiv.org/abs/2209.12152)
 - [PixArt-α](https://arxiv.org/abs/2310.00426)；[Scaling Rectified Flow Transformers（Stable Diffusion 3 / MMDiT）](https://arxiv.org/abs/2403.03206)
 - [CogVideoX](https://arxiv.org/abs/2408.06072)
-

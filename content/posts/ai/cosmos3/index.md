@@ -1,7 +1,7 @@
 ---
 title: "Cosmos 3 论文详解：把推理、视频、音频与动作接入同一个世界模型"
 date: 2026-10-22
-lastmod: 2026-10-27
+lastmod: 2026-11-09
 draft: false
 tags: ["Cosmos 3", "World Model", "World Action Model", "Multimodal", "Flow Matching", "Robot Learning", "Paper Notes"]
 categories: ["人工智能"]
@@ -831,6 +831,9 @@ Cosmos 3 为理解、可控生成和动作学习提供共同的架构与训练�
 20. 不能；行是评估域，列是加入域，两个方向可能有不同幅度甚至相反的效果。
 
 </details>
+
+**通过条件：** 逐题解释 AR/DM 可见性与时间位置，手算一秒位置增量；评价结果附数据集、训练/选择协议及候选成本，不把联合生成一致性当作控制保证。
+
 
 ## 参考资料与继续阅读
 

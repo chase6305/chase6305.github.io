@@ -1,7 +1,7 @@
 ---
 title: 'libpython3.9.so.1.0: cannot open shared object file: No such file or directory 解决方法'
 date: 2025-02-28
-lastmod: 2026-09-30
+lastmod: 2026-11-09
 draft: false
 tags: ["Python", "Shared Libraries", "Troubleshooting"]
 categories: ["编程开发"]
@@ -91,5 +91,18 @@ LD_DEBUG=libs ./your_application
 
 ## 阅读自测与验收
 
-- 打印 sys.executable 和实际加载库路径，确认当前 Python 3.9 所属环境；目录名称相似不代表加载的是同一套库。
-- 用相同入口启动最小导入和实际应用，避免终端可运行而 IDE 或服务仍使用其他解释器。
+先独立作答或操作，再核对下方参考答案与解析；实践结果以实际记录为准。
+
+1. 打印 sys.executable 和实际加载库路径，确认当前 Python 3.9 所属环境；目录名称相似不代表加载的是同一套库。
+2. 用相同入口启动最小导入和实际应用，避免终端可运行而 IDE 或服务仍使用其他解释器。
+
+<details>
+<summary>参考答案与解析（2 项，顺序对应上文）</summary>
+
+1. sys.executable 指向实际运行解释器，模块的 __file__ 等信息说明导入来源。即使都显示 Python 3.9，不同环境也可能加载不同依赖；目录名不是充分证据。
+
+2. 在终端、IDE 或服务中使用同一显式入口运行最小导入及应用。若只有终端成功，比较解释器、工作目录和环境变量，而不是继续给另一套环境安装包。
+
+</details>
+
+**通过条件：** 实际应用入口的解释器与依赖路径均符合预期，最小导入和应用可重复运行；系统 Python 保持可用。

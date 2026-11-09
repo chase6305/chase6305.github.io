@@ -1,7 +1,7 @@
 ---
 title: "TAMP 详解：任务与运动联合规划的建模、约束与搜索"
 date: 2026-10-29
-lastmod: 2026-10-30
+lastmod: 2026-11-09
 draft: false
 tags: ["TAMP", "Motion Planning", "Robotics", "Optimization", "Paper Notes"]
 categories: ["机器人", "规划与控制"]
@@ -790,6 +790,8 @@ $$
 
 ## 阅读自测与验收 {#self-check}
 
+先独立作答或操作，再核对本节答案；实践结果以实际记录为准。
+
 1. TAMP 除了动作顺序与运动路径，还必须选择什么？
 2. downward refinement property 在一般操作场景中为何不可靠？
 3. transit 与 transfer 的模式参数有什么不同？
@@ -830,6 +832,9 @@ $$
 17. 它可能没有连接指定终点，例如始终停留在墙左侧；要同时核对 `Motion` 的端点／连续性与 `CFree` 的整段无碰。
 
 </details>
+
+**通过条件：** 17 项答案与构造例对应；约束、端点 IK、连续路径和执行条件分开检查，网格/预算耗尽保持 unknown，缓存键与证据依赖相符。
+
 
 ## 参考资料与继续阅读
 

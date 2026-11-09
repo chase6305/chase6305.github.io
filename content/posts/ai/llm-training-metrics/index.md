@@ -1,7 +1,7 @@
 ---
 title: "大语言模型训练与指标详解：参数、权重、预训练、后训练与消融实验"
 date: 2026-09-17
-lastmod: 2026-10-29
+lastmod: 2026-11-09
 draft: false
 tags: ["LLM", "Pretraining", "Post-training", "Evaluation", "Ablation"]
 categories: ["人工智能"]
@@ -880,6 +880,8 @@ python -B paired_eval.py \
 
 ## 阅读自测与验收
 
+先独立作答或操作，再核对本节答案；实践结果以实际记录为准。
+
 1. **为什么 7B BF16 权重约 14 GB，却不能据此判断训练显存？** 训练还包含梯度、优化器状态、激活与临时缓冲。
 2. **PPL 从 10 降到 8 前，必须核对哪些条件？** 数据、tokenizer、上下文、mask、窗口策略和归约分母。
 3. **为什么不能仅凭 SFT loss 0.5 小于 2.0 就判断模型更好？** 两者可能监督不同位置，必须先统一口径。
@@ -892,3 +894,5 @@ python -B paired_eval.py \
 10. **pass@k 的三个边界如何核对？** `c=0` 时为 0，`k=1` 时为 `c/n`，`n-c<k` 时为 1；数值实现应避免巨大组合数和接近 1 的概率相减。
 
 进一步阅读可按问题选择：[Transformer 与注意力](../transformer-attention/)补充模型结构，[分布式训练与显存](../distributed-training-memory/)展开资源管理，[PPO、DPO 与 GRPO](../ppo-dpo-grpo/)推导后训练优化目标。正文链接中的版本用于界定指标口径；实际实验应记录自己使用的实现版本。
+
+**通过条件：** 同一 mask/tokenizer/分母下复算 NLL、PPL 与 pass@k 边界；显存分项计数，评估记录预算、划分和抽样单位，零失败仍报告统计上界。

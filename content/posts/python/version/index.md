@@ -1,7 +1,7 @@
 ---
 title: 'Ubuntu 为项目选择 Python 版本：venv、Conda 与解释器排查'
 date: 2025-03-13
-lastmod: 2026-09-30
+lastmod: 2026-11-09
 draft: false
 tags: ["Python", "Ubuntu", "Environment Management"]
 categories: ["编程开发"]
@@ -100,5 +100,18 @@ python -c "import numpy; print(numpy.__version__); print(numpy.__file__)"
 
 ## 阅读自测与验收
 
-- 把 python、python -m pip 与 IDE 使用的解释器路径放在一起比较；不要仅依赖 python --version 的主次版本号。
-- 建立独立环境复现最小导入，保留系统 Python；切换项目解释器不需要改系统命令的默认链接。
+先独立作答或操作，再核对下方参考答案与解析；实践结果以实际记录为准。
+
+1. 把 python、python -m pip 与 IDE 使用的解释器路径放在一起比较；不要仅依赖 python --version 的主次版本号。
+2. 建立独立环境复现最小导入，保留系统 Python；切换项目解释器不需要改系统命令的默认链接。
+
+<details>
+<summary>参考答案与解析（2 项，顺序对应上文）</summary>
+
+1. 同时记录 python 的 sys.executable、python -m pip 的安装目标及 IDE 配置。相同主次版本可能对应多套解释器；将 pip 绑定到目标 python 可减少装到别处的风险。
+
+2. 新建独立环境并通过显式解释器运行最小导入与项目。项目解释器切换无需覆盖系统 Python 链接；修改系统默认入口可能影响系统工具而不修复 IDE 配置。
+
+</details>
+
+**通过条件：** 目标解释器安装、导入和运行三者一致，新会话可复现；保留系统工具的原入口。

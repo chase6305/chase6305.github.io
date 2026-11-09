@@ -1,7 +1,7 @@
 ---
 title: 'JetsonNV 上解决 PyQt5 “Could not load the Qt platform plugin ‘xcb‘“ 错误'
 date: 2025-03-06
-lastmod: 2026-09-05
+lastmod: 2026-11-09
 draft: false
 tags: ["PyQt5", "Jetson", "Qt"]
 categories: ["编程开发"]
@@ -90,5 +90,18 @@ QT_QPA_PLATFORM=offscreen python example.py
 
 ## 阅读自测与验收
 
-- 在 Jetson 上核对进程架构与 Qt 平台插件依赖，避免混入 x86_64 库；路径存在不代表二进制架构正确。
-- 分别确认显示会话授权和平台后端，远程 SSH 设置 DISPLAY 不能替代授权；无窗口任务才考虑适合的离屏方式。
+先独立作答或操作，再核对下方参考答案与解析；实践结果以实际记录为准。
+
+1. 在 Jetson 上核对进程架构与 Qt 平台插件依赖，避免混入 x86_64 库；路径存在不代表二进制架构正确。
+2. 分别确认显示会话授权和平台后端，远程 SSH 设置 DISPLAY 不能替代授权；无窗口任务才考虑适合的离屏方式。
+
+<details>
+<summary>参考答案与解析（2 项，顺序对应上文）</summary>
+
+1. 确认进程、Qt binding 与插件均为目标 ARM 架构，依赖库完整且来自兼容环境。文件名和目录存在只能说明路径可见，不能证明可加载。
+
+2. DISPLAY 指定显示地址，授权决定能否访问；SSH 中仅设置 DISPLAY 可能仍被拒绝。需要窗口时检查会话与授权，无窗口任务才选择支持其绘制需求的离屏后端。
+
+</details>
+
+**通过条件：** 同一环境的最小窗口在目标显示会话可见，或离屏任务输出正确；不混入 x86_64 插件。

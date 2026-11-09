@@ -1,7 +1,7 @@
 ---
 title: "Transformer Attention 学习指南：从 Q/K/V 到现代大模型架构"
 date: 2026-08-27
-lastmod: 2026-10-28
+lastmod: 2026-11-09
 draft: false
 tags: ["Transformer", "Attention", "PyTorch"]
 categories: ["人工智能"]
@@ -2258,5 +2258,18 @@ Post-Norm 计算 `LN(x + Sublayer(x))`，归一化发生在残差相加之后；
 
 ## 阅读自测与验收
 
-- 在极小序列上手算 QKᵀ、mask 与 softmax，再比较实现输出；特别检查未来位置屏蔽和 padding 屏蔽的方向。
-- 分别测完整前向和带 KV cache 的逐 token 解码，在相同位置编码、权重及数值容差下比较输出，避免把缓存长度误当成有效上下文位置。
+先独立作答或操作，再核对下方参考答案与解析；实践结果以实际记录为准。
+
+1. 在极小序列上手算 QKᵀ、mask 与 softmax，再比较实现输出；特别检查未来位置屏蔽和 padding 屏蔽的方向。
+2. 分别测完整前向和带 KV cache 的逐 token 解码，在相同位置编码、权重及数值容差下比较输出，避免把缓存长度误当成有效上下文位置。
+
+<details>
+<summary>参考答案与解析（2 项，顺序对应上文）</summary>
+
+1. 对极小序列先算 QKᵀ/√d，再在 softmax 前屏蔽未来与无效 key。被屏蔽项概率应为零，有效行概率和为 1；整行均被屏蔽需按实现明确处理，不能忽略 NaN。
+
+2. 固定权重并关闭随机训练行为，对相同 token、位置和 mask 比较完整前向与 KV cache 增量结果。cache 长度、padding 与位置偏移应分开处理，误差在预设 dtype 容差内一致才通过。
+
+</details>
+
+**通过条件：** 至少一个因果/padding 反例与手算一致；完整前向与缓存解码输出匹配，并记录位置、mask 与数值容差。

@@ -1,7 +1,7 @@
 ---
 title: "RRSI 论文详解：让 Agent 的自我改进跨任务泛化"
 date: 2026-10-15
-lastmod: 2026-10-28
+lastmod: 2026-11-09
 draft: false
 tags: ["RRSI", "LLM Agents", "Agent Harness", "Self-Improvement", "Regularization", "LLM", "Evaluation", "Ablation", "Paper Notes"]
 categories: ["人工智能"]
@@ -671,6 +671,8 @@ bash domains/coding/scripts/swe_eval.sh
 
 ## 阅读自测与验收
 
+先独立作答或操作，再核对本节答案；实践结果以实际记录为准。
+
 **方法与搜索**
 
 - **RRSI 更新模型权重吗？** 不更新；演化提示、控制流、工具、上下文等外围程序。
@@ -712,6 +714,9 @@ bash domains/coding/scripts/swe_eval.sh
 - **RRSI 的 round --dry-run 保证不调用模型吗？** 不保证；它在 proposer 之前停止，未缓存的轨迹分析仍可能调用模型并写入报告。
 - **继续轮次、重测与重新裁决有何区别？** 继续轮次会复用测量缓存；重测重新运行候选并触发裁决；单独裁决复用测量，但会更新赢家、历史与分支，且不能保留依赖旧赢家的后续轮次。
 - **35／178 与 36／178 个缺失 trial 在默认 coding 配置中怎样处理？** 前者未超过 20% 门槛，仍补零计分；后者重试一次，若仍超限则标为无效评估。
+
+**通过条件：** 逐题核对候选筛选、历史最高分、新颖度及成本覆盖；复算一个噪声带内/外决策，区分离线规则、真实模型调用与留出基准，配对统计保留逐任务结果。
+
 
 ## 参考资料
 

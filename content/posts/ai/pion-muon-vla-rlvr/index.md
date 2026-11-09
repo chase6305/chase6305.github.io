@@ -1,7 +1,7 @@
 ---
 title: "Pion 详解：Muon 在 VLA 与 RLVR 中的谱失效与高通修正"
 date: 2026-10-30
-lastmod: 2026-11-02
+lastmod: 2026-11-09
 draft: false
 tags: ["Muon", "Pion", "VLA", "RLVR", "GRPO", "Paper Notes"]
 categories: ["人工智能"]
@@ -1308,6 +1308,8 @@ Pion 提供的是一种**不显式求 SVD 的软谱选择机制**。它改变了
 
 ## 阅读自测与验收 {#self-check}
 
+先独立作答或操作，再核对本节答案；实践结果以实际记录为准。
+
 1. 矩阵msign与逐元素sign有什么不同，零奇异方向如何处理？
 2. 五步Muon是否会把每个奇异值精确变为1？
 3. erank使用奇异值还是奇异值平方，是否就是整数秩？
@@ -1375,3 +1377,5 @@ Pion 提供的是一种**不显式求 SVD 的软谱选择机制**。它改变了
 [paper]: https://arxiv.org/abs/2605.19282v1
 [project]: https://chongyu-fan.netlify.app/posts/pion/
 [code]: https://github.com/OPTML-Group/Pion/tree/87965014b360bde604632cba0aa12e423c6c63c6
+
+**通过条件：** 复算谱形、更新幅度与状态步进，并明确零梯度和缺失梯度的区别；高精度/CPU 结果与 BF16、GPU、多 Rank 训练结论分别记录。

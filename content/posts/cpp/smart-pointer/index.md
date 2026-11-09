@@ -1,7 +1,7 @@
 ---
 title: C++ 智能指针学习总结
 date: 2025-01-27
-lastmod: 2026-09-30
+lastmod: 2026-11-09
 draft: false
 tags: ["C++"]
 categories: ["编程开发"]
@@ -173,5 +173,18 @@ g++-12 -std=c++20 -O2 -Wall -Wextra -Wpedantic -pthread immutable_snapshot.cpp -
 
 ## 阅读自测与验收
 
-- 移动 unique_ptr 后，原拥有者应为空；让最后一个 shared_ptr 离开作用域后，weak_ptr::lock() 应返回空。
-- 检查回调捕获和父子反向引用是否形成强引用环；引用计数正确与对象成员并发访问正确需要分别验证。
+先独立作答或操作，再核对下方参考答案与解析；实践结果以实际记录为准。
+
+1. 移动 unique_ptr 后，原拥有者应为空；让最后一个 shared_ptr 离开作用域后，weak_ptr::lock() 应返回空。
+2. 检查回调捕获和父子反向引用是否形成强引用环；引用计数正确与对象成员并发访问正确需要分别验证。
+
+<details>
+<summary>参考答案与解析（2 项，顺序对应上文）</summary>
+
+1. unique_ptr 移动后源指针为空且资源只被新拥有者释放一次；最后一个强引用销毁后，weak_ptr::lock() 返回空。weak_ptr 不延长对象寿命，lock 成功时才获得临时强引用。
+
+2. 父子双向 shared_ptr 或回调捕获 shared_ptr 可形成强引用环，适合的反向关系应使用 weak_ptr。引用计数支持共享所有权，并不自动保护被指向对象的成员或同一指针变量的任意并发修改。
+
+</details>
+
+**通过条件：** 析构次数与对象数一致，弱引用能识别销毁；另行说明成员数据的同步方式，不能把 use_count 正常当作线程安全证据。

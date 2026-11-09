@@ -1,7 +1,7 @@
 ---
 title: "PPO、DPO 与 GRPO 详解：从策略梯度原子模块到可运行 Python 实验"
 date: 2026-09-08
-lastmod: 2026-10-28
+lastmod: 2026-11-09
 draft: false
 tags: ["Reinforcement Learning", "PPO", "DPO", "GRPO", "RLHF", "PyTorch"]
 categories: ["人工智能"]
@@ -932,6 +932,8 @@ DPO 可以学习对控制策略或轨迹的偏好，但偏好 loss 不会自动�
 
 ## 阅读自测与验收
 
+先独立作答或操作，再核对本节答案；实践结果以实际记录为准。
+
 - 能否区分 current、old、reference 与 reward model、critic，并说明哪些张量应停止梯度？
 - 运行原子模块与测试，解释 PPO 四种 clipping 情况、DPO 的初始梯度方向以及 GAE 的终止/截断边界。
 - 能否正确对齐回答 token 的 log-probability，并解释 DPO 求和与 GRPO 每回答平均的差别？
@@ -948,6 +950,9 @@ DPO 可以学习对控制策略或轨迹的偏好，但偏好 loss 不会自动�
 5. **组优势与扩展**：等值奖励组的奖励优势为零，KL 仍可能有梯度；混合奖励组的平均 loss 为零，也不代表梯度为零。RLOO 用其余 G−1 个回答的均值作 baseline；GSPO 使用 token 概率比的几何平均进行序列层面的更新约束。可只改变 G，并同时记录零方差组比例与采样成本，其余设置固定；解释时说明增加 G 也改变了本实验的动作预算。定义和边界见[第 10 节](#extensions)。
 
 </details>
+
+**通过条件：** 用同一组 log-probability 和优势手算 PPO/GRPO 裁剪与 DPO 偏好项；明确奖励模型、critic 和策略各自训练目标，独立生成评估不被偏好对准确率替代。
+
 
 ## 参考资料与版本边界
 

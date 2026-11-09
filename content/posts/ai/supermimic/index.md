@@ -1,7 +1,7 @@
 ---
 title: "SuperMimic 论文详解：用可微世界模型训练全身控制"
 date: 2026-10-22
-lastmod: 2026-11-02
+lastmod: 2026-11-09
 draft: false
 tags: ["SuperMimic", "Humanoid", "Whole-Body Control", "World Model", "Reinforcement Learning", "Imitation Learning", "Automatic Differentiation", "Paper Notes"]
 categories: ["人工智能"]
@@ -946,6 +946,9 @@ SuperMimic 展示了一条可部署的人形控制训练路线：用普通刚体
 22. 它混合不同长度的回报，形成 critic 的监督目标；actor 仍优化窗口内回报加末端价值。$\lambda=0$ 是一步奖励加下一状态估值，$\lambda=1$ 展开到窗口末端再接 $V_H$。
 
 </details>
+
+**通过条件：** 完整梯度与 detach 反例可复算，分别说明世界模型拟合、actor 更新与 critic 目标；部署只调用训练后的策略，零失败结论保留原动作库及检查点。
+
 
 ## 参考资料与继续阅读
 

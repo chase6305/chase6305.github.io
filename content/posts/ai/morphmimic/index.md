@@ -1,7 +1,7 @@
 ---
 title: "MorphMimic 详解：跨人形机器人的世界模型与策略共享"
 date: 2026-10-27
-lastmod: 2026-11-02
+lastmod: 2026-11-09
 draft: false
 tags: ["MorphMimic", "Humanoid", "Whole-Body Control", "World Model", "Imitation Learning", "Cross-Embodiment", "Paper Notes"]
 categories: ["人工智能"]
@@ -521,6 +521,8 @@ python3 -B morphmimic_contracts.py --output contracts-results.json
 
 ## 阅读自测与验收
 
+先独立作答或操作，再核对本节答案；实践结果以实际记录为准。
+
 1. 29 个关节相同是否足以直接复制动作？
 2. 速度映射需要减零位吗？
 3. 动作尺度为何除以 kp？
@@ -579,3 +581,5 @@ python3 -B morphmimic_contracts.py --output contracts-results.json
 [distributed-code]: https://github.com/lzyang2000/morphmimic/blob/aa40fe46a7fa995ba7a7354ad065a2c8ad64a302/src/morphmimic/train/distributed.py
 [keypoints-code]: https://github.com/lzyang2000/morphmimic/blob/aa40fe46a7fa995ba7a7354ad065a2c8ad64a302/src/morphmimic/model/keypoints.py
 [trainer-code]: https://github.com/lzyang2000/morphmimic/blob/aa40fe46a7fa995ba7a7354ad065a2c8ad64a302/src/morphmimic/train/trainer.py
+
+**通过条件：** 按题号核对身体映射、数据来源与仿真/真机接口，复算公开算例；结果比较保留具身、任务、分母与适配条件，不把运动可视化当作物理可行性。

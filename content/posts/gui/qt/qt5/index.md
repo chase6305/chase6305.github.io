@@ -1,7 +1,7 @@
 ---
 title: 'symbol version Qt_5_PRIVATE_API not defined in libQt5Gui.so.5 解决方法'
 date: 2025-02-28
-lastmod: 2026-09-30
+lastmod: 2026-11-09
 draft: false
 tags: ["Qt", "Shared Libraries", "Troubleshooting"]
 categories: ["编程开发"]
@@ -66,5 +66,18 @@ printenv QT_PLUGIN_PATH QT_QPA_PLATFORM_PLUGIN_PATH LD_LIBRARY_PATH
 
 ## 阅读自测与验收
 
-- 记录导入的 Qt binding、Qt 版本和插件目录，检查应用是否同时加载了不兼容的 Qt5/Qt6 组件。
-- 用同一环境启动最小窗口，再逐步加回 Matplotlib、OpenCV 等依赖；不要在最小窗口尚未成功时调试业务界面。
+先独立作答或操作，再核对下方参考答案与解析；实践结果以实际记录为准。
+
+1. 记录导入的 Qt binding、Qt 版本和插件目录，检查应用是否同时加载了不兼容的 Qt5/Qt6 组件。
+2. 用同一环境启动最小窗口，再逐步加回 Matplotlib、OpenCV 等依赖；不要在最小窗口尚未成功时调试业务界面。
+
+<details>
+<summary>参考答案与解析（2 项，顺序对应上文）</summary>
+
+1. 记录实际导入的是哪个 binding、Qt 版本与插件目录，并检查加载日志。依赖可能把不兼容的 Qt5/Qt6 或其他打包插件路径引入同一进程，需要统一实际加载来源。
+
+2. 用该解释器先开最小窗口，再逐个加入业务依赖。最小窗口失败时先查平台插件、依赖与显示会话；加入某个库后才失败，可据此缩小冲突范围。
+
+</details>
+
+**通过条件：** 最小窗口和完整应用在同一入口均可启动，记录插件实际路径；不以另一个环境的成功代替目标环境验证。

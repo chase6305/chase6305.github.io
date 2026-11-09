@@ -1,7 +1,7 @@
 ---
 title: '解决 Isaac Lab 中module ''omni.usd'' has no attribute ''UsdContext'' 错误'
 date: 2025-11-17
-lastmod: 2026-09-05
+lastmod: 2026-11-09
 draft: false
 tags: ["Isaac Lab", "USD", "Troubleshooting"]
 categories: ["人工智能"]
@@ -70,5 +70,18 @@ python -c "import sys; print(sys.executable); print(sys.version)"
 
 ## 阅读自测与验收
 
-- 先运行当前 Isaac Lab 安装自带的最小示例，确认应用初始化顺序，再增加 USD 操作。
-- 记录启动方式、扩展加载日志和 stage 状态；任意删除扩展缓存可能掩盖版本或依赖问题，不能作为默认步骤。
+先独立作答或操作，再核对下方参考答案与解析；实践结果以实际记录为准。
+
+1. 先运行当前 Isaac Lab 安装自带的最小示例，确认应用初始化顺序，再增加 USD 操作。
+2. 记录启动方式、扩展加载日志和 stage 状态；任意删除扩展缓存可能掩盖版本或依赖问题，不能作为默认步骤。
+
+<details>
+<summary>参考答案与解析（2 项，顺序对应上文）</summary>
+
+1. 先按当前安装版本的最小示例初始化仿真应用，再导入依赖已加载扩展的模块与操作 USD。初始化前过早访问上下文可能得到不可用模块或空 stage。
+
+2. 记录启动器、扩展加载结果及 stage 是否存在，再在有效 stage 中执行最小读写。清缓存后偶然成功不能说明根因已消除，应定位版本与依赖并复测正式入口。
+
+</details>
+
+**通过条件：** 官方最小入口与增加 USD 操作后的入口均成功，stage 可查询且修改可观察；保留初始化顺序与版本记录。

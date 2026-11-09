@@ -1,7 +1,7 @@
 ---
 title: "机器人滤波方法详解：从 Butterworth、One Euro 到位姿平滑与状态估计"
 date: 2026-09-25T03:14:26+08:00
-lastmod: 2026-10-28
+lastmod: 2026-11-09
 draft: false
 tags: ["Robotics", "Signal Processing", "Butterworth", "One Euro Filter", "Mass Spring Damper", "Weighted Moving Average", "Pose Filter", "Kalman Filter", "Teleoperation"]
 categories: ["机器人技术"]
@@ -905,6 +905,8 @@ python -B feedback_filter.py --output-dir feedback-results
 
 ## 阅读自测与验收
 
+先独立作答或操作，再核对下方参考答案与解析；实践结果以实际记录为准。
+
 - **Butterworth 的通带平坦是否表示零延迟？** 不是，幅值与相位是不同性质。
 - **相同四点权重在任何采样率下都一样吗？** 不是，物理时间窗与延迟随更新率变化。
 - **One Euro 换成毫米输入还能直接沿用原来的 β 吗？** 不能，速度数值与参数单位必须同步换算。
@@ -914,6 +916,16 @@ python -B feedback_filter.py --output-dir feedback-results
 - **离线零相位曲线是否可以证明在线控制同样无延迟？** 不可以，两者可用的信息不同。
 - **曲线更平滑是否足以判断滤波器更好？** 不足，还要检查延迟、失真、异常行为和闭环任务表现。
 - **静止标准差小于 1 mm 是否等于位置误差小于 1 mm？** 不是；标准差描述波动，均值偏差与动态误差需要另外统计。
+
+<details>
+<summary>实践项参考结果：非法配置与历史恢复</summary>
+
+1. 在首次采样前及已有滤波历史后分别设置非法最低截止频率；更新应拒绝参数，不推进时间、原始值、滤波值与导数历史。恢复合法配置后输出应与“从未执行非法更新”的对照一致。修改单位时还须同步换算速度及 β，而非只换输入数值。
+
+</details>
+
+**通过条件：** 按上述两种历史状态核对参数拒绝与恢复；再分别报告噪声、延迟、偏差和动态误差，不能用一项平滑指标代替全部性能。
+
 
 ## 参考资料
 

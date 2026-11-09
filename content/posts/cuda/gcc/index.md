@@ -1,7 +1,7 @@
 ---
 title: 'CUDA环境配置->解决CUDA、GLIBCXX及libc++abi依赖问题的指南'
 date: 2025-03-28
-lastmod: 2026-09-05
+lastmod: 2026-11-09
 draft: false
 tags: ["CUDA", "GCC", "Dependencies"]
 categories: ["编程开发"]
@@ -127,5 +127,18 @@ print(o3d.__version__, len(mesh.vertices), len(mesh.triangles))
 
 ## 阅读自测与验收
 
-- 分别记录驱动、nvcc、host compiler 和目标架构；nvidia-smi 中显示的 CUDA 能力上限不等于本机 Toolkit 版本。
-- 用项目实际构建命令编译最小 CUDA 程序，再检查加载库；不要用随意改 GCC 链接或忽略版本检查来证明兼容。
+先独立作答或操作，再核对下方参考答案与解析；实践结果以实际记录为准。
+
+1. 分别记录驱动、nvcc、host compiler 和目标架构；nvidia-smi 中显示的 CUDA 能力上限不等于本机 Toolkit 版本。
+2. 用项目实际构建命令编译最小 CUDA 程序，再检查加载库；不要用随意改 GCC 链接或忽略版本检查来证明兼容。
+
+<details>
+<summary>参考答案与解析（2 项，顺序对应上文）</summary>
+
+1. 分别记录驱动版本、nvcc 的 Toolkit 版本、host compiler 版本和目标 GPU 架构。nvidia-smi 的 CUDA 字段表示驱动支持能力，不证明当前 shell 安装或选中了同版本 Toolkit。
+
+2. 以项目实际配置编译并运行最小 CUDA 程序，检查编译日志及加载的运行库。随意替换 gcc 链接或跳过版本检查只会绕过部分诊断，不能验证编译链兼容。
+
+</details>
+
+**通过条件：** 最小程序在目标 GPU 运行并给出正确结果；编译器、Toolkit、目标架构与运行库路径均明确。

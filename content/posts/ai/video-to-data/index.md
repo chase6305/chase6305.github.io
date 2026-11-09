@@ -1,7 +1,7 @@
 ---
 title: "NVIDIA Video to Data 详解：从人类视频到机器人仿真、强化学习与 GR00T 数据"
 date: 2026-10-15
-lastmod: 2026-10-16
+lastmod: 2026-11-09
 draft: false
 tags: ["Video to Data", "CHORD", "Robot Learning", "Egocentric", "3D Vision", "Isaac Lab", "Reinforcement Learning", "VLA"]
 categories: ["人工智能"]
@@ -783,6 +783,8 @@ CHORD 论文 §4.1 对每个任务重复执行 rollout：执行到任务末尾�
 
 ## 阅读自测与验收
 
+先独立作答或操作，再核对本节答案；实践结果以实际记录为准。
+
 **感知、几何与物理**
 
 - **V2D 的视频检索是不是 E2E 的必选第一步？** 不是。它用于筛选候选片段；纸巾盒 E2E 可直接从指定视频开始。
@@ -823,6 +825,9 @@ CHORD 论文 §4.1 对每个任务重复执行 rollout：执行到任务末尾�
 - **末段样本数少于 20，就一定没有完整稳定窗口吗？** 不一定；评估器取整段最后 20 次更新，窗口可能包含缓慢的过渡段，仍须检查高度、相邻变化和极差。
 - **切换运行后，如何确认命令仍作用于纸巾盒目录？** 显式传入它的 `--config` 路径，并用 `status --json` 核对 `config` 和 `run_root`；新终端须重新设置 `E2E_CONFIG`。
 - **V2D 重建预览会保存新阶段参数吗？** 不会；`--dry-run` 打印命令，正式运行仍需传入相同选项。
+
+**通过条件：** 以一个 episode 跟踪视频、参考、专家动作、数据转换与策略执行；核对关节字段和成功判据，保留 train/validation 分组，并把 DONE、done 与真实成功分开。
+
 
 ## 参考资料
 

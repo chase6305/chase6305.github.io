@@ -1,7 +1,7 @@
 ---
 title: VScode终端出现显示两个环境名问题的解决方案
 date: 2025-02-07
-lastmod: 2026-09-30
+lastmod: 2026-11-09
 draft: false
 tags: ["VS Code", "Conda", "Environment Management"]
 categories: ["系统与工具"]
@@ -82,5 +82,18 @@ conda config --set auto_activate_base false
 
 ## 阅读自测与验收
 
-- 比较新终端、已有终端与调试启动中的 sys.executable；提示符显示两个环境名不一定意味着 Python 真在叠加运行。
-- 修改自动激活设置后创建新终端复测，并检查 shell 启动脚本；关闭 shell integration 不是关闭环境激活的等价操作。
+先独立作答或操作，再核对下方参考答案与解析；实践结果以实际记录为准。
+
+1. 比较新终端、已有终端与调试启动中的 sys.executable；提示符显示两个环境名不一定意味着 Python 真在叠加运行。
+2. 修改自动激活设置后创建新终端复测，并检查 shell 启动脚本；关闭 shell integration 不是关闭环境激活的等价操作。
+
+<details>
+<summary>参考答案与解析（2 项，顺序对应上文）</summary>
+
+1. 分别在已有终端、新终端与调试进程打印 sys.executable 和环境路径。提示符可能残留或重复显示名称，实际解释器与模块来源才决定运行环境。
+
+2. 自动激活设置通常影响新终端，已有 shell 还保留旧状态；同时检查 shell 启动脚本。shell integration 提供终端集成功能，并不等价于 Python 环境激活设置。
+
+</details>
+
+**通过条件：** 新终端与调试器使用预期解释器，旧终端差异可解释；重新打开会话后不再依赖提示符猜测环境。

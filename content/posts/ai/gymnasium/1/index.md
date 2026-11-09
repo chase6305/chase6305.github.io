@@ -1,7 +1,7 @@
 ---
 title: 'Gymnasium入门(一)'
 date: 2025-03-20
-lastmod: 2026-09-30
+lastmod: 2026-11-09
 draft: false
 tags: ["Reinforcement Learning", "Gymnasium", "Python"]
 categories: ["人工智能"]
@@ -148,5 +148,18 @@ finally:
 
 ## 阅读自测与验收
 
-- 同一 seed 下比较 reset 与动作采样，确认环境随机源和 action_space 都已设置；有渲染和无渲染时任务逻辑应一致。
-- 人为设置较短时间限制，核对 truncated 与 terminated 的差别；继续计算价值目标时应使用截断前的最终观测，而不是 reset 后的新初态。
+先独立作答或操作，再核对下方参考答案与解析；实践结果以实际记录为准。
+
+1. 同一 seed 下比较 reset 与动作采样，确认环境随机源和 action_space 都已设置；有渲染和无渲染时任务逻辑应一致。
+2. 人为设置较短时间限制，核对 truncated 与 terminated 的差别；继续计算价值目标时应使用截断前的最终观测，而不是 reset 后的新初态。
+
+<details>
+<summary>参考答案与解析（2 项，顺序对应上文）</summary>
+
+1. 使用环境 reset 的 seed 设置环境随机源，并另外设置 action_space 的 seed；在相同版本与确定性设置下重复相同动作序列，观测、奖励及结束标记应一致。仅给环境设 seed 不保证动作抽样相同。
+
+2. terminated 表示任务定义的终止，truncated 表示时间上限等外部截断。通常真正终止不 bootstrap，时间截断仍可从最终观测估值；自动 reset 包装器返回的新初态不能替代这份最终观测。
+
+</details>
+
+**通过条件：** 同 seed 的两次短 rollout 对齐；缩短时间限制后能单独识别截断，并展示价值目标使用的是截断前的最终观测。
