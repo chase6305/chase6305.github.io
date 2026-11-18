@@ -1,7 +1,7 @@
 ---
 title: "大语言模型训练与指标详解：参数、权重、预训练、后训练与消融实验"
 date: 2026-09-17
-lastmod: 2026-11-09
+lastmod: 2026-11-13
 draft: false
 tags: ["LLM", "Pretraining", "Post-training", "Evaluation", "Ablation"]
 categories: ["人工智能"]
@@ -13,7 +13,7 @@ math: true
 toc: true
 images: ["assets/llm-training-map.png"]
 imageZoom: true
-reading_prerequisites: "概率、交叉熵与 Transformer 基础；不要求运行过大模型训练"
+reading_prerequisites: "基础概率、张量形状与 Transformer 数据流；交叉熵和统计口径会在文中解释，不要求运行过大模型训练"
 reading_focus: "把模型规模、资源成本、训练目标和实际能力分开，逐项检查指标的分母、评估协议与实验对照。"
 related_posts:
   - "/posts/ai/transformer-attention"
@@ -38,6 +38,10 @@ related_posts:
 | 如何比较两份模型报告 | [能力评估](#evaluation)、[部署指标](#serving) |
 | 如何证明一个模块或数据处理有效 | [消融实验](#ablation)、[记录模板](#report) |
 
+第一次阅读可以只完成一条小闭环：用第 1.2、2.2 节分清**权重与缓存**，用第 4.1、5.1 节分清**监督位置与分母**，再用第 7.2、9.5 节分清**尝试预算与配对评估**。这些概念不需要先掌握训练框架；第 11 节的标准库脚本可以逐项复算。
+
+进阶时再按目标补细节：部署容量看真实配置与服务指标，后训练看 DPO／RL 的内部诊断，研究效果看消融与不确定性。最终产物应是一份有单位、分母和协议的比较记录，而不是收集更多没有上下文的分数。
+
 ## 1. 参数量、模型大小和权重大小 {#size}
 
 ### 1.1 先给“大小”加上单位
@@ -54,7 +58,7 @@ related_posts:
 
 7B 通常表示约 $7\times10^9$ 个参数，B 是 billion。GB 是 $10^9$ 字节，GiB 是 $2^{30}$ 字节；“14 GB”和“约 13.04 GiB”可以指同样多的字节。
 
-同样是 7B，不同层数、隐藏宽度、词表大小、KV 头数和上下文设计，也会产生不同吞吐和缓存需求。MoE 的总参数影响存储，激活参数帮助估算单 token 计算，但实际速度还受路由、通信和专家负载影响，不能把“激活 7B”直接等同于稠密 7B。
+同样是 7B，不同层数、隐藏宽度、词表大小、KV 头数和上下文设计，也会产生不同吞吐和缓存需求。混合专家模型（MoE）的总参数影响存储，激活参数帮助估算单 token 计算，但实际速度还受路由、通信和专家负载影响，不能把“激活 7B”直接等同于稠密 7B。
 
 ### 1.2 原始权重体积怎样计算
 
@@ -104,9 +108,11 @@ $$
 
 ### 1.5 真实配置核对：为什么 Qwen2.5-7B 不是恰好 7B {#qwen-budget}
 
+本节用于从模型标签进阶到结构核算。初读时先记住“规模标签不能代替精确参数与 dtype”，可在理解第 2 节显存账本后再回来逐项复算。
+
 以基础模型 `Qwen/Qwen2.5-7B` 为例，固定模型仓库提交为 [`d14972939875`](https://huggingface.co/Qwen/Qwen2.5-7B/tree/d149729398750b98c0af14eb82c78cfe92750796)。其 $L=28,d=3584,d_{\mathrm{ff}}=18944,V=152064$，Q 头数为 28、KV 头数为 4，头维度为 128；输入 embedding 与输出头**不共享**。结构还包含 Q/K/V bias、每层两个 RMSNorm，以及末尾一个 RMSNorm。[配置文件](https://huggingface.co/Qwen/Qwen2.5-7B/blob/d149729398750b98c0af14eb82c78cfe92750796/config.json)、[对应结构实现](https://github.com/huggingface/transformers/blob/v4.45.2/src/transformers/models/qwen2/modeling_qwen2.py)
 
-令 KV 投影宽度 $d_{\mathrm{KV}}=4\times128=512$，可以逐项计算：
+令 KV 投影宽度 $d_{\mathrm{KV}}=4\times128=512$。按“输出维 × 输入维”看一层：Q 与 O 都是 $d\times d$，K、V 各是 $d_{\mathrm{KV}}\times d$，所以四个矩阵共 $2d^2+2dd_{\mathrm{KV}}$ 个参数；Q/K/V 的 bias 则共 $d+2d_{\mathrm{KV}}$ 个。门控 MLP 的两个扩展矩阵与一个收缩矩阵各含 $dd_{\mathrm{ff}}$ 个参数。先算一层，再乘 $L$，得到：
 
 | 部分 | 参数计算 | 参数数目 |
 | --- | --- | ---: |
@@ -136,8 +142,9 @@ BF16 载荷为 **15,231,233,024 字节，即 15.23 GB / 14.19 GiB**，与该提�
 
 $$
 \begin{aligned}
-M_{\mathrm{train}}={}&M_W+M_{\mathrm{grad}}+M_{\mathrm{optimizer}}\\
-&+M_{\mathrm{activations}}+M_{\mathrm{workspace}}+M_{\mathrm{other}}.
+M_{\mathrm{train}}={}&M_W+M_{\mathrm{grad}}\\
+&+M_{\mathrm{optimizer}}+M_{\mathrm{activations}}\\
+&+M_{\mathrm{workspace}}+M_{\mathrm{other}}.
 \end{aligned}
 $$
 
@@ -155,11 +162,11 @@ $$
 M_{\mathrm{KV}}=2LBTH_{\mathrm{KV}}d_hs.
 $$
 
-这里 $L$ 为层数，$B$ 为同时保留缓存的序列数，$T$ 为每条序列缓存长度，$H_{\mathrm{KV}}$ 为 KV 头数，$d_h$ 为头维度，$s$ 为每元素字节数；前面的 2 表示 K 与 V。长度不同时用 $\sum_iT_i$ 替换 $BT$。[KV cache 说明](https://huggingface.co/docs/transformers/v4.57.0/en/cache_explanation)
+从一个位置数起：每层、每个已缓存 token 都要保存 K 和 V，各有 $H_{\mathrm{KV}}d_h$ 个元素，所以先乘 2，再乘层数 $L$、序列数 $B$、缓存长度 $T$ 和每元素字节数 $s$。长度不同时用 $\sum_iT_i$ 替换 $BT$。这里数的是 KV 头，GQA 下不能换成更多的 Q 头。[KV cache 说明](https://huggingface.co/docs/transformers/v4.57.0/en/cache_explanation)
 
-自设结构 $L=32,B=1,T=4096,H_{\mathrm{KV}}=8,d_h=128,s=2$，得到 **512 MiB**；8 条相同长度的并发序列为 **4 GiB**。如果 KV 头数变成 32，其余不变，单条就是 2 GiB。这解释了为什么只看 7B 标签无法估计长上下文并发容量。
+自设结构 $L=32,B=1,T=4096,H_{\mathrm{KV}}=8,d_h=128,s=2$，得到 **512 MiB**；8 条相同长度的并发序列为 **4 GiB**。这里要重复保存的是各条请求的缓存，并不是为每条请求重新放一整份权重。如果 KV 头数变成 32，其余不变，单条就是 2 GiB。这解释了为什么只看 7B 标签无法估计长上下文并发容量。
 
-前面真实 Qwen 配置的层数和 KV 头数不同：同样按单序列、4096 个缓存 token、BF16 计算，理论 KV 载荷是 **224 MiB**，而不是 512 MiB。这里仍是结构公式计算，不是实测分配器峰值。
+前面真实 Qwen 配置只有 28 层、4 个 KV 头；其余条件相同时，可以直接从上例换算：$512\times(28/32)\times(4/8)=224$ MiB。因此单序列、4096 个缓存 token、BF16 的理论 KV 载荷是 **224 MiB**。这里仍是结构公式计算，不是实测分配器峰值。
 
 滑动窗口、压缩潜变量缓存、量化缓存、共享前缀、分页分配、预留容量和设备分片需要另建账本；不能不加说明地套用上式。
 
@@ -244,6 +251,8 @@ SFT 是后训练的一类，后训练不等于 RLHF。使用人工偏好训练�
 
 ### 4.1 交叉熵要先看监督位置与分母
 
+负对数似然（Negative Log-Likelihood，NLL）从一个位置开始计分：模型给真实后继 token 的概率越小，$-\log p$ 越大；例如概率为 0.5 时，该位置约产生 0.6931 的损失。把选定位置的损失加起来，再除以位置数，就是这里的平均 NLL。
+
 令 $m_t\in\{0,1\}$ 表示该位置是否计入损失，采用自然对数：
 
 $$
@@ -254,9 +263,19 @@ $$
 \end{aligned}
 $$
 
-给真实后继 token 的概率依次为 0.5、0.25、0.125，平均负对数概率为 1.3863，PPL 为 4。它可理解为对这批目标的不确定程度，**不等于“每四个字错一个”**。PPL 的比较需要保持 tokenizer、文本预处理、上下文和评估窗口策略一致。[PPL 定义与窗口评估](https://huggingface.co/docs/transformers/v4.57.1/en/perplexity)
+给真实后继 token 的概率依次为 0.5、0.25、0.125，先分别取负对数再平均：
 
-两个 batch 分别有 2 和 8 个有效目标 token，平均 loss 为 1 和 3。整个集合的 loss 应为 $(2\times1+8\times3)/10=2.6$，不是两个均值再平均得到的 2。PPL 应在汇总 NLL 后取指数，不能平均 batch PPL。
+$$
+\begin{aligned}
+\mathcal L_{\mathrm{NLL}}
+&=-\frac{\ln0.5+\ln0.25+\ln0.125}{3}\\
+&=\ln4\approx1.3863.
+\end{aligned}
+$$
+
+取指数后 PPL 为 4；等价地，它是这些真实目标概率的**几何平均数的倒数**，即 $(0.5\times0.25\times0.125)^{-1/3}$，不是错误率。比较 PPL 时须固定 tokenizer、文本预处理、上下文和评估窗口策略。[PPL 定义与窗口评估](https://huggingface.co/docs/transformers/v4.57.1/en/perplexity)
+
+两个 batch 分别有 2 和 8 个有效目标 token，平均 loss 为 1 和 3。先把均值还原成总量：两批的 NLL 总和分别是 2 和 24，合计 26；有效目标合计 10。因此集合 loss 为 $26/10=2.6$，不是两个均值再平均得到的 2。PPL 应在汇总 NLL 后取指数，不能平均 batch PPL。
 
 框架日志可能先按 step 求均值，再做跨 step 或跨设备归约。离线报告应核对实际实现，最好同时保留损失总和与目标计数，而不是仅凭字段名假定它已经是全局 token 加权结果。
 
@@ -327,7 +346,7 @@ A 与 B 命中相同数量的目标，但 B 在最后一个位置强烈偏向错
 
 设一条对话为“用户：解释二分查找。助手：……”。一种常见设置是保留系统、用户和助手文本作为输入，仍按因果 attention mask 限制可见前文，而 loss 只监督指定的助手目标；padding 另行屏蔽。多轮对话还要约定监督所有助手轮次，还是仅最后一轮，以及 EOS、工具返回、系统消息是否计入 loss。
 
-这会直接改变指标。假设移位后有 100 个有效 prompt 目标 token，平均 NLL 为 0.2；另有 20 个有效 response 目标 token，平均 NLL 为 2.0：全序列平均是 0.5，而 response-only loss 是 2.0。数值差异来自分母与监督位置，不能说明前者训练更好。
+这会直接改变指标。假设移位后有 100 个有效 prompt 目标 token，平均 NLL 为 0.2；另有 20 个有效 response 目标 token，平均 NLL 为 2.0。沿用第 4.1 节的汇总方法，全序列为 $(100\times0.2+20\times2.0)/120=0.5$；只保留回答目标时，分子与分母同时移除 prompt 部分，得到 $40/20=2.0$。两者监督的位置不同，不能据此判断前者训练更好。
 
 训练采用 teacher forcing：每一步看到的是数据中的前文。自由生成时，后续 token 的上下文包含模型自己的输出。因此 token accuracy 高也可能在一次早期错误后偏离任务；还可能只是准确预测了大量模板词。
 
@@ -384,7 +403,7 @@ r_\theta(x,y)&=\beta\log\frac{\pi_\theta(y\mid x)}{\pi_{\mathrm{ref}}(y\mid x)},
 \end{aligned}
 $$
 
-这里序列概率由回答 token 的条件概率构成；不同 loss 变体、长度归一化和 mask 会改变口径。$r_\theta$ 是相对参考模型的隐式分数，不是直接观测到的人类满意度。
+这里 $x$ 是 prompt，$\pi_\theta$ 是待更新策略，$\pi_{\mathrm{ref}}$ 是固定参考策略，$\beta>0$ 控制相对分数的尺度，$\sigma$ 是 sigmoid 函数。回答的序列 log-probability 是各目标 token 条件 log-probability 之和；因此第一行可直接按“策略 log-probability 减参考 log-probability，再乘 $\beta$”计算。不同长度归一化、mask 或 loss 变体会改变目标。$r_\theta$ 是相对参考的隐式分数，不是直接观测到的人类满意度。
 
 标准口径下，`rewards/margins` 是平均 $\Delta r$；`rewards/accuracies` 是 $\Delta r>0$ 的回答对比例。比如四对 margin 为 0.2、−0.1、0.4、0，严格大于零的准确率是 50%，平均 margin 为 0.125。更换 $\beta$ 会改变 margin 数值尺度；严格为零如何计数也应遵守实现定义。[TRL v0.19.0 指标说明](https://huggingface.co/docs/trl/v0.19.0/en/dpo_trainer)
 
@@ -392,7 +411,7 @@ $$
 
 chosen 与 rejected 的分数可以同时下降，只要差值改善，DPO loss 仍可能下降。训练对的偏好准确率上升，只能说明该目标更符合给定偏好标签；是否让新回答更好，需要 held-out 生成评估。还要检查偏好标签是否把“更长”“更多套话”误当作“更正确”。
 
-例如 $\beta=0.1$，参考策略对 chosen/rejected 的序列 log-probability 分别为 −10、−12。初始策略等于参考策略时，两个隐式 reward 都为零，单对 DPO loss 为 $\log2\approx0.6931$。若更新后两项变为 −11、−15，则隐式 reward 为 −0.1、−0.3，margin 为 0.2，loss 降到约 0.5981。**chosen 的绝对概率在下降，但偏好间隔在改善。** 这是一对样本的算例，不代表 DPO 必然降低 chosen 概率。
+例如 $\beta=0.1$，参考策略对 chosen/rejected 的序列 log-probability 分别为 −10、−12。初始策略等于参考策略时，两个差值均为零，单对 DPO loss 为 $\log2\approx0.6931$。更新后两项变为 −11、−15：chosen 的分数为 $0.1[-11-(-10)]=-0.1$，rejected 为 $0.1[-15-(-12)]=-0.3$，故 margin 为 $-0.1-(-0.3)=0.2$。代入 $-\log\sigma(0.2)=\log(1+e^{-0.2})$，loss 降到约 0.5981。**chosen 的绝对概率在下降，但 rejected 的 log-probability 降幅更大，偏好间隔仍在改善。**
 
 ### 6.2 RL 后训练的监控面板
 
@@ -459,9 +478,9 @@ $$
 \widehat{\mathrm{pass@}k}=1-\frac{\binom{n-c}{k}}{\binom{n}{k}}.
 $$
 
-当 $n-c<k$ 时，分子按零处理。先对每题计算，再对题目求平均；这依赖固定的采样和测试协议。[HumanEval 论文](https://arxiv.org/abs/2107.03374)、[估计器源码](https://github.com/openai/human-eval/blob/master/human_eval/evaluation.py)
+分母数出从这 $n$ 个候选中抽取 $k$ 个的所有子集；分子只数从 $n-c$ 个失败候选中抽取的子集。两者相除是候选池中“全部失败”的比例，取补集便得到“至少一个通过”。当 $n-c<k$ 时已凑不出全失败子集，分子按零处理。先逐题计算，再对题目求平均。[HumanEval 论文](https://arxiv.org/abs/2107.03374)、[估计器源码](https://github.com/openai/human-eval/blob/master/human_eval/evaluation.py)
 
-例如 $n=10,c=2$，pass@1 为 20%，pass@3 为 $1-56/120=53.33\%$。提升来自允许尝试更多次，不能写成单次回答正确率达到 53.33%。若实际系统没有可靠验证器，还需要评估候选选择器；多数投票、best-of-N 与 pass@k 是不同协议。
+例如 $n=10,c=2$，pass@1 为 20%；选 3 个候选共有 $\binom{10}{3}=120$ 个子集，其中 $\binom{8}{3}=56$ 个全失败，所以 pass@3 为 $1-56/120=53.33\%$。提升来自允许尝试更多次，不能写成单次回答正确率达到 53.33%。若实际系统没有可靠验证器，还需要评估候选选择器；多数投票、best-of-N 与 pass@k 是不同协议。
 
 若真实单次成功概率 $p$ 已知，独立尝试 $k$ 次的成功概率是 $1-(1-p)^k$。但把有限样本的 $c/n$ 直接代入，并不等于上面的组合数估计器；本例直接代入会得到 48.8%，与 53.33% 不同。论文报告应注明使用的估计方法，不能把两种计算混写。
 
@@ -471,8 +490,10 @@ $$
 在 $c>0$ 且 $n-c\ge k$ 时，令 $m=\min(c,k)$、$M=\max(c,k)$，无通过概率可以等价地写成：
 
 $$
-q=\prod_{i=0}^{m-1}\left(1-\frac{M}{n-i}\right),
-\qquad \widehat{\mathrm{pass@}k}=1-q.
+\begin{aligned}
+q&=\prod_{i=0}^{m-1}\left(1-\frac{M}{n-i}\right),\\
+\widehat{\mathrm{pass@}k}&=1-q.
+\end{aligned}
 $$
 
 这利用了从 $n$ 个位置中选择 $k$ 个、避开 $c$ 个成功位置的对称性，乘积只需 $\min(c,k)$ 项。下载脚本通过 `log1p` 累加这些因子的对数，再用 `-expm1(log_q)` 计算结果，避免 $q$ 接近 1 时直接相减丢失小概率。`c=0` 返回 0，`n-c<k` 返回 1；`k=1` 的结果应与 `c/n` 一致。它计算的仍是同一个有限候选池估计量，不改变采样协议或增加评估证据。
@@ -684,7 +705,9 @@ $$
 
 ### 9.6 0/100 不代表真实失败概率为零
 
-对独立同分布的二元试验，单个比例可以使用 Wilson 区间。令 $\hat p=c/n$，$z$ 是对应置信水平的标准正态分位数，其中心和半宽为：
+先看结论：对独立同分布的二元试验，观测 100 次、0 次失败，双侧 95% Wilson 区间约为 **[0%, 3.70%]**。已有数据中没有失败，不足以断言同样机制下再测试也不会失败；这个例子估计的是失败率，若改报成功率，方向也要改变。[Wilson 区间](https://www.itl.nist.gov/div898/handbook/prc/section2/prc241.htm)
+
+要复算时，令 $\hat p=c/n$ 为样本比例，$z$ 是对应置信水平的标准正态分位数，其中心和半宽为：
 
 $$
 \begin{aligned}
@@ -692,8 +715,6 @@ $$
 \mathrm{halfwidth}&=\frac{z\sqrt{\hat p(1-\hat p)/n+z^2/(4n^2)}}{1+z^2/n}.
 \end{aligned}
 $$
-
-观测 100 次、0 次失败，双侧 95% Wilson 区间约为 **[0%, 3.70%]**，不会因为样本全为零就认定没有不确定性。这个例子统计的是失败率；若改为成功率，方向也要随之改变。[Wilson 区间](https://www.itl.nist.gov/div898/handbook/prc/section2/prc241.htm)
 
 这类区间描述相同抽样机制下的不确定性，不包括测试污染、评分器错误、分布变化或重新训练带来的变动。对两模型的**差值**不要直接套单比例公式，也不要把两个区间是否重叠作为配对显著性的唯一判断。普通百分位 bootstrap 在全部观察相同等边界情形可能退化为零宽度，应报告局限而非宣称“结果完全确定”。
 
@@ -723,8 +744,10 @@ $$
 这里每组大小相同，且组内差值完全相同，所以按组抽样等价于对 20 个组均值抽样。若组大小为 $m$、独立组数为 $G$，组差值的经验方差为 $s_G^2$（此处分母用 $G$），两种经验 bootstrap 均值分布的方差分别为：
 
 $$
-\operatorname{Var}_{boot}(\bar d_{group})=\frac{s_G^2}{G},\qquad
-\operatorname{Var}_{boot}(\bar d_{row})=\frac{s_G^2}{Gm}.
+\begin{aligned}
+\operatorname{Var}_{boot}(\bar d_{group})&=\frac{s_G^2}{G},\\
+\operatorname{Var}_{boot}(\bar d_{row})&=\frac{s_G^2}{Gm}.
+\end{aligned}
 $$
 
 于是本例错误的逐条标准误缩小了 $\sqrt{20}\approx4.47$ 倍。这个倍数依赖“组内完全相同、组大小一致”的构造，不能拿去修正任意相关题集。
@@ -732,8 +755,10 @@ $$
 **组大小不同时，先确定要估计的平均值。** 设第 $g$ 组有 $n_g$ 道题、组内平均差值 $\bar d_g$：
 
 $$
-\Delta_{question}=\frac{\sum_g n_g\bar d_g}{\sum_g n_g},\qquad
-\Delta_{group}=\frac1G\sum_g\bar d_g.
+\begin{aligned}
+\Delta_{question}&=\frac{\sum_g n_g\bar d_g}{\sum_g n_g},\\
+\Delta_{group}&=\frac1G\sum_g\bar d_g.
+\end{aligned}
 $$
 
 前者让每道题等权，后者让每个组等权。若一个组有 2 题、全部改对，另一个组有 8 题、全部改错，题目平均差值为 −60 pp，组平均却为 0 pp。按组 bootstrap 题目平均时，每次抽组后仍应重新累计分子、分母；不能因为“按组抽了”，就顺手把目标指标改成组均值的平均。
@@ -743,6 +768,8 @@ $$
 真实评估应预先保存 `question_id` 与 `group_id` 的对应关系，按文档、用户、会话或采集场景中真正共享随机因素的单位分组，同时保留两模型的配对关系。时间相关、层级抽样和分层抽样各有额外假设，不能一律用相同的抽组方式替代实验设计。语音评估中对相关样本进行分块处理的讨论可见 [Modeling Dependent Structure for Utterances in ASR Evaluation](https://arxiv.org/abs/2209.05281)。
 
 ## 10. 一份能读懂、能复查的实验报告 {#report}
+
+前面的章节可以汇成三项交付：**资源账本**说明模型和运行条件，**指标协议**说明统计对象与分母，**逐题对照**说明变化落在哪些样本上。下面的模板用于保存这些依据；没有实际测过的字段保留 `null`，不要为了填满表格而估出一个看似精确的结论。
 
 ### 10.1 最小记录模板
 
@@ -880,7 +907,7 @@ python -B paired_eval.py \
 
 ## 阅读自测与验收
 
-先独立作答或操作，再核对本节答案；实践结果以实际记录为准。
+先独立作答或操作，再核对本节答案。也可以把练习分成三次完成：先复算权重／缓存，再复算 NLL／mask，最后复算 pass@k／配对差值；每次都留下单位、分母和假设。
 
 1. **为什么 7B BF16 权重约 14 GB，却不能据此判断训练显存？** 训练还包含梯度、优化器状态、激活与临时缓冲。
 2. **PPL 从 10 降到 8 前，必须核对哪些条件？** 数据、tokenizer、上下文、mask、窗口策略和归约分母。

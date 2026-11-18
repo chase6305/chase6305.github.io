@@ -1,7 +1,7 @@
 ---
 title: "LeRobot 与 ACT 详解：从机器人示教数据到动作分块、训练与部署"
 date: 2026-09-16
-lastmod: 2026-11-09
+lastmod: 2026-11-13
 draft: false
 tags: ["LeRobot", "ACT", "Imitation Learning", "Transformer", "Embodied AI"]
 categories: ["人工智能", "机器人"]
@@ -57,6 +57,8 @@ ACT 是行为克隆的一种具体实现，不要求先设计奖励函数。ALOH
 
 ## 2. LeRobot 如何把整个实验串起来
 
+这条链从 `action` 的定义开始：采集端保存某种控制目标，训练端预测它的归一化数值，部署端再恢复为同一种目标。以下先看目标怎样记录，再看数值怎样进入和离开模型。
+
 <figure class="article-figure" id="fig-workflow">
   {{< post-image src="assets/lerobot-workflow.png" alt="LeRobot 的离线示教、数据集、ACT 训练和 checkpoint，以及在线观测、归一化、动作调度与机器人执行闭环" >}}
   <figcaption>
@@ -67,11 +69,7 @@ ACT 是行为克隆的一种具体实现，不要求先设计奖励函数。ALOH
 
 ### 2.1 硬件接口统一调用方式，不统一物理含义
 
-机器人接口提供连接、读取观测、发送动作等操作。策略因此可以与具体串口通信分离。但同样长度的动作向量，可能分别代表关节角、归一化电机位置或末端位姿增量，不能只看形状就互换。
-
-例如，`observation.state` 记录的是机械臂**测得的位置**，而 `action` 可能是遥操作器提供的**目标位置**。有跟踪误差时，两者本来就不同。把当前状态直接复制成动作标签，往往会教出一套“保持原位”的策略。
-
-接入新硬件时，需要落实四件事：特征名称与顺序、物理单位与范围、标定关系，以及控制指令的时序含义。训练和部署必须采用同一套约定。[Robot 接口源码](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/robots/robot.py)
+机器人接口统一连接、读取观测和发送动作等操作，把策略与串口通信分开；它不统一关节顺序、单位或控制方式。例如，`observation.state` 可以是**测得的位置**，`action` 则是遥操作器给出的**目标位置**。有跟踪误差时两者本来就不同；复制状态作标签，会让策略倾向于保持原位。[Robot 接口源码](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/robots/robot.py)
 
 还要区分**记录的目标与实际发送的目标**。本文版本的 `lerobot-record` 将遥操作动作经过 `teleop_action_processor` 后赋给 `action_values`，用它构造数据集的 `action`；发送路径还会经过 `robot_action_processor` 和 `robot.send_action()`。后者返回的 `_sent_action` 没有用于替换标签，因此不能笼统地说数据集始终记录了限幅后的指令。[采集循环实现](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/scripts/lerobot_record.py)
 
@@ -89,7 +87,7 @@ ACT 是行为克隆的一种具体实现，不要求先设计奖励函数。ALOH
 
 在这个版本中，ACT 的预处理和后处理由独立 Processor 管理，包含批次维度、设备迁移、归一化和动作反归一化。直接把相机原始数组交给 `select_action()`，通常缺少必要转换；把模型输出直接发送给电机，也可能把归一化数值当成真实控制量。
 
-对于采用均值、标准差归一化的一个动作维度，可以写成：
+对一个动作维度，令 $a$ 为数据标签，$\mu_a$ 与 $\sigma_a$ 为保存的训练统计量，$\widetilde a$ 为模型使用的归一化值，$\widehat a$ 为恢复后的控制值：
 
 $$
 \widetilde a = \frac{a-\mu_a}{\sigma_a+\epsilon},
@@ -97,7 +95,7 @@ $$
 \widehat a = \widetilde a\sigma_a+\mu_a.
 $$
 
-这与核对版本的 `MEAN_STD` 实现一致：归一化分母加 `ε`，反归一化则直接乘以标准差，因此数值上并非严格互逆。`ε` 用于避免除零，不是需要部署时重新拟合的参数。部署要恢复训练时保存的处理器及统计量，不能对实时数据临时重新估计一套均值和方差。[ACT Processor](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/processor_act.py)、[Processor 工厂](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/processor/factory.py)
+`ε` 是防止除零的小正数。核对版本的 `MEAN_STD` 只在归一化分母加它，反归一化直接乘标准差，因而两步数值上并非严格互逆。部署仍须恢复训练时的 Processor 与统计量，不能改用实时观测重新估计的均值和方差。[ACT Processor](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/processor_act.py)、[Processor 工厂](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/processor/factory.py)
 
 ### 2.3 从像素到控制目标：两种归一化不要混淆
 
@@ -129,7 +127,7 @@ $$
 | `use_degrees=false` | 标定后的 `-100～100` 范围值 | 标定后的 `0～100` 范围值 |
 {.table-readable}
 
-这里的范围映射属于电机接口，和 ACT Processor 的均值／标准差归一化是不同层次。夹爪值也不能直接解释成毫米。使用已有数据或 checkpoint 时，先查其采集配置；更改 `use_degrees` 后，形状虽然不变，数值含义却变了，不能仅切换部署参数继续沿用原模型。[SO follower 配置](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/robots/so_follower/config_so_follower.py)、[关节与夹爪映射](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/robots/so_follower/so_follower.py)
+这层范围映射发生在电机接口中，夹爪值也不直接等于毫米。更改 `use_degrees` 会改变训练标签的含义，必须连同数据和模型接口处理。[SO follower 配置](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/robots/so_follower/config_so_follower.py)、[关节与夹爪映射](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/robots/so_follower/so_follower.py)
 
 | 交接位置 | 至少核对什么 | 典型错误 |
 | --- | --- | --- |
@@ -142,7 +140,7 @@ $$
 
 ### 3.1 一行数据、一个 episode 与一个动作块
 
-一个 episode 是一次完整尝试。一个数据行对应某个采样时刻；ACT 的训练样本则会以这一行为起点，再取未来若干行的动作。
+一个 episode 是一次完整尝试，数据行按采样时刻排列。假设积木示教中有 `a0…a5` 六行动作，在第 2 帧制作 `K=4` 的训练样本，就取**第 2 帧图像与状态**作条件，取 **`a2、a3、a4、a5`** 作标签；不是把四帧图像一起送进 ACT。下表把多条这样的样本叠成 batch：
 
 | 字段示例 | 单帧含义 | ACT 训练批次中的典型形状 |
 | --- | --- | --- |
@@ -154,7 +152,7 @@ $$
 | `episode_index`、`frame_index`、`timestamp` | 轨迹、帧与时间定位 | 元数据，不都直接输入网络 |
 {.table-readable}
 
-其中 `B` 为 batch size，`K` 为动作块长度，`Ds` 与 `Da` 分别为状态和动作维度，不必相等。图像在读取、预处理以后应满足模型需要的通道顺序与数值范围。
+`B` 为 batch 大小，图像中的 `H`、`W` 是像素高宽；`K` 为动作块长度，`Ds`、`Da` 分别为状态和动作维度，不必相等。`action_is_pad[b,j]` 只回答第 `b` 条样本、第 `j` 个动作是否补齐，不是相机遮挡或任务失败的标记。
 
 普通的 `dataset[i]` 不会凭空返回长度为 `K` 的动作序列。需要配置时间窗口；标准训练入口会根据策略的 `action_delta_indices` 和数据 FPS 生成相应的 `delta_timestamps`。[数据集时间窗口解析](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/datasets/factory.py)
 
@@ -166,7 +164,7 @@ $$
   </figcaption>
 </figure>
 
-**读图顺序**：先看蓝色高亮的当前观测，再沿橙色括号找到四个动作标签；下半图把起点移到 `t=4`，因此只有 `a4`、`a5` 有效。`PAD` 表示逻辑上的无效位置，张量里仍需填入数值。
+图 4 沿用这个六帧例子。起点从 `t=2` 移到 `t=4` 后，标签只剩 `a4、a5`；后两格仍要填入数值以保持形状，但必须标为 `PAD`。第 6.3 节再说明这个标记怎样影响后验和损失。
 
 ### 3.2 v3 的存储结构
 
@@ -220,7 +218,7 @@ $$
 \widehat a_{t+K-1\mid t}\right].
 $$
 
-下标 $t+j\mid t$ 表示“在时刻 $t$ 做出、针对时刻 $t+j$ 的预测”。这不是一次输出多个备选动作，而是按时间排列的一段连续控制目标。
+下标 $t+j\mid t$ 表示“在时刻 $t$ 做出、针对时刻 $t+j$ 的预测”；$\theta$ 是动作预测网络的参数，$z$ 是表示示教差异的潜变量，其训练取法与部署取法见第 6 节。于是图 4 的样本让网络根据第 2 帧观测，一次预测 `a2…a5` 这四行标签，而不是输出四个备选方案。
 
 逐步 BC 在执行中稍有偏差，就可能看到示教里没有出现过的状态，随后继续偏离，形成误差累积。动作分块让模型在同一次预测中学习“靠近、闭合夹爪、抬起”等局部运动之间的关联。原论文用它缩短有效决策跨度，但这不意味着分布偏移消失，也不保证开环执行任意长的一段都可靠。[ACT 论文](https://arxiv.org/abs/2304.13705)
 
@@ -234,9 +232,7 @@ $$
 
 例如 $K=100$、$M=20$、$f=30$ Hz：动作块包含 100 个采样点，覆盖约 3.33 秒的动作序列，首末时间戳相差 $99/30=3.30$ 秒；执行前 20 步后使用最新观测重新预测，理想情况下约每 0.67 秒更新一次动作计划。
 
-把 `M` 降到 1 会更频繁地利用视觉反馈，但推理计算必须跟得上。把 `K` 增大则会延长预测跨度，也增加序列建模和监督的负担。这两个改动的含义不同。
-
-即使底层电机始终在做位置反馈控制，策略在动作队列未耗尽时也可能没有使用新图像。**电机闭环与视觉策略闭环的频率不是一回事。**
+减小 `M` 会增加视觉重预测频率，增大 `K` 则延长预测与监督跨度。队列执行期间电机仍可做位置反馈，但视觉策略没有因此刷新预测。
 
 ### 4.3 用六个控制周期看清“预测”和“执行”
 
@@ -251,9 +247,7 @@ $$
 | `4` | 是，生成 `A(4)` | `A(4)[0]` | 再次使用新观测 |
 | `5` | 否 | `A(4)[1]` | 下一周期才重预测 |
 
-虽然每块后两步没有执行，训练时仍然监督全部四步。这可以让网络学习较完整的局部运动，同时在部署时只承诺执行较短的前缀。不过，后半段预测的质量是否帮助了当前动作，需要通过实验验证，不能仅凭窗口更长就认定策略更好。
-
-这与滚动时域控制在“预测一段、执行前缀、重新规划”上相似，但 ACT 没有因此获得 MPC 的动力学模型、在线约束求解或稳定性保证。
+未执行的后两步仍有训练监督，网络学习完整局部运动，部署只执行前缀；更长监督是否有益须通过实验判断。这种调度类似滚动时域控制，但 ACT 不包含 MPC 的动力学模型、在线约束求解或稳定性保证。
 
 ## 5. ACT 网络：两个 Encoder 分别做什么
 
@@ -277,18 +271,18 @@ $$
 
 Decoder 为动作块的 `K` 个时间位置分别设置可学习的位置向量，通过 cross-attention 读取 Encoder 特征，最后经线性回归头得到 `[B, K, Da]`。第 `j` 个位置始终对应相对当前观测的第 `j` 步动作；它不是某个关节的专属查询，每个位置都会输出完整的 `Da` 维动作。
 
-它不是像语言模型一样先生成第一个动作、把它拼回输入、再逐步生成第二个动作。一个动作块在一次前向中并行产生；也不是输出离散动作 token 后查码本还原。这里输出的是连续动作数值。
+一次前向并行回归全部位置，不把前一行动作拼回输入逐行生成，也不经过离散码本。输出仍处于第 2 节定义的归一化数值空间。
 
 **为什么 Decoder 内容全零，却能输出不同时间位置的动作？** 零初始化的是内容张量，可学习的位置向量并不相同。源码将位置向量加入注意力的 Query、Key 输入，使不同时间位置能够从同一份观测特征中读取不同信息。回归头在所有位置共享参数，但接收的隐藏特征不同，因此输出可以不同。
 
-令 `x` 表示 Decoder 当前的内容特征，`memory` 表示 Encoder 输出，`p_action` 和 `p_obs` 分别表示动作位置与观测位置编码。忽略 LayerNorm、残差和投影细节，两个注意力操作的输入为：
+令 `x` 为 Decoder 内容、`memory` 为 Encoder 输出，`p_action`、`p_obs` 为动作与观测位置编码。省略 LayerNorm、残差与投影细节，注意力输入为：
 
 | 注意力操作 | Query 输入 | Key 输入 | Value 输入 |
 | --- | --- | --- | --- |
 | Decoder self-attention | `x + p_action` | `x + p_action` | `x` |
 | Decoder cross-attention | `x + p_action` | `memory + p_obs` | `memory` |
 
-这里列的是传给注意力模块的张量，模块内部还会做 Q/K/V 线性投影。位置向量用于区分查询位置，不是预先写好的动作轨迹；动作内容由观测条件和学习到的网络参数共同决定。[Decoder 层实现](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/modeling_act.py)
+模块内部还会做 Q/K/V 投影；位置向量区分查询，动作内容仍由观测和学习到的参数决定。[Decoder 层实现](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/modeling_act.py)
 
 以 `B=8`、两路 `480×640` 图像、`Ds=Da=6`、`K=100` 为例，默认 ResNet-18 最终步幅为 32，张量沿主策略网络的变化如下。这里的尺寸仅对应这个输入和默认骨干配置：
 
@@ -301,9 +295,7 @@ Decoder 为动作块的 `K` 个时间位置分别设置可学习的位置向量�
 | Decoder 查询 | `[100, 8, 512]` | 内容初始为零，加入可学习的查询位置编码 |
 | 动作回归输出 | `[8, 100, 6]` | 每个时间位置回归 6 维连续动作 |
 
-CVAE Encoder 则是另一条长度为 `K+2=102` 的序列：一个 CLS token、一个状态 token，加 100 个真实动作 token。它不接收这 600 个图像 token。这样区分以后，就不容易把两个 Encoder 的序列长度和 padding mask 混在一起。
-
-并行 Decoder 的查询之间可以相互注意，不要求语言模型式的因果 mask：它们代表待预测的时间位置，没有携带真实未来动作标签。因此，第 0 个查询能关注第 99 个查询，并不等于看到了第 99 步的真实动作。真实动作标签进入训练时的 CVAE 后验分支，并用于计算重建损失；它们不会直接作为主策略 Decoder 的动作查询输入。
+另一个 CVAE Encoder 接收 CLS、状态与真实动作，共 `K+2=102` 个位置，没有上述 600 个视觉 token。真实动作由这条训练后验路径参与计算，不直接充当策略 Decoder 的查询内容；因此待预测查询之间采用双向注意力，也不等于读取真实未来动作。
 
 ### 5.3 避免把两个 Encoder 混为一谈
 
@@ -313,7 +305,7 @@ CVAE Encoder 则是另一条长度为 `K+2=102` 的序列：一个 CLS token、�
 | 策略 Transformer Encoder | 图像特征、状态、潜变量 | 融合当前条件 | 是 |
 | 策略 Transformer Decoder | Encoder 特征、时间位置查询 | 输出动作块 | 是 |
 
-从 CVAE 的整体视角看，**整个动作预测网络，包括它自己的 Transformer Encoder 和 Decoder，合起来才是 CVAE 的解码器**。源码中的 `vae_encoder`、`encoder`、`decoder` 正好对应这三个不同角色。[ACT 网络实现](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/modeling_act.py)
+这里有两层命名：从 CVAE 看，后两行合起来是它的**解码器**；从 Transformer 看，这个解码器内部又有 Encoder 和 Decoder。源码的 `vae_encoder`、`encoder`、`decoder` 分别对应表中三行。[ACT 网络实现](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/modeling_act.py)
 
 ## 6. CVAE：为什么训练时输入真实的未来动作
 
@@ -327,31 +319,33 @@ CVAE Encoder 则是另一条长度为 `K+2=102` 的序列：一个 CLS token、�
   </figcaption>
 </figure>
 
-**读图顺序**：先跟随左图的“真实动作 → 后验 → z → 动作预测”路径，再看右图如何用 `z=0` 替代它。两侧的 Action predictor 是图 5 的整个主策略网络，不是单独一个 Transformer Decoder。
+图中左侧先用真实动作求 $z$，再由图 5 的整个主策略网络重建动作；右侧以 `z=0` 替代这条后验路径。
 
 ### 6.1 后验与重参数化
 
-训练时，CVAE Encoder 接收状态 $q_t$ 和示教动作块 $A_t$，预测一个对角高斯后验：
+回到第 2 帧样本：训练已经知道 `a2…a5`，可以据此推断这次示教的潜在描述；部署只有观测，不能再执行这一步。前者称为**后验**，不看真实动作时采用的潜变量分布称为**先验**。
+
+令 $\phi$ 为 CVAE Encoder 的参数。它接收状态 $q_t$ 和真实动作块 $A_t$，预测每个潜维的均值 $\mu_\phi$ 与标准差 $\sigma_\phi$，构成对角高斯后验：
 
 $$
 q_\phi(z\mid q_t,A_t)
 =\mathcal N\!\left(\mu_\phi,\operatorname{diag}(\sigma_\phi^2)\right).
 $$
 
-通过重参数化采样：
+这里 $q_t$ 是机器人状态，$q_\phi(\cdot\mid\cdot)$ 则是概率密度，两个 $q$ 的角色不同。对角协方差表示各潜维在这个后验下独立。把随机性集中到标准高斯 $\epsilon$，便可通过重参数化采样：
 
 $$
 z=\mu_\phi+\sigma_\phi\odot\epsilon,
 \qquad \epsilon\sim\mathcal N(0,I).
 $$
 
-这里未来动作是**训练监督的一部分**，用于估计后验，并不是假设机器人运行时可以知道未来。部署时去掉这条分支，按标准 ACT 做法设 $z=0$，即标准正态先验的均值。
+`⊙` 表示逐元素乘法；抽样的 $\epsilon$ 与 $z$ 同维，而不是第 2 节防除零的小常数。给定 $\epsilon$ 后，$z$ 对均值与标准差可导，动作重建损失便能沿这条路径训练后验编码器。
 
-标准部署固定 `z=0`，而不通过反复采样潜变量探索多个动作模式。动作预测网络是非线性的，因此“在潜变量均值处预测”通常不等于“对不同潜变量的动作预测求平均”。CVAE 有助于建模示教差异，但最终的确定性执行效果仍需通过 rollout 检查。
+标准部署移除后验分支，固定 $z=0$，取标准正态先验的均值。它不反复抽取潜变量寻找多个动作；而且动作网络非线性，在 $z=0$ 处预测也不等于对不同 $z$ 的预测取平均。
 
 ### 6.2 重建损失与 KL 正则
 
-令 $v_{b,j}$ 在第 $b$ 个样本、第 $j$ 个动作有效时取 1，否则取 0。核对版本按有效动作元素归一化 L1 损失：
+先定义公式中的三条轴：$b$ 遍历 batch 的 $B$ 条样本，$j$ 遍历每块的 $K$ 个动作位置，$d$ 遍历每个动作的 $D_a$ 个分量。$D_a$ 即前面形状中的 `Da`。令 $v_{b,j}$ 在动作有效时取 1，否则取 0，则核对版本的 L1 为：
 
 $$
 \mathcal L_{\mathrm{L1}}
@@ -360,11 +354,11 @@ v_{b,j}\left|\widehat a_{b,j,d}-a_{b,j,d}\right|}
 {\displaystyle\max\!\left(D_a\sum_{b,j}v_{b,j},1\right)}.
 $$
 
-这里的动作已经过策略预处理，L1 计算发生在**归一化后的动作空间**。因此，`L1=0.1` 不能直接读成“平均关节误差为 0.1 弧度”。按维度恢复物理量后，才能分别讨论关节位置、夹爪开度等误差；同一个归一化误差乘上不同标准差，会得到不同的物理误差。
+式中的标签 $a$ 与预测 $\widehat a$ 都在**归一化动作空间**。一次有效动作有 $D_a$ 个标量，所以分母先数有效动作，再乘 $D_a$；`max(...,1)` 防止全填充时除零。`L1=0.1` 因而没有直接的弧度含义：同一个归一化误差乘上不同标准差，会得到不同的物理误差。
 
 分母还决定了 batch 内的加权方式：源码先汇总所有有效动作元素，再除以有效元素总数。以单维动作为例，样本 A 有 4 个有效元素、每个误差为 1，样本 B 有 1 个有效元素、误差为 3，batch L1 是 `(4×1+1×3)/5=1.4`，而不是先算两条样本均值再平均得到的 `2.0`。这解释了为什么 padding 比例变化会影响不同样本对 batch 损失的贡献。
 
-对角高斯与标准正态之间的 KL 项是：
+再令 $\ell$ 遍历潜变量维度，它与动作分量 $d$ 是不同的轴。对角高斯后验相对标准正态先验的 KL 项是：
 
 $$
 \mathcal L_{\mathrm{KL}}
@@ -373,6 +367,8 @@ $$
 -\log\sigma_{b,\ell}^2-1\right).
 $$
 
+单个潜维取 `μ=0、σ=1` 时，KL 为 0；取 `μ=1、σ=1` 时为 0.5。与 L1 相比，这里**先累加潜维，再平均样本**，没有动作时间轴，也不除以有效动作数。它度量后验偏离先验的程度，不能据此判断动作是否正确。
+
 总损失：
 
 $$
@@ -380,13 +376,18 @@ $$
 +\beta\mathcal L_{\mathrm{KL}}.
 $$
 
-L1 督促动作重建，KL 约束后验靠近先验，减少训练潜变量与推理固定潜变量之间的脱节。`kl_weight` 就是 $\beta$。权重太小可能使网络过度依赖训练时从真实动作中提取的信息；太大则可能使潜变量携带的信息过少。判断时应同时观察 L1、KL 和实际 rollout，不能只比较总 loss。
+`kl_weight` 对应 $\beta$，平衡动作重建与后验正则。太小时，网络可能过度依赖从示教提取的 $z$；太大时，$z$ 又可能丢失示教差异。因此要分别读 L1、KL，再检查固定 `z=0` 的执行效果。
 
 这几个公式对应核对版本的 `ACTPolicy.forward()`；不同历史实现对 padding 后的平均方式可能不同，因此同名 loss 的绝对数值未必能直接横向比较。[损失实现](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/modeling_act.py)
 
 对照原论文时还有一个细节：Algorithm 1 的伪代码写作 MSE，但第 IV-C 节明确说明实际采用 L1 重建损失。本文遵循已核对源码中的 L1 实现，不把伪代码里的 MSE 当成当前训练目标。[原论文](https://arxiv.org/html/2304.13705)
 
 #### 多卡与梯度累积：L1 和 KL 的分母不同
+
+修改训练循环时，需要保留两种计数：**L1 按有效动作元素平均，KL 按示例平均。** 只使用前文单次前向的损失、暂不修改分布式归约的读者，可以先继续看下一节的 episode 尾部填充。
+
+<details>
+<summary>进阶推导：怎样让多卡与累积窗口保持所选的全局目标</summary>
 
 上面的 batch 指一次策略前向收到的张量；不能据此推断多卡和多个 micro-batch 合起来也恰好按全部有效动作元素等权。若两张卡分别得到“4 个误差为 1 的有效元素”和“1 个误差为 3 的有效元素”，本地先求均值、再平均两卡梯度，对应的是 `(1+3)/2=2`；全局有效元素均值则是 `7/5=1.4`。两者优化的加权目标不同。
 
@@ -401,9 +402,11 @@ $$
 
 这是对**所选全局目标**的推导，不是声称本文固定版本的训练入口已经执行了这套分母归约。接入 Accelerate、FSDP 或自定义通信时，应核对框架是否已经缩放 loss。一个不用机器人与 GPU 的实际双进程对照见[DDP 的 token 均值实验]({{< relref "/posts/ai/distributed-training-memory" >}}#44-变长文本平均局部均值未必等于全局-token-均值)。动作元素与 token 虽然含义不同，局部均值和全局均值的区别相同。
 
+</details>
+
 ### 6.3 episode 尾部必须屏蔽填充
 
-假设 `K=100`，采样起点距离 episode 结束只剩 15 个有效动作，其余位置需要填充，以形成固定长度张量。填充值不是额外的真实示教，不能跨过边界从下一条轨迹补齐。
+图 4 在 `t=4` 的窗口有两个有效动作和两个补齐位置；扩大到 `K=100`、只剩 15 行标签时，同样需要屏蔽余下 85 行，而不能从下一条 episode 接上。
 
 `action_is_pad` 在两个地方参与计算：一是在 CVAE Encoder 中屏蔽无效动作 token，二是在动作重建损失中去掉无效元素。两者缺一，都可能让尾部样本传递错误的监督。
 
@@ -467,9 +470,9 @@ $$
 | `t=1` | 第 2 个元素：预测未来一步后的动作 |
 | `t=2` | 第 1 个元素：预测当前动作 |
 
-时间集成将这一列融合，而不是把当前动作块内部不同未来时刻的动作平均掉。后者会破坏轨迹的时间含义。
+沿用第 4 节的记号，这一列就是 $\widehat a_{2\mid0}$、$\widehat a_{2\mid1}$、$\widehat a_{2\mid2}$：执行时刻相同，预测依据不同。沿一行平均则会混合多个执行时刻，破坏轨迹含义。
 
-把针对同一执行时刻的候选动作按**生成时间从旧到新**记为 $u_0,\ldots,u_{n-1}$，LeRobot 使用：
+把这些候选按**生成时间从旧到新**记为 $u_0,\ldots,u_{n-1}$，$n$ 是候选数，$m$ 是配置中的集成系数。LeRobot 对每个动作分量使用同一组权重：
 
 $$
 w_i=\exp(-mi),\qquad
@@ -484,7 +487,7 @@ $$
 
 系数的效果要结合候选数量理解。对于 `m=0.01`，最新候选与最旧候选的权重比是 `exp(-0.01×(n-1))`：`n=3` 时约为 `0.980`，差异很小；`n=100` 时约为 `0.372`。因此，同一个系数在 episode 开头与稳定运行阶段的融合效果不同，也不能脱离 `K` 比较系数大小。
 
-这是实现层面的定义。偏重早期预测有助于保持先前动作计划的连续性，但也可能减缓对新情况的响应，具体效果要看任务与系数。[ACTTemporalEnsembler 源码及注释](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/modeling_act.py)
+偏重早期预测可能保持先前计划的连续性，也可能减缓对新观测的响应，须按任务验证。[ACTTemporalEnsembler 源码及注释](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/modeling_act.py)
 
 ### 7.3 一个可运行的数值例子
 
@@ -507,7 +510,7 @@ for coefficient in (0.0, 0.5, -0.5):
     print(f"m={coefficient:+.1f}: {ensemble(predictions, coefficient):.4f}")
 ```
 
-结果为 `0.5000`、`0.4040`、`0.5960`。正系数向较旧的 `0.2` 偏移，负系数向较新的 `0.8` 偏移。这里故意用绝对值较大的系数，让差异更明显。
+结果为 `0.5000`、`0.4040`、`0.5960`，分别体现均匀、偏旧与偏新的融合。这里用较大的系数便于观察。融合或队列选出一个归一化动作后，才接第 2.3 节的反归一化；若选出的某维为 `1.5`，沿用那里的统计量便恢复为 `0.35 rad`。
 
 代码将最大权重所在的端点设为 `anchor`，使所有指数不大于零。每个权重都除以同一个正数，归一化后的平均不变，但不会先生成一个溢出的正指数。对同一组有限候选，系数趋向正无穷时取最旧预测，趋向负无穷时取最新预测；这只是加权公式的极限，不是推荐的部署参数。下载脚本也使用这一写法，命令行系数要求为有限数。
 
@@ -524,7 +527,7 @@ python act_timing_lab.py --chunk-size 6 --action-steps 3 --coeff 0.01
 
 ### 7.4 时间集成的代价与边界
 
-启用它需要设置 `n_action_steps=1`，因为每一步都要获取新预测；核对版本会拒绝“时间集成开启且执行步数大于 1”的配置。它可以减小块切换时的不连续，但不是关节限速器、碰撞检测器，也不能自动弥补推理超时。
+时间集成每步重预测，所以要求 `n_action_steps=1`；核对版本会拒绝更大的值。融合可能减小块切换的不连续，却没有施加关节限速、碰撞或实时性约束。
 
 ACT 时间集成与 RTC 也不是同一个机制：这里融合重叠预测，RTC 则重点处理异步推理时已经在执行的动作前缀和新动作块衔接。关于后者可继续阅读[实时动作分块文章]({{< relref "/posts/ai/real-time-chunking" >}})。
 
@@ -538,7 +541,7 @@ ACT 时间集成与 RTC 也不是同一个机制：这里融合重叠预测，RT
 | ACT 网络调用频率 | 约为 `f/M` | 1.5 次／秒 |
 | 机器人指令发送频率 | 约为 `f×N` | 60 次／秒 |
 
-相机采集频率是另一项硬件配置。即使每个控制周期都有新观测，队列未耗尽时也不会重新计算动作块。开启时间集成后，网络需要每个策略动作周期都预测一次，理想调用频率才接近 `f`。
+相机采集频率另由硬件配置。时间集成每个策略动作周期都重预测，理想网络调用频率为 `f`。
 
 本文版本的 `lerobot-rollout` 提供 `--interpolation_multiplier`。例如在 `--fps=30` 的基础上设置倍率 2，会在线性插值后以目标 60 Hz 发送机器人命令，同时保持 30 Hz 的策略动作时间尺度。它有助于细化发送节奏，但不会增加新的视觉决策，也不能代替降低模型推理延迟。[Rollout 配置](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/rollout/configs.py)
 
@@ -574,8 +577,6 @@ ACT 时间集成与 RTC 也不是同一个机制：这里融合重叠预测，RT
 | `optimizer_lr` / `optimizer_lr_backbone` | `1e-5` / `1e-5` | 主网络与视觉骨干学习率 |
 
 一个容易忽视的细节是 `n_decoder_layers=1`：源码注释解释，它是为了对齐原 ACT 实现中实际只生效第一层的行为。复现实验时，应区分论文设计、原始实现实际行为和 LeRobot 的配置，不能只从文字描述抄一个层数。[ACT 配置及校验](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/configuration_act.py)
-
-初次调试建议先确认默认配置的数据流，再单独调整 `n_action_steps` 或时间集成。若同时更换动作表示、图像尺寸、块长度和数据增强，即使成功率发生变化，也很难知道原因。
 
 ### 8.1 哪些参数可以复用同一份权重 {#checkpoint-config}
 
@@ -734,13 +735,15 @@ for index in sorted({0, len(dataset) - 1}):
         print(key, image.shape, image.dtype, "range:", (low, high))
 ```
 
-这里按索引取到的是帧样本，`len(dataset)` 也是帧数。对于完整、非空的轨迹，最后一帧在这个从偏移 0 开始的动作窗口中应只剩一个有效动作。首帧能否提供 100 个有效动作，则取决于第一条 episode 是否足够长。此处尚未调用策略的统计归一化处理器，因此 RGB 图像应为 `[3,H,W]` 浮点张量，值域在 `[0,1]`；归一化后的策略输入不再适用这个值域断言。
+`len(dataset)` 数帧。偏移从 0 开始，所以最后一帧只有一个有效动作；首帧能否提供 100 个则取决于 episode 长度。此时尚未做统计归一化，RGB 应为 `[3,H,W]`、值域 `[0,1]`；进入策略 Processor 后不再适用这个值域断言。
 
 padding 断言依据的是本例连续向未来取样的窗口：有效动作在前，越过 episode 末尾的部分在后。读取器会用边界帧填充越界位置，同时将它们标为 padding，不能通过“动作是否重复”判断有效性。[窗口与 padding 实现](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/datasets/dataset_reader.py)
 
-这两个采样点通过检查后，再扩展到各 episode 的起点、终点和若干中间帧。有限值与形状检查能发现 NaN、Inf 或接口不一致，但无法证明相机时间对齐、动作单位和关节顺序正确；这些仍需回放轨迹并对照采集配置。
+随后扩展到每条 episode 的首尾与中间帧；形状和有限值检查之外，时间、单位与关节顺序仍需通过回放及采集配置核对。
 
 这个例子也展示了时间偏移的单位：`delta_timestamps` 使用秒，`action_delta_indices` 使用帧索引。不要把 `[0, 1, 2]` 直接当成三帧的秒偏移传进去。
+
+接下来训练入口会把这份窗口与有效性标记交给 Processor 和损失函数；这里验证过的行号、单位及 episode 边界，正是前面公式中的 $a_{b,j,d}$ 与 $v_{b,j}$ 的来源。
 
 ### 9.4 启动一个 ACT 训练实验 {#train-act}
 
@@ -759,7 +762,7 @@ lerobot-train \
   --wandb.enable=false
 ```
 
-这里显式将执行步数改为 20，网络仍然预测并监督 100 步。`100000` 是实验训练步数示例，不代表收敛保证。首次运行建议先做短程试跑：保留上面的数据与策略参数，将下表对应参数替换为试跑值；试跑完成后，再使用正式实验的参数。
+命令预测并监督 100 步、队列执行 20 步。`100000` 是实验预算示例；首次运行先保留数据与策略参数，只用下表替换步数和输出位置，检查保存链路。
 
 | 参数 | 短程试跑 | 正式实验示例 |
 | --- | --- | --- |
@@ -827,7 +830,7 @@ lerobot-rollout \
 
 ### 9.6 加载模型与恢复训练有什么区别 {#resume-training}
 
-部署只需要预测所需的产物；完整断点恢复还依赖训练过程状态。
+模型产物能否支持恢复，取决于保存了哪一层状态：
 
 | 操作 | 需要恢复什么 | 实验含义 |
 | --- | --- | --- |

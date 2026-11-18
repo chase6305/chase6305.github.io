@@ -1,7 +1,7 @@
 ---
 title: "机器人滤波方法详解：从 Butterworth、One Euro 到位姿平滑与状态估计"
 date: 2026-09-25T03:14:26+08:00
-lastmod: 2026-11-09
+lastmod: 2026-11-13
 draft: false
 tags: ["Robotics", "Signal Processing", "Butterworth", "One Euro Filter", "Mass Spring Damper", "Weighted Moving Average", "Pose Filter", "Kalman Filter", "Teleoperation"]
 categories: ["机器人技术"]
@@ -22,7 +22,7 @@ related_posts:
   - "/posts/ai/molmo-motion"
 ---
 
-**机器人里没有一种滤波器能够同时消除所有噪声、保持零延迟、保留突变，并保证运动约束。** 选型的起点是弄清：这个信号来自哪里，什么变化是真实运动，什么变化是噪声，允许延迟多少，以及结果将进入哪条控制链。
+选择机器人滤波器，先确定信号来自哪里、要保留什么运动、允许多少延迟，以及输出进入哪条控制链。降噪、跟随突变与满足运动约束需要分别判断。
 
 手柄静止时末端抖动，可以考虑低通或 One Euro；编码器求导后速度噪声很大，需要合适的微分估计；关节存在窄带振动，可能应识别频率后设置陷波；视觉定位偶尔跳点，先要处理异常与重定位；轨迹不能超过速度、加速度和 jerk 限制，则需要轨迹生成器。它们都可能被写在 `filter` 工具目录中，却解决不同问题。
 
@@ -52,10 +52,12 @@ related_posts:
 
 <figure class="article-figure" id="fig-filter-map">
   {{< post-image src="assets/filter-map.png" alt="测量经时间单位坐标检查、降噪和状态估计进入控制器；目标经参考平滑和运动约束进入同一个控制器" >}}
-  <figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text"><strong>先确定滤波器位于哪条信号链。</strong>图中列出可选功能位置，并非要求每个机器人都串联所有模块；估计器也可能直接使用带噪测量。 <a href="assets/filter-map.png">查看原图</a></span></figcaption>
+  <figcaption><span class="article-figure__number">图 1</span><span class="article-figure__text">测量链与参考链中的可选处理位置。估计器也可直接使用带噪测量，图中模块不必全部串联。 <a href="assets/filter-map.png">查看原图</a></span></figcaption>
 </figure>
 
 ### 1.1 方法总览
+
+先用前面的四类用途缩小范围：“偶发定位跳变”先检查坏数据与重定位，“静止手柄抖动”再比较低通参数。表中 FIR 指有限脉冲响应，IIR 指无限脉冲响应；前者可由有限窗口加权实现，后者通过递归状态保留更长历史。后文以平均、One Euro、位姿与二阶动态为主例，其余家族用于定位专门问题。
 
 | 家族 | 典型方法 | 主要用途 | 主要代价或假设 |
 | --- | --- | --- | --- |
@@ -80,7 +82,7 @@ related_posts:
 | 约束与整形 | 限速器、死区、滞回、jerk 限制、输入整形 | 指令整形和运动约束 | 不能都解释成降噪滤波 |
 {.table-readable}
 
-这里“尽可能多”不意味着把全部方法串起来。一个典型链路可能只需要时间检查、一个异常门限和一个低阶滤波器。每多加一层，都应回答它针对哪一种可观察的问题。
+典型链路可能只需时间检查、异常门限和一个低阶滤波器；新增一层时，应能指出它解决的具体问题。
 
 ### 1.2 先记录信号契约
 
@@ -104,19 +106,19 @@ related_posts:
 
 考虑离散测量 $x_k=s_k+n_k$：真实信号为 $s_k$，噪声为 $n_k$，滤波输出为 $y_k$。如果只知道当前与过去的样本，一个突然变化既可能是噪声，也可能是真实运动开始。抑制它与立即跟随它之间存在取舍。
 
-对线性时不变滤波器，频率响应 $H(e^{j\omega})$ 同时包含幅值和相位。低通不仅降低高频幅值，还会改变不同频率成分的时间关系。群延迟定义为：
+对线性时不变滤波器，频率响应 $H(e^{j\omega})$ 同时包含幅值和相位；这里 $j$ 是虚数单位，$\omega$ 是离散角频率。相位说明每个正弦分量移动了多少角度，群延迟则由相位随频率的变化率得到：
 
 $$
 \tau_g(\omega)=-\frac{d\angle H(e^{j\omega})}{d\omega}.
 $$
 
-若 $\omega$ 以 rad/sample 表示，结果单位是采样点，再乘 $\Delta t$ 才是秒；若对连续角频率 rad/s 求导，结果直接是秒。不能把 `group_delay` 输出的“5”直接写成 5 ms。
+若 $\omega$ 以 rad/sample 表示，结果单位是采样点，再乘 $\Delta t$ 才是秒；若对连续角频率 rad/s 求导，结果直接是秒。群延迟描述相近频率成分的局部时间关系；它与一次阶跃要多久接近终值、程序计算耗时多久，是不同的量。
 
 ### 2.1 截止频率不是滤波器的“响应时间”
 
-一阶连续低通的时间常数为 $\tau=1/(2\pi f_c)$。例如 $f_c=5$ Hz，$\tau\approx31.8$ ms；从零跟随阶跃达到 95% 大约需要 $3\tau\approx95.5$ ms。这个关系属于一阶模型，不能照搬到任意阶数、阻尼比或自适应滤波器。
+一阶连续低通的时间常数为 $\tau=1/(2\pi f_c)$。从零跟随单位阶跃时，输出为 $1-e^{-t/\tau}$，到 $t=3\tau$ 时剩余误差约为 5%。因此，$f_c=5$ Hz 对应 $\tau\approx31.8$ ms，达到 95% 约需 $3\tau\approx95.5$ ms。高阶或自适应滤波器需要分析自己的响应。
 
-闭环也关心相位。纯延迟 $T_d$ 在频率 $f$ 引入的相位为 $-360fT_d$ 度。若交越频率约 10 Hz，额外 20 ms 延迟对应约 $-72^\circ$ 的相位变化。这个算例解释为什么反馈通道中过强的平滑可能让系统更容易振荡；实际稳定性还要结合完整环路分析。
+闭环还关心相位。纯延迟 $T_d$ 在频率 $f$ 引入 $-360fT_d$ 度相位；10 Hz 信号的周期为 100 ms，延迟 20 ms 就占一个周期的五分之一，对应 $-72^\circ$。若这发生在环路交越频率附近，稳定裕度可能明显下降。[第 13.4 节](#feedback-stability)会把滤波器纳入完整离散环路计算。
 
 ### 2.2 在线与离线是两种信息条件
 
@@ -162,7 +164,7 @@ T_{\mathrm{age}}&=\Delta t\sum_i i w_i,\\
 \end{aligned}
 $$
 
-以 $[0.4,0.3,0.2,0.1]$ 为例，平均年龄为一个采样周期，方差比为 $0.30$。它比四点等权平均的 1.5 个周期更偏重当前值，但降噪能力也略弱于后者的 $0.25$ 方差比。这里的延迟是低频近似，非对称 FIR 的群延迟一般不是全频率常数。
+以 $[0.4,0.3,0.2,0.1]$ 为例，样本年龄按权重平均为 $0\times0.4+1\times0.3+2\times0.2+3\times0.1=1$ 个采样周期；独立噪声的方差则按权重平方相加，得到 $0.4^2+0.3^2+0.2^2+0.1^2=0.30$。相比四点等权平均的 1.5 个周期和 $0.25$ 方差比，这组权重更及时，也保留更多噪声。年龄只解释低频跟随，非对称 FIR 的群延迟通常随频率变化。
 
 公开 [Unitree weighted moving filter](https://github.com/unitreerobotics/xr_teleoperate/blob/7dc9aa1a6edbf4a9f4f887d8ab6fc449ea5135f6/teleop/utils/weighted_moving_filter.py) 使用 `np.convolve`。卷积会翻转核的配对顺序：当数据队列从旧到新排列时，这组权重的第一个值实际乘最新样本。把它改成普通 `dot(weights, queue)` 而不调整顺序，就会得到相反的偏重。
 
@@ -176,7 +178,7 @@ $$
 y_k=\alpha x_k+(1-\alpha)y_{k-1}.
 $$
 
-$\alpha$ 越小，历史占比越大，输出通常越稳，跟随也越慢。白噪声条件下，稳态方差比为 $\alpha/(2-\alpha)$；低频延迟近似为 $(1-\alpha)\Delta t/\alpha$。
+展开递归，当前与更早样本的权重依次为 $\alpha$、$\alpha(1-\alpha)$、$\alpha(1-\alpha)^2$，所以小 $\alpha$ 会让历史衰减得更慢。忽略已衰减的初始化项，对独立白噪声把这些权重平方求和，便得到稳态方差比 $\alpha/(2-\alpha)$；按样本年龄加权求和，得到低频延迟 $(1-\alpha)\Delta t/\alpha$。这与 WMA 的两项计算遵循同一思路，只是历史窗口变成无限递减序列。
 
 把连续时间常数离散化，常见的两种系数是：
 
@@ -228,7 +230,7 @@ assert np.isclose(velocity, 1.0)
 
 ### 4.1 Butterworth：通带幅值平坦
 
-$n$ 阶模拟低通 Butterworth 的幅值满足：
+$n$ 阶模拟低通 Butterworth 的幅值满足下式，其中 $\Omega$ 是连续角频率，$\Omega_c$ 是截止角频率，单位均为 rad/s：
 
 $$
 |H(j\Omega)|^2=
@@ -252,7 +254,7 @@ sos = butter(order, cutoff, fs=200, output="sos")
 
 ### 4.2 在线运行的重点是保留状态
 
-下面的类按一维标量流运行，把第一条测量作为常值稳态初始化，避免从零状态产生无意义的启动拖尾。
+下面的类按一维标量流运行，采用二阶节（second-order sections，SOS）表示滤波器；第一条测量用于常值稳态初始化，避免零状态产生启动拖尾。
 
 ```python
 import numpy as np
@@ -323,7 +325,7 @@ Bessel 的 `norm="phase"`、`"delay"` 和 `"mag"` 不是同一种截止约定；
 
 <figure class="article-figure" id="fig-iir-frequency">
   {{< post-image src="assets/iir-frequency-delay.png" alt="四种四阶数字 IIR 的幅频响应与通带群延迟对照，相同设计频率下仍具有不同幅值和相位行为" >}}
-  <figcaption><span class="article-figure__number">图 2</span><span class="article-figure__text"><strong>幅值取舍与延迟取舍要一起看。</strong>采样率 200 Hz、阶数 4，设计参数为 5 Hz；Bessel 使用 mag 归一化，Chebyshev I 与 Elliptic 通带波纹设 1 dB，Elliptic 阻带衰减设 40 dB。这不是相同有效带宽下的排名。 <a href="assets/iir-frequency-delay.png">查看原图</a></span></figcaption>
+  <figcaption><span class="article-figure__number">图 2</span><span class="article-figure__text">四阶滤波器的幅值与群延迟，采样率 200 Hz，设计参数为 5 Hz。Bessel 使用 mag 归一化，Chebyshev I 与 Elliptic 通带波纹为 1 dB，Elliptic 阻带衰减为 40 dB；各曲线的有效带宽未对齐。 <a href="assets/iir-frequency-delay.png">查看原图</a></span></figcaption>
 </figure>
 
 ### 4.4 Notch：只针对确定的窄带成分
@@ -382,11 +384,11 @@ NaN、时间戳倒退、坐标系重置和视觉定位跳变，应作为事件�
 
 One Euro（1€）主要希望同时改善两个体验：静止时少抖动，快速移动时少拖尾。它不是预测未来，而是根据运动变化调节一阶低通的截止频率。[作者页面与调参说明](https://gery.casiez.net/1euro/)
 
-可以把它看成四步：估计变化率；低通变化率；根据其大小设置截止频率；用该频率滤波原信号。
+两条支路的职责不同：变化率支路选择带宽，信号支路产生平滑位置。记原始测量为 $x_k$，滤波值为 $\hat x_k$，相邻采集时刻之差为 $\Delta t_k$；$d_k$ 是变化率估计，$\hat d_k$ 是其低通结果。四步按以下顺序执行：
 
 <figure class="article-figure" id="fig-one-euro">
   {{< post-image src="assets/one-euro-adaptation.png" alt="One Euro 上支路估计并低通过滤变化率以选择截止频率，下支路用自适应增益平滑当前信号" >}}
-  <figcaption><span class="article-figure__number">图 3</span><span class="article-figure__text"><strong>速度决定放开多少带宽，当前测量仍是被滤波的信号。</strong>两条支路共享时间间隔，并保留上一时刻的滤波状态；图中变化率采用前一滤波值作为参照。 <a href="assets/one-euro-adaptation.png">查看原图</a></span></figcaption>
+  <figcaption><span class="article-figure__number">图 3</span><span class="article-figure__text">上支路估计变化率并调节增益，下支路平滑测量。两者共享时间间隔，变化率以前一滤波值为参照。 <a href="assets/one-euro-adaptation.png">查看原图</a></span></figcaption>
 </figure>
 
 $$
@@ -398,7 +400,7 @@ f_{c,k}&=f_{\min}+\beta|\hat d_k|,\\
 \end{aligned}
 $$
 
-这里使用[作者 Python 实现的固定版本](https://github.com/casiez/OneEuroFilter/blob/d78925584245597f2aa9c4c01a802eb0f0b77fb9/python/OneEuroFilter/OneEuroFilter.py)中的**前一滤波值**计算变化率；其他实现也有使用前一原始值的变体，数值行为会不同。$\alpha_d$ 由导数截止频率 $f_d$ 计算，$\alpha_k$ 由自适应的 $f_{c,k}$ 计算，采用 $\alpha=\Delta t/(\Delta t+1/(2\pi f_c))$。
+变化率分子使用[作者 Python 实现固定版本](https://github.com/casiez/OneEuroFilter/blob/d78925584245597f2aa9c4c01a802eb0f0b77fb9/python/OneEuroFilter/OneEuroFilter.py)中的**前一滤波值**，因此既反映新运动，也包含已有滤波滞后；换成前一原始值会改变行为。导数支路的 $\alpha_d$ 由固定 $f_d$ 决定，信号支路的 $\alpha_k$ 随 $f_{c,k}$ 变化，两者都使用后向 Euler 系数 $\alpha=\Delta t/(\Delta t+1/(2\pi f_c))$。
 
 ### 6.1 三个参数分别管什么
 
@@ -408,7 +410,7 @@ $$
 | $\beta$ | 速度上升时放开多少带宽 | 增大通常减少快速运动拖尾 |
 | $f_d$ | 变化率估计的反应速度 | 太低可能反应慢，太高可能被噪声带动 |
 
-先令 $\beta=0$，根据静止抖动和慢速跟随调整 $f_{\min}$；再做较快运动，逐步增加 $\beta$。最后检查停止、反向和异常跳点，因为“快时放开带宽”也可能让高速异常值更容易穿过。
+先令 $\beta=0$，隔离出一个固定参数的一阶低通，根据静止抖动和慢速跟随调整 $f_{\min}$。这个基线可用后，再做较快运动，逐步增加 $\beta$，观察动态拖尾是否改善。最后检查停止、反向和异常跳点，因为变化率支路也会对跳点作出响应，放开的带宽可能让异常更容易穿过。
 
 这里的截止参数通过一阶离散系数起作用，具有第 3 节所述的名义频率与实际带宽差异。启用速度自适应后，系数又随输入改变，整个滤波器不再是固定的线性时不变系统；一张固定频响图或一个常数群延迟，不能完整描述它在整段运动中的行为。
 
@@ -438,7 +440,7 @@ $$
 
 单位四元数 $q$ 与 $-q$ 表示相同旋转。若直接平均它们，可能得到零向量，归一化也无法修复。常见操作是在相邻四元数点积为负时翻转其中一个，使它们处于同一半球，再做最短弧插值。
 
-用旋转矩阵表示，同一个更新可以写成：
+用旋转矩阵表示，记当前测量为 $R_k$、上一滤波姿态为 $\hat R_{k-1}$。先求相对于上一滤波姿态的旋转，再沿它前进一部分：
 
 $$
 \begin{aligned}
@@ -447,7 +449,7 @@ r_k&=\operatorname{Log}(\hat R_{k-1}^{\top}R_k),\\
 \end{aligned}
 $$
 
-这里的 Log／Exp 在旋转群与其切空间之间转换，$\alpha_k$ 控制沿最短旋转走多远。这个公式没有对矩阵九个元素分别平均，因此输出仍是合法旋转。
+这里 Log 将相对旋转写成旋转向量 $r_k$：方向为转轴，长度为转角；Exp 将缩放后的向量变回旋转。$\alpha_k=0$ 时保持原姿态，$\alpha_k=1$ 时到达测量姿态，中间值沿最短弧插值。整个更新始终在旋转群上进行，输出仍是合法旋转。
 
 几何与误差状态的系统推导可参考 [Solà 的四元数与 ESKF 讲义](https://arxiv.org/abs/1711.02508)。实际代码还要统一四元数顺序：SciPy 默认是 `xyzw`，其他库可能采用 `wxyz`。
 
@@ -465,14 +467,14 @@ $$
 
 <figure class="article-figure" id="fig-pose-pipeline">
   {{< post-image src="assets/pose-filter-pipeline.png" alt="同一时间戳下，位置经三个标量 One Euro 更新，姿态经相对旋转、角速度尺度与 SO3 插值更新；平移和旋转分别使用自己的参数" >}}
-  <figcaption><span class="article-figure__number">图 4</span><span class="article-figure__text"><strong>同一个位姿，使用两种几何更新规则。</strong>图中对应本文的逐轴平移与旋转标量增益方案；旋转更新同时需要相对旋转向量和自适应增益。单位四元数自身无量纲，rad 表示旋转角与 Log 映射的尺度。 <a href="assets/pose-filter-pipeline.png">查看原图</a></span></figcaption>
+  <figcaption><span class="article-figure__number">图 4</span><span class="article-figure__text">逐轴平移与旋转标量增益方案。旋转更新结合相对旋转向量和自适应增益；单位四元数自身无量纲，rad 表示旋转角与 Log 映射的尺度。 <a href="assets/pose-filter-pipeline.png">查看原图</a></span></figcaption>
 </figure>
 
 接近 $180^\circ$ 的旋转具有最短路径方向歧义。若采样间真实转角可能超过半周，单靠相邻姿态无法恢复完整转动，需要更高采样率、陀螺仪或连续运动模型。
 
 <figure class="article-figure" id="fig-rotation-wrap">
   {{< post-image src="assets/rotation-wrap.png" alt="姿态经过正负 180 度边界时，直接平滑包裹角度产生大误差，旋转群上的低通沿短弧跟随" >}}
-  <figcaption><span class="article-figure__number">图 5</span><span class="article-figure__text"><strong>几何错误可能远大于噪声误差。</strong>两条平滑路径使用相同增益；输入四元数还故意逐帧交替正负号，表示的旋转保持不变。此处固定 β=0，隔离姿态几何问题。 <a href="assets/rotation-wrap.png">查看原图</a></span></figcaption>
+  <figcaption><span class="article-figure__number">图 5</span><span class="article-figure__text">相同增益下的包裹角度平滑与旋转群插值。输入四元数逐帧交替正负号，表示的旋转不变；固定 β=0，以隔离姿态几何问题。 <a href="assets/rotation-wrap.png">查看原图</a></span></figcaption>
 </figure>
 
 ## 8. Mass–spring–damper：把参考目标变成二阶动态 {#spring-damper}
@@ -483,7 +485,7 @@ $$
 M\ddot y+B\dot y+K(y-u)=0.
 $$
 
-$M$、$B$、$K$ 可以是为参考动态选择的虚拟参数，不必等于机器人真实质量、摩擦和刚度。将其归一化：
+$M$、$B$、$K$ 可以是为参考动态选择的虚拟参数。方程两边除以 $M$ 后，$\ddot y$ 的系数变成 1，另外两项的系数是 $B/M$ 和 $K/M$；将其分别写为 $2\zeta\omega_n$ 和 $\omega_n^2$，就得到常用的归一化参数与零初始状态传递函数：
 
 $$
 \begin{aligned}
@@ -494,9 +496,9 @@ $$
 \end{aligned}
 $$
 
-$\omega_n$ 是自然角频率，单位 rad/s；$f_n=\omega_n/(2\pi)$ 才是 Hz。$\zeta$ 是阻尼比：小于 1 时欠阻尼，等于 1 时临界阻尼，大于 1 时过阻尼。
+$\omega_n$ 是自然角频率，单位 rad/s；$f_n=\omega_n/(2\pi)$ 才是 Hz。$\zeta$ 是阻尼比：小于 1 时欠阻尼，等于 1 时临界阻尼，大于 1 时过阻尼。这里的 $s$ 是 Laplace 变量，$Y(s)$、$U(s)$ 是输出与输入的变换。
 
-调参考动态时，先选择 $f_n$ 与 $\zeta$ 往往更直观。例如取虚拟 $M=1$、$f_n=5$ Hz、$\zeta=1$，可得到 $K\approx986.96$、$B\approx62.83$。将三个参数同时乘以 2，归一化方程与输出完全不变；只改变 $M$，则自然频率和阻尼比都会变化。因此，不能脱离其他参数，仅凭“质量更大”判断滤波会变成怎样。
+调参考动态时，先选择 $f_n$ 与 $\zeta$ 往往更直观。例如取虚拟 $M=1$、$f_n=5$ Hz、$\zeta=1$，先算 $\omega_n=2\pi\times5$，再用 $K=M\omega_n^2$、$B=2\zeta M\omega_n$，得到 $K\approx986.96$、$B\approx62.83$。三个参数同时乘以 2，两个比值不变，响应也不变；单独改变 $M$ 时，频率和阻尼比都会变化。
 
 ### 8.1 临界阻尼不等于 Butterworth
 
@@ -518,7 +520,7 @@ $$
 
 这里的标准阶跃比较假定系统从静止出发。**已有速度时，临界阻尼也可能越过新目标。** 例如遥操作中突然停止或反向，滤波器保存的速度状态仍需要时间衰减；不能把阻尼比设为 1 就当成任意初始状态下的无超调保证。
 
-对于临界阻尼，从静止跟随幅度为 $\Delta u$ 的阶跃，连续模型的速度峰值是：
+临界阻尼从静止跟随幅度为 $\Delta u$ 的阶跃时，连续模型的速度为 $\dot y=\Delta u\,\omega_n^2t e^{-\omega_n t}$。对时间求导，峰值条件中出现 $1-\omega_n t=0$，即峰值发生于 $t=1/\omega_n$，代回得到：
 
 $$
 v_{\max}=\frac{|\Delta u|\omega_n}{e}.
@@ -528,7 +530,7 @@ $$
 
 <figure class="article-figure" id="fig-spring-response">
   {{< post-image src="assets/spring-damper-response.png" alt="相同自然频率下，阻尼比改变二阶系统的阶跃超调、衰减速度和负 3 dB 截止位置" >}}
-  <figcaption><span class="article-figure__number">图 6</span><span class="article-figure__text"><strong>自然频率与截止频率是不同参数。</strong>左图为自然频率 5 Hz、不同阻尼比下的零阶保持精确离散阶跃响应；右图为对应连续模型的归一化幅频响应。 <a href="assets/spring-damper-response.png">查看原图</a></span></figcaption>
+  <figcaption><span class="article-figure__number">图 6</span><span class="article-figure__text">左图为自然频率 5 Hz、不同阻尼比下的零阶保持精确离散阶跃响应；右图为对应连续模型的归一化幅频响应。 <a href="assets/spring-damper-response.png">查看原图</a></span></figcaption>
 </figure>
 
 ### 8.3 连续稳定不代表随便离散也稳定
@@ -581,7 +583,7 @@ r_k&=z_k-\hat p_k^-,\\
 \end{aligned}
 $$
 
-它比直接位置低通多了一条速度状态。α–β–γ 再引入加速度状态，适合希望以较低计算量追踪运动目标的场景。但固定增益依赖采样率与运动假设，转弯、加速和离群点仍可能让预测变差；这里的 $\beta$ 也不是 One Euro 的同名参数。
+上标 $-$ 表示尚未使用本次测量的预测，$r_k$ 是测量减预测的残差。同一位置残差以 $\alpha$ 校正位置、以 $\beta/\Delta t$ 校正速度；后一项除以时间，才有速度单位。α–β–γ 进一步加入加速度状态。固定增益仍依赖采样率与运动假设，这里的 $\beta$ 也不同于 One Euro 的速度增益。
 
 ### 9.2 互补滤波：让不同传感器负责不同频段
 
@@ -603,7 +605,7 @@ Mahony 与 Madgwick 都属于常见的姿态融合方法：前者利用姿态误
 
 ### 9.3 Kalman Filter：增益来自不确定性
 
-线性 Kalman Filter 的模型为：
+线性 Kalman Filter 用状态向量 $x_k$ 表示待估计的位置、速度等量，测量向量为 $z_k$；$F_k$ 传播状态，$H_k$ 将状态映射到传感器所测的量。模型写成：
 
 $$
 \begin{aligned}
@@ -612,18 +614,18 @@ z_k&=H_kx_k+v_k.
 \end{aligned}
 $$
 
-其中 $Q$ 描述过程噪声协方差，$R$ 描述测量噪声协方差。预测传播状态与协方差，测量更新再根据两者的不确定性分配权重。
+这里 $x_k$ 是状态向量，区别于前文低通中的原始标量输入；$w_k$、$v_k$ 分别为过程噪声与测量噪声，协方差为 $Q$、$R$。每次先用模型传播状态与不确定性，再根据新测量残差及双方不确定性计算校正增益。
 
 通常，增大 $R$ 会降低对该测量的信任，增大 $Q$ 会增加对运动模型的怀疑。但“把 Q 调大就一定更平滑”是错误理解；它常常使更新更愿意跟随测量。滤波效果还取决于模型是否包含速度、偏置等状态。
 
-对一维常速度模型，$F=\begin{bmatrix}1&\Delta t\\0&1\end{bmatrix}$。过程噪声建模还要区分两种常见假设：
+对一维常速度状态 $x=[p,v]^\top$，$F=\begin{bmatrix}1&\Delta t\\0&1\end{bmatrix}$：位置增加 $v\Delta t$，速度保持不变。未建模的加速度通过过程噪声引入，但下面两种假设会产生不同的 $Q$：
 
 | 噪声假设 | 离散过程噪声协方差 |
 | --- | --- |
 | 每个区间内随机常值加速度，方差 $\sigma_a^2$ | $Q=\sigma_a^2 GG^\top$，$G=[\Delta t^2/2,\Delta t]^\top$ |
 | 连续白加速度，谱密度 $q_a$ | $Q=q_a\begin{bmatrix}\Delta t^3/3&\Delta t^2/2\\\Delta t^2/2&\Delta t\end{bmatrix}$ |
 
-两者参数的单位和采样间隔幂次不同，不能复制一个 Q 矩阵后只换采样率而不检查假设。
+第一行把同一个随机加速度保持整个区间，位置与速度增量分别是 $a\Delta t^2/2$ 和 $a\Delta t$，所以协方差是 $\sigma_a^2GG^\top$。第二行的加速度在连续时间上为白噪声，积分后才得到表中的各项。$\sigma_a^2$ 与谱密度 $q_a$ 的单位不同，不能直接互换或只改采样率。
 
 单位改变也会改变协方差。位置观测从米换成毫米，位置测量方差应乘 $10^6$；更一般地，状态改写为 $x'=Dx$ 时，协方差变为 $P'=DPD^\top$，过程模型和观测模型也要同步变换。保持数字不变、只改变量后缀，会改变估计器的实际信任关系。
 
@@ -749,7 +751,7 @@ $$
 
 滤波器自身的极点稳定，也不意味着加上它之后的反馈闭环稳定。[第 13.4 节](#feedback-stability)把同一个低通分别放在测量反馈和参考输入处，直接比较整个离散系统的极点。
 
-串联还会改变噪声的统计结构。独立白噪声经过 EMA 后，稳态相邻输出的相关系数为 $1-\alpha$；当 $\alpha=0.1$ 时，这个相关系数就是 0.9。若再把这些输出交给假定测量噪声时间独立的 Kalman Filter，仅减小 R 不能完整表达变化；应考虑原始测量、已有滤波动态与创新序列的相关性。更平滑的多个样本，不一定提供更多独立信息。
+串联还会改变噪声统计。EMA 相邻输出共享历史状态，因此独立白噪声输入的稳态相邻输出相关系数为 $1-\alpha$；$\alpha=0.1$ 时就是 0.9。若后级 Kalman Filter 仍假设每次测量噪声相互独立，只减小 $R$ 会遗漏这种相关性；需要把已有滤波动态纳入信息模型，或直接使用原始测量。
 
 ### 12.5 用任务指标验收
 
@@ -778,7 +780,7 @@ $$
 | 大臂或柔性负载残余振动 | 随姿态／负载变化的模态 | 模态识别后的输入整形或陷波 | 停稳时间、频率失配、任务节拍 |
 {.table-readable}
 
-例如，30 Hz 视觉定位发来一个目标，500 Hz 控制周期在下一帧前会多次读取同一目标。可以在测量到达时更新位置估计，再在控制时刻预测或推进参考动态；也可以明确定义目标的零阶保持。两条路径都需要记录测量年龄。把同一帧重复塞进“按新测量更新”的统计队列，会悄悄改变窗口和置信度。
+对前述 30 Hz 视觉、500 Hz 控制链，可以只在新测量到达时校正状态，在控制时刻预测或推进参考动态；也可以将目标定义为零阶保持。关键是区分“重复使用旧测量”和“收到新观测”，前者不能反复增加统计信息。
 
 如果使用 ROS 的插件链，配置文件里的顺序就是信号处理顺序。ROS `filters` 提供均值、中值和传递函数等组件以及统一链式接口，但不会替应用决定时间戳、坐标系和状态重置语义。配置时同时记录插件版本、系数、初始化方式和链路顺序，才能从日志还原输出。[ROS filters 文档](https://docs.ros.org/en/rolling/p/filters/)
 
@@ -805,10 +807,10 @@ python -B robot_filters_lab.py --output-dir filter-lab-output
 
 <figure class="article-figure" id="fig-tracking-tradeoff">
   {{< post-image src="assets/tracking-tradeoff.png" alt="合成位置测量经四点加权平均、Butterworth、One Euro 与临界阻尼处理后的全程、静止和运动开始局部对照" >}}
-  <figcaption><span class="article-figure__number">图 7</span><span class="article-figure__text"><strong>静止抖动与运动滞后要同时验收。</strong>这些曲线使用下表中的示例参数；WMA 更偏重最新样本，其他三种设置的静止抖动更小，但运动开始时响应不同。 <a href="assets/tracking-tradeoff.png">查看原图</a></span></figcaption>
+  <figcaption><span class="article-figure__number">图 7</span><span class="article-figure__text">下表默认参数对应的全程、静止段与运动开始局部曲线。WMA 保留更多静止抖动，其他三种设置的动态响应也各不相同。 <a href="assets/tracking-tradeoff.png">查看原图</a></span></figcaption>
 </figure>
 
-下表的静止标准差统计 0.8–1.8 s 区间；等效滞后用 2.5–3.5 s 匀速段的平均位置差除以速度得到。它是该段的跟随统计，不能视为整个滤波器的全频率固定延迟。
+下表的静止标准差统计 0.8–1.8 s 区间；等效滞后则把 2.5–3.5 s 匀速段的平均跟随误差，按 $T_{\mathrm{eq}}=\operatorname{mean}(s-y)/v$ 换算成时间，$s$ 为真实位置，$y$ 为输出，$v=0.2$ m/s。它回答“这段匀速运动平均落后多久”，与第 2 节按频率定义的群延迟不同，也会受静态偏差和有限样本噪声影响。
 
 | 示例设置 | 静止标准差／mm | 匀速等效滞后／ms |
 | --- | ---: | ---: |
@@ -818,7 +820,7 @@ python -B robot_filters_lab.py --output-dir filter-lab-output
 | One Euro，最低 1 Hz，β=4 | 0.699 | 24.608 |
 | 临界阻尼，自然频率 5 Hz | 0.835 | 65.023 |
 
-逐项数值可下载 [默认参数统计 JSON](assets/filter-lab-results.json)。原始测量出现微小负值，是有限样本噪声造成的平均位置偏差，**不是传感器预知未来**。不同示例没有强制对齐带宽或噪声输出，因此这张表用于解释取舍，不是算法排名。换任务速度、噪声分布或参数，排序就可能改变。
+逐项数值见[默认参数统计 JSON](assets/filter-lab-results.json)。原始测量的负滞后来自该有限片段的平均噪声偏差。各行参数未对齐带宽或输出噪声，表中比较的是这些具体设置的取舍，不能据此给整个算法家族排序。
 
 ### 13.2 脚本还验证什么
 
@@ -839,7 +841,7 @@ python -B robot_filters_lab.py --output-dir filter-lab-output
 
 <figure class="article-figure" id="fig-parameter-tradeoff">
   {{< post-image src="assets/parameter-tradeoff.png" alt="同一合成信号上五条参数扫描曲线对照静止标准差与匀速等效滞后，并放大一毫米抖动附近的区间" >}}
-  <figcaption><span class="article-figure__number">图 8</span><span class="article-figure__text"><strong>一个算法对应一组取舍，而不是一个固定分数。</strong>每个点是一组实际计算的参数；虚线是 1 mm 静止标准差预算，不是位置误差上限。曲线连接用于观察趋势，未计算的参数仍需单独验证。 <a href="assets/parameter-tradeoff.png">查看原图</a></span></figcaption>
+  <figcaption><span class="article-figure__number">图 8</span><span class="article-figure__text">每个点对应一组已计算参数，连线仅显示趋势。虚线为 1 mm 静止标准差预算，约束的是抖动幅度，位置偏差另行统计。 <a href="assets/parameter-tradeoff.png">查看原图</a></span></figcaption>
 </figure>
 
 假设只把“该静止段标准差不超过 1 mm”作为第一道筛选，再从每条曲线的已扫描点中选匀速滞后较小的一点，会得到下面的例子。完整记录可下载 [filter-parameter-sweep.json](assets/filter-parameter-sweep.json)。
@@ -858,26 +860,32 @@ python -B robot_filters_lab.py --output-dir filter-lab-output
 
 ### 13.4 更强的低通，可能让原本稳定的反馈环失稳 {#feedback-stability}
 
-前面的抖动实验把信号作为已给定的输入。现在让滤波输出参与控制，从而反过来改变下一次测量。取质量–弹簧–阻尼对象
+前面的抖动实验把信号作为已给定的输入。现在让滤波输出参与控制，控制力又改变下一次测量。取质量–弹簧–阻尼对象，$q$ 为实际位置，$u$ 为控制力；此处小写 $m,b,k$ 是被控对象的物理参数，区别于第 8 节参考平滑的虚拟参数：
 
 $$
-m\ddot q+b\dot q+kq=u,
-\qquad m=1\ \mathrm{kg},\quad b=2\ \mathrm{N\,s/m},\quad k=4\ \mathrm{N/m}.
+\begin{aligned}
+m\ddot q+b\dot q+kq&=u,\\
+m&=1\ \mathrm{kg},\\
+b&=2\ \mathrm{N\,s/m},\\
+k&=4\ \mathrm{N/m}.
+\end{aligned}
 $$
 
 采样周期 $h=5$ ms，每次采样立即计算控制量，并在下一个采样区间保持不变。对象用 [SciPy `cont2discrete` 的零阶保持方法](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.cont2discrete.html)精确离散化；没有另外加入一拍计算延迟。控制器采用 $K_p=80$ N/m、$K_d=4$ N·s/m，对**滤波后的测量**做后向差分：
 
 $$
 \begin{aligned}
-\bar q_k&=\bar q_{k-1}+\alpha(q_k-\bar q_{k-1}),
-&\alpha&=1-e^{-2\pi f_c h},\\
-u_k&=K_p(r_k-\bar q_k)-K_d\frac{\bar q_k-\bar q_{k-1}}{h}.
+\bar q_k&=\bar q_{k-1}\\
+&\quad+\alpha(q_k-\bar q_{k-1}),\\
+\alpha&=1-e^{-2\pi f_c h},\\
+u_k&=K_p(r_k-\bar q_k)\\
+&\quad-K_d\frac{\bar q_k-\bar q_{k-1}}{h}.
 \end{aligned}
 $$
 
-这里 $f_c$ 是指数离散化的频率参数，数字 −3 dB 点的区别见第 3 节；“无测量低通”对应 $\alpha=1$，仍保留后向差分。它与 [PID 文章]({{< relref "/posts/pid" >}})中只对导数单独滤波的结构不同，不能直接交换两套结果。
+这里 $r_k$ 是参考位置，$\bar q_k$ 是低通后的测量；它既进入比例误差，也用于计算差分速度。$f_c$ 是第 3 节所述指数离散化频率参数；“无测量低通”令 $\alpha=1$，仍保留后向差分。该结构区别于 [PID 文章]({{< relref "/posts/pid" >}})中只滤波导数的方案。
 
-令 $r=0$，增广状态取 $z_k=[q_k,\dot q_k,\bar q_{k-1}]^\top$，即可得到 $z_{k+1}=Fz_k$。在这个有限维线性离散模型中，全部极点严格位于单位圆内，即谱半径 $\rho(F)<1$，才有渐近稳定性。脚本既按“滤波→控制→对象”逐步计算，也按增广矩阵更新，核对两者一致。
+令 $r=0$，将对象位置、速度与上一滤波值一起作为状态 $z_k=[q_k,\dot q_k,\bar q_{k-1}]^\top$。保留第三项，下一步才能同时重建低通与差分；组合更新便得到 $z_{k+1}=Fz_k$。其谱半径 $\rho(F)$ 是全部特征值模的最大值：小于 1 时每种自由响应都会衰减，大于 1 时至少有一种模式增长。脚本用逐步计算和增广矩阵两种写法核对同一模型。
 
 | 测量反馈低通 | 滤波器单独处理白噪声时的标准差比 | 闭环最大极点模 | 本模型的结果 |
 | --- | ---: | ---: | --- |
@@ -886,11 +894,11 @@ $$
 | 2 Hz | 0.1772 | 0.999190 | 稳定，但衰减很慢 |
 | 1 Hz | 0.1253 | 1.003462 | 不稳定 |
 
-第二列是独立白噪声经过该一阶递归滤波器后的稳态解析比值 $\sqrt{\alpha/(2-\alpha)}$，**不是闭环位置噪声的比值**。它说明滤波器自身确实更能压低白噪声，同时整个反馈系统却可能失稳。所有这些低通自身的极点 $1-\alpha$ 都位于单位圆内。
+第二列只把独立白噪声送入低通，使用第 3 节的方差比开方，得到标准差比 $\sqrt{\alpha/(2-\alpha)}$；它没有把对象与控制器闭合。第三列才判断整个反馈系统。1 Hz 行在独立降噪上最强，却有闭环极点越出单位圆；低通自身的极点 $1-\alpha$ 仍在圆内。
 
 <figure class="article-figure" id="fig-feedback-stability">
   {{< post-image src="assets/feedback-filter-stability.png" alt="左侧显示一毫米初始偏差在不同测量低通下的自由响应，一赫兹反馈低通出现增长振荡；右侧比较滤波位于反馈或参考输入时的闭环最大极点模" >}}
-  <figcaption><span class="article-figure__number">图 9</span><span class="article-figure__text"><strong>滤波位置改变了系统的动态关系。</strong>左图没有测量噪声，初始速度为零，滤波状态与 1 mm 初始位置一致；振荡增长并非由启动微分冲击造成。右图虚线将低通移到参考输入，保留原来的位置反馈与差分。所有曲线来自下方脚本。</span></figcaption>
+  <figcaption><span class="article-figure__number">图 9</span><span class="article-figure__text">左图无测量噪声，初始速度为零，滤波状态与 1 mm 初始位置一致，排除了启动微分冲击。右图虚线将低通移到参考输入，保留原位置反馈与差分；曲线来自下方脚本。</span></figcaption>
 </figure>
 
 如果只把低通放在外部参考 $r$ 上，反馈仍使用原始 $q$ 与其后向差分，增广系统在本例中呈分块三角结构：极点是原闭环极点与参考滤波器极点的并集。1 Hz 参考滤波时最大极点模仍为约 0.985326，稳定但改变了参考跟随；它也没有抑制测量噪声。这个结论依赖这里的线性、单向参考串联结构，不能直接推广到含饱和、模式切换或参考生成器读取反馈的系统。

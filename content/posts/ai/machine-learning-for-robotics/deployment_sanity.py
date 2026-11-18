@@ -99,14 +99,50 @@ def check():
     import random
     population = [0.,0.,1.,1.]
     for predicted in [population,[1-x for x in population],[.2+.6*x for x in population],[.7]*4]:
-        estimates=[]
-        for indices in product(range(4),repeat=4):
-            a,b,c,d=indices
-            estimates.append(ppi_pooled([population[a],population[b]],[predicted[a],predicted[b]],[predicted[c],predicted[d]]))
-        mean=average(estimates)
-        var=average((x-mean)**2 for x in estimates)
-        assert abs(mean-.5)<1e-13
-        assert abs(var-pooled_variance(population,predicted,2,2))<1e-13
+        # Enumerate actual estimator values, independently of the variance
+        # formula, at unequal paired/additional counts as well as equal counts.
+        for n, extra in ((1, 2), (2, 1), (2, 2), (2, 3)):
+            estimates=[]
+            for indices in product(range(4), repeat=n+extra):
+                paired, additional = indices[:n], indices[n:]
+                estimates.append(ppi_pooled(
+                    [population[i] for i in paired],
+                    [predicted[i] for i in paired],
+                    [predicted[i] for i in additional],
+                ))
+            mean=average(estimates)
+            var=average((x-mean)**2 for x in estimates)
+            assert abs(mean-.5)<1e-13
+            assert abs(var-pooled_variance(population,predicted,n,extra))<1e-13
+
+    # Positive correlation alone is insufficient. These equiprobable binary
+    # joint populations have Var(F)=1/4 and Cov(Y,F)=1/16 or 1/8 respectively.
+    weak_y = [0.]*8+[1.]*8
+    weak_f = [0.]*5+[1.]*3+[0.]*3+[1.]*5
+    boundary_y = [0.]*4+[1.]*4
+    boundary_f = [0.]*3+[1.,0.]+[1.]*3
+    for y, f, covariance in ((weak_y, weak_f, 1/16),
+                              (boundary_y, boundary_f, 1/8)):
+        # Small complete draws check the two nontrivial covariance cases
+        # without assuming the simplified expression under examination.
+        for extra in (1, 2):
+            estimates = []
+            for indices in product(range(len(y)), repeat=1+extra):
+                estimates.append(ppi_pooled(
+                    [y[indices[0]]], [f[indices[0]]],
+                    [f[i] for i in indices[1:]],
+                ))
+            observed_mean = average(estimates)
+            observed_variance = average((v-observed_mean)**2 for v in estimates)
+            weight = extra/(1+extra)
+            simplified = .25+weight*(.25-2*covariance)
+            assert abs(observed_mean-.5) < 1e-13
+            assert abs(observed_variance-simplified) < 1e-13
+        variances = [pooled_variance(y, f, 2, extra) for extra in (1, 3, 9, 90)]
+        if covariance < 1/8:
+            assert all(a < b for a, b in zip(variances, variances[1:]))
+        else:
+            assert all(abs(v-.125) < 1e-14 for v in variances)
     assert abs(pooled_variance(population,population,2,2)-.0625)<1e-14
     assert abs(pooled_variance(population,[1-x for x in population],2,2)-.3125)<1e-14
     assert .3125 > .25/2

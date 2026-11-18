@@ -1,0 +1,446 @@
+{
+  "reviewed_on": "2026-11-12",
+  "baseline_commit": "814f14b373281bd3e958ac7db207c6aa36f37333",
+  "scope": "2026-09-12起引入的36篇文章，以及当天发表的Light-Loco-Parkour：共37篇；正文理解路径、进阶练习、重复自测与关键技术口径",
+  "articles": [
+    {
+      "path": "content/posts/ai/behavior-prompting/index.md",
+      "headings": 20,
+      "code_blocks": 0,
+      "metadata_anchors_code": "unchanged",
+      "changes": "以画线任务贯穿提示、观测与动作，补固定示范预算和交换提示的实验。"
+    },
+    {
+      "path": "content/posts/ai/card-retargeting/index.md",
+      "headings": 23,
+      "code_blocks": 1,
+      "metadata_anchors_code": "unchanged",
+      "changes": "解释接触点内外层优化与力反馈，修正整组接触损失的力权重。"
+    },
+    {
+      "path": "content/posts/ai/cosmos3/index.md",
+      "headings": 59,
+      "code_blocks": 2,
+      "metadata_anchors_code": "unchanged",
+      "changes": "从注意力矩阵解释缓存依赖，区分物理时间与去噪坐标，补动作/视频配对记录。"
+    },
+    {
+      "path": "content/posts/ai/foundations-modern-ai/index.md",
+      "headings": 36,
+      "code_blocks": 0,
+      "metadata_anchors_code": "unchanged",
+      "changes": "澄清码长与可计算性，补编码账目，合并重复自测为情境题。"
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/index.md",
+      "headings": 55,
+      "code_blocks": 22,
+      "metadata_anchors_code": "unchanged",
+      "changes": "串联请求、动作和新观测，分开评分与延迟，补候选快照配对表。"
+    },
+    {
+      "path": "content/posts/ai/last-action-tokenizer/index.md",
+      "headings": 34,
+      "code_blocks": 2,
+      "metadata_anchors_code": "unchanged",
+      "changes": "按坐标、时间和统计尺度进入方法，解释控制点并非执行路点，分阶段定位误差。"
+    },
+    {
+      "path": "content/posts/ai/lerobot-act/index.md",
+      "headings": 57,
+      "code_blocks": 13,
+      "metadata_anchors_code": "unchanged",
+      "changes": "补先验/后验与KL直觉，强调单样本语义链，折叠多卡分母细节。"
+    },
+    {
+      "path": "content/posts/ai/light-loco-parkour/index.md",
+      "headings": 58,
+      "code_blocks": 11,
+      "metadata_anchors_code": "unchanged",
+      "changes": "解释单触发点奖励，按训练阶段区分损失与样本，补选择性reset记录。"
+    },
+    {
+      "path": "content/posts/ai/llm-training-metrics/index.md",
+      "headings": 53,
+      "code_blocks": 6,
+      "metadata_anchors_code": "unchanged",
+      "changes": "降低前置门槛，补单位置NLL与加权汇总，串联资源账本、指标协议与逐题对照。"
+    },
+    {
+      "path": "content/posts/ai/machine-learning-for-robotics/index.md",
+      "headings": 36,
+      "code_blocks": 3,
+      "metadata_anchors_code": "unchanged",
+      "changes": "围绕一次任务失败进入系统分工，补二元PPI校正直觉和交接诊断。"
+    },
+    {
+      "path": "content/posts/ai/molmo-motion/index.md",
+      "headings": 56,
+      "code_blocks": 4,
+      "metadata_anchors_code": "unchanged",
+      "changes": "明确缓存、单样本推理、留出评估的递进产物，追踪同一点身份与时间索引。"
+    },
+    {
+      "path": "content/posts/ai/morphmimic/index.md",
+      "headings": 31,
+      "code_blocks": 1,
+      "metadata_anchors_code": "unchanged",
+      "changes": "区分状态零位与动作默认姿态、跨机与跨接口配对，沿计算图核对梯度归属。"
+    },
+    {
+      "path": "content/posts/ai/multiview-geometry/index.md",
+      "headings": 29,
+      "code_blocks": 2,
+      "metadata_anchors_code": "unchanged",
+      "changes": "用桌角贯穿对应、三维位置与验收，区分尺度拟合与独立长度检查。"
+    },
+    {
+      "path": "content/posts/ai/muon-learning-rate-batch-size/index.md",
+      "headings": 32,
+      "code_blocks": 3,
+      "metadata_anchors_code": "unchanged",
+      "changes": "解释平均方向、谱近似与曲率条件，连接局部步长、训练预算和衰减目标。"
+    },
+    {
+      "path": "content/posts/ai/muon-optimizer/index.md",
+      "headings": 31,
+      "code_blocks": 8,
+      "metadata_anchors_code": "unchanged",
+      "changes": "逐行解释更新符号，连接尺寸因子与元素RMS，按中间量定位一步更新差异。"
+    },
+    {
+      "path": "content/posts/ai/pion-muon-vla-rlvr/index.md",
+      "headings": 53,
+      "code_blocks": 16,
+      "metadata_anchors_code": "unchanged",
+      "changes": "拆开有效秩、SNR、更新幅度和信号对齐，串联标量、矩阵与有状态更新。"
+    },
+    {
+      "path": "content/posts/ai/residual-reinforcement-learning/index.md",
+      "headings": 32,
+      "code_blocks": 1,
+      "metadata_anchors_code": "unchanged",
+      "changes": "统一两种critic动作记账，补动作账本，纠正奖励和Euler递推口径。"
+    },
+    {
+      "path": "content/posts/ai/rlhf-rlvr-rlcd/index.md",
+      "headings": 16,
+      "code_blocks": 0,
+      "metadata_anchors_code": "unchanged",
+      "changes": "用同一请求审计反馈，连接评分器与策略更新，精简为8项诊断自测。"
+    },
+    {
+      "path": "content/posts/ai/rma-umi-rtc-deployment/index.md",
+      "headings": 38,
+      "code_blocks": 4,
+      "metadata_anchors_code": "unchanged",
+      "changes": "补上下文版本、引导求导与重锚点交接，按单接口到组合任务推进验证。"
+    },
+    {
+      "path": "content/posts/ai/rrsi/index.md",
+      "headings": 45,
+      "code_blocks": 5,
+      "metadata_anchors_code": "unchanged",
+      "changes": "区分任务恢复与外层程序搜索，复算候选资格与赢家，独立记录部署成本。"
+    },
+    {
+      "path": "content/posts/ai/stable-hand/index.md",
+      "headings": 21,
+      "code_blocks": 0,
+      "metadata_anchors_code": "unchanged",
+      "changes": "用遮挡分量进入质量信号，补分位阈值代入，分别诊断候选、质量与生成轨迹。"
+    },
+    {
+      "path": "content/posts/ai/supermimic/index.md",
+      "headings": 49,
+      "code_blocks": 4,
+      "metadata_anchors_code": "unchanged",
+      "changes": "解释跨步梯度与actor/critic计算图，按控制变量使用现有交互算例。"
+    },
+    {
+      "path": "content/posts/ai/ultralytics/index.md",
+      "headings": 39,
+      "code_blocks": 20,
+      "metadata_anchors_code": "unchanged",
+      "changes": "先分原始预测、解码与筛选，再用坐标往返定位画框偏移。"
+    },
+    {
+      "path": "content/posts/ai/vflash/index.md",
+      "headings": 20,
+      "code_blocks": 0,
+      "metadata_anchors_code": "unchanged",
+      "changes": "明确VLM、草拟网络与动作模型三角色，串起十路点计划的生成与回填。"
+    },
+    {
+      "path": "content/posts/ai/video-to-data/index.md",
+      "headings": 51,
+      "code_blocks": 17,
+      "metadata_anchors_code": "unchanged",
+      "changes": "解释support投影，沿数值来源、字段与时刻串联专家标签和GR00T监督。"
+    },
+    {
+      "path": "content/posts/ai/vision-transformers/index.md",
+      "headings": 44,
+      "code_blocks": 2,
+      "metadata_anchors_code": "unchanged",
+      "changes": "分清骨干、目标与任务头，设置分阶段练习产物，合并重复自测并逐项作答。"
+    },
+    {
+      "path": "content/posts/ai/vla-evolution/index.md",
+      "headings": 100,
+      "code_blocks": 9,
+      "metadata_anchors_code": "unchanged",
+      "changes": "重整阅读主线，对照动作表示、生成与监督，串联训练、生成和执行时钟。"
+    },
+    {
+      "path": "content/posts/ai/vla-survey/index.md",
+      "headings": 57,
+      "code_blocks": 1,
+      "metadata_anchors_code": "unchanged",
+      "changes": "把组件比较变成有条件的实验记录，限定定位探针与候选反事实，补接口/证据对照。"
+    },
+    {
+      "path": "content/posts/ai/vla-world-model-data/index.md",
+      "headings": 69,
+      "code_blocks": 3,
+      "metadata_anchors_code": "unchanged",
+      "changes": "先定义监督语义再选采集设备，以同一日志对照三种目标，补标签与预算匹配路径。"
+    },
+    {
+      "path": "content/posts/ai/weight-space-programming/index.md",
+      "headings": 28,
+      "code_blocks": 1,
+      "metadata_anchors_code": "unchanged",
+      "changes": "串联可构造、非唯一表示与编辑效果，补非轴向投影算例。"
+    },
+    {
+      "path": "content/posts/calibration/interactive-contact-calibration/index.md",
+      "headings": 35,
+      "code_blocks": 1,
+      "metadata_anchors_code": "unchanged",
+      "changes": "先讲权重机制再核对原文参数差异，统一自测坐标记号。"
+    },
+    {
+      "path": "content/posts/calibration/omnicalib/index.md",
+      "headings": 34,
+      "code_blocks": 2,
+      "metadata_anchors_code": "unchanged",
+      "changes": "解释Jacobian列、和/差激励与干扰消元，纠正独立参考和Base的自测口径。"
+    },
+    {
+      "path": "content/posts/planner/tampagent/index.md",
+      "headings": 27,
+      "code_blocks": 1,
+      "metadata_anchors_code": "unchanged",
+      "changes": "以几何、抓法、构型、路径串联两种图，按依赖关系处理证据失效。"
+    },
+    {
+      "path": "content/posts/planner/task-and-motion-planning/index.md",
+      "headings": 52,
+      "code_blocks": 14,
+      "metadata_anchors_code": "unchanged",
+      "changes": "先解释模式和H-CSP记号，再连接IK候选、失败证据与三组独立算例。"
+    },
+    {
+      "path": "content/posts/robotics/control/robot-filters/index.md",
+      "headings": 64,
+      "code_blocks": 6,
+      "metadata_anchors_code": "unchanged",
+      "changes": "按症状选方法，解释One Euro双支路与基线调参，补Kalman预测/校正直觉。"
+    },
+    {
+      "path": "content/posts/robotics/cuarms/index.md",
+      "headings": 31,
+      "code_blocks": 2,
+      "metadata_anchors_code": "unchanged",
+      "changes": "分开路网、模式掩码与跨臂冲突，区分PIBT一步协调和LaCAM后继搜索。"
+    },
+    {
+      "path": "content/posts/robotics/curobo-v2-fast/index.md",
+      "headings": 35,
+      "code_blocks": 4,
+      "metadata_anchors_code": "unchanged",
+      "changes": "补链式法则、路径弯曲与动力学系数直觉，纠正抓放周期解释。"
+    }
+  ],
+  "editorial_changes": [
+    "保留全部原有标题、章节锚点、发布时间、草稿状态与代码；只更新lastmod。",
+    "为公式补直觉和小算例，把输入输出、训练与推理、表示与执行的交接写清楚。",
+    "将进阶建议改成可检查的产物或控制变量实验，收窄无法直接观测或不能由现有证据推出的判断。",
+    "现代AI基础自测由20项合并为9项情境题；后训练路线由12项合并为8项；视觉Transformer合并重复自测并逐项作答。",
+    "AI与具身专题调整建议顺序，学习路线页新增按目标进入的四条短路径；专题ID与文章成员保持。",
+    "ACT多卡分母和数据混采权重的既有长推导改为原生details，保留可见标题与全部推导。"
+  ],
+  "technical_corrections": [
+    {
+      "article": "card-retargeting",
+      "change": "rho平方覆盖整组接触损失，包含时间稳定项。",
+      "source": "https://arxiv.org/html/2610.36539v1#S3.E3",
+      "evidence": "v1原始HTML/TeX；未声称本轮核对完整PDF"
+    },
+    {
+      "article": "residual-reinforcement-learning",
+      "change": "真机密集奖励与人工判定成功率分开；离散递推明确为本例前向Euler形式。",
+      "source": "https://arxiv.org/html/1812.03201v2#S4.SS2",
+      "local_source": "content/posts/ai/residual-reinforcement-learning/residual_control_sanity.py"
+    },
+    {
+      "article": "curobo-v2-fast",
+      "change": "真机抓放周期与控制器更新间隔分开。"
+    },
+    {
+      "article": "cuarms",
+      "change": "Shelves失败按正文归到协调搜索与预算限制，不仅凭成功率推断路网缺边。"
+    },
+    {
+      "article": "omnicalib",
+      "change": "Kalibr独立参考保留自身误差；注入恢复不笼统称软件改动。"
+    },
+    {
+      "article": "interactive-contact-calibration",
+      "change": "自测答案统一采用正文环境、基座与末端的变换记号。"
+    },
+    {
+      "article": "vision-transformers",
+      "change": "自测中原版DiT预测噪声与方差参数，与其他速度参数化分开。",
+      "source": "https://arxiv.org/html/2212.09748v2#S3.SS1"
+    },
+    {
+      "article": "vla-world-model-data",
+      "change": "通过条件将未知未来观测与可给定的候选动作分开，保留动作条件世界模型接口。"
+    },
+    {
+      "article": "omnicalib",
+      "change": "Base为未注入记录的估计基线，不称已知真实基线误差。"
+    },
+    {
+      "article": "tampagent",
+      "change": "起始手臂构型变化只使本例Motion证据失效，目标Kin可按依赖复用。",
+      "local_source": "content/posts/planner/tampagent/belief_contract_sanity.py"
+    }
+  ],
+  "verification": {
+    "source_preservation": {
+      "status": "passed",
+      "articles": 37,
+      "checks": [
+        "titles",
+        "publication dates",
+        "draft states",
+        "headings",
+        "explicit IDs",
+        "fenced code blocks"
+      ]
+    },
+    "production_build": {
+      "status": "passed",
+      "hugo": "0.165.0 extended",
+      "destination": "/tmp/chase-editorial-20261112/production-final2",
+      "fresh": true
+    },
+    "examples": {
+      "status": "passed",
+      "command_groups": 42,
+      "retry": "滤波组在现有pin环境的NumPy/SciPy依赖下通过；其他41组首轮通过。",
+      "details": "/tmp/chase-editorial-20261112/example-checks.json"
+    },
+    "browser": {
+      "reading_cases": 432,
+      "print_layouts": 648,
+      "article_and_learning_layouts": 304,
+      "keyboard_interactions": 3,
+      "native_pdf_exports": 6,
+      "layout_or_runtime_failures": 0,
+      "status": "passed"
+    },
+    "self_check_cross_review": {
+      "status": "completed",
+      "articles": 37,
+      "method": "三组只读对照正文与随文脚本；必要原始来源复核，未运行模型。"
+    },
+    "display_math": {
+      "unchanged_articles": 36,
+      "corrected_article": "content/posts/ai/card-retargeting/index.md"
+    },
+    "release_validation": {
+      "status": "passed",
+      "pages": 354,
+      "local_references": 39222,
+      "python_snippets": 229,
+      "strict_math_errors": 0,
+      "errors": 0
+    },
+    "final_reading_equivalence": {
+      "status": "passed",
+      "pages": 120,
+      "ignored_difference": "学习路线标题变化带来的生成搜索脚本引用与SRI；其余120个文章及集合页面HTML完全相同。独立搜索回归已通过。"
+    },
+    "initial_findings_resolved": [
+      "学习路线正文直达文章链接与有序清单重复；改为四个专题入口，最终清单与本地引用验证通过。",
+      "首选数值环境缺SciPy；改用已有隔离pin环境，无依赖安装。",
+      "标题变化使搜索指纹变化，完整字节比较断言不适用；已核对阅读HTML仅搜索引用变化，并通过独立搜索与最终路线检查。"
+    ],
+    "final_learning_page": {
+      "status": "passed",
+      "layouts": 8,
+      "updated_title_search": "/learning-paths/",
+      "title": "技术学习路线",
+      "body_topic_links": 4,
+      "screenshots_inspected": [
+        "320px light 100%",
+        "320px dark 200%"
+      ]
+    },
+    "search": {
+      "status": "passed",
+      "browser_layouts": 12,
+      "contrast_failures": 0,
+      "runtime_exceptions": 0,
+      "unit_oracle_queries": 400,
+      "coverage": "两种语言入口、技术标点、Unicode、章节交集、键盘编辑、IME、迟到响应与失败重试；新增标题可检索。"
+    },
+    "native_pdf": {
+      "status": "passed",
+      "tagged_exports": 6,
+      "closed_open_full_text_pairs": 3,
+      "paper_pages_visually_inspected": [
+        {
+          "article": "lerobot-act",
+          "closed_open_text_equal": true,
+          "required_text_present": "进阶推导",
+          "pages": 37,
+          "rasterized_page": 16,
+          "image": "/tmp/chase-editorial-20261112/focused/lerobot-act-paper-page-16.png"
+        },
+        {
+          "article": "vla-world-model-data",
+          "closed_open_text_equal": true,
+          "required_text_present": "进阶算例",
+          "pages": 43,
+          "rasterized_page": 37,
+          "image": "/tmp/chase-editorial-20261112/focused/vla-world-model-data-paper-page-37.png"
+        },
+        {
+          "article": "card-retargeting",
+          "closed_open_text_equal": true,
+          "required_text_present": "位置、方向和时间稳定性三项",
+          "pages": 13,
+          "rasterized_page": 5,
+          "image": "/tmp/chase-editorial-20261112/focused/card-retargeting-paper-page-5.png"
+        }
+      ]
+    },
+    "toc_regression": {
+      "status": "passed",
+      "details": "/tmp/chase-editorial-20261112/toc-final.log"
+    },
+    "temporary_services": {
+      "status": "stopped",
+      "http_port": 13651,
+      "cdp_port": 9495
+    }
+  },
+  "limits": "正文修订与构造算例验证不等于重新运行论文模型、复现训练指标或验证机器人硬件。",
+  "finished_at": "2026-11-12T22:31:02+08:00",
+  "visual_review": "人工检查ACT第16页、数据来源第37页、CARD第5页，以及新标题窄屏与VLA比较表的200%字号截图；纸面公式与折叠内容完整，横向表格保留焦点及键盘滚动。"
+}

@@ -1,7 +1,7 @@
 ---
 title: "NVIDIA Video to Data 详解：从人类视频到机器人仿真、强化学习与 GR00T 数据"
 date: 2026-10-15
-lastmod: 2026-11-09
+lastmod: 2026-11-13
 draft: false
 tags: ["Video to Data", "CHORD", "Robot Learning", "Egocentric", "3D Vision", "Isaac Lab", "Reinforcement Learning", "VLA"]
 categories: ["人工智能"]
@@ -54,9 +54,7 @@ related_posts:
 | 示范与策略训练 | 专家 rollout、相机与动作约定 | HDF5、LeRobot 数据、GR00T checkpoint | 视觉策略怎样从观测生成机器人动作？ |
 {.table-readable}
 
-这里最容易误解的是第三、四行。**机器人参考轨迹描述“希望到哪里”，策略描述“看到当前情况后怎样行动”。** 把参考关节角逐帧写进可视化器，能得到流畅动画；物理执行还要处理重力、摩擦、碰撞、执行器和控制误差。V2D 的 Robotic Grounding 正是在这个间隙里工作。
-
-另一个区别是训练目标：V2D 的检索模块没有训练机器人控制器；重建模块没有直接输出 GR00T 动作标签；专家 RL 和后续 GR00T 微调也使用不同的观测与学习方式。阅读目录时，应先确认自己停在哪一个接口。[Robotic Grounding 架构](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/docs/ARCHITECTURE.md)
+关键交接在第三、四行：参考轨迹指定“希望到哪里”，策略根据当前状态决定“怎样行动”。逐帧设置参考姿态只得到动画；Robotic Grounding 要让控制器与仿真器真正推进重力、摩擦、碰撞和跟踪误差。专家完成交互后，其 rollout 才能为后续视觉策略提供监督。[Robotic Grounding 架构](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/docs/ARCHITECTURE.md)
 
 ## 2. Video Ingestion Agent：先把长视频变成可查询片段 {#ingestion}
 
@@ -135,7 +133,7 @@ T_{W\leftarrow O}(t)
 =T_{W\leftarrow C_t}(t)\,T_{C_t\leftarrow O}(t).
 $$
 
-这是坐标组合关系，不是某个视觉模型的学习公式。左右手也必须进入相同的固定坐标系，才能比较它们与物体的距离。若把每帧相机系中的手姿直接当成世界轨迹，相机抬头或走动就会被误当成手和物体的运动。
+矩阵从右向左作用：物体系中的点先到本帧相机系，再到固定世界系。左右手采用相同参考后，才能比较手物距离；直接堆叠每帧相机系坐标，会把相机抬头或走动混入物体与手的运动。
 
 此外，单目尺度、网格尺度和手模型尺度必须一致。**重力对齐只确定方向，不能单独解决绝对尺度，也不会自动得到机器人基座标定。** 源视频看起来对齐，并不排除世界坐标中的长程漂移。
 
@@ -157,15 +155,11 @@ WiLoR 路径还处理了“这一帧的手属于哪条轨迹”：它渲染检�
 
 ### 3.4 重建结果怎样验收
 
-根目录 E2E 启动器把最终 bundle 放在运行目录的 `reconstruction/result_slam_gravity_aligned/`，其中需要有非空的 `result.npz`、`mesh.obj`、`manifest.json` 和 `threejs_scene/index.html`。检查文件存在只是第一步，还应看：
+最终 bundle 位于运行目录的 `reconstruction/result_slam_gravity_aligned/`，应有非空的 `result.npz`、`mesh.obj`、`manifest.json` 和 `threejs_scene/index.html`。
 
-1. 开始、抓取、搬运和放回时，物体模型能否持续覆盖目标。
-2. 世界坐标中桌面与静止背景是否稳定，手和物体是否一起漂移。
-3. 物体尺寸、手掌尺寸、支撑面高度是否处于合理比例。
-4. 遮挡时的姿态是否跳变，左右手身份是否交换，接触附近是否明显穿透。
-5. 关键接触片段是否主要由插值补齐，检测覆盖与填补区间是否有记录。
+沿纸巾盒的开始、抓取、搬运与放回逐段看模型是否覆盖实物。若桌面也在世界系里漂移，先回查相机轨迹；若手掌、盒子与支撑面比例不对，先回查尺度。遮挡附近的姿态跳变、左右手换 ID、接触穿透，则需要回到相应帧段的估计与关联结果。
 
-这些是下游任务所需的几何条件。发现错误后，应回到具体模块、帧段和缓存输出定位，而不是直接增加策略训练步数。
+最后把接触片段与 `interpolated` 标记对照：轨迹连续可能只是缺帧填补，不能证明接触观测有效。几何问题应在这里定位到模块和缓存，增加下游训练步数不会修正这些输入。
 
 ## 4. Retargeting：把人体运动转换为机器人参考 {#retargeting}
 
@@ -173,15 +167,17 @@ WiLoR 路径还处理了“这一帧的手属于哪条轨迹”：它渲染检�
 
 MANO 等人体模型与机器人具有不同的骨架、手掌尺度、自由度和限位。一个人体手指弯曲参数不等于某个机器人电机角度。重定向通常比较关键点、末端位姿和相对关系，再通过机器人正运动学与逆运动学寻找合适的关节配置。
 
-为了说明这一类问题，可以写出一个通用 IK 目标：
+令 $q$ 为待求机器人关节向量，$f_i(q)$ 为正运动学算出的第 $i$ 项任务空间量，$\hat x_i$ 为经过坐标与尺度处理的目标。用 $w_i$ 加权各项误差，再用 $\lambda$ 惩罚偏离上一帧解 $q_{\mathrm{prev}}$，得到一个通用 IK 示例：
 
 $$
-\min_q\;\sum_i w_i\left\|f_i(q)-\hat x_i\right\|^2
-+\lambda\left\|q-q_{\mathrm{prev}}\right\|^2,
-\qquad q_{\min}\le q\le q_{\max}.
+\begin{aligned}
+\min_q\;&\sum_i w_i\left\|f_i(q)-\hat x_i\right\|^2\\
+&+\lambda\left\|q-q_{\mathrm{prev}}\right\|^2,\\
+&q_{\min}\le q\le q_{\max}.
+\end{aligned}
 $$
 
-其中 $f_i(q)$ 是机器人关键点或任务空间量，$\hat x_i$ 是经过坐标与尺度处理的目标；后一项抑制逐帧跳变。这是帮助理解重定向的概括，**不是仓库所有机器人共用的一条完整损失**。具体实现还取决于手型、手腕或全身约束、关节映射与碰撞处理。[重定向配置](https://github.com/nvidia-isaac/video_to_data/tree/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/retarget)
+$q_{\min},q_{\max}$ 是关节限位。前一项追踪目标，后一项抑制帧间跳变；手型、手腕／全身约束与碰撞处理仍由具体实现定义，**这不是所有机器人共用的完整损失**。[重定向配置](https://github.com/nvidia-isaac/video_to_data/tree/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/retarget)
 
 Robotic Grounding 也能从 ARCTIC、HOT3D、TACO、GRAB 等已有运动数据进入，不必每次先从原始视频做视觉重建。数据加载阶段可把 MANO 参数变成关节和物体运动，再生成物体 URDF、机器人运动与仿真支撑面。这里只能复用相同的数据语义；不同数据集的格式、许可与预处理仍要分别处理。
 
@@ -240,30 +236,29 @@ $$
 
 若 $f$ 是以 N 计的实际力，$r$ 是相对参考点、以 m 计的位置，则 $\tau$ 的单位是 N·m。比如 $r=(0.05,0,0)$ m，$f=(0,2,0)$ N，得到 $\tau=(0,0,0.1)$ N·m。这是力学计算示例，不是视频测得的接触力，也不是论文实验值。
 
-它说明了一个直观差别：相同方向的力，施加位置不同，扭转物体的效果就可能不同；只追踪接触位置，遗漏了法向、摩擦可行方向与力臂。
+力臂 $r$ 改变，力矩也会改变。下一节就把接触位置、法向与摩擦允许的作用方向合在一起，而不只比较指尖距离。
 
 ### 5.3 代码比较的是接触能力表示，不是视频里的真实六轴力传感器读数
 
-在 FlashCHORD 的 `objectives/wrench.py` 中，每个激活接触由物体系下的位置、法向与摩擦锥射线表示。射线生成六维 wrench 特征，力矩部分使用物体半径做尺度处理；参考与仿真共享采样方向，比较这些方向上的 support 特征。
+FlashCHORD 的 `objectives/wrench.py` 先在物体系内为激活接触生成摩擦锥射线。令 $i$ 为接触编号，$p_i$ 为其位置，$j$ 为该接触的射线编号，$f_{ij}$ 为允许的力方向；以物体包围半径 $r_c$ 缩放力矩部分，得到六维列向量 $w_{ij}$。
 
-可以把特征计算读成四步：接触位置 $p_i$ 与可行力射线 $f_{ij}$ 生成 $w_{ij}$；把全部接触的射线列放入六行矩阵 $W$；给定共同方向 $b_k$；再计算该方向上最大的投影。FlashCHORD 当前实现把负值截为零：
+再取参考与仿真共用的查询方向 $b_k$，其中 $k$ 是方向编号。每列与 $b_k$ 点乘，选最大投影，再把负值截为零：
 
 $$
-w_{ij}=\begin{bmatrix}f_{ij}\\(p_i\times f_{ij})/r_c\end{bmatrix},
-\qquad
+\begin{gathered}
+w_{ij}=\begin{bmatrix}f_{ij}\\(p_i\times f_{ij})/r_c\end{bmatrix},\\
 s_k=\max\left(0,\max_{i,j}b_k^\top w_{ij}\right).
+\end{gathered}
 $$
 
-$r_c$ 是当前物体刚体的包围半径。接触点或射线数量变化会改变 $W$ 的列数，但选定的方向数量固定，因此人手与机器人最终能得到同长度的 $s$。这里的最大值不是把所有接触力相加，不能据此宣称恢复了完整的、多接触同时作用的净 wrench 可行集合；CHORD 论文 §3.1 也明确区分了这种方向能力表示与精确可行多面体。
+把全部 $w_{ij}$ 排成六行矩阵 $W$，一次查询就是沿其所有列取最大投影。接触数改变时列数变化，查询方向数却固定，所以人手与机器人仍得到同长度的 $s$，可以逐方向比较。这个最大值没有将各接触力相加，也没有恢复多接触同时作用的精确净 wrench 可行集合；CHORD §3.1 明确保留了这个区别。
 
 <figure class="article-figure" id="fig-contact-wrench-support">
   {{< post-image src="assets/contact-wrench-support-v2.webp" alt="三个参考接触和两个机器人接触分别生成六行 wrench 特征矩阵，图中每接触仅画两条射线；在共享方向上得到同长度的 support 向量，再逐方向比较接触能力" >}}
   <figcaption><span class="article-figure__number">图 3</span><span class="article-figure__text">接触数不同，特征矩阵的列数可以不同；共享方向把它们转换成可逐项比较的向量。矩阵为每个接触只画两条射线，条形只画六个方向，实际数量由配置决定。条形没有实验数值或测量单位；图中还省略逐帧、逐手和逐刚体索引。接触点表示几何线索，不能当作传感器测得的真实力。</span></figcaption>
 </figure>
 
-这种表示回答的是“接触能沿哪些方向对物体施加作用”。归一化射线采用奖励特征的尺度；真实接触力、物体质量与摩擦参数则需要另行测量或设定。物理量与归一化特征的单位应分别记录。[wrench 特征实现](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/flash_chord/src/flash_chord/objectives/wrench.py)
-
-训练仍需运动模仿、物体跟踪以及任务相关配置共同约束。接触引导提供更有用的优化信号，不能保证每个重建片段都可解，也不能修正所有上游几何错误。
+$s$ 是按奖励特征尺度构造的方向能力，不能读成视频测得的六轴力。真实力、质量与摩擦仍需测量或设定；训练也仍需运动模仿与物体跟踪，无法靠 support 匹配修复错误几何。[wrench 特征实现](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/flash_chord/src/flash_chord/objectives/wrench.py)
 
 ### 5.4 接触参考有噪声时，不能一味追随它
 
@@ -273,7 +268,7 @@ CHORD 论文 §3.2 对高噪声重建给出另一种选择：降低对人手接�
 
 奖励的激活时机由接触标签控制。重定向器根据机器人 FK 探针与物体网格的近邻关系生成标签，默认距离门槛 0.018 m、至少连续两帧。连续性检查在目标参考帧率上执行，默认是 50 Hz 参考中的两帧，与 20 Hz 控制更新数分开计。还可用物体运动窗口抑制静止阶段的近邻误报，默认开启。未检测到明显物体运动时，窗口函数返回空值，保留未加窗口限制的标签。因此这些标签应结合几何与运动片段检查，不能当作真实触觉测量。[接触标签实现](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/scripts/retarget/contact_labels.py)、[重采样后的标签生成](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/scripts/retarget/ego_recon_to_dexmate_sharpa.py)
 
-因此，复现时应记录实际运行的是哪条接触目标、摩擦系数、物体半径、采样方向与随机种子，而不只记录“启用了 CHORD”。若重建的手物接触本身明显错位，应先审查几何和参考，不宜靠增大奖励权重掩盖问题。[CHORD 论文](https://arxiv.org/abs/2607.00033v2)
+参考匹配与 force-closure 因而是两种不同训练目标；结果还依赖摩擦、物体半径与采样方向。手物几何明显错位时，增大奖励权重不能替代重建修正。[CHORD 论文](https://arxiv.org/abs/2607.00033v2)
 
 ### 5.5 专家训练看到了什么 {#expert-observations}
 
@@ -285,13 +280,13 @@ CHORD 论文 §3.2 对高噪声重建给出另一种选择：降低对人手接�
 | 后续 GR00T 策略 | 三路相机图像、58 维关节状态与语言指令 | 从专家示范学习绝对关节目标 chunk，再做视觉闭环 |
 {.table-readable}
 
-前者已知物体状态和示教接下来的参考，后者需要从视觉中判断当前交互阶段。GR00T 微调是在用专家轨迹监督另一个模型，不是把 PPO 网络权重转换成 GR00T 权重。闭环评估器仍可读取物体真值来计分，这与策略能看到哪些输入是两个接口。
+前者知道物体状态与运动参考，后者从图像和本体状态判断当前阶段。因此这里迁移的是**专家轨迹监督**，不是 PPO 网络权重。评估器另可读取物体真值计分，不代表 GR00T 拥有该输入。
 
 参考窗口也有自己的时间约定：配置取三个参考时刻，底层偏移从 0 开始，所以包含当前参考；默认 `dt_future_frames=0.1`、20 Hz 播放时，对应偏移 0、2、4 个播放帧。接近轨迹或选定窗口的末端时，索引会截到该末帧，因此也可能重复同一参考。它们不是 GR00T 的 16 步预测 chunk，也不能把参数名中的 `future` 读成三个都严格晚于当前时刻。[参考索引与播放时钟](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/mdp/commands/tracking_command.py)
 
 ### 5.6 VOC 的全局课程与 reset 辅助是两个时钟 {#voc-curriculum}
 
-**Virtual Object Controller（VOC）** 根据参考与当前物体的位姿误差，直接向物体施加辅助力和力矩，帮助训练早期建立接触。刚性物体实现还包含重力补偿、阻尼与力/力矩限幅；它的 `action_dim` 为 0，这份辅助不是 PPO 额外预测的机器人动作。[VOC 实现](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d/mdp/actions/virtual_rigid_object_control.py)
+**Virtual Object Controller（VOC）** 直接向物体施加位姿误差反馈力／力矩，含重力补偿、阻尼与限幅，帮助早期建立接触。它的 `action_dim=0`，不是 PPO 另行预测的机器人动作。辅助强度有两层调度：全局课程决定当前目标尺度，每次 reset 后的局部过程再从初始尺度降向它。[VOC 实现](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d/mdp/actions/virtual_rigid_object_control.py)
 
 在当前 Vega 配方中，全局目标从 1.0 开始，环境步阈值每增加 30,000 步降低 0.1，300,000 步对应零档阈值。每次 PPO 更新采样 `num_steps_per_env=24` 步，因而分别折合 1,250 和 12,500 次更新的采样量。图的横轴使用环境步计数除以 24，避免与 checkpoint 的零起始迭代编号混淆；并行环境数量不再乘进阈值。[全局课程实现](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/mdp/curriculum/curriculum.py)
 
@@ -323,7 +318,7 @@ python3 -B voc_schedule_lab.py --self-test
 
 GR00T post-training 路径先运行专家，导出机器人与物体轨迹，再选出固定数量的合格 episode，用标定相机回放并写成语义 HDF5，随后转换为 LeRobot 数据。
 
-把物理交互采集与相机渲染拆开，可以分别控制两者的并行度。数据回放必须保留同一条轨迹的机器人、物体、相机时序与身份；仅看视频清晰，无法证明图像与动作对齐。
+交互采集与相机渲染因此能采用不同并行度，但必须保留同一轨迹的机器人、物体与相机对应关系。
 
 本版本的回放录制会把已导出的关节与物体位姿逐帧写入场景，再执行 `forward` 与渲染来更新相机，**正式录制阶段不再推进物理动力学**。它为同一条专家交互轨迹补录观测，操作成败仍由源 rollout 和后续闭环评估判断。预热阶段与正式取帧使用不同的执行方式。[回放取帧实现](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/scripts/rsl_rl/replay_record.py)
 
@@ -333,9 +328,11 @@ GR00T post-training 路径先运行专家，导出机器人与物体轨迹，再
 
 ### 6.2 58 维状态、58 维动作不代表同一个东西
 
+下面沿同一个控制步追踪：PPO 原始输出先合成为绝对目标，再与本步观测配成标签，最后进入 GR00T 的 16 步预测窗口。
+
 在 Vega 示例中，每帧状态包含 58 个关节位置，动作包含 58 个**绝对关节位置目标**。这 58 个都是转动关节，位置与目标以 rad 表示；前方相机与腕部相机流按 20 FPS 录制。动作是希望控制器达到的目标，状态是实际记录的位置，两者可能因跟踪误差而不同。
 
-专家内部的原始策略输出可以是相对参考运动的残差，导出的训练标签则取控制器**实际收到的绝对目标**。采集器先快照动作前的关节与物体状态，再执行一步，最后读取该步保存的 `last_applied_actions`。因此配对关系是“当前观测 → 本步发出的目标”，不是“下一帧位置 → 已清零的 reset 动作”；回合结束时也需要保留终止前实际施加的目标。[源轨迹导出](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/scripts/rsl_rl/export_parallel_rollouts.py)
+采集器先保存动作前的关节与物体状态，再执行一步，读取 `last_applied_actions` 中本步送入控制器的绝对目标。回合结束也保留终止前目标，不能读成 reset 后已清零的动作；配对关系始终是“当前观测 → 本步目标”。[源轨迹导出](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/scripts/rsl_rl/export_parallel_rollouts.py)
 
 这个转换还包含状态与顺序。以当前 Vega PPO 配方的一只关节为例，$u_t$ 是送入残差动作项的策略输出，$r_t$ 是滤波后的角度残差，$q_t^{\mathrm{ref}}$ 是本步参考角度，导出的绝对目标为 $a_t$：
 
@@ -353,7 +350,7 @@ $$
 | 0 | 0.210 | 0.710 |
 | 1 | 0.063 | 0.613 |
 
-第二步原始输出已为零，残差仍由历史衰减而来，所以目标并未立即回到参考 0.55 rad。这是按配置构造的数值例子，不是实测关节响应。[残差动作实现](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/mdp/actions/reference_residual_action.py)、[Vega 配方](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/config/vega_sharpa/vega_sharpa_manip_env_cfg.py)
+第一步标签因此是 0.710 rad；第二步虽输出零，滤波历史仍让标签成为 0.613 rad，而非参考的 0.55 rad。这些目标是按配置计算的，尚未说明实际关节跟到了哪里。[残差动作实现](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/mdp/actions/reference_residual_action.py)、[Vega 配方](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/config/vega_sharpa/vega_sharpa_manip_env_cfg.py)
 
 下载配套 [data_contract_lab.py](data_contract_lab.py) 后，在文件所在目录运行，即可复算两步残差与目标：
 
@@ -379,7 +376,7 @@ GR00T 推理入口改用 `scale=1.0`、`use_default_offset=False` 的绝对关�
   <figcaption><span class="article-figure__number">图 5</span><span class="article-figure__text">Vega 示例的两套字段布局。数字是从零开始、右端不包含的切片边界，块宽与字段维数成比例。重排只能让已有位置按相同关节对齐，无法把实测状态变成专家动作目标。</span></figcaption>
 </figure>
 
-因此，不能把下一帧状态直接当成本帧动作，也不能把绝对目标解释为角度增量或力矩。三条相机流的键分别为 `front`、`right_wrist_view`、`left_wrist_view`；转换后的第 $i$ 帧时间戳为 $i/20$ 秒。审计需要同时核对字段顺序、关节单位、相机身份和逐帧对应关系，不能只看数组维数或视频帧数。
+三条相机键为 `front`、`right_wrist_view`、`left_wrist_view`，第 $i$ 帧时间戳为 $i/20$ 秒。按字段名将本帧实测位置与目标对到同一关节后，两者仍是“状态”和“命令”；重排没有把前者转换成训练标签。
 
 当前模态配置的 `video` 和 `state` 都取 `delta_indices=[0]`，即查询时刻的三路图像与一帧机器人状态；`action` 取偏移 0～15。三路相机代表三个视角，专家观测中的三个参考时刻则代表时间偏移，两者承担不同职责。[Vega 模态配置](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/groot_finetune/vega_sharpa_joint_config.py)
 
@@ -387,7 +384,7 @@ GR00T 的动作 chunk 长度、每次实际执行多少步以及控制频率也�
 
 当前配方还有两个不能混用的“4 步”：物理步长是 0.01 秒，`decimation=5` 形成 0.05 秒的控制间隔；臂的 DelayedPD 配置延迟 4 个物理子步，对应 40 ms。GR00T 每次执行 4 个预测动作，则是 4 个控制间隔、0.2 秒的名义控制覆盖时长。前者是执行器模型里的配置延迟，后者是策略重新观察的节奏，都不能直接当成实测端到端延迟，时长对照见[图 6](#fig-control-clocks)。[物理时钟与动作配方](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/tasks/v2d_whole_body/config/vega_sharpa/vega_sharpa_manip_env_cfg.py)、[DelayedPD 配置](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/assets/vega_sharpa.py)、[Isaac Lab 延迟实现](https://github.com/isaac-sim/IsaacLab/blob/v2.3.2/source/isaaclab/isaaclab/actuators/actuator_pd.py)
 
-以一个具备完整动作窗口的训练时刻为例：第 $t$ 帧的三路图像、58 维实测状态和任务文字，对应标签 $[a_t,\ldots,a_{t+15}]\in\mathbb R^{16\times58}$；每个 $a$ 都按动作字段顺序排列。运行时，模型预测的是 $\hat a_{t+j\mid t}$，下标表示“根据第 $t$ 步观测，为第 $t+j$ 步预测的目标”。例如连续运行且未发生 reset 时：
+令 $t$ 为控制步索引，不是秒。完整训练窗口将第 $t$ 帧三路图像、58 维实测状态及任务文字，配给 $[a_t,\ldots,a_{t+15}]\in\mathbb R^{16\times58}$；各行都是前面合成、按动作字段排列的绝对目标。部署预测 $\hat a_{t+j\mid t}$，即依据第 $t$ 步观测，为第 $t+j$ 步给出的目标。无 reset 时，例如：
 
 | 控制步 | 使用哪次观测 | 发出哪些目标 |
 | --- | --- | --- |
@@ -473,7 +470,7 @@ print(result["success"], result["max_hold_samples"])  # True 33
 
 33 次连续保持包括峰值那一次、下降到 6 cm 的 10 次、停留的 20 次，以及随后 5.5、5 cm 的两次；并非只计算代码中显式写出的停留。这个构造序列用于核对评估逻辑，初次抬升没有模拟动力学，不能作为可执行机器人轨迹。
 
-其中 `positions_in_action_order()` 只重排同一帧测得的位置，便于核对字段，**不会生成训练用的专家目标**。图 5、图 7 可在本站仓库运行 `python3 -B scripts/plot_v2d_contracts.py` 重建；图 6 对应 `python3 -B scripts/plot_v2d_control_clocks.py`。曲线结论已与固定版本的官方评估器交叉核对。
+`positions_in_action_order()` 只重排实测位置，用途见第 6.2 节。图 5、图 7 可由 `python3 -B scripts/plot_v2d_contracts.py` 重建，图 6 对应 `python3 -B scripts/plot_v2d_control_clocks.py`。曲线结论已与固定版本官方评估器交叉核对。
 
 ### 6.5 转换后的文件与终止字段怎样读 {#dataset-files}
 
@@ -604,7 +601,7 @@ E2E_CONFIG="$PWD/.e2e/tissue_box/e2e_config.json"
 
 当前 Vega 专家的参考运动速度为 `motion_speed=0.5`，采集控制频率为 20 Hz。采集步数上限需要覆盖专家 episode timeout，不能不看源运动就复制一个常数。
 
-这还涉及一个内部重采样率：加载器按 $1/(\Delta t_{\mathrm{env}}s)$ 重采样参考，其中 $s$ 是 `motion_speed`。本例 $\Delta t_{\mathrm{env}}=0.05$ 秒、$s=0.5$，得到沿**原参考时间轴**的 40 Hz 采样，再以每秒 20 帧的控制节奏消费，形成半速播放。因此，重定向文件的 50 Hz、内部重采样的 40 Hz、控制与数据的 20 Hz 可以同时成立。`motion.dt` 仍须等于环境步长 0.05 秒，不能因为文件是 50 Hz 就改成 0.02 秒。[播放时钟约束](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/motion_schema/timing.py)
+加载器按 $1/(\Delta t_{\mathrm{env}}s)$ 重采样参考，$s$ 为 `motion_speed`。本例环境每 0.05 秒更新一次、$s=0.5$，每次只前进原参考的 0.025 秒，所以先沿**原参考时间轴**重采样为 40 Hz，再按墙钟 20 Hz 消费，得到半速播放。重定向文件仍可为 50 Hz；`motion.dt` 则必须匹配环境的 0.05 秒，不能照文件改成 0.02 秒。[播放时钟约束](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/robotic_grounding/source/robotic_grounding/robotic_grounding/motion_schema/timing.py)
 
 估计控制步数的方法是：源帧数除以源帧率，得到原始时长；再除以运动速度，得到播放时长；最后乘控制频率并向上取整。随后增加约 10%～20% 余量。实际统一 horizon 由 pilot 测量，**这个安全上限不等于最终记录帧数**。
 
@@ -672,6 +669,8 @@ FINETUNED_CHECKPOINT=/absolute/path/to/checkpoint-N
 
 ### 8.7 应保存哪些证据
 
+一次运行的来源关系应能从源视频、参考、专家 checkpoint 追到状态／目标与相机帧，再追到训练或验证 episode。下表列出已有产物的位置：
+
 | 文件或目录 | 主要用途 |
 | --- | --- |
 | `e2e_config.json`、`run_manifest.json`、`logs/` | 记录配置、代码与运行来源、各阶段状态和失败尝试 |
@@ -687,6 +686,8 @@ FINETUNED_CHECKPOINT=/absolute/path/to/checkpoint-N
 最后运行 `./run_e2e.sh --config "$E2E_CONFIG" status --json`。根启动器根据命令、声明输入、必需产物和源码哈希是否匹配决定恢复方式。重建内部还有自己的阶段缓存，一些步骤以中间文件存在为完成条件。`--force` 强制外层阶段执行，内部缓存仍需分别检查；更换视频、对象或网格时，优先使用新的运行目录，再逐阶段验收。[阶段恢复逻辑](https://github.com/nvidia-isaac/video_to_data/blob/193382a184308f6800331f3db829f76dc4294cfe/tools/e2e/runner.py)
 
 终端出现 `[DONE]` 只表示评估执行结束，结果仍可能是零成功。
+
+出现失败时按这条来源链往回查：几何和 IK 有误先修参考，无 VOC 专家失败先修物理训练；这些成立后，再判断 GR00T 的视觉闭环问题。
 
 ## 9. 两种更小的入口：深度与 FlashCHORD {#smaller-entrypoints}
 

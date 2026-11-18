@@ -1,7 +1,7 @@
 ---
 title: "Light-Loco-Parkour 深度解析：从地形配对参考、多技能蒸馏到自主衔接与深度视觉控制"
 date: 2026-09-12
-lastmod: 2026-11-09
+lastmod: 2026-11-13
 draft: false
 tags: ["Light-Loco-Parkour", "Humanoid", "Locomotion", "Reinforcement Learning", "Distillation", "Paper Notes"]
 categories: ["人工智能"]
@@ -83,7 +83,7 @@ h_t=\operatorname{GRU}(e_t,h_{t-1}),\qquad
 \pi_\theta(a_t\mid e_t,h_t),
 $$
 
-其中 $e_t$ 来自本体信息、地形感知与速度命令的编码。机器人是否已经把重量移到手上、相机刚才看见的平台边缘在哪里，都不一定能由当前单帧深度恢复。
+其中 $t$ 编号控制步，$e_t$ 是本体、地形与速度命令的编码，$h_t$ 是更新后的记忆，$\theta$ 是策略参数。每步先融合当前编码与旧记忆，再输出动作分布。刚才的平台边缘、当前手臂是否承重，都未必能由单帧深度恢复。
 
 论文的高度扫描教师使用 MLP，并堆叠最近 5 帧提供短期历史；最终深度学生使用循环记忆。作者还比较过卷积与全连接地图编码器，在该设置下卷积没有带来可测量收益，因而采用 MLP。不能看到输入是深度图，就自动把它描述成 CNN 或视觉 Transformer。[论文 Section IV-A](https://arxiv.org/pdf/2608.02653v1)
 
@@ -96,7 +96,7 @@ $$
 | Actor | 根据自身观测选择动作 | 尽量使用学生能够观测或从历史推断的信息 |
 | Critic | 为训练估计回报与优势 | 可以读取更多模拟器真值，提高价值估计质量 |
 
-不对称 actor–critic 不是把所有特权信息都塞给 actor。假如同一学生观测对应两个教师动作 $+1$ 与 $-1$，且学生历史也无法区分两种状态，单纯最小化均方误差只会倾向于条件均值 0。更强的教师不能消除学生信息不足造成的歧义；需要改善可推断性、记忆或监督设计。
+假如同一学生观测等概率对应教师动作 $+1$、$-1$，历史也无法区分，均方误差最优预测便是 0。问题在信息不足，增加教师精度不能补齐；应调整 actor 的可推断输入、记忆或监督。额外真值仍可交给 critic 改善价值估计。
 
 原论文从学生的信息条件反推教师 actor 的输入设计，并将额外真值更多地交给 critic。学生不能直接读取底座线速度等量时，循环网络需要从深度与本体历史中推断它们。高度扫描和深度图也不是同一张图换个名字：前者可提供较宽的局部地形覆盖，后者受到视野与自遮挡限制。[论文 Sections IV-A、IV-B、VI](https://arxiv.org/pdf/2608.02653v1)
 
@@ -110,7 +110,7 @@ $$
 
 ### 3.1 速度跟踪与“敢于前进”解决不同问题
 
-论文使用高斯核奖励跟踪平面速度与偏航角速度：
+用 $v$ 表示实际速度、$v_{cmd}$ 表示命令，$\sigma>0$ 控制容许误差尺度。论文以高斯核奖励跟踪平面速度与偏航角速度：
 
 $$
 r_{vel}=\exp\left(-\frac{\|v-v_{cmd}\|^2}{\sigma^2}\right).
@@ -131,7 +131,7 @@ p_{foot}=\sum_i c_i\frac1K\sum_{k=1}^{K}
 \mathbf1[z_i^{foot}-z_{ik}^{hit}>\delta].
 $$
 
-$c_i$ 表示脚是否处于接触状态。论文和源码的默认阈值为 0.1 m。若某只接触脚的 4 条射线中有 1 条越过阈值，它贡献 0.25；未接触的摆动脚不会因为正好位于空中而得到同一项落脚惩罚。
+$i$ 编号脚，$k$ 编号射线，$c_i$ 是二值接触指示；$z_i^{foot}$ 与 $z_{ik}^{hit}$ 分别为脚和命中点高度，$\mathbf1$ 将超阈值事件计为 1。默认阈值为 0.1 m。接触脚的 4 条射线若只有 1 条超限，先平均得 0.25，再乘接触指示；摆动脚因此不受同一惩罚。
 
 这个量衡量支撑区域的风险，不是地图重建误差。脚部射线在训练奖励和特权信息中有用途，并不意味着部署时机器人额外安装了脚底激光扫描仪。[论文 Eq. (4)、Figure 3](https://arxiv.org/pdf/2608.02653v1)
 
@@ -140,16 +140,18 @@ $c_i$ 表示脚是否处于接触状态。论文和源码的默认阈值为 0.1 
 设每只脚的加速度为 $a_i$，阈值为 $\bar a$，先计算超出部分：
 
 $$
-e_t=\sum_i\max(\|a_i\|-\bar a,0),\qquad
-\widetilde e_t=\alpha\widetilde e_{t-1}+e_t,
-\quad \alpha=e^{-\Delta t/\tau}.
+\begin{aligned}
+e_t&=\sum_i\max(\|a_i\|-\bar a,0),\\
+\widetilde e_t&=\alpha\widetilde e_{t-1}+e_t,\\
+\alpha&=e^{-\Delta t/\tau}.
+\end{aligned}
 $$
 
 默认 $\bar a=30\,\mathrm{m/s^2}$、$\Delta t=0.02$ s、$\tau=0.06$ s，因此 $\alpha\approx0.7165$。若第一步只有一只脚的加速度为 50，之后都低于阈值，累积量依次约为 20、14.3306、10.2683。一次冲击会在后续几步持续产生影响。
 
 ![一次脚部加速度超限后，累积量在多个控制周期内指数衰减；标注源码默认正号与论文负号的奖励差异](assets/reward-memory.svg "图 3：根据正文递推式计算的数值。纵轴是非负的超限累积量，不是已经乘权重的总奖励，也不是实机加速度测量。")
 
-这里没有在新输入前乘上 $(1-\alpha)$，所以它不是保持输入幅值的标准指数滑动平均。持续输入同样的超限量 $e$ 时，稳态为 $e/(1-\alpha)$，不是 $e$。
+新输入没有乘 $(1-\alpha)$，因此不是保持常量幅值的标准 EMA。持续超限量为 $e$ 时，令定常累积量为 $E$，递推要求 $E=\alpha E+e$；移项即得 $E=e/(1-\alpha)$。它还累加过去冲击，所以会大于本步超限量。
 
 **固定仓库的默认符号需要额外处理。** 论文 Table I 给脚部加速度项的权重是 **−0.01**；源码 `FootAccelerationPenalty` 返回非负累积量，但 `default_stateful_reward_fns()` 配置的是 **+0.01**，`RewardShapingWrapper` 随后直接加权求和。因此，上面的第一步在默认实现中贡献约 **+0.2**，而按论文惩罚方向应为 **−0.2**。[源码默认值](https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/light_loco_parkour/light_loco_parkour.py#L1194)
 
@@ -187,7 +189,7 @@ $\tau$ 决定历史在物理时间上衰减多快，但不单独决定这个累�
 
 两种设置下，一次相同初始冲击经过 60 ms 都衰减到原来的 $\exp(-1)$；持续超限的稳态幅值却相差约 1.8465 倍。原因是更密集地加入同样大小的 $e$，而递推式没有乘上步长或 $(1-\alpha)$。这些是 [parkour_lab.py](parkour_lab.py) 验证的数学结果，不是改变真实机器人频率后的实测。
 
-因此，改变控制周期时，仅重新计算 $\alpha$ 不能保证奖励尺度不变；甚至只改频率、仍把 `hparams.dt` 留在 0.02，会连物理衰减时间也改变。若设计新奖励，可明确选择累积量、时间积分或保持常量输入幅值的平滑量，并相应调整权重；若复现固定实现，则应保留其定义，记录控制周期。两种目标不宜通过静默更换公式混在一起。
+改变周期后，重算 $\alpha$ 只保留衰减时间，不能保留累积幅值；若连 `hparams.dt=0.02` 都未更新，两者都会改变。设计新奖励时可选累积、时间积分或常量幅值平滑，并配套权重；复现固定实现则应保留当前定义。
 
 ## 4. 参考增强：为什么不能把人体轨迹直接抬高 {#references-data}
 
@@ -209,9 +211,7 @@ $\tau$ 决定历史在物理时间上衰减多快，但不单独决定这个累�
 4. 将参考和对应障碍共同提高约 5–10 cm，继续下一轮训练。
 5. 保存各轮地形与对应参考，形成后续技能泛化的数据集。
 
-关键不是对一段静态关节轨迹反复加高度，而是**每轮都让策略在物理环境中重新解决接触，再把解决结果用作新的参考**。轨迹可以逐渐偏离最初的人体姿态，却更适合机器人的动力学与障碍几何。[论文 Section V-A、Algorithm 1](https://arxiv.org/pdf/2608.02653v1)
-
-论文称这些 rollout 参考在模拟器及执行器约束下具有动力学可行性。这个条件不应扩展成真实硬件的无条件保证：模型误差、接触参数和传感器条件仍需通过后面的随机化、学生训练与实机验证处理。
+每轮的输出成为下一轮输入：**先在当前障碍上重新解决接触，再将物理 rollout 用作参考并提高地形**。动作可以偏离人体原姿态，以适应机器人和障碍。这里的动力学可行性限于模拟器及执行器约束，真机差异由后续随机化、学生训练与部署验证处理。[论文 Section V-A、Algorithm 1](https://arxiv.org/pdf/2608.02653v1)
 
 ### 4.3 保存的单位应是动作与地形这一对
 
@@ -232,12 +232,14 @@ $\tau$ 决定历史在物理时间上衰减多快，但不单独决定这个累�
 行为克隆常在预先采集的专家轨迹上训练。DAgger（Dataset Aggregation，数据集聚合）则让学生进入环境，对学生实际访问到的状态调用专家提供标签：
 
 $$
-\mathcal L_{DAgger}=
-\mathbb E_{s\sim d_{\pi_S}}
-\left[\|\pi_E(o_E(s))-\pi_S(o_S(s))\|^2\right].
+\begin{aligned}
+\mathcal L_{DAgger}
+&=\mathbb E_{s\sim d_{\pi_S}}\\
+&\quad\left[\|\pi_E(o_E(s))-\pi_S(o_S(s))\|^2\right].
+\end{aligned}
 $$
 
-$o_E$ 与 $o_S$ 可以包含不同信息，但必须来自同一时刻、同一个物理状态。不能用学生摔偏之后的观测，去匹配专家原始录像中相同帧号的动作；那是另一种监督关系。
+$E,S$ 分别指专家和学生，$d_{\pi_S}$ 是学生策略访问的状态分布。先让学生到达状态 $s$，再分别构造专家观测 $o_E(s)$ 与学生观测 $o_S(s)$，才得到同状态动作标签；不能按录像帧号匹配已摔偏学生和理想专家。
 
 仅做动作模仿仍可能产生恢复能力不足的学生。论文在这一阶段加入 PPO，用任务、目标与参考奖励提供环境反馈：
 
@@ -253,7 +255,7 @@ $$
 
 论文还调整初始化：关闭随机参考帧初始化，从动作起点附近开始，并用感知行走策略的关节姿态初始化身体。这样，技能面对的起始状态更接近后面真实的“行走 → 技能”交接，而不只是参考轨迹中某个理想中间姿态。[论文 Section V-B2](https://arxiv.org/pdf/2608.02653v1)
 
-因此，“训练一项技能”“让它适应地形变化”“让它从行走状态自然启动”是不同的训练问题。增加专家数或训练步数，不会自动替代这些分布变化。
+参考覆盖的地形、学生访问的状态、技能启动的身体姿态因而分别扩展；这三处变化一起把单个跟踪专家接到后续行走闭环。
 
 ## 6. 多技能统一：一个网络会多个动作，为什么还不会衔接 {#transitions}
 
@@ -278,22 +280,38 @@ $$
 AMP（Adversarial Motion Priors，对抗运动先验）使用判别器判断当前运动是否接近参考行为。令判别器 logit 为 $\ell_\phi(z)$，概率为 $D_\phi(z)=\sigma(\ell_\phi(z))$，则：
 
 $$
-r_{AMP}(z)=-\log(1-D_\phi(z))
-=\operatorname{softplus}(\ell_\phi(z)).
+\begin{aligned}
+r_{AMP}(z)&=-\log(1-D_\phi(z))\\
+&=\operatorname{softplus}(\ell_\phi(z)).
+\end{aligned}
 $$
 
-论文中 $z$ 表示运动状态转移。衔接训练时，障碍触发位置之前使用行走先验，之后使用对应技能先验。它改变的是策略获得的训练奖励，促使策略在适当区域产生合适运动；最终 actor 仍根据自身观测输出动作。
-
-因此，论文同时使用“训练先验按阶段切换”和“部署不使用手写技能切换器”并不矛盾。前者是教师信号的组织方式，后者是部署控制图的性质。若把 `PhaseConditionalMotionPrior` 直接当成线上技能调度器，便改变了原来的系统。[论文 Eq. (12)、Figure 6](https://arxiv.org/pdf/2608.02653v1)
+这里 $z$ 是运动状态转移，$\phi$ 为判别器参数，$\sigma$ 是 sigmoid。代入 $1-\sigma(\ell)=1/(1+e^\ell)$，奖励便成为 $\log(1+e^\ell)$，即 softplus。训练按障碍触发位置选择行走或技能先验，改变奖励；部署 actor 仍直接从观测出动作，未将 `PhaseConditionalMotionPrior` 用作线上技能调度器。[论文 Eq. (12)、Figure 6](https://arxiv.org/pdf/2608.02653v1)
 
 固定源码提供两种先验权重。硬选择以**严格大于**触发位置计数；恰好位于触发位置时仍属于前一阶段。平滑模式使用累计 sigmoid：
 
 $$
-s_j(x)=\sigma(\beta(x-p_j)),\qquad
-w_0=1-s_0,\quad w_j=s_{j-1}-s_j,\quad w_K=s_{K-1}.
+\begin{aligned}
+s_j(x)&=\sigma(\beta(x-p_j)),\\
+w_0&=1-s_0,\\
+w_j&=s_{j-1}-s_j,\\
+w_K&=s_{K-1}.
+\end{aligned}
 $$
 
-触发位置有序且 $\beta>0$ 时，各权重非负且和为 1。代码里的 `handoff_temperature` 对应这里的乘数 $\beta$，数值越大切换越陡；它更接近通常所说的逆温度。[`phase_weights`](https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/light_loco_parkour/light_loco_parkour.py#L1515)
+$K\geq1$ 个触发点按 $p_0<\cdots<p_{K-1}$ 排列，划出 $K+1$ 个阶段；$x$ 为当前位置，中间式适用于 $1\leq j<K$。因 $\beta>0$，有 $s_0\geq\cdots\geq s_{K-1}$，相邻差非负；求和时中间项又全部消去：
+
+$$
+\begin{aligned}
+\sum_{j=0}^{K}w_j
+&=1-s_0+\sum_{j=1}^{K-1}(s_{j-1}-s_j)\\
+&\quad+s_{K-1}=1.
+\end{aligned}
+$$
+
+代码的 `handoff_temperature` 对应乘数 $\beta$，越大切换越陡，含义更接近逆温度。[`phase_weights`](https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/light_loco_parkour/light_loco_parkour.py#L1515)
+
+先看仅有一个触发点 $p$ 的情形：平滑模式在 $x=p$ 时给前后两个先验各一半权重，向两侧移动时逐渐偏向对应先验；硬选择在恰好等于 $p$ 时仍选前一阶段。两者改变的是同一段策略运动怎样获得奖励，不是把动作本身按这些权重混成一条新轨迹。
 
 ![三个训练先验的平滑权重随位置变化，在触发位置一和二附近交接并保持总和为一](assets/phase-prior.svg "图 4：固定源码平滑权重公式的曲线，触发位置为 1、2，逆温度乘数为 4。它展示奖励权重，不表示线上切换三个 actor。")
 
@@ -410,12 +428,14 @@ Beta 则由独立依赖 `mean-conc-beta` 提供。本文安装的 0.0.8 版本�
 固定实现先计算 TD 残差，再通过反向扫描累积：
 
 $$
-\delta_t=r_t+\gamma m_tV_{t+1}-V_t,
-\qquad A_t=\delta_t+\gamma\lambda m_tA_{t+1},
-\qquad R_t=A_t+V_t.
+\begin{aligned}
+\delta_t&=r_t+\gamma m_tV_{t+1}-V_t,\\
+A_t&=\delta_t+\gamma\lambda m_tA_{t+1},\\
+R_t&=A_t+V_t.
+\end{aligned}
 $$
 
-这里 $m_t$ 是是否继续 bootstrap／跨步传播的 mask。`calc_gae` 最终返回 $R_t$，不是 $A_t$。函数接受 $T$ 或 $T+1$ 个价值估计；如果只给 $T$ 个，就在末尾补零，不能因此声称已经计算了正确的非终止 bootstrap。[`calc_gae`](https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/light_loco_parkour/light_loco_parkour.py#L723)
+$r_t$ 为本步奖励，$V_t$ 为价值估计，$\gamma$ 为折扣，$\lambda$ 控制优势沿时间累积的程度，$m_t$ 决定是否继续 bootstrap／传播。先倒推优势 $A_t$，再加回 $V_t$ 得价值目标 $R_t$，这才是 `calc_gae` 的返回值。函数接受 $T$ 或 $T+1$ 个价值；只给 $T$ 个时末尾补零，未自动取得非终止终点的正确价值。[`calc_gae`](https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/light_loco_parkour/light_loco_parkour.py#L723)
 
 例如 $r=[1,2]$、$V=[0.5,0.4,0.3]$、$m=[1,0]$，取 $\gamma=0.9,\lambda=0.8$，得到：
 
@@ -425,7 +445,18 @@ advantages    = [2.012, 1.6]
 value targets = [2.512, 2.0]
 ```
 
-最后一步是终止，所以传入的 0.3 不会参与 bootstrap。若它只是时间上限，应该按所用环境协议保留终点价值贡献，同时阻断向下一个 episode 传播；这需要数据采集层区分真正终止与截断。
+按末尾向前计算。$m_1=0$，故末步没有终点价值；前一步可以 bootstrap：
+
+$$
+\begin{aligned}
+\delta_1&=2-0.4=1.6,\\
+\delta_0&=1+0.9\times0.4-0.5=0.86,\\
+A_0&=0.86+0.9\times0.8\times1.6=2.012,\\
+R_0&=2.012+0.5=2.512.
+\end{aligned}
+$$
+
+真正终止使末端 0.3 不参与 bootstrap；若只是时间截断，应按环境协议保留终点价值，同时阻断向下个 episode 传播。两种边界须由采集层区分。
 
 ### 9.2 先分别标准化，再按组组合
 
@@ -436,7 +467,7 @@ $$
 \frac{A_t^{(g)}-\mu_g}{\sqrt{\operatorname{Var}(A^{(g)})+\epsilon}}.
 $$
 
-这样可以减少某个奖励流单纯因为数值尺度较大而主导 actor 更新。它不保证所有目标都同等重要；权重 $w_g$、各组梯度方向及奖励定义仍然决定取舍。固定实现的方差是按有效样本平均的总体方差，$\epsilon$ 加在方差内部。
+$g$ 编号奖励组，$\mu_g$ 与方差由该组有效样本计算，$w_g$ 决定标准化后的组权重，$\epsilon$ 是方差内部的正数稳定项。先消去各组均值与主要尺度，再相加，能减少单纯因奖励数值大而主导更新的现象；它没有使各组方向与重要性相同。固定实现采用总体方差。
 
 组内标准化还意味着：将某组奖励整体放大，不等于按同样倍数提高其对策略的影响。如果要控制组间偏好，应区分“组内奖励项权重”和“标准化后的组权重”。`actor_loss` 默认还会对组合后的优势再标准化一次；公共缩放的效果因此又不同于相对组权重。[`calc_advantages` 与 `actor_loss`](https://github.com/lucidrains/light-loco-parkour/blob/963a6ec3b8b42eb29dd6b9dfed34ededd3c64c7b/light_loco_parkour/light_loco_parkour.py#L770)
 
@@ -445,8 +476,10 @@ $$
 概率比为：
 
 $$
-\rho_t=\exp\big(\log\pi_\theta(a_t\mid o_{\le t})-
-\log\pi_{old}(a_t\mid o_{\le t})\big).
+\begin{aligned}
+\rho_t=\exp\big(&\log\pi_\theta(a_t\mid o_{\le t})\\
+&-\log\pi_{old}(a_t\mid o_{\le t})\big).
+\end{aligned}
 $$
 
 当前策略重新评价的是缓存的动作 $a_t$，不是重新采一个动作后与旧概率相减。源码把各动作维度的 log probability 相加，然后使用 clipped surrogate 与熵项。
@@ -471,7 +504,7 @@ $$
 
 一个真正的 DAgger 迭代至少需要：学生访问环境、在对应状态查询教师、形成监督样本、更新学生，然后用更新后的学生继续采集。这个 wrapper 只处理已经传入的一批张量。
 
-它也没有自动根据环境组选择多个专家，或者把 PPO、判别器损失和优化器组合起来。名字中有 `Distillation`，不代表已经覆盖论文的全部训练阶段。
+第 5、6 节决定本批状态由哪位专家标注，以及动作 MSE、PPO 或 AMP 中哪些项参与更新；wrapper 只计算传入样本的监督误差，不负责专家调度与环境交互。
 
 循环状态同样需要处理：wrapper 接受师生的初始隐藏状态，但内部没有把更新后的隐藏状态作为输出返回。用它做跨调用的循环蒸馏时，应明确训练片段如何切分、起始记忆从哪里来，而不是假设 wrapper 已经维护连续轨迹。
 
@@ -480,8 +513,12 @@ $$
 论文的辅助目标是重建教师高度扫描。当前仓库还增加了 `NextLatentPredictionWrapper`，引用 SPR 与 next-latent prediction 工作，预测下一时刻内部表示：
 
 $$
-\widehat h_{t+1}=h_t+f_\psi(h_t,a_t),\qquad
-\mathcal L_{latent}=2-2\cos\big(P\widehat h_{t+1},P\operatorname{sg}(h_{t+1})\big).
+\begin{aligned}
+\widehat h_{t+1}&=h_t+f_\psi(h_t,a_t),\\
+\mathcal L_{latent}&=2-2\cos\big(\\
+&\quad P\widehat h_{t+1},\\
+&\quad P\operatorname{sg}(h_{t+1})\big).
+\end{aligned}
 $$
 
 它是第三方实现的扩展，不是原论文深度重建项的另一个名字。该目标通过时间相邻的潜变量训练前向动力学；高度扫描重建则有明确的地形目标。
@@ -552,6 +589,8 @@ $$
 重置顺序同样重要：先用终止前的状态完成最后一步奖励和转移记录，再清理已结束环境的历史，然后处理自动重置后的首个观测。GAE 对截断所需的终点价值应来自该 episode 的终点条件，不能在隐藏状态清空后，用下一轮初始观测冒充它。
 
 需要共同遵守这个边界的状态包括 GRU 隐藏状态、原始堆帧缓存、上一动作以及奖励记忆。训练片段若跨 reset，还需阻断循环状态传播和潜变量转移配对。可变 batch 若重排环境，也应同步重排这些状态；只保持张量形状相同，不代表每一行仍属于同一个机器人。
+
+可先构造“两环境、只结束一行”：结束行按新 episode 初始化，继续行保留历史，再调换 batch 顺序并同步重排状态。这样能在完整训练前隔离误清理与状态串用。
 
 ## 12. 论文结果：既看高成功率，也看感知缺口 {#evaluation}
 
@@ -703,7 +742,7 @@ python validate_pendulum.py \
 
 三者共同要求保留动作的语义、时间与状态来源，但本文没有把它们合成为一个已经训练或验证的统一策略。阅读顺序可按问题选择：先核对动作表示，再理解异步时序，最后研究循环状态与技能学习。
 
-阅读这套方法最有价值的收获，是把四件事分开并重新接起来：**地形配对参考提供可学习的接触经验，蒸馏把经验转移到更现实的观测条件，专门的衔接训练覆盖行为转换，而记忆与传感器建模帮助最终学生闭环执行。** 每一层都要用对应的证据验证，不能由上一层的成功自动推断下一层也成立。
+沿训练链定位失败：参考与地形不匹配先回到增强阶段，进入技能时失稳先查衔接分布，深度部署下降再查遮挡、时延与记忆。后一步训练不能替代前一步缺失的条件。
 
 ## 阅读自测与验收 {#reading-checks}
 

@@ -1,0 +1,1559 @@
+{
+  "reviewed_on": "2026-11-13",
+  "scope": "继续优化前一轮审阅的37篇近两个月引入文章；本轮聚焦核心正文、中间推导与基础到进阶的衔接。",
+  "baseline": "用户第二次请求开始时的工作区，保留此前阅读路线、元数据和文章修订。",
+  "started_utc": "2026-11-12T15:18:25Z",
+  "time_budget_hours": 5,
+  "editorial_principles": [
+    "符号在首次使用时给出含义与形状；将接口按实际调用顺序叙述。",
+    "补齐中间计算与成立条件，构造算例与论文实测分别注明。",
+    "合并同义告诫和重复清单，把细节放回它解释的步骤。",
+    "保留所有旧章节标题、显式锚点、代码块、发布日期与草稿状态。"
+  ],
+  "specific_corrections": [
+    {
+      "path": "content/posts/ai/foundations-modern-ai/index.md",
+      "change": "n=1000、delta=0.05、prior=2^-10 的风险界复杂度项明确为约0.0705。"
+    },
+    {
+      "path": "content/posts/ai/vla-world-model-data/index.md",
+      "change": "有效样本倍率使用omega_s，避免与源级目标权重lambda_s混用。"
+    },
+    {
+      "path": "content/posts/ai/machine-learning-for-robotics/index.md",
+      "change": "控制仿射系统的Lyapunov导数是输入u的仿射函数；固定n和配对分布时，pooled PPI方差随N下降当且仅当Cov(Y,F)>Var(F)/2。同步现有自测问题10。"
+    },
+    {
+      "path": "content/posts/robotics/control/robot-filters/index.md",
+      "change": "修正仅有质量M能同时影响频率与阻尼比的过强说法。"
+    },
+    {
+      "path": "content/posts/planner/tampagent/index.md",
+      "change": "准确区分Grasp/Kin共享抓法g，以及Kin/Motion共享终点q。"
+    }
+  ],
+  "independent_review": "所有37篇新增推理均由另一位协作代理或root复核；真实问题修正后重新冻结。",
+  "helper_change": {
+    "path": "content/posts/ai/machine-learning-for-robotics/deployment_sanity.py",
+    "only_check_function_changed": true,
+    "public_calculations_and_default_cli_preserved": true
+  },
+  "validation_status": "passed",
+  "articles": [
+    {
+      "path": "content/posts/ai/behavior-prompting/index.md",
+      "added_lines": 23,
+      "removed_lines": 23,
+      "character_delta": 89,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 2,
+      "changes": "连接提示时间片、密集动作汇总、注意力查询与多次去噪，澄清最低误差指标。",
+      "baseline_sha256": "aa279e577b71aaed07f5010e40f10272dc53a6f0d9edf100075cfda4ca0e50ce",
+      "revised_sha256": "cfef0fd4d5cffa12134b8ccbde4a8796d48c7f7c0af8830cd75f8875b84169a8",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/card-retargeting/index.md",
+      "added_lines": 51,
+      "removed_lines": 44,
+      "character_delta": 694,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 3,
+      "changes": "对接触选点目标配方并投影，补方向代价量纲、刚体搬运算术和控制 Jacobian 的维数。",
+      "baseline_sha256": "3e525f409a01088cc7b763e455414b60e7fa647de51cbd582edf4b6b2ceb41d0",
+      "revised_sha256": "7e492bff43eadacf4cd9ffde0fefff66a1dfdbd3766c691a3cee6d095fe6090c",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/cosmos3/index.md",
+      "added_lines": 41,
+      "removed_lines": 49,
+      "character_delta": -604,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 2,
+      "changes": "补域投影和 Q/K/V 形状、位置与物理时间换算、流路径导数及 shift 系数比，串联 CFG 调用。",
+      "baseline_sha256": "b61d152634225654afb4b9cd647864908a2bd0a5154ccc432e13fd623aa8fafd",
+      "revised_sha256": "e81b26b5a5f1dd81f91de5def8060bc6cfe92a2e02c91667bfd5a40c6418c1e5",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/foundations-modern-ai/index.md",
+      "added_lines": 59,
+      "removed_lines": 40,
+      "character_delta": 13,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 5,
+      "changes": "展开风险界、两段编码、序贯预测时序、教师分布条件和 ADO 导数，修正风险界近似值。",
+      "baseline_sha256": "e32461e6645611b07ad86d67958d95dab8eede62ade75be09c9312e8edf6a2e6",
+      "revised_sha256": "497e7f5496194570f7e357c38daa31d054786fee3bbf82047034c15ff36a1f75",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/jev-decision-layer/index.md",
+      "added_lines": 33,
+      "removed_lines": 35,
+      "character_delta": -878,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 0,
+      "changes": "串起标签、候选、问题与调用，解释 confidence 端点、CE/Brier 及覆盖率分母，压缩门控清单。",
+      "baseline_sha256": "e19dadcc08ebcdfaf5274c97aa464d877b19765ebfdd54e20a4939c9c79440b1",
+      "revised_sha256": "dca20b5b8edbb5414d57d2bac89d47e4ab17963329cbe7428e73baf7c8870bdb",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/ai/last-action-tokenizer/index.md",
+      "added_lines": 52,
+      "removed_lines": 17,
+      "character_delta": 969,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 3,
+      "changes": "区分混合模式与样条控制点记号，补齐齐次变换和90度旋转算例，用重建误差解释白化度量；将GW与残差单位球推导放入原生折叠段。",
+      "baseline_sha256": "ff116fd2af624c9f8b10f1c5b641c8ebdd784aee8a0e117e73e7c482b8bb42eb",
+      "revised_sha256": "c05633d67b75874613fdeccb3819d4f2f9e35ecc3a4f663fe89827b3ea9eeda3",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/ai/lerobot-act/index.md",
+      "added_lines": 43,
+      "removed_lines": 55,
+      "character_delta": -500,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 0,
+      "changes": "以六步动作走通采样和 padding，定义 latent 与张量轴，补 L1/KL 分母、同执行时刻集成与反归一化链。",
+      "baseline_sha256": "7833933baaf12ce797f7ad68035757c5e903ac75d2a26b0c479478dd78a76776",
+      "revised_sha256": "1f1bb88c939dd47e41d56e35bc3ecbc6b401c58f5901f3635787729f9e4a240b",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/ai/light-loco-parkour/index.md",
+      "added_lines": 82,
+      "removed_lines": 47,
+      "character_delta": 554,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 9,
+      "changes": "补接触/奖励/GAE 符号、累积量定常解、阶段权重非负与伸缩求和、GAE 倒推，精简重复阶段清单。",
+      "baseline_sha256": "7dc8e298a5538e6a6f3a590773a76ea41a96e278f8df7a39f43dc2c90a0036fc",
+      "revised_sha256": "37544d1b0120842c55f2e41939b6d3b3c52c19fca80a9c809f67a5203aba9322",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/llm-training-metrics/index.md",
+      "added_lines": 36,
+      "removed_lines": 19,
+      "character_delta": 1017,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 5,
+      "changes": "连接 GQA/KV 账本、PPL 几何平均、DPO 分差与 pass@k 组合计数。",
+      "baseline_sha256": "0f3ba2138ab1047c625cd54dd74637d0fe2022a10a992a14f206ba3b99bd4aca",
+      "revised_sha256": "05fed7e67e2691e46c5675b972bd25d6a8854b0fa758299cd7c6a5c4ea40a030",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/machine-learning-for-robotics/index.md",
+      "added_lines": 36,
+      "removed_lines": 14,
+      "character_delta": 922,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 2,
+      "changes": "补 PPO 截断算例、控制约束对输入的仿射关系，化简 pooled PPI 方差并给出增加仿真的精确条件，扩充穷举反例自测。",
+      "baseline_sha256": "44a06c65942a2daf01efdf44f9894f8b6101ce5b4770b2a991c2ccd84b9655d5",
+      "revised_sha256": "762df3008619c9f6a089c6baaa139cbc479fd7f216debfee629ecc6a19eaea15",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/ai/molmo-motion/index.md",
+      "added_lines": 57,
+      "removed_lines": 13,
+      "character_delta": 1113,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 5,
+      "changes": "将坐标文本还原为点帧数组，贯通锚点量化、Euler 整表更新和射线平滑。",
+      "baseline_sha256": "5c2ec83344e8fa95cefb932c46354ae6fd4fc1a3b5ac94f3f1e6332bd3c1846b",
+      "revised_sha256": "44d89c7278a82c42e7e94199e54d153d2dfc8ac42849100e82852aa6731b40d7",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/morphmimic/index.md",
+      "added_lines": 21,
+      "removed_lines": 21,
+      "character_delta": 316,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 0,
+      "changes": "补关节逆映射、PD 尺度及单位、240到268维的组成、局部坐标恢复、FiLM 与固定均值对齐梯度。",
+      "baseline_sha256": "2262325ba4b8f92e43333fbf8683e3ccee322be4f28f6919b08c6697479c9eb4",
+      "revised_sha256": "64ab29be8c275c268f58d15a9400508915a1b07fdc7462472ffd9b851c5a839a",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/ai/multiview-geometry/index.md",
+      "added_lines": 49,
+      "removed_lines": 22,
+      "character_delta": 381,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 2,
+      "changes": "连接非单位射线、完整位姿求逆、裁剪内参与96/24像素反例，区分两个尺度开关。",
+      "baseline_sha256": "83b14491f69b39231586226afed2bc29fa4d47489b8cada353bbeea14f56eb1a",
+      "revised_sha256": "2fa48ac005eb2e63658aa03e563c2577ee1656c7895a0fd5b7e6179c9a1da3b3",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/muon-learning-rate-batch-size/index.md",
+      "added_lines": 54,
+      "removed_lines": 20,
+      "character_delta": 1898,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 3,
+      "changes": "展开 Gram 噪声计数、曲率迹抵消、EMA 权重平方和、信号校正与预算极值。",
+      "baseline_sha256": "3b1c188f3bd8d6b0cba4c768a8c1ce3c7d97759119e867bb0312503bf1ff4486",
+      "revised_sha256": "f09271f07bde23fc92c09c2a871bffc5ce02c12d5c27dfbe5b3dccbb06bd83b6",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/muon-optimizer/index.md",
+      "added_lines": 62,
+      "removed_lines": 29,
+      "character_delta": 1431,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 4,
+      "changes": "补齐谱范数方向、紧致 SVD 取等号、NS 幂次、尺寸 RMS 与单步更新的计算链。",
+      "baseline_sha256": "37d077b01dd76c209656337edab2e2981d4c5666f12cd5b70a7f3a08c3855d04",
+      "revised_sha256": "d4b034dcff3d3eb42b30239b0bc72479439aa83e5e8b8dd6caaabbce7b522965",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/ai/pion-muon-vla-rlvr/index.md",
+      "added_lines": 62,
+      "removed_lines": 23,
+      "character_delta": 1754,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 4,
+      "changes": "贯通谱归一化、系数消元、抑制分界、五步响应、分头操作和有状态更新。",
+      "baseline_sha256": "4d447d0ecfec3f3b66a66d2da686e51752a23faec52abf36a5b50eca6e322e5f",
+      "revised_sha256": "921fb5e7f431e09d6230d6d575dc67b616d776f2b73556a867a07a07ccbcea9c",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/residual-reinforcement-learning/index.md",
+      "added_lines": 47,
+      "removed_lines": 41,
+      "character_delta": -27,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 2,
+      "changes": "连接残差动作封装、同后续策略下的 Q 映射、Bellman 与 actor 坐标，补缩放/限幅梯度、Lyapunov 因式和 Euler 收缩条件。",
+      "baseline_sha256": "8e996310acf07619f9a60b7c2e439e7a803964222aaa633ebd34fd30308e52da",
+      "revised_sha256": "a7b1d598d4290d3f6c0693eb4ebc5d25684638d480490c1597fecee853f8bdce",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/ai/rlhf-rlvr-rlcd/index.md",
+      "added_lines": 38,
+      "removed_lines": 8,
+      "character_delta": 460,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 4,
+      "changes": "补奖励分差梯度、优势到对数概率损失的路径，以及对比上下文转成训练反馈的过程。",
+      "baseline_sha256": "d5d63a70f8e0dbd8650562d16c52f490bcc22e0e44c0a5ade3e035d2c082f0a5",
+      "revised_sha256": "ef010ea45e3dc8b50d6b8c0658cb9ed5c0de71e4762c5e6fd511c3ab12a9778a",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/rma-umi-rtc-deployment/index.md",
+      "added_lines": 51,
+      "removed_lines": 36,
+      "character_delta": -160,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 3,
+      "changes": "串联快慢循环、同锚点变换消去、换锚点与有效目标索引，展开 RTC Jacobian 和动作度量回传。",
+      "baseline_sha256": "56d4b5b98e014bb8f037cd0b8c275f5f70030dd281f683803b22526128255611",
+      "revised_sha256": "99b4917233a646ce772a4a3045ce7df66dbaee0eabe32a5469edea052126b093",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/ai/rrsi/index.md",
+      "added_lines": 59,
+      "removed_lines": 25,
+      "character_delta": 679,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 6,
+      "changes": "展开预算取整、两种成本上限、A到F候选的中间值、跨轮状态和噪声尺度换算。",
+      "baseline_sha256": "9d7ba916c5334db341430417afdd1ca1fdb4171e96d615d2610803a5ca699d12",
+      "revised_sha256": "c068f4213cd431e7c5f7e4944c2412350e74c530d1b9ce539dcdf2d1c191ad21",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/stable-hand/index.md",
+      "added_lines": 35,
+      "removed_lines": 29,
+      "character_delta": -43,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 3,
+      "changes": "解释108维表示与9/45质量通道、带宽和误差阈值换算，补质量固定时的流路径求导，合并重复说明。",
+      "baseline_sha256": "8abe9c289cba4410313fc35fd604b1b0a3ae1e6fa782a9935971d65a1ffdab02",
+      "revised_sha256": "68c69d18f8f783344e66ebd6834a40260bf729428a4ce118031fe70772ddddc6",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/supermimic/index.md",
+      "added_lines": 64,
+      "removed_lines": 51,
+      "character_delta": -419,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 3,
+      "changes": "区分固定动作偏导与状态反馈路径，展开存活乘积、detach后的3.2加2.4、两步lambda-return和末端价值导数。",
+      "baseline_sha256": "2ff6caf0b312065bc9e9f811f77e3934990e258f080f68b41bc637962ae3ad9e",
+      "revised_sha256": "f51af1744d5c32f6733b0bf8e8fb6d279051087cbe01a4db2cd7676cd2ac9248",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/ai/ultralytics/index.md",
+      "added_lines": 50,
+      "removed_lines": 18,
+      "character_delta": 750,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 3,
+      "changes": "补64回归通道到四边距离、两角、步幅与xywh/xyxy的解码链，展开DFL、LetterBox、IoU和标签算术。",
+      "baseline_sha256": "dc03babe12cfd85af87bbcee6e16457a71c55699352260b58aa23ab6645f0aaa",
+      "revised_sha256": "36a7089e6c69e72819dbb5c1cda7d1b31890a7fadb6a35d1066f818adc3be6e8",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/ai/vflash/index.md",
+      "added_lines": 33,
+      "removed_lines": 30,
+      "character_delta": 160,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 1,
+      "changes": "串联草拟、校验回退、缓存回填与动作头，说明连续接受前缀、每块八动作和共同剩余成本。",
+      "baseline_sha256": "1f351e20f1cab1e25d573e766439ef01e78407a375f2605fa1fb7d0b0b0958bf",
+      "revised_sha256": "3fc1ad07206ec5a6021d084b9e4e70a2b74b57a4376c34cb26781deec308ebb8",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/ai/video-to-data/index.md",
+      "added_lines": 45,
+      "removed_lines": 50,
+      "character_delta": -652,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 2,
+      "changes": "补IK与支撑wrench索引，连接PPO残差、绝对目标标签与GR00T窗口，解释40Hz参考按20Hz消费的半速过程。",
+      "baseline_sha256": "df55a4975ad2f1d0d90028cc54026b3cd6fc8b382ddd504004a39dac0927d9e8",
+      "revised_sha256": "685d45b2ff7a66d1482cc722051e0dccaa8aa8176f76e87e95705f84d37658d9",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/vision-transformers/index.md",
+      "added_lines": 22,
+      "removed_lines": 14,
+      "character_delta": 473,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 1,
+      "changes": "补patch和多头形状、窗口复杂度、TinyViT张量轴、CLIP双向损失与DiT潜空间计数。",
+      "baseline_sha256": "ff43ef2c1dd8d400edd8359d40d4d53026ba1514c1118a838075837742fcf370",
+      "revised_sha256": "9faed687d124e2fa72f90d19ac90f78f54a9fd24abbb08501846c514ff85ef3a",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/vla-evolution/index.md",
+      "added_lines": 49,
+      "removed_lines": 80,
+      "character_delta": -2340,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 0,
+      "changes": "定义动作块、条件和索引，连接Bayes后验、tanh与条件速度场，解释条件方差交叉项。",
+      "baseline_sha256": "7b2e8b9602286591f3250f3b3120d1b78f961c82a8a61c15da6a05340b7d2d4e",
+      "revised_sha256": "8a0bb8ba7c1904f2fe894ab6f7472fc0ab0891762731dee42148a2ec58e4eda7",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/ai/vla-survey/index.md",
+      "added_lines": 47,
+      "removed_lines": 38,
+      "character_delta": 275,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 5,
+      "changes": "补CLIP分母候选、条件均值导数、扩散训练样本、flow路径导数和长任务条件概率链。",
+      "baseline_sha256": "6b10524583ab49869ac222cac75b5871a40ef589b044159cda3ecad37cc3f1e2",
+      "revised_sha256": "c929541879b24c6c86b55ed04db5ea74adc7415e724e0f040cd9c45d8c289f5b",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/ai/vla-world-model-data/index.md",
+      "added_lines": 34,
+      "removed_lines": 48,
+      "character_delta": -648,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 1,
+      "changes": "以柜门任务串联策略、世界模型和LAPA，补位姿链、时钟校正与混合份额，区分目标系数lambda与样本倍率omega。",
+      "baseline_sha256": "145df8993f13d09c2df84c118d746d1d49f03dfda4ea7fc1431e7c8edbf4e850",
+      "revised_sha256": "d29e81c6fa8b63ee1b373b63935f1427120699693de6c2b53ac82be7658ba543",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/ai/weight-space-programming/index.md",
+      "added_lines": 32,
+      "removed_lines": 12,
+      "character_delta": 852,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 3,
+      "changes": "将XOR写成权重矩阵，解释置换抵消与选列投影，并明确固定层输入的前提。",
+      "baseline_sha256": "3d11d751a5ebc3c12313deab0ed97241c62e6f81343af720af2e786ab1cdbeaa",
+      "revised_sha256": "26010c7e7fc7132ec4b98f944d08cafe7fa1ad9a2ecff731f43e2ed9920f1608",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/calibration/interactive-contact-calibration/index.md",
+      "added_lines": 61,
+      "removed_lines": 73,
+      "character_delta": -573,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 0,
+      "changes": "区分轮次、接触、粒子和工具点索引，连接似然、重采样、法向秩与二维残差，保留v1核函数差异。",
+      "baseline_sha256": "3065f3e3a5c0436d6ce2bfdccb0b43afc6d8e1e9df064e1444332cfbe5211526",
+      "revised_sha256": "5589a876fd50793864bef364fd8a28e10f6caf7ad4b16025dfcc268f0ed22f14",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/calibration/omnicalib/index.md",
+      "added_lines": 54,
+      "removed_lines": 58,
+      "character_delta": 552,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 0,
+      "changes": "补首见符号、局部线性化、白化与先验/激励算例，串起ICP、足端、时差及共同旋转gauge。",
+      "baseline_sha256": "86acc7faf5601257081bb14dfe41349d2a436759a40b9652247811f5c5cd9281",
+      "revised_sha256": "a36b0feb330819f31d147033fe5b984dab663bf08c466a3ec83a0e54b00f982f",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/planner/tampagent/index.md",
+      "added_lines": 33,
+      "removed_lines": 43,
+      "character_delta": 3,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 0,
+      "changes": "逐项绑定共享抓法和配置，展开抓法集合交集并注明未来集合已知的构造前提，解释证据依赖失效。",
+      "baseline_sha256": "f648faaa9fd82c52bac72d702d432a0557d99bedc8ff7784b9fc797fa3cb901f",
+      "revised_sha256": "1eb020649ec95d4a3cf16ae74e61bed978d9d818e79d6770c487428bff29b7e9",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/planner/task-and-motion-planning/index.md",
+      "added_lines": 45,
+      "removed_lines": 55,
+      "character_delta": -643,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 0,
+      "changes": "理顺模式、骨架、共享抓法与坐标组合，解释H-CSP、候选生成和预算分配，合并重复边界说明。",
+      "baseline_sha256": "7b1f0f66bfab7dee455fdba849ce82f1ba1a5f0e846f6cd800721ba61d59f772",
+      "revised_sha256": "1c14c0c4edfbbd42fb62134bc25f6cdf8b9bb4d981f0a25d0ba1338527dc36a5",
+      "enlarged_formula_reflow_revised": false
+    },
+    {
+      "path": "content/posts/robotics/control/robot-filters/index.md",
+      "added_lines": 61,
+      "removed_lines": 55,
+      "character_delta": 930,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 2,
+      "changes": "补WMA/EMA权重、噪声平方和、样本年龄、MSD归一化与KF两种Q，串联延迟和闭环极点。",
+      "baseline_sha256": "991598cb0c607d2544bf91c92a6187c4e99803c1505856d565376f722c4f2c3d",
+      "revised_sha256": "cd14470ed1a065f8035b98ed64233be132f80f6256f1540861f5caf94e2e08cc",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/robotics/cuarms/index.md",
+      "added_lines": 36,
+      "removed_lines": 34,
+      "character_delta": 456,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 1,
+      "changes": "依次引入骨架、模式、技能和阶段状态，解释成对关系与联合选择的区别及两轮捷径检查。",
+      "baseline_sha256": "948bd14b116689d75b737fd6ce83ece5ed450c10bf0994716b96fd7f88920c47",
+      "revised_sha256": "f8a139407a2c4e057df3a21b9d56a622481d380db2729c9abdc1b381e40ab672",
+      "enlarged_formula_reflow_revised": true
+    },
+    {
+      "path": "content/posts/robotics/curobo-v2-fast/index.md",
+      "added_lines": 29,
+      "removed_lines": 28,
+      "character_delta": 637,
+      "headings_preserved": true,
+      "explicit_ids_preserved": true,
+      "fenced_code_preserved": true,
+      "publication_metadata_preserved": true,
+      "new_or_revised_display_formulas": 1,
+      "changes": "补样条h尺度、gather转置、jerk系数、三次逆动力学消项和s等于0.5的代入步骤。",
+      "baseline_sha256": "f4ffbc03629830af472126744351dc26e88816f0ecb3addd58ebab4d25ab4e9a",
+      "revised_sha256": "e7f4661c39cbb3133bd28820480070fd7f31d1b77f34d86896d688cf36aeddae",
+      "enlarged_formula_reflow_revised": true
+    }
+  ],
+  "preservation": {
+    "articles": 37,
+    "existing_headings_preserved": true,
+    "explicit_ids_preserved": true,
+    "fenced_code_preserved": true,
+    "publication_dates_and_draft_states_preserved": true,
+    "front_matter_changes_this_round": "lastmod only; reading metadata from prior pass retained",
+    "article_lastmod": "2026-11-13",
+    "existing_metadata_record_updated": "Machine Learning for Robotics acceptance question10"
+  },
+  "new_or_revised_display_formulas": 90,
+  "new_optional_details": [
+    {
+      "path": "content/posts/ai/last-action-tokenizer/index.md",
+      "summaries": [
+        "进阶：GW 怎样比较两个空间内部的距离",
+        "进阶推导：按当前样本二阶矩白化，为什么残差长度小于 1"
+      ]
+    }
+  ],
+  "previous_pass_report": "docs/site-reviews/2026-11-12-reading-progression/review.json",
+  "validation": {
+    "status": "passed",
+    "initial_attempt": {
+      "work_directory": "/tmp/chase-editorial-fivehour-20261112",
+      "production_build": "passed",
+      "strict_validation_pages": 354,
+      "numerical_groups": 46,
+      "normal_reading_layouts": 432,
+      "normal_print_layouts": 648,
+      "new_formula_keyboard_and_native_disclosure_interactions": 142,
+      "tagged_native_pdfs": 8,
+      "runtime_exceptions": 0,
+      "real_findings": {
+        "large_print_failed_layouts": 96,
+        "affected_large_print_articles": 16,
+        "mobile_200_failed_layouts": 12,
+        "affected_mobile_articles": 6
+      },
+      "test_invocation_issue": "filter check initially omitted fresh output directory and read existing preview public; recheck invocation includes fresh production directory"
+    },
+    "reflow_fixes": {
+      "articles": 20,
+      "action": "equivalent display-equation line breaks and long inline-math relocation; original font sizes retained"
+    },
+    "recheck_2": {
+      "work_directory": "/tmp/chase-editorial-fivehour-20261112/recheck-2",
+      "stages": [
+        {
+          "stage": "hugo-production",
+          "command": [
+            "/home/ubuntu/miniconda3/envs/blog/lib/python3.10/site-packages/hugo/binaries/hugo",
+            "--minify",
+            "--destination",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/production",
+            "--cacheDir",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/hugo-cache"
+          ],
+          "exit_code": 0,
+          "seconds": 5.89,
+          "log": "/tmp/chase-editorial-fivehour-20261112/recheck-2/qa-logs/hugo-production.log"
+        },
+        {
+          "stage": "validation",
+          "command": [
+            "python3",
+            "-B",
+            "scripts/validate_blog.py",
+            "--public",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/production",
+            "--python-snippets",
+            "--structured-snippets",
+            "--strict-math"
+          ],
+          "exit_code": 0,
+          "seconds": 3.83,
+          "log": "/tmp/chase-editorial-fivehour-20261112/recheck-2/qa-logs/validation.log"
+        },
+        {
+          "stage": "asset-output",
+          "command": [
+            "python3",
+            "-B",
+            "scripts/test_site_assets.py",
+            "--public",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/production"
+          ],
+          "exit_code": 0,
+          "seconds": 2.88,
+          "log": "/tmp/chase-editorial-fivehour-20261112/recheck-2/qa-logs/asset-output.log"
+        },
+        {
+          "stage": "article-filter",
+          "command": [
+            "node",
+            "scripts/test_blog_filter.cjs",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/production"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/recheck-2/qa-logs/article-filter.log"
+        },
+        {
+          "stage": "search-unit",
+          "command": [
+            "node",
+            "scripts/test_site_search.cjs"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/recheck-2/qa-logs/search-unit.log"
+        },
+        {
+          "stage": "browser-reading",
+          "command": [
+            "node",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/check_scoped_reading.cjs",
+            "http://127.0.0.1:13661",
+            "9496",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/reading"
+          ],
+          "exit_code": 0,
+          "seconds": 87.07,
+          "log": "/tmp/chase-editorial-fivehour-20261112/recheck-2/qa-logs/browser-reading.log"
+        },
+        {
+          "stage": "browser-print",
+          "command": [
+            "node",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/check_scoped_print.cjs",
+            "http://127.0.0.1:13661",
+            "9496",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/print"
+          ],
+          "exit_code": 0,
+          "seconds": 52.13,
+          "log": "/tmp/chase-editorial-fivehour-20261112/recheck-2/qa-logs/browser-print.log"
+        },
+        {
+          "stage": "browser-large-print",
+          "command": [
+            "node",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/check_scoped_print.cjs",
+            "http://127.0.0.1:13661",
+            "9496",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/print-large",
+            "--large-text"
+          ],
+          "exit_code": 0,
+          "seconds": 57.22,
+          "log": "/tmp/chase-editorial-fivehour-20261112/recheck-2/qa-logs/browser-large-print.log"
+        },
+        {
+          "stage": "browser-deep-editorial",
+          "command": [
+            "node",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/inspect_deep_changes.cjs",
+            "http://127.0.0.1:13661",
+            "9496",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/focused"
+          ],
+          "exit_code": 0,
+          "seconds": 245.84,
+          "log": "/tmp/chase-editorial-fivehour-20261112/recheck-2/qa-logs/browser-deep-editorial.log"
+        },
+        {
+          "stage": "browser-search",
+          "command": [
+            "node",
+            "scripts/check_site_search.cjs",
+            "http://127.0.0.1:13661",
+            "9496",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/search"
+          ],
+          "exit_code": 0,
+          "seconds": 35.9,
+          "log": "/tmp/chase-editorial-fivehour-20261112/recheck-2/qa-logs/browser-search.log"
+        },
+        {
+          "stage": "native-pdf-text",
+          "command": [
+            "python3",
+            "-B",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/check_native_pdfs.py"
+          ],
+          "exit_code": 0,
+          "seconds": 3.43,
+          "log": "/tmp/chase-editorial-fivehour-20261112/recheck-2/qa-logs/native-pdf-text.log"
+        }
+      ],
+      "reading": {
+        "cases": 148,
+        "failures": 0
+      },
+      "print": {
+        "layouts": 222,
+        "failures": 0,
+        "textSamples": 155448,
+        "runtimeExceptions": 0
+      },
+      "large_print": {
+        "layouts": 222,
+        "failures": 0,
+        "textSamples": 155448,
+        "runtimeExceptions": 0
+      },
+      "focused": {
+        "articles": 37,
+        "routes": 37,
+        "layouts": 296,
+        "interactions": 222,
+        "pdfExports": 10,
+        "failures": 0,
+        "runtimeExceptions": 0
+      },
+      "native_pdf_text_checks": [
+        {
+          "article": "last-action-tokenizer",
+          "closed_open_text_equal": true,
+          "required_text_present": [
+            "GW怎样比较两个空间内部的距离",
+            "按当前样本二阶矩白化"
+          ],
+          "pages": 21,
+          "rasterized_pages": [
+            3,
+            18
+          ],
+          "images": [
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/focused/last-action-tokenizer-paper-page-3.png",
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/focused/last-action-tokenizer-paper-page-18.png"
+          ]
+        },
+        {
+          "article": "machine-learning-for-robotics",
+          "closed_open_text_equal": null,
+          "required_text_present": [
+            "还可以看清增加仿真的方向",
+            "配对真实样本数不变时"
+          ],
+          "pages": 23,
+          "rasterized_pages": [
+            13
+          ],
+          "images": [
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/focused/machine-learning-for-robotics-paper-page-13.png"
+          ]
+        },
+        {
+          "article": "stable-hand",
+          "closed_open_text_equal": null,
+          "required_text_present": [
+            "该阈值的一半时",
+            "108"
+          ],
+          "pages": 17,
+          "rasterized_pages": [
+            5
+          ],
+          "images": [
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/focused/stable-hand-paper-page-5.png"
+          ]
+        },
+        {
+          "article": "foundations-modern-ai",
+          "closed_open_text_equal": null,
+          "required_text_present": [
+            "0.0705"
+          ],
+          "pages": 23,
+          "rasterized_pages": [
+            6
+          ],
+          "images": [
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/focused/foundations-modern-ai-paper-page-6.png"
+          ]
+        },
+        {
+          "article": "supermimic",
+          "closed_open_text_equal": null,
+          "required_text_present": [
+            "若传入的",
+            "5.6"
+          ],
+          "pages": 32,
+          "rasterized_pages": [
+            11
+          ],
+          "images": [
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/focused/supermimic-paper-page-11.png"
+          ]
+        },
+        {
+          "article": "light-loco-parkour",
+          "closed_open_text_equal": null,
+          "required_text_present": [
+            "先计算超出部分"
+          ],
+          "pages": 82,
+          "rasterized_pages": [
+            15
+          ],
+          "images": [
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/focused/light-loco-parkour-paper-page-15.png"
+          ]
+        },
+        {
+          "article": "card-retargeting",
+          "closed_open_text_equal": null,
+          "required_text_present": [
+            "两个平方项配方"
+          ],
+          "pages": 36,
+          "rasterized_pages": [
+            11
+          ],
+          "images": [
+            "/tmp/chase-editorial-fivehour-20261112/recheck-2/focused/card-retargeting-paper-page-11.png"
+          ]
+        }
+      ]
+    },
+    "strict_production_validation": {
+      "reviewed_posts": 111,
+      "learning_paths": 11,
+      "acceptance_checks": 896,
+      "blog_posting_schemas": 108,
+      "sharing_images": 70,
+      "shared_search_indexes": 2,
+      "classified_tags": 207,
+      "code_blocks": 687,
+      "syntax_checked_by_language": {
+        "bash": 294,
+        "json": 12,
+        "jsonc": 6,
+        "python": 229,
+        "sh": 10,
+        "xml": 1
+      },
+      "html_pages": 354,
+      "html_pages_checked": 354,
+      "local_references_checked": 39222,
+      "collection_pages_checked": 340,
+      "filter_indexes_checked": 11,
+      "errors": [],
+      "python_fragment_warnings": [],
+      "unrendered_math_warnings": []
+    },
+    "article_filter": {
+      "articles": 108,
+      "drafts": 0,
+      "topics": 11,
+      "metadata_bytes": 71632,
+      "tests": "normalization, literal/AND matching, sorting, immutability, URL state, exact coverage passed"
+    },
+    "search_unit": {
+      "library": "FlexSearch 0.8.143",
+      "languageMetadata": {
+        "uiLanguages": 2,
+        "fixturePages": 4,
+        "storedMetadataOnly": true,
+        "oldDataFallback": true
+      },
+      "checks": "NFKC, CJK bigrams and final characters, supplementary Unicode, technical punctuation, no partial-term suggestions, field-specific ranking, chapter intersections, unique limited results and 400 whole-text oracle queries passed"
+    },
+    "numerical_examples": {
+      "groups": 46,
+      "failures": 0,
+      "commands": [
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/test_act_examples.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.32,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/00-test_act_examples.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/ai/cosmos3/token_contract_lab.py",
+            "--self-test"
+          ],
+          "exit_code": 0,
+          "seconds": 0.03,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/01-token_contract_lab.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/test_llm_metrics.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.16,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/02-test_llm_metrics.log"
+        },
+        {
+          "command": [
+            "node",
+            "scripts/test_llm_budget.cjs"
+          ],
+          "exit_code": 0,
+          "seconds": 0.03,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/03-test_llm_budget.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/test_parkour_examples.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/04-test_parkour_examples.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/test_morphmimic_contracts.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.11,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/05-test_morphmimic_contracts.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/ai/supermimic/survival_credit.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/06-survival_credit.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/ai/molmo-motion/trajectory_contract_lab.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.11,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/07-trajectory_contract_lab.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/ai/multiview-geometry/geometry_sanity.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.03,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/08-geometry_sanity.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/test_muon_articles.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.21,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/09-test_muon_articles.log"
+        },
+        {
+          "command": [
+            "node",
+            "scripts/test_muon_batch.cjs"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/10-test_muon_batch.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/package_muon_examples.py",
+            "--check",
+            "--test"
+          ],
+          "exit_code": 0,
+          "seconds": 0.42,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/11-package_muon_examples.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/test_pion_examples.py"
+          ],
+          "exit_code": 0,
+          "seconds": 1.32,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/12-test_pion_examples.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/package_pion_lab.py",
+            "--check",
+            "--test"
+          ],
+          "exit_code": 0,
+          "seconds": 1.82,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/13-package_pion_lab.log"
+        },
+        {
+          "command": [
+            "node",
+            "scripts/test_pion_spectrum.cjs"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/14-test_pion_spectrum.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/planner/task-and-motion-planning/tamp_constraints.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.32,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/15-tamp_constraints.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/planner/task-and-motion-planning/tamp_search.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/16-tamp_search.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/planner/task-and-motion-planning/tamp_kinematics.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/17-tamp_kinematics.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/test_tamp_examples.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.87,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/18-test_tamp_examples.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/package_tamp_lab.py",
+            "--check",
+            "--test"
+          ],
+          "exit_code": 0,
+          "seconds": 0.62,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/19-package_tamp_lab.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/ai/card-retargeting/contact_sanity.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.03,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/20-contact_sanity.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/planner/tampagent/belief_contract_sanity.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.03,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/21-belief_contract_sanity.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/robotics/cuarms/coordination_sanity.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.03,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/22-coordination_sanity.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/ai/weight-space-programming/weight_space_sanity.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.02,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/23-weight_space_sanity.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/robotics/curobo-v2-fast/timeopt_sanity.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.03,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/24-timeopt_sanity.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/render_curobo_timeopt_figures.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/25-render_curobo_timeopt_figures.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/ai/ultralytics/detection_geometry.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.03,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/26-detection_geometry.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/render_ultralytics_geometry.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/27-render_ultralytics_geometry.log"
+        },
+        {
+          "command": [
+            "node",
+            "scripts/test_ultralytics_geometry.cjs"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/28-test_ultralytics_geometry.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/ai/rma-umi-rtc-deployment/deployment_contracts.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/29-deployment_contracts.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/ai/residual-reinforcement-learning/residual_control_sanity.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/30-residual_control_sanity.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/calibration/interactive-contact-calibration/contact_calibration_sanity.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.11,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/31-contact_calibration_sanity.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/render_deployment_figures.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/32-render_deployment_figures.log"
+        },
+        {
+          "command": [
+            "node",
+            "scripts/test_deployment_labs.cjs"
+          ],
+          "exit_code": 0,
+          "seconds": 1.52,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/33-test_deployment_labs.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/ai/last-action-tokenizer/geometry_sanity.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/34-geometry_sanity.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/calibration/omnicalib/observability_sanity.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.03,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/35-observability_sanity.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/render_last_omnicalib_figures.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.11,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/36-render_last_omnicalib_figures.log"
+        },
+        {
+          "command": [
+            "node",
+            "scripts/test_last_whitening.cjs"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/37-test_last_whitening.log"
+        },
+        {
+          "command": [
+            "node",
+            "scripts/test_omnicalib_prior.cjs"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/38-test_omnicalib_prior.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "content/posts/ai/machine-learning-for-robotics/deployment_sanity.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/39-deployment_sanity.log"
+        },
+        {
+          "command": [
+            "python3",
+            "-B",
+            "scripts/render_robotics_ml_review.py",
+            "--check"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/40-render_robotics_ml_review.log"
+        },
+        {
+          "command": [
+            "/home/ubuntu/miniconda3/envs/pin/bin/python",
+            "-B",
+            "scripts/test_filter_examples.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.42,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/41-test_filter_examples.log"
+        },
+        {
+          "command": [
+            "/home/ubuntu/miniconda3/envs/pin/bin/python",
+            "-B",
+            "scripts/test_muon_articles.py",
+            "--numpy"
+          ],
+          "exit_code": 0,
+          "seconds": 0.57,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/42-test_muon_articles.log"
+        },
+        {
+          "command": [
+            "/home/ubuntu/miniconda3/envs/pin/bin/python",
+            "-B",
+            "scripts/package_muon_examples.py",
+            "--check",
+            "--test",
+            "--numpy"
+          ],
+          "exit_code": 0,
+          "seconds": 0.92,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/43-package_muon_examples.log"
+        },
+        {
+          "command": [
+            "/home/ubuntu/miniconda3/envs/pin/bin/python",
+            "-B",
+            "scripts/test_pion_examples.py",
+            "--numpy"
+          ],
+          "exit_code": 0,
+          "seconds": 1.37,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/44-test_pion_examples.log"
+        },
+        {
+          "command": [
+            "/home/ubuntu/miniconda3/envs/pin/bin/python",
+            "-B",
+            "scripts/package_pion_lab.py",
+            "--check",
+            "--test",
+            "--numpy"
+          ],
+          "exit_code": 0,
+          "seconds": 2.02,
+          "log": "/tmp/chase-editorial-fivehour-20261112/checks/45-package_pion_lab.log"
+        }
+      ],
+      "evidence_reuse_after_equivalent_reflow": {
+        "changed_since_full_numerical_checks": [
+          "content/posts/ai/behavior-prompting/index.md",
+          "content/posts/ai/card-retargeting/index.md",
+          "content/posts/ai/cosmos3/index.md",
+          "content/posts/ai/foundations-modern-ai/index.md",
+          "content/posts/ai/light-loco-parkour/index.md",
+          "content/posts/ai/llm-training-metrics/index.md",
+          "content/posts/ai/molmo-motion/index.md",
+          "content/posts/ai/multiview-geometry/index.md",
+          "content/posts/ai/muon-learning-rate-batch-size/index.md",
+          "content/posts/ai/pion-muon-vla-rlvr/index.md",
+          "content/posts/ai/rlhf-rlvr-rlcd/index.md",
+          "content/posts/ai/rrsi/index.md",
+          "content/posts/ai/stable-hand/index.md",
+          "content/posts/ai/video-to-data/index.md",
+          "content/posts/ai/vision-transformers/index.md",
+          "content/posts/ai/vla-survey/index.md",
+          "content/posts/ai/weight-space-programming/index.md",
+          "content/posts/robotics/control/robot-filters/index.md",
+          "content/posts/robotics/cuarms/index.md",
+          "content/posts/robotics/curobo-v2-fast/index.md"
+        ],
+        "all_example_sources_test_scripts_and_published_fenced_code_preserved": true,
+        "example_checks": "/tmp/chase-editorial-fivehour-20261112/example-checks.json",
+        "numerical_groups_passed": 46
+      }
+    },
+    "final_formula_endpoints": {
+      "work_directory": "/tmp/chase-editorial-fivehour-20261112/edge-audit",
+      "summary": {
+        "formulaRegions": 1190,
+        "failures": 0,
+        "exceptions": 0
+      },
+      "configurations": {
+        "articles": 37,
+        "width_pixels": 320,
+        "root_font_size_percent": 200,
+        "scripts": [
+          true,
+          false
+        ]
+      },
+      "method": "Measure actual .base left/right bounds after scrollTo with instant behavior at both endpoints.",
+      "start_screenshots": [
+        "molmo-motion-start-dark-200.png",
+        "pion-muon-vla-rlvr-start-dark-200.png",
+        "stable-hand-start-dark-200.png"
+      ]
+    },
+    "rendered_contracts": {
+      "articles": 37,
+      "canonical_urls_preserved": 37,
+      "previous_html_ids_preserved": 2078,
+      "missing_ids": 0
+    },
+    "source_identity": {
+      "frozen_tracked_files": 2374,
+      "changed_files": [],
+      "verified": true
+    },
+    "source_manifest_sha256": "f049783168c251f5f971ad42309eac26962103d0260a4b9c0996d0bb03270a91"
+  },
+  "manual_pdf_review": {
+    "pages": 8,
+    "groups": 7,
+    "font_sizes_percent": [
+      100,
+      200
+    ],
+    "result": "inspected equations, prose, margins and table rows; readable and no clipping observed",
+    "unchanged_page_image_checks": [
+      {
+        "artifact": "/tmp/chase-editorial-fivehour-20261112/recheck-2/focused/last-action-tokenizer-paper-page-3.png",
+        "same_pixels_as_already_inspected_attempt1": true
+      },
+      {
+        "artifact": "/tmp/chase-editorial-fivehour-20261112/recheck-2/focused/last-action-tokenizer-paper-page-18.png",
+        "same_pixels_as_already_inspected_attempt1": true
+      },
+      {
+        "artifact": "/tmp/chase-editorial-fivehour-20261112/recheck-2/focused/machine-learning-for-robotics-paper-page-13.png",
+        "same_pixels_as_already_inspected_attempt1": true
+      }
+    ]
+  },
+  "completed_utc": "2026-11-12T17:44:15Z",
+  "elapsed_hours": 2.431,
+  "manual_mobile_review": {
+    "screenshots": [
+      "/tmp/chase-editorial-fivehour-20261112/edge-audit/molmo-motion-start-dark-200.png",
+      "/tmp/chase-editorial-fivehour-20261112/edge-audit/pion-muon-vla-rlvr-start-dark-200.png",
+      "/tmp/chase-editorial-fivehour-20261112/edge-audit/stable-hand-start-dark-200.png"
+    ],
+    "result": "Formula starts and opening brackets are visible at the true left endpoint; horizontal controls retain focus and page prose reflows.",
+    "resolved_observation": "Earlier screenshots captured intermediate keyboard-scroll positions; instant-endpoint measurements passed without stylesheet changes."
+  },
+  "new_or_revised_display_formula_count_note": "相对本轮开始的工作区计数，含已有公式的等价分行重排。",
+  "repository_head": "814f14b373281bd3e958ac7db207c6aa36f37333",
+  "temporary_services": "Private HTTP/Chrome processes stopped; no listeners remain on13661 or9496."
+}
