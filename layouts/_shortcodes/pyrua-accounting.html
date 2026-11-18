@@ -1,0 +1,45 @@
+{{- $id := printf "pyrua-accounting-%d" .Ordinal -}}
+{{- $reference := (.Page.Resources.Get "assets/accounting-default.json").Content | transform.Unmarshal -}}
+{{- $css := resources.Get "css/pyrua-accounting.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/pyrua-accounting.js" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section id="{{ $id }}" class="pyrua-accounting" data-pyrua-accounting aria-labelledby="{{ $id }}-title">
+  <p id="{{ $id }}-title" class="pyrua-accounting__title"><strong>动手算：调用边界与累计输入</strong></p>
+  <p id="{{ $id }}-help" class="pyrua-accounting__note">固定初始输入：工具 2000、代码 2400 token。每次调用读取此前全部回传内容；最后一次反馈不会计入此前输入。不模拟图像编码、缓存折扣、历史压缩或执行成功率。</p>
+  <p data-static class="pyrua-accounting__note">默认：12 个原语事件，每组三个，每事件反馈 1200 token，分组后回传 20%。脚本不可用时保留以下默认结果。</p>
+  <div data-controls hidden>
+    <div class="pyrua-accounting__presets" role="group" aria-label="载入并计算构造配置">
+      <button type="button" data-preset="default">每组三步，回传两成</button>
+      <button type="button" data-preset="single">逐事件并全部回传</button>
+    </div>
+    <form novalidate aria-label="构造输入记账的参数">
+      <div class="pyrua-accounting__fields">
+      {{- range slice
+        (dict "name" "operations" "label" "原语事件数" "min" "1" "max" "100" "help" "固定要执行的事件，不表示任务难度")
+        (dict "name" "group" "label" "每 cell 最多事件数" "min" "1" "max" "100" "help" "最后一组允许不足；不判断能否合并")
+        (dict "name" "reply" "label" "每事件完整反馈 token" "min" "0" "max" "100000" "help" "构造的新增历史量，不含固定初始输入")
+        (dict "name" "retained" "label" "分组后保留百分比" "min" "0" "max" "100" "help" "0 到 100 的整数；逐组向上取整为 token") -}}
+        <label for="{{ $id }}-{{ .name }}"><span data-label>{{ .label }}</span>
+          <input id="{{ $id }}-{{ .name }}" name="{{ .name }}" type="number" min="{{ .min }}" max="{{ .max }}" step="1" value="{{ index $reference.input .name }}" required inputmode="numeric" aria-describedby="{{ $id }}-help">
+          <small>{{ .help }}</small>
+        </label>
+      {{- end -}}
+      </div>
+      <button type="submit" class="pyrua-accounting__submit">计算当前配置</button>
+    </form>
+  </div>
+  <p id="{{ $id }}-error" data-error class="pyrua-accounting__error" role="alert" hidden></p>
+  <p data-status class="pyrua-accounting__note" role="status" aria-live="polite" aria-atomic="true"></p>
+  <dl class="pyrua-accounting__results">
+  {{- range slice
+    (dict "key" "tool_calls" "label" "逐事件的模型调用次数")
+    (dict "key" "code_calls" "label" "分组后的模型调用次数")
+    (dict "key" "tool_input" "label" "逐事件的累计输入 token")
+    (dict "key" "grouped_input" "label" "仅分组的累计输入 token")
+    (dict "key" "selected_input" "label" "分组并选择反馈的累计输入 token") -}}
+    <div><dt id="{{ $id }}-label-{{ .key }}">{{ .label }}</dt><dd><output data-value="{{ .key }}" aria-labelledby="{{ $id }}-label-{{ .key }}" aria-live="off">{{ int (index $reference.result .key) }}</output></dd></div>
+  {{- end -}}
+  </dl>
+  <p class="pyrua-accounting__note">事件相同只为单独观察反馈记账；分组后的程序是否仍能正确判断、恢复和完成任务，需要另行评估。</p>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

@@ -135,6 +135,8 @@ Check explanatory tables at 320 pixels wide. If long sentences collapse into nea
 
 ## Testing Guidelines
 
+For the PyRUA-Lean article, run `python3 -B content/posts/ai/pyrua-lean/interface_sanity.py --check`, `python3 -B scripts/render_pyrua_figures.py --check` and `node scripts/test_pyrua_accounting.cjs`. They check paper counts, macro versus pooled aggregation, constructed rigid translation, direct prompt replay and all binary reward groups of eight, not model or robot performance. The optional `probe_runtime.py --source <pinned-checkout>` verifies its commit and seven module hashes before executing the official runtime against recording objects; it loads no simulator, hardware, network or third-party numerical dependency. Article browser checks live in `docs/site-reviews/2026-11-18-pyrua-lean/` and run serially. Preserve the accountant's static default, focus, stale-result clearing and printed label/value pairs.
+
 When adding an article, update `data/blog_topics.json` and `docs/blog-editorial-review.json` so the learning path, neighboring-post links, filter inventory, and acceptance checks include it. Preserve existing records and follow the metadata format used by recent additions.
 
 Older articles may keep their acceptance checks in `docs/blog-second-pass.json`. Update that existing record when revising them; do not add a second copy to `docs/blog-editorial-review.json`. The validator rejects duplicate acceptance sources.

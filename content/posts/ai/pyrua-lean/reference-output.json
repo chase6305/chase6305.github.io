@@ -1,0 +1,75 @@
+{
+  "scope": "paper bookkeeping and constructed arithmetic; no model or robot",
+  "main": {
+    "instances": 700,
+    "tool_successes": 442,
+    "code_successes": 502,
+    "tool_percent": 63.142857142857146,
+    "code_percent": 71.71428571428571,
+    "percentage_points": 8.571428571428571,
+    "relative_increase_percent": 13.574660633484163,
+    "both_solved": 406,
+    "tool_only": 36,
+    "code_only": 96,
+    "both_failed": 162
+  },
+  "robodojo": {
+    "macro_percent": 51.61666666666667,
+    "pooled_percent": 50.523809523809526,
+    "successes": 1061,
+    "episodes": 2100
+  },
+  "accounting": {
+    "input": {
+      "operations": 12,
+      "group": 3,
+      "reply": 1200,
+      "retained": 20
+    },
+    "result": {
+      "primitive_events": 12,
+      "tool_calls": 12,
+      "code_calls": 4,
+      "tool_input": 103200,
+      "grouped_input": 31200,
+      "selected_input": 13920
+    }
+  },
+  "placement_metres": [
+    0.4300000000000001,
+    0.24000000000000002,
+    1.047
+  ],
+  "group_advantages": [
+    1.2909944487358056,
+    1.2909944487358056,
+    1.2909944487358056,
+    -0.7745966692414834,
+    -0.7745966692414834,
+    -0.7745966692414834,
+    -0.7745966692414834,
+    -0.7745966692414834
+  ],
+  "clipped_gain_examples": {
+    "0.6": {
+      "positive": 0.6,
+      "negative": -0.8
+    },
+    "0.8": {
+      "positive": 0.8,
+      "negative": -0.8
+    },
+    "1.0": {
+      "positive": 1.0,
+      "negative": -1.0
+    },
+    "1.28": {
+      "positive": 1.28,
+      "negative": -1.28
+    },
+    "1.4": {
+      "positive": 1.28,
+      "negative": -1.4
+    }
+  }
+}

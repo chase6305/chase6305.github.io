@@ -1,0 +1,690 @@
+{
+  "reviewed_on": "2026-11-18",
+  "started_utc": "2026-11-18T07:34:08Z",
+  "local_review_completed_utc": "2026-11-18T09:07:39.305690+00:00",
+  "baseline_commit": "41bb60ce48dde84111564b9ade9b6a559280a45c",
+  "article": "content/posts/ai/pyrua-lean/index.md",
+  "markdown_characters": 27630,
+  "headings": 52,
+  "sources": "source-notes.json",
+  "status": "local validation passed; publication verified separately after main push",
+  "content": [
+    "persistent cell namespace and two feedback loops",
+    "guarded motion and bowl placement geometry",
+    "cumulative input accounting with static/interactive defaults",
+    "paired main results and shared-success versus all-episode costs",
+    "ablations, geometric recovery and stochastic primitive limits",
+    "RGB RoboDojo, no live success signal, macro aggregation and distinct depth configuration",
+    "GRPO, asymmetric clipping, training/evaluation split and learned interface behavior",
+    "pinned source execution semantics, bounded offline probes, exercises and answered acceptance checks"
+  ],
+  "production_validation": {
+    "reviewed_posts": 112,
+    "learning_paths": 11,
+    "acceptance_checks": 908,
+    "blog_posting_schemas": 109,
+    "sharing_images": 71,
+    "shared_search_indexes": 2,
+    "classified_tags": 208,
+    "code_blocks": 692,
+    "syntax_checked_by_language": {
+      "bash": 296,
+      "json": 12,
+      "jsonc": 6,
+      "python": 232,
+      "sh": 10,
+      "xml": 1
+    },
+    "html_pages": 356,
+    "html_pages_checked": 356,
+    "local_references_checked": 39672,
+    "collection_pages_checked": 342,
+    "filter_indexes_checked": 11,
+    "errors": [],
+    "python_fragment_warnings": [],
+    "unrendered_math_warnings": []
+  },
+  "asset_validation": {
+    "pinned_packages": 3,
+    "pinned_files": 29,
+    "active_pinned_packages": 2,
+    "native_image_viewers": 1,
+    "verified_integrity_assets": 37,
+    "html_pages_checked": 356,
+    "manifest_icons_checked": 2,
+    "theme_overrides": 17,
+    "core_renderer_overrides": 1,
+    "local_math_fonts": 20
+  },
+  "local_checks": [
+    {
+      "name": "hugo",
+      "command": [
+        "/home/ubuntu/miniconda3/envs/blog/lib/python3.10/site-packages/hugo/binaries/hugo",
+        "--minify",
+        "--destination",
+        "/tmp/chase-pyrua-lean-20261118/production-5",
+        "--cacheDir",
+        "/tmp/chase-pyrua-lean-20261118/hugo-cache"
+      ],
+      "exit_code": 0,
+      "seconds": 7.071
+    },
+    {
+      "name": "validation",
+      "command": [
+        "python3",
+        "-B",
+        "scripts/validate_blog.py",
+        "--public",
+        "/tmp/chase-pyrua-lean-20261118/production-5",
+        "--python-snippets",
+        "--structured-snippets",
+        "--strict-math"
+      ],
+      "exit_code": 0,
+      "seconds": 3.719
+    },
+    {
+      "name": "assets",
+      "command": [
+        "python3",
+        "-B",
+        "scripts/test_site_assets.py",
+        "--public",
+        "/tmp/chase-pyrua-lean-20261118/production-5"
+      ],
+      "exit_code": 0,
+      "seconds": 2.75
+    },
+    {
+      "name": "filter",
+      "command": [
+        "node",
+        "scripts/test_blog_filter.cjs",
+        "/tmp/chase-pyrua-lean-20261118/production-5"
+      ],
+      "exit_code": 0,
+      "seconds": 0.029
+    },
+    {
+      "name": "search",
+      "command": [
+        "node",
+        "scripts/test_site_search.cjs"
+      ],
+      "exit_code": 0,
+      "seconds": 0.033
+    },
+    {
+      "name": "figure-data",
+      "command": [
+        "python3",
+        "-B",
+        "scripts/render_pyrua_figures.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.019
+    },
+    {
+      "name": "numerics",
+      "command": [
+        "python3",
+        "-B",
+        "content/posts/ai/pyrua-lean/interface_sanity.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.027
+    },
+    {
+      "name": "toc",
+      "command": [
+        "python3",
+        "-B",
+        "scripts/test_blog_toc.py",
+        "--hugo",
+        "/home/ubuntu/miniconda3/envs/blog/lib/python3.10/site-packages/hugo/binaries/hugo"
+      ],
+      "exit_code": 0,
+      "seconds": 0.837
+    }
+  ],
+  "numerical_scope": {
+    "standard_library": "passed: paper counts, 42-task aggregation, rigid translation, direct prompt replay, 256 binary reward groups and sign-based clipping oracle",
+    "javascript_oracle": {
+      "cases": 541,
+      "invalid_cases": 11,
+      "status": "passed outside sandbox; CI also runs this test"
+    },
+    "reference_output": "content/posts/ai/pyrua-lean/reference-output.json"
+  },
+  "official_runtime_probe": {
+    "commit": "e754cf43c822b91f4728777a78071fa4e012c371",
+    "verified_modules": [
+      "_backend",
+      "_robot",
+      "arms",
+      "libero",
+      "robots",
+      "runner",
+      "sandbox"
+    ],
+    "persistent_assignment_after_exception": true,
+    "side_effects_are_not_rolled_back": true,
+    "show_then_move_attaches_end_of_cell_frame": true,
+    "materialized_display_preserves_earlier_bytes": true,
+    "cell_budget_differs_from_primitive_count": true,
+    "defaults_are_rich_and_on_motion": true,
+    "simulator_model_hardware_or_network_used": false
+  },
+  "probe_rejection_contracts": {
+    "checks": [
+      "verified source, no third-party imports, recording behavior",
+      "existing output rejected and preserved byte for byte",
+      "wrong commit rejected before source execution or output creation",
+      "modified source rejected before import or output creation",
+      "official source kept free of Python bytecode"
+    ],
+    "passed": 5,
+    "source": "/tmp/chase-pyrua-lean-20261118/upstream"
+  },
+  "browser": {
+    "reading_layouts": 96,
+    "native_fragment_cases": 9,
+    "contrast_text_samples": 84891,
+    "behavior_groups": [
+      {
+        "case": "native number arrow, stale clearing, Enter, focus",
+        "passed": true
+      },
+      {
+        "case": "invalid recovery, Tab, Space preset, focus",
+        "passed": true
+      },
+      {
+        "case": "actual keyboard horizontal scrolling",
+        "regions": 29
+      },
+      {
+        "case": "manual review of closed-dialog axe incomplete references",
+        "viewerIds": 1,
+        "allResolved": true,
+        "nativeDialog": true
+      },
+      {
+        "case": "image viewer open/Escape/focus",
+        "passed": true
+      },
+      {
+        "case": "new article searchable",
+        "entrance": "/",
+        "passed": true
+      },
+      {
+        "case": "new article searchable",
+        "entrance": "/zh-cn/",
+        "passed": true
+      }
+    ],
+    "fallbacks": [
+      {
+        "case": "blocked lab script, static default",
+        "passed": true
+      },
+      {
+        "case": "late enhancement preserves reader",
+        "focus": true,
+        "delta": 0.046875
+      },
+      {
+        "case": "browser-restored invalid input remains correctable",
+        "passed": true
+      },
+      {
+        "case": "unavailable numeric feature preserves static default",
+        "passed": true
+      }
+    ],
+    "article_outlines": 252,
+    "article_outline_minimum_contrast": 4.939955162140827,
+    "shared_outlines": 702,
+    "print_geometry_layouts": 48,
+    "native_tagged_pdfs": 48,
+    "native_printed_label_value_pairs": 240,
+    "normal_and_forced_colors": true,
+    "runtime_exceptions": 0,
+    "semantic_violations": 0,
+    "incomplete_manual_review": {
+      "count": 2,
+      "rule": "aria-valid-attr-value",
+      "reason": "image viewer dialog is outside the main-element audit context",
+      "resolution": "both aria-controls references resolve to one native dialog; actual opening, Escape and focus restoration passed"
+    },
+    "position_scope": "Exact restoration within 1 CSS px at the calculator input with scripts and the nearby native chapter heading without scripts; late no-script reanchoring is reported separately."
+  },
+  "manual_visual_review": {
+    "pages": [
+      {
+        "label": "runtime-overview",
+        "pdf": "/tmp/chase-pyrua-lean-20261118/final-native/A4-light-100-scripts.pdf",
+        "page": 2,
+        "image": "/tmp/chase-pyrua-lean-20261118/paper-previews/runtime-overview.png",
+        "paper_corners": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ]
+      },
+      {
+        "label": "paired-outcomes",
+        "pdf": "/tmp/chase-pyrua-lean-20261118/final-native/A4-light-100-scripts.pdf",
+        "page": 11,
+        "image": "/tmp/chase-pyrua-lean-20261118/paper-previews/paired-outcomes.png",
+        "paper_corners": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ]
+      },
+      {
+        "label": "large-result-card",
+        "pdf": "/tmp/chase-pyrua-lean-20261118/final-native/A4-light-200-scripts.pdf",
+        "page": 22,
+        "image": "/tmp/chase-pyrua-lean-20261118/paper-previews/large-result-card.png",
+        "paper_corners": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ]
+      },
+      {
+        "label": "large-pooled-equation",
+        "pdf": "/tmp/chase-pyrua-lean-20261118/final-native/A4-light-200-scripts.pdf",
+        "page": 44,
+        "image": "/tmp/chase-pyrua-lean-20261118/paper-previews/large-pooled-equation.png",
+        "paper_corners": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ]
+      },
+      {
+        "label": "large-advantages",
+        "pdf": "/tmp/chase-pyrua-lean-20261118/final-native/A4-light-200-scripts.pdf",
+        "page": 51,
+        "image": "/tmp/chase-pyrua-lean-20261118/paper-previews/large-advantages.png",
+        "paper_corners": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ]
+      },
+      {
+        "label": "forced-large-result-card",
+        "pdf": "/tmp/chase-pyrua-lean-20261118/final-native-forced/A4-dark-200-scripts-forced.pdf",
+        "page": 22,
+        "image": "/tmp/chase-pyrua-lean-20261118/paper-previews/forced-large-result-card.png",
+        "paper_corners": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ]
+      }
+    ],
+    "findings": "Inspected architecture arrow directions, all chart labels and paired counts, two enlarged multiline formulas, ordinary and forced-color result cards. Text and values remain legible and unclipped; all six sampled paper corners are white."
+  },
+  "figure_repeatability": {
+    "stage": "render-repeat",
+    "command": [
+      "/home/ubuntu/miniconda3/envs/tj/bin/python",
+      "-B",
+      "scripts/render_pyrua_figures.py",
+      "--output",
+      "/tmp/chase-pyrua-lean-20261118/figure-repeat"
+    ],
+    "exit_code": 0,
+    "seconds": 0.265,
+    "completed_utc": "2026-11-18T09:02:08.968777+00:00",
+    "log": "/tmp/chase-pyrua-lean-20261118/render-repeat-final.log",
+    "byte_equal": true,
+    "sha256": "72b463f757293e97ba1b17fee1894ddd8dc1f75834ec5dfac7d667be18ee0635"
+  },
+  "fixed_findings": [
+    "Two display equations exceeded A4/Letter content widths at 200% root size; equivalent aligned line breaks fixed both without reducing font sizes.",
+    "Initial invalid values restored by the browser could leave hidden controls; invalid values now remain visible and correctable.",
+    "Unavailable numeric feature detection now retains the server-rendered static result without mounting controls.",
+    "The first inline-math assertion wrongly treated horizontally scrolling table content as body overflow; table-scoped math now follows the table scroller checks.",
+    "Text extraction interleaved a wrapped result label and adjacent value; PDF checks now match word geometry and verify same-page placement.",
+    "Sandboxed Node-to-Python pipes raised EPERM/timeouts; the unchanged independent oracle passed with authorized native execution and thread caps."
+  ],
+  "known_native_limit": {
+    "diagnostic": [
+      {
+        "route": "/posts/ai/pyrua-lean/",
+        "before": {
+          "y": 27102,
+          "height": 28669,
+          "top": 535,
+          "bottom": 564.328125,
+          "focused": true,
+          "viewport": 1100
+        },
+        "after": {
+          "y": 22394,
+          "height": 28669,
+          "top": 5243,
+          "bottom": 5272.328125,
+          "focused": true,
+          "viewport": 1100
+        },
+        "scrollDelta": -4708
+      },
+      {
+        "route": "/posts/ai/muon-optimizer/",
+        "before": {
+          "y": 20859,
+          "height": 22449,
+          "top": 535.734375,
+          "bottom": 565.0625,
+          "focused": true,
+          "viewport": 1100
+        },
+        "after": {
+          "y": 20799,
+          "height": 22449,
+          "top": 595.734375,
+          "bottom": 625.0625,
+          "focused": true,
+          "viewport": 1100
+        },
+        "scrollDelta": -60
+      }
+    ],
+    "build": "production-3",
+    "interpretation": "No-script Chromium can retain a different scroll position after printing, also observed on the existing Muon article. Exact late-position restoration is supplied by page scripts; it is not claimed for the native fallback."
+  },
+  "resources": {
+    "exclusive_lock": "/home/ubuntu/.cache/codex-heavy-work.lock",
+    "browser_suites": "serial, private Chrome CDP endpoint",
+    "numerical_threads": 1,
+    "hugo_GOMAXPROCS": 2,
+    "available_memory_snapshots_GiB": "at least 29",
+    "scope": "Limits apply to this run; these are not global quotas on all conversations."
+  },
+  "stages": {
+    "reanchor": {
+      "stage": "reanchor",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-18-pyrua-lean/check_native_reanchor.cjs",
+        "http://127.0.0.1:13682",
+        "9498",
+        "/tmp/chase-pyrua-lean-20261118/native-reanchor"
+      ],
+      "exit_code": 0,
+      "seconds": 2.829,
+      "completed_utc": "2026-11-18T08:50:03.268229+00:00",
+      "log": "/tmp/chase-pyrua-lean-20261118/reanchor-final.log"
+    },
+    "render-repeat": {
+      "stage": "render-repeat",
+      "command": [
+        "/home/ubuntu/miniconda3/envs/tj/bin/python",
+        "-B",
+        "scripts/render_pyrua_figures.py",
+        "--output",
+        "/tmp/chase-pyrua-lean-20261118/figure-repeat"
+      ],
+      "exit_code": 0,
+      "seconds": 0.265,
+      "completed_utc": "2026-11-18T09:02:08.968777+00:00",
+      "log": "/tmp/chase-pyrua-lean-20261118/render-repeat-final.log",
+      "byte_equal": true,
+      "sha256": "72b463f757293e97ba1b17fee1894ddd8dc1f75834ec5dfac7d667be18ee0635"
+    },
+    "native": {
+      "stage": "native",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-18-pyrua-lean/check_article.cjs",
+        "http://127.0.0.1:13683",
+        "9498",
+        "/tmp/chase-pyrua-lean-20261118/final-native",
+        "--print-only"
+      ],
+      "exit_code": 0,
+      "seconds": 58.317,
+      "completed_utc": "2026-11-18T08:59:59.556928+00:00",
+      "log": "/tmp/chase-pyrua-lean-20261118/native-final.log"
+    },
+    "behavior": {
+      "stage": "behavior",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-18-pyrua-lean/check_article.cjs",
+        "http://127.0.0.1:13683",
+        "9498",
+        "/tmp/chase-pyrua-lean-20261118/final-behavior",
+        "--behavior-only",
+        "--axe",
+        "/tmp/chase-a11y/node_modules/axe-core/axe.min.js"
+      ],
+      "exit_code": 0,
+      "seconds": 8.759,
+      "completed_utc": "2026-11-18T09:02:08.702962+00:00",
+      "log": "/tmp/chase-pyrua-lean-20261118/behavior-final.log"
+    },
+    "geometry-forced": {
+      "stage": "geometry-forced",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-18-pyrua-lean/check_print_geometry.cjs",
+        "http://127.0.0.1:13683",
+        "9498",
+        "/tmp/chase-pyrua-lean-20261118/final-geometry-forced",
+        "--forced-colors"
+      ],
+      "exit_code": 0,
+      "seconds": 6.446,
+      "completed_utc": "2026-11-18T09:01:13.226170+00:00",
+      "log": "/tmp/chase-pyrua-lean-20261118/geometry-forced-final.log"
+    },
+    "reading": {
+      "stage": "reading",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-18-pyrua-lean/check_article.cjs",
+        "http://127.0.0.1:13683",
+        "9498",
+        "/tmp/chase-pyrua-lean-20261118/final-reading",
+        "--screen-only",
+        "--axe",
+        "/tmp/chase-a11y/node_modules/axe-core/axe.min.js"
+      ],
+      "exit_code": 0,
+      "seconds": 40.019,
+      "completed_utc": "2026-11-18T09:01:59.943487+00:00",
+      "log": "/tmp/chase-pyrua-lean-20261118/reading-final.log"
+    },
+    "site-focus": {
+      "stage": "site-focus",
+      "command": [
+        "node",
+        "scripts/check_site_focus.cjs",
+        "http://127.0.0.1:13683",
+        "9498",
+        "/tmp/chase-pyrua-lean-20261118/site-focus",
+        "--forced-colors"
+      ],
+      "exit_code": 0,
+      "seconds": 16.396,
+      "completed_utc": "2026-11-18T09:02:25.365250+00:00",
+      "log": "/tmp/chase-pyrua-lean-20261118/site-focus-final.log"
+    },
+    "geometry": {
+      "stage": "geometry",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-18-pyrua-lean/check_print_geometry.cjs",
+        "http://127.0.0.1:13683",
+        "9498",
+        "/tmp/chase-pyrua-lean-20261118/final-geometry"
+      ],
+      "exit_code": 0,
+      "seconds": 6.598,
+      "completed_utc": "2026-11-18T09:01:06.779485+00:00",
+      "log": "/tmp/chase-pyrua-lean-20261118/geometry-final.log"
+    },
+    "previews": {
+      "stage": "previews",
+      "command": [
+        "/home/ubuntu/miniconda3/envs/tj/bin/python",
+        "-B",
+        "docs/site-reviews/2026-11-18-pyrua-lean/render_pdf_previews.py",
+        "--root",
+        "/tmp/chase-pyrua-lean-20261118",
+        "--output",
+        "/tmp/chase-pyrua-lean-20261118/paper-previews"
+      ],
+      "exit_code": 0,
+      "seconds": 1.873,
+      "completed_utc": "2026-11-18T09:03:56.915406+00:00",
+      "log": "/tmp/chase-pyrua-lean-20261118/previews-final.log"
+    },
+    "native-forced": {
+      "stage": "native-forced",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-18-pyrua-lean/check_article.cjs",
+        "http://127.0.0.1:13683",
+        "9498",
+        "/tmp/chase-pyrua-lean-20261118/final-native-forced",
+        "--print-only",
+        "--forced-colors"
+      ],
+      "exit_code": 0,
+      "seconds": 60.624,
+      "completed_utc": "2026-11-18T09:01:00.181491+00:00",
+      "log": "/tmp/chase-pyrua-lean-20261118/native-forced-final.log"
+    },
+    "focus": {
+      "stage": "focus",
+      "command": [
+        "node",
+        "docs/site-reviews/2026-11-18-pyrua-lean/check_focus.cjs",
+        "http://127.0.0.1:13683",
+        "9498",
+        "/tmp/chase-pyrua-lean-20261118/final-focus"
+      ],
+      "exit_code": 0,
+      "seconds": 6.697,
+      "completed_utc": "2026-11-18T09:01:19.923813+00:00",
+      "log": "/tmp/chase-pyrua-lean-20261118/focus-final.log"
+    }
+  },
+  "limits": "No policy training, SAM/VLA inference, 700-instance benchmark rerun, physical robot or hardware latency validation was performed. The population-standard-deviation GRPO example and token accountant explicitly state their constructed assumptions."
+}

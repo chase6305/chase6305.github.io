@@ -1,0 +1,66 @@
+.pyrua-accounting {
+  border: 1px solid var(--chase-border);
+  border-radius: 1rem;
+  padding: 1.1rem;
+  margin-block: 1.5rem;
+  background: var(--chase-surface);
+  color: var(--chase-text);
+  scroll-margin-top: 5rem;
+}
+.pyrua-accounting [hidden] { display: none !important; }
+.content .pyrua-accounting p { margin-block: .6rem; }
+.pyrua-accounting__title { font-size: 1.1rem; }
+.pyrua-accounting__note { font-size: .9rem; }
+.pyrua-accounting__presets { display: flex; flex-wrap: wrap; gap: .5rem; margin-block: 1rem; }
+.pyrua-accounting button {
+  border: 1px solid var(--chase-border);
+  border-radius: .5rem;
+  padding: .5rem .7rem;
+  color: var(--chase-accent);
+  background: var(--chase-surface-strong);
+  font: inherit;
+  font-size: .9rem;
+  cursor: pointer;
+}
+.pyrua-accounting__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
+.pyrua-accounting label { display: flex; flex-direction: column; gap: .3rem; min-width: 0; font-size: .9rem; }
+.pyrua-accounting label small { font-size: .8rem; }
+.pyrua-accounting input {
+  border: 1px solid var(--chase-border);
+  border-radius: .4rem;
+  padding: .5rem;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--chase-text);
+  background: var(--chase-surface-strong);
+}
+.pyrua-accounting__submit { margin-top: .9rem; }
+.pyrua-accounting :is(input, button):focus-visible { outline: 2px solid var(--chase-accent); outline-offset: 3px; }
+.pyrua-accounting [aria-invalid="true"] { border-color: #b3261e; }
+.content .pyrua-accounting__error { color: var(--chase-text); border-left: 3px solid #b3261e; padding-left: .6rem; font-weight: 600; }
+.pyrua-accounting__results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; margin-block: 1rem; }
+.pyrua-accounting__results > div { min-width: 0; border: 1px solid var(--chase-border); border-radius: .5rem; padding: .7rem; background: var(--chase-surface-strong); break-inside: avoid; }
+.pyrua-accounting__results dt { font-size: .85rem; margin: 0; }
+.pyrua-accounting__results dd { margin: .2rem 0 0; }
+.pyrua-accounting output { display: block; font-size: 1.05rem; font-weight: 650; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+@media (max-width: 520px) {
+  .pyrua-accounting { padding: .8rem; }
+  .pyrua-accounting__fields, .pyrua-accounting__results { grid-template-columns: minmax(0, 1fr); }
+}
+@media print {
+  .pyrua-accounting, .pyrua-accounting input, .pyrua-accounting__results > div { color: #171717 !important; background: #fff !important; border-color: #777 !important; box-shadow: none !important; }
+  .pyrua-accounting__presets, .pyrua-accounting__submit { display: none !important; }
+  .pyrua-accounting label { break-inside: avoid; }
+  .pyrua-accounting__results { display: block; }
+  .pyrua-accounting__results > div { display: table; table-layout: fixed; width: 100%; box-sizing: border-box; margin-block: .4rem; break-inside: avoid-page; }
+  .pyrua-accounting__results dt, .pyrua-accounting__results dd { display: table-cell; vertical-align: top; }
+  .pyrua-accounting__results dt { width: 60%; padding-right: .5rem; }
+  .pyrua-accounting__results dd { width: 40%; }
+}
+@media (forced-colors: active) {
+  .pyrua-accounting :is(input, button):focus-visible { outline-color: Highlight; }
+  .pyrua-accounting [aria-invalid="true"] { border-style: dashed; }
+}

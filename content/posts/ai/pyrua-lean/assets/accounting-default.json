@@ -1,0 +1,16 @@
+{
+  "input": {
+    "operations": 12,
+    "group": 3,
+    "reply": 1200,
+    "retained": 20
+  },
+  "result": {
+    "primitive_events": 12,
+    "tool_calls": 12,
+    "code_calls": 4,
+    "tool_input": 103200,
+    "grouped_input": 31200,
+    "selected_input": 13920
+  }
+}

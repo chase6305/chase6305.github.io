@@ -63,6 +63,9 @@ jobs:
           python3 -B scripts/test_blog_rss.py
           node scripts/test_blog_filter.cjs public
           node scripts/test_site_search.cjs
+          python3 -B content/posts/ai/pyrua-lean/interface_sanity.py --check
+          python3 -B scripts/render_pyrua_figures.py --check
+          node scripts/test_pyrua_accounting.cjs
           node scripts/test_multiview_geometry_lab.cjs
           node scripts/test_supermimic_gradient_lab.cjs
           node scripts/test_llm_budget.cjs

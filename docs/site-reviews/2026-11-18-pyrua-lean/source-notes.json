@@ -1,0 +1,90 @@
+{
+  "paper": {
+    "version": "arXiv:2610.01939v2",
+    "date": "2026-10-13",
+    "local_file": "/home/ubuntu/Documents/PyRUA-Lean.pdf",
+    "pages": 29,
+    "sha256": "28a6fb59556f8cc55de75eb2d786396a57073044bef01935708ba402fa5848ff"
+  },
+  "official_source": {
+    "repository": "https://github.com/DAGroup-PKU/PyRUA-Lean",
+    "commit": "e754cf43c822b91f4728777a78071fa4e012c371",
+    "inspected_on": "2026-11-18"
+  },
+  "evidence": [
+    {
+      "topic": "execution, state, exception, selective feedback",
+      "paper": "3.1–3.3",
+      "code": "src/pyrualean/arms.py; src/pyrualean/_robot.py"
+    },
+    {
+      "topic": "main success, budgets, samples and shared-success costs",
+      "paper": "Table 2; 3.4–3.8; Appendices D–G"
+    },
+    {
+      "topic": "bowl placement geometry and whole versus solving call",
+      "paper": "Figure 2; Appendix A, Table 10"
+    },
+    {
+      "topic": "RGB observation, geometric primitives, no live success and macro aggregation",
+      "paper": "4.1–4.3; Table 4–5; Appendices H, K"
+    },
+    {
+      "topic": "depth is a distinct configuration; RGB variance not established by depth seeds",
+      "paper": "4.4; Table 7; Appendix I"
+    },
+    {
+      "topic": "GRPO, 45 instances, 3840 episodes, budgets and held-out behavior",
+      "paper": "Section 5; Tables 8–9; Appendix J, Table 16"
+    },
+    {
+      "topic": "show defers artifact read until end of cell in inspected source",
+      "code": "RobotBase.show; ArmToolkit._attach_images",
+      "probe": "probe_runtime.py against synthetic recording object"
+    },
+    {
+      "topic": "current release of v0.1-4B weights",
+      "url": "https://huggingface.co/DAGroup-PKU/PyRUA-Lean-Coder-v0.1-4B",
+      "checked_on": "2026-11-18"
+    }
+  ],
+  "limits": "Article arithmetic, rendering and runtime semantics do not reproduce model training, SAM/VLA inference, simulation benchmarks, multi-seed RGB variance or physical robots.",
+  "figure_data": {
+    "script": "scripts/render_pyrua_figures.py",
+    "source": "paper v2 Table 2 and Section 3.5",
+    "success_counts": [
+      [
+        200,
+        166,
+        188
+      ],
+      [
+        250,
+        150,
+        173
+      ],
+      [
+        90,
+        71,
+        78
+      ],
+      [
+        160,
+        55,
+        63
+      ]
+    ],
+    "paired": [
+      [
+        406,
+        36
+      ],
+      [
+        96,
+        162
+      ]
+    ],
+    "uncertainty": "one run per interface per instance; no added error bars"
+  },
+  "generated_diagram_provenance": "docs/image-generation/2026-11-18-pyrua-lean/runtime-feedback.json"
+}
