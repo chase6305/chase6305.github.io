@@ -58,7 +58,7 @@ async function screens(){
  }
  await load(1440,'light',100,true);await semantic('enhanced');
  await load(320,'dark',200,false,true);await semantic('scripts disabled, enlarged');
- for(const id of ['placement','token-accounting','recovery-examples','robodojo','coder','source-probe','self-check','fig-pyrua-runtime','fig-pyrua-outcomes']){
+ for(const id of ['handoff','placement','token-accounting','recovery-examples','robodojo','coder','source-probe','design-checklist','self-check','fig-pyrua-runtime','fig-pyrua-outcomes']){
   await load(320,'light',200,true);
   await b.cdp('Page.navigate',{url:base+route+'#'+id});await b.pause(200);
   const anchor=await b.evaluate(`(()=>{const target=document.getElementById(${JSON.stringify(id)});const e=target.closest('h2,h3')||target;const r=e.getBoundingClientRect();return {exists:!!e,top:r.top,bottom:r.bottom,height:innerHeight}})()`);

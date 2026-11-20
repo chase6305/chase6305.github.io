@@ -1,0 +1,49 @@
+{
+  "reviewed_on": "2026-11-20",
+  "baseline_commit": "ab03c85d0460e2f7256ce41262ae8b9fc3191c57",
+  "article": "content/posts/ai/pyrua-lean/index.md",
+  "purpose": "Connect persistent state, local feedback control and selective observation, then explain when the program should gather evidence or return control to the planner.",
+  "editorial_changes": [
+    "Lead with the three mechanisms and distinguish the success-rate denominator from the jointly successful cost subset.",
+    "Add a bowl-task handoff table with explicit assumptions, stopping conditions and evidence for the next planner decision.",
+    "Explain that identical reached flags can accompany different grasp outcomes; forwarding the same flag does not add missing evidence.",
+    "Distinguish adding observations inside a cell from handing interpretation or strategy revision to the planner.",
+    "Clarify that persistent variables neither refresh their values nor remove already-visible conversation history.",
+    "Connect feedback inside a cell with feedback between cells, and add four practical design questions plus two answered acceptance checks."
+  ],
+  "source": {
+    "paper": "arXiv:2610.01939v2",
+    "pdf_sha256": "28a6fb59556f8cc55de75eb2d786396a57073044bef01935708ba402fa5848ff",
+    "basis": "Provided PDF introduction and interface sections, existing fixed-source review, and the article's main comparison, ablations and training behavior tables.",
+    "interpretation": "Handoff examples and design questions are explicitly derived guidance, not an additional measured benchmark or an optimal observation algorithm."
+  },
+  "preserved": {
+    "publication_date": "2026-11-18",
+    "draft": false,
+    "title_and_url": true,
+    "existing_rendered_ids": 74,
+    "removed_ids": [],
+    "added_ids": ["handoff", "design-checklist"],
+    "figures_formulas_programs_and_reported_measurements": "unchanged"
+  },
+  "validation": {
+    "fresh_production_build": "passed with Hugo 0.165.0",
+    "blog_snippets_metadata_references_and_strict_math": "passed",
+    "toc_fixtures": "passed",
+    "article_arithmetic_figure_data_and_javascript_oracle": "passed",
+    "reading_layouts": 96,
+    "chapter_and_figure_fragment_checks": 11,
+    "new_table_actual_arrow_key_scroll_cases": 2,
+    "print_geometry_layouts": 24,
+    "tagged_native_pdfs": 24,
+    "pdf_scope": "A4 and Letter; light, dark and warm; 100% and 200% text; scripts enabled and disabled.",
+    "pdf_result_label_value_pairs": 120,
+    "semantic_violations": 0,
+    "semantic_manual_review": "Two main-only axe incomplete image-viewer references resolve to the same unique native dialog; opening, Escape and focus restoration passed.",
+    "browser_exceptions": 0,
+    "manual_visual_review": "Four desktop/mobile screenshots and three rasterized PDF pages covering the new table at 100% and 200%; no clipping or split table rows observed."
+  },
+  "scope": "Editorial revision with unchanged experiment data and execution code. No model, simulator, training, hardware or new performance measurement was run. The earlier review's native late-print scroll limitation remains applicable.",
+  "evidence_directory": "/tmp/chase-pyrua-refine-20261120",
+  "publication": "Verified separately after the main-branch push."
+}
