@@ -51,5 +51,6 @@
       1968
     ],
     "meaning": "Task/initial-state row weights, not generated rollouts or retained update proportions."
-  }
+  },
+  "probe_verified_file_count": 9
 }

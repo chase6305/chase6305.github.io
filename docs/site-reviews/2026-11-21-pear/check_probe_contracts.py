@@ -32,6 +32,9 @@ def main():
         result=run(command)
         report=json.loads(result.stdout)
         assert report['source_commit']==REVISION and report['gripper_sign_not_magnitude']
+        assert len(report['verified_files'])==9
+        assert report['data_manifests']['stage3_nominal_row_weights']=={'libero':2000,'robodojo':1968}
+        assert report['data_manifests']['official_smoke']['rows']==52
         checks.append('valid pinned source and bounded recorders')
         original=valid.read_bytes()
         result=run(command,2)
@@ -49,6 +52,15 @@ def main():
             assert 'Traceback' not in result.stderr
             checks.append('tampered source rejected before execution/output')
             protocol.write_bytes(original_source)
+            manifest=worktree/'pear/envs/robodojo/configs/official_smoke.json'
+            original_manifest=manifest.read_bytes()
+            manifest.write_bytes(original_manifest+b'\n')
+            output=tmp/'tampered-manifest.json'
+            result=run([sys.executable,'-B',str(PROBE),'--source',str(worktree),'--output',str(output)],2)
+            assert 'Source hash mismatch: pear/envs/robodojo/configs/official_smoke.json' in result.stderr
+            assert 'Traceback' not in result.stderr and not output.exists()
+            checks.append('tampered manifest rejected before execution/output')
+            manifest.write_bytes(original_manifest)
             run(['git','-C',str(worktree),'-c','user.name=Probe Fixture','-c','user.email=probe@example.invalid',
                  'commit','--allow-empty','-m','probe wrong revision fixture'])
             output=tmp/'wrong-revision.json'

@@ -527,12 +527,13 @@ print(tuple(round(v, 3) for v in target))
 
 ### 11.2 用记录对象核对官方协议与目标生成
 
-另一个下载程序 [probe_pear_contracts.py](probe_pear_contracts.py)读取固定源码，先验证提交与文件哈希，再用标准库加载纯协议模块、提取指定解析器与目标生成方法。它用记录对象代替模型与执行器，检查：
+另一个下载程序 [probe_pear_contracts.py](probe_pear_contracts.py)读取固定源码，先验证提交与文件哈希，再用标准库加载纯协议模块、提取指定解析器、目标生成与范围展开方法。它用记录对象代替模型与执行器，检查：
 
 - 字段齐全、有限数值、布尔值与未知字段的拒绝；
 - 训练路径的最后 JSON 块提取与部署路径的末尾格式约束；
 - 未舍入当前量与动作增量的合成；
-- 仿真夹爪变化符号，以及全零动作的保持目标。
+- 仿真夹爪变化符号，以及全零动作的保持目标；
+- LIBERO 与 RoboDojo 清单的条目数、第三阶段重复文件权重，以及 smoke 清单与完整评测的区别。
 
 ```bash
 git clone https://github.com/mit-han-lab/pear.git
@@ -540,7 +541,7 @@ git -C pear checkout 2a81b2eec95e6e6f19c3fc0a80a38aebb40a30e2
 python3 -B probe_pear_contracts.py --source pear --output contracts.json
 ```
 
-输出文件采用排他创建；已有文件被保留。探针不执行仓库包初始化、安装脚本、模拟器、CUDA 内核、设备驱动或任何真实运动。它的通过范围是所列协议行为，不包含完整 Pydantic 模型校验、逆运动学或任务成功率。
+输出文件采用排他创建；已有文件被保留。探针不执行仓库包初始化、数据集框架、训练脚本、模拟器、CUDA 内核、设备驱动或任何真实运动。它的通过范围是所列协议与清单行为，不包含完整 Pydantic 模型校验、逆运动学或任务成功率。
 
 ### 11.3 当前脚本与论文默认值并非完全相同
 

@@ -37,9 +37,22 @@
     "numerical_examples": "77 exact binomial cases, all 256 binary groups of eight with Decimal advantages, coordinate/rotation, Wilson score endpoints, task-mixture and score-centering checks",
     "browser_calculator_oracle": "344 valid and 13 invalid cases against independent exact Python binomial enumeration, plus extreme values and static-default agreement",
     "figure_checks": "303 probability-curve cases and declared real-trial counts; independent re-render produces identical SVG bytes",
-    "fixed_source_probe": "Pinned commit and four source hashes; pure protocol and selected AST methods run only against bounded recording objects",
-    "probe_guards": "Six passed checks: valid source, existing-output preservation, tampering rejection before execution, wrong-revision rejection, missing-source behavior and no bytecode",
-    "citation_links": "18 unique citation targets: immutable Git paths verified locally; project, paper and model collection opened read-only. Local Hugging Face TLS timeout was resolved through the web reader."
+    "fixed_source_probe": "Pinned commit and nine source hashes; pure protocol, selected AST methods and manifest products checked with bounded recorders. No dataset framework or training script executed.",
+    "probe_guards": "Seven passed checks: valid source, existing-output preservation, source/manifest tampering rejection before execution, wrong-revision rejection, missing-source behavior and no bytecode.",
+    "citation_links": "18 unique citation targets: immutable Git paths verified locally; project, paper and model collection opened read-only. Local Hugging Face TLS timeout was resolved through the web reader.",
+    "manifest_products": {
+      "libero_unique_rows": 2000,
+      "robodojo_unique_rows": 328,
+      "pickup_rows": 163,
+      "align_rows": 165,
+      "smoke_settings": 52,
+      "stage3_robodojo_repetitions": 6,
+      "nominal_row_weights": [
+        2000,
+        1968
+      ],
+      "scope": "Pinned task/initial-state row products, not actual scheduler frequencies or retained rollout proportions."
+    }
   },
   "limits": [
     "No model weights, policy training, simulator, GPU kernel, IK solver or robot device was run.",

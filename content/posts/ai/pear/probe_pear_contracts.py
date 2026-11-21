@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Inspect PEAR's pinned pure protocol and extracted methods with recording objects.
+"""Inspect PEAR's pinned protocol, recorded methods and data-manifest products.
 
 No model, third-party package, simulator, device, network or package initializer.
 The source revision and file hashes are verified BEFORE any source is executed.
@@ -9,12 +9,15 @@ from __future__ import annotations
 import argparse
 import ast
 import asyncio
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
 import hashlib
+import itertools
 import json
 import math
 from pathlib import Path
+import re
 import subprocess
 import sys
 from types import SimpleNamespace
@@ -24,7 +27,12 @@ HASHES = {
     "pear/agent_loop/protocol.py": "511e71155d44d925945189a00c871a6c9c4d3a1c193bbae11e0f8ce0f13ba99a",
     "pear/agent_loop/tool_parser.py": "3ce4e2fa60b3291a69c99c3321c11eaaa0b671ce5ab95c54a67a69f4785cf8bd",
     "pear/envs/robodojo/controller.py": "b9d30e4ccb31bfd986bb837cb1b4dec40899b8b0b65d05247f7068fab49ed763",
-    "pear/deploy/station/agent_loop/action_parser.py": "6a46b351751cb36255f9f21c5566ad2356042dff757ed4b1b7d66cb15647a386"
+    "pear/deploy/station/agent_loop/action_parser.py": "6a46b351751cb36255f9f21c5566ad2356042dff757ed4b1b7d66cb15647a386",
+    "pear/agent_loop/dataset.py": "eee246ad5cbfb54c85a3b6628348ad1f2f928b9db6b7ba0b7978a6bbf1272ee1",
+    "pear/envs/libero/configs/libero_all.json": "ed2cc87605655eeafcf456e0a193a4a9569f226fe050bd7cf75efb9b52d2d352",
+    "pear/envs/robodojo/configs/pickup_align_all.json": "efe64048b87977313e4792a30e74c4e1244fb80e00c4d08b3062f3a34db87ce4",
+    "pear/envs/robodojo/configs/official_smoke.json": "09e720cb7a69c0a95d232ebbe91f12e8d4d7da6311fa9424e2bd20fa9ac5a8fd",
+    "examples/models/qwen3_8_27b_pear/train/run_stage3.sh": "36b3f0204702c2bfed525fc1dbeabb1f07ed3a260316efcc87598b8ddb213c96"
 }
 
 def verified_source(source):
@@ -53,6 +61,52 @@ def extracted(text, names, namespace, filename):
     )
     exec(compile(ast.fix_missing_locations(module),filename,"exec"),namespace)
     return namespace
+
+def inspect_manifests(source, texts):
+    """Expand pinned row products with the source's pure range method only.
+
+    No datasets/verl import, environment constructor or rollout is performed.
+    Repeated files change nominal row weights, rather than unique initial states.
+    """
+    dataset_name="pear/agent_loop/dataset.py"
+    tree=ast.parse(texts[dataset_name],filename=str(source/dataset_name))
+    dataset=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=="EpisodeDataset")
+    method=next(n for n in dataset.body if isinstance(n,ast.FunctionDef) and n.name=="_parse_range")
+    method.decorator_list=[]
+    fragment=ast.Module(body=[ast.ImportFrom(module="__future__",names=[ast.alias(name="annotations")],level=0),method],type_ignores=[])
+    namespace={}
+    exec(compile(ast.fix_missing_locations(fragment),str(source/dataset_name),"exec"),namespace)
+    parse_range=namespace["_parse_range"]
+    assert parse_range("0-3,7")==[0,1,2,3,7]
+    assert parse_range("0-28,30-54")==list(range(29))+list(range(30,55))
+    def row_counts(name):
+        manifest=json.loads(texts[name]);counts=Counter();unique=set()
+        products=manifest["env"] if isinstance(manifest["env"],list) else [manifest["env"]]
+        for product in products:
+            keys=list(product)
+            values=[parse_range(value) if isinstance(value,str) else list(value) for value in product.values()]
+            for combination in itertools.product(*values):
+                row=dict(zip(keys,combination))
+                counts[str(row[manifest["data_source"]])]+=1
+                unique.add(tuple(sorted(row.items())))
+        return {"rows":sum(counts.values()),"unique_rows":len(unique),"by_data_source":dict(sorted(counts.items()))}
+    libero=row_counts("pear/envs/libero/configs/libero_all.json")
+    dojo=row_counts("pear/envs/robodojo/configs/pickup_align_all.json")
+    smoke=row_counts("pear/envs/robodojo/configs/official_smoke.json")
+    assert libero["rows"]==libero["unique_rows"]==2000
+    assert set(libero["by_data_source"].values())=={500} and len(libero["by_data_source"])==4
+    assert dojo["rows"]==dojo["unique_rows"]==328
+    assert dojo["by_data_source"]=={"align_blocks":165,"general_pickup":163}
+    assert smoke["rows"]==smoke["unique_rows"]==len(smoke["by_data_source"])==52
+    assert not ({"align_blocks","general_pickup"}&set(smoke["by_data_source"]))
+    recipe_name="examples/models/qwen3_8_27b_pear/train/run_stage3.sh"
+    match=re.search(r"^PICKUP_ALIGN_REPEAT_N=(\d+)\s*$",texts[recipe_name],re.MULTILINE)
+    assert match is not None
+    repeat=int(match.group(1));assert repeat==6
+    return {"libero_all":libero,"pickup_align_all":dojo,"official_smoke":smoke,
+            "stage3_robodojo_file_repetitions":repeat,
+            "stage3_nominal_row_weights":{"libero":libero["rows"],"robodojo":dojo["rows"]*repeat},
+            "scope":"Pinned task/initial-state row products and literal recipe weight; not generated rollouts, scheduler frequencies, retained batches or a full benchmark run."}
 
 def expect_rejection(operation):
     try:
@@ -167,6 +221,7 @@ def run(source, texts):
         goals=controller_stub._goals(altered)
         assert goals=={"left":{"pose":None,"opening":expected}}
     return {"source_commit":REVISION,"verified_files":list(HASHES),
+            "data_manifests":inspect_manifests(source,texts),
             "protocol_invalid_rejections":len(invalid),
             "protocol_exception_types":sorted(set(protocol_rejections)),
             "deployment_exception_types":sorted(set(deployment_rejections)),
@@ -174,7 +229,7 @@ def run(source, texts):
             "deployment_rejects_duplicate_fields":True,"training_extraction":training,
             "recorded_target_z_cm":30.11,"unrounded_current_quantity_preserved":True,
             "zero_action_records_holds":True,"gripper_sign_not_magnitude":True,
-            "scope":"Pure protocol and extracted methods only; no full action-model validation, IK, simulation, policy or hardware."}
+            "scope":"Pure protocol, extracted methods and manifest products only; no full action-model validation, dataset framework, IK, simulation, policy or hardware."}
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)

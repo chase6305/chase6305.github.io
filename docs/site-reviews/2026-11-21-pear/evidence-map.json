@@ -97,7 +97,8 @@
       "article": "reproduce",
       "source": "Pinned train/run_stage3.sh; examples/eval/README.md; examples/eval/eval_robolab.sh; robodojo configuration JSON; deployment docs",
       "observation": "Released stage 3 mixes LIBERO and RoboDojo; current rollout recipes enable MTP. RoboLab default is 120 episodes. official_smoke.json contains 52 settings, rather than the paper full 54. Updated drafter throughput and optional history compression are later configurations. Nominal stage-3 row weights are 2000 LIBERO versus 328 x 6 RoboDojo; these are not newly generated trajectories or guaranteed retained proportions.",
-      "scope": "Current defaults must not silently replace original paper protocol or denominators."
+      "scope": "Current defaults must not silently replace original paper protocol or denominators.",
+      "verification": "The downloadable probe verifies nine source hashes, extracts only the pure range parser, expands the three pinned JSON manifests and reads the literal recipe repeat count."
     }
   ]
 }
