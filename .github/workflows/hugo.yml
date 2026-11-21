@@ -66,6 +66,9 @@ jobs:
           python3 -B content/posts/ai/pyrua-lean/interface_sanity.py --check
           python3 -B scripts/render_pyrua_figures.py --check
           node scripts/test_pyrua_accounting.cjs
+          python3 -B content/posts/ai/pear/pear_sanity.py --check
+          python3 -B scripts/render_pear_figures.py --check
+          node scripts/test_pear_sampling.cjs
           node scripts/test_multiview_geometry_lab.cjs
           node scripts/test_supermimic_gradient_lab.cjs
           node scripts/test_llm_budget.cjs

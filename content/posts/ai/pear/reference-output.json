@@ -1,0 +1,103 @@
+{
+  "default_sampling": {
+    "all_fail": 0.8507630225817855,
+    "all_success": 2.5600000000000006e-14,
+    "mixed": 0.1492369774181888,
+    "candidate_groups": 857.6962775205573,
+    "candidate_rollouts": 6861.570220164458,
+    "retained_success": 0.13401504336241551,
+    "accepted_rollouts": 1024
+  },
+  "low_probability_sampling": {
+    "all_fail": 0.9684444338627706,
+    "all_success": 6.553600000000001e-20,
+    "mixed": 0.03155556613722944,
+    "candidate_groups": 4056.336667938429,
+    "candidate_rollouts": 32450.69334350743,
+    "retained_success": 0.1267605208730759,
+    "accepted_rollouts": 1024
+  },
+  "task_mixture_illustration": {
+    "success_percent": [
+      2,
+      50
+    ],
+    "candidate_weights": [
+      0.5,
+      0.5
+    ],
+    "retained_weights": [
+      0.13074625642841564,
+      0.8692537435715845
+    ]
+  },
+  "real_trials": [
+    {
+      "model": "base",
+      "successes": 0,
+      "trials": 30,
+      "fraction": 0.0,
+      "iid_wilson_illustration": [
+        0.0,
+        0.11351339317396876
+      ]
+    },
+    {
+      "model": "libero_only",
+      "successes": 7,
+      "trials": 30,
+      "fraction": 0.23333333333333334,
+      "iid_wilson_illustration": [
+        0.11792388144489496,
+        0.40928326158122164
+      ]
+    },
+    {
+      "model": "final",
+      "successes": 18,
+      "trials": 30,
+      "fraction": 0.6,
+      "iid_wilson_illustration": [
+        0.42320360253322475,
+        0.7540937188319815
+      ]
+    }
+  ],
+  "position_target_world_m": [
+    0.8,
+    2.4,
+    0.75
+  ],
+  "score_example": {
+    "pi": [
+      0.5,
+      0.5
+    ],
+    "mu": [
+      0.9,
+      0.1
+    ],
+    "raw_score_expectation": [
+      0.4,
+      -0.4
+    ],
+    "centered_score_expectation": [
+      -2.7755575615628914e-17,
+      2.7755575615628914e-17
+    ],
+    "rollout_centered_reward_gradient": [
+      -0.09000000000000001,
+      0.09000000000000001
+    ],
+    "on_policy_reward_gradient": [
+      -0.25,
+      0.25
+    ]
+  },
+  "decode_only_seconds_for_3230_tokens": {
+    "52": 62.11538461538461,
+    "221": 14.615384615384615,
+    "747": 4.323962516733601
+  },
+  "scope": "Constructed IID sampling, coordinates and score algebra; reported trial counts only. No policy or robot execution."
+}

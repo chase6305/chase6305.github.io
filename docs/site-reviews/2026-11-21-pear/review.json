@@ -1,0 +1,53 @@
+{
+  "reviewed_on": "2026-11-21",
+  "article": "/posts/ai/pear/",
+  "artifacts": "/tmp/chase-pear-20261121",
+  "content": {
+    "main_chapters": 12,
+    "answered_self_checks": 16,
+    "figures": 3,
+    "interactive_experiments": 1,
+    "scope": "Original Chinese explanation of PEAR/RURL, coordinate increments, group filtering and conditional task weights, asynchronous updates, curriculum, transfer evidence and deployment timing.",
+    "source_audit": "evidence-map.json",
+    "pinned_sources": "source-notes.json"
+  },
+  "validation": {
+    "production_build": "Hugo 0.165.0, minified, fresh temporary destination, at most two workers",
+    "blog_validation": {
+      "reviewed_posts": 113,
+      "published_schemas": 110,
+      "html_pages": 358,
+      "local_references": 40140,
+      "code_blocks": 696,
+      "strict_math_errors": 0,
+      "snippet_errors": 0
+    },
+    "filter_inventory": "110 published posts, 11 topics; exact metadata and learning-path coverage",
+    "search": "Shared search unit checks and PEAR discovery from both language entrances",
+    "browser_reading": "96 layouts: scripts on/off, 320/390/768/1440 pixels, three themes, 100/200 percent text, ordinary/increased spacing",
+    "chapter_and_figure_fragments": 19,
+    "discovery": "18 scoped contexts covering native/enhanced home cards in both languages, blog index, PEAR taxonomy, filter URL and article metadata",
+    "keyboard_and_fallbacks": "Native number controls, Enter/Space, Tab order, invalid recovery, stale-value clearing, endpoints, all overflowing formula/table regions, three image viewers, blocked/late numeric script and restored invalid inputs",
+    "focus": "252 painted-outline cases including ordinary and light/dark forced-color palettes",
+    "touch": "24 browser-emulated contexts, 36 preset taps, 24 horizontal-table/vertical-page gesture pairs; not physical-device validation",
+    "native_print": "24 production PDFs plus 24 forced-color draft PDFs: A4/Letter, three themes, 100/200 percent text and scripts on/off; six result label/value pairs checked in every PDF",
+    "print_geometry": "24 ordinary and 24 forced-color layouts, including formula/table/code bounds, white paper and text contrast",
+    "manual_pdf_review": "Ten selected pages rasterized across ordinary A4, enlarged native Letter and forced-color A4; action table, probability results, perturbation comparison, trial figure, formulas and downloadable-code usage inspected",
+    "semantic_rules": "Pinned axe-core 4.14.0: zero violations. One closed-dialog incomplete rule with three image links was resolved by confirming every referenced dialog and testing open/Escape/focus restoration.",
+    "numerical_examples": "77 exact binomial cases, all 256 binary groups of eight with Decimal advantages, coordinate/rotation, Wilson score endpoints, task-mixture and score-centering checks",
+    "browser_calculator_oracle": "344 valid and 13 invalid cases against independent exact Python binomial enumeration, plus extreme values and static-default agreement",
+    "figure_checks": "303 probability-curve cases and declared real-trial counts; independent re-render produces identical SVG bytes",
+    "fixed_source_probe": "Pinned commit and four source hashes; pure protocol and selected AST methods run only against bounded recording objects",
+    "probe_guards": "Six passed checks: valid source, existing-output preservation, tampering rejection before execution, wrong-revision rejection, missing-source behavior and no bytecode",
+    "citation_links": "18 unique citation targets: immutable Git paths verified locally; project, paper and model collection opened read-only. Local Hugging Face TLS timeout was resolved through the web reader."
+  },
+  "limits": [
+    "No model weights, policy training, simulator, GPU kernel, IK solver or robot device was run.",
+    "Fixed IID probability examples do not measure training candidate counts or throughput. Conditional retained success is distinct from evaluation success.",
+    "Wilson intervals are additional IID illustrations; fixed repeated scenes do not establish that assumption or real-robot coverage.",
+    "Quality uses BF16 while quoted original deployment throughput uses NVFP4 plus DFlash2. Fixed-token division is not an observed full-round latency.",
+    "Current published recipe defaults differ from paper configuration. Source observations are pinned, rather than attributed to all future revisions.",
+    "Native Chrome printing can shift the no-script reading position. The driver records that delta; it asserts exact position restoration only with page scripts, while checking values and focus in both modes."
+  ],
+  "resource_policy": "Heavy work serialized under /home/ubuntu/.cache/codex-heavy-work.lock, resource reserve checked after acquisition, numeric threads one, Hugo at most two workers, browser drivers serial. Temporary previews stopped after each stage."
+}

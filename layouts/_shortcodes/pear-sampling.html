@@ -1,0 +1,46 @@
+{{- $id := printf "pear-sampling-%d" .Ordinal -}}
+{{- $reference := (.Page.Resources.Get "assets/sampling-default.json").Content | transform.Unmarshal -}}
+{{- $css := resources.Get "css/pear-sampling.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/pear-sampling.js" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section id="{{ $id }}" class="pear-sampling" data-pear-sampling aria-labelledby="{{ $id }}-title">
+  <p id="{{ $id }}-title" class="pear-sampling__title"><strong>动手算：稀疏奖励与混合组过滤</strong></p>
+  <p id="{{ $id }}-help" class="pear-sampling__note">假设每次试验独立、成功概率固定；保留同时包含成功与失败的组。候选数包含被丢弃的组，不包含策略更新、任务难度差异、执行时长与并发开销。</p>
+  <p data-static class="pear-sampling__note">默认构造条件：成功概率 2%，每组 8 段，目标 128 个混合组。脚本不可用时保留以下结果。</p>
+  <div data-controls hidden>
+    <div class="pear-sampling__presets" role="group" aria-label="载入并计算构造概率">
+      <button type="button" data-preset="default">成功概率 2%</button>
+      <button type="button" data-preset="rare">成功概率 0.4%</button>
+      <button type="button" data-preset="balanced">成功概率 50%</button>
+    </div>
+    <form novalidate aria-label="独立试验与分组的构造参数">
+      <div class="pear-sampling__fields">
+      {{- range slice
+        (dict "name" "probability" "label" "单段成功概率（%）" "min" "0" "max" "100" "step" "0.1" "help" "固定概率假设；不代表真实任务都一样难")
+        (dict "name" "group" "label" "每组 rollout 数" "min" "2" "max" "64" "step" "1" "help" "同组共享任务与初态，算例再假设相互独立")
+        (dict "name" "groups" "label" "目标混合组数" "min" "1" "max" "1024" "step" "1" "help" "只计通过过滤的组；候选采样量通常更大") -}}
+        <label for="{{ $id }}-{{ .name }}"><span data-label>{{ .label }}</span>
+          <input id="{{ $id }}-{{ .name }}" name="{{ .name }}" type="number" min="{{ .min }}" max="{{ .max }}" step="{{ .step }}" value="{{ index $reference.input .name }}" required inputmode="decimal" aria-describedby="{{ $id }}-help">
+          <small>{{ .help }}</small>
+        </label>
+      {{- end -}}
+      </div>
+      <button type="submit" class="pear-sampling__submit">计算当前配置</button>
+    </form>
+  </div>
+  <p id="{{ $id }}-error" data-error class="pear-sampling__error" role="alert" hidden></p>
+  <p data-status class="pear-sampling__note" role="status" aria-live="polite" aria-atomic="true"></p>
+  <dl class="pear-sampling__results">
+  {{- range slice
+    (dict "key" "all_fail" "label" "整组全败的概率")
+    (dict "key" "all_success" "label" "整组全胜的概率")
+    (dict "key" "mixed" "label" "可保留混合组的概率")
+    (dict "key" "candidate_groups" "label" "候选组总数的期望")
+    (dict "key" "candidate_rollouts" "label" "候选 rollout 总数的期望")
+    (dict "key" "retained_success" "label" "保留组中的成功比例") -}}
+    <div><dt id="{{ $id }}-label-{{ .key }}">{{ .label }}</dt><dd><output data-value="{{ .key }}" aria-labelledby="{{ $id }}-label-{{ .key }}" aria-live="off">{{ index $reference.display .key }}</output></dd></div>
+  {{- end -}}
+  </dl>
+  <p class="pear-sampling__note">保留组中的成功比例经过条件筛选，不能用它估计独立评测成功率。0% 或 100% 都没有混合组；增大采样量不能给绝不成功的策略凭空创造成功。</p>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

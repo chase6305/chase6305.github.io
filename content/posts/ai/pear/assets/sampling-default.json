@@ -1,0 +1,24 @@
+{
+  "input": {
+    "probability": 2.0,
+    "group": 8,
+    "groups": 128
+  },
+  "result": {
+    "all_fail": 0.8507630225817855,
+    "all_success": 2.5600000000000006e-14,
+    "mixed": 0.1492369774181888,
+    "candidate_groups": 857.6962775205573,
+    "candidate_rollouts": 6861.570220164458,
+    "retained_success": 0.13401504336241551,
+    "accepted_rollouts": 1024
+  },
+  "display": {
+    "all_fail": "85.0763%",
+    "all_success": "2.560e-12%",
+    "mixed": "14.9237%",
+    "candidate_groups": "857.7",
+    "candidate_rollouts": "6861.57",
+    "retained_success": "13.4015%"
+  }
+}

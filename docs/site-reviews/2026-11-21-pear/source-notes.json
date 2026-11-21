@@ -1,0 +1,55 @@
+{
+  "started_utc": "2026-11-20T19:44:45Z",
+  "minimum_end_utc": "2026-11-21T05:28:25Z",
+  "retrieved_on": "2026-11-21",
+  "project_url": "https://mit-han-lab.github.io/pear-blog/",
+  "paper": "https://arxiv.org/abs/2611.18562v1",
+  "paper_sha256": "9848441c3485cacadcb345e31fb8fcc3c4523bc3c720c749e0476e1e383d7fa6",
+  "blog_html_sha256": "e77bede2518345579b36c8afbe7e5ca077537fdd9655e939794312fa0be2e560",
+  "source_commit": "2a81b2eec95e6e6f19c3fc0a80a38aebb40a30e2",
+  "source_files": {
+    "pear/agent_loop/protocol.py": "511e71155d44d925945189a00c871a6c9c4d3a1c193bbae11e0f8ce0f13ba99a",
+    "pear/agent_loop/tool_parser.py": "3ce4e2fa60b3291a69c99c3321c11eaaa0b671ce5ab95c54a67a69f4785cf8bd",
+    "pear/envs/system_prompt.md": "de3e97a8829d4027c8f8e362b66292ee9c5183e5a1bcedc71f3bd713f1fbb1e3",
+    "pear/envs/libero/controller.py": "afe823584c456c903a81ec934dfbc7f778ce4069804ee26ea2648cd7cf24011a",
+    "pear/envs/robodojo/controller.py": "b9d30e4ccb31bfd986bb837cb1b4dec40899b8b0b65d05247f7068fab49ed763",
+    "pear/deploy/station/agent_loop/action_parser.py": "6a46b351751cb36255f9f21c5566ad2356042dff757ed4b1b7d66cb15647a386",
+    "pear/configs/training.yaml": "7b17be15ce9f9199f19d4dcc94e8a7ac11a180ca5c8653901f3035e9adb4d57b",
+    "examples/models/qwen3_8_27b_pear/train/run_stage3.sh": "36b3f0204702c2bfed525fc1dbeabb1f07ed3a260316efcc87598b8ddb213c96",
+    "README.md": "451529abc1caee262c76e5ddd1c1421de9a5db5ac0e0c6033a28a644e93dd6e7",
+    "pear/agent_loop/agent_loop.py": "dfb873b60aa60fff2a13dde77eaf70d2320c760e2ca2a069b4c3d5b4006b0240",
+    "examples/eval/eval_robolab.sh": "77010f495c9022a7aa5efc539fc84a695891d1f6e9e9dfd0be0a39ddaf108e4c",
+    "pear/envs/robodojo/configs/official_smoke.json": "09e720cb7a69c0a95d232ebbe91f12e8d4d7da6311fa9424e2bd20fa9ac5a8fd",
+    "pear/envs/robodojo/configs/pickup_align_all.json": "efe64048b87977313e4792a30e74c4e1244fb80e00c4d08b3062f3a34db87ce4",
+    "pear/agent_loop/dataset.py": "eee246ad5cbfb54c85a3b6628348ad1f2f928b9db6b7ba0b7978a6bbf1272ee1",
+    "pear/envs/libero/configs/libero_all.json": "ed2cc87605655eeafcf456e0a193a4a9569f226fe050bd7cf75efb9b52d2d352"
+  },
+  "code_license": "Apache-2.0",
+  "distinctions": [
+    "Model JSON gives coordinate increments in centimeters and radians.",
+    "Paper stage 3 describes two RoboDojo tasks; current recipe mixes LIBERO with RoboDojo.",
+    "Paper rollout MTP was disabled; current recipes enable it.",
+    "Paper decode benchmarks use original DFlash2; current repository reports updated PEAR drafter figures.",
+    "Paper quality evaluations use BF16; quoted deployment throughput uses NVFP4.",
+    "Real-robot result is 18/30 on two task families, not a whole robot benchmark or no-task-exposure result."
+  ],
+  "continued_utc": "2026-11-21T03:28:25Z",
+  "queried_model_metadata": {
+    "id": "mit-han-lab/Qwen3.8-27B-PEAR",
+    "revision": "65176e435e5fa80a059ebfafaf8215e6ad00a83e",
+    "weights_downloaded": false
+  },
+  "sampling_example_scope": "Fixed independent Bernoulli trials, conditional retained success, and task-mixture reweighting are original constructed calculations, not measured training curves.",
+  "parser_observation": "Deployment validation raises OverflowError for an extremely large integer; probe records exception types and does not execute station recovery.",
+  "dataset_observation": "official_smoke.json lists 52 settings and is not by itself the paper full 54-setting evaluation. pickup_align_all.json expands the two training/evaluation task families; released recipes must be checked against paper denominators.",
+  "dataset_counts": {
+    "libero_rows": 2000,
+    "robodojo_rows": 328,
+    "robodojo_repetitions": 6,
+    "nominal_row_weights": [
+      2000,
+      1968
+    ],
+    "meaning": "Task/initial-state row weights, not generated rollouts or retained update proportions."
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "paper": "https://arxiv.org/abs/2611.18562v1",
+  "source_revision": "2a81b2eec95e6e6f19c3fc0a80a38aebb40a30e2",
+  "purpose": "Editorial claim audit. These observations and constructed calculations do not reproduce policy training or robot experiments.",
+  "claims": [
+    {
+      "article": "boundary",
+      "source": "Paper section 3 and appendix H; pear/envs/system_prompt.md",
+      "observation": "Native use retains the robot description, action parser and IK/controller. The removed harness comprises model-facing perception/planning/skill tools.",
+      "scope": "System decomposition, not a claim that all non-model code disappears."
+    },
+    {
+      "article": "action",
+      "source": "System prompt; pear/envs/libero/controller.py; pear/envs/robodojo/controller.py",
+      "observation": "Observations give current quantities; actions give increments in centimeters and radians, with all fields present. Goals use unrounded measurements. Simulated gripper width change selects open/close by sign.",
+      "scope": "The pinned simulators and protocol; real device implementations require their own mapping."
+    },
+    {
+      "article": "robot-description",
+      "source": "Paper appendix H",
+      "observation": "Robot environment descriptions supply part names, frame directions and camera relationships. ARX names four parts and uses a shared frame between the arm bases.",
+      "scope": "Descriptions are part of the transfer setup, rather than evidence that matching field names performs calibration."
+    },
+    {
+      "article": "objective",
+      "source": "Paper equations 1 and 2; appendix A, Table 1",
+      "observation": "Task/initial-state groups use binary rewards and normalized advantages; all generated tokens of an episode share its advantage. Loss reduction is token-mean. The update uses REINFORCE bypass plus score centering, without PPO clipping, KL penalty, entropy bonus or truncated importance sampling.",
+      "scope": "The paper's specified algorithm; the population-standard-deviation example is separately declared as constructed arithmetic."
+    },
+    {
+      "article": "sampling",
+      "source": "Original derivation in pear_sanity.py and independent Fraction/binomial checks",
+      "observation": "IID fixed-probability mixed groups have probability 1-(1-p)^G-p^G; retained successful fraction and task weights are conditional sampling quantities.",
+      "scope": "Not a measurement of PEAR candidate counts, scheduling throughput or evaluation success."
+    },
+    {
+      "article": "curriculum",
+      "source": "Paper sections 3.3 and 4; appendix A",
+      "observation": "Steps 1-148 train three LIBERO suites; steps 149-225 add Long; 115 further steps train two RoboDojo tasks. Long improves 0.4 to 39.0 percent before its own training. Each update retains 128 groups of eight after filtering.",
+      "scope": "LIBERO-only is step 225; final real-robot model is after RoboDojo. The nominal 348160 retained trajectories exclude discarded candidates and recovery."
+    },
+    {
+      "article": "engine",
+      "source": "Paper appendix A; pear/agent_loop/agent_loop.py",
+      "observation": "Episodes average about 94k sequence tokens, 19.7 rounds and 39-59 images. Later environment observations are appended with zero response masks. H100 uses LMCache; GB300 does not in the paper setup.",
+      "scope": "Sequence, generated-token and cumulative request-length accounting remain distinct."
+    },
+    {
+      "article": "evidence",
+      "source": "Paper section 4.1; appendix B, Table 2",
+      "observation": "LIBERO base 1.6 percent and LIBERO-only xhigh 74.4 percent; 40 tasks with 50 episodes each.",
+      "scope": "This task benchmark is not an arbitrary robot-task distribution or a compute-matched model ranking."
+    },
+    {
+      "article": "evidence",
+      "source": "Paper appendix C, Table 3",
+      "observation": "PEAR versus LIBERO-SFT pi0.5: task 57.4/0.75, position 57.5/20.8, semantic 73.3/95.8, object 60.2/96.0 percent. PEAR runs 2000 episodes per perturbation; baseline numbers aggregate prior study results.",
+      "scope": "Mixed strengths across perturbations; this is not a controlled attribution of every difference to chain-of-thought."
+    },
+    {
+      "article": "evidence",
+      "source": "Paper appendix D, Table 5",
+      "observation": "RoboLab has 64 simple, 39 moderate and 17 complex tasks. Final results average two 1200-episode runs. Overall final/Cosmos success is 37.3/36.8 percent, complex 13.2/25.3.",
+      "scope": "Task-weighted overall success differs from equally weighting the three difficulty groups. Baseline checkpoints are DROID variants."
+    },
+    {
+      "article": "evidence",
+      "source": "Paper appendix E, Figure 11",
+      "observation": "Full RoboDojo has 42 tasks, 54 settings and 540 episodes. Final successes are 8+7 on trained tasks and 3+3 on two others, total 21. Official five-dimension mean is 5.50 percent; pooled 21/540 is 3.89 percent. Context exhaustion affects 370/540 episodes.",
+      "scope": "Separate from the larger two-task evaluation reporting 71.2 and 78.8 percent."
+    },
+    {
+      "article": "real-world",
+      "source": "Paper sections 4 and 4.4; appendix G, Table 7",
+      "observation": "YAM real trials per model are five alignment scenes times two plus ten pickup objects times two. Base, LIBERO-only and final achieve 0, 7 and 18 out of 30. Final had simulation training on the corresponding task families, but no YAM or real-robot training data.",
+      "scope": "Cross-robot and sim-to-real transfer; not absence of all task-family exposure. Fixed repeated scenes do not establish IID sampling."
+    },
+    {
+      "article": "real-world",
+      "source": "Paper section 4 and appendix G",
+      "observation": "Pickup target is 10 cm. Alignment includes releasing the set square and resetting the arm. Budget is 25 rounds and 32k reasoning tokens per round; IK retries count as rounds. Final failures: six round limits, three unaligned, two toppled, one rolled. Successful final trials use 7-24 rounds.",
+      "scope": "The 18/30 result includes these task and budget definitions. Drawing and chemistry demonstrations are outside that denominator."
+    },
+    {
+      "article": "latency",
+      "source": "Paper section 4.6, Figure 9; appendix B",
+      "observation": "Same LIBERO-only checkpoint at low/xhigh has about 0.86k/3.23k thinking tokens and 21.9/74.4 percent success. Original NVFP4 plus DFlash2 decode rates are 52, 221 and 747 tokens/s, while quality evaluation uses BF16.",
+      "scope": "Fixed 3230-token division is constructed cross-configuration arithmetic. It is not a matched measured end-to-end round latency."
+    },
+    {
+      "article": "general-capabilities",
+      "source": "Paper appendix F, Table 6",
+      "observation": "Nine benchmark comparisons use paired question bootstrap with 2000 resamples. All 95 percent change intervals contain zero; ERQA change is -2.0 points with [-6.2,+2.2].",
+      "scope": "Failure to reject zero change does not establish equivalence or noninferiority. No controlled SFT branch is supplied by this comparison."
+    },
+    {
+      "article": "reproduce",
+      "source": "Pinned train/run_stage3.sh; examples/eval/README.md; examples/eval/eval_robolab.sh; robodojo configuration JSON; deployment docs",
+      "observation": "Released stage 3 mixes LIBERO and RoboDojo; current rollout recipes enable MTP. RoboLab default is 120 episodes. official_smoke.json contains 52 settings, rather than the paper full 54. Updated drafter throughput and optional history compression are later configurations. Nominal stage-3 row weights are 2000 LIBERO versus 328 x 6 RoboDojo; these are not newly generated trajectories or guaranteed retained proportions.",
+      "scope": "Current defaults must not silently replace original paper protocol or denominators."
+    }
+  ]
+}
