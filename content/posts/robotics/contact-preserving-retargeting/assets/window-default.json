@@ -1,0 +1,25 @@
+{
+  "input": {
+    "distance": 12,
+    "step": 4,
+    "intervals": 3,
+    "pinned": 0
+  },
+  "result": {
+    "free_intervals": 3,
+    "late_gap": 8,
+    "window_gap": 0,
+    "late_path": [
+      0,
+      0,
+      0,
+      4
+    ],
+    "window_path": [
+      0,
+      4,
+      8,
+      12
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "extends": "humanoid_retarget_unitree_g1_example.json",
+  "correspondence": {
+    "dataset": {
+      "num_points": 512,
+      "out": "../output/umr-character-cpu/samples.npz"
+    },
+    "train": {
+      "out_dir": "../output/umr-character-cpu/correspondence",
+      "device": "cpu",
+      "epochs": 16,
+      "edge_k": 8,
+      "save_every": 0,
+      "log_every": 8,
+      "extra_args": {
+        "latent_dim": 64,
+        "hidden_dim": 64
+      }
+    }
+  },
+  "motion": {
+    "start": 12,
+    "stride": 2,
+    "max_frames": 8
+  },
+  "solver": {
+    "iters": 4,
+    "pose_init_iters": 5
+  },
+  "retarget": {
+    "out": "../output/umr-character-cpu/character_cpu_smoke_g1.npz"
+  }
+}

@@ -1,9 +1,9 @@
 ---
 title: "CARD 详解：以接触为锚点的灵巧手重定向与触觉回放"
 date: 2026-11-06
-lastmod: 2026-11-13
+lastmod: 2026-11-24
 draft: false
-tags: ["CARD", "Cross-Embodiment", "Imitation Learning", "Robot Control", "Paper Notes"]
+tags: ["CARD", "Cross-Embodiment", "Imitation Learning", "Robot Control", "Paper Notes", "Motion Retargeting"]
 categories: ["机器人", "人工智能"]
 authors: ["chase"]
 summary: "拆解 CARD 的手—接触统一表示、接触点对应、方向与防滑目标、GPU 采样优化和触觉导纳回放，区分视频合成力、接触保真度、真机成功率与物理重定向。"
@@ -306,6 +306,8 @@ CARD-physics 在 SPIDER 的仿真重定向中使用 CARD 初始化、替换接�
 最后，分别验证离线几何与硬件执行。几何侧看正确区域、方向、间隙和穿透；硬件侧看触觉标定、力误差、滑动、接触丢失与物体偏移后的恢复。CARD 明确承认，大幅物体位移超出了这种回放的恢复能力。
 
 它与 [MorphMimic]({{< relref "/posts/ai/morphmimic" >}}) 等跨身体方法关注的层级不同：CARD 围绕手的接触接口组织演示；与 [cuArms]({{< relref "/posts/robotics/cuarms" >}}) 也有互补关系，后者解决多机械臂的协同运动和技能时序，但不会替代这里的手内接触控制。
+
+如果同一个物体还要由躯干或大腿承托，可以进一步检查掌面位置、支撑连杆与受力方向怎样随阶段切换。 [全身重定向中的接触切换]({{< relref "/posts/robotics/contact-preserving-retargeting#support-transition" >}})
 
 ## 阅读自测与验收
 

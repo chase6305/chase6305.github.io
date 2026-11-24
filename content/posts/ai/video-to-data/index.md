@@ -1,9 +1,9 @@
 ---
 title: "NVIDIA Video to Data 详解：从人类视频到机器人仿真、强化学习与 GR00T 数据"
 date: 2026-10-15
-lastmod: 2026-11-13
+lastmod: 2026-11-24
 draft: false
-tags: ["Video to Data", "CHORD", "Robot Learning", "Egocentric", "3D Vision", "Isaac Lab", "Reinforcement Learning", "VLA"]
+tags: ["Video to Data", "CHORD", "Robot Learning", "Egocentric", "3D Vision", "Isaac Lab", "Reinforcement Learning", "VLA", "Motion Retargeting"]
 categories: ["人工智能"]
 authors: ["chase"]
 summary: "沿源码拆解 NVIDIA Video to Data 的视频检索、三维重建、动作重定向、接触引导强化学习和 GR00T N1.7 数据链路，给出纸巾盒示例的运行步骤、数据接口、验收标准与适用边界。"
@@ -211,6 +211,8 @@ Robotic Grounding 也能从 ARCTIC、HOT3D、TACO、GRAB 等已有运动数据�
 该脚本自动新建物体 URDF 时默认质量为 0.3 kg，并按网格包围盒近似惯量；复用已有资产时参数来自对应 URDF。这些是仿真设定，应与几何重建结果分别核对。
 
 这 58 维属于当前 Vega 双臂与双手约定，不能推广成所有 Sharpa、Dex3 或 G1 的通用维数。新增机器人需要新的模型、映射、控制与观测配置，以及相应 contract；更换 URDF 文件名只覆盖其中很小一部分。
+
+如果重建结果还包含全身和步态，可沿同样的验收思路选择连杆映射、表面点对应或联合求解物体轨迹，并先用源时刻对齐各自的导出文件。 [GMR、UMR 与 OTRetarget]({{< relref "/posts/robotics/motion-retargeting" >}}) · [源时间与四元数约定]({{< relref "/posts/robotics/motion-retargeting#align-exports" >}})
 
 ## 5. Robotic Grounding 与 CHORD：让动作接受接触物理的检验 {#grounding}
 

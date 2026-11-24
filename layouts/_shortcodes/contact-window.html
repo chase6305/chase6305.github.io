@@ -1,0 +1,40 @@
+{{- $id := printf "contact-window-%d" .Ordinal -}}
+{{- $reference := (.Page.Resources.Get "assets/window-default.json").Content | transform.Unmarshal -}}
+{{- $css := resources.Get "css/contact-window.css" | minify | fingerprint -}}
+{{- $js := resources.Get "js/contact-window.js" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<section class="contact-window" data-contact-window aria-labelledby="{{ $id }}-title">
+  <p id="{{ $id }}-title" class="contact-window__title"><strong>算一算握持前要留多少步</strong></p>
+  <p data-static>目标相距 {{ $reference.input.distance }} cm，每步最多移动 {{ $reference.input.step }} cm。接触前共有 {{ $reference.input.intervals }} 个时间间隔，其中 {{ $reference.input.pinned }} 个前部间隔固定在起始位置。</p>
+  <form hidden novalidate>
+    <div class="contact-window__inputs">
+      {{- range slice
+        (dict "name" "distance" "label" "目标距离（cm）" "min" 0 "max" 100)
+        (dict "name" "step" "label" "每步位移上限（cm）" "min" 0 "max" 100)
+        (dict "name" "intervals" "label" "到接触的间隔数" "min" 1 "max" 12)
+        (dict "name" "pinned" "label" "前部固定间隔数" "min" 0 "max" 12) -}}
+      <div class="contact-window__field">
+        <label for="{{ $id }}-{{ .name }}">{{ .label }}</label>
+        <input id="{{ $id }}-{{ .name }}" name="{{ .name }}" type="number" min="{{ .min }}" max="{{ .max }}" step="1" inputmode="numeric" required value="{{ index $reference.input .name }}">
+      </div>
+      {{- end -}}
+    </div>
+    <button type="submit">计算</button>
+  </form>
+  <p id="{{ $id }}-error" data-error role="alert"></p>
+  <p data-status role="status" aria-atomic="true"></p>
+  <dl class="contact-window__results">
+    {{- range slice
+      (dict "key" "late_path" "label" "等到接触帧的路径（cm）" "path" true)
+      (dict "key" "late_gap" "label" "等到接触帧的末帧间隙（cm）")
+      (dict "key" "window_path" "label" "窗口内调整的路径（cm）" "path" true)
+      (dict "key" "window_gap" "label" "窗口内调整的末帧间隙（cm）") -}}
+    {{- $value := index $reference.result .key -}}
+    <div>
+      <dt id="{{ $id }}-{{ .key }}">{{ .label }}</dt>
+      <dd><output data-value="{{ .key }}" aria-labelledby="{{ $id }}-{{ .key }}" aria-live="off">{{ if .path }}{{ delimit $value " → " }}{{ else }}{{ $value }}{{ end }}</output></dd>
+    </div>
+    {{- end -}}
+  </dl>
+</section>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
