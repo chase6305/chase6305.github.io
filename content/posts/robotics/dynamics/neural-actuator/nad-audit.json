@@ -1,0 +1,362 @@
+{
+  "revision": "541a93aac4368e73883e86a51f31a7add6bde059",
+  "csv_paths": 485,
+  "distinct_git_blobs": 474,
+  "paths_by_family": {
+    "force_sensor": 120,
+    "force_unlabeled": 100,
+    "franka": 35,
+    "motor_condition": 40,
+    "so101": 100,
+    "weight": 90
+  },
+  "exact_blob_aliases": [
+    [
+      "force_unlabeled/pick_place_empty/test/001.csv",
+      "motor_condition/pick_place_empty/test/001.csv"
+    ],
+    [
+      "force_unlabeled/pick_place_empty/train/001.csv",
+      "motor_condition/pick_place_empty/train/001.csv"
+    ],
+    [
+      "force_unlabeled/pick_place_empty/train/002.csv",
+      "motor_condition/pick_place_empty/train/002.csv"
+    ],
+    [
+      "force_unlabeled/pick_place_empty/train/003.csv",
+      "motor_condition/pick_place_empty/train/003.csv"
+    ],
+    [
+      "force_unlabeled/pick_place_empty/train/004.csv",
+      "motor_condition/pick_place_empty/train/004.csv"
+    ],
+    [
+      "force_unlabeled/pick_place_empty/train/005.csv",
+      "motor_condition/pick_place_empty/train/005.csv"
+    ],
+    [
+      "force_unlabeled/pick_place_empty/train/006.csv",
+      "motor_condition/pick_place_empty/train/006.csv"
+    ],
+    [
+      "force_unlabeled/pick_place_empty/train/007.csv",
+      "motor_condition/pick_place_empty/train/007.csv"
+    ],
+    [
+      "force_unlabeled/pick_place_empty/train/008.csv",
+      "motor_condition/pick_place_empty/train/008.csv"
+    ],
+    [
+      "force_unlabeled/pick_place_empty/validation/001.csv",
+      "motor_condition/pick_place_empty/validation/001.csv"
+    ],
+    [
+      "franka/lift_hold/test/200_006.csv",
+      "franka/lift_hold/train/200_007.csv"
+    ]
+  ],
+  "omx_loaded_crop_aliases": [
+    {
+      "weight_path": "weight/pick_place_object_200g/test/001.csv",
+      "motor_condition_path": "motor_condition/pick_place_object_200g/test/001.csv",
+      "weight_rows": 697,
+      "motor_condition_rows": 1363,
+      "first_matching_index": 480,
+      "last_matching_index": 1176,
+      "timestamp_offset_s": 8.20518970489502,
+      "max_non_timestamp_abs_delta": 1.7763568394002505e-15
+    },
+    {
+      "weight_path": "weight/pick_place_object_200g/train/001.csv",
+      "motor_condition_path": "motor_condition/pick_place_object_200g/train/001.csv",
+      "weight_rows": 634,
+      "motor_condition_rows": 1304,
+      "first_matching_index": 430,
+      "last_matching_index": 1063,
+      "timestamp_offset_s": 7.356838464736938,
+      "max_non_timestamp_abs_delta": 1.7763568394002505e-15
+    },
+    {
+      "weight_path": "weight/pick_place_object_200g/train/002.csv",
+      "motor_condition_path": "motor_condition/pick_place_object_200g/train/002.csv",
+      "weight_rows": 683,
+      "motor_condition_rows": 1232,
+      "first_matching_index": 392,
+      "last_matching_index": 1074,
+      "timestamp_offset_s": 6.71022891998291,
+      "max_non_timestamp_abs_delta": 1.7763568394002505e-15
+    },
+    {
+      "weight_path": "weight/pick_place_object_200g/train/003.csv",
+      "motor_condition_path": "motor_condition/pick_place_object_200g/train/003.csv",
+      "weight_rows": 751,
+      "motor_condition_rows": 1288,
+      "first_matching_index": 377,
+      "last_matching_index": 1127,
+      "timestamp_offset_s": 6.447861909866333,
+      "max_non_timestamp_abs_delta": 1.7763568394002505e-15
+    },
+    {
+      "weight_path": "weight/pick_place_object_200g/train/004.csv",
+      "motor_condition_path": "motor_condition/pick_place_object_200g/train/004.csv",
+      "weight_rows": 801,
+      "motor_condition_rows": 1440,
+      "first_matching_index": 406,
+      "last_matching_index": 1206,
+      "timestamp_offset_s": 6.956841945648193,
+      "max_non_timestamp_abs_delta": 1.7763568394002505e-15
+    },
+    {
+      "weight_path": "weight/pick_place_object_200g/train/005.csv",
+      "motor_condition_path": "motor_condition/pick_place_object_200g/train/005.csv",
+      "weight_rows": 715,
+      "motor_condition_rows": 1277,
+      "first_matching_index": 366,
+      "last_matching_index": 1080,
+      "timestamp_offset_s": 6.24683690071106,
+      "max_non_timestamp_abs_delta": 1.7763568394002505e-15
+    },
+    {
+      "weight_path": "weight/pick_place_object_200g/train/006.csv",
+      "motor_condition_path": "motor_condition/pick_place_object_200g/train/006.csv",
+      "weight_rows": 756,
+      "motor_condition_rows": 1371,
+      "first_matching_index": 396,
+      "last_matching_index": 1151,
+      "timestamp_offset_s": 6.760900735855103,
+      "max_non_timestamp_abs_delta": 1.7763568394002505e-15
+    },
+    {
+      "weight_path": "weight/pick_place_object_200g/train/007.csv",
+      "motor_condition_path": "motor_condition/pick_place_object_200g/train/007.csv",
+      "weight_rows": 711,
+      "motor_condition_rows": 1363,
+      "first_matching_index": 436,
+      "last_matching_index": 1146,
+      "timestamp_offset_s": 7.442861795425415,
+      "max_non_timestamp_abs_delta": 1.7763568394002505e-15
+    },
+    {
+      "weight_path": "weight/pick_place_object_200g/train/008.csv",
+      "motor_condition_path": "motor_condition/pick_place_object_200g/train/008.csv",
+      "weight_rows": 711,
+      "motor_condition_rows": 1279,
+      "first_matching_index": 352,
+      "last_matching_index": 1062,
+      "timestamp_offset_s": 6.002223014831543,
+      "max_non_timestamp_abs_delta": 1.7763568394002505e-15
+    },
+    {
+      "weight_path": "weight/pick_place_object_200g/validation/001.csv",
+      "motor_condition_path": "motor_condition/pick_place_object_200g/validation/001.csv",
+      "weight_rows": 876,
+      "motor_condition_rows": 1328,
+      "first_matching_index": 323,
+      "last_matching_index": 1198,
+      "timestamp_offset_s": 5.504798173904419,
+      "max_non_timestamp_abs_delta": 1.7763568394002505e-15
+    }
+  ],
+  "franka_cross_split": {
+    "train": "franka/lift_hold/train/200_007.csv",
+    "test": "franka/lift_hold/test/200_006.csv",
+    "git_blob": "699814736e609192b00311f6b319292ad35b5e3e",
+    "sha256": "86d49d30d60821021a6da1a884937f49be601999bba47cda00cb9d3ff7234cf9",
+    "bytes": 1020944,
+    "rows": 929
+  },
+  "samples": {
+    "omx_push": {
+      "path": "force_sensor/force_x_plus/test/001.csv",
+      "rows": 542,
+      "columns": 44,
+      "median_interval_ms": 16.999006,
+      "valid_xyz": [
+        542,
+        542,
+        542
+      ],
+      "min_filled_force_norm_n": 0.045110974,
+      "max_filled_force_norm_n": 4.045122248,
+      "threshold_positive_rows": 542,
+      "threshold_transition_indices": [],
+      "nine_frame_span_ms": {
+        "min": 129.717827,
+        "median": 136.013389,
+        "max": 146.396875
+      }
+    },
+    "omx_reference": {
+      "path": "force_sensor/force_x_plus_ref/test/001.csv",
+      "rows": 542,
+      "columns": 44,
+      "median_interval_ms": 16.011238,
+      "valid_xyz": [
+        0,
+        0,
+        0
+      ],
+      "min_filled_force_norm_n": 0.0,
+      "max_filled_force_norm_n": 0.0,
+      "threshold_positive_rows": 0,
+      "threshold_transition_indices": [],
+      "nine_frame_span_ms": {
+        "min": 128.000259,
+        "median": 135.999203,
+        "max": 144.080639
+      }
+    },
+    "omx_gripper": {
+      "path": "force_unlabeled/joint_sweep_motor15/test/001.csv",
+      "rows": 767,
+      "columns": 44,
+      "median_interval_ms": 17.001152,
+      "valid_xyz": [
+        0,
+        0,
+        0
+      ],
+      "min_filled_force_norm_n": 0.0,
+      "max_filled_force_norm_n": 0.0,
+      "threshold_positive_rows": 0,
+      "threshold_transition_indices": [],
+      "nine_frame_span_ms": {
+        "min": 131.82354,
+        "median": 136.013269,
+        "max": 146.520138
+      }
+    },
+    "so101_pick_place": {
+      "path": "so101/pick_and_place/300g/test/001.csv",
+      "rows": 539,
+      "columns": 46,
+      "median_interval_ms": 16.011834,
+      "valid_xyz": [
+        0,
+        0,
+        187
+      ],
+      "min_filled_force_norm_n": 0.0,
+      "max_filled_force_norm_n": 2.94,
+      "threshold_positive_rows": 187,
+      "threshold_transition_indices": [
+        186,
+        373
+      ],
+      "nine_frame_span_ms": {
+        "min": 125.427961,
+        "median": 128.458977,
+        "max": 132.570267
+      }
+    },
+    "franka_300g": {
+      "path": "franka/lift_hold/test/300_001.csv",
+      "rows": 941,
+      "columns": 72,
+      "median_interval_ms": 15.982389,
+      "valid_xyz": [
+        0,
+        0,
+        941
+      ],
+      "min_filled_force_norm_n": 2.943,
+      "max_filled_force_norm_n": 2.943,
+      "threshold_positive_rows": 941,
+      "threshold_transition_indices": [],
+      "nine_frame_span_ms": {
+        "min": 109.393835,
+        "median": 127.958298,
+        "max": 136.464834
+      }
+    }
+  },
+  "franka_test_lengths": {
+    "200_006.csv": {
+      "raw_rows": 929,
+      "cropped_rows": 418,
+      "rollout_steps": 417
+    },
+    "300_001.csv": {
+      "raw_rows": 941,
+      "cropped_rows": 423,
+      "rollout_steps": 422
+    },
+    "400_001.csv": {
+      "raw_rows": 935,
+      "cropped_rows": 421,
+      "rollout_steps": 420
+    },
+    "500_006.csv": {
+      "raw_rows": 930,
+      "cropped_rows": 418,
+      "rollout_steps": 417
+    },
+    "600_003.csv": {
+      "raw_rows": 931,
+      "cropped_rows": 419,
+      "rollout_steps": 418
+    }
+  },
+  "omx_validation_initial_state_example": {
+    "row_index": 100,
+    "train_minus_validation_pose_deg": [
+      -0.87891,
+      2.0214930000000018,
+      -2.1972749999999976,
+      2.4609480000000077
+    ]
+  },
+  "omx_max_paired_goal_delta_rad": 2.220446049250313e-16,
+  "omx_single_finger_min_max_mm": [
+    -11.081047030677242,
+    18.33306455904125
+  ],
+  "franka_proxy": {
+    "first_row": 282,
+    "stop_row_exclusive": 705,
+    "retained_rows": 423,
+    "unique_logged_goals_full": 7,
+    "unique_logged_goals_cropped": 3,
+    "median_lookahead_ms": 79.976797,
+    "last_lookahead_ms": 0.0
+  },
+  "franka_telemetry_overlap": {
+    "train_paths": 30,
+    "test_paths": 5,
+    "compared_pairs": 150,
+    "match_columns": [
+      "pos1",
+      "pos2",
+      "pos3",
+      "pos4",
+      "pos5",
+      "pos6",
+      "pos7",
+      "tau_d1",
+      "tau_d2",
+      "tau_d3",
+      "tau_d4",
+      "tau_d5",
+      "tau_d6",
+      "tau_d7",
+      "motor_pos1",
+      "motor_pos2",
+      "motor_pos3",
+      "motor_pos4",
+      "motor_pos5",
+      "motor_pos6",
+      "motor_pos7"
+    ],
+    "minimum_contiguous_rows": 9,
+    "matches": [
+      {
+        "train": "franka/lift_hold/train/200_007.csv",
+        "test": "franka/lift_hold/test/200_006.csv",
+        "train_start_row": 0,
+        "test_start_row": 0,
+        "matching_rows": 929
+      }
+    ]
+  }
+}
